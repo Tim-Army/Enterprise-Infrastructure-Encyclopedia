@@ -1,0 +1,21 @@
+<button id="theme-toggle" type="button" aria-label="Toggle light and dark mode">Light mode</button>
+<script>
+  (function () {
+    var STORAGE_KEY = "eie-theme";
+    var btn = document.getElementById("theme-toggle");
+    var stored = localStorage.getItem(STORAGE_KEY);
+
+    function apply(theme) {
+      document.body.classList.toggle("light", theme === "light");
+      btn.textContent = theme === "light" ? "Dark mode" : "Light mode";
+    }
+
+    apply(stored === "light" ? "light" : "dark");
+
+    btn.addEventListener("click", function () {
+      var next = document.body.classList.contains("light") ? "dark" : "light";
+      localStorage.setItem(STORAGE_KEY, next);
+      apply(next);
+    });
+  })();
+</script>

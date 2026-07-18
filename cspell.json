@@ -1,0 +1,14 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "iDRAC", "RACADM", "Redfish", "vSAN", "vCenter", "vSphere", "NSX",
+    "FortiGate", "FortiOS", "FortiGuard", "Panorama", "PAN-OS", "Gigamon",
+    "GigaVUE", "GigaSMART", "Forescout", "OpenManage", "Cockpit", "SELinux",
+    "AppArmor", "firewalld", "Netplan", "systemd", "Podman", "OpenShift",
+    "Wireshark", "Pandoc", "Typst", "Lychee", "pnpm", "corepack",
+    "kubectl", "GitOps", "FinOps", "RHCSA", "NSE", "VCP", "WCA", "MAAS",
+    "Juju", "Ansible", "Terraform", "cspell", "markdownlint"
+  ],
+  "ignorePaths": ["node_modules/**", "output/**", "_site/**"]
+}

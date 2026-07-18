@@ -1,0 +1,65 @@
+:root {
+  color-scheme: dark light;
+  --eie-bg: #000000;
+  --eie-fg: #006600;
+  --eie-link: #00aa00;
+  --eie-bg-light: #ffffff;
+  --eie-fg-light: #060606;
+}
+
+body {
+  background: var(--eie-bg);
+  color: var(--eie-fg);
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+body.light {
+  background: var(--eie-bg-light);
+  color: var(--eie-fg-light);
+}
+
+a {
+  color: var(--eie-link);
+}
+
+body.light a {
+  color: #046804;
+}
+
+pre, code {
+  background: rgba(0, 102, 0, 0.12);
+  border-radius: 4px;
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+#theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  background: transparent;
+  border: 1px solid currentColor;
+  color: inherit;
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid rgba(0, 102, 0, 0.35);
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+}

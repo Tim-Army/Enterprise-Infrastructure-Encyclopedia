@@ -1,0 +1,17 @@
+{
+  "name": "enterprise-infrastructure-encyclopedia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A volume-first, documentation-as-code curriculum for enterprise infrastructure.",
+  "license": "MIT",
+  "scripts": {
+    "validate": "scripts/bash/validate.sh",
+    "build": "scripts/bash/build-book.sh --format all",
+    "build:site": "scripts/bash/build-download-site.sh --output _site",
+    "check:links": "scripts/bash/check-external-links.sh"
+  },
+  "devDependencies": {
+    "cspell": "^8.0.0",
+    "markdownlint-cli2": "^0.13.0"
+  }
+}

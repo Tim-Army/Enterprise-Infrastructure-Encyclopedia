@@ -1,0 +1,842 @@
+# book.yml — chapter sources and build-eligibility declaration
+#
+# Generated from the 24-volume roadmap. Each volume is build-eligible only
+# after its contiguous chapter list, index, glossary, and declared chapter
+# count pass repository validation (scripts/bash/validate.sh).
+
+title: Enterprise Infrastructure Encyclopedia
+volumes:
+  - id: volume-01
+    number: "I"
+    slug: volume-01-enterprise-engineering-foundations
+    title: "Enterprise Engineering Foundations"
+    chapter_count: 8
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Building the Enterprise Developer Workstation"
+        path: volumes/volume-01-enterprise-engineering-foundations/chapters/01-building-the-enterprise-developer-workstation.md
+      - id: 02
+        title: "Repository Architecture"
+        path: volumes/volume-01-enterprise-engineering-foundations/chapters/02-repository-architecture.md
+      - id: 03
+        title: "Automation Architecture"
+        path: volumes/volume-01-enterprise-engineering-foundations/chapters/03-automation-architecture.md
+      - id: 04
+        title: "GitHub Project and Workflow Management"
+        path: volumes/volume-01-enterprise-engineering-foundations/chapters/04-github-project-and-workflow-management.md
+      - id: 05
+        title: "Documentation Pipelines and Publishing"
+        path: volumes/volume-01-enterprise-engineering-foundations/chapters/05-documentation-pipelines-and-publishing.md
+      - id: 06
+        title: "Understanding Enterprise Infrastructure"
+        path: volumes/volume-01-enterprise-engineering-foundations/chapters/06-understanding-enterprise-infrastructure.md
+      - id: 07
+        title: "Enterprise Architecture Fundamentals"
+        path: volumes/volume-01-enterprise-engineering-foundations/chapters/07-enterprise-architecture-fundamentals.md
+      - id: 08
+        title: "Infrastructure Lifecycle Management"
+        path: volumes/volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md
+  - id: volume-02
+    number: "II"
+    slug: volume-02-network-engineering-foundations
+    title: "Network Engineering Foundations"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Network Models and Protocol Architecture"
+        path: volumes/volume-02-network-engineering-foundations/chapters/01-network-models-and-protocol-architecture.md
+      - id: 02
+        title: "IP Addressing and Subnetting"
+        path: volumes/volume-02-network-engineering-foundations/chapters/02-ip-addressing-and-subnetting.md
+      - id: 03
+        title: "Ethernet Switching, VLANs, and Layer 2 Resilience"
+        path: volumes/volume-02-network-engineering-foundations/chapters/03-ethernet-switching-vlans-and-layer-2-resilience.md
+      - id: 04
+        title: "IP Routing Fundamentals"
+        path: volumes/volume-02-network-engineering-foundations/chapters/04-ip-routing-fundamentals.md
+      - id: 05
+        title: "Core Network Services"
+        path: volumes/volume-02-network-engineering-foundations/chapters/05-core-network-services.md
+      - id: 06
+        title: "Wireless Network Foundations"
+        path: volumes/volume-02-network-engineering-foundations/chapters/06-wireless-network-foundations.md
+      - id: 07
+        title: "Enterprise Network Design and Resilience"
+        path: volumes/volume-02-network-engineering-foundations/chapters/07-enterprise-network-design-and-resilience.md
+      - id: 08
+        title: "Network Validation and Observability"
+        path: volumes/volume-02-network-engineering-foundations/chapters/08-network-validation-and-observability.md
+      - id: 09
+        title: "Network Troubleshooting and Operations"
+        path: volumes/volume-02-network-engineering-foundations/chapters/09-network-troubleshooting-and-operations.md
+  - id: volume-03
+    number: "III"
+    slug: volume-03-cisco-enterprise-networking
+    title: "Cisco Enterprise Networking"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Cisco Enterprise Architecture and IOS XE Foundations"
+        path: volumes/volume-03-cisco-enterprise-networking/chapters/01-cisco-enterprise-architecture-and-ios-xe-foundations.md
+      - id: 02
+        title: "Catalyst Campus Switching and Resiliency"
+        path: volumes/volume-03-cisco-enterprise-networking/chapters/02-catalyst-campus-switching-and-resiliency.md
+      - id: 03
+        title: "Cisco Enterprise Routing and Path Control"
+        path: volumes/volume-03-cisco-enterprise-networking/chapters/03-cisco-enterprise-routing-and-path-control.md
+      - id: 04
+        title: "Enterprise WAN, Internet Edge, and Catalyst SD-WAN"
+        path: volumes/volume-03-cisco-enterprise-networking/chapters/04-enterprise-wan-internet-edge-and-catalyst-sd-wan.md
+      - id: 05
+        title: "Catalyst Wireless Architecture and Operations"
+        path: volumes/volume-03-cisco-enterprise-networking/chapters/05-catalyst-wireless-architecture-and-operations.md
+      - id: 06
+        title: "Cisco Network Services, QoS, and Application Delivery"
+        path: volumes/volume-03-cisco-enterprise-networking/chapters/06-cisco-network-services-qos-and-application-delivery.md
+      - id: 07
+        title: "Cisco Identity, Access Control, and Segmentation"
+        path: volumes/volume-03-cisco-enterprise-networking/chapters/07-cisco-identity-access-control-and-segmentation.md
+      - id: 08
+        title: "IOS XE Programmability and Network Automation"
+        path: volumes/volume-03-cisco-enterprise-networking/chapters/08-ios-xe-programmability-and-network-automation.md
+      - id: 09
+        title: "Catalyst Center, SD-Access, Assurance, and Operations"
+        path: volumes/volume-03-cisco-enterprise-networking/chapters/09-catalyst-center-sd-access-assurance-and-operations.md
+  - id: volume-04
+    number: "IV"
+    slug: volume-04-enterprise-systems-administration
+    title: "Enterprise Systems Administration"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Systems Administration Architecture and Operating Model"
+        path: volumes/volume-04-enterprise-systems-administration/chapters/01-systems-administration-architecture-and-operating-model.md
+      - id: 02
+        title: "Enterprise Linux Administration"
+        path: volumes/volume-04-enterprise-systems-administration/chapters/02-enterprise-linux-administration.md
+      - id: 03
+        title: "Windows Server Administration"
+        path: volumes/volume-04-enterprise-systems-administration/chapters/03-windows-server-administration.md
+      - id: 04
+        title: "Enterprise Identity and Directory Services"
+        path: volumes/volume-04-enterprise-systems-administration/chapters/04-enterprise-identity-and-directory-services.md
+      - id: 05
+        title: "Compute, Process, and Service Management"
+        path: volumes/volume-04-enterprise-systems-administration/chapters/05-compute-process-and-service-management.md
+      - id: 06
+        title: "Configuration, Software, and Patch Management"
+        path: volumes/volume-04-enterprise-systems-administration/chapters/06-configuration-software-and-patch-management.md
+      - id: 07
+        title: "Storage, Filesystems, and Data Services"
+        path: volumes/volume-04-enterprise-systems-administration/chapters/07-storage-filesystems-and-data-services.md
+      - id: 08
+        title: "Systems Security, Automation, and Compliance"
+        path: volumes/volume-04-enterprise-systems-administration/chapters/08-systems-security-automation-and-compliance.md
+      - id: 09
+        title: "Monitoring, Troubleshooting, and Lifecycle Operations"
+        path: volumes/volume-04-enterprise-systems-administration/chapters/09-monitoring-troubleshooting-and-lifecycle-operations.md
+  - id: volume-05
+    number: "V"
+    slug: volume-05-vmware-virtualization
+    title: "VMware Virtualization"
+    chapter_count: 16
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "VMware Virtualization Architecture and Design"
+        path: volumes/volume-05-vmware-virtualization/chapters/01-vmware-virtualization-architecture-and-design.md
+      - id: 02
+        title: "ESXi Installation, Configuration, and Host Operations"
+        path: volumes/volume-05-vmware-virtualization/chapters/02-esxi-installation-configuration-and-host-operations.md
+      - id: 03
+        title: "vCenter Server Deployment, Identity, and Recovery"
+        path: volumes/volume-05-vmware-virtualization/chapters/03-vcenter-server-deployment-identity-and-recovery.md
+      - id: 04
+        title: "vSphere Virtual Networking"
+        path: volumes/volume-05-vmware-virtualization/chapters/04-vsphere-virtual-networking.md
+      - id: 05
+        title: "Virtual Machine Lifecycle and Resource Management"
+        path: volumes/volume-05-vmware-virtualization/chapters/05-virtual-machine-lifecycle-and-resource-management.md
+      - id: 06
+        title: "vSphere Storage and vSAN"
+        path: volumes/volume-05-vmware-virtualization/chapters/06-vsphere-storage-and-vsan.md
+      - id: 07
+        title: "vSphere Availability, Mobility, and Cluster Services"
+        path: volumes/volume-05-vmware-virtualization/chapters/07-vsphere-availability-mobility-and-cluster-services.md
+      - id: 08
+        title: "vSphere and NSX Security Architecture"
+        path: volumes/volume-05-vmware-virtualization/chapters/08-vsphere-and-nsx-security-architecture.md
+      - id: 09
+        title: "vSphere Lifecycle, Automation, Observability, and Troubleshooting"
+        path: volumes/volume-05-vmware-virtualization/chapters/09-vsphere-lifecycle-automation-observability-and-troubleshooting.md
+      - id: 10
+        title: "Installing VMware NSX"
+        path: volumes/volume-05-vmware-virtualization/chapters/10-installing-vmware-nsx.md
+      - id: 11
+        title: "Configuring VMware NSX"
+        path: volumes/volume-05-vmware-virtualization/chapters/11-configuring-vmware-nsx.md
+      - id: 12
+        title: "VCP Network Virtualization 2V0-41.24 Exam Preparation"
+        path: volumes/volume-05-vmware-virtualization/chapters/12-vcp-network-virtualization-2v0-41-24-exam-preparation.md
+      - id: 13
+        title: "VCP VMware Cloud Foundation Support 2V0-15.25 Exam Preparation"
+        path: volumes/volume-05-vmware-virtualization/chapters/13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md
+      - id: 14
+        title: "VCP VMware Cloud Foundation Administrator 2V0-17.25 Exam Preparation"
+        path: volumes/volume-05-vmware-virtualization/chapters/14-vcp-vmware-cloud-foundation-administrator-2v0-17-25-exam-preparation.md
+      - id: 15
+        title: "VCP VMware vSphere Foundation Administrator 2V0-16.25 Exam Preparation"
+        path: volumes/volume-05-vmware-virtualization/chapters/15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md
+      - id: 16
+        title: "VCP VMware vSphere Foundation Support 2V0-18.25 Exam Preparation"
+        path: volumes/volume-05-vmware-virtualization/chapters/16-vcp-vmware-vsphere-foundation-support-2v0-18-25-exam-preparation.md
+  - id: volume-06
+    number: "VI"
+    slug: volume-06-enterprise-storage-data-protection
+    title: "Enterprise Storage and Data Protection"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Enterprise Storage Architecture and Service Design"
+        path: volumes/volume-06-enterprise-storage-data-protection/chapters/01-enterprise-storage-architecture-and-service-design.md
+      - id: 02
+        title: "Block Storage and Storage Area Networks"
+        path: volumes/volume-06-enterprise-storage-data-protection/chapters/02-block-storage-and-storage-area-networks.md
+      - id: 03
+        title: "Enterprise File and Object Storage"
+        path: volumes/volume-06-enterprise-storage-data-protection/chapters/03-enterprise-file-and-object-storage.md
+      - id: 04
+        title: "Host Storage Integration and Multipathing"
+        path: volumes/volume-06-enterprise-storage-data-protection/chapters/04-host-storage-integration-and-multipathing.md
+      - id: 05
+        title: "Backup Architecture and Data Protection Policy"
+        path: volumes/volume-06-enterprise-storage-data-protection/chapters/05-backup-architecture-and-data-protection-policy.md
+      - id: 06
+        title: "Snapshots, Replication, and Continuous Data Protection"
+        path: volumes/volume-06-enterprise-storage-data-protection/chapters/06-snapshots-replication-and-continuous-data-protection.md
+      - id: 07
+        title: "Recovery Engineering and Disaster Recovery Validation"
+        path: volumes/volume-06-enterprise-storage-data-protection/chapters/07-recovery-engineering-and-disaster-recovery-validation.md
+      - id: 08
+        title: "Storage Security, Ransomware Resilience, and Data Governance"
+        path: volumes/volume-06-enterprise-storage-data-protection/chapters/08-storage-security-ransomware-resilience-and-data-governance.md
+      - id: 09
+        title: "Storage Automation, Observability, Capacity, and Lifecycle Operations"
+        path: volumes/volume-06-enterprise-storage-data-protection/chapters/09-storage-automation-observability-capacity-and-lifecycle-operations.md
+  - id: volume-07
+    number: "VII"
+    slug: volume-07-cloud-infrastructure
+    title: "Cloud Infrastructure"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Cloud Operating Models and Architecture Foundations"
+        path: volumes/volume-07-cloud-infrastructure/chapters/01-cloud-operating-models-and-architecture-foundations.md
+      - id: 02
+        title: "Landing Zones, Resource Organization, and Guardrails"
+        path: volumes/volume-07-cloud-infrastructure/chapters/02-landing-zones-resource-organization-and-guardrails.md
+      - id: 03
+        title: "Cloud Identity, Access, and Cryptographic Services"
+        path: volumes/volume-07-cloud-infrastructure/chapters/03-cloud-identity-access-and-cryptographic-services.md
+      - id: 04
+        title: "Cloud Networking and Hybrid Connectivity"
+        path: volumes/volume-07-cloud-infrastructure/chapters/04-cloud-networking-and-hybrid-connectivity.md
+      - id: 05
+        title: "Cloud Compute and Workload Placement"
+        path: volumes/volume-07-cloud-infrastructure/chapters/05-cloud-compute-and-workload-placement.md
+      - id: 06
+        title: "Cloud Storage, Databases, and Data Services"
+        path: volumes/volume-07-cloud-infrastructure/chapters/06-cloud-storage-databases-and-data-services.md
+      - id: 07
+        title: "Hybrid and Multicloud Architecture"
+        path: volumes/volume-07-cloud-infrastructure/chapters/07-hybrid-and-multicloud-architecture.md
+      - id: 08
+        title: "Cloud Governance, Security, and FinOps"
+        path: volumes/volume-07-cloud-infrastructure/chapters/08-cloud-governance-security-and-finops.md
+      - id: 09
+        title: "Cloud Automation, Observability, Resilience, and Lifecycle Operations"
+        path: volumes/volume-07-cloud-infrastructure/chapters/09-cloud-automation-observability-resilience-and-lifecycle-operations.md
+  - id: volume-08
+    number: "VIII"
+    slug: volume-08-containers-platform-engineering
+    title: "Containers and Platform Engineering"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Container Architecture, Images, Runtimes, and Registries"
+        path: volumes/volume-08-containers-platform-engineering/chapters/01-container-architecture-images-runtimes-and-registries.md
+      - id: 02
+        title: "Kubernetes Architecture and Cluster Lifecycle"
+        path: volumes/volume-08-containers-platform-engineering/chapters/02-kubernetes-architecture-and-cluster-lifecycle.md
+      - id: 03
+        title: "Kubernetes Workloads, Scheduling, and Capacity"
+        path: volumes/volume-08-containers-platform-engineering/chapters/03-kubernetes-workloads-scheduling-and-capacity.md
+      - id: 04
+        title: "Kubernetes Networking, Service Delivery, and Traffic Policy"
+        path: volumes/volume-08-containers-platform-engineering/chapters/04-kubernetes-networking-service-delivery-and-traffic-policy.md
+      - id: 05
+        title: "Kubernetes Storage and Stateful Platforms"
+        path: volumes/volume-08-containers-platform-engineering/chapters/05-kubernetes-storage-and-stateful-platforms.md
+      - id: 06
+        title: "Kubernetes Identity, Configuration, Policy, and Security"
+        path: volumes/volume-08-containers-platform-engineering/chapters/06-kubernetes-identity-configuration-policy-and-security.md
+      - id: 07
+        title: "Cloud-Native Delivery, GitOps, and Software Supply Chains"
+        path: volumes/volume-08-containers-platform-engineering/chapters/07-cloud-native-delivery-gitops-and-software-supply-chains.md
+      - id: 08
+        title: "Internal Developer Platforms and Platform Products"
+        path: volumes/volume-08-containers-platform-engineering/chapters/08-internal-developer-platforms-and-platform-products.md
+      - id: 09
+        title: "Platform Observability, Reliability, and Lifecycle Operations"
+        path: volumes/volume-08-containers-platform-engineering/chapters/09-platform-observability-reliability-and-lifecycle-operations.md
+  - id: volume-09
+    number: "IX"
+    slug: volume-09-infrastructure-automation
+    title: "Infrastructure Automation"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Automation Operating Models and Engineering Foundations"
+        path: volumes/volume-09-infrastructure-automation/chapters/01-automation-operating-models-and-engineering-foundations.md
+      - id: 02
+        title: "Infrastructure as Code, State, Providers, and Modules"
+        path: volumes/volume-09-infrastructure-automation/chapters/02-infrastructure-as-code-state-providers-and-modules.md
+      - id: 03
+        title: "Configuration Management and Desired-State Convergence"
+        path: volumes/volume-09-infrastructure-automation/chapters/03-configuration-management-and-desired-state-convergence.md
+      - id: 04
+        title: "API, Event, and Integration Automation"
+        path: volumes/volume-09-infrastructure-automation/chapters/04-api-event-and-integration-automation.md
+      - id: 05
+        title: "Automation Pipelines, Testing, and Policy Gates"
+        path: volumes/volume-09-infrastructure-automation/chapters/05-automation-pipelines-testing-and-policy-gates.md
+      - id: 06
+        title: "Automation Identity, Secrets, and Privileged Execution"
+        path: volumes/volume-09-infrastructure-automation/chapters/06-automation-identity-secrets-and-privileged-execution.md
+      - id: 07
+        title: "Workflow Orchestration and Event-Driven Operations"
+        path: volumes/volume-09-infrastructure-automation/chapters/07-workflow-orchestration-and-event-driven-operations.md
+      - id: 08
+        title: "Automation Security, Governance, and Supply Chains"
+        path: volumes/volume-09-infrastructure-automation/chapters/08-automation-security-governance-and-supply-chains.md
+      - id: 09
+        title: "Automation Observability, Reliability, and Lifecycle Operations"
+        path: volumes/volume-09-infrastructure-automation/chapters/09-automation-observability-reliability-and-lifecycle-operations.md
+  - id: volume-10
+    number: "X"
+    slug: volume-10-enterprise-cybersecurity
+    title: "Enterprise Cybersecurity"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Cybersecurity Governance, Risk, and Architecture"
+        path: volumes/volume-10-enterprise-cybersecurity/chapters/01-cybersecurity-governance-risk-and-architecture.md
+      - id: 02
+        title: "Enterprise Identity, Zero Trust, and Privileged Access"
+        path: volumes/volume-10-enterprise-cybersecurity/chapters/02-enterprise-identity-zero-trust-and-privileged-access.md
+      - id: 03
+        title: "Platform Hardening, Configuration, and Endpoint Defense"
+        path: volumes/volume-10-enterprise-cybersecurity/chapters/03-platform-hardening-configuration-and-endpoint-defense.md
+      - id: 04
+        title: "Network Security Architecture and Infrastructure Defense"
+        path: volumes/volume-10-enterprise-cybersecurity/chapters/04-network-security-architecture-and-infrastructure-defense.md
+      - id: 05
+        title: "Vulnerability, Exposure, and Patch Risk Management"
+        path: volumes/volume-10-enterprise-cybersecurity/chapters/05-vulnerability-exposure-and-patch-risk-management.md
+      - id: 06
+        title: "Security Telemetry, Detection Engineering, and SOC Operations"
+        path: volumes/volume-10-enterprise-cybersecurity/chapters/06-security-telemetry-detection-engineering-and-soc-operations.md
+      - id: 07
+        title: "Cybersecurity Incident Response and Digital Evidence"
+        path: volumes/volume-10-enterprise-cybersecurity/chapters/07-cybersecurity-incident-response-and-digital-evidence.md
+      - id: 08
+        title: "Data Security, Cryptography, Privacy, and Ransomware Resilience"
+        path: volumes/volume-10-enterprise-cybersecurity/chapters/08-data-security-cryptography-privacy-and-ransomware-resilience.md
+      - id: 09
+        title: "Security Automation, Assurance, Threat Hunting, and Lifecycle Operations"
+        path: volumes/volume-10-enterprise-cybersecurity/chapters/09-security-automation-assurance-threat-hunting-and-lifecycle-operations.md
+  - id: volume-11
+    number: "XI"
+    slug: volume-11-observability-enterprise-operations
+    title: "Observability and Enterprise Operations"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Observability Operating Model and Service Ownership"
+        path: volumes/volume-11-observability-enterprise-operations/chapters/01-observability-operating-model-and-service-ownership.md
+      - id: 02
+        title: "Telemetry Architecture, Instrumentation, and Pipelines"
+        path: volumes/volume-11-observability-enterprise-operations/chapters/02-telemetry-architecture-instrumentation-and-pipelines.md
+      - id: 03
+        title: "Metrics, Service-Level Objectives, and Error Budgets"
+        path: volumes/volume-11-observability-enterprise-operations/chapters/03-metrics-service-level-objectives-and-error-budgets.md
+      - id: 04
+        title: "Enterprise Logging, Event Management, and Retention"
+        path: volumes/volume-11-observability-enterprise-operations/chapters/04-enterprise-logging-event-management-and-retention.md
+      - id: 05
+        title: "Distributed Tracing, Profiling, and Dependency Analysis"
+        path: volumes/volume-11-observability-enterprise-operations/chapters/05-distributed-tracing-profiling-and-dependency-analysis.md
+      - id: 06
+        title: "Actionable Alerting, On-Call, and Operations Centers"
+        path: volumes/volume-11-observability-enterprise-operations/chapters/06-actionable-alerting-on-call-and-operations-centers.md
+      - id: 07
+        title: "Service Management, Incident, Problem, and Change Operations"
+        path: volumes/volume-11-observability-enterprise-operations/chapters/07-service-management-incident-problem-and-change-operations.md
+      - id: 08
+        title: "Capacity, Performance, and Cost-Aware Operations"
+        path: volumes/volume-11-observability-enterprise-operations/chapters/08-capacity-performance-and-cost-aware-operations.md
+      - id: 09
+        title: "Operational Automation, Analytics, and Continual Improvement"
+        path: volumes/volume-11-observability-enterprise-operations/chapters/09-operational-automation-analytics-and-continual-improvement.md
+  - id: volume-12
+    number: "XII"
+    slug: volume-12-resilience-lifecycle-management
+    title: "Resilience and Lifecycle Management"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Resilience Engineering and Critical-Service Design"
+        path: volumes/volume-12-resilience-lifecycle-management/chapters/01-resilience-engineering-and-critical-service-design.md
+      - id: 02
+        title: "Business Impact Analysis and Continuity Planning"
+        path: volumes/volume-12-resilience-lifecycle-management/chapters/02-business-impact-analysis-and-continuity-planning.md
+      - id: 03
+        title: "High Availability, Fault Tolerance, and Graceful Degradation"
+        path: volumes/volume-12-resilience-lifecycle-management/chapters/03-high-availability-fault-tolerance-and-graceful-degradation.md
+      - id: 04
+        title: "Backup, Recovery, and Disaster-Recovery Engineering"
+        path: volumes/volume-12-resilience-lifecycle-management/chapters/04-backup-recovery-and-disaster-recovery-engineering.md
+      - id: 05
+        title: "Resilience Testing, Exercises, and Chaos Engineering"
+        path: volumes/volume-12-resilience-lifecycle-management/chapters/05-resilience-testing-exercises-and-chaos-engineering.md
+      - id: 06
+        title: "Maintenance, Patching, and Upgrade Engineering"
+        path: volumes/volume-12-resilience-lifecycle-management/chapters/06-maintenance-patching-and-upgrade-engineering.md
+      - id: 07
+        title: "Technical Debt, Modernization, and Platform Renewal"
+        path: volumes/volume-12-resilience-lifecycle-management/chapters/07-technical-debt-modernization-and-platform-renewal.md
+      - id: 08
+        title: "Sustainable Infrastructure and Resource Lifecycle"
+        path: volumes/volume-12-resilience-lifecycle-management/chapters/08-sustainable-infrastructure-and-resource-lifecycle.md
+      - id: 09
+        title: "Retirement, Decommissioning, and Lifecycle Governance"
+        path: volumes/volume-12-resilience-lifecycle-management/chapters/09-retirement-decommissioning-and-lifecycle-governance.md
+  - id: volume-13
+    number: "XIII"
+    slug: volume-13-integrated-enterprise-labs
+    title: "Integrated Enterprise Labs"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Lab Engineering, Safety, Reproducibility, and Evidence"
+        path: volumes/volume-13-integrated-enterprise-labs/chapters/01-lab-engineering-safety-reproducibility-and-evidence.md
+      - id: 02
+        title: "Integrated Identity, DNS, Time, and Core Services Lab"
+        path: volumes/volume-13-integrated-enterprise-labs/chapters/02-integrated-identity-dns-time-and-core-services-lab.md
+      - id: 03
+        title: "Campus, WAN, Wireless, and Network Services Lab"
+        path: volumes/volume-13-integrated-enterprise-labs/chapters/03-campus-wan-wireless-and-network-services-lab.md
+      - id: 04
+        title: "Virtualization, Storage, and Data Protection Lab"
+        path: volumes/volume-13-integrated-enterprise-labs/chapters/04-virtualization-storage-and-data-protection-lab.md
+      - id: 05
+        title: "Hybrid Cloud, Kubernetes, and Platform Services Lab"
+        path: volumes/volume-13-integrated-enterprise-labs/chapters/05-hybrid-cloud-kubernetes-and-platform-services-lab.md
+      - id: 06
+        title: "Infrastructure as Code and Automated Delivery Lab"
+        path: volumes/volume-13-integrated-enterprise-labs/chapters/06-infrastructure-as-code-and-automated-delivery-lab.md
+      - id: 07
+        title: "Zero Trust, Detection, and Incident Response Lab"
+        path: volumes/volume-13-integrated-enterprise-labs/chapters/07-zero-trust-detection-and-incident-response-lab.md
+      - id: 08
+        title: "Observability, Operations, and Major-Incident Lab"
+        path: volumes/volume-13-integrated-enterprise-labs/chapters/08-observability-operations-and-major-incident-lab.md
+      - id: 09
+        title: "Enterprise Resilience and Lifecycle Capstone"
+        path: volumes/volume-13-integrated-enterprise-labs/chapters/09-enterprise-resilience-and-lifecycle-capstone.md
+  - id: volume-14
+    number: "XIV"
+    slug: volume-14-red-hat-enterprise-linux-10
+    title: "Red Hat Enterprise Linux 10"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Installation, Subscriptions, Repositories, and Cockpit"
+        path: volumes/volume-14-red-hat-enterprise-linux-10/chapters/01-installation-subscriptions-repositories-and-cockpit.md
+      - id: 02
+        title: "Essential Tools, Shell Scripting, and Software Management"
+        path: volumes/volume-14-red-hat-enterprise-linux-10/chapters/02-essential-tools-shell-scripting-and-software-management.md
+      - id: 03
+        title: "Boot, systemd, Processes, Logging, and Scheduled Work"
+        path: volumes/volume-14-red-hat-enterprise-linux-10/chapters/03-boot-systemd-processes-logging-and-scheduled-work.md
+      - id: 04
+        title: "Users, Privilege, SSH, Networking, and firewalld"
+        path: volumes/volume-14-red-hat-enterprise-linux-10/chapters/04-users-privilege-ssh-networking-and-firewalld.md
+      - id: 05
+        title: "Storage, LVM, Filesystems, Swap, and Shared-Storage Services"
+        path: volumes/volume-14-red-hat-enterprise-linux-10/chapters/05-storage-lvm-filesystems-swap-and-shared-storage-services.md
+      - id: 06
+        title: "SELinux, Permissions, Cryptography, and System Hardening"
+        path: volumes/volume-14-red-hat-enterprise-linux-10/chapters/06-selinux-permissions-cryptography-and-system-hardening.md
+      - id: 07
+        title: "DNS, NTP, Web, Database, and Common Server Services"
+        path: volumes/volume-14-red-hat-enterprise-linux-10/chapters/07-dns-ntp-web-database-and-common-server-services.md
+      - id: 08
+        title: "Podman, Docker Compatibility, Kubernetes, and OpenShift Foundations"
+        path: volumes/volume-14-red-hat-enterprise-linux-10/chapters/08-podman-docker-compatibility-kubernetes-and-openshift-foundations.md
+      - id: 09
+        title: "Ansible, System Roles, Operations, and RHCSA Capstone"
+        path: volumes/volume-14-red-hat-enterprise-linux-10/chapters/09-ansible-system-roles-operations-and-rhcsa-capstone.md
+  - id: volume-15
+    number: "XV"
+    slug: volume-15-forescout-platform-certifications
+    title: "Forescout Platform and Certifications"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Platform Architecture, Installation, and Deployment Planning"
+        path: volumes/volume-15-forescout-platform-certifications/chapters/01-platform-architecture-installation-and-deployment-planning.md
+      - id: 02
+        title: "Console, Plugins, Properties, and Asset Classification"
+        path: volumes/volume-15-forescout-platform-certifications/chapters/02-console-plugins-properties-and-asset-classification.md
+      - id: 03
+        title: "Clarification, Compliance, and Control Policies"
+        path: volumes/volume-15-forescout-platform-certifications/chapters/03-clarification-compliance-and-control-policies.md
+      - id: 04
+        title: "Host Management, Administration, Inventory, and Reporting"
+        path: volumes/volume-15-forescout-platform-certifications/chapters/04-host-management-administration-inventory-and-reporting.md
+      - id: 05
+        title: "Advanced Policy, Integrations, and Business Outcomes"
+        path: volumes/volume-15-forescout-platform-certifications/chapters/05-advanced-policy-integrations-and-business-outcomes.md
+      - id: 06
+        title: "Advanced Troubleshooting, Performance, and Resilience"
+        path: volumes/volume-15-forescout-platform-certifications/chapters/06-advanced-troubleshooting-performance-and-resilience.md
+      - id: 07
+        title: "Expert Automation, API Governance, and Capstone"
+        path: volumes/volume-15-forescout-platform-certifications/chapters/07-expert-automation-api-governance-and-capstone.md
+      - id: 08
+        title: "OT/ICS Associate Architecture, Sensors, and Asset Visibility"
+        path: volumes/volume-15-forescout-platform-certifications/chapters/08-ot-ics-associate-architecture-sensors-and-asset-visibility.md
+      - id: 09
+        title: "OT/ICS Expert Design, Deployment, Curation, and Troubleshooting"
+        path: volumes/volume-15-forescout-platform-certifications/chapters/09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md
+  - id: volume-16
+    number: "XVI"
+    slug: volume-16-palo-alto-networks-security
+    title: "Palo Alto Networks Security"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Cybersecurity Apprentice Foundations"
+        path: volumes/volume-16-palo-alto-networks-security/chapters/01-cybersecurity-apprentice-foundations.md
+      - id: 02
+        title: "Cybersecurity Practitioner and Platform Portfolio"
+        path: volumes/volume-16-palo-alto-networks-security/chapters/02-cybersecurity-practitioner-and-platform-portfolio.md
+      - id: 03
+        title: "VM-Series Deployment, Licensing, and Bootstrap"
+        path: volumes/volume-16-palo-alto-networks-security/chapters/03-vm-series-deployment-licensing-and-bootstrap.md
+      - id: 04
+        title: "PAN-OS Networking, NAT, Routing, and High Availability"
+        path: volumes/volume-16-palo-alto-networks-security/chapters/04-pan-os-networking-nat-routing-and-high-availability.md
+      - id: 05
+        title: "Application, Identity, Threat, and Data Security Policy"
+        path: volumes/volume-16-palo-alto-networks-security/chapters/05-application-identity-threat-and-data-security-policy.md
+      - id: 06
+        title: "Panorama Installation, Central Management, and Logging"
+        path: volumes/volume-16-palo-alto-networks-security/chapters/06-panorama-installation-central-management-and-logging.md
+      - id: 07
+        title: "Firewall Operations, Troubleshooting, Upgrades, and Automation"
+        path: volumes/volume-16-palo-alto-networks-security/chapters/07-firewall-operations-troubleshooting-upgrades-and-automation.md
+      - id: 08
+        title: "Role-Based Certification Portfolio and Enterprise Capstone"
+        path: volumes/volume-16-palo-alto-networks-security/chapters/08-role-based-certification-portfolio-and-enterprise-capstone.md
+      - id: 09
+        title: "Cortex Cloud Security Professional"
+        path: volumes/volume-16-palo-alto-networks-security/chapters/09-cortex-cloud-security-professional.md
+  - id: volume-17
+    number: "XVII"
+    slug: volume-17-aws-architecture-security
+    title: "AWS Architecture and Security"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Cloud Foundations, Accounts, and Well-Architected Design"
+        path: volumes/volume-17-aws-architecture-security/chapters/01-cloud-foundations-accounts-and-well-architected-design.md
+      - id: 02
+        title: "Multi-Account Identity, Governance, and Landing Zones"
+        path: volumes/volume-17-aws-architecture-security/chapters/02-multi-account-identity-governance-and-landing-zones.md
+      - id: 03
+        title: "Secure Networking, Hybrid Connectivity, and Edge"
+        path: volumes/volume-17-aws-architecture-security/chapters/03-secure-networking-hybrid-connectivity-and-edge.md
+      - id: 04
+        title: "Compute, Containers, Serverless, and Application Architecture"
+        path: volumes/volume-17-aws-architecture-security/chapters/04-compute-containers-serverless-and-application-architecture.md
+      - id: 05
+        title: "Storage, Databases, Analytics, and Data Protection"
+        path: volumes/volume-17-aws-architecture-security/chapters/05-storage-databases-analytics-and-data-protection.md
+      - id: 06
+        title: "Reliability, Migration, Multi-Region, and Disaster Recovery"
+        path: volumes/volume-17-aws-architecture-security/chapters/06-reliability-migration-multi-region-and-disaster-recovery.md
+      - id: 07
+        title: "Observability, Automation, Performance, and Cost Governance"
+        path: volumes/volume-17-aws-architecture-security/chapters/07-observability-automation-performance-and-cost-governance.md
+      - id: 08
+        title: "Security Architecture, Detection, and Incident Response"
+        path: volumes/volume-17-aws-architecture-security/chapters/08-security-architecture-detection-and-incident-response.md
+      - id: 09
+        title: "Solutions Architect and Security Training Capstone"
+        path: volumes/volume-17-aws-architecture-security/chapters/09-solutions-architect-and-security-training-capstone.md
+  - id: volume-18
+    number: "XVIII"
+    slug: volume-18-gigamon-network-visibility
+    title: "Gigamon Network Visibility"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Visibility Architecture, Traffic Acquisition, and Tool Delivery"
+        path: volumes/volume-18-gigamon-network-visibility/chapters/01-visibility-architecture-traffic-acquisition-and-tool-delivery.md
+      - id: 02
+        title: "GigaVUE Appliance First Deployment and Fabric Foundations"
+        path: volumes/volume-18-gigamon-network-visibility/chapters/02-gigavue-appliance-first-deployment-and-fabric-foundations.md
+      - id: 03
+        title: "GigaVUE Virtual Nodes and Virtual Traffic Acquisition"
+        path: volumes/volume-18-gigamon-network-visibility/chapters/03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md
+      - id: 04
+        title: "GigaVUE-FM Installation, Onboarding, Security, and Governance"
+        path: volumes/volume-18-gigamon-network-visibility/chapters/04-gigavue-fm-installation-onboarding-security-and-governance.md
+      - id: 05
+        title: "Ports, Flow Mapping, Traffic Policy, and Tool Delivery"
+        path: volumes/volume-18-gigamon-network-visibility/chapters/05-ports-flow-mapping-traffic-policy-and-tool-delivery.md
+      - id: 06
+        title: "GigaSMART Traffic Intelligence and Packet Transformation"
+        path: volumes/volume-18-gigamon-network-visibility/chapters/06-gigasmart-traffic-intelligence-and-packet-transformation.md
+      - id: 07
+        title: "Inline Bypass, TLS Decryption, and Production Safety"
+        path: volumes/volume-18-gigamon-network-visibility/chapters/07-inline-bypass-tls-decryption-and-production-safety.md
+      - id: 08
+        title: "Hybrid Cloud Visibility, Automation, APIs, and Integrations"
+        path: volumes/volume-18-gigamon-network-visibility/chapters/08-hybrid-cloud-visibility-automation-apis-and-integrations.md
+      - id: 09
+        title: "Operations, Troubleshooting, Training, and Enterprise Capstone"
+        path: volumes/volume-18-gigamon-network-visibility/chapters/09-operations-troubleshooting-training-and-enterprise-capstone.md
+  - id: volume-19
+    number: "XIX"
+    slug: volume-19-fortinet-network-security
+    title: "Fortinet Network Security"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "NSE 1 Cybersecurity Awareness and Digital Safety"
+        path: volumes/volume-19-fortinet-network-security/chapters/01-nse-1-cybersecurity-awareness-and-digital-safety.md
+      - id: 02
+        title: "NSE 2 Threat Landscape, Security Technologies, and Fortinet Portfolio"
+        path: volumes/volume-19-fortinet-network-security/chapters/02-nse-2-threat-landscape-security-technologies-and-fortinet-portfolio.md
+      - id: 03
+        title: "NSE 3 Security Fabric and FortiGate Operator Foundations"
+        path: volumes/volume-19-fortinet-network-security/chapters/03-nse-3-security-fabric-and-fortigate-operator-foundations.md
+      - id: 04
+        title: "FortiGate First Deployment, Licensing, Management, and Hardening"
+        path: volumes/volume-19-fortinet-network-security/chapters/04-fortigate-first-deployment-licensing-management-and-hardening.md
+      - id: 05
+        title: "Interfaces, Routing, NAT, Virtual Domains, and High Availability"
+        path: volumes/volume-19-fortinet-network-security/chapters/05-interfaces-routing-nat-virtual-domains-and-high-availability.md
+      - id: 06
+        title: "Firewall Policy, Authentication, VPN, and Zero-Trust Access"
+        path: volumes/volume-19-fortinet-network-security/chapters/06-firewall-policy-authentication-vpn-and-zero-trust-access.md
+      - id: 07
+        title: "FortiGuard Security Profiles, SSL Inspection, and Threat Prevention"
+        path: volumes/volume-19-fortinet-network-security/chapters/07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md
+      - id: 08
+        title: "SD-WAN, Operations, Central Management, Automation, and Troubleshooting"
+        path: volumes/volume-19-fortinet-network-security/chapters/08-sd-wan-operations-central-management-automation-and-troubleshooting.md
+      - id: 09
+        title: "NSE 4 FortiOS Administrator Training and Enterprise Capstone"
+        path: volumes/volume-19-fortinet-network-security/chapters/09-nse-4-fortios-administrator-training-and-enterprise-capstone.md
+  - id: volume-20
+    number: "XX"
+    slug: volume-20-wireshark-packet-analysis
+    title: "Wireshark and Packet Analysis"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Packet Analysis Foundations, Wireshark Installation, and Evidence"
+        path: volumes/volume-20-wireshark-packet-analysis/chapters/01-packet-analysis-foundations-wireshark-installation-and-evidence.md
+      - id: 02
+        title: "Enterprise Capture Engineering, Taps, Mirrors, and Ring Buffers"
+        path: volumes/volume-20-wireshark-packet-analysis/chapters/02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md
+      - id: 03
+        title: "Wireshark Interface, Profiles, Filters, and Analysis Workflows"
+        path: volumes/volume-20-wireshark-packet-analysis/chapters/03-wireshark-interface-profiles-filters-and-analysis-workflows.md
+      - id: 04
+        title: "Ethernet, ARP, IPv4, and ICMPv4 Analysis"
+        path: volumes/volume-20-wireshark-packet-analysis/chapters/04-ethernet-arp-ipv4-and-icmpv4-analysis.md
+      - id: 05
+        title: "IPv6, ICMPv6, UDP, DHCP, and DNS Analysis"
+        path: volumes/volume-20-wireshark-packet-analysis/chapters/05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md
+      - id: 06
+        title: "TCP Reliability, Flow Control, and Performance Analysis"
+        path: volumes/volume-20-wireshark-packet-analysis/chapters/06-tcp-reliability-flow-control-and-performance-analysis.md
+      - id: 07
+        title: "Application Protocol, TLS, and Service-Response Analysis"
+        path: volumes/volume-20-wireshark-packet-analysis/chapters/07-application-protocol-tls-and-service-response-analysis.md
+      - id: 08
+        title: "Security Investigation, Command-Line Analysis, and Automation"
+        path: volumes/volume-20-wireshark-packet-analysis/chapters/08-security-investigation-command-line-analysis-and-automation.md
+      - id: 09
+        title: "WCA-101 Certification Readiness and Enterprise Capstone"
+        path: volumes/volume-20-wireshark-packet-analysis/chapters/09-wca-101-certification-readiness-and-enterprise-capstone.md
+  - id: volume-21
+    number: "XXI"
+    slug: volume-21-ubuntu-server-cloud-26-04-lts
+    title: "Ubuntu Server and Cloud 26.04 LTS"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Installation, Autoinstall, Ubuntu Pro, Repositories, and Landscape"
+        path: volumes/volume-21-ubuntu-server-cloud-26-04-lts/chapters/01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md
+      - id: 02
+        title: "Essential Tools, Shell Scripting, APT, and Snap Management"
+        path: volumes/volume-21-ubuntu-server-cloud-26-04-lts/chapters/02-essential-tools-shell-scripting-apt-and-snap-management.md
+      - id: 03
+        title: "Boot, systemd, Processes, Logging, and Scheduled Work"
+        path: volumes/volume-21-ubuntu-server-cloud-26-04-lts/chapters/03-boot-systemd-processes-logging-and-scheduled-work.md
+      - id: 04
+        title: "Identity, Privilege, SSH, Netplan, and Firewalling"
+        path: volumes/volume-21-ubuntu-server-cloud-26-04-lts/chapters/04-identity-privilege-ssh-netplan-and-firewalling.md
+      - id: 05
+        title: "Storage, LVM, Filesystems, Swap, and Shared-Storage Services"
+        path: volumes/volume-21-ubuntu-server-cloud-26-04-lts/chapters/05-storage-lvm-filesystems-swap-and-shared-storage-services.md
+      - id: 06
+        title: "AppArmor, Permissions, Cryptography, and System Hardening"
+        path: volumes/volume-21-ubuntu-server-cloud-26-04-lts/chapters/06-apparmor-permissions-cryptography-and-system-hardening.md
+      - id: 07
+        title: "DNS, NTP, DHCP, Web, Database, and Common Server Services"
+        path: volumes/volume-21-ubuntu-server-cloud-26-04-lts/chapters/07-dns-ntp-dhcp-web-database-and-common-server-services.md
+      - id: 08
+        title: "Docker, LXD, Canonical Kubernetes, and OpenShift Interoperability"
+        path: volumes/volume-21-ubuntu-server-cloud-26-04-lts/chapters/08-docker-lxd-canonical-kubernetes-and-openshift-interoperability.md
+      - id: 09
+        title: "Cloud-init, MAAS, Juju, Ansible, Landscape, Operations, and Capstone"
+        path: volumes/volume-21-ubuntu-server-cloud-26-04-lts/chapters/09-cloud-init-maas-juju-ansible-landscape-operations-and-capstone.md
+  - id: volume-22
+    number: "XXII"
+    slug: volume-22-dell-openmanage-enterprise
+    title: "Dell OpenManage Enterprise"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Architecture, Requirements, Deployment, and First Configuration"
+        path: volumes/volume-22-dell-openmanage-enterprise/chapters/01-architecture-requirements-deployment-and-first-configuration.md
+      - id: 02
+        title: "Identity, Licensing, Security, and Administrative Control"
+        path: volumes/volume-22-dell-openmanage-enterprise/chapters/02-identity-licensing-security-and-administrative-control.md
+      - id: 03
+        title: "Discovery, Onboarding, Inventory, Groups, and Device Control"
+        path: volumes/volume-22-dell-openmanage-enterprise/chapters/03-discovery-onboarding-inventory-groups-and-device-control.md
+      - id: 04
+        title: "Monitoring, Alerts, Reports, Jobs, and Operational Integrations"
+        path: volumes/volume-22-dell-openmanage-enterprise/chapters/04-monitoring-alerts-reports-jobs-and-operational-integrations.md
+      - id: 05
+        title: "Firmware and Driver Catalogs, Baselines, Compliance, and Updates"
+        path: volumes/volume-22-dell-openmanage-enterprise/chapters/05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md
+      - id: 06
+        title: "Connected Online Repositories and Update Workflows"
+        path: volumes/volume-22-dell-openmanage-enterprise/chapters/06-connected-online-repositories-and-update-workflows.md
+      - id: 07
+        title: "Isolated Offline Repositories and Air-Gapped Updates"
+        path: volumes/volume-22-dell-openmanage-enterprise/chapters/07-isolated-offline-repositories-and-air-gapped-updates.md
+      - id: 08
+        title: "Templates, Configuration Compliance, Automation, and APIs"
+        path: volumes/volume-22-dell-openmanage-enterprise/chapters/08-templates-configuration-compliance-automation-and-apis.md
+      - id: 09
+        title: "Backup, Restore, Upgrade, Troubleshooting, and Capstone Operations"
+        path: volumes/volume-22-dell-openmanage-enterprise/chapters/09-backup-restore-upgrade-troubleshooting-and-capstone-operations.md
+  - id: volume-23
+    number: "XXIII"
+    slug: volume-23-dell-idrac-9-10-administration
+    title: "Dell iDRAC 9 and 10 Administration"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Architecture, Generations, Licensing, and First Access"
+        path: volumes/volume-23-dell-idrac-9-10-administration/chapters/01-architecture-generations-licensing-and-first-access.md
+      - id: 02
+        title: "Configuration, Restart, Factory Reset, Full Power Cycle, and Recovery"
+        path: volumes/volume-23-dell-idrac-9-10-administration/chapters/02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md
+      - id: 03
+        title: "Management Network, IPv4, IPv6, DNS, NTP, and Connectivity"
+        path: volumes/volume-23-dell-idrac-9-10-administration/chapters/03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md
+      - id: 04
+        title: "Identity, Certificates, Security, and Compliance"
+        path: volumes/volume-23-dell-idrac-9-10-administration/chapters/04-identity-certificates-security-and-compliance.md
+      - id: 05
+        title: "iDRAC Direct, Virtual Console, Virtual Media, and Local Service"
+        path: volumes/volume-23-dell-idrac-9-10-administration/chapters/05-idrac-direct-virtual-console-virtual-media-and-local-service.md
+      - id: 06
+        title: "Hardware Health, Power, Thermal, Logs, and Support"
+        path: volumes/volume-23-dell-idrac-9-10-administration/chapters/06-hardware-health-power-thermal-logs-and-support.md
+      - id: 07
+        title: "Storage Arrays, BOSS, RAID Configuration, and Maintenance"
+        path: volumes/volume-23-dell-idrac-9-10-administration/chapters/07-storage-arrays-boss-raid-configuration-and-maintenance.md
+      - id: 08
+        title: "Firmware, iDRAC, BIOS, Lifecycle Controller, and Platform Updates"
+        path: volumes/volume-23-dell-idrac-9-10-administration/chapters/08-firmware-idrac-bios-lifecycle-controller-and-platform-updates.md
+      - id: 09
+        title: "RACADM, Redfish, OpenManage, Automation, and Capstone Operations"
+        path: volumes/volume-23-dell-idrac-9-10-administration/chapters/09-racadm-redfish-openmanage-automation-and-capstone-operations.md
+  - id: volume-24
+    number: "C"
+    slug: volume-24-reference-library
+    title: "Reference Library"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Command Quick Reference and Safe Administration"
+        path: volumes/volume-24-reference-library/chapters/01-command-quick-reference-and-safe-administration.md
+      - id: 02
+        title: "Ports, Protocols, Services, and Traffic Flows"
+        path: volumes/volume-24-reference-library/chapters/02-ports-protocols-services-and-traffic-flows.md
+      - id: 03
+        title: "Addressing, Subnetting, Naming, Time, and Identity Reference"
+        path: volumes/volume-24-reference-library/chapters/03-addressing-subnetting-naming-time-and-identity-reference.md
+      - id: 04
+        title: "Configuration Templates, Baselines, and Change Records"
+        path: volumes/volume-24-reference-library/chapters/04-configuration-templates-baselines-and-change-records.md
+      - id: 05
+        title: "Validation, Evidence, Checklists, and Acceptance"
+        path: volumes/volume-24-reference-library/chapters/05-validation-evidence-checklists-and-acceptance.md
+      - id: 06
+        title: "Troubleshooting Decision Aids and Escalation"
+        path: volumes/volume-24-reference-library/chapters/06-troubleshooting-decision-aids-and-escalation.md
+      - id: 07
+        title: "Security, Hardening, Incident Response, and Risk Reference"
+        path: volumes/volume-24-reference-library/chapters/07-security-hardening-incident-response-and-risk-reference.md
+      - id: 08
+        title: "Automation, APIs, Data Formats, and Integration Reference"
+        path: volumes/volume-24-reference-library/chapters/08-automation-apis-data-formats-and-integration-reference.md
+      - id: 09
+        title: "Standards, Certifications, Vendor Documentation, and Reference Governance"
+        path: volumes/volume-24-reference-library/chapters/09-standards-certifications-vendor-documentation-and-reference-governance.md
