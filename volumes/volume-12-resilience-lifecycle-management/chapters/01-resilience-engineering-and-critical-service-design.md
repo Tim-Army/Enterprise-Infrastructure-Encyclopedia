@@ -213,6 +213,8 @@ def find_spofs(graph: nx.DiGraph, critical_services: set[str]) -> list[str]:
     from its declared entry points."""
     spofs = []
     for node in graph.nodes:
+        if node == "ingress":
+            continue  # the entry point itself is not a candidate SPOF
         trial = graph.copy()
         trial.remove_node(node)
         for svc in critical_services:
@@ -221,6 +223,17 @@ def find_spofs(graph: nx.DiGraph, critical_services: set[str]) -> list[str]:
                 break
     return spofs
 ```
+
+The entry-point guard matters: without it, the loop eventually tries to
+remove `"ingress"` itself, and the subsequent `nx.has_path(trial, "ingress", svc)`
+call raises `NodeNotFound` instead of returning a result, since the source
+node no longer exists in the trial graph. Also note what this algorithm
+does and does not detect: it finds *topological* SPOFs — nodes that sit on
+the only path between the entry point and a critical service. It does not
+find *shared-dependency* SPOFs — a node with no path-blocking role but that
+many services call at runtime (a shared auth service, for example). A node
+can be a real operational risk without ever appearing in this list; treat
+it as one input to SPOF identification, not the whole analysis.
 
 Run this analysis as a scheduled job against the dependency graph produced above, and alert when a new SPOF appears — most commonly introduced by a well-intentioned shared-services consolidation.
 
@@ -315,11 +328,11 @@ When measured availability does not match the calculated theoretical availabilit
    python3 find_spof.py
    ```
 
-**Expected Result:** The script reports `auth-service` as a SPOF, because both `web-frontend` and `api-service` depend on it with no alternate path to `ingress` if it is removed — even though `auth-service` may not have appeared critical at first glance from the application's own architecture diagram.
+**Expected Result:** The script reports `['web-frontend', 'api-service']` as SPOFs. Both sit on the *only* path from `ingress` to the critical services: removing `web-frontend` disconnects `ingress` from everything downstream, and removing `api-service` disconnects `ingress` from `database` (its only inbound edge). `auth-service` is **not** reported, even though both `web-frontend` and `api-service` call it — the graph's edges point from caller to callee, so `auth-service` is a leaf with no outgoing path back toward the critical services, and removing a leaf can never disconnect anything upstream of it. This is a useful distinction to internalize: a widely-depended-upon service like a shared auth provider is a real operational risk, but it is a *shared-dependency* risk, not the *topological chokepoint* risk this particular algorithm detects — treat them as two different questions.
 
-6. Update `criticality-register.yaml` to raise `auth-service` to at least the same tier as its highest-tier dependent, and add a note in `last_reviewed` justifying the change.
+6. Update `criticality-register.yaml` to raise `web-frontend` and `api-service` to reflect that each is a hard chokepoint for every request, and add a note in `last_reviewed` justifying the change.
 
-**Negative Test:** Remove the `[web-frontend, api-service]` edge from `dependencies.yaml` (simulating a redesign where the web front end talks only to auth, not the API) and rerun the script. Confirm the SPOF list changes accordingly — if it does not, the detection logic or the edge list is broken, not the architecture.
+**Negative Test:** Remove the `[web-frontend, api-service]` edge from `dependencies.yaml` (simulating a redesign where the web front end talks only to auth, not the API) and rerun the script. `api-service` now has no inbound edge at all, so it is unreachable from `ingress` regardless of which other node is removed — the script reports every remaining node (`['web-frontend', 'api-service', 'auth-service', 'database']`) as a "SPOF" for it. That result is correct, if blunt: when a critical service loses its only path in, every node trivially satisfies "removing this node leaves the service unreachable," because it was already unreachable before any node was removed. The finding here is not "four new SPOFs appeared" — it is that the redesign severed the only route to `api-service` entirely, which is a worse problem than any single SPOF. If the SPOF list does not change at all after this edit, the detection logic or the edge list is broken, not the architecture.
 
 **Validation Evidence:** Capture the script output before and after step 6 in a `RESULTS.md` file alongside the YAML files, showing the SPOF list shrinking or the tier assignment change.
 
