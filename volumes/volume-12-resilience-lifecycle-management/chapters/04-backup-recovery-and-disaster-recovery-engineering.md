@@ -157,7 +157,6 @@ echo "Starting backup of ${SOURCE_DIR}..."
 tar -czf "${BACKUP_TARGET}/backup-$(date +%Y%m%dT%H%M%S).tar.gz" -C "${SOURCE_DIR}" .
 
 echo "Generating checksums for verification..."
-find "${BACKUP_TARGET}" -name "*.tar.gz" -newer "${MANIFEST%.*}" -exec sha256sum {} \; > "${MANIFEST}" || true
 sha256sum "${BACKUP_TARGET}"/backup-*.tar.gz > "${MANIFEST}"
 
 echo "Verifying archive integrity..."
