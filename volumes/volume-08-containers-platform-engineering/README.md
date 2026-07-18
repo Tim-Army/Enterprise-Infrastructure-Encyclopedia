@@ -12,9 +12,8 @@ process on one host to a fleet of Kubernetes clusters operated as a
 platform product. It assumes the engineering and automation practices
 established in [Volume I](../volume-01-enterprise-engineering-foundations/README.md)
 and builds toward the automation, security, and observability disciplines
-covered in depth across
-[Volume IX](../volume-09-infrastructure-automation/README.md),
-[Volume X](../volume-10-enterprise-cybersecurity/README.md), and
+covered in depth across [Volume IX](../volume-09-infrastructure-automation/README.md),
+Volume X (Enterprise Cybersecurity), and
 [Volume XI](../volume-11-observability-enterprise-operations/README.md) —
 this volume applies those disciplines specifically to containers and
 Kubernetes rather than restating them generically.

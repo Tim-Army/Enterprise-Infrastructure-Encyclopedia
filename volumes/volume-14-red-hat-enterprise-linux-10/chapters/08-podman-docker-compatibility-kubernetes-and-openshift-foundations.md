@@ -169,7 +169,6 @@ multi-node production cluster.
   fleet-wide default of "search everywhere" becomes an established
   habit; an unscoped image source is a supply-chain risk regardless of
   how well the runtime itself is hardened.
-  
 - **Podman as a Kubernetes/OpenShift on-ramp, not a replacement.**
   Podman is well suited to single-host workloads, CI build steps, and
   local development against pod definitions later deployed to a

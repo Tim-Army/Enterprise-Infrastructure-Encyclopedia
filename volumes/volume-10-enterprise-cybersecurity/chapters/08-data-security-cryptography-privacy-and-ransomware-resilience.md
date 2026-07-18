@@ -287,13 +287,26 @@ import json
 import base64
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
-# In production, the KEK lives in a KMS/HSM and never touches
-# application memory in unwrapped form outside the KMS boundary. This
-# lab simulates that boundary locally for reproducibility.
-KEK = AESGCM.generate_key(bit_length=256)
+# In production, the KEK lives in a KMS/HSM and never leaves that
+# boundary in unwrapped form. This lab simulates the KMS boundary with
+# a local key file so separate encrypt/decrypt invocations share the
+# same KEK, the same way separate calls to a real KMS API would.
+KEK_PATH = "kek.local"
+
+
+def load_or_create_kek() -> bytes:
+    if os.path.exists(KEK_PATH):
+        with open(KEK_PATH, "rb") as fh:
+            return fh.read()
+    kek = AESGCM.generate_key(bit_length=256)
+    with open(KEK_PATH, "wb") as fh:
+        fh.write(kek)
+    os.chmod(KEK_PATH, 0o600)
+    return kek
 
 
 def encrypt(infile: str, outfile: str) -> None:
+    kek = load_or_create_kek()
     dek = AESGCM.generate_key(bit_length=256)          # per-object data key
     data_aesgcm = AESGCM(dek)
     data_nonce = os.urandom(12)
@@ -301,7 +314,7 @@ def encrypt(infile: str, outfile: str) -> None:
         plaintext = fh.read()
     ciphertext = data_aesgcm.encrypt(data_nonce, plaintext, None)
 
-    kek_aesgcm = AESGCM(KEK)
+    kek_aesgcm = AESGCM(kek)
     kek_nonce = os.urandom(12)
     wrapped_dek = kek_aesgcm.encrypt(kek_nonce, dek, None)
 
@@ -317,10 +330,11 @@ def encrypt(infile: str, outfile: str) -> None:
 
 
 def decrypt(infile: str, outfile: str) -> None:
+    kek = load_or_create_kek()
     with open(infile, encoding="utf-8") as fh:
         envelope = json.load(fh)
 
-    kek_aesgcm = AESGCM(KEK)
+    kek_aesgcm = AESGCM(kek)
     dek = kek_aesgcm.decrypt(
         base64.b64decode(envelope["kek_nonce"]),
         base64.b64decode(envelope["wrapped_dek"]),

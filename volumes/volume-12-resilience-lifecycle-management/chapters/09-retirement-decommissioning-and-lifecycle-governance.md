@@ -243,19 +243,21 @@ If a dependency is discovered after decommissioning has begun but before sanitiz
    mkdir -p ~/labs/resilience-ch9 && cd ~/labs/resilience-ch9
    ```
 
-2. Create `dependencies.yaml` describing a small graph where a legacy service still has one active dependent:
+2. Create `dependencies.yaml` describing a small graph where a legacy batch job still actively calls an old auth service, while a second, unrelated path serves normal production traffic:
 
    ```yaml
    edges:
      - [ingress, web-frontend]
      - [web-frontend, api-service]
      - [api-service, auth-service-v2]
-     - [legacy-reporting-job, auth-service-v1]
+     - [legacy-batch-job, auth-service-v1]
    status:
-     legacy-reporting-job: active
+     legacy-batch-job: active
      auth-service-v1: active
      auth-service-v2: active
    ```
+
+   Note that `legacy-batch-job` itself has no incoming edges — nothing in this graph depends on it, which is typical for a scheduled batch job that nothing else calls.
 
 3. Save `decommission_ready` from this chapter as `decommission_check.py` with a driver:
 
@@ -277,7 +279,7 @@ If a dependency is discovered after decommissioning has begun but before sanitiz
        if node in graph:
            graph.nodes[node]["status"] = status
 
-   for candidate in ["auth-service-v1", "auth-service-v2"]:
+   for candidate in ["auth-service-v1", "legacy-batch-job"]:
        ready, blockers = decommission_ready(graph, candidate)
        if ready:
            print(f"READY: {candidate} has no active dependents")
@@ -291,13 +293,13 @@ If a dependency is discovered after decommissioning has begun but before sanitiz
    python3 decommission_check.py
    ```
 
-**Expected Result:** The script reports `BLOCKED: auth-service-v1 still depended on by ['legacy-reporting-job']` and `READY: auth-service-v2 has no active dependents` — correctly distinguishing the two candidates based on live dependency status.
+**Expected Result:** The script reports `BLOCKED: auth-service-v1 still depended on by ['legacy-batch-job']` and `READY: legacy-batch-job has no active dependents` — correctly distinguishing a candidate that is still actively used (`auth-service-v1`, still called by the batch job) from one that is safe to retire on its own merits (`legacy-batch-job`, which nothing else in the graph calls).
 
-5. Simulate retiring the blocking dependent by editing `dependencies.yaml` to change `legacy-reporting-job`'s status to `retired`, and rerun the script.
+5. Simulate retiring the blocking dependent by editing `dependencies.yaml` to change `legacy-batch-job`'s status to `retired`, and rerun the script.
 
 **Expected Result:** `auth-service-v1` now reports `READY`, demonstrating that the readiness gate correctly re-evaluates once the blocking dependent is itself retired — the re-verification behavior required by this chapter's Design Considerations before proceeding to sanitization.
 
-**Negative Test:** Attempt to simulate a naive decommission process that skips the dependency check entirely — write a one-line script that "decommissions" `auth-service-v1` unconditionally (simply prints `"decommissioned"` with no check), run it against the original (pre-edit) `dependencies.yaml` where `legacy-reporting-job` is still active, and confirm it proceeds with no warning. Contrast this explicitly with the gated script's `BLOCKED` result on the same input, and record in a short `FINDINGS.md` file why the gate is a required control rather than an optional nicety — this is the concrete mechanism that prevents the premature-decommissioning outage scenario described earlier in this chapter.
+**Negative Test:** Attempt to simulate a naive decommission process that skips the dependency check entirely — write a one-line script that "decommissions" `auth-service-v1` unconditionally (simply prints `"decommissioned"` with no check), run it against the original (pre-edit) `dependencies.yaml` where `legacy-batch-job` is still active, and confirm it proceeds with no warning. Contrast this explicitly with the gated script's `BLOCKED` result on the same input, and record in a short `FINDINGS.md` file why the gate is a required control rather than an optional nicety — this is the concrete mechanism that prevents the premature-decommissioning outage scenario described earlier in this chapter.
 
 **Cleanup:**
 
