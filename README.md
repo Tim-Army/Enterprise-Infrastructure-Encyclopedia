@@ -2,7 +2,7 @@
 
 > A volume-first, documentation-as-code curriculum for designing, deploying, securing, automating, operating, and troubleshooting modern enterprise infrastructure.
 
-<a href="https://derg20.github.io/Enterprise-Infrastructure-Encyclopedia-v2/" target="_blank" rel="noopener noreferrer">Read the HTML edition</a>
+<a href="https://derg20.github.io/Enterprise-Infrastructure-Encyclopedia/" target="_blank" rel="noopener noreferrer">Read the HTML edition</a>
 
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
