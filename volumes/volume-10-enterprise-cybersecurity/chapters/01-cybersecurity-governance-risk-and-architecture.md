@@ -431,23 +431,38 @@ quality with a scripted check.
    score due to the two mapped controls.
 
 5. Add a data-quality guard that fails the run when a risk has no owner —
-   this represents the governance rule that every risk must be assigned:
+   this represents the governance rule that every risk must be assigned.
+   Insert it, along with a call at the top of `main()`, using a small
+   Python patch rather than a plain append — `validate` must be defined
+   *before* `main()` calls it, and `main()` is invoked immediately when
+   the script runs:
 
    ```bash
-   cat >> compute_risk.py << 'EOF'
+   python3 - << 'EOF'
+   with open("compute_risk.py") as fh:
+       content = fh.read()
 
-
-   def validate(path: str) -> None:
+   validate_fn = '''def validate(path: str) -> None:
        import csv as _csv
        with open(path, newline="", encoding="utf-8") as fh:
            for row in _csv.DictReader(fh):
                if not row["owner"].strip():
                    raise SystemExit(f"VALIDATION FAILED: {row['risk_id']} has no owner")
+
+
+   '''
+
+   content = content.replace(
+       "def main(path: str) -> None:\n    rows = []",
+       validate_fn + 'def main(path: str) -> None:\n    validate(path)\n    rows = []'
+   )
+
+   with open("compute_risk.py", "w") as fh:
+       fh.write(content)
    EOF
    ```
 
-6. Insert a call to `validate(path)` at the top of `main()` in the script
-   (before the scoring loop), then re-run:
+6. Re-run the script:
 
    ```bash
    python3 compute_risk.py risk_register.csv
