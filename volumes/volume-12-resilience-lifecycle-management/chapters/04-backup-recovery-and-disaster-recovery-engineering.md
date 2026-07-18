@@ -188,7 +188,7 @@ mkdir -p "${RESTORE_SCRATCH}"
 echo "Restoring ${LATEST} to scratch location ${RESTORE_SCRATCH}..."
 tar -xzf "${LATEST}" -C "${RESTORE_SCRATCH}"
 
-RESTORED_FILE_COUNT=$(find "${RESTORE_SCRATCH}" -type f | wc -l)
+RESTORED_FILE_COUNT=$(find "${RESTORE_SCRATCH}" -type f | wc -l | tr -d ' ')
 if [ "${RESTORED_FILE_COUNT}" -eq 0 ]; then
   echo "FAIL: restore produced zero files" >&2
   exit 1
@@ -317,15 +317,16 @@ When a restore test fails, resist the instinct to simply re-run it — a failed 
    diff -r source restore && echo "Restored content matches source"
    ```
 
-**Negative Test:** Deliberately corrupt the backup archive and confirm the integrity check catches it:
+**Negative Test:** Deliberately corrupt the backup archive and confirm the integrity check catches it. Appending bytes after a valid gzip stream is not sufficient — most tar/gzip readers stop cleanly at the end of the valid stream and ignore trailing bytes — so truncate the archive instead, which reliably breaks the compressed stream itself:
 
 ```bash
 LATEST=$(ls -t backups/backup-*.tar.gz | head -1)
-echo "corruption" >> "$LATEST"
-bash -c 'set -e; tar -tzf "'"$LATEST"'" > /dev/null' || echo "Corruption correctly detected — integrity check failed as expected"
+truncate -s -200 "$LATEST"
+tar -tzf "$LATEST" > /dev/null 2>&1 && echo "UNEXPECTED: archive still passed integrity check" \
+  || echo "Corruption correctly detected — integrity check failed as expected"
 ```
 
-Confirm the corrupted archive fails the `tar -tzf` integrity check rather than silently appearing to succeed — this is the specific failure mode the verification step exists to catch before a real restore is attempted against it.
+Confirm the truncated archive fails the `tar -tzf` integrity check with a message such as `truncated gzip input`, rather than silently appearing to succeed — this is the specific failure mode the verification step exists to catch before a real restore is attempted against it. If your `truncate` implementation does not support the `-s -200` relative-size syntax, remove the same number of bytes with an equivalent tool (for example, `head -c -200 "$LATEST" > "$LATEST.tmp" && mv "$LATEST.tmp" "$LATEST"` on GNU coreutils).
 
 **Cleanup:**
 
