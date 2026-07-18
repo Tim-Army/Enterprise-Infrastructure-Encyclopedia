@@ -289,14 +289,19 @@ def verify_integrity(log_path: str, evidence_id: str, artifact_path: str) -> boo
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 5:
+    if len(sys.argv) < 2 or sys.argv[1] not in ("log", "verify"):
         raise SystemExit(
-            "Usage: evidence_custody.py <log|verify> <evidence_id> <artifact_path> <handler_or_log_path>"
+            "Usage: evidence_custody.py log <evidence_id> <artifact_path> <handler>\n"
+            "       evidence_custody.py verify <evidence_id> <artifact_path>"
         )
     mode = sys.argv[1]
     if mode == "log":
+        if len(sys.argv) != 5:
+            raise SystemExit("Usage: evidence_custody.py log <evidence_id> <artifact_path> <handler>")
         log_custody_event("custody_log.csv", sys.argv[2], sys.argv[3], sys.argv[4], "collected")
     elif mode == "verify":
+        if len(sys.argv) != 4:
+            raise SystemExit("Usage: evidence_custody.py verify <evidence_id> <artifact_path>")
         verify_integrity("custody_log.csv", sys.argv[2], sys.argv[3])
 ```
 

@@ -359,7 +359,7 @@ collection has added coverage for newer iDRAC features.
 5. Why can the same automation script behave differently against two
    servers of the same model, and what should you check first?
 
-## Hands-On Lab (Capstone)
+## Hands-On Lab
 
 **Objective:** Execute an end-to-end provisioning runbook against a lab
 server — network configuration, identity hardening, storage baseline,
