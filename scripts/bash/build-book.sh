@@ -67,6 +67,13 @@ mkdir -p output/html output/epub
 series_title="Enterprise Infrastructure Encyclopedia"
 author="Enterprise Infrastructure Encyclopedia Project"
 
+# The project's creation date is a fixed constant (not derived from git log)
+# because CI checks out a shallow clone, under which "earliest commit" would
+# incorrectly resolve to whatever commit triggered the build. "Last updated"
+# is the actual build date, which is accurate in any environment.
+title_page_created="2026-07-18"
+title_page_updated="$(date +%Y-%m-%d)"
+
 link_tmp="$(mktemp -d)"
 trap 'rm -rf "$link_tmp"' EXIT
 
@@ -95,6 +102,17 @@ first_line_title() {
   head -1 "$1" | sed -E 's/^# (Chapter [0-9]+: )?//'
 }
 
+# Renders publishing/title-page.md with its date placeholders filled in and
+# prints the path to the rendered copy. Prepended as the first input file to
+# every build so it becomes the first Table of Contents entry.
+title_page_for() {
+  local dest="$link_tmp/title-page.md"
+  sed -e "s/{{CREATED_DATE}}/$title_page_created/" \
+      -e "s/{{UPDATED_DATE}}/$title_page_updated/" \
+      publishing/title-page.md > "$dest"
+  printf '%s' "$dest"
+}
+
 # Pandoc resolves an image's relative path against its own working
 # directory, not against the source file's directory -- so a chapter's
 # "../../../diagrams/..." reference needs each rewritten file's own
@@ -118,17 +136,19 @@ resource_path_for() {
 
 build_chapter_html() {
   local chapter_file="$1" volume_slug="$2"
-  local base title outdir rewritten
+  local base title outdir rewritten rewritten_title_page
   base="$(basename "$chapter_file" .md)"
   title="$(first_line_title "$chapter_file")"
   outdir="output/html/$volume_slug"
   mkdir -p "$outdir"
   rewritten="$(rewrite_file "$chapter_file" html-flat "$volume_slug")"
-  pandoc "$rewritten" \
+  rewritten_title_page="$(title_page_for)"
+  pandoc "$rewritten_title_page" "$rewritten" \
     --standalone --embed-resources \
     --resource-path="$(resource_path_for "$rewritten")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
+    --include-after-body=publishing/repo-link.html \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=2 \
     --metadata "title=$title" \
@@ -138,13 +158,19 @@ build_chapter_html() {
 
 build_chapter_epub() {
   local chapter_file="$1" volume_slug="$2"
-  local base title outdir rewritten
+  local base title outdir rewritten rewritten_title_page rewritten_colophon
   base="$(basename "$chapter_file" .md)"
   title="$(first_line_title "$chapter_file")"
   outdir="output/epub/$volume_slug"
   mkdir -p "$outdir"
   rewritten="$(rewrite_file "$chapter_file" epub-absolute)"
-  pandoc "$rewritten" \
+  rewritten_title_page="$(title_page_for)"
+  # Leading/trailing sections rather than --include-after-body: EPUB output
+  # splits into one XHTML file per top-level section, and an after-body
+  # include is appended to every one of them, which would repeat the GitHub
+  # link on the title page as well as the chapter.
+  rewritten_colophon="$(rewrite_file "publishing/colophon.md" epub-absolute)"
+  pandoc "$rewritten_title_page" "$rewritten" "$rewritten_colophon" \
     --toc --toc-depth=2 \
     --resource-path="$(resource_path_for "$rewritten")" \
     --css=publishing/web.css \
@@ -154,7 +180,7 @@ build_chapter_epub() {
 }
 
 build_volume_html() {
-  local volume_dir="$1" volume_slug title chapters ch rewritten_readme rewritten_chapters
+  local volume_dir="$1" volume_slug title chapters ch rewritten_readme rewritten_chapters rewritten_title_page
   volume_dir="${1%/}"
   volume_slug="$(basename "$volume_dir")"
   title="$(first_line_title "$volume_dir/README.md")"
@@ -166,11 +192,13 @@ build_volume_html() {
   for ch in "${chapters[@]}"; do
     rewritten_chapters+=("$(rewrite_file "$ch" html-flat "$volume_slug")")
   done
-  pandoc "$rewritten_readme" "${rewritten_chapters[@]}" \
+  rewritten_title_page="$(title_page_for)"
+  pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" \
     --standalone --embed-resources \
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
+    --include-after-body=publishing/repo-link.html \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=2 \
     --metadata "title=$title" \
@@ -179,7 +207,7 @@ build_volume_html() {
 }
 
 build_volume_epub() {
-  local volume_dir="$1" volume_slug title chapters ch rewritten_readme rewritten_chapters
+  local volume_dir="$1" volume_slug title chapters ch rewritten_readme rewritten_chapters rewritten_colophon rewritten_title_page
   volume_dir="${1%/}"
   volume_slug="$(basename "$volume_dir")"
   title="$(first_line_title "$volume_dir/README.md")"
@@ -190,7 +218,14 @@ build_volume_epub() {
   for ch in "${chapters[@]}"; do
     rewritten_chapters+=("$(rewrite_file "$ch" epub-absolute)")
   done
-  pandoc "$rewritten_readme" "${rewritten_chapters[@]}" \
+  # A trailing colophon section, not --include-after-body, so the GitHub
+  # link appears exactly once at the end of the book instead of once per
+  # internal chapter-split XHTML file. The title page is prepended the same
+  # way, as a leading section, so it becomes the first Table of Contents
+  # entry rather than repeating on every chapter's own split file.
+  rewritten_colophon="$(rewrite_file "publishing/colophon.md" epub-absolute)"
+  rewritten_title_page="$(title_page_for)"
+  pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" "$rewritten_colophon" \
     --toc --toc-depth=2 \
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
@@ -200,7 +235,7 @@ build_volume_epub() {
 }
 
 build_series_html() {
-  local chapters ch rewritten_readme rewritten_chapters
+  local chapters ch rewritten_readme rewritten_chapters rewritten_title_page
   rewritten_readme="$(rewrite_file "README.md" html-root)"
   chapters=()
   while IFS= read -r f; do chapters+=("$f"); done < <(find volumes -path "*/chapters/*.md" | sort)
@@ -208,11 +243,13 @@ build_series_html() {
   for ch in "${chapters[@]}"; do
     rewritten_chapters+=("$(rewrite_file "$ch" html-root)")
   done
-  pandoc "$rewritten_readme" "${rewritten_chapters[@]}" \
+  rewritten_title_page="$(title_page_for)"
+  pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" \
     --standalone --embed-resources \
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
+    --include-after-body=publishing/repo-link.html \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=2 \
     --metadata "title=$series_title — Complete Edition" \
@@ -221,7 +258,7 @@ build_series_html() {
 }
 
 build_series_epub() {
-  local chapters ch rewritten_readme rewritten_chapters
+  local chapters ch rewritten_readme rewritten_chapters rewritten_colophon rewritten_title_page
   rewritten_readme="$(rewrite_file "README.md" epub-absolute)"
   chapters=()
   while IFS= read -r f; do chapters+=("$f"); done < <(find volumes -path "*/chapters/*.md" | sort)
@@ -229,7 +266,9 @@ build_series_epub() {
   for ch in "${chapters[@]}"; do
     rewritten_chapters+=("$(rewrite_file "$ch" epub-absolute)")
   done
-  pandoc "$rewritten_readme" "${rewritten_chapters[@]}" \
+  rewritten_colophon="$(rewrite_file "publishing/colophon.md" epub-absolute)"
+  rewritten_title_page="$(title_page_for)"
+  pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" "$rewritten_colophon" \
     --toc --toc-depth=2 \
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \

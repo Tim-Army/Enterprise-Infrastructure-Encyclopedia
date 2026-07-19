@@ -46,6 +46,7 @@ HTML
 }
 
 page_tail() {
+  cat publishing/repo-link.html
   cat publishing/theme-toggle.html
   echo "</body></html>"
 }

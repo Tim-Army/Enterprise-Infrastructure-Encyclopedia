@@ -53,6 +53,17 @@ pre {
   cursor: pointer;
 }
 
+#repo-link {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 102, 0, 0.35);
+  font-size: 0.9rem;
+}
+
+body.light #repo-link {
+  border-top-color: rgba(4, 104, 4, 0.35);
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
