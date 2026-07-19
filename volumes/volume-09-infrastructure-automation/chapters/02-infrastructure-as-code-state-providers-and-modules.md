@@ -1,5 +1,9 @@
 # Chapter 02: Infrastructure as Code, State, Providers, and Modules
 
+![Lab flow for this chapter: a cloud-credential-free module creates one random_pet and one local_file; terraform test runs a plan-level assertion that passes. A moved block renames the resource address, and terraform plan afterward reports 0 to add, 0 to change, 0 to destroy, confirming the resource was renamed in place rather than replaced. As a negative test, the generated output file's contents are edited by hand outside Terraform; terraform plan reports no diff at all, because local_file only tracks that it manages the file's existence and declared content in state, not out-of-band edits.](../../../diagrams/volume-09-infrastructure-automation/chapter-02-moved-block-drift-blindspot-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: a safe moved-block refactor, followed by a demonstration of a specific provider's drift-detection blind spot.*
+
 ## Learning Objectives
 
 - Explain how Terraform's plan/apply lifecycle uses state to compute a

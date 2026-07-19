@@ -1,5 +1,9 @@
 # Chapter 08: Automation Security, Governance, and Supply Chains
 
+![Lab flow for this chapter: Checkov scans the demo module for misconfigurations, reporting a clean or low-severity summary; the module is packaged and signed with cosign sign-blob using a local key pair, and cosign verify-blob against the untouched archive prints 'Verified OK'. As a negative test, one line is appended to the archive after signing; re-running cosign verify-blob against the same signature now fails with a signature-mismatch error, proving that even a one-line append invalidates the signature and that consuming this artifact without verification would have gone undetected.](../../../diagrams/volume-09-infrastructure-automation/chapter-08-checkov-cosign-tamper-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: a Terraform module scanned, packaged, and cosign-signed, then verified against a tampered archive.*
+
 ## Learning Objectives
 
 - Map the components of an infrastructure automation supply chain and the

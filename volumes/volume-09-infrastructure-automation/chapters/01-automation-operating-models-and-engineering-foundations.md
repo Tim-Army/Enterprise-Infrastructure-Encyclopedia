@@ -1,5 +1,9 @@
 # Chapter 01: Automation Operating Models and Engineering Foundations
 
+![Lab flow for this chapter: a baseline repository skeleton is pushed to GitHub with branch protection on main requiring a pull request and passing terraform-fmt/ansible-lint status checks. As a negative test, a feature branch deliberately introduces unformatted HCL and opens a pull request; the terraform-fmt check fails and the merge button is disabled by branch protection, proving a non-conforming change is mechanically blocked rather than relying on manual review diligence. Running terraform fmt -recursive locally, committing the fix, and pushing again turns the check green and allows the merge.](../../../diagrams/volume-09-infrastructure-automation/chapter-01-branch-protection-lint-gate-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: a branch-protected CI lint gate that mechanically blocks a non-conforming pull request.*
+
 ## Learning Objectives
 
 - Explain the difference between scripting, infrastructure as code, and

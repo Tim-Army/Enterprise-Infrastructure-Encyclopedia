@@ -1,5 +1,9 @@
 # Chapter 05: Automation Pipelines, Testing, and Policy Gates
 
+![Lab flow for this chapter: planning with no owner_tag and evaluating with Conftest fails ('has an empty owner_tag'); re-planning with owner_tag set and re-evaluating passes cleanly. As a negative test, the failing plan is applied anyway, bypassing the policy gate entirely; the resulting output file shows owner= with no value, exactly what the policy predicted — demonstrating that nothing at the terraform apply layer itself prevents applying a plan that failed policy, which is why the check must be a required, blocking CI step and not an advisory one a human can choose to ignore.](../../../diagrams/volume-09-infrastructure-automation/chapter-05-conftest-policy-gate-bypass-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: a Conftest policy gate evaluated before apply, with a deliberate bypass showing exactly why the gate must block rather than merely advise.*
+
 ## Learning Objectives
 
 - Design a plan/test/policy/approve/apply pipeline for infrastructure as

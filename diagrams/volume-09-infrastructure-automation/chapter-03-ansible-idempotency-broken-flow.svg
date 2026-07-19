@@ -1,0 +1,31 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 3 lab flow: an idempotent Ansible role converging to no-change, contrasted with a non-idempotent shell task</title>
+  <desc>
+    The motd role deploys /tmp/ansible-lab-motd via the template module. The first playbook run reports changed=1; the second run reports changed=0 across all tasks, the idempotency contract holding. As a negative test, a raw ansible.builtin.shell task appending a timestamp is added to the same role; its first run reports changed=1 as expected, but the second run also reports changed=1 again — idempotency broken, because a raw shell/command task has no built-in concept of desired state and needs an explicit creates, removes, or when guard before it belongs in a convergence-oriented playbook.
+  </desc>
+  <defs>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: Ansible Idempotency Proven, Then Deliberately Broken</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A template task converges to changed=0 on the second run; a raw shell append never does</text>
+  <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">motd role (template task)</text>
+  <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">run 1: changed=1</text>
+  <text x="190.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">run 2: changed=0</text>
+  <line x1="320" y1="200" x2="380" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="380" y="140" width="260" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="510.0" y="186.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">+ shell append (negative test)</text>
+  <text x="510.0" y="204.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">run 1: changed=1</text>
+  <text x="510.0" y="222.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">run 2: changed=1 again</text>
+  <rect x="680" y="140" width="240" height="120" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="800.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Why it breaks</text>
+  <text x="800.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">raw shell has no desired-state</text>
+  <text x="800.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">needs creates/removes/when guard</text>
+  <line x1="640" y1="200" x2="680" y2="200" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="60" y1="380" x2="100" y2="380" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="384" font-size="11" fill="#33415c">Idempotent task</text>
+  <line x1="273" y1="380" x2="313" y2="380" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="321" y="384" font-size="11" fill="#b91c1c">Non-idempotent task (negative test)</text>
+</svg>

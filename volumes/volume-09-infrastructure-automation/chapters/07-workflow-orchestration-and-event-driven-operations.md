@@ -1,5 +1,9 @@
 # Chapter 07: Workflow Orchestration and Event-Driven Operations
 
+![Lab flow for this chapter: ansible-rulebook listens on a local webhook for HighCPU/firing alerts; a matching event tagged source=monitoring triggers the rule, running a playbook and appending a log line recording the trigger. As a negative test, an otherwise identical event tagged source=automation (as if produced by the automation's own action) is sent; the rulebook receives it but the rule's condition does not match, so no playbook runs and no log line is appended — proving the guard actually prevents a feedback loop rather than merely documenting the intent to prevent one.](../../../diagrams/volume-09-infrastructure-automation/chapter-07-eda-rulebook-loop-guard-flow.svg)
+
+*Figure 7-1. Flow used throughout this chapter's Hands-On Lab: an Event-Driven Ansible rulebook reacting to a webhook alert, guarded against reacting to its own output.*
+
 ## Learning Objectives
 
 - Distinguish configuration management, pipeline automation, and workflow

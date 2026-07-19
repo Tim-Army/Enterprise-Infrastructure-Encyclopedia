@@ -1,0 +1,37 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab flow: a local webhook receiver enforcing HMAC signature verification and idempotency-key deduplication</title>
+  <desc>
+    A local HTTP receiver validates an HMAC-SHA256 signature over the raw request body. A correctly signed event (evt-001) is accepted with HTTP 200 and processed once. The identical request replayed a second time returns HTTP 200 'duplicate event acknowledged' without a second processing log line, proving the idempotency-key check suppressed the duplicate. As a negative test, a request with a tampered body but the original (now-mismatched) signature returns HTTP 401 'invalid signature' — the receiver correctly rejects a payload that does not match the signature computed over the original body, even though the signature header itself was once a real, valid value.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: Webhook Signature Verification, Replay Deduplication, and Tamper Detection</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A duplicate event is acknowledged without reprocessing; a tampered body with the original signature is rejected</text>
+  <rect x="60" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="180.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Signed event (evt-001)</text>
+  <text x="180.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">valid HMAC-SHA256</text>
+  <text x="180.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">200 accepted, processed once</text>
+  <rect x="380" y="140" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="500.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Same event replayed</text>
+  <text x="500.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">identical signature + body</text>
+  <text x="500.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">200 duplicate acknowledged</text>
+  <line x1="300" y1="195" x2="380" y2="195" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">tampered body, original sig</text>
+  <text x="810.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">401 invalid signature</text>
+  <line x1="620" y1="195" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="330" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="370.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">dedup check prevents double-processing of legitimate retries; signature check rejects any payload that doesn't</text>
+  <text x="490.0" y="388.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">match its signature, even a once-valid header value replayed against different content.</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="108" y="464" font-size="11" fill="#166534">Valid, processed once</text>
+  <line x1="327" y1="460" x2="367" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="375" y="464" font-size="11" fill="#33415c">Deduplicated replay</text>
+  <line x1="576" y1="460" x2="616" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="624" y="464" font-size="11" fill="#b91c1c">Tampered (rejected)</text>
+</svg>

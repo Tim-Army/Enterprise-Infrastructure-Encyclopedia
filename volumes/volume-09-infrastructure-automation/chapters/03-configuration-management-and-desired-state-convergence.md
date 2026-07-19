@@ -1,5 +1,9 @@
 # Chapter 03: Configuration Management and Desired-State Convergence
 
+![Lab flow for this chapter: the motd role deploys a managed file via the template module; the first playbook run reports changed=1 and the second reports changed=0 across all tasks, the idempotency contract holding. As a negative test, a raw shell task appending a timestamp is added to the same role; its second run also reports changed=1 again — idempotency broken, because a raw shell/command task has no built-in concept of desired state and needs an explicit creates, removes, or when guard before it belongs in a convergence-oriented playbook.](../../../diagrams/volume-09-infrastructure-automation/chapter-03-ansible-idempotency-broken-flow.svg)
+
+*Figure 3-1. Flow used throughout this chapter's Hands-On Lab: Ansible idempotency proven with a template task, then deliberately broken with a raw shell append.*
+
 ## Learning Objectives
 
 - Explain idempotency and desired-state convergence, and why they matter

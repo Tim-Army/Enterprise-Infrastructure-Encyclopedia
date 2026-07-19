@@ -1,0 +1,37 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 2 lab flow: a Terraform module refactored in place with a moved block, then a local_file provider's drift-detection limits</title>
+  <desc>
+    A cloud-credential-free module (random and local providers only) creates one random_pet and one local_file. terraform test runs a plan-level assertion that passes. A moved block renames the resource address; terraform plan afterward reports 0 to add, 0 to change, 0 to destroy, confirming the resource was renamed in place rather than replaced. As a negative test, the generated output file's contents are edited by hand outside Terraform; terraform plan reports no diff at all, because local_file only tracks that it manages the file's existence and declared content in state, not out-of-band edits — a concrete demonstration that not every provider detects every kind of drift.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 2 Hands-On Lab: A moved Block Refactor and a Provider's Drift-Detection Blind Spot</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Renaming a resource in place produces a zero-change plan; local_file never notices its own file being hand-edited</text>
+  <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Module apply</text>
+  <text x="180.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">random_pet + local_file</text>
+  <text x="180.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">terraform test: PASS</text>
+  <rect x="380" y="130" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="500.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">moved block refactor</text>
+  <text x="500.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">resource renamed in place</text>
+  <text x="500.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">plan: 0 add / 0 change / 0 destroy</text>
+  <line x1="300" y1="185" x2="380" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="171.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="189.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">output file hand-edited</text>
+  <text x="810.0" y="207.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">terraform plan: no diff!</text>
+  <line x1="620" y1="185" x2="700" y2="185" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="330" width="860" height="100" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="375.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">local_file tracks only the fact that it manages a file's existence and declared content in state,</text>
+  <text x="490.0" y="393.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">not the actual on-disk bytes — a specific provider's drift-detection behavior must be understood before relying on it.</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="464" font-size="11" fill="#33415c">Baseline apply</text>
+  <line x1="264" y1="460" x2="304" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="312" y="464" font-size="11" fill="#166534">Safe in-place refactor</text>
+  <line x1="540" y1="460" x2="580" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="588" y="464" font-size="11" fill="#b91c1c">Undetected drift (negative test)</text>
+</svg>

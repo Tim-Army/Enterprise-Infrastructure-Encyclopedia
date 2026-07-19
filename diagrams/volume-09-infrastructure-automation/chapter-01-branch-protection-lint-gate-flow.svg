@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab flow: a repository skeleton with branch protection and a CI lint gate blocking a non-conforming pull request</title>
+  <desc>
+    A baseline repository skeleton (modules/, environments/, .github/workflows/lint.yml) is pushed to GitHub with branch protection on main requiring a pull request and passing terraform-fmt / ansible-lint status checks. As a negative test, a feature branch deliberately introduces unformatted HCL and opens a pull request; the terraform-fmt check fails and the merge button is disabled by branch protection, proving a non-conforming change is mechanically blocked rather than relying on manual review diligence. Running terraform fmt -recursive locally, committing the fix, and pushing again turns the check green and allows the merge.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Hands-On Lab: A Branch-Protected Lint Gate That Mechanically Blocks a Bad Commit</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">An unformatted-HCL pull request fails terraform-fmt in CI and cannot be merged until fixed</text>
+  <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Repository skeleton</text>
+  <text x="180.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">branch protection on main</text>
+  <text x="180.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">required: terraform-fmt, ansible-lint</text>
+  <rect x="380" y="130" width="240" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="500.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">PR: lab/negative-test</text>
+  <text x="500.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">unformatted HCL committed</text>
+  <text x="500.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">terraform-fmt check: FAIL</text>
+  <line x1="300" y1="185" x2="380" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Fixed + re-pushed</text>
+  <text x="810.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">terraform fmt -recursive</text>
+  <text x="810.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">check: PASS, merge allowed</text>
+  <line x1="620" y1="185" x2="700" y2="185" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="330" width="860" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="366.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test (this is the lab's actual test)</text>
+  <text x="490.0" y="384.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">merge button stays disabled while terraform-fmt is failing — branch protection enforces the gate mechanically</text>
+  <text x="490.0" y="402.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">no reliance on a reviewer noticing the formatting issue by hand</text>
+  <line x1="60" y1="470" x2="100" y2="470" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="474" font-size="11" fill="#33415c">Protected branch</text>
+  <line x1="282" y1="470" x2="322" y2="470" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="330" y="474" font-size="11" fill="#b91c1c">Blocked PR</text>
+  <line x1="450" y1="470" x2="490" y2="470" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="498" y="474" font-size="11" fill="#166534">Fixed, merge allowed</text>
+</svg>

@@ -1,5 +1,9 @@
 # Chapter 09: Automation Observability, Reliability, and Lifecycle Operations
 
+![Lab flow for this chapter: a wrapper script around terraform apply records run_id, duration, exit_status, and timestamp as one JSON line per run; three successful runs produce a computed success rate of 3/3. Separately, a Vault dev-mode backup-and-restore drill seeds a marker secret to prove a backup is actually usable, not merely present. As a negative test, a deliberately broken resource is added and the wrapper run a fourth time; the run log gains a fourth entry with a non-zero exit_status, and the recomputed success rate correctly drops to 3/4 — proving the instrumentation captures failures as data instead of only recording successful runs.](../../../diagrams/volume-09-infrastructure-automation/chapter-09-structured-logging-success-rate-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: structured JSON logging around Terraform apply feeding a success-rate metric that correctly captures a failed run.*
+
 ## Learning Objectives
 
 - Apply the three observability pillars (logs, metrics, traces) to the

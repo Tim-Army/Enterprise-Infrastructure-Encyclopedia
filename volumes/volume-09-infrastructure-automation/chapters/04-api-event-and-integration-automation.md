@@ -1,5 +1,9 @@
 # Chapter 04: API, Event, and Integration Automation
 
+![Lab flow for this chapter: a local HTTP receiver validates an HMAC-SHA256 signature over the raw request body; a correctly signed event is accepted with HTTP 200 and processed once, and the identical request replayed a second time returns HTTP 200 'duplicate event acknowledged' without a second processing line, proving the idempotency-key check suppressed the duplicate. As a negative test, a request with a tampered body but the original signature returns HTTP 401 'invalid signature' — the receiver correctly rejects a payload that does not match the signature computed over the original body.](../../../diagrams/volume-09-infrastructure-automation/chapter-04-webhook-signature-dedup-flow.svg)
+
+*Figure 4-1. Flow used throughout this chapter's Hands-On Lab: a webhook receiver enforcing signature verification and replay deduplication, tested against a tampered payload.*
+
 ## Learning Objectives
 
 - Distinguish synchronous request/response API automation from asynchronous,

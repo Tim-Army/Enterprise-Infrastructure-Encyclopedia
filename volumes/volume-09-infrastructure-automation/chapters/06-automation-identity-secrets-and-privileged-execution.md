@@ -1,5 +1,9 @@
 # Chapter 06: Automation Identity, Secrets, and Privileged Execution
 
+![Lab flow for this chapter: an AppRole role ci-pipeline is bound to a pipeline-read policy granting only read on a scoped secret path; the issued token reads the secret successfully both via the Vault CLI and via an Ansible hashi_vault lookup task, with no_log keeping the value out of task output. As a negative test, the same scoped token attempts a write to the same secret path; Vault returns 'permission denied', proving the read-only policy is enforced by Vault itself, not merely by convention.](../../../diagrams/volume-09-infrastructure-automation/chapter-06-vault-approle-readonly-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: a Vault AppRole-issued, read-only-scoped token used by both a CLI login flow and an Ansible lookup, then tested against a write attempt.*
+
 ## Learning Objectives
 
 - Distinguish static long-lived credentials from federated, short-lived
