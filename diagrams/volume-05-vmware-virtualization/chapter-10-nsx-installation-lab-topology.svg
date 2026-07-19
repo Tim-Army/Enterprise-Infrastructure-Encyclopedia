@@ -1,0 +1,129 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 10 hands-on lab topology: NSX Manager, an ESXi transport node, and an NSX Edge node connected by a management network and an overlay transport VLAN</title>
+  <desc>
+    A single-node NSX Manager creates a transport zone, uplink profile, and TEP IP pool.
+    One ESXi host, already carrying a vSphere Distributed Switch from the Chapter 4 lab,
+    is prepared as a transport node using those objects and gets a TEP interface (TEP-1)
+    on the transport VLAN. An NSX Edge VM is deployed, registers with NSX Manager, joins
+    an Edge cluster, and gets its own TEP interface (TEP-2) on the same transport VLAN.
+    NSX Manager, the ESXi host's management interface, and the Edge VM's management
+    interface all share a management network. The transport VLAN separately carries
+    Geneve-encapsulated overlay traffic at MTU 9000 between TEP-1 and TEP-2.
+  </desc>
+
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+
+  <defs>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#33415c"/>
+    </marker>
+    <marker id="arrow-overlay" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b45309"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="480" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">
+    Chapter 10 Hands-On Lab: NSX Installation Topology
+  </text>
+  <text x="480" y="50" text-anchor="middle" font-size="13" fill="#4b5563">
+    Single-node NSX Manager, one prepared ESXi transport node, and one NSX Edge node
+  </text>
+
+  <!-- Management network bar -->
+  <rect x="60" y="80" width="840" height="34" rx="6" fill="#eef2f8" stroke="#33415c" stroke-width="1.5"/>
+  <text x="480" y="102" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2937">
+    Management Network (VLAN) — solid arrows below
+  </text>
+
+  <!-- NSX Manager box -->
+  <rect x="380" y="150" width="200" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480" y="174" text-anchor="middle" font-size="15" font-weight="700" fill="#111827">NSX Manager</text>
+  <text x="480" y="192" text-anchor="middle" font-size="11" fill="#374151">(single node, lab-scoped)</text>
+  <line x1="396" y1="202" x2="564" y2="202" stroke="#93a3b8" stroke-width="1"/>
+  <text x="480" y="219" text-anchor="middle" font-size="11" fill="#1f2937">Creates on System &gt; Fabric:</text>
+  <text x="480" y="234" text-anchor="middle" font-size="11" fill="#1f2937">Overlay Transport Zone</text>
+  <text x="480" y="248" text-anchor="middle" font-size="11" fill="#1f2937">Uplink Profile · TEP IP Pool</text>
+
+  <!-- Management links from NSX Manager -->
+  <line x1="440" y1="150" x2="270" y2="114" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="520" y1="150" x2="690" y2="114" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+
+  <!-- ESXi Host box -->
+  <rect x="120" y="330" width="300" height="220" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="270" y="356" text-anchor="middle" font-size="15" font-weight="700" fill="#111827">
+    ESXi Host (nested)
+  </text>
+  <text x="270" y="374" text-anchor="middle" font-size="11" fill="#374151">
+    Prepared as a Transport Node
+  </text>
+
+  <!-- VDS inside ESXi host -->
+  <rect x="140" y="390" width="260" height="60" rx="6" fill="#ffffff" stroke="#6b7280" stroke-width="1.25" stroke-dasharray="4 3"/>
+  <text x="270" y="410" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2937">
+    vSphere Distributed Switch
+  </text>
+  <text x="270" y="426" text-anchor="middle" font-size="10.5" fill="#4b5563">
+    (from Chapter 4 lab) — 2 uplinks
+  </text>
+  <text x="270" y="442" text-anchor="middle" font-size="10.5" fill="#4b5563">
+    mapped by the Uplink Profile
+  </text>
+
+  <!-- TEP-1 box -->
+  <rect x="180" y="470" width="180" height="46" rx="6" fill="#fff7ed" stroke="#b45309" stroke-width="1.5"/>
+  <text x="270" y="490" text-anchor="middle" font-size="12" font-weight="700" fill="#7c2d12">
+    TEP-1
+  </text>
+  <text x="270" y="505" text-anchor="middle" font-size="10.5" fill="#7c2d12">
+    (from TEP IP Pool)
+  </text>
+
+  <!-- Host management interface stub -->
+  <line x1="270" y1="330" x2="270" y2="114" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="212" y="330" font-size="10.5" fill="#33415c">vmk0 (mgmt)</text>
+
+  <!-- Edge VM box -->
+  <rect x="540" y="330" width="300" height="220" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="690" y="356" text-anchor="middle" font-size="15" font-weight="700" fill="#111827">
+    NSX Edge VM
+  </text>
+  <text x="690" y="374" text-anchor="middle" font-size="11" fill="#374151">
+    Registered with NSX Manager
+  </text>
+  <text x="690" y="390" text-anchor="middle" font-size="11" fill="#374151">
+    Member of an Edge Cluster
+  </text>
+
+  <!-- TEP-2 box -->
+  <rect x="600" y="470" width="180" height="46" rx="6" fill="#fff7ed" stroke="#b45309" stroke-width="1.5"/>
+  <text x="690" y="490" text-anchor="middle" font-size="12" font-weight="700" fill="#7c2d12">
+    TEP-2
+  </text>
+  <text x="690" y="505" text-anchor="middle" font-size="10.5" fill="#7c2d12">
+    (from TEP IP Pool)
+  </text>
+
+  <!-- Edge management interface stub -->
+  <line x1="690" y1="330" x2="690" y2="114" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="700" y="330" font-size="10.5" fill="#33415c">mgmt vNIC</text>
+
+  <!-- Transport VLAN bar -->
+  <rect x="60" y="570" width="840" height="60" rx="6" fill="#fff7ed" stroke="#b45309" stroke-width="1.5" stroke-dasharray="7 4"/>
+  <text x="480" y="595" text-anchor="middle" font-size="14" font-weight="700" fill="#7c2d12">
+    Transport VLAN — dashed arrows below
+  </text>
+  <text x="480" y="613" text-anchor="middle" font-size="11.5" fill="#7c2d12">
+    Geneve-encapsulated overlay traffic between TEPs, MTU 9000 end-to-end
+  </text>
+
+  <!-- TEP links to transport VLAN -->
+  <line x1="270" y1="516" x2="270" y2="570" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-overlay)"/>
+  <line x1="690" y1="516" x2="690" y2="570" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-overlay)"/>
+
+  <!-- Legend -->
+  <line x1="60" y1="646" x2="100" y2="646" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="650" font-size="11" fill="#1f2937">Management-plane connection</text>
+  <line x1="330" y1="646" x2="370" y2="646" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-overlay)"/>
+  <text x="378" y="650" font-size="11" fill="#7c2d12">Overlay transport (Geneve) connection</text>
+</svg>

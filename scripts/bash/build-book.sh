@@ -70,6 +70,16 @@ author="Enterprise Infrastructure Encyclopedia Project"
 link_tmp="$(mktemp -d)"
 trap 'rm -rf "$link_tmp"' EXIT
 
+# Mirror diagrams/ into the rewrite workspace so relative image references
+# in chapter Markdown (for example "../../../diagrams/...") resolve to a
+# real local file, the same way they do in the repo itself. Pandoc then
+# embeds the image directly (HTML via --embed-resources, EPUB by packaging
+# it) instead of needing network access.
+if [[ -d diagrams ]]; then
+  mkdir -p "$link_tmp/diagrams"
+  cp -r diagrams/. "$link_tmp/diagrams/"
+fi
+
 # Rewrite chapter links in $1 for $2 (html-flat|html-root|epub-absolute),
 # optionally scoped to volume $3 for html-flat. Prints the path to a
 # rewritten temp copy of the file.
@@ -85,6 +95,27 @@ first_line_title() {
   head -1 "$1" | sed -E 's/^# (Chapter [0-9]+: )?//'
 }
 
+# Pandoc resolves an image's relative path against its own working
+# directory, not against the source file's directory -- so a chapter's
+# "../../../diagrams/..." reference needs each rewritten file's own
+# directory on the search path. Prints a colon-joined --resource-path
+# value covering every directory in $@ (deduplicated), for input files
+# that may live at different depths (a volume README.md plus its
+# chapters/*.md).
+resource_path_for() {
+  local dirs=() f d already
+  for f in "$@"; do
+    d="$(dirname "$f")"
+    already=0
+    for existing in "${dirs[@]:-}"; do
+      [[ "$existing" == "$d" ]] && { already=1; break; }
+    done
+    [[ "$already" -eq 0 ]] && dirs+=("$d")
+  done
+  local IFS=:
+  printf '%s' "${dirs[*]}"
+}
+
 build_chapter_html() {
   local chapter_file="$1" volume_slug="$2"
   local base title outdir rewritten
@@ -95,6 +126,7 @@ build_chapter_html() {
   rewritten="$(rewrite_file "$chapter_file" html-flat "$volume_slug")"
   pandoc "$rewritten" \
     --standalone --embed-resources \
+    --resource-path="$(resource_path_for "$rewritten")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
@@ -114,6 +146,7 @@ build_chapter_epub() {
   rewritten="$(rewrite_file "$chapter_file" epub-absolute)"
   pandoc "$rewritten" \
     --toc --toc-depth=2 \
+    --resource-path="$(resource_path_for "$rewritten")" \
     --css=publishing/web.css \
     --metadata "title=$title" \
     --metadata "author=$author" \
@@ -135,6 +168,7 @@ build_volume_html() {
   done
   pandoc "$rewritten_readme" "${rewritten_chapters[@]}" \
     --standalone --embed-resources \
+    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
@@ -158,6 +192,7 @@ build_volume_epub() {
   done
   pandoc "$rewritten_readme" "${rewritten_chapters[@]}" \
     --toc --toc-depth=2 \
+    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
     --metadata "title=$title" \
     --metadata "author=$author" \
@@ -175,6 +210,7 @@ build_series_html() {
   done
   pandoc "$rewritten_readme" "${rewritten_chapters[@]}" \
     --standalone --embed-resources \
+    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
@@ -195,6 +231,7 @@ build_series_epub() {
   done
   pandoc "$rewritten_readme" "${rewritten_chapters[@]}" \
     --toc --toc-depth=2 \
+    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
     --metadata "title=$series_title — Complete Edition" \
     --metadata "author=$author" \
