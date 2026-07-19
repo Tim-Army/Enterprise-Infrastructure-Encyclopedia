@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 5 lab flow: a firmware baseline created against a catalog and device group, evaluated for compliance, tested against a nonexistent baseline ID</title>
+  <desc>
+    A baseline is created against an existing catalog and the Chapter 3 device group, then compliance evaluation is triggered and polled to completion through the job engine. The resulting per-device compliance report identifies at least one non-compliant device and a specific non-compliant component with its severity classification. As a negative test, compliance evaluation is triggered against a baseline ID that does not exist on the appliance; the API returns an HTTP 4xx error rather than silently succeeding, confirming the evaluation endpoint validates the baseline reference before doing any work.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: Compliance Evaluation Against a Baseline That Does Not Exist Fails Loudly</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A real baseline evaluates per-device firmware drift against a catalog; a fabricated baseline ID is rejected outright</text>
+  <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Baseline: catalog + device group</text>
+  <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">CheckBaselineCompliance job</text>
+  <text x="190.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">polled to completion</text>
+  <rect x="400" y="140" width="240" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">DeviceComplianceReports</text>
+  <text x="520.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">non-compliant device +</text>
+  <text x="520.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">component + severity identified</text>
+  <line x1="320" y1="200" x2="400" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="177.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="195.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">CheckBaselineCompliance</text>
+  <text x="810.0" y="213.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">against baseline 999999</text>
+  <text x="810.0" y="231.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ HTTP 4xx</text>
+  <line x1="640" y1="200" x2="700" y2="200" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="330" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="370.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the same evaluation action succeeds against a real baseline and is rejected against a fabricated ID —</text>
+  <text x="490.0" y="388.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the API validates the reference rather than trusting the caller's input.</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="464" font-size="11" fill="#33415c">Baseline + compliance job</text>
+  <line x1="363" y1="460" x2="403" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="411" y="464" font-size="11" fill="#166534">Per-device report</text>
+  <line x1="594" y1="460" x2="634" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="642" y="464" font-size="11" fill="#b91c1c">Rejected nonexistent baseline</text>
+</svg>

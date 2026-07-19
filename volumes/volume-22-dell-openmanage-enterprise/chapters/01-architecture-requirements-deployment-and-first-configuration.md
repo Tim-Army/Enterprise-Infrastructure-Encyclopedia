@@ -1,5 +1,9 @@
 # Chapter 01: Architecture, Requirements, Deployment, and First Configuration
 
+![Flow diagram showing an OME appliance bootstrapped through the first-run wizard and validated over the REST API with a correct password, then rejected with an HTTP error when the bootstrap check is re-run with an intentionally wrong password.](../../diagrams/volume-22-dell-openmanage-enterprise/chapter-01-ome-bootstrap-api-validation-flow.svg)
+
+*Figure 1-1. The appliance bootstrap and API validation flow exercised in this chapter's lab, including the wrong-password negative test.*
+
 ## Learning Objectives
 
 - Explain where Dell OpenManage Enterprise (OME) fits in Dell's systems

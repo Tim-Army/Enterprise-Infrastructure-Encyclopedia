@@ -1,0 +1,37 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab flow: an OME virtual appliance deployed and bootstrapped through the first-run wizard, then validated over the REST API, tested against an intentionally wrong password</title>
+  <desc>
+    An OME virtual appliance is imported, network-bootstrapped from its text console, and taken through the browser first-run wizard, ending with a home dashboard showing zero managed devices and no active alerts. A bootstrap-check script authenticates against the session endpoint with the new admin password and prints the appliance version, confirming the REST API and session-token workflow both succeed. As a negative test, the same script is re-run with an intentionally wrong password; the session endpoint returns an HTTP error, typically 401, and the script exits non-zero, confirming the endpoint correctly rejects invalid credentials rather than silently issuing a token anyway.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Hands-On Lab: The Session Endpoint Rejects a Wrong Password Rather Than Issuing a Token Anyway</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A fresh OME appliance is bootstrapped through the console wizard, then validated end to end over the REST API</text>
+  <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Appliance deploy + wizard</text>
+  <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">static IP, EULA, admin password, NTP</text>
+  <text x="190.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">dashboard: 0 devices, 0 alerts</text>
+  <rect x="400" y="140" width="240" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">ome_bootstrap_check.py</text>
+  <text x="520.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">correct admin password</text>
+  <text x="520.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">→ version + product name printed</text>
+  <line x1="320" y1="200" x2="400" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="186.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="204.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">wrong password</text>
+  <text x="810.0" y="222.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ 401, script exits non-zero</text>
+  <line x1="640" y1="200" x2="700" y2="200" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="320" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="360.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the session endpoint's raise_for_status() failure confirms the API validates credentials on every</text>
+  <text x="490.0" y="378.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">request rather than trusting a prior successful login state.</text>
+  <line x1="60" y1="450" x2="100" y2="450" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="454" font-size="11" fill="#33415c">Appliance bootstrap</text>
+  <line x1="309" y1="450" x2="349" y2="450" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="357" y="454" font-size="11" fill="#166534">Valid API authentication</text>
+  <line x1="603" y1="450" x2="643" y2="450" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="651" y="454" font-size="11" fill="#b91c1c">Rejected credentials</text>
+</svg>

@@ -1,0 +1,37 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 6 lab flow: a connected online catalog refreshed manually and its effect confirmed on a dependent baseline, tested against an intentionally unreachable proxy</title>
+  <desc>
+    Direct reachability to Dell's download host is confirmed independently, then a connected catalog's manual refresh job is triggered and polled to completion, advancing its last-refreshed timestamp past its previously recorded value. Re-running compliance evaluation on the Chapter 5 baseline completes without error, referencing the newly refreshed catalog content. As a negative test, the appliance's proxy is deliberately pointed at an unreachable reserved address and another catalog refresh is attempted; the refresh job fails with a connectivity-related error, confirming catalog refresh genuinely depends on working egress rather than succeeding from cached state. Restoring the correct proxy configuration lets a subsequent refresh succeed again.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 6 Hands-On Lab: A Catalog Refresh Genuinely Depends on Working Egress, Not Cached State</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A working proxy path refreshes the connected catalog and advances its timestamp; an unreachable proxy fails the same refresh cleanly</text>
+  <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Direct reachability confirmed</text>
+  <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">RefreshCatalog job</text>
+  <text x="190.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">→ last-refreshed timestamp advances</text>
+  <rect x="400" y="140" width="240" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Compliance re-evaluation</text>
+  <text x="520.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">against refreshed catalog</text>
+  <text x="520.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">→ completes without error</text>
+  <line x1="320" y1="200" x2="400" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="186.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="204.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">proxy → unreachable 192.0.2.1</text>
+  <text x="810.0" y="222.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">refresh job → connectivity error</text>
+  <line x1="640" y1="200" x2="700" y2="200" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="330" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="370.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">restoring the correct proxy configuration lets a subsequent refresh succeed again, confirming the</text>
+  <text x="490.0" y="388.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">failure was specific to the broken egress path, not a lingering appliance-side fault.</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="464" font-size="11" fill="#33415c">Working egress path</text>
+  <line x1="309" y1="460" x2="349" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="357" y="464" font-size="11" fill="#166534">Downstream compliance re-eval</text>
+  <line x1="648" y1="460" x2="688" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="696" y="464" font-size="11" fill="#b91c1c">Broken egress path</text>
+</svg>

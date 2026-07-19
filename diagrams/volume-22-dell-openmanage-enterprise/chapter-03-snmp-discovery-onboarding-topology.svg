@@ -1,0 +1,41 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 3 lab topology: an SNMP-discovered lab host onboarded into static and dynamic groups, tested against a wrong community string and an unsupported power-control action</title>
+  <desc>
+    A lab Linux host running an SNMP agent is discovered using the correct read-only community string, then onboarded into managed inventory, added to a static group, and picked up automatically by a dynamic group filtered on SNMP discovery protocol. A forced inventory refresh updates its last-inventoried timestamp. As a first negative test, a second discovery job against the same host using an intentionally wrong community string completes but reports the target as unauthenticated and unidentified rather than onboarding it, confirming network reachability alone does not produce a managed device. As a second negative test, a device-control power action against this same SNMP-only host fails, since a generic SNMP-discovered Linux host has no iDRAC out-of-band interface for OME to control.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: A Wrong Community String Discovers Reachability but Never Onboards a Device</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A correct SNMP credential onboards the lab host into managed inventory; a wrong one and a missing iDRAC interface both fail differently and informatively</text>
+  <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">SNMP discovery: correct string</text>
+  <text x="180.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">onboarded → static + dynamic group</text>
+  <rect x="360" y="130" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">RefreshInventory</text>
+  <text x="480.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">last-inventoried timestamp</text>
+  <text x="480.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">updates</text>
+  <line x1="300" y1="185" x2="360" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="171.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test 1</text>
+  <text x="810.0" y="189.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">wrong community string</text>
+  <text x="810.0" y="207.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ unauthenticated, not onboarded</text>
+  <line x1="600" y1="185" x2="700" y2="185" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="360" y="300" width="400" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="560.0" y="341.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test 2</text>
+  <text x="560.0" y="359.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">power-control action vs. SNMP-only host</text>
+  <text x="560.0" y="377.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ rejected, no iDRAC OOB interface</text>
+  <line x1="480" y1="240" x2="480" y2="300" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="460" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="500.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">both negative tests illustrate the inventory/control fidelity gap: SNMP discovery proves a host is</text>
+  <text x="490.0" y="518.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">reachable and identifiable, but only native iDRAC discovery exposes out-of-band device control.</text>
+  <line x1="60" y1="590" x2="100" y2="590" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="594" font-size="11" fill="#33415c">Discovery + onboarding</text>
+  <line x1="336" y1="590" x2="376" y2="590" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="384" y="594" font-size="11" fill="#166534">Inventory refresh</text>
+  <line x1="567" y1="590" x2="607" y2="590" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="615" y="594" font-size="11" fill="#b91c1c">Reachable but not manageable</text>
+</svg>

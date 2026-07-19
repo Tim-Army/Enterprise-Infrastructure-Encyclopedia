@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 9 capstone lab flow: an on-demand backup to a validated NFS share, a pre/post-change operational snapshot diff across the volume's earlier chapters, tested against an invalid password</title>
+  <desc>
+    An NFS share is configured and validated as the appliance's backup destination, and an on-demand backup completes with a backup file appearing on the share. A pre-change snapshot script captures the appliance's operational state, after which a representative cross-chapter sequence is exercised: an inventory refresh, an alert-log check, and where hardware allows, a firmware compliance re-evaluation. A post-change snapshot is captured and diffed against the pre-change one, showing only the changes attributable to the operations just performed, with no unexplained changes in device health counts. As a negative test, the same snapshot script is run with an intentionally invalid password; it fails with an HTTP error from the session endpoint, consistent with Chapter 1's original bootstrap validation, confirming this final capstone script depends on the same authentication discipline established at the very start of the volume.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: The Capstone — a Before/After Snapshot Diff Shows Only the Expected Changes</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A validated backup destination, a scripted cross-chapter operational sequence, and a snapshot diff confirming nothing unexpected moved</text>
+  <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Validated NFS backup share</text>
+  <text x="180.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">on-demand backup completes</text>
+  <rect x="360" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">pre-change-snapshot.json</text>
+  <text x="480.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">captured before operations</text>
+  <line x1="300" y1="185" x2="360" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">post-change diff</text>
+  <text x="810.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">only expected changes</text>
+  <text x="810.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">appear, nothing else</text>
+  <line x1="600" y1="185" x2="700" y2="185" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="360" y="300" width="400" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="560.0" y="341.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="560.0" y="359.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">snapshot script, wrong password</text>
+  <text x="560.0" y="377.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ session HTTP error (as in Ch. 1)</text>
+  <line x1="480" y1="240" x2="480" y2="300" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="460" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="500.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the capstone's snapshot script fails on invalid credentials exactly like Chapter 1's original</text>
+  <text x="490.0" y="518.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">bootstrap check — the same authentication discipline holds from the first lab to the last.</text>
+  <line x1="60" y1="590" x2="100" y2="590" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="594" font-size="11" fill="#33415c">Backup + baseline snapshot</text>
+  <line x1="372" y1="590" x2="412" y2="590" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="420" y="594" font-size="11" fill="#166534">Diffed operational sequence</text>
+  <line x1="693" y1="590" x2="733" y2="590" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="741" y="594" font-size="11" fill="#b91c1c">Rejected invalid credentials</text>
+</svg>
