@@ -1,0 +1,42 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 7 lab topology: HA/DRS cluster behavior under a live vMotion and a simulated host isolation event</title>
+  <desc>
+    HA admission control is enabled on a 3-host cluster with an explicit isolation address (10.10.10.1) and isolation response set to 'Power off and restart VMs'. lab-ha-test-vm is live vMotioned to a second host with no sustained ping loss, confirming baseline mobility. As a negative test, that host's management vmknic (vmk0) is disabled directly at the console while the VM network path stays theoretically reachable, simulating isolation rather than failure: the HA master detects loss of network heartbeats, confirms isolation via datastore heartbeating, hard-powers-off lab-ha-test-vm on the isolated host, and restarts it on a surviving host without any administrator-initiated migration. Restoring vmk0 reconnects the host to the cluster within minutes.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: vMotion Baseline and an HA Isolation Event</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A live vMotion confirms mobility, then a management-network isolation triggers HA's power-off-and-restart response</text>
+  <rect x="80" y="150" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="200.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Host A</text>
+  <text x="190.0" y="218.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">lab-ha-test-vm (before)</text>
+  <rect x="380" y="150" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="490.0" y="191.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Host B</text>
+  <text x="490.0" y="209.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">lab-ha-test-vm (after vMotion)</text>
+  <text x="490.0" y="227.6" text-anchor="middle" font-size="10" font-weight="700" fill="#7f1d1d">then: vmk0 disabled (negative test)</text>
+  <rect x="680" y="150" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="790.0" y="191.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Host C</text>
+  <text x="790.0" y="209.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">HA restarts lab-ha-test-vm here</text>
+  <text x="790.0" y="227.6" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">after isolation is confirmed</text>
+  <line x1="300" y1="205" x2="380" y2="205" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="346.0" y="205.0" font-size="10.5" fill="#33415c">live vMotion (no sustained loss)</text>
+  <line x1="600" y1="205" x2="680" y2="205" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="646.0" y="205.0" font-size="10.5" fill="#b91c1c">HA restart after isolation</text>
+  <rect x="80" y="340" width="820" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="382.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="400.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">Host B's management vmknic (vmk0) disabled — VM network path remains theoretically reachable</text>
+  <text x="490.0" y="418.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">HA master detects lost heartbeats, confirms isolation via datastore heartbeating (not failure)</text>
+  <text x="490.0" y="436.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">lab-ha-test-vm hard-powered-off on Host B, restarted on Host C with no admin action</text>
+  <rect x="80" y="500" width="820" height="60" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="534.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">Restoring vmk0 reconnects Host B to the cluster as an agent host within a few minutes</text>
+  <line x1="80" y1="610" x2="120" y2="610" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="128" y="614" font-size="11" fill="#33415c">Healthy host</text>
+  <line x1="266" y1="610" x2="306" y2="610" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="314" y="614" font-size="11" fill="#166534">vMotion target / isolated host</text>
+  <line x1="614" y1="610" x2="654" y2="610" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="662" y="614" font-size="11" fill="#b91c1c">HA-driven restart</text>
+</svg>

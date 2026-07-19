@@ -1,0 +1,43 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 13 lab flow: three blind faults across identity, networking, and storage domains, each diagnosed against a target time</title>
+  <desc>
+    A baseline health check confirms host connection state, vCenter Server services, NSX Manager cluster status, and DFW/gateway configuration are all healthy. Three faults are then introduced blind: a vCenter machine SSL certificate or LDAPS credential problem (identity domain, diagnosed with vecs-cli and identity-source test-connection), a mis-scoped DFW rule (networking domain, diagnosed with Traceflow and rule hit counters), and a vSAN network partition or datastore loss (storage domain, diagnosed with esxcli vsan cluster get and Skyline Health). Each diagnosis is timed against a 15-minute target, then all three faults are restored to the known-good baseline.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 13 Hands-On Lab: Layered VCF-Support Diagnostic Workflow Across Three Failure Domains</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Identity, networking, and storage faults are each diagnosed unaided in under 15 minutes from a known-good baseline</text>
+  <rect x="60" y="130" width="220" height="80" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="170.0" y="165.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Baseline Health Check</text>
+  <text x="170.0" y="183.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">all layers healthy</text>
+  <rect x="60" y="260" width="250" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="185.0" y="297.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Fault 1: Identity</text>
+  <text x="185.0" y="315.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">cert expiry / LDAPS bind cred</text>
+  <text x="185.0" y="333.2" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">vecs-cli, test-connection</text>
+  <text x="185.0" y="351.2" text-anchor="middle" font-size="10" font-weight="700" fill="#1d4ed8">target: 15 min</text>
+  <rect x="355" y="260" width="250" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="297.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Fault 2: Networking</text>
+  <text x="480.0" y="315.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">DFW Applied To mis-scoped</text>
+  <text x="480.0" y="333.2" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">Traceflow, rule hit counters</text>
+  <text x="480.0" y="351.2" text-anchor="middle" font-size="10" font-weight="700" fill="#1d4ed8">target: 15 min</text>
+  <rect x="650" y="260" width="250" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="775.0" y="297.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Fault 3: Storage</text>
+  <text x="775.0" y="315.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">vSAN partition / datastore loss</text>
+  <text x="775.0" y="333.2" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">vsan cluster get, Skyline Health</text>
+  <text x="775.0" y="351.2" text-anchor="middle" font-size="10" font-weight="700" fill="#1d4ed8">target: 15 min</text>
+  <line x1="170" y1="210" x2="170" y2="260" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="470" y1="210" x2="470" y2="260" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="770" y1="210" x2="770" y2="260" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="430" width="840" height="80" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="474.2" text-anchor="middle" font-size="12" font-weight="700" fill="#14532d">All three faults restored to known-good baseline; step-1 health check passes again</text>
+  <line x1="60" y1="530" x2="100" y2="530" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="108" y="534" font-size="11" fill="#6b7280">Baseline state</text>
+  <line x1="264" y1="530" x2="304" y2="530" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="312" y="534" font-size="11" fill="#b91c1c">Timed blind fault</text>
+  <line x1="495" y1="530" x2="535" y2="530" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="543" y="534" font-size="11" fill="#166534">Restored state</text>
+</svg>

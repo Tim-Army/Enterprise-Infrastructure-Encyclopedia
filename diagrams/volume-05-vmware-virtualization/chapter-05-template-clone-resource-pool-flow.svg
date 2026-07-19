@@ -1,0 +1,47 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 5 lab flow: cloning from a template, a deliberate resource pool sibling misconfiguration, and snapshot delta-disk growth</title>
+  <desc>
+    lab-src-01 is converted to a template and two customized clones (lab-clone-01, lab-clone-02) are deployed with DHCP networking, confirmed by distinct guest hostnames. Both clones are moved into lab-pool-high (CPU shares: High), while a third standalone VM remains at the cluster root as a sibling of that pool. As a negative test, simultaneous CPU load on all three shows the standalone VM receiving scheduling roughly proportional to one High-share entity competing against the entire pool as a single entity — not two independently High-share VMs — visible as disproportionate %RDY on the pooled VMs in esxtop. Separately, a snapshot of lab-clone-01 grows its delta disk by roughly the size of new guest writes, confirmed via Get-Snapshot.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: Template Cloning, the Resource Pool Sibling Pitfall, and Snapshot Delta Growth</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Two pooled clones share one High-share allocation against a standalone sibling VM, and a snapshot's delta disk grows measurably</text>
+  <rect x="60" y="130" width="220" height="90" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="170.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">lab-src-01 → template</text>
+  <text x="170.0" y="188.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Set-VM -ToTemplate</text>
+  <line x1="280" y1="175" x2="370" y2="175" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="331.0" y="175.0" font-size="10.5" fill="#33415c">2x clone + customize</text>
+  <rect x="370" y="260" width="250" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="495.0" y="302.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">lab-pool-high (CPU: High)</text>
+  <text x="495.0" y="320.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">lab-clone-01</text>
+  <text x="495.0" y="338.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">lab-clone-02</text>
+  <text x="495.0" y="356.4" text-anchor="middle" font-size="10" font-weight="700" fill="#7f1d1d">(share ONE pool-level allocation)</text>
+  <rect x="700" y="260" width="220" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="302.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Standalone VM</text>
+  <text x="810.0" y="320.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">cluster root (sibling of pool)</text>
+  <text x="810.0" y="338.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">competes against the pool</text>
+  <text x="810.0" y="356.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">as if it were ONE entity</text>
+  <line x1="620" y1="325" x2="700" y2="325" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="666.0" y="325.0" font-size="10.5" fill="#b91c1c">CPU contention (negative test)</text>
+  <rect x="60" y="450" width="400" height="110" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="260.0" y="482.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">Negative test result</text>
+  <text x="260.0" y="500.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">esxtop %RDY climbs disproportionately on</text>
+  <text x="260.0" y="518.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">the two pooled VMs relative to their</text>
+  <text x="260.0" y="536.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">individual pool-inherited High share</text>
+  <rect x="500" y="450" width="420" height="110" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="710.0" y="482.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">Snapshot delta-disk growth</text>
+  <text x="710.0" y="500.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">pre-change-snapshot on lab-clone-01</text>
+  <text x="710.0" y="518.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">500 MB guest write → SizeGB grows ~500 MB</text>
+  <text x="710.0" y="536.0" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">(delta disk absorbs the change, not base)</text>
+  <line x1="60" y1="610" x2="100" y2="610" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="614" font-size="11" fill="#33415c">Template/clone lifecycle</text>
+  <line x1="354" y1="610" x2="394" y2="610" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="402" y="614" font-size="11" fill="#b91c1c">Shared pool allocation</text>
+  <line x1="630" y1="610" x2="670" y2="610" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="678" y="614" font-size="11" fill="#166534">Sibling competing VM</text>
+</svg>

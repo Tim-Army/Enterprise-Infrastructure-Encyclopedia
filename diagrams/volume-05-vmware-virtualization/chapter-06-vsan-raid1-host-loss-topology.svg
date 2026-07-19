@@ -1,0 +1,43 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 6 lab topology: a 3-host vSAN cluster enforcing a RAID-1 FTT=1 storage policy through a simulated host loss</title>
+  <desc>
+    Three nested ESXi hosts each contribute a cache and capacity disk to a vSAN disk group, forming the vsanDatastore. A RAID-1 FTT=1 storage policy is applied to vsan-lab-test-vm, reporting ComplianceStatus compliant across all three fault domains. As a negative test, one host enters maintenance mode with the 'No data migration' option while the test VM's replica components reside partly on it, simulating unplanned host loss; the object becomes nonCompliant / reduced-redundancy since only 2 of 3 fault domains remain reachable, but the VM stays running — exactly what FTT=1 is designed to tolerate. Exiting maintenance mode triggers a resync back to full compliance.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 6 Hands-On Lab: vSAN RAID-1 FTT=1 Policy Surviving a Simulated Host Loss</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A test VM stays online with reduced redundancy when one of three hosts enters maintenance mode with no data migration</text>
+  <rect x="60" y="150" width="200" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="160.0" y="191.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Host 1</text>
+  <text x="160.0" y="209.6" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">disk group (cache+capacity)</text>
+  <text x="160.0" y="227.6" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">fault domain 1</text>
+  <rect x="380" y="150" width="200" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="191.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Host 2</text>
+  <text x="480.0" y="209.6" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">disk group (cache+capacity)</text>
+  <text x="480.0" y="227.6" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">fault domain 2</text>
+  <rect x="700" y="150" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="191.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Host 3 (negative test)</text>
+  <text x="810.0" y="209.4" text-anchor="middle" font-size="10" font-weight="700" fill="#7f1d1d">maintenance mode, No data migration</text>
+  <text x="810.0" y="227.4" text-anchor="middle" font-size="10" font-weight="700" fill="#7f1d1d">fault domain 3 — unreachable</text>
+  <rect x="340" y="320" width="280" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="347.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">vsanDatastore</text>
+  <text x="480.0" y="365.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">vsan-lab-test-vm — RAID-1 FTT=1</text>
+  <text x="480.0" y="383.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">2 of 3 fault domains reachable →</text>
+  <text x="480.0" y="401.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7c2d12">nonCompliant, VM stays running</text>
+  <line x1="160" y1="260" x2="420" y2="320" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="480" y1="260" x2="480" y2="320" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="800" y1="260" x2="550" y2="320" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="470" width="840" height="100" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="515.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">Exit maintenance mode → Resyncing Objects shows active resync traffic</text>
+  <text x="480.0" y="533.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#14532d">ComplianceStatus returns to compliant once resync completes</text>
+  <line x1="60" y1="610" x2="100" y2="610" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="614" font-size="11" fill="#33415c">Healthy fault domain</text>
+  <line x1="318" y1="610" x2="358" y2="610" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="366" y="614" font-size="11" fill="#166534">vSAN object state</text>
+  <line x1="549" y1="610" x2="589" y2="610" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="597" y="614" font-size="11" fill="#b91c1c">Simulated host loss</text>
+</svg>

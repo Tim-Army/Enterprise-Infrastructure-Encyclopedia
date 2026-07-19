@@ -1,5 +1,9 @@
 # Chapter 8: vSphere and NSX Security Architecture
 
+![Lab topology for this chapter: esxi01 is placed in Normal Lockdown Mode, blocking direct SSH from non-exception accounts; a custom role lab-role-power-only is assigned to a test user at a single folder (lab-scoped-vms), confirmed to permit power operations but deny settings/snapshot/delete. lab-web-01 and lab-db-01 are tagged web/db, forming dynamic NSX security groups; a default-deny DFW policy allows only web-to-db traffic on TCP 5432, and the allowed flow succeeds. As a negative test, a connection from lab-web-01 to lab-db-01 on TCP 22 (not covered by the allow rule) is blocked, and NSX's Traffic Analysis view shows it matching the default-deny rule.](../../../diagrams/volume-05-vmware-virtualization/chapter-08-lockdown-nsx-microsegmentation-topology.svg)
+
+*Figure 8-1. Topology used throughout this chapter's Hands-On Lab: ESXi Lockdown Mode and folder-scoped RBAC alongside NSX dynamic-group micro-segmentation with a default-deny negative test.*
+
 ## Learning Objectives
 
 - Configure ESXi Lockdown Mode (strict versus normal) and explain the

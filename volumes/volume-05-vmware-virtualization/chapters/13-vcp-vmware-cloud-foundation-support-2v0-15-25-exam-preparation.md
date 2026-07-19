@@ -1,5 +1,9 @@
 # Chapter 13: VCP VMware Cloud Foundation Support 2V0-15.25 Exam Preparation
 
+![Lab flow for this chapter: a baseline health check confirms host connection state, vCenter Server services, NSX Manager cluster status, and DFW/gateway configuration are all healthy. Three faults are then introduced blind: a vCenter machine SSL certificate or LDAPS credential problem (identity domain, diagnosed with vecs-cli and identity-source test-connection), a mis-scoped DFW rule (networking domain, diagnosed with Traceflow and rule hit counters), and a vSAN network partition or datastore loss (storage domain, diagnosed with esxcli vsan cluster get and Skyline Health). Each diagnosis is timed against a 15-minute target, then all three faults are restored to the known-good baseline.](../../../diagrams/volume-05-vmware-virtualization/chapter-13-vcf-support-diagnostic-flow.svg)
+
+*Figure 13-1. Flow used throughout this chapter's Hands-On Lab: three blind faults across identity, networking, and storage domains, each diagnosed and timed against a 15-minute target.*
+
 ## Learning Objectives
 
 - Explain the VMware Cloud Foundation (VCF) components a support engineer

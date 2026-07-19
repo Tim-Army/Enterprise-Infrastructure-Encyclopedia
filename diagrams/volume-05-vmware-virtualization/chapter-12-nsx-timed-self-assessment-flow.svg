@@ -1,0 +1,47 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 12 lab flow: a timed, unaided NSX build-and-troubleshoot exercise for exam self-assessment</title>
+  <desc>
+    From a clean NSX state, five timed steps are completed from memory without reference material: transport zone/uplink profile/TEP pool and transport node prep (target 20 minutes), Edge node and Edge cluster (15 minutes), Tier-0 BGP plus Tier-1 and overlay segment (20 minutes), a DFW default-deny plus scoped allow policy (15 minutes), and a blind negative test diagnosing one deliberately introduced fault — a wrong BGP AS number, a mis-scoped DFW rule, or an exhausted TEP pool — using only Traceflow, BGP neighbor status, and transport node status (15 minutes). Total elapsed time under 90 minutes with all steps unaided is a strong exam-readiness signal.
+  </desc>
+  <defs>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 12 Hands-On Lab: Timed NSX Build-and-Troubleshoot Self-Assessment (VCP-NV)</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Five timed steps from transport-zone prep through a blind negative test, target under 90 minutes total</text>
+  <rect x="40" y="140" width="160" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="120.0" y="176.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">1. Transport prep</text>
+  <text x="120.0" y="194.0" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">zone/uplink/TEP</text>
+  <text x="120.0" y="212.0" text-anchor="middle" font-size="10" font-weight="700" fill="#1d4ed8">target 20 min</text>
+  <rect x="220" y="140" width="160" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="300.0" y="176.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">2. Edge cluster</text>
+  <text x="300.0" y="194.0" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">Edge node join</text>
+  <text x="300.0" y="212.0" text-anchor="middle" font-size="10" font-weight="700" fill="#1d4ed8">target 15 min</text>
+  <rect x="400" y="140" width="160" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="176.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">3. T0/T1 + BGP</text>
+  <text x="480.0" y="194.0" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">overlay segment</text>
+  <text x="480.0" y="212.0" text-anchor="middle" font-size="10" font-weight="700" fill="#1d4ed8">target 20 min</text>
+  <rect x="580" y="140" width="160" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="660.0" y="176.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">4. DFW policy</text>
+  <text x="660.0" y="194.0" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">deny + scoped allow</text>
+  <text x="660.0" y="212.0" text-anchor="middle" font-size="10" font-weight="700" fill="#1d4ed8">target 15 min</text>
+  <rect x="760" y="140" width="160" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="840.0" y="176.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7f1d1d">5. Blind fault</text>
+  <text x="840.0" y="194.0" text-anchor="middle" font-size="10" font-weight="700" fill="#7f1d1d">diagnose unaided</text>
+  <text x="840.0" y="212.0" text-anchor="middle" font-size="10" font-weight="700" fill="#7f1d1d">target 15 min</text>
+  <line x1="200" y1="190" x2="220" y2="190" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="380" y1="190" x2="400" y2="190" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="560" y1="190" x2="580" y2="190" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="740" y1="190" x2="760" y2="190" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="160" y="320" width="640" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="361.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test (step 5)</text>
+  <text x="480.0" y="379.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">one fault injected blind: wrong BGP AS, mis-scoped DFW Applied To, or exhausted TEP pool</text>
+  <text x="480.0" y="397.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">diagnosed using Traceflow / BGP neighbor status / transport node status only — no reference material</text>
+  <line x1="840" y1="240" x2="480" y2="320" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="480" y="480" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Total elapsed time under 90 minutes, all results achieved unaided: strong exam-readiness signal</text>
+  <line x1="160" y1="520" x2="200" y2="520" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="208" y="524" font-size="11" fill="#33415c">Timed build step</text>
+  <line x1="382" y1="520" x2="422" y2="520" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="430" y="524" font-size="11" fill="#b91c1c">Timed diagnosis step</text>
+</svg>

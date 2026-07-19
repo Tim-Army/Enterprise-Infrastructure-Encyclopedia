@@ -1,0 +1,41 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 2 lab flow: a Host Profile extracted from a kickstart-installed reference host, applied to a drifted second host</title>
+  <desc>
+    esxi-lab-01 is installed unattended via a kickstart file setting IP, hostname, NTP, and syslog forwarding, confirmed by esxcli system syslog config get. esxi-lab-02 is installed without NTP or syslog configured, deliberately non-standardized. A Host Profile (lab-standard-profile) extracted from esxi-lab-01 flags esxi-lab-02 as non-compliant on exactly the NTP/syslog settings. As a negative test, remediation without a required host-specific answer-file value fails or prompts rather than silently overwriting host identity; supplying the value and remediating again brings esxi-lab-02 to full compliance.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 2 Hands-On Lab: Scripted ESXi Install and Host Profile Drift Remediation</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A kickstart-built reference host's profile detects and remediates a second, non-standardized host</text>
+  <rect x="60" y="150" width="240" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="196.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">esxi-lab-01 (reference)</text>
+  <text x="180.0" y="214.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">kickstart: NTP + syslog set</text>
+  <text x="180.0" y="232.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">source of lab-standard-profile</text>
+  <rect x="380" y="150" width="240" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="500.0" y="196.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">lab-standard-profile</text>
+  <text x="500.0" y="214.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">extracted Host Profile</text>
+  <text x="500.0" y="232.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">checked against esxi-lab-02</text>
+  <rect x="700" y="150" width="220" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="196.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">esxi-lab-02 (drifted)</text>
+  <text x="810.0" y="214.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">no NTP / no syslog set</text>
+  <text x="810.0" y="232.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">non-compliant vs. profile</text>
+  <line x1="300" y1="210" x2="380" y2="210" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="346.0" y="210.0" font-size="10.5" fill="#33415c">extract profile</text>
+  <line x1="620" y1="210" x2="700" y2="210" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="666.0" y="210.0" font-size="10.5" fill="#33415c">compliance check</text>
+  <rect x="60" y="400" width="840" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="441.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="459.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">remediation attempted before supplying a required host-specific answer-file value → fails/prompts</text>
+  <text x="480.0" y="477.4" text-anchor="middle" font-size="11" font-weight="400" fill="#14532d">value supplied, remediation re-run → esxi-lab-02 compliant, syslog matches the reference host</text>
+  <line x1="810" y1="270" x2="480" y2="400" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="60" y1="570" x2="100" y2="570" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="574" font-size="11" fill="#33415c">Reference / profile source</text>
+  <line x1="372" y1="570" x2="412" y2="570" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="420" y="574" font-size="11" fill="#166534">Profile artifact</text>
+  <line x1="594" y1="570" x2="634" y2="570" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="642" y="574" font-size="11" fill="#b91c1c">Drifted target</text>
+</svg>

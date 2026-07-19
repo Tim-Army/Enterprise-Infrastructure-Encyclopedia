@@ -1,5 +1,9 @@
 # Chapter 9: vSphere Lifecycle, Automation, Observability, and Troubleshooting
 
+![Lab flow for this chapter: a vLCM-managed cluster's desired-state image reports all hosts Compliant at baseline. As a negative test, an unmanaged VIB is manually installed on one host outside the desired-state image; the next compliance check flags that host non-compliant, demonstrating vLCM's whole-image drift detection. Update-VMHostImage remediates the cluster, removing the test VIB and restoring Compliant status. Separately, a custom datastore-usage alarm is created, a support bundle is generated with vm-support, and esxtop's CPU view shows percent-RDY rising measurably under synthetic CPU contention and returning to baseline once the extra load stops.](../../../diagrams/volume-05-vmware-virtualization/chapter-09-vlcm-drift-remediation-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: vLCM drift detection and remediation, alongside a support-bundle generation and an esxtop CPU-contention observation.*
+
 ## Learning Objectives
 
 - Explain vSphere Lifecycle Manager (vLCM) images and contrast the

@@ -1,5 +1,9 @@
 # Chapter 16: VCP VMware vSphere Foundation Support 2V0-18.25 Exam Preparation
 
+![Lab flow for this chapter: a baseline health check confirms compute, storage, and network layers are healthy in a VVF-scoped lab. Three timed faults follow: hostd stopped on one host (compute domain, target 10 minutes, diagnosed via DCUI/esxcli as a management-agent issue distinct from full host failure), an MTU mismatch on a vSAN VMkernel adapter (storage domain, target 15 minutes, diagnosed via esxcli vsan cluster get and vmkping), and a misconfigured port group VLAN ID (network domain, target 10 minutes). An untimed licensing-recognition exercise identifies a feature unavailable under a more restrictive license tier without changing the actual assignment. All three faults are then restored to baseline.](../../../diagrams/volume-05-vmware-virtualization/chapter-16-vvf-support-timed-diagnostic-flow.svg)
+
+*Figure 16-1. Flow used throughout this chapter's Hands-On Lab: three timed layered faults across compute, storage, and network, plus an untimed licensing-tier recognition exercise.*
+
 ## Learning Objectives
 
 - Map the 2V0-18.25 blueprint's support/troubleshooting-oriented domains

@@ -1,5 +1,9 @@
 # Chapter 7: vSphere Availability, Mobility, and Cluster Services
 
+![Lab topology for this chapter: HA admission control is enabled on a 3-host cluster with an explicit isolation address and isolation response set to Power off and restart VMs; lab-ha-test-vm is live vMotioned to a second host with no sustained ping loss, confirming baseline mobility. As a negative test, that host's management vmknic is disabled directly at the console, simulating isolation rather than failure: the HA master detects loss of network heartbeats, confirms isolation via datastore heartbeating, hard-powers-off lab-ha-test-vm on the isolated host, and restarts it on a surviving host without any administrator-initiated migration. Restoring the vmknic reconnects the host to the cluster within minutes.](../../../diagrams/volume-05-vmware-virtualization/chapter-07-vmotion-ha-isolation-topology.svg)
+
+*Figure 7-1. Topology used throughout this chapter's Hands-On Lab: a live vMotion baseline followed by a deliberate host isolation event and HA's automatic restart response.*
+
 ## Learning Objectives
 
 - Explain vSphere HA's Fault Domain Manager (FDM) architecture, including

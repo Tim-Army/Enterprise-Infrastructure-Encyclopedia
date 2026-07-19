@@ -1,5 +1,9 @@
 # Chapter 14: VCP VMware Cloud Foundation Administrator 2V0-17.25 Exam Preparation
 
+![Lab flow for this chapter: host commissioning prerequisites (NTP sync, DNS resolution, acceptance level) are verified on an additional host. As a negative test, NTP is deliberately misconfigured and commissioning is attempted; the validation fails or warns specifically on the time-synchronization prerequisite, naming the actual root cause rather than a generic error. NTP is corrected and re-verified, then a new cluster is created with HA/DRS and the host joins successfully. A scoped RBAC role at the new cluster's folder confirms a test account can manage the new cluster but is denied against the pre-existing standalone infrastructure. The standalone vCenter's certificate store is inspected as import-path preparation.](../../../diagrams/volume-05-vmware-virtualization/chapter-14-vcf-admin-commissioning-rbac-flow.svg)
+
+*Figure 14-1. Flow used throughout this chapter's Hands-On Lab: host commissioning prerequisites, a deliberately broken NTP negative test, workload-domain-style cluster creation, and RBAC layering.*
+
 ## Learning Objectives
 
 - Map the 2V0-17.25 blueprint's deployment, design, and day-2 operational

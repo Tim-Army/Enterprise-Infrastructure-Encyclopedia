@@ -1,5 +1,9 @@
 # Chapter 15: VCP VMware vSphere Foundation Administrator 2V0-16.25 Exam Preparation
 
+![Lab flow for this chapter: four timed build steps reuse earlier chapters' procedures as one continuous exercise — 3 ESXi hosts plus vCenter Server with a Host Profile (target 30 minutes), a VDS with a tagged port group (20 minutes), vSAN with a RAID-1 FTT=1 policy and compliant test VM (25 minutes), and HA admission control plus DRS Fully Automated (20 minutes). Two timed negative tests follow: a host placed in maintenance mode with no data migration while the test VM has replica components on it, diagnosing the resulting reduced-redundancy state (15 minutes), and induced CPU contention diagnosed via esxtop percent-RDY (15 minutes). Total elapsed time under 2 hours, achieved largely unaided, is a strong readiness signal.](../../../diagrams/volume-05-vmware-virtualization/chapter-15-vvf-admin-timed-self-assessment-flow.svg)
+
+*Figure 15-1. Flow used throughout this chapter's Hands-On Lab: a timed, combined vSphere/vSAN/HA-DRS build exercise culminating in two diagnostic negative tests.*
+
 ## Learning Objectives
 
 - Map the 2V0-16.25 blueprint's fundamentals, design, deploy/configure/

@@ -1,5 +1,9 @@
 # Chapter 5: Virtual Machine Lifecycle and Resource Management
 
+![Lab flow for this chapter: lab-src-01 is converted to a template and two customized clones are deployed with DHCP networking; both clones are moved into lab-pool-high (CPU shares: High), while a third standalone VM remains at the cluster root as a sibling of that pool. As a negative test, simultaneous CPU load on all three shows the standalone VM receiving scheduling roughly proportional to one High-share entity competing against the entire pool as a single entity, visible as disproportionate percent-RDY on the pooled VMs in esxtop. Separately, a snapshot of lab-clone-01 grows its delta disk by roughly the size of new guest writes.](../../../diagrams/volume-05-vmware-virtualization/chapter-05-template-clone-resource-pool-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: template cloning, the resource pool sibling pitfall proven as a negative test, and snapshot delta-disk growth.*
+
 ## Learning Objectives
 
 - Explain virtual machine hardware versions and identify compatibility

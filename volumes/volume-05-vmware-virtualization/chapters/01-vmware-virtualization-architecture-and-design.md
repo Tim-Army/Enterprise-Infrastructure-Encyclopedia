@@ -1,5 +1,9 @@
 # Chapter 1: VMware Virtualization Architecture and Design
 
+![Lab topology for this chapter: LAB-DC/LAB-CLUSTER is built with PowerCLI, including a Restricted-Apps folder and a DataClassification tag category, both confirmed visible through a second, independent API client (govc). A custom role LabRestrictedOperator (power on/off only) is assigned to lab-restricted-user at the Restricted-Apps folder with Propagate true; a test VM moved into that folder inherits the permission. As a negative test, logging in as lab-restricted-user allows power operations inside Restricted-Apps but is denied or cannot see objects outside it, proving the folder-scoped permission enforces the boundary.](../../../diagrams/volume-05-vmware-virtualization/chapter-01-folder-scoped-rbac-topology.svg)
+
+*Figure 1-1. Topology used throughout this chapter's Hands-On Lab: a permission-delegation-ready inventory hierarchy, verified through two independent API clients and a folder-scoped negative test.*
+
 ## Learning Objectives
 
 - Explain why x86 required hardware-assisted virtualization (VT-x/AMD-V)

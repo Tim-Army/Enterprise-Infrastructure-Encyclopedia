@@ -1,0 +1,42 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 9 lab flow: vLCM image compliance drift detection and remediation, plus an esxtop CPU-contention observation</title>
+  <desc>
+    A vLCM-managed cluster's desired-state image reports all hosts Compliant at baseline. As a negative test, an unmanaged VIB is manually installed on one host outside the desired-state image; the next compliance check flags that host non-compliant, demonstrating vLCM's whole-image drift detection. Update-VMHostImage remediates the cluster, removing the test VIB and restoring Compliant status. Separately, a custom datastore-usage alarm is created, a support bundle is generated with vm-support, and esxtop's CPU view shows %RDY rising measurably under synthetic CPU contention and returning to baseline once the extra load stops.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: vLCM Drift Detection, Remediation, and esxtop Contention Observation</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">An out-of-image VIB flips a host non-compliant; vLCM remediation removes it and restores the desired-state image</text>
+  <rect x="60" y="150" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="191.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Baseline Image Check</text>
+  <text x="180.0" y="209.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Get-VMHostImageCompliance</text>
+  <text x="180.0" y="227.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">all hosts: Compliant</text>
+  <rect x="380" y="150" width="240" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="500.0" y="191.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="500.0" y="209.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">esxcli vib install (unmanaged)</text>
+  <text x="500.0" y="227.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">host now: non-compliant</text>
+  <line x1="300" y1="205" x2="380" y2="205" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="700" y="150" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="191.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Remediation</text>
+  <text x="810.0" y="209.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Update-VMHostImage</text>
+  <text x="810.0" y="227.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">VIB removed → Compliant</text>
+  <line x1="620" y1="205" x2="700" y2="205" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="340" width="400" height="110" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="260.0" y="381.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Support Bundle + Alarm</text>
+  <text x="260.0" y="399.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">vm-support → .tgz on datastore</text>
+  <text x="260.0" y="417.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">custom datastore-usage alarm enabled</text>
+  <rect x="500" y="340" width="400" height="110" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="700.0" y="381.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">esxtop CPU Contention</text>
+  <text x="700.0" y="399.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">synthetic load exceeds logical CPUs</text>
+  <text x="700.0" y="417.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">%RDY rises, then returns to baseline</text>
+  <line x1="60" y1="570" x2="100" y2="570" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="574" font-size="11" fill="#33415c">Compliant baseline</text>
+  <line x1="300" y1="570" x2="340" y2="570" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="348" y="574" font-size="11" fill="#166534">Remediated state</text>
+  <line x1="522" y1="570" x2="562" y2="570" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="570" y="574" font-size="11" fill="#b91c1c">Drift (negative test)</text>
+</svg>

@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 8 lab topology: ESXi Lockdown Mode, a folder-scoped custom role, and NSX dynamic-group micro-segmentation</title>
+  <desc>
+    esxi01 is placed in Normal Lockdown Mode, blocking direct SSH from non-exception accounts. A custom role lab-role-power-only is assigned to CORP\lab-test-user at a single folder (lab-scoped-vms), confirmed to permit power operations but deny settings/snapshot/delete. lab-web-01 and lab-db-01 are tagged web/db, forming dynamic NSX security groups lab-sg-web and lab-sg-db; a default-deny DFW policy allows only web-to-db traffic on TCP 5432. The allowed flow succeeds and increments the rule's hit counter. As a negative test, a connection from lab-web-01 to lab-db-01 on TCP 22 (not covered by the allow rule) is blocked, and NSX's Traffic Analysis view shows it matching the default-deny rule.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: Lockdown Mode, Least-Privilege RBAC, and NSX Micro-Segmentation</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A default-deny DFW policy allows only web-to-db on TCP 5432; every other flow between them is blocked</text>
+  <rect x="60" y="130" width="220" height="90" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="170.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">esxi01 — Lockdown: Normal</text>
+  <text x="170.0" y="188.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">non-exception SSH refused</text>
+  <rect x="60" y="260" width="260" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="190.0" y="296.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">lab-scoped-vms folder</text>
+  <text x="190.0" y="314.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">lab-role-power-only</text>
+  <text x="190.0" y="332.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">(power on/off only, no edit)</text>
+  <rect x="400" y="130" width="220" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="510.0" y="175.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">lab-web-01 (tag: web)</text>
+  <text x="510.0" y="193.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">lab-sg-web (dynamic group)</text>
+  <rect x="700" y="130" width="220" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="175.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">lab-db-01 (tag: db)</text>
+  <text x="810.0" y="193.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">lab-sg-db (dynamic group)</text>
+  <line x1="620" y1="180" x2="700" y2="180" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="666.0" y="180.0" font-size="10.5" fill="#166534">TCP 5432 only — ALLOW</text>
+  <rect x="400" y="300" width="520" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="660.0" y="336.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="660.0" y="354.2" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">lab-web-01 → lab-db-01 on TCP 22 (not covered by the allow rule)</text>
+  <text x="660.0" y="372.2" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">blocked; Traffic Analysis shows the flow matching the default-deny rule</text>
+  <line x1="660" y1="230" x2="660" y2="300" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="60" y1="570" x2="100" y2="570" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="574" font-size="11" fill="#33415c">Lockdown / dynamic group</text>
+  <line x1="354" y1="570" x2="394" y2="570" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="402" y="574" font-size="11" fill="#166534">Scoped role / allowed flow</text>
+  <line x1="666" y1="570" x2="706" y2="570" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="714" y="574" font-size="11" fill="#b91c1c">Default-deny (negative test)</text>
+</svg>

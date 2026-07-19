@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab topology: an inventory hierarchy with a folder-scoped custom role, cross-verified with govc</title>
+  <desc>
+    LAB-DC/LAB-CLUSTER is built with PowerCLI, including a Restricted-Apps folder and a DataClassification tag category, both confirmed visible through a second, independent API client (govc). A custom role LabRestrictedOperator (power on/off only) is assigned to lab-restricted-user at the Restricted-Apps folder with Propagate true; a test VM moved into that folder inherits the permission. As a negative test, logging in as lab-restricted-user allows power operations inside Restricted-Apps but is denied or cannot see objects outside it (for example LAB-CLUSTER's settings), proving the folder-scoped permission — not a naming convention — enforces the boundary.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Hands-On Lab: Folder-Scoped RBAC Verified Through a Second API Client</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">LabRestrictedOperator is confined to the Restricted-Apps folder; govc confirms vCenter and PowerCLI agree</text>
+  <rect x="370" y="110" width="220" height="90" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="150.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">vCenter01 (LAB-DC)</text>
+  <text x="480.0" y="168.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">LAB-CLUSTER (HA+DRS)</text>
+  <rect x="370" y="250" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="282.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Restricted-Apps folder</text>
+  <text x="480.0" y="300.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">LabRestrictedOperator role</text>
+  <text x="480.0" y="318.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">lab-restricted-user, Propagate:True</text>
+  <text x="480.0" y="336.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">test VM (inherits permission)</text>
+  <rect x="700" y="110" width="220" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="810.0" y="150.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">govc (2nd API client)</text>
+  <text x="810.0" y="168.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">tags.category.ls / tags.ls</text>
+  <line x1="480" y1="200" x2="480" y2="250" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="590" y1="155" x2="700" y2="155" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="651.0" y="155.0" font-size="10.5" fill="#6b7280">cross-verify</text>
+  <rect x="60" y="430" width="840" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="471.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="489.4" text-anchor="middle" font-size="11" font-weight="400" fill="#14532d">logged in as lab-restricted-user: power on/off inside Restricted-Apps succeeds</text>
+  <text x="480.0" y="507.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">viewing/modifying LAB-CLUSTER or a VM in another folder is hidden or permission-denied</text>
+  <line x1="480" y1="360" x2="480" y2="430" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="60" y1="570" x2="100" y2="570" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="574" font-size="11" fill="#33415c">vCenter inventory</text>
+  <line x1="291" y1="570" x2="331" y2="570" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="339" y="574" font-size="11" fill="#166534">Folder-scoped role</text>
+  <line x1="531" y1="570" x2="571" y2="570" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="579" y="574" font-size="11" fill="#6b7280">Independent verification</text>
+</svg>

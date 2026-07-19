@@ -1,5 +1,9 @@
 # Chapter 3: vCenter Server Deployment, Identity, and Recovery
 
+![Lab flow for this chapter: vcsa-deploy installs a new VCSA from a JSON template; an LDAPS identity source (lab.example) is added and a scoped RBAC role assigned to an AD test account; a file-based backup is taken to a remote SFTP target. As a negative test, the VCSA VM is powered off and deleted entirely, simulating total appliance loss — ESXi hosts keep running existing workloads, but centralized management is unavailable. vcsa-deploy in restore mode rehydrates a new appliance from the SFTP backup, restoring the SSO domain, AD identity source, and RBAC assignment; hosts reconnect and the AD test account authenticates successfully.](../../../diagrams/volume-05-vmware-virtualization/chapter-03-vcsa-backup-restore-flow.svg)
+
+*Figure 3-1. Flow used throughout this chapter's Hands-On Lab: deploying a VCSA and Active Directory identity source, then simulating and recovering from total appliance loss via file-based backup.*
+
 ## Learning Objectives
 
 - Explain the vCenter Server Appliance (VCSA) architecture, including its

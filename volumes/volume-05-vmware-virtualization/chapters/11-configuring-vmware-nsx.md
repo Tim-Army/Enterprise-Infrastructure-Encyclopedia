@@ -1,5 +1,9 @@
 # Chapter 11: Configuring VMware NSX
 
+![Lab topology for this chapter: a Tier-0 gateway peers over BGP with a simulated upstream router; a Tier-1 gateway attaches beneath it, with an overlay segment using DHCP relay. test-app-01 and test-db-01 deploy onto the segment and can ping each other and the gateway. A DFW policy section's default-deny rule initially blocks test-app-01 to test-db-01 on TCP 5432; Traceflow confirms the packet reaches the destination segment but is dropped by the default-deny rule, not a routing failure. A scoped allow rule for exactly that flow is added above the default-deny rule and succeeds, while a third, out-of-group test VM remains blocked, confirming the Applied To scope is not inadvertently permissive.](../../../diagrams/volume-05-vmware-virtualization/chapter-11-nsx-tier0-tier1-dfw-topology.svg)
+
+*Figure 11-1. Topology used throughout this chapter's Hands-On Lab: a Tier-0/Tier-1 gateway hierarchy with an overlay segment and a DFW policy verified step by step with Traceflow.*
+
 ## Learning Objectives
 
 - Explain segments (overlay and VLAN-backed) and how they attach to

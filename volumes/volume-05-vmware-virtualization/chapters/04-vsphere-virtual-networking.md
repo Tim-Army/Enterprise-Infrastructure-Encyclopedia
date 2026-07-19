@@ -1,5 +1,9 @@
 # Chapter 4: vSphere Virtual Networking
 
+![Lab topology for this chapter: dvs-lab spans esxi-lab-01 and esxi-lab-02, each contributing two uplinks bundled into an Active LACP LAG (lag-lab); a VST-tagged port group (pg-lab-test, VLAN 150) hosts a test VM, NIOC shares favor vMotion traffic during contention, and vmkping at 8972 bytes confirms end-to-end MTU 9000. As a negative test, one physical uplink is disabled while the test VM has active traffic: the LAG shows that uplink as no longer bundled while the surviving uplink keeps carrying traffic with no sustained loss, and the failed uplink automatically rejoins the LAG once restored.](../../../diagrams/volume-05-vmware-virtualization/chapter-04-vds-lacp-uplink-failure-topology.svg)
+
+*Figure 4-1. Topology used throughout this chapter's Hands-On Lab: a distributed switch with an LACP link aggregation group, tested against a live uplink failure.*
+
 ## Learning Objectives
 
 - Compare the standard vSwitch (VSS) and distributed vSwitch (VDS)

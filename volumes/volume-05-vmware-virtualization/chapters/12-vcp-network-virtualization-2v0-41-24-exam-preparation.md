@@ -1,5 +1,9 @@
 # Chapter 12: VCP Network Virtualization 2V0-41.24 Exam Preparation
 
+![Lab flow for this chapter: from a clean NSX state, five timed steps are completed from memory without reference material — transport zone/uplink profile/TEP pool and transport node prep (target 20 minutes), Edge node and Edge cluster (15 minutes), Tier-0 BGP plus Tier-1 and overlay segment (20 minutes), a DFW default-deny plus scoped allow policy (15 minutes), and a blind negative test diagnosing one deliberately introduced fault using only Traceflow, BGP neighbor status, and transport node status (15 minutes). Total elapsed time under 90 minutes with all steps unaided is a strong exam-readiness signal.](../../../diagrams/volume-05-vmware-virtualization/chapter-12-nsx-timed-self-assessment-flow.svg)
+
+*Figure 12-1. Flow used throughout this chapter's Hands-On Lab: a timed, unaided NSX build-and-troubleshoot exercise culminating in a blind fault diagnosis.*
+
 ## Learning Objectives
 
 - Map the VCP-NV (2V0-41.24) exam's published blueprint sections to the

@@ -1,5 +1,9 @@
 # Chapter 6: vSphere Storage and vSAN
 
+![Lab topology for this chapter: three nested ESXi hosts each contribute a cache and capacity disk to a vSAN disk group, forming the vsanDatastore; a RAID-1 FTT=1 storage policy is applied to vsan-lab-test-vm, reporting compliant across all three fault domains. As a negative test, one host enters maintenance mode with the 'No data migration' option while the test VM's replica components reside partly on it, simulating unplanned host loss; the object becomes nonCompliant/reduced-redundancy since only 2 of 3 fault domains remain reachable, but the VM stays running — exactly what FTT=1 is designed to tolerate. Exiting maintenance mode triggers a resync back to full compliance.](../../../diagrams/volume-05-vmware-virtualization/chapter-06-vsan-raid1-host-loss-topology.svg)
+
+*Figure 6-1. Topology used throughout this chapter's Hands-On Lab: a 3-host vSAN cluster enforcing a RAID-1 FTT=1 policy through a simulated host loss and subsequent resync.*
+
 ## Learning Objectives
 
 - Compare VMFS6, NFS (v3 and v4.1), iSCSI, Fibre Channel/FCoE, and NVMe over

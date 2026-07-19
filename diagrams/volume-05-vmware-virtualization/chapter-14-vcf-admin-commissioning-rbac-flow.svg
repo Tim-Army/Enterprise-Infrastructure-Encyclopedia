@@ -1,0 +1,45 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 14 lab flow: host commissioning prerequisites, workload-domain-style cluster creation, and RBAC layering</title>
+  <desc>
+    Host commissioning prerequisites (NTP sync, DNS resolution, acceptance level) are verified on an additional host. As a negative test, NTP is deliberately misconfigured and commissioning is attempted; the validation fails or warns specifically on the time-synchronization prerequisite, naming the actual root cause rather than a generic error. NTP is corrected and re-verified, then a new cluster (representing a VI workload domain's compute layer) is created with HA/DRS and the host joins successfully. A scoped RBAC role at the new cluster's folder confirms a test account can manage the new cluster but is denied against the pre-existing standalone infrastructure. The standalone vCenter's certificate store is inspected as import-path preparation.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 14 Hands-On Lab: VCF Administrator Workflow — Commissioning, RBAC Layering, and Import Prerequisites</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A deliberately broken NTP prerequisite fails commissioning by name before being corrected and re-verified</text>
+  <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Prerequisite Checks</text>
+  <text x="180.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">NTP, DNS, acceptance level</text>
+  <rect x="380" y="130" width="240" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="500.0" y="171.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="500.0" y="189.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">NTP pointed at unreachable server</text>
+  <text x="500.0" y="207.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">commissioning fails, names NTP</text>
+  <line x1="300" y1="185" x2="380" y2="185" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="180.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Corrected + Verified</text>
+  <text x="810.0" y="198.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">NTP fixed, re-check passes</text>
+  <line x1="620" y1="185" x2="700" y2="185" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="300" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="350.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">lab-wld-cluster</text>
+  <text x="190.0" y="368.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">HA + DRS, host joins</text>
+  <rect x="380" y="300" width="260" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="510.0" y="341.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Scoped RBAC role</text>
+  <text x="510.0" y="359.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">manages new cluster only</text>
+  <text x="510.0" y="377.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">denied on standalone infra</text>
+  <rect x="700" y="300" width="220" height="110" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="810.0" y="341.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Certificate Store</text>
+  <text x="810.0" y="359.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">vecs-cli entry list</text>
+  <text x="810.0" y="377.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">(import-path prerequisite)</text>
+  <line x1="810" y1="240" x2="810" y2="300" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <line x1="60" y1="500" x2="100" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="504" font-size="11" fill="#33415c">Prerequisite / infrastructure</text>
+  <line x1="399" y1="500" x2="439" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="447" y="504" font-size="11" fill="#166534">Corrected / scoped state</text>
+  <line x1="693" y1="500" x2="733" y2="500" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="741" y="504" font-size="11" fill="#b91c1c">Negative-test path</text>
+</svg>

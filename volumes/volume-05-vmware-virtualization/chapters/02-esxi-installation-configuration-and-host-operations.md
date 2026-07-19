@@ -1,5 +1,9 @@
 # Chapter 2: ESXi Installation, Configuration, and Host Operations
 
+![Lab flow for this chapter: esxi-lab-01 is installed unattended via a kickstart file setting IP, hostname, NTP, and syslog forwarding; esxi-lab-02 is installed without NTP or syslog configured, deliberately non-standardized. A Host Profile (lab-standard-profile) extracted from esxi-lab-01 flags esxi-lab-02 as non-compliant on exactly the NTP/syslog settings. As a negative test, remediation without a required host-specific answer-file value fails or prompts rather than silently overwriting host identity; supplying the value and remediating again brings esxi-lab-02 to full compliance.](../../../diagrams/volume-05-vmware-virtualization/chapter-02-esxi-kickstart-host-profile-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: a scripted ESXi install feeding a Host Profile that detects and remediates configuration drift on a second host.*
+
 ## Learning Objectives
 
 - Compare interactive, scripted (kickstart), and PXE/UEFI HTTP network-boot
