@@ -372,7 +372,7 @@ consumers can schedule against.
 - HashiCorp, *Vault Operator Raft Snapshot Commands* —
   <https://developer.hashicorp.com/vault/docs/commands/operator/raft>
 - Red Hat, *Ansible Callback Plugins Documentation* —
-  <https://docs.ansible.com/ansible/latest/plugin_guide/callback_plugins.html>
+  <https://docs.ansible.com/projects/ansible/latest/plugins/callback.html>
 - Prometheus, *Alerting Rules Documentation* —
   <https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/>
 

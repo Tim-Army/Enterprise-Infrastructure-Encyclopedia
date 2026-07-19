@@ -343,7 +343,7 @@ control simultaneously true instead of trading one for the other.
 - OpenSSF, *Supply-chain Levels for Software Artifacts (SLSA)* —
   <https://slsa.dev/>
 - Sigstore, *cosign Documentation* —
-  <https://docs.sigstore.dev/cosign/overview/>
+  <https://docs.sigstore.dev/cosign/signing/overview/>
 - Bridgecrew, *Checkov Documentation* —
   <https://www.checkov.io/1.Welcome/What%20is%20Checkov.html>
 - Anchore, *Syft Documentation* —

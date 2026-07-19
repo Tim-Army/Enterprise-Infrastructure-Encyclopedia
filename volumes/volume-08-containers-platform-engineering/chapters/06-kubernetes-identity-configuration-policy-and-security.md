@@ -444,9 +444,9 @@ kubectl logs -n kyverno deploy/kyverno-admission-controller --tail=50
 
 **Authoritative references**
 
-- Kubernetes documentation, [Using RBAC Authorization](https://kubernetes.io/docs/reference/access-control/rbac/), version 1.31.x baseline per [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md).
+- Kubernetes documentation, [Using RBAC Authorization](https://kubernetes.io/docs/reference/access-authn-authz/rbac/), version 1.31.x baseline per [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md).
 - Kubernetes documentation, [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) and [Pod Security Admission](https://kubernetes.io/docs/concepts/security/pod-security-admission/).
-- Kubernetes documentation, [ValidatingAdmissionPolicy](https://kubernetes.io/docs/reference/access-control/validating-admission-policy/).
+- Kubernetes documentation, [ValidatingAdmissionPolicy](https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/).
 - External Secrets Operator documentation, [external-secrets.io](https://external-secrets.io/).
 - Kyverno documentation, [kyverno.io](https://kyverno.io/), and Open Policy Agent Gatekeeper documentation, [open-policy-agent.github.io/gatekeeper](https://open-policy-agent.github.io/gatekeeper/).
 

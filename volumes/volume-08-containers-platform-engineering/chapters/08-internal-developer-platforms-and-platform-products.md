@@ -460,7 +460,7 @@ kubectl describe databaseclaim order-db -n payments
 
 **Authoritative references**
 
-- CNCF, [Platform Engineering Maturity Model](https://tag-app-delivery.cncf.io/whitepapers/platform-engineering-maturity-model/) and [Backstage documentation](https://backstage.io/docs/), version 1.31.x Kubernetes baseline per [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md).
+- CNCF, [Platform Engineering Maturity Model](https://tag-app-delivery.cncf.io/whitepapers/platform-eng-maturity-model/) and [Backstage documentation](https://backstage.io/docs/), version 1.31.x Kubernetes baseline per [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md).
 - Kubernetes documentation, [Custom Resources](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) and [Operator Pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/).
 - Kubebuilder documentation, [book.kubebuilder.io](https://book.kubebuilder.io/).
 - Crossplane documentation, [docs.crossplane.io](https://docs.crossplane.io/).

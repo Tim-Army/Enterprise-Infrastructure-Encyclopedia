@@ -340,7 +340,7 @@ access.
 ### References
 
 - Red Hat, *Event-Driven Ansible Documentation* —
-  <https://docs.ansible.com/eda/>
+  <https://docs.ansible.com/projects/ansible-eda/>
 - Red Hat, *Ansible Rulebook Documentation* —
   <https://ansible.readthedocs.io/projects/rulebook/>
 - Red Hat, *Ansible Automation Platform: Workflow Job Templates* —

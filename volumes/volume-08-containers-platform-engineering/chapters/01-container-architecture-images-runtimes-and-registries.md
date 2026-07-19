@@ -292,7 +292,7 @@ when the failure is below the pod abstraction, at the runtime or image layer.
 - Open Container Initiative, [Image Format Specification](https://github.com/opencontainers/image-spec), [Runtime Specification](https://github.com/opencontainers/runtime-spec), and [Distribution Specification](https://github.com/opencontainers/distribution-spec).
 - Kubernetes documentation, [Container Runtimes](https://kubernetes.io/docs/setup/production-environment/container-runtimes/) and [Container Runtime Interface (CRI)](https://kubernetes.io/docs/concepts/architecture/cri/), version 1.31.x baseline per [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md).
 - containerd documentation, [containerd.io](https://containerd.io/docs/).
-- Sigstore project documentation, [cosign](https://docs.sigstore.dev/cosign/overview/).
+- Sigstore project documentation, [cosign](https://docs.sigstore.dev/cosign/signing/overview/).
 - Anchore, [syft](https://github.com/anchore/syft) and Aqua Security, [Trivy](https://aquasecurity.github.io/trivy/).
 
 **Knowledge check**
