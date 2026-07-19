@@ -225,7 +225,7 @@ build_volume_html() {
   pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" \
     -f markdown-implicit_figures \
     --standalone --embed-resources \
-    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
+    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_body[@]}")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
     --include-after-body=publishing/repo-link.html \
@@ -239,16 +239,20 @@ build_volume_html() {
 }
 
 build_series_html() {
-  local chapters ch rewritten_readme rewritten_chapters rewritten_title_page
+  local volume_dir ch rewritten_readme rewritten_body rewritten_title_page
   rewritten_readme="$(rewrite_file "README.md" html-root)"
-  chapters=()
-  while IFS= read -r f; do chapters+=("$f"); done < <(find volumes -path "*/chapters/*.md" | sort)
-  rewritten_chapters=()
-  for ch in "${chapters[@]}"; do
-    rewritten_chapters+=("$(rewrite_file "$ch" html-root)")
+  # Walk volume by volume so each volume's README is emitted ahead of its own
+  # chapters. Collecting chapters alone (the previous "*/chapters/*.md" find)
+  # left all 24 volumes out of the table of contents entirely.
+  rewritten_body=()
+  for volume_dir in volumes/*/; do
+    rewritten_body+=("$(rewrite_file "${volume_dir}README.md" html-root)")
+    for ch in "${volume_dir}"chapters/*.md; do
+      rewritten_body+=("$(rewrite_file "$ch" html-root)")
+    done
   done
   rewritten_title_page="$(title_page_for)"
-  pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" \
+  pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_body[@]}" \
     -f markdown-implicit_figures \
     --standalone --embed-resources \
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
@@ -263,25 +267,32 @@ build_series_html() {
 }
 
 build_series_epub() {
-  local chapters ch rewritten_readme rewritten_chapters rewritten_colophon rewritten_title_page
+  local volume_dir ch rewritten_readme rewritten_body rewritten_colophon rewritten_title_page
   rewritten_readme="$(rewrite_file "README.md" epub-absolute)"
-  chapters=()
-  while IFS= read -r f; do chapters+=("$f"); done < <(find volumes -path "*/chapters/*.md" | sort)
-  rewritten_chapters=()
-  for ch in "${chapters[@]}"; do
-    rewritten_chapters+=("$(rewrite_file "$ch" epub-absolute)")
+  # Same volume-by-volume walk as the HTML edition, for the same reason: the
+  # volume READMEs carry the "Volume N" headings the table of contents needs.
+  rewritten_body=()
+  for volume_dir in volumes/*/; do
+    rewritten_body+=("$(rewrite_file "${volume_dir}README.md" epub-absolute)")
+    for ch in "${volume_dir}"chapters/*.md; do
+      rewritten_body+=("$(rewrite_file "$ch" epub-absolute)")
+    done
   done
   rewritten_colophon="$(rewrite_file "publishing/colophon.md" epub-absolute)"
   rewritten_title_page="$(title_page_for --no-cover)"
-  pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" "$rewritten_colophon" \
+  pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_body[@]}" "$rewritten_colophon" \
     -f markdown-implicit_figures \
     --epub-cover-image=publishing/cover.png \
     --toc --toc-depth=2 \
-    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
+    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_body[@]}")" \
     --css=publishing/web.css \
     --metadata "title=$series_title — Complete Edition" \
     --metadata "author=$author" \
     -o "output/epub/Enterprise-Infrastructure-Encyclopedia.epub"
+  # Pandoc leaves the cover first in the spine but not in the navigation
+  # metadata, so readers that consult the guide or landmarks open elsewhere.
+  python3 "$repo_root/scripts/bash/lib/finalize_epub.py" \
+    "output/epub/Enterprise-Infrastructure-Encyclopedia.epub"
 }
 
 # The EPUB edition is the encyclopedia as a single book, so it is only ever
