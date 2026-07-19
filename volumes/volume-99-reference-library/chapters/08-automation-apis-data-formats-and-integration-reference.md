@@ -1,5 +1,9 @@
 # Chapter 08: Automation, APIs, Data Formats, and Integration Reference
 
+![Flow diagram showing an API reference card built from a documented authentication procedure and one successful authenticated call, tested against both an invalid credential returning 401 and an unauthorized resource returning 403, explicitly distinguished from each other.](../../diagrams/volume-99-reference-library/chapter-08-api-reference-auth-failure-flow.svg)
+
+*Figure 8-1. The API authentication and reference card flow exercised in this chapter's lab, including both the 401 and 403 negative tests.*
+
 ## Learning Objectives
 
 - Select the correct HTTP method and interpret the correct status-code

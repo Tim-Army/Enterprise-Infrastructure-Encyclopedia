@@ -1,5 +1,9 @@
 # Chapter 06: Troubleshooting Decision Aids and Escalation
 
+![Flow diagram showing a single induced failure diagnosed through a decision tree to a specific conclusion and resolved back to its documented baseline, alongside the identical failure reintroduced to confirm the same decision tree reaches the same diagnosis a second time.](../../diagrams/volume-99-reference-library/chapter-06-decision-tree-repeatability-flow.svg)
+
+*Figure 6-1. The decision-tree diagnosis and resolution flow exercised in this chapter's lab, including the repeatability negative test.*
+
 ## Learning Objectives
 
 - Apply a structured troubleshooting methodology (bottom-up, top-down, or

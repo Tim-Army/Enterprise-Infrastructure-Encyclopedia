@@ -1,5 +1,9 @@
 # Chapter 02: Ports, Protocols, Services, and Traffic Flows
 
+![Flow diagram showing a port reference card validated by a live TCP handshake capture and a bound-address listening-state check, alongside a connection to an unopened port that distinguishes a reset, an ICMP unreachable, and a silent timeout.](../../diagrams/volume-99-reference-library/chapter-02-port-reference-handshake-flow.svg)
+
+*Figure 2-1. The port reference card validation flow exercised in this chapter's lab, including the closed-versus-firewalled-port negative test.*
+
 ## Learning Objectives
 
 - Identify the transport protocol, port number, and direction of initiation

@@ -1,5 +1,9 @@
 # Chapter 01: Command Quick Reference and Safe Administration
 
+![Flow diagram showing a command quick-reference card populated with real Tier 0 output and a Tier 1 change gated through authorization, backup, dry run, and rollback before execution, alongside a mistyped read-only command whose error text becomes a documented common-failure note.](../../diagrams/volume-99-reference-library/chapter-01-command-card-safe-admin-gates-flow.svg)
+
+*Figure 1-1. The command card build and safe-administration gate flow exercised in this chapter's lab, including the documented-typo negative test.*
+
 ## Learning Objectives
 
 - Translate a common administrative task into the equivalent command on

@@ -1,5 +1,9 @@
 # Chapter 09: Standards, Certifications, Vendor Documentation, and Reference Governance
 
+![Flow diagram showing three of this encyclopedia's own reference-table entries independently re-verified against their live authoritative sources with corrected rows drafted for any discrepancy, alongside a compliance check confirming no certification exam question or licensed courseware excerpt was ever reproduced.](../../diagrams/volume-99-reference-library/chapter-09-capstone-reference-governance-audit-flow.svg)
+
+*Figure 9-1. The capstone reference-governance audit flow exercised in this chapter's lab, including the reproduction-compliance negative test.*
+
 ## Learning Objectives
 
 - Identify the standards body (IEEE, IETF, ISO/IEC, NIST, PCI SSC, or a

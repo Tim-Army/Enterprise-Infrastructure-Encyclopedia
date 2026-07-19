@@ -1,5 +1,9 @@
 # Chapter 05: Validation, Evidence, Checklists, and Acceptance
 
+![Flow diagram showing an acceptance checklist populated with falsifiable items and dispositions traced strictly to linked evidence, alongside one item deliberately recorded as Fail with its resulting rollback, follow-up, or escalation action documented.](../../diagrams/volume-99-reference-library/chapter-05-acceptance-checklist-evidence-flow.svg)
+
+*Figure 5-1. The acceptance checklist and evidence flow exercised in this chapter's lab, including the documented-Fail-path negative test.*
+
 ## Learning Objectives
 
 - Distinguish validation, evidence, and acceptance as three related but
