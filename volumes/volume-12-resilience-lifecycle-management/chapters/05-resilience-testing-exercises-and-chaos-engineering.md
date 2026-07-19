@@ -1,5 +1,9 @@
 # Chapter 5: Resilience Testing, Exercises, and Chaos Engineering
 
+![Lab flow for this chapter: a fault-injection experiment triggers an ABORT once a simulated steady-state metric drops below threshold, and because rollback is wrapped in a finally block, it executes even though the experiment exited early. As a negative test, the rollback call is deliberately moved outside the try/finally to run only after normal loop completion; rerunning the identical scenario produces the same ABORT at the same elapsed time, but the degraded state now remains true after the script exits, because the early-return abort path no longer passes through any rollback call — the exact unprotected-rollback failure mode this chapter warns against.](../../../diagrams/volume-12-resilience-lifecycle-management/chapter-05-chaos-experiment-rollback-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: a hypothesis-driven fault-injection experiment aborting on steady-state violation, contrasted with an unprotected rollback.*
+
 ## Learning Objectives
 
 - Explain why declared resilience (redundancy, HA design, backups, DR runbooks) is unverified until it has been exercised, and connect that principle back to Chapters 1–4.

@@ -1,5 +1,9 @@
 # Chapter 2: Business Impact Analysis and Continuity Planning
 
+![Lab flow for this chapter: derive_mtd.py walks a sample BIA's impact-escalation curve and finds the operational impact category first crosses the severity threshold at the 24-hour checkpoint, producing a derived MTD deliberately in conflict with the questionnaire's owner-stated 48 hours; the evidence-based figure takes precedence, escalated to the process owner for reconciliation. As a negative test, every checkpoint's impact scores are set identical (no escalation over time); the script still returns a 1-hour-checkpoint-based MTD, but this flat-impact scenario should itself be flagged as suspect during BIA quality review.](../../../diagrams/volume-12-resilience-lifecycle-management/chapter-02-bia-mtd-derivation-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: deriving a maximum tolerable downtime from a BIA impact-escalation curve, checked against a flat-impact negative test.*
+
 ## Learning Objectives
 
 - Explain the purpose and output of a business impact analysis (BIA) and how it differs from a risk assessment.

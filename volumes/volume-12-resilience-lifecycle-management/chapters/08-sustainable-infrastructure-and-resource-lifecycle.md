@@ -1,5 +1,9 @@
 # Chapter 8: Sustainable Infrastructure and Resource Lifecycle
 
+![Lab topology for this chapter: a fleet right-sizing scan flags two idle production instances as downsize/consolidate candidates, correctly excluding tagged HA/DR standby capacity (deliberate redundancy headroom, not waste) and an instance with too little observed data. As a negative test, removing the role tag from one standby instance causes it to incorrectly appear as a right-sizing candidate — automation that cannot distinguish deliberate redundancy from waste will recommend reducing HA capacity when the underlying data isn't properly tagged. Restoring the tag returns the candidate list to its expected, correct state.](../../../diagrams/volume-12-resilience-lifecycle-management/chapter-08-pue-rightsizing-scan-topology.svg)
+
+*Figure 8-1. Topology used throughout this chapter's Hands-On Lab: a right-sizing scan that excludes tagged HA/DR standby capacity from its recommendations, tested against an untagged standby.*
+
 ## Learning Objectives
 
 - Calculate and interpret Power Usage Effectiveness (PUE) and explain its limitations as a sole efficiency metric.

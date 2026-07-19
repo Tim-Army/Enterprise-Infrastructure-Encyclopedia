@@ -1,0 +1,35 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 3 lab flow: a circuit breaker transitioning to open after repeated failures, and a failover-verification script enforcing an RTO budget</title>
+  <desc>
+    breaker_demo.py wraps a deliberately failing dependency in a circuit breaker (fail_max=3). The first three calls fail with RuntimeError as the breaker's state progresses toward open; from the fourth call onward, calls are rejected immediately with CircuitBreakerError rather than waiting for the dependency to fail again — fail-fast behavior. Separately, verify-failover.sh run against a load-balancer stub with a 60-second RTO budget reports PASS once the target is no longer InService. As a negative test, rerunning with an artificially tight 0-second RTO budget reports FAIL, proving the RTO-enforcement branch is reachable and correctly triggers, not just the success path.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: Circuit Breaker Fail-Fast and RTO-Enforced Failover Verification</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">After 3 failures the breaker fails fast instead of retrying; a zero-second RTO budget correctly fails the check</text>
+  <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Calls 1-3</text>
+  <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">dependency fails (RuntimeError)</text>
+  <text x="190.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">breaker state → open</text>
+  <rect x="400" y="140" width="240" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Calls 4-6</text>
+  <text x="520.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">rejected immediately</text>
+  <text x="520.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">CircuitBreakerError (fail-fast)</text>
+  <line x1="320" y1="200" x2="400" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="186.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">verify-failover.sh 60s</text>
+  <text x="810.0" y="204.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">target no longer InService</text>
+  <text x="810.0" y="222.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">PASS</text>
+  <rect x="60" y="330" width="860" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="362.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="380.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">verify-failover.sh re-run with RTO budget = 0 seconds</text>
+  <text x="490.0" y="398.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">script reports FAIL — proving the RTO-enforcement branch is reachable and actually triggers,</text>
+  <text x="490.0" y="416.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">not merely present alongside a success path that always passes</text>
+  <line x1="60" y1="500" x2="100" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="504" font-size="11" fill="#33415c">Failures accumulating</text>
+  <line x1="327" y1="500" x2="367" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="375" y="504" font-size="11" fill="#166534">Fail-fast / passing checks</text>
+</svg>

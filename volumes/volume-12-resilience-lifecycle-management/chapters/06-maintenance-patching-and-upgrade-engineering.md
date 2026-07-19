@@ -1,5 +1,9 @@
 # Chapter 6: Maintenance, Patching, and Upgrade Engineering
 
+![Lab flow for this chapter: a rolling patch script patches all five simulated cluster nodes one at a time (drain, patch, rejoin), reporting quorum preserved throughout and returning the cluster to full strength. As a negative test, the script's quorum calculation is hardcoded to a value well below true majority and the rolling patch re-run; the script now proceeds even when it should not, demonstrating that a quorum guard with an incorrect threshold provides false confidence rather than real protection — the formula itself must be verified, not merely present.](../../../diagrams/volume-12-resilience-lifecycle-management/chapter-06-quorum-rolling-patch-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: a rolling patch preserving cluster quorum throughout, contrasted with a deliberately broken quorum guard.*
+
 ## Learning Objectives
 
 - Distinguish patching from upgrading and explain why each carries a different risk profile and testing requirement.

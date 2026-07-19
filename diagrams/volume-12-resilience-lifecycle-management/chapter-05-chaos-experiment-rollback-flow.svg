@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 5 lab flow: a hypothesis-driven fault-injection experiment aborting on steady-state violation, contrasted with an unprotected rollback</title>
+  <desc>
+    experiment.py injects a simulated dependency failure; the steady-state checkout success metric drops below the 95.0 threshold at approximately the 3-4 second mark, triggering an ABORT — and because rollback_fn() is wrapped in a finally block, it executes even though the experiment exited early, confirmed by degraded=False afterward. As a negative test, rollback_fn() is deliberately moved outside the try/finally to run only after normal loop completion; rerunning the identical scenario produces the same ABORT at the same elapsed time, but state['degraded'] now remains True after the script exits, because the early return on the abort path no longer passes through any rollback call — the exact unprotected-rollback failure mode this chapter warns against.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: A Chaos Experiment Whose Rollback Must Be Structurally Guaranteed</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">finally guarantees rollback even on early abort; removing that guarantee leaves the fault permanently active</text>
+  <rect x="60" y="140" width="260" height="130" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="191.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">experiment.py (finally-guarded)</text>
+  <text x="190.0" y="209.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">fault injected → metric drops</text>
+  <text x="190.0" y="227.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7c2d12">ABORT at ~3-4s</text>
+  <rect x="400" y="140" width="260" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="530.0" y="191.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">finally: rollback_fn()</text>
+  <text x="530.0" y="209.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">executes on EVERY exit path</text>
+  <text x="530.0" y="227.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">degraded=False (cleared)</text>
+  <line x1="320" y1="205" x2="400" y2="205" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="182.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="200.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">rollback moved outside finally</text>
+  <text x="810.0" y="218.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">same ABORT fires, but</text>
+  <text x="810.0" y="236.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">degraded=True remains after exit</text>
+  <line x1="660" y1="205" x2="700" y2="205" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="350" width="860" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="395.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#7f1d1d">the early-return abort path no longer passes through any rollback call once finally is removed —</text>
+  <text x="490.0" y="413.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#7f1d1d">rollback must be structurally guaranteed to run on every exit path, not merely present in the normal-completion path.</text>
+  <line x1="60" y1="500" x2="100" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="504" font-size="11" fill="#33415c">Injected fault + abort</text>
+  <line x1="336" y1="500" x2="376" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="384" y="504" font-size="11" fill="#166534">Guaranteed rollback</text>
+  <line x1="585" y1="500" x2="625" y2="500" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="633" y="504" font-size="11" fill="#b91c1c">Unprotected rollback (bug)</text>
+</svg>

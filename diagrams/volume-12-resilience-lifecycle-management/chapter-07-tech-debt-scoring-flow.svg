@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 7 lab flow: a technical-debt register scored by urgency-adjusted impact, re-tested after scoping down effort and after an EOL lapses</title>
+  <desc>
+    score_debt_item ranks legacy-billing-service-eol (EOL under 180 days, moderate 8-week effort) first, ahead of the architecturally more severe but non-urgent monolith-order-processing entry — urgency-adjusted prioritization rather than raw impact alone. Reducing monolith-order-processing's effort estimate to 2 weeks (a smaller, well-scoped first increment) raises its score substantially, illustrating the strangler-fig principle. As a negative test, setting legacy-billing-service-eol's EOL date into the past increases its score further still, correctly modeling that a system already past its EOL carries materially higher unmanaged risk than one still inside its remediation window.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: Urgency-Adjusted Debt Scoring Elevates an Approaching EOL Over Raw Impact</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A moderate-effort item with an EOL under 180 days outranks a more architecturally severe item with no deadline</text>
+  <rect x="60" y="140" width="260" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">legacy-billing-service-eol</text>
+  <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">EOL &lt; 180 days, 8wk effort</text>
+  <text x="190.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7c2d12">ranks #1 (urgency-adjusted)</text>
+  <rect x="400" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="530.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">monolith-order-processing</text>
+  <text x="530.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">higher raw impact, no deadline</text>
+  <text x="530.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">ranks lower until re-scoped</text>
+  <line x1="320" y1="200" x2="400" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Effort → 2 weeks</text>
+  <text x="810.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">score rises substantially</text>
+  <text x="810.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(strangler-fig increment)</text>
+  <line x1="660" y1="200" x2="700" y2="200" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="320" width="860" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="356.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="374.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">legacy-billing-service-eol's eol_date set into the past → score increases further (urgency maxes out)</text>
+  <text x="490.0" y="392.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">correctly models that a system already past EOL carries higher unmanaged risk than one still in-window</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="108" y="464" font-size="11" fill="#b91c1c">Deadline-driven urgency</text>
+  <line x1="345" y1="460" x2="385" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="393" y="464" font-size="11" fill="#33415c">High raw impact, no deadline</text>
+  <line x1="675" y1="460" x2="715" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="723" y="464" font-size="11" fill="#166534">Re-scoped increment</text>
+</svg>

@@ -1,5 +1,9 @@
 # Chapter 3: High Availability, Fault Tolerance, and Graceful Degradation
 
+![Lab flow for this chapter: breaker_demo.py wraps a deliberately failing dependency in a circuit breaker; the first three calls fail with RuntimeError as the breaker's state progresses toward open, and from the fourth call onward, calls are rejected immediately with CircuitBreakerError rather than waiting for the dependency to fail again. Separately, a failover-verification script run against a load-balancer stub with a generous RTO budget reports PASS. As a negative test, rerunning with an artificially tight zero-second RTO budget reports FAIL, proving the RTO-enforcement branch is reachable and correctly triggers, not just the success path.](../../../diagrams/volume-12-resilience-lifecycle-management/chapter-03-circuit-breaker-failover-flow.svg)
+
+*Figure 3-1. Flow used throughout this chapter's Hands-On Lab: a circuit breaker's fail-fast transition after repeated failures, and a failover-verification script enforcing an RTO budget.*
+
 ## Learning Objectives
 
 - Distinguish active-active, active-passive, and clustered HA topologies and select among them based on RTO/RPO from [Chapter 2](02-business-impact-analysis-and-continuity-planning.md).

@@ -1,5 +1,9 @@
 # Chapter 7: Technical Debt, Modernization, and Platform Renewal
 
+![Lab flow for this chapter: a scoring script ranks a debt item with an EOL under 180 days first, ahead of an architecturally more severe but non-urgent item with no deadline — urgency-adjusted prioritization rather than raw impact alone. Reducing the non-urgent item's effort estimate to a smaller, well-scoped first increment raises its score substantially, illustrating the strangler-fig principle. As a negative test, setting the EOL-driven item's date into the past increases its score further still, correctly modeling that a system already past its EOL carries materially higher unmanaged risk than one still inside its remediation window.](../../../diagrams/volume-12-resilience-lifecycle-management/chapter-07-tech-debt-scoring-flow.svg)
+
+*Figure 7-1. Flow used throughout this chapter's Hands-On Lab: urgency-adjusted technical-debt scoring re-tested after scoping down effort and after an EOL date lapses.*
+
 ## Learning Objectives
 
 - Define technical debt using the deliberate/inadvertent and reckless/prudent quadrant, and distinguish it from ordinary imperfection.

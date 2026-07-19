@@ -1,0 +1,36 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 2 lab flow: deriving a maximum tolerable downtime from a BIA impact-escalation curve, checked against a flat-impact negative test</title>
+  <desc>
+    derive_mtd.py walks the impact_by_checkpoint data from a sample BIA and finds the operational impact category first crosses the severity threshold at the 24-hour checkpoint, producing a derived MTD of 24 hours — deliberately in conflict with the questionnaire's owner-stated 48 hours. The evidence-based, data-derived figure should generally take precedence, with the disagreement escalated to the process owner for reconciliation. As a negative test, every checkpoint's impact scores are set identical (no escalation over time); the script still returns a 1-hour-checkpoint-based MTD, but this flat-impact scenario should itself be flagged as suspect during BIA quality review, per the checkpoint-monotonicity guidance.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 2 Hands-On Lab: A Data-Derived MTD That Disagrees With the Owner-Stated Figure</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">The impact-escalation curve crosses threshold at 24 hours; the questionnaire's own answer says 48 — evidence wins</text>
+  <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">bia-customer-refunds.yaml</text>
+  <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">impact_by_checkpoint: 1h/4h/24h/72h</text>
+  <text x="190.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">owner-stated MTD: 48h</text>
+  <rect x="400" y="140" width="240" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">derive_mtd.py</text>
+  <text x="520.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">operational impact crosses</text>
+  <text x="520.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">threshold at 24h checkpoint</text>
+  <line x1="320" y1="200" x2="400" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="810.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">RESOLUTION.md</text>
+  <text x="810.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">evidence-based 24h figure</text>
+  <text x="810.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">used, escalated to owner</text>
+  <line x1="640" y1="200" x2="700" y2="200" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="320" width="860" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="352.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="370.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">every checkpoint's impact score set identical (no escalation over time)</text>
+  <text x="490.0" y="388.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">script still returns a 1-hour-checkpoint MTD — but a flat-impact curve is itself a BIA quality defect</text>
+  <text x="490.0" y="406.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">that should be flagged during review per checkpoint-monotonicity guidance, not accepted at face value</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="464" font-size="11" fill="#33415c">Questionnaire input</text>
+  <line x1="309" y1="460" x2="349" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="357" y="464" font-size="11" fill="#166534">Evidence-derived MTD</text>
+</svg>

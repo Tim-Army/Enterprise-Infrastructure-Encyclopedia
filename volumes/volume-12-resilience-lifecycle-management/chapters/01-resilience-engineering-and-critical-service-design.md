@@ -1,5 +1,9 @@
 # Chapter 1: Resilience Engineering and Critical-Service Design
 
+![Lab flow for this chapter: find_spof.py analyzes a dependency graph and reports web-frontend and api-service as SPOFs, since both sit on the only path from ingress to the critical services; auth-service is correctly not reported, since it is a leaf with no outgoing path back toward the critical services — a shared-dependency risk rather than a topological chokepoint. As a negative test, removing the web-frontend-to-api-service edge leaves api-service with no inbound edge at all; every remaining node is then trivially reported as a 'SPOF', correctly signaling that the redesign severed the only route in — a worse problem than any single SPOF.](../../../diagrams/volume-12-resilience-lifecycle-management/chapter-01-spof-dependency-graph-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: single-point-of-failure detection on a dependency graph, distinguishing topological chokepoints from shared-dependency risk.*
+
 ## Learning Objectives
 
 - Define resilience engineering and distinguish it from adjacent disciplines such as high availability, disaster recovery, and security hardening.

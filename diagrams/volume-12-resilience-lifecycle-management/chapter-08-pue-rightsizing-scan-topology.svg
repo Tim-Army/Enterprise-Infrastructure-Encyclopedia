@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 8 lab topology: a fleet right-sizing scan excluding tagged HA/DR standby capacity from its recommendations, tested against an untagged standby</title>
+  <desc>
+    calculate_pue reports 1.45 for Q1 versus 1.62 for Q3 against identical IT load, illustrating a seasonal cooling-load increase a single-period snapshot would miss. find_rightsizing_candidates scans a six-instance fleet and flags exactly web-02 and batch-01 as candidates, correctly excluding db-standby-01 and dr-replica-01 (low utilization is deliberate redundancy headroom, not waste) and web-03 (fewer than 14 days observed). As a negative test, removing the role field from db-standby-01 (simulating an untagged standby) causes it to incorrectly appear as a right-sizing candidate — automation that cannot distinguish deliberate redundancy from waste will recommend reducing HA capacity when the underlying data isn't properly tagged. Restoring the tag returns the candidate list to its expected state.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: A Right-Sizing Scan That Must Not Mistake Redundancy for Waste</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Two idle production instances are flagged; tagged HA/DR standby capacity is correctly excluded — until the tag is removed</text>
+  <rect x="60" y="140" width="240" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="180.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">web-02, batch-01</text>
+  <text x="180.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">production, low CPU, ≥14 days</text>
+  <text x="180.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7c2d12">flagged: downsize/consolidate</text>
+  <rect x="380" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="500.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">db-standby-01, dr-replica-01</text>
+  <text x="500.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">role: ha-standby / dr-standby</text>
+  <text x="500.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">correctly excluded (redundancy)</text>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="810.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">web-03</text>
+  <text x="810.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">only 5 days observed</text>
+  <text x="810.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">excluded (insufficient data)</text>
+  <rect x="60" y="330" width="860" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="363.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="381.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">role field removed from db-standby-01 (simulating an untagged standby instance)</text>
+  <text x="490.0" y="399.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">db-standby-01 now incorrectly appears as a right-sizing candidate</text>
+  <text x="490.0" y="417.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">automation cannot distinguish deliberate redundancy from waste without correct tagging — restoring</text>
+  <text x="490.0" y="435.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">the role field returns the candidate list to its expected, correct state</text>
+  <line x1="60" y1="500" x2="100" y2="500" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="108" y="504" font-size="11" fill="#b91c1c">Right-sizing candidate</text>
+  <line x1="336" y1="500" x2="376" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="384" y="504" font-size="11" fill="#166534">Excluded redundancy</text>
+  <line x1="585" y1="500" x2="625" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="633" y="504" font-size="11" fill="#33415c">Excluded, insufficient data</text>
+</svg>

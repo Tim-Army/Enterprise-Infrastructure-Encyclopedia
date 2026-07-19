@@ -1,5 +1,9 @@
 # Chapter 9: Retirement, Decommissioning, and Lifecycle Governance
 
+![Lab flow for this chapter: a decommission-readiness gate evaluates a dependency graph and reports one system as BLOCKED because an active batch job still depends on it, while the batch job itself is READY since nothing depends on it. Retiring the batch job's status and re-running flips the blocked system to READY, demonstrating the gate re-evaluates once the blocking dependent is itself retired. As a negative test, a naive one-line script that 'decommissions' the same system unconditionally, with no dependency check, proceeds with no warning against the exact same active-dependent input the gated script correctly blocked.](../../../diagrams/volume-12-resilience-lifecycle-management/chapter-09-decommission-dependency-gate-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: a dependency-gated decommission check blocking a system with an active dependent, contrasted with a naive decommission that has no gate at all.*
+
 ## Learning Objectives
 
 - Design a decommissioning process from candidate identification through record closure, with an explicit dependency-verification gate.

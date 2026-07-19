@@ -1,5 +1,9 @@
 # Chapter 4: Backup, Recovery, and Disaster-Recovery Engineering
 
+![Lab flow for this chapter: a backup script archives sample records and reports the backup created and verified, producing an archive and a checksum manifest; a restore script restores from that archive and confirms the restored content matches the source exactly. As a negative test, the latest archive is truncated to break its compressed stream; the integrity check against the truncated archive fails with a message such as 'truncated gzip input' rather than silently appearing to succeed, confirming the specific failure mode the verification step exists to catch before a real restore is ever attempted against it.](../../../diagrams/volume-12-resilience-lifecycle-management/chapter-04-backup-restore-verification-flow.svg)
+
+*Figure 4-1. Flow used throughout this chapter's Hands-On Lab: a self-verifying backup and restore workflow tested against a deliberately truncated archive.*
+
 ## Learning Objectives
 
 - Distinguish backup types (full, incremental, differential, synthetic full) and select a scheme from a change-rate and recovery-time budget.
