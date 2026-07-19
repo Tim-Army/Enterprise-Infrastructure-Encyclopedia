@@ -1,5 +1,9 @@
 # Chapter 08: Security Investigation, Command-Line Analysis, and Automation
 
+![Lab flow for this chapter: an authorized TCP SYN scan against a lab target is captured, and a detection one-liner counting SYN-only packets by source address identifies the scanning host with a count near the scanned port range. The matched attempts export to CSV, and a sanitized capture keeping only completed handshakes shows a markedly lower packet count than the original. As a negative test, the same detection one-liner is run against the sanitized file; it reports no scan-pattern match at all, confirming the half-open SYNs were genuinely excluded by the sanitization step.](../../../diagrams/volume-20-wireshark-packet-analysis/chapter-08-portscan-detection-sanitization-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: a port-scan detection one-liner validated against a real scan, then re-run against a sanitized capture with the scan noise removed.*
+
 ## Learning Objectives
 
 - Build `tshark`-based scripted workflows that extract, filter, and

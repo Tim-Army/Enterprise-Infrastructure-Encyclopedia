@@ -1,5 +1,9 @@
 # Chapter 05: IPv6, ICMPv6, UDP, DHCP, and DNS Analysis
 
+![Lab flow for this chapter: a capture scoped to DHCP and DNS shows the full four-message DORA exchange in order, and a DNS query for a real domain shows a successful response code with at least one answer record. As a negative test, a query for a domain guaranteed not to exist is captured the same way; the filter for that domain matches a response with an NXDOMAIN response code, confirming the filter correctly distinguishes a failed resolution from the successful one captured moments earlier.](../../../diagrams/volume-20-wireshark-packet-analysis/chapter-05-dhcp-dns-nxdomain-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: DHCP DORA and DNS resolution captured and isolated with targeted filters, tested against a deliberately unresolvable domain.*
+
 ## Learning Objectives
 
 - Decode an IPv6 header and its extension header chain, and explain how it

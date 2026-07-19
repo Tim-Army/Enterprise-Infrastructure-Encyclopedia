@@ -1,5 +1,9 @@
 # Chapter 04: Ethernet, ARP, IPv4, and ICMPv4 Analysis
 
+![Lab flow for this chapter: a capture scoped to ARP and ICMP shows one broadcast ARP request followed by one unicast reply resolving the gateway's MAC address; a ping sequence isolates to matched Echo Request/Reply pairs, and a traceroute isolates to a Time Exceeded hop ladder ending in the destination's reply. As a negative test, a filter for an original Echo Request TTL value never actually used in this lab's traffic returns zero matches, confirming the filter correctly produces an empty result rather than matching unrelated packets.](../../../diagrams/volume-20-wireshark-packet-analysis/chapter-04-arp-icmp-traceroute-filter-flow.svg)
+
+*Figure 4-1. Flow used throughout this chapter's Hands-On Lab: ARP, ICMP echo, and traceroute captured and isolated with targeted display filters, tested against a TTL value that cannot appear.*
+
 ## Learning Objectives
 
 - Decode an Ethernet II frame's fields in Wireshark and explain what each

@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 8 lab flow: a tshark-based port-scan detection one-liner validated against a real scan, then re-run against a sanitized capture with the scan noise removed</title>
+  <desc>
+    An authorized TCP SYN scan against a lab target is captured, and a tshark one-liner counting SYN-only packets by source address identifies the scanning host with a count near the scanned port range — clearly distinguishable from legitimate low-count traffic. The matched attempts export to CSV, and a sanitized capture keeping only completed handshakes shows a markedly lower packet count than the original. As a negative test, the same detection one-liner is run against the sanitized file; it reports no scan-pattern match at all, confirming the half-open SYNs were genuinely excluded by the sanitization step and the detection script correctly reports nothing when the pattern it looks for is actually absent.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: A Detection Script That Correctly Reports Nothing Once the Scan Pattern Is Removed</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">An authorized SYN scan is detected by its high distinct-port count; the same script run against a sanitized capture finds no pattern left to detect</text>
+  <rect x="60" y="130" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Authorized SYN scan captured</text>
+  <text x="190.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">detection one-liner: scanning host</text>
+  <text x="190.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">identified by high SYN count</text>
+  <rect x="400" y="130" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Sanitized capture</text>
+  <text x="520.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">only completed handshakes kept</text>
+  <text x="520.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">markedly lower packet count</text>
+  <line x1="320" y1="185" x2="400" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="162.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="180.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">same detection script run</text>
+  <text x="810.0" y="198.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">against sanitized file</text>
+  <text x="810.0" y="216.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ no scan-pattern match</text>
+  <line x1="640" y1="185" x2="700" y2="185" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="300" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="340.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the detection script reports nothing once the half-open SYNs it looks for are genuinely gone —</text>
+  <text x="490.0" y="358.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">proof the sanitization step actually removed the scan noise rather than merely relabeling it.</text>
+  <line x1="60" y1="430" x2="100" y2="430" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="434" font-size="11" fill="#33415c">Raw capture with scan</text>
+  <line x1="327" y1="430" x2="367" y2="430" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="375" y="434" font-size="11" fill="#166534">Hand-off-ready sanitized capture</text>
+  <line x1="693" y1="430" x2="733" y2="430" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="741" y="434" font-size="11" fill="#b91c1c">Confirmed clean re-scan</text>
+</svg>

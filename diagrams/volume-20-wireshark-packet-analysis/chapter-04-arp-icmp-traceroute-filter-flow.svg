@@ -1,0 +1,34 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab flow: ARP, ICMP echo, and traceroute captured and isolated with targeted display filters, tested against a TTL value that cannot appear</title>
+  <desc>
+    A capture scoped to ARP and ICMP shows one broadcast ARP request followed by one unicast reply resolving the gateway's MAC address; a ping sequence isolates to matched Echo Request/Echo Reply pairs; a traceroute isolates to a Time Exceeded hop ladder ending in the destination's reply. As a negative test, a filter for an original Echo Request TTL of 1 — a value never actually used as the starting TTL in this lab's traffic — returns zero matches, confirming the filter correctly produces an empty result rather than matching unrelated packets when the condition genuinely does not occur in the capture.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: A TTL Filter That Correctly Returns Empty Rather Than Matching the Wrong Traffic</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">ARP resolution, ping, and traceroute all isolate cleanly with targeted filters; an impossible TTL condition confirms the filter isn't matching unrelated packets</text>
+  <rect x="60" y="140" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">ARP exchange</text>
+  <text x="170.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">request (broadcast) →</text>
+  <text x="170.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">reply (unicast), gateway MAC</text>
+  <rect x="360" y="140" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="470.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Ping sequence</text>
+  <text x="470.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">Echo Request/Reply pairs</text>
+  <text x="470.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(4 of each, matched)</text>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Traceroute hop ladder</text>
+  <text x="810.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Time Exceeded, increasing hops</text>
+  <text x="810.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">→ final Echo Reply</text>
+  <rect x="60" y="320" width="860" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="352.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="370.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">filter: ip.ttl == 1 &amp;&amp; icmp.type == 8 (original Echo Request TTL of 1, never actually used)</text>
+  <text x="490.0" y="388.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">zero packets match — the filter correctly returns empty rather than matching unrelated traffic,</text>
+  <text x="490.0" y="406.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">confirming the filter logic behaves correctly even when the condition genuinely doesn't occur</text>
+  <line x1="60" y1="470" x2="100" y2="470" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="474" font-size="11" fill="#33415c">Layer 2 resolution</text>
+  <line x1="300" y1="470" x2="340" y2="470" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="348" y="474" font-size="11" fill="#166534">Isolated ICMP sequences</text>
+</svg>

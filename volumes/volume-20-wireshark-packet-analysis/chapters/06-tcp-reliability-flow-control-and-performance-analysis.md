@@ -1,5 +1,9 @@
 # Chapter 06: TCP Reliability, Flow Control, and Performance Analysis
 
+![Lab flow for this chapter: a file transfer's handshake shows Window Scale and SACK Permitted options, TCP Stream Graphs plot RTT and throughput for the transfer, and a retransmission filter records a baseline count. As a negative test, artificial packet loss is introduced on the capture interface and the transfer repeated; the same retransmission filter now shows a nonzero count in the new capture, contrasted directly against the loss-free baseline, confirming Wireshark's expert-flag analysis correctly detects retransmissions caused by genuinely induced loss.](../../../diagrams/volume-20-wireshark-packet-analysis/chapter-06-tcp-retransmission-induced-loss-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: TCP handshake options, RTT, and throughput analyzed on a real transfer, then contrasted against a transfer with deliberately induced packet loss.*
+
 ## Learning Objectives
 
 - Decode the TCP header and explain how sequence numbers, acknowledgment

@@ -1,5 +1,9 @@
 # Chapter 01: Packet Analysis Foundations, Wireshark Installation, and Evidence
 
+![Lab flow for this chapter: non-administrative capture access lets tshark list interfaces with no permission error and no elevation; a short baseline capture is taken, confirmed, then hashed alongside a UTC collection timestamp as an evidence-handling record. As a negative test, a capture attempt from a second, unmodified user account without the configured group membership is denied with a permission error, confirming capture rights are correctly scoped to the intended group rather than open to every local account.](../../../diagrams/volume-20-wireshark-packet-analysis/chapter-01-nonadmin-capture-evidence-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: non-administrative Wireshark capture rights validated end to end, then tested against an account outside the configured group.*
+
 ## Learning Objectives
 
 - Explain what packet analysis reveals that logs, metrics, and flow records

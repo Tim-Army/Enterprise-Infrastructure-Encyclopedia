@@ -1,5 +1,9 @@
 # Chapter 07: Application Protocol, TLS, and Service-Response Analysis
 
+![Lab flow for this chapter: with a TLS session-key log enabled, an HTTPS request populates a key log file, and pointing Wireshark's TLS pre-master-secret log preference at that file reveals decrypted HTTP request/response frames with a populated response-time value. As a negative test, the TLS key log preference is cleared and the capture reloaded; the same HTTP filter now matches nothing, since the identical records dissect only as encrypted TLS — confirming decryption genuinely depended on the configured key log rather than some other mechanism.](../../../diagrams/volume-20-wireshark-packet-analysis/chapter-07-tls-decryption-keylog-flow.svg)
+
+*Figure 7-1. Flow used throughout this chapter's Hands-On Lab: an HTTPS session decrypted in Wireshark via a session-key log, tested against a cleared key log preference.*
+
 ## Learning Objectives
 
 - Decode an HTTP/1.1 request/response exchange and identify the HTTP/2

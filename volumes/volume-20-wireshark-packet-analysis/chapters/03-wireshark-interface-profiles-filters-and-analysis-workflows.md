@@ -1,5 +1,9 @@
 # Chapter 03: Wireshark Interface, Profiles, Filters, and Analysis Workflows
 
+![Lab flow for this chapter: a dedicated analysis profile isolates a lab-specific workflow with a saved display filter, a coloring rule, a custom column, and Follow TCP Stream reassembling a full conversation in a separate window. As a negative test, a deliberately misspelled filter field name is entered in the filter bar; the bar turns red and the filter does not apply at all, demonstrating Wireshark's syntax validation rejects an invalid field name outright rather than silently applying a filter that matches nothing.](../../../diagrams/volume-20-wireshark-packet-analysis/chapter-03-analysis-profile-filter-validation-flow.svg)
+
+*Figure 3-1. Flow used throughout this chapter's Hands-On Lab: a dedicated Wireshark analysis profile with a saved filter, coloring rule, and custom column, tested against a misspelled filter field.*
+
 ## Learning Objectives
 
 - Navigate Wireshark's packet list, packet detail, and packet bytes panes,

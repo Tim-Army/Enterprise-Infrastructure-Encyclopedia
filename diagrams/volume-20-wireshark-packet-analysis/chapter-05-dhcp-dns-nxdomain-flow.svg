@@ -1,0 +1,36 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 5 lab flow: DHCP DORA and DNS resolution captured and isolated with targeted filters, tested against a deliberately unresolvable domain</title>
+  <desc>
+    A capture scoped to DHCP and DNS shows the full four-message DORA exchange in order — Discover, Offer, Request, Ack — each from the expected source, and a DNS query/response pair for a real domain shows rcode==0 with at least one answer record. As a negative test, a query for a domain guaranteed not to exist is captured the same way; the filter for that domain matches a response with rcode==3 (NXDOMAIN), confirming the filter correctly distinguishes a failed resolution from the successful one captured moments earlier, rather than treating both as equivalent 'a response arrived' events.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: A Filter That Distinguishes a Failed Resolution From a Successful One</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A clean DORA exchange and a successful DNS answer both isolate correctly; an NXDOMAIN response is caught by rcode, not confused with success</text>
+  <rect x="60" y="140" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">DHCP DORA exchange</text>
+  <text x="190.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">Discover → Offer → Request → Ack</text>
+  <text x="190.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(correct order, correct sources)</text>
+  <rect x="400" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="190.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">DNS query (real domain)</text>
+  <text x="520.0" y="208.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">rcode==0, answer present</text>
+  <line x1="320" y1="195" x2="400" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">query: nonexistent domain</text>
+  <text x="810.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ rcode==3 (NXDOMAIN)</text>
+  <line x1="640" y1="195" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="300" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="340.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the rcode field distinguishes success from failure precisely — a filter matching 'a response arrived'</text>
+  <text x="490.0" y="358.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">alone would have conflated the successful and failed queries; rcode==3 catches the difference.</text>
+  <line x1="60" y1="430" x2="100" y2="430" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="434" font-size="11" fill="#33415c">DHCP lease sequence</text>
+  <line x1="309" y1="430" x2="349" y2="430" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="357" y="434" font-size="11" fill="#166534">Successful resolution</text>
+  <line x1="576" y1="430" x2="616" y2="430" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="624" y="434" font-size="11" fill="#b91c1c">Failed resolution (correctly detected)</text>
+</svg>

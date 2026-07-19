@@ -1,5 +1,9 @@
 # Chapter 09: WCA-101 Certification Readiness and Enterprise Capstone
 
+![Lab flow for this chapter: a bounded ring-buffer capture on the lab host records a reproduced DHCP renewal, DNS resolution, and HTTPS request alongside an authorized port scan simulating the reported symptom; DHCP, DNS, and TLS all confirm working as expected, leaving the scan as the explanation once the detection one-liner identifies the scanning host by its high distinct-port count. As a negative test, the scanning host's traffic is filtered out entirely and the detection command re-run against what remains; no high-count scan signature remains, confirming the original detection was correctly attributable to the scanning host specifically.](../../../diagrams/volume-20-wireshark-packet-analysis/chapter-09-capstone-investigation-report-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: an integrated investigation combining capture engineering, protocol analysis, and scan detection against one realistic 'slow and occasionally unreachable' scenario.*
+
 ## Learning Objectives
 
 - Map this volume's eight technical chapters to the general skill domains

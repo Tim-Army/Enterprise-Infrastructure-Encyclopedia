@@ -1,5 +1,9 @@
 # Chapter 02: Enterprise Capture Engineering, Taps, Mirrors, and Ring Buffers
 
+![Lab flow for this chapter: a ring-buffer capture bounded to five files, filtered to exclude SSH management traffic, rotates correctly while traffic is generated to force rotation; filtering the resulting files for port 22 traffic returns nothing, confirming SSH was discarded by the capture filter before it ever reached disk even though the SSH session running these commands was active throughout. As a negative test, the same file is filtered for DNS traffic instead; DNS packets do appear, confirming the exclusion was specific to port 22 rather than an accidentally broad filter.](../../../diagrams/volume-20-wireshark-packet-analysis/chapter-02-ring-buffer-capture-filter-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: a ring-buffer capture with a BPF exclusion filter, validated for both correct exclusion and correctly narrow scope.*
+
 ## Learning Objectives
 
 - Compare SPAN/mirror ports and TAPs as capture points and select the
