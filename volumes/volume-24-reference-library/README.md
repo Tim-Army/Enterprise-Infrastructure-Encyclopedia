@@ -1,4 +1,4 @@
-# Volume C (XXIV) — Reference Library
+# Volume C — Reference Library
 
 > A consolidated, series-wide reference volume: dense lookup tables,
 > decision aids, and checklists pulled together from Volumes I through
@@ -7,9 +7,9 @@
 
 ## Overview
 
-Volume XXIV is not a teaching volume. Every other volume in this
+Volume C is not a teaching volume. Every other volume in this
 encyclopedia introduces a domain, builds understanding of it, and ends
-with a hands-on lab that exercises that understanding. Volume XXIV assumes
+with a hands-on lab that exercises that understanding. Volume C assumes
 the reader already has that understanding from the relevant volume and
 instead answers a narrower, more urgent question: "what is the port
 number," "what does this error mean," "what is the exact syntax," "who do
@@ -24,7 +24,7 @@ decision trees, templates, and checklists — designed to be scanned rather
 than read in prose. Every chapter still follows the same nine-section
 framework as the rest of the encyclopedia (see [Chapter
 framework](../../README.md#chapter-framework)), including a hands-on lab,
-so that Volume XXIV remains consistent with the series' structure and
+so that Volume C remains consistent with the series' structure and
 validation tooling even though its content is reference-first.
 
 The volume is organized in a rough dependency order, though most chapters

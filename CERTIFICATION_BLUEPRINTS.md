@@ -17,7 +17,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXI — Ubuntu Server and Cloud | Ubuntu Certified Administrator (where applicable) | Canonical |
 | XXII / XXIII — Dell OpenManage / iDRAC | Dell certified systems administrator paths (where applicable) | Dell Technologies Education Services |
 
-Volumes not listed (I, II, IV, VI–XIII, XVIII, XXIV) are vendor-neutral or
+Volumes not listed (I, II, IV, VI–XIII, XVIII, C) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
 support the certification-track volumes above with foundational and
 integrated-lab material.

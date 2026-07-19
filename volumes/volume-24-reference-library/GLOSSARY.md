@@ -1,6 +1,6 @@
-# Volume XXIV Glossary
+# Volume C Glossary
 
-Definitions for terms introduced in **Volume C (XXIV) — Reference
+Definitions for terms introduced in **Volume C — Reference
 Library**, alphabetized. See also the [volume index](INDEX.md) for
 pointers back to the chapter section each term is drawn from, and the
 [master glossary](../../GLOSSARY.md) for cross-volume terminology.

@@ -53,5 +53,8 @@ Enterprise-Infrastructure-Encyclopedia/
   kebab-case name: `volume-01-enterprise-engineering-foundations`.
 - Chapter slugs are zero-padded two-digit numbers followed by a short
   kebab-case title: `01-network-models-and-protocol-architecture.md`.
-- Volume XXIV uses the Roman numeral **C** in its title numbering but keeps
-  the `volume-24-` directory slug for filesystem ordering.
+- The 24th volume's title uses **Volume C** (the Roman numeral for 100,
+  not 24) rather than continuing the sequential I–XXIII numbering used by
+  every other volume; it still keeps the `volume-24-` directory slug for
+  filesystem ordering, so the slug and the display title intentionally
+  don't match for this one volume.

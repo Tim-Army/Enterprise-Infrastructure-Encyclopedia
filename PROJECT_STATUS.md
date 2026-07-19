@@ -33,7 +33,7 @@ does not by itself verify every technical claim in it.
 | XXI — Ubuntu Server and Cloud 26.04 LTS | 9 | Drafted |
 | XXII — Dell OpenManage Enterprise | 9 | Drafted |
 | XXIII — Dell iDRAC 9 and 10 Administration | 9 | Drafted |
-| C (XXIV) — Reference Library | 9 | Drafted |
+| C — Reference Library | 9 | Drafted |
 
 **Total declared chapters:** 222 of 222 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.

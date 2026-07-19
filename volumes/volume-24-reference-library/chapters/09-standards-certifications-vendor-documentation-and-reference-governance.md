@@ -125,7 +125,7 @@ this repository's release cycle.
 | XXI — Ubuntu Server and Cloud | Ubuntu Certified Administrator (where applicable) | Canonical |
 | XXII / XXIII — Dell OpenManage / iDRAC | Dell certified systems administrator paths (where applicable) | Dell Technologies Education Services |
 
-Volumes I, II, IV, VI–XIII, XVIII, and this volume (XXIV) are
+Volumes I, II, IV, VI–XIII, XVIII, and this volume (C) are
 vendor-neutral or cross-domain and are not mapped to a single
 certification blueprint; they support the certification-track volumes
 above with foundational and integrated reference material.
@@ -314,7 +314,7 @@ claim across all 24 volumes, and it defined the reference-governance
 discipline — provenance, as-of dating, dual-trigger review — that keeps
 this reference volume from becoming exactly the kind of stale, drifted
 documentation the rest of the encyclopedia warns readers to avoid. With
-this chapter, Volume XXIV's nine chapters give a reader a complete,
+this chapter, Volume C's nine chapters give a reader a complete,
 cross-referenced quick path through command syntax, ports and protocols,
 addressing and identity, configuration governance, validation and
 acceptance, troubleshooting, security and risk, automation and

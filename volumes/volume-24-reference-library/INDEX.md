@@ -1,6 +1,6 @@
-# Volume XXIV Index
+# Volume C Index
 
-Alphabetized topical index for **Volume C (XXIV) — Reference Library**.
+Alphabetized topical index for **Volume C — Reference Library**.
 Each entry links to the chapter section where the topic is introduced or
 covered in depth. See also the [volume glossary](GLOSSARY.md) for term
 definitions and the [master index](../../INDEX.md) for cross-volume
