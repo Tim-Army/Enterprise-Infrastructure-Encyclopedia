@@ -42,4 +42,4 @@ jobs:
         with:
           files: |
             output/html/complete-encyclopedia.html
-            output/epub/complete-encyclopedia.epub
+            output/epub/Enterprise-Infrastructure-Encyclopedia.epub

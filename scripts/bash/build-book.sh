@@ -14,8 +14,9 @@
 # one chapter.
 #
 # HTML is produced per chapter, per volume and for the complete series.
-# EPUB is produced only as a single complete-encyclopedia.epub: the whole
-# work is one book, so --volume/--chapter scoping affects HTML alone.
+# EPUB is produced only as a single
+# Enterprise-Infrastructure-Encyclopedia.epub: the whole work is one book,
+# so --volume/--chapter scoping affects HTML alone.
 #
 # Links to other chapters (volumes/*/chapters/*.md) and to volume READMEs
 # (volumes/*/README.md) are rewritten by
@@ -280,7 +281,7 @@ build_series_epub() {
     --css=publishing/web.css \
     --metadata "title=$series_title — Complete Edition" \
     --metadata "author=$author" \
-    -o "output/epub/complete-encyclopedia.epub"
+    -o "output/epub/Enterprise-Infrastructure-Encyclopedia.epub"
 }
 
 # The EPUB edition is the encyclopedia as a single book, so it is only ever
