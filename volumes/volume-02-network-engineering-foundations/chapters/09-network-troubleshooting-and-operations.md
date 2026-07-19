@@ -1,5 +1,9 @@
 # Chapter 9: Network Troubleshooting and Operations
 
+![Lab topology for this chapter: ns-router runs dnsmasq serving both DHCP and DNS on 10.95.0.1/24, but the DHCP dns-server option is deliberately misconfigured to 10.95.0.53, an address nothing listens on; ns-client leases 10.95.0.100/24 correctly but receives the broken resolver address. Step 1 defines the problem (dig times out); Steps 2-3 confirm Layer 3 to the gateway is healthy and isolate resolv.conf's 10.95.0.53 as the theory; Step 4 tests the theory by querying 10.95.0.1 directly, which succeeds; Steps 5-6 fix the DHCP option to 10.95.0.1 and verify. As a negative test, skipping the theory-test step and instead only bouncing the client interface leaves the fault in place.](../../../diagrams/volume-02-network-engineering-foundations/chapter-09-dhcp-dns-fault-troubleshooting-topology.svg)
+
+*Figure 9-1. Topology used throughout this chapter's Hands-On Lab: a single injected DHCP/DNS fault, worked through the chapter's structured six-step troubleshooting methodology.*
+
 ## Learning Objectives
 
 - Apply a structured troubleshooting methodology that moves from problem

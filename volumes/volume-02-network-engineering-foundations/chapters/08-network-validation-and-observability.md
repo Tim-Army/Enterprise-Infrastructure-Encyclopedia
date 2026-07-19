@@ -1,5 +1,9 @@
 # Chapter 8: Network Validation and Observability
 
+![Lab flow for this chapter: logger (or a Python UDP fallback) sends RFC 5424-formatted syslog messages to 127.0.0.1:1514; syslog_receiver.py parses the PRI field into facility and severity, printing a human-readable line per message such as '[Warning] facility=16 :: interface Gi0/1 flapping'; three error-or-higher messages within 10 seconds trigger a correlated ALERT line rather than three separate low-signal notices. As a negative test, a message with no valid PRI field is printed as '[UNPARSEABLE] raw message: ...' and the receiver keeps running rather than crashing.](../../../diagrams/volume-02-network-engineering-foundations/chapter-08-syslog-receiver-alert-correlation-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: a minimal UDP syslog receiver parsing RFC 5424 severity and correlating a burst of errors into a single actionable alert.*
+
 ## Learning Objectives
 
 - Distinguish monitoring, observability, and validation as related but

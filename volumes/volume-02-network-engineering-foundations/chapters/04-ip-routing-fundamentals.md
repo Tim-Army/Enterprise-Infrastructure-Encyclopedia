@@ -1,5 +1,9 @@
 # Chapter 4: IP Routing Fundamentals
 
+![Lab topology for this chapter: router r1 (loopback 192.168.1.1/32) connects to r2 over 10.0.12.0/30; r2 connects to r3 (loopback 192.168.3.1/32) over 10.0.23.0/30; all three run FRRouting's ospfd advertising their connected interfaces into Area 0, and r1 learns a dynamic route to 192.168.3.1/32 via r2 despite having no direct link to r3. As a negative test, the r1–r2 link is set down; OSPF withdraws the route to 192.168.3.1/32, and a subsequent ping from r1 fails immediately with 'Network is unreachable' rather than timing out.](../../../diagrams/volume-02-network-engineering-foundations/chapter-04-ospf-three-router-topology.svg)
+
+*Figure 4-1. Topology used throughout this chapter's Hands-On Lab: a three-router line topology running OSPF in a single area, with a simulated link failure to observe convergence.*
+
 ## Learning Objectives
 
 - Explain how a router builds and uses a routing table, including the

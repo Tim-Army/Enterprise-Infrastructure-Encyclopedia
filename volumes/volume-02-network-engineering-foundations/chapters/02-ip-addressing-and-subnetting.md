@@ -1,5 +1,9 @@
 # Chapter 2: IP Addressing and Subnetting
 
+![Lab topology for this chapter: a parent block 10.50.0.0/24 is subdivided by VLSM into a /26 Users segment (10.50.0.0/26, ns-users at 10.50.0.2), a /27 Servers segment (10.50.0.64/27, ns-servers at 10.50.0.65), and a reserved /30 point-to-point block (10.50.0.96/30) not used by the namespace lab; ns-router holds the first usable address of each in-use block (10.50.0.1/26 and 10.50.0.66/27) and forwards between them. As a negative test, a fourth namespace addressed at 10.50.0.30/26 collides with the already-allocated Users block, and the conflicting address assignment on ns-router fails with 'RTNETLINK answers: File exists'.](../../../diagrams/volume-02-network-engineering-foundations/chapter-02-vlsm-addressing-plan-topology.svg)
+
+*Figure 2-1. Topology used throughout this chapter's Hands-On Lab: a VLSM addressing plan derived from a single /24 and implemented with Linux network namespaces, validated both programmatically and by end-to-end ping.*
+
 ## Learning Objectives
 
 - Decompose an IPv4 address into network and host portions using a subnet

@@ -1,5 +1,9 @@
 # Chapter 6: Wireless Network Foundations
 
+![Lab sequence for this chapter: a synthetic AP (address 02:00:00:00:00:01, SSID LAB-WLAN, channel 6) and Client (address 02:00:00:00:00:02) exchange five crafted 802.11 management frames in order — Beacon, Probe Request, Probe Response, Association Request, and Association Response — matching the association sequence from this chapter's theory section. Separately, free space path loss is calculated at 10, 30, and 60 meters for 2.4 GHz, 5 GHz, and 6 GHz, showing 6 GHz attenuates fastest. As a negative test, at 100 meters the estimated 6 GHz RSSI falls below a -70 dBm reliability threshold, showing a link budget deficit.](../../../diagrams/volume-02-network-engineering-foundations/chapter-06-wireless-association-sequence.svg)
+
+*Figure 6-1. Sequence used throughout this chapter's Hands-On Lab: the beacon/probe/association exchange between a synthetic AP and client, reproduced entirely in software with scapy and decoded with tshark.*
+
 ## Learning Objectives
 
 - Explain RF fundamentals — frequency bands, channels, channel width, and

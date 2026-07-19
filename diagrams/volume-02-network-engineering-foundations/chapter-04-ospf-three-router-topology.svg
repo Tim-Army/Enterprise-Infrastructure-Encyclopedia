@@ -1,0 +1,47 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab topology: three FRRouting routers in a line, running OSPF in Area 0</title>
+  <desc>
+    Router r1 (loopback 192.168.1.1/32) connects to r2 over 10.0.12.0/30; r2 connects to r3 (loopback 192.168.3.1/32) over 10.0.23.0/30. All three run FRR's ospfd advertising their connected interfaces into Area 0. r1 learns a dynamic route to 192.168.3.1/32 via r2, though r1 has no direct link to r3. As a negative test, the r1–r2 link is set down; OSPF withdraws the route to 192.168.3.1/32 within the failure-detection window, and a subsequent ping from r1 fails immediately with 'Network is unreachable' rather than timing out.
+  </desc>
+  <defs>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: Three-Router OSPF Area 0 with Simulated Link Failure</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">r1—r2—r3 line topology; OSPF learns 192.168.3.1/32 across r2 with no direct r1–r3 link</text>
+  <rect x="60" y="180" width="220" height="130" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="223.2" text-anchor="middle" font-size="15" font-weight="700" fill="#111827">r1</text>
+  <text x="170.0" y="241.2" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">r1-r2: 10.0.12.1/30</text>
+  <text x="170.0" y="259.2" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">lo: 192.168.1.1/32</text>
+  <text x="170.0" y="277.2" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">OSPF Area 0</text>
+  <rect x="370" y="180" width="220" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="223.2" text-anchor="middle" font-size="15" font-weight="700" fill="#111827">r2</text>
+  <text x="480.0" y="241.2" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">r2-r1: 10.0.12.2/30</text>
+  <text x="480.0" y="259.2" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">r2-r3: 10.0.23.1/30</text>
+  <text x="480.0" y="277.2" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">OSPF Area 0</text>
+  <rect x="680" y="180" width="220" height="130" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="790.0" y="223.2" text-anchor="middle" font-size="15" font-weight="700" fill="#111827">r3</text>
+  <text x="790.0" y="241.2" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">r3-r2: 10.0.23.2/30</text>
+  <text x="790.0" y="259.2" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">lo: 192.168.3.1/32</text>
+  <text x="790.0" y="277.2" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">OSPF Area 0</text>
+  <line x1="280" y1="245" x2="370" y2="245" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="331.0" y="245.0" font-size="10.5" fill="#33415c">10.0.12.0/30</text>
+  <line x1="590" y1="245" x2="680" y2="245" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="641.0" y="245.0" font-size="10.5" fill="#33415c">10.0.23.0/30</text>
+  <rect x="60" y="360" width="220" height="60" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="170.0" y="385.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7f1d1d">Negative test: link down</text>
+  <text x="170.0" y="403.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">ip link set r1-r2 down</text>
+  <line x1="170" y1="310" x2="170" y2="360" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="310" y="450" width="640" height="130" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="630.0" y="492.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Result of the OSPF Area 0 adjacency and failover</text>
+  <text x="630.0" y="510.4" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">Normal: r2 lists r1 and r3 as Full neighbors; r1 pings 192.168.3.1 via r2 (0% loss)</text>
+  <text x="630.0" y="528.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">After r1–r2 down: r1's route to 192.168.3.1/32 is withdrawn</text>
+  <text x="630.0" y="546.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">ping from r1 fails immediately — &quot;Network is unreachable&quot;, not a timeout</text>
+  <line x1="280" y1="390" x2="310" y2="460" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <line x1="60" y1="610" x2="100" y2="610" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="614" font-size="11" fill="#33415c">Router-to-router OSPF link</text>
+  <line x1="372" y1="610" x2="412" y2="610" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="420" y="614" font-size="11" fill="#b91c1c">Negative-test path</text>
+</svg>

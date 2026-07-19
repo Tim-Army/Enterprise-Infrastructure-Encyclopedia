@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 5 lab topology: a router namespace providing DHCP, DNS, and NAT for a client namespace</title>
+  <desc>
+    ns-router runs dnsmasq, offering a single-address DHCP scope (10.90.0.100) with gateway and DNS server both set to 10.90.0.1, and a static record app.lab.internal -&gt; 10.90.0.1. ns-client leases 10.90.0.100/24 by DHCP and resolves app.lab.internal via DNS. ns-router also MASQUERADEs 10.90.0.0/24 traffic out its 203.0.113.1/30 interface toward ns-wan (203.0.113.2/30), which never sees a route back to 10.90.0.0/24. As a negative test, a second client cannot obtain a lease from the exhausted single-address DHCP scope.
+  </desc>
+  <defs>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: DHCP, DNS, and PAT with dnsmasq</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">ns-client leases an address and resolves a lab domain through ns-router, which PATs to ns-wan</text>
+  <rect x="60" y="190" width="220" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="236.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">ns-client</text>
+  <text x="170.0" y="254.9" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">DHCP → 10.90.0.100/24</text>
+  <text x="170.0" y="272.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">DNS via 10.90.0.1</text>
+  <rect x="370" y="170" width="240" height="160" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="490.0" y="218.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#111827">ns-router (dnsmasq)</text>
+  <text x="490.0" y="236.7" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">veth-cr: 10.90.0.1/24</text>
+  <text x="490.0" y="254.7" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">veth-wr: 203.0.113.1/30</text>
+  <text x="490.0" y="272.7" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">DHCP scope: 10.90.0.100 only</text>
+  <text x="490.0" y="290.7" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">MASQUERADE → veth-wr</text>
+  <rect x="700" y="190" width="220" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="810.0" y="236.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">ns-wan (&quot;internet&quot;)</text>
+  <text x="810.0" y="254.6" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">203.0.113.2/30</text>
+  <text x="810.0" y="272.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">sees only NAT'd source</text>
+  <line x1="280" y1="250" x2="370" y2="250" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="331.0" y="250.0" font-size="10.5" fill="#33415c">DHCP + DNS (10.90.0.0/24)</text>
+  <line x1="610" y1="250" x2="700" y2="250" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="661.0" y="250.0" font-size="10.5" fill="#b45309">PAT (203.0.113.0/30)</text>
+  <rect x="60" y="400" width="840" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="437.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="455.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">ns-client2 requests a lease from the same single-address scope (10.90.0.100, already leased)</text>
+  <text x="480.0" y="473.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">dhclient on ns-client2 repeats DHCPDISCOVER with no DHCPOFFER — veth-c2 receives no address</text>
+  <text x="480.0" y="491.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">reproduces DHCP scope exhaustion</text>
+  <line x1="60" y1="570" x2="100" y2="570" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="574" font-size="11" fill="#33415c">DHCP / DNS (internal)</text>
+  <line x1="327" y1="570" x2="367" y2="570" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="375" y="574" font-size="11" fill="#b45309">PAT'd outbound traffic</text>
+</svg>

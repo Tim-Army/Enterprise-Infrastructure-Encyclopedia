@@ -1,0 +1,46 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 2 lab topology: a VLSM addressing plan implemented with Linux network namespaces</title>
+  <desc>
+    A parent block 10.50.0.0/24 is subdivided by VLSM into a /26 Users segment (10.50.0.0/26), a /27 Servers segment (10.50.0.64/27), and a /30 point-to-point block (10.50.0.96/30) reserved but unused by this lab. ns-users (10.50.0.2/26) and ns-servers (10.50.0.65/27) each connect to ns-router, which holds the first usable address of each block (10.50.0.1/26 and 10.50.0.66/27) and forwards between them. As a negative test, a fourth namespace addressed at 10.50.0.30/26 collides with the already-allocated Users block, and the conflicting 'ip addr add' on ns-router fails with 'RTNETLINK answers: File exists'.
+  </desc>
+  <defs>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 2 Hands-On Lab: VLSM Addressing Plan Validation</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Users /26 and Servers /27 segments derived from 10.50.0.0/24 and routed through a namespace router</text>
+  <rect x="60" y="90" width="840" height="30" rx="6" fill="#f4f7fb" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="480.0" y="110.0" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Parent block — 10.50.0.0/24 (VLSM: largest block first)</text>
+  <rect x="80" y="160" width="230" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="195.0" y="201.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">ns-users</text>
+  <text x="195.0" y="219.9" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1d4ed8">veth-u: 10.50.0.2/26</text>
+  <text x="195.0" y="237.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">block 10.50.0.0/26</text>
+  <rect x="365" y="160" width="230" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="202.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">ns-router</text>
+  <text x="480.0" y="220.9" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">veth-ur: 10.50.0.1/26</text>
+  <text x="480.0" y="238.9" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">veth-sr: 10.50.0.66/27</text>
+  <text x="480.0" y="256.9" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">net.ipv4.ip_forward=1</text>
+  <rect x="650" y="160" width="230" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="765.0" y="201.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">ns-servers</text>
+  <text x="765.0" y="219.9" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1d4ed8">veth-s: 10.50.0.65/27</text>
+  <text x="765.0" y="237.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">block 10.50.0.64/27</text>
+  <line x1="310" y1="215" x2="365" y2="215" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="343.5" y="215.0" font-size="10.5" fill="#33415c">10.50.0.0/26</text>
+  <line x1="595" y1="215" x2="650" y2="215" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="628.5" y="215.0" font-size="10.5" fill="#33415c">10.50.0.64/27</text>
+  <rect x="365" y="340" width="230" height="70" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="370.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Reserved P2P block</text>
+  <text x="480.0" y="388.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">10.50.0.96/30 (not used by netns)</text>
+  <line x1="480" y1="290" x2="480" y2="340" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <rect x="80" y="450" width="800" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="492.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="510.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">ns-conflict addressed at 10.50.0.30/26 — overlaps the already-allocated Users block</text>
+  <text x="480.0" y="528.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">second 'ip addr add 10.50.0.30/26' on ns-router fails:</text>
+  <text x="480.0" y="546.4" text-anchor="middle" font-size="11" font-weight="700" fill="#7f1d1d">RTNETLINK answers: File exists</text>
+  <line x1="80" y1="610" x2="120" y2="610" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="128" y="614" font-size="11" fill="#33415c">Management-plane connection</text>
+  <line x1="401" y1="610" x2="441" y2="610" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="449" y="614" font-size="11" fill="#b45309">Data-plane connection</text>
+</svg>

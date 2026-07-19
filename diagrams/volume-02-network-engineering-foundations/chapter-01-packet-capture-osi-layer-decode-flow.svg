@@ -1,0 +1,52 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab flow: capturing an HTTP request and confirming OSI-layer encapsulation</title>
+  <desc>
+    A lab host runs tcpdump scoped to tcp port 80 or 443 while curl issues an HTTP GET to example.com (93.184.216.34:80). The captured .pcap is decoded with tshark -V, showing Frame, Ethernet II, IPv4, TCP, and HTTP sections in order; a second tshark filter isolates the three-frame TCP handshake (SYN, SYN-ACK, ACK); a scapy-built IP()/TCP() packet is shown to match the same layer order. As a negative test, repeating the capture with an unused filter (tcp port 8443) yields a capture with zero matching packets, demonstrating that an incorrect Layer 4 filter value silently discards traffic rather than producing an error.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Hands-On Lab: Packet Capture and OSI Layer Decode</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">tcpdump capture of an HTTP request, decoded layer by layer and cross-checked with a scapy-built packet</text>
+  <rect x="60" y="90" width="840" height="30" rx="6" fill="#fff7ed" stroke="#b45309" stroke-width="1.5" stroke-dasharray="7 4"/>
+  <text x="480.0" y="110.0" text-anchor="middle" font-size="14" font-weight="600" fill="#7c2d12">Captured segment — tcpdump -i eth0 'tcp port 80 or tcp port 443'</text>
+  <rect x="60" y="150" width="240" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="186.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">Lab Host</text>
+  <text x="180.0" y="204.9" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">curl http://example.com</text>
+  <text x="180.0" y="222.9" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">tcpdump -w model-lab.pcap</text>
+  <rect x="660" y="150" width="240" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="780.0" y="186.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">example.com</text>
+  <text x="780.0" y="204.9" text-anchor="middle" font-size="11.5" font-weight="700" fill="#14532d">93.184.216.34:80</text>
+  <text x="780.0" y="222.9" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">HTTP server</text>
+  <line x1="300" y1="200" x2="660" y2="200" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="486.0" y="200.0" font-size="10.5" fill="#b45309">HTTP GET / (captured)</text>
+  <rect x="60" y="300" width="260" height="130" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="190.0" y="342.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">tshark -r model-lab.pcap -V</text>
+  <text x="190.0" y="360.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Frame → Ethernet II →</text>
+  <text x="190.0" y="378.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">IPv4 → TCP → HTTP</text>
+  <text x="190.0" y="396.2" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">(header order confirmed)</text>
+  <rect x="350" y="300" width="260" height="130" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="351.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">tshark -Y tcp.flags.syn|fin</text>
+  <text x="480.0" y="369.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">SYN → SYN,ACK → ACK</text>
+  <text x="480.0" y="387.2" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">3 distinct frames</text>
+  <rect x="640" y="300" width="260" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="770.0" y="351.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">scapy: IP()/TCP()/Raw()</text>
+  <text x="770.0" y="369.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#14532d">###[ IP ]### / ###[ TCP ]###</text>
+  <text x="770.0" y="387.2" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">matches captured order</text>
+  <line x1="180" y1="250" x2="180" y2="300" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="180" y1="250" x2="480" y2="300" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="180" y1="250" x2="770" y2="300" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="60" y="470" width="840" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="506.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="524.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">Filter changed to 'tcp port 8443' (unused port); curl re-run against example.com</text>
+  <text x="480.0" y="542.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">tshark -r model-lab.pcap → 0 matching packets (silently discarded, not an error)</text>
+  <line x1="60" y1="610" x2="100" y2="610" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="614" font-size="11" fill="#33415c">Local analysis step</text>
+  <line x1="309" y1="610" x2="349" y2="610" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="357" y="614" font-size="11" fill="#b45309">Captured network traffic</text>
+  <line x1="603" y1="610" x2="643" y2="610" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="651" y="614" font-size="11" fill="#166534">Cross-check / expected match</text>
+</svg>

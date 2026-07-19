@@ -1,5 +1,9 @@
 # Chapter 5: Core Network Services
 
+![Lab topology for this chapter: ns-router runs dnsmasq, offering a single-address DHCP scope (10.90.0.100) with gateway and DNS server both set to 10.90.0.1 and a static record app.lab.internal -> 10.90.0.1; ns-client leases 10.90.0.100/24 by DHCP and resolves app.lab.internal via DNS; ns-router also MASQUERADEs 10.90.0.0/24 traffic out its 203.0.113.1/30 interface toward ns-wan (203.0.113.2/30), which never sees a route back to 10.90.0.0/24. As a negative test, a second client cannot obtain a lease from the exhausted single-address DHCP scope.](../../../diagrams/volume-02-network-engineering-foundations/chapter-05-dhcp-dns-pat-topology.svg)
+
+*Figure 5-1. Topology used throughout this chapter's Hands-On Lab: one router namespace providing DHCP, DNS, and PAT for a client namespace, with a simulated internet host on the far side of the translation.*
+
 ## Learning Objectives
 
 - Explain how DNS resolves names to addresses, including the difference

@@ -1,5 +1,9 @@
 # Chapter 1: Network Models and Protocol Architecture
 
+![Lab flow for this chapter: the lab host runs tcpdump scoped to tcp port 80 or 443 while curl issues an HTTP GET to example.com (93.184.216.34:80); the capture is decoded with tshark -V, showing Frame, Ethernet II, IPv4, TCP, and HTTP sections in order, and a separate filter isolates the three-frame TCP handshake (SYN, SYN-ACK, ACK); a scapy-built IP()/TCP() packet is shown to match the same layer order. As a negative test, repeating the capture with an unused filter (tcp port 8443) yields zero matching packets, since an incorrect Layer 4 filter value silently discards traffic rather than erroring.](../../../diagrams/volume-02-network-engineering-foundations/chapter-01-packet-capture-osi-layer-decode-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: capturing, decoding, and constructing packets to confirm that theoretical OSI-layer encapsulation matches what appears on the wire.*
+
 ## Learning Objectives
 
 - Explain why layered reference models exist and how they simplify design,

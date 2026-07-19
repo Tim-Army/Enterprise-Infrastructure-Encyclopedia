@@ -1,5 +1,9 @@
 # Chapter 7: Enterprise Network Design and Resilience
 
+![Lab topology for this chapter: ns-r1 (10.60.0.2/24, priority 150) and ns-r2 (10.60.0.3/24, priority 100) both run keepalived for VRRP group 60, sharing the virtual IP 10.60.0.1/24 over the bridge br-vrrp; ns-r1 wins the election as Master and holds the VIP, while ns-client (10.60.0.100/24) reaches the VIP as its default gateway. As a negative test, keepalived is killed on ns-r1; a continuous ping shows one to three missed replies (consistent with the 1-second advertisement interval) before the VIP reappears on ns-r2, confirming Backup promotes to Master.](../../../diagrams/volume-02-network-engineering-foundations/chapter-07-vrrp-failover-topology.svg)
+
+*Figure 7-1. Topology used throughout this chapter's Hands-On Lab: two VRRP peers sharing a bridge and a virtual gateway IP, with a measured failover after the Master is killed.*
+
 ## Learning Objectives
 
 - Explain the three-tier hierarchical design model (core, distribution,

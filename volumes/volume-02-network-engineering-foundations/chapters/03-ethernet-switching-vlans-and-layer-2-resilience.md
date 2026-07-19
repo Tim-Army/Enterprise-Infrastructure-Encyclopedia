@@ -1,5 +1,9 @@
 # Chapter 3: Ethernet Switching, VLANs, and Layer 2 Resilience
 
+![Lab topology for this chapter: ns-host-a (10.20.0.2/24) and ns-host-b (10.20.0.3/24) are access ports on VLAN 20 of a VLAN-filtered Linux bridge (br0 in ns-switch) and can reach each other; ns-host-c (10.20.0.4/24) is an access port on VLAN 30 of the same physical bridge and cannot reach VLAN 20, demonstrating broadcast-domain isolation. As a negative test, a second, looped link from ns-host-a back to the bridge causes a broadcast storm with STP disabled; enabling the bridge's STP (stp_state 1) puts the redundant link into a blocking state while the primary link stays forwarding, breaking the loop.](../../../diagrams/volume-02-network-engineering-foundations/chapter-03-vlan-bridge-broadcast-isolation-topology.svg)
+
+*Figure 3-1. Topology used throughout this chapter's Hands-On Lab: two VLANs sharing one Linux bridge, showing both broadcast-domain isolation and STP loop prevention.*
+
 ## Learning Objectives
 
 - Explain how Ethernet switches learn MAC addresses, build a forwarding

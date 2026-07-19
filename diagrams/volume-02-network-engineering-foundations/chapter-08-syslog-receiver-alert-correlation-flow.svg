@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 8 lab flow: a UDP syslog receiver parsing RFC 5424 severity and correlating error bursts</title>
+  <desc>
+    logger (or a Python UDP fallback) sends RFC 5424-formatted syslog messages to 127.0.0.1:1514. syslog_receiver.py parses the PRI field into facility and severity, printing a human-readable line per message, for example '[Warning] facility=16 :: interface Gi0/1 flapping'. Three error-or-higher messages within 10 seconds trigger a correlated ALERT line rather than three separate low-signal notices. As a negative test, a message with no valid PRI field is printed as '[UNPARSEABLE] raw message: ...' and the receiver keeps running rather than crashing.
+  </desc>
+  <defs>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: Minimal Syslog Receiver and Alert Correlation</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">An RFC 5424 UDP receiver parses PRI severity and correlates a burst of errors into one alert</text>
+  <rect x="60" y="180" width="240" height="130" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="222.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">logger --rfc5424</text>
+  <text x="180.0" y="240.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">or python3 UDP fallback</text>
+  <text x="180.0" y="258.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">→ 127.0.0.1:1514</text>
+  <text x="180.0" y="276.6" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">-p local0.warning / .err</text>
+  <rect x="360" y="170" width="260" height="150" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="490.0" y="222.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#111827">syslog_receiver.py</text>
+  <text x="490.0" y="240.7" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">UDP :1514</text>
+  <text x="490.0" y="258.7" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">parse PRI → facility/severity</text>
+  <text x="490.0" y="276.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7c2d12">≥3 errors / 10s → ALERT</text>
+  <rect x="700" y="180" width="220" height="130" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="810.0" y="222.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Console Output</text>
+  <text x="810.0" y="240.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">[Warning] facility=16 ::</text>
+  <text x="810.0" y="258.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">interface Gi0/1 flapping</text>
+  <text x="810.0" y="276.4" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">!! ALERT (3 errors/10s)</text>
+  <line x1="300" y1="245" x2="360" y2="245" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="336.0" y="245.0" font-size="10.5" fill="#33415c">UDP</text>
+  <line x1="620" y1="245" x2="700" y2="245" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="666.0" y="245.0" font-size="10.5" fill="#33415c">stdout</text>
+  <rect x="60" y="400" width="840" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="441.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="459.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">malformed message with no valid PRI field sent to the receiver</text>
+  <text x="480.0" y="477.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">→ '[UNPARSEABLE] raw message: ...' printed; receiver keeps listening (no unhandled exception)</text>
+  <line x1="60" y1="570" x2="100" y2="570" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="574" font-size="11" fill="#33415c">Management-plane connection</text>
+  <line x1="381" y1="570" x2="421" y2="570" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="429" y="574" font-size="11" fill="#b45309">Data-plane connection</text>
+</svg>

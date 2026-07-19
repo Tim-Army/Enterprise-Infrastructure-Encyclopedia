@@ -1,0 +1,44 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 7 lab topology: two VRRP routers sharing a bridge and a virtual IP, with a measured failover</title>
+  <desc>
+    ns-r1 (10.60.0.2/24, priority 150) and ns-r2 (10.60.0.3/24, priority 100) both run keepalived for VRRP group 60, sharing the virtual IP 10.60.0.1/24 over the bridge br-vrrp. ns-r1 wins the election as Master and holds the VIP; ns-client (10.60.0.100/24) reaches the VIP as its default gateway. As a negative test, keepalived is killed on ns-r1; a continuous ping shows one to three missed replies (consistent with the 1-second advertisement interval) before the VIP reappears on ns-r2, confirming Backup promotes to Master.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: VRRP Failover Across a Shared Bridge</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">ns-r1 (Master, priority 150) holds VIP 10.60.0.1 until keepalived is killed; ns-r2 (Backup) then takes over</text>
+  <rect x="70" y="150" width="210" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="175.0" y="191.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">ns-r1 (MASTER)</text>
+  <text x="175.0" y="209.6" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">10.60.0.2/24 · prio 150</text>
+  <text x="175.0" y="227.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">owns VIP 10.60.0.1</text>
+  <rect x="70" y="320" width="210" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="175.0" y="361.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">ns-r2 (BACKUP)</text>
+  <text x="175.0" y="379.6" text-anchor="middle" font-size="11" font-weight="700" fill="#7f1d1d">10.60.0.3/24 · prio 100</text>
+  <text x="175.0" y="397.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">takes VIP if r1 fails</text>
+  <rect x="370" y="230" width="200" height="150" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="470.0" y="282.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">br-vrrp</text>
+  <text x="470.0" y="300.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">shared L2 segment</text>
+  <text x="470.0" y="318.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">10.60.0.0/24</text>
+  <text x="470.0" y="336.9" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">VIP 10.60.0.1 (VRID 60)</text>
+  <rect x="690" y="260" width="210" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="795.0" y="301.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">ns-client</text>
+  <text x="795.0" y="319.6" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">10.60.0.100/24</text>
+  <text x="795.0" y="337.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">default via 10.60.0.1</text>
+  <line x1="280" y1="205" x2="370" y2="280" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="280" y1="375" x2="370" y2="330" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="570" y1="305" x2="690" y2="315" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="70" y="500" width="830" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="485.0" y="536.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="485.0" y="554.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">kill keepalived on ns-r1 (Master) — continuous ping to VIP shows 1–3 missed replies (~1s advert_int)</text>
+  <text x="485.0" y="572.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">VIP 10.60.0.1 reappears on ns-r2's veth-r2 — Backup promoted to Master, correct FHRP failover</text>
+  <line x1="70" y1="630" x2="110" y2="630" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="118" y="634" font-size="11" fill="#33415c">Master (normal)</text>
+  <line x1="283" y1="630" x2="323" y2="630" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="331" y="634" font-size="11" fill="#b91c1c">Backup / failover path</text>
+  <line x1="559" y1="630" x2="599" y2="630" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="607" y="634" font-size="11" fill="#166534">Client reachability</text>
+</svg>
