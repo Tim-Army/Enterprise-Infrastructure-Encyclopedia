@@ -102,15 +102,42 @@ first_line_title() {
   head -1 "$1" | sed -E 's/^# (Chapter [0-9]+: )?//'
 }
 
+# The deployed portal URL, read from the link-rewriting library so the two
+# never drift apart.
+portal_base_url="$(python3 -c 'import sys; sys.path.insert(0, "scripts/bash/lib"); import rewrite_chapter_links; print(rewrite_chapter_links.PORTAL_BASE_URL)')"
+
 # Renders publishing/title-page.md with its date placeholders filled in and
 # prints the path to the rendered copy. Prepended as the first input file to
 # every build so it becomes the first Table of Contents entry.
+#
+# Any arguments are appended as up-navigation links, each given as
+# "Label|href". Only EPUB builds pass them: an EPUB nav document may only
+# reference resources inside the book, so a chapter's link up to its volume
+# has to live in the title page body instead. HTML gets the same navigation
+# as real table-of-contents entries via inject_toc_links.py.
 title_page_for() {
-  local dest="$link_tmp/title-page.md"
+  local dest="$link_tmp/title-page.md" pair label href
   sed -e "s/{{CREATED_DATE}}/$title_page_created/" \
       -e "s/{{UPDATED_DATE}}/$title_page_updated/" \
       publishing/title-page.md > "$dest"
+  if [[ $# -gt 0 ]]; then
+    printf '\n' >> "$dest"
+    for pair in "$@"; do
+      label="${pair%%|*}"
+      href="${pair#*|}"
+      printf -- '- [%s](%s)\n' "$label" "$href" >> "$dest"
+    done
+  fi
   printf '%s' "$dest"
+}
+
+# Adds up-navigation entries to the top of a generated HTML file's table of
+# contents. No-op when given no link pairs.
+inject_toc_links() {
+  local file="$1"
+  shift
+  [[ $# -eq 0 ]] && return 0
+  python3 "$repo_root/scripts/bash/lib/inject_toc_links.py" "$file" "$@"
 }
 
 # Pandoc resolves an image's relative path against its own working
@@ -154,6 +181,9 @@ build_chapter_html() {
     --metadata "title=$title" \
     --metadata "author=$author" \
     -o "$outdir/$base.html"
+  inject_toc_links "$outdir/$base.html" \
+    "Encyclopedia title page|../complete-encyclopedia.html#title-page" \
+    "Volume title page|complete-volume.html#title-page"
 }
 
 build_chapter_epub() {
@@ -164,7 +194,9 @@ build_chapter_epub() {
   outdir="output/epub/$volume_slug"
   mkdir -p "$outdir"
   rewritten="$(rewrite_file "$chapter_file" epub-absolute)"
-  rewritten_title_page="$(title_page_for)"
+  rewritten_title_page="$(title_page_for \
+    "Encyclopedia title page|$portal_base_url/html/complete-encyclopedia.html#title-page" \
+    "Volume title page|$portal_base_url/html/$volume_slug/complete-volume.html#title-page")"
   # Leading/trailing sections rather than --include-after-body: EPUB output
   # splits into one XHTML file per top-level section, and an after-body
   # include is appended to every one of them, which would repeat the GitHub
@@ -204,6 +236,8 @@ build_volume_html() {
     --metadata "title=$title" \
     --metadata "author=$author" \
     -o "output/html/$volume_slug/complete-volume.html"
+  inject_toc_links "output/html/$volume_slug/complete-volume.html" \
+    "Encyclopedia title page|../complete-encyclopedia.html#title-page"
 }
 
 build_volume_epub() {
@@ -224,7 +258,8 @@ build_volume_epub() {
   # way, as a leading section, so it becomes the first Table of Contents
   # entry rather than repeating on every chapter's own split file.
   rewritten_colophon="$(rewrite_file "publishing/colophon.md" epub-absolute)"
-  rewritten_title_page="$(title_page_for)"
+  rewritten_title_page="$(title_page_for \
+    "Encyclopedia title page|$portal_base_url/html/complete-encyclopedia.html#title-page")"
   pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" "$rewritten_colophon" \
     --toc --toc-depth=2 \
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
