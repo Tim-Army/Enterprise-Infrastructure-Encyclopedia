@@ -21,6 +21,10 @@
 # anything other than a chapter file (root docs, volume/root README,
 # INDEX, GLOSSARY) are left as-is, since those have no generated-output
 # equivalent to point at.
+#
+# Every link in HTML output (internal and external alike) opens in a new
+# tab via scripts/pandoc/open-links-new-tab.lua, applied at Pandoc
+# conversion time — not used for EPUB, since e-readers have no tab concept.
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -92,6 +96,7 @@ build_chapter_html() {
     --standalone --embed-resources \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
+    --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=2 \
     --metadata "title=$title" \
     --metadata "author=$author" \
@@ -131,6 +136,7 @@ build_volume_html() {
     --standalone --embed-resources \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
+    --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=2 \
     --metadata "title=$title" \
     --metadata "author=$author" \
@@ -170,6 +176,7 @@ build_series_html() {
     --standalone --embed-resources \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
+    --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=2 \
     --metadata "title=$series_title — Complete Edition" \
     --metadata "author=$author" \
