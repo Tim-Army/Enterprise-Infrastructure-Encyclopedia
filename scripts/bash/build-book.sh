@@ -30,6 +30,13 @@
 # Every link in HTML output (internal and external alike) opens in a new
 # tab via scripts/pandoc/open-links-new-tab.lua, applied at Pandoc
 # conversion time — not used for EPUB, since e-readers have no tab concept.
+#
+# implicit_figures is disabled. Left on, Pandoc wraps every image in a
+# <figure> and repeats its alt text as a visible <figcaption>, so each
+# diagram rendered its whole accessibility description as prose on the page
+# before its real "Figure N-1" caption. The alt text stays on the <img>
+# where assistive technology reads it; only the duplicated visible copy is
+# gone.
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -184,6 +191,7 @@ build_chapter_html() {
   mkdir -p "$outdir"
   rewritten="$(rewrite_file "$chapter_file" html-flat "$volume_slug")"
   pandoc "$rewritten" \
+    -f markdown-implicit_figures \
     --standalone --embed-resources \
     --resource-path="$(resource_path_for "$rewritten")" \
     --css=publishing/web.css \
@@ -214,6 +222,7 @@ build_volume_html() {
   done
   rewritten_title_page="$(volume_title_page_for "$title")"
   pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" \
+    -f markdown-implicit_figures \
     --standalone --embed-resources \
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
@@ -239,6 +248,7 @@ build_series_html() {
   done
   rewritten_title_page="$(title_page_for)"
   pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" \
+    -f markdown-implicit_figures \
     --standalone --embed-resources \
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
@@ -263,6 +273,7 @@ build_series_epub() {
   rewritten_colophon="$(rewrite_file "publishing/colophon.md" epub-absolute)"
   rewritten_title_page="$(title_page_for --no-cover)"
   pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" "$rewritten_colophon" \
+    -f markdown-implicit_figures \
     --epub-cover-image=publishing/cover.png \
     --toc --toc-depth=2 \
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
