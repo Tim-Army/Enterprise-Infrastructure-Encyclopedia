@@ -1,5 +1,9 @@
 # Chapter 07: DNS, NTP, Web, Database, and Common Server Services
 
+![Lab topology for this chapter: chronyd reports normal time sync, a local caching DNS resolver forwards to public resolvers successfully, and a self-signed TLS virtual host serves lab content over HTTPS. A MariaDB user granted privileges only on one database can see and use that database. As a negative test, the same user attempts to access the MariaDB system database directly; the server returns an access-denied error, confirming the grant is properly scoped to the one application database and does not implicitly extend to server-wide system tables.](../../../diagrams/volume-14-red-hat-enterprise-linux-10/chapter-07-dns-tls-mariadb-scope-topology.svg)
+
+*Figure 7-1. Topology used throughout this chapter's Hands-On Lab: a caching DNS resolver, TLS web virtual host, and scoped MariaDB user, tested against an out-of-scope database access attempt.*
+
 ## Learning Objectives
 
 - Configure time synchronization with `chrony` and explain why

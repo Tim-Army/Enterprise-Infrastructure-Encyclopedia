@@ -1,5 +1,9 @@
 # Chapter 04: Users, Privilege, SSH, Networking, and firewalld
 
+![Lab topology for this chapter: a scoped operator account authenticates via SSH key with no password prompt, and sudo -l confirms exactly two permitted systemctl commands, not full root. SSH on a second interface is restricted by a firewalld rich rule to one client subnet, with the plain ssh service removed from that zone's service list. As a negative test, five repeated wrong-password login attempts are sent against the account; faillock records the failures and, once the configured threshold is exceeded, temporarily locks the account. Resetting the lockout restores normal access.](../../../diagrams/volume-14-red-hat-enterprise-linux-10/chapter-04-scoped-sudo-ssh-lockout-topology.svg)
+
+*Figure 4-1. Topology used throughout this chapter's Hands-On Lab: a scoped operator account with delegated sudo and source-restricted SSH, tested against a brute-force lockout.*
+
 ## Learning Objectives
 
 - Create and manage local users and groups, including password aging

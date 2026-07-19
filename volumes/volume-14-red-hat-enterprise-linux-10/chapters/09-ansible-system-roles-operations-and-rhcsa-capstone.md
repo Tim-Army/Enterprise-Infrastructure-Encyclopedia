@@ -1,5 +1,9 @@
 # Chapter 09: Ansible, System Roles, Operations, and RHCSA Capstone
 
+![Lab flow for this chapter: a single Ansible playbook builds a scoped service account, an LVM-backed XFS filesystem, an SELinux file context, an httpd virtual host, an open firewall port, and a nightly timer in one run; a second run reports zero changes for every task except the always-changed context-restore command. Independent verification checks every domain directly, exactly as an RHCSA practical would require. As a negative test, the SELinux context is manually reverted; the web service now fails at the SELinux layer with a corresponding denial in the audit log, and re-running the playbook restores the correct context and working service — demonstrating both MAC enforcement and idempotent remediation together.](../../../diagrams/volume-14-red-hat-enterprise-linux-10/chapter-09-rhcsa-capstone-selinux-remediation-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: an integrated Ansible capstone build across identity, storage, SELinux, firewall, and scheduled work, tested against a manual SELinux regression.*
+
 ## Learning Objectives
 
 - Explain Ansible's agentless, inventory-driven architecture and its

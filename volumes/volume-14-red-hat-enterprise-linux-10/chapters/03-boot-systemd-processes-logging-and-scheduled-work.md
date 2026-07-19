@@ -1,5 +1,9 @@
 # Chapter 03: Boot, systemd, Processes, Logging, and Scheduled Work
 
+![Lab flow for this chapter: a systemd timer fires a companion service every minute; after waiting past the first interval, the journal shows at least one line from the service and systemctl status reports the oneshot unit as inactive with exit code 0 between runs. As a negative test, a second unit points ExecStart at a script that does not exist; starting it reports failed with a status such as 203/EXEC, and the journal shows systemd could not execute the configured path at all — a distinct failure signature from an application starting and then crashing on its own.](../../../diagrams/volume-14-red-hat-enterprise-linux-10/chapter-03-systemd-timer-missing-binary-flow.svg)
+
+*Figure 3-1. Flow used throughout this chapter's Hands-On Lab: a custom systemd service and timer observed through the journal, contrasted with a unit whose ExecStart path does not exist.*
+
 ## Learning Objectives
 
 - Trace the RHEL 10 boot sequence from firmware through GRUB2, the

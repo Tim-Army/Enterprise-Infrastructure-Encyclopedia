@@ -1,0 +1,39 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 9 lab flow: an integrated Ansible capstone build across identity, storage, SELinux, firewall, and scheduled work, tested against a manual SELinux regression</title>
+  <desc>
+    capstone.yml builds a scoped service account, an LVM-backed XFS filesystem, an SELinux file context, an httpd virtual host, an open firewall port, and a nightly timer in one run; a second run reports changed=0 for every task except the always-changed restorecon command. Independent verification checks every domain directly — id, lsblk, SELinux context, firewall list, service status, and timer schedule — exactly as an RHCSA practical would require. As a negative test, the SELinux context is manually removed and reset to var_t; the web service now fails at the SELinux layer with a corresponding AVC denial in the audit log, and re-running the playbook restores the correct context and working service — demonstrating both MAC enforcement and idempotent remediation in the same exercise.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: The RHCSA Capstone — One Ansible Run Verified Independently Across Every Domain</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">An idempotent playbook builds identity, storage, SELinux, firewall, and a timer at once; reverting SELinux by hand breaks it and the playbook heals it again</text>
+  <rect x="60" y="130" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="176.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">capstone.yml (one run)</text>
+  <text x="190.0" y="194.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">identity, LVM/XFS, SELinux,</text>
+  <text x="190.0" y="212.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">firewall, httpd, nightly timer</text>
+  <rect x="400" y="130" width="240" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="176.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Independent verification</text>
+  <text x="520.0" y="194.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">id, lsblk, ls -Z, firewall-cmd,</text>
+  <text x="520.0" y="212.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">systemctl, list-timers — all pass</text>
+  <line x1="320" y1="190" x2="400" y2="190" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="130" width="220" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="167.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="185.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">SELinux context reverted</text>
+  <text x="810.0" y="203.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">by hand (chcon var_t)</text>
+  <text x="810.0" y="221.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">httpd fails, AVC denial logged</text>
+  <line x1="640" y1="190" x2="700" y2="190" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="340" width="860" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="490.0" y="381.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Idempotent Remediation</text>
+  <text x="490.0" y="399.4" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">capstone.yml re-run restores httpd_sys_content_t on /capstone-data</text>
+  <text x="490.0" y="417.4" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">curl succeeds again — MAC enforcement and idempotent remediation demonstrated together</text>
+  <line x1="60" y1="500" x2="100" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="504" font-size="11" fill="#33415c">Integrated build</text>
+  <line x1="282" y1="500" x2="322" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="330" y="504" font-size="11" fill="#166534">Verified / remediated state</text>
+  <line x1="603" y1="500" x2="643" y2="500" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="651" y="504" font-size="11" fill="#b91c1c">Manual regression</text>
+</svg>

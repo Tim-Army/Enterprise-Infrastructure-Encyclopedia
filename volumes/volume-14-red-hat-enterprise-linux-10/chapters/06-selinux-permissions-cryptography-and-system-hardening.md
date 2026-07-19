@@ -1,5 +1,9 @@
 # Chapter 06: SELinux, Permissions, Cryptography, and System Hardening
 
+![Lab flow for this chapter: serving content from a relocated web directory fails because the directory does not carry the correct SELinux context, confirmed by an AVC denial in the audit log; applying the correct persistent file context and relabeling fixes it, and the same request now succeeds. An ACL separately grants one non-owner user write access without touching SELinux policy. A LUKS-encrypted loopback volume mounts and accepts a written file normally. As a negative test, the volume is unmounted and the LUKS mapping closed; searching the raw backing file for the plaintext string finds nothing, confirming the data is not recoverable from the backing file without the LUKS key.](../../../diagrams/volume-14-red-hat-enterprise-linux-10/chapter-06-selinux-acl-luks-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: a relocated web content directory triggering and then resolving an SELinux denial, plus a LUKS volume tested for plaintext leakage.*
+
 ## Learning Objectives
 
 - Apply and audit standard Linux permissions, special bits, and POSIX

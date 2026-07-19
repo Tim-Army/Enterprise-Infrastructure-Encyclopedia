@@ -1,0 +1,37 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 7 lab topology: a caching DNS resolver, TLS web virtual host, and scoped MariaDB user, tested against an out-of-scope database access attempt</title>
+  <desc>
+    chronyd reports Leap status Normal; a local BIND caching resolver forwards to public resolvers and dig returns a real answer. A self-signed TLS virtual host serves lab content over HTTPS. MariaDB's labuser, granted all privileges only on labdb, can see and use that one database. As a negative test, labuser attempts USE mysql; SHOW TABLES against the system database; MariaDB returns an access-denied error, confirming the grant is properly scoped to labdb alone and does not implicitly extend to server-wide system tables.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: A Scoped Database Grant Confirmed to Not Reach the System Database</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">labuser sees its own database over a validated DNS/TLS/web stack, but is correctly denied access to MariaDB's mysql schema</text>
+  <rect x="60" y="140" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">chronyd + BIND resolver</text>
+  <text x="180.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Leap status: Normal</text>
+  <text x="180.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">dig @127.0.0.1: real answer</text>
+  <rect x="380" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="500.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Apache TLS vhost</text>
+  <text x="500.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">self-signed cert, :443</text>
+  <text x="500.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">curl -k returns lab vhost</text>
+  <line x1="300" y1="195" x2="380" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="810.0" y="190.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">MariaDB: labuser → labdb</text>
+  <text x="810.0" y="208.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">SHOW DATABASES: labdb visible</text>
+  <line x1="620" y1="195" x2="700" y2="195" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="320" width="860" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="356.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="374.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">labuser: USE mysql; SHOW TABLES → access denied</text>
+  <text x="490.0" y="392.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">the GRANT ALL on labdb.* does not extend to the mysql system schema — the scope holds exactly as defined</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="464" font-size="11" fill="#33415c">Core service</text>
+  <line x1="246" y1="460" x2="286" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="294" y="464" font-size="11" fill="#166534">TLS-verified access</text>
+  <line x1="495" y1="460" x2="535" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="543" y="464" font-size="11" fill="#b91c1c">Correctly denied scope</text>
+</svg>

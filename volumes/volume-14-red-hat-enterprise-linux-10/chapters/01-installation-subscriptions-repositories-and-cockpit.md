@@ -1,5 +1,9 @@
 # Chapter 01: Installation, Subscriptions, Repositories, and Cockpit
 
+![Lab flow for this chapter: local repositories point at the mounted RHEL 10 ISO's BaseOS and AppStream content sets, and dnf repolist confirms both resolve with a nonzero package count. Cockpit installs from those repos, its socket is enabled, and the firewall opens the cockpit service; a browser reaches the Overview page at port 9090 showing hostname, uptime, and resource graphs. As a negative test, cockpit.socket is stopped while the firewall rule stays in place; a curl request to the same port now fails to connect, confirming that socket activation — not just the open firewall port — is what actually provides access.](../../../diagrams/volume-14-red-hat-enterprise-linux-10/chapter-01-cockpit-socket-activation-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: local repository configuration and Cockpit access, proven to depend on socket activation rather than the firewall rule alone.*
+
 ## Learning Objectives
 
 - Describe the RHEL 10 installation workflow, including Anaconda,

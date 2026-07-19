@@ -1,5 +1,9 @@
 # Chapter 08: Podman, Docker Compatibility, Kubernetes, and OpenShift Foundations
 
+![Lab flow for this chapter: a custom container image runs rootless as a Quadlet-managed systemd user service publishing a high port, confirmed reachable with curl. A two-container pod shares one network namespace, and the sidecar container reaches the app container over localhost. The pod is exported as Kubernetes-compatible YAML, removed entirely, and recreated purely from that file. As a negative test, running the same image rootless bound to a privileged port fails with a permission error — the documented, deliberate limitation of rootless Podman without additional configuration.](../../../diagrams/volume-14-red-hat-enterprise-linux-10/chapter-08-podman-quadlet-kube-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: a custom container image run rootless as a Quadlet service, grouped into a pod, and recreated from exported Kubernetes YAML.*
+
 ## Learning Objectives
 
 - Explain Podman's daemonless, rootless architecture and how it

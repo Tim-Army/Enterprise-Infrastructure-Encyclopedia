@@ -1,5 +1,9 @@
 # Chapter 02: Essential Tools, Shell Scripting, and Software Management
 
+![Lab flow for this chapter: an administrative audit script prints disk usage, recent dnf transactions, and largest /var directories cleanly; installing a small test package creates a new transaction that the script's next run picks up automatically. As a negative test, a copy of the script replaces a quoted path with an unquoted multi-word variable; running it word-splits the value into two separate arguments, and du reports it cannot access a directory literally named audit in the current working directory — exactly the class of bug quoting prevents. Separately, dnf history undo cleanly reverses the test package installation.](../../../diagrams/volume-14-red-hat-enterprise-linux-10/chapter-02-dnf-audit-quoting-rollback-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: an administrative audit script exercised against a real package transaction, then deliberately broken to demonstrate a quoting bug.*
+
 ## Learning Objectives
 
 - Navigate, inspect, and manipulate the filesystem efficiently using

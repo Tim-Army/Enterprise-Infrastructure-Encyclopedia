@@ -1,5 +1,9 @@
 # Chapter 05: Storage, LVM, Filesystems, Swap, and Shared-Storage Services
 
+![Lab topology for this chapter: a spare disk becomes an LVM-backed XFS filesystem, live-extended from 4G to approximately 6G with no unmount required, with a swap logical volume in the same volume group. The filesystem exports over NFS to one subnet, and a client on that subnet mounts it and writes a test file successfully. As a negative test, the export is narrowed to a different subnet that the same client is not on; re-mounting from that client now fails with a permission or access error, confirming the export's client restriction is enforced by the NFS server itself, not merely documented.](../../../diagrams/volume-14-red-hat-enterprise-linux-10/chapter-05-lvm-nfs-export-restriction-topology.svg)
+
+*Figure 5-1. Topology used throughout this chapter's Hands-On Lab: an LVM-backed XFS filesystem exported over NFS, extended live and tested against a client-restriction negative test.*
+
 ## Learning Objectives
 
 - Partition disks using GPT and manage block devices with `parted` and
