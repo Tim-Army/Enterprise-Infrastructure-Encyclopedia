@@ -44,7 +44,7 @@ The series combines architecture and theory with implementation guidance, automa
 | XXI | [Ubuntu Server and Cloud 26.04 LTS](volumes/volume-21-ubuntu-server-cloud-26-04-lts/README.md) | 9 |
 | XXII | [Dell OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) | 9 |
 | XXIII | [Dell iDRAC 9 and 10 Administration](volumes/volume-23-dell-idrac-9-10-administration/README.md) | 9 |
-| C | [Reference Library](volumes/volume-24-reference-library/README.md) | 9 |
+| XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
 Technical review and lab-validation sign-off for all 222 chapters are
 tracked in [PROJECT_STATUS.md](PROJECT_STATUS.md). The

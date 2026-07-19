@@ -21,7 +21,7 @@ The volume is organized in two halves:
   pipeline that treats content as code.
 - **Chapters 06–08** zoom out from tooling to the conceptual foundations
   that frame the rest of the encyclopedia: what enterprise infrastructure
-  is and how its domains map to Volumes II through C, how enterprise
+  is and how its domains map to Volumes II through XCIX, how enterprise
   architecture governs technology decisions, and how infrastructure moves
   through a managed lifecycle from planning to decommissioning.
 

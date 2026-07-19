@@ -30,4 +30,4 @@ for current coverage.
 - [Volume XXI — Ubuntu Server and Cloud 26.04 LTS](volumes/volume-21-ubuntu-server-cloud-26-04-lts/GLOSSARY.md)
 - [Volume XXII — Dell OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/GLOSSARY.md)
 - [Volume XXIII — Dell iDRAC 9 and 10 Administration](volumes/volume-23-dell-idrac-9-10-administration/GLOSSARY.md)
-- [Volume C — Reference Library](volumes/volume-24-reference-library/GLOSSARY.md)
+- [Volume XCIX — Reference Library](volumes/volume-99-reference-library/GLOSSARY.md)

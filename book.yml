@@ -807,36 +807,36 @@ volumes:
         title: "RACADM, Redfish, OpenManage, Automation, and Capstone Operations"
         path: volumes/volume-23-dell-idrac-9-10-administration/chapters/09-racadm-redfish-openmanage-automation-and-capstone-operations.md
   - id: volume-24
-    number: "C"
-    slug: volume-24-reference-library
+    number: "XCIX"
+    slug: volume-99-reference-library
     title: "Reference Library"
     chapter_count: 9
     build_eligible: true
     chapters:
       - id: 01
         title: "Command Quick Reference and Safe Administration"
-        path: volumes/volume-24-reference-library/chapters/01-command-quick-reference-and-safe-administration.md
+        path: volumes/volume-99-reference-library/chapters/01-command-quick-reference-and-safe-administration.md
       - id: 02
         title: "Ports, Protocols, Services, and Traffic Flows"
-        path: volumes/volume-24-reference-library/chapters/02-ports-protocols-services-and-traffic-flows.md
+        path: volumes/volume-99-reference-library/chapters/02-ports-protocols-services-and-traffic-flows.md
       - id: 03
         title: "Addressing, Subnetting, Naming, Time, and Identity Reference"
-        path: volumes/volume-24-reference-library/chapters/03-addressing-subnetting-naming-time-and-identity-reference.md
+        path: volumes/volume-99-reference-library/chapters/03-addressing-subnetting-naming-time-and-identity-reference.md
       - id: 04
         title: "Configuration Templates, Baselines, and Change Records"
-        path: volumes/volume-24-reference-library/chapters/04-configuration-templates-baselines-and-change-records.md
+        path: volumes/volume-99-reference-library/chapters/04-configuration-templates-baselines-and-change-records.md
       - id: 05
         title: "Validation, Evidence, Checklists, and Acceptance"
-        path: volumes/volume-24-reference-library/chapters/05-validation-evidence-checklists-and-acceptance.md
+        path: volumes/volume-99-reference-library/chapters/05-validation-evidence-checklists-and-acceptance.md
       - id: 06
         title: "Troubleshooting Decision Aids and Escalation"
-        path: volumes/volume-24-reference-library/chapters/06-troubleshooting-decision-aids-and-escalation.md
+        path: volumes/volume-99-reference-library/chapters/06-troubleshooting-decision-aids-and-escalation.md
       - id: 07
         title: "Security, Hardening, Incident Response, and Risk Reference"
-        path: volumes/volume-24-reference-library/chapters/07-security-hardening-incident-response-and-risk-reference.md
+        path: volumes/volume-99-reference-library/chapters/07-security-hardening-incident-response-and-risk-reference.md
       - id: 08
         title: "Automation, APIs, Data Formats, and Integration Reference"
-        path: volumes/volume-24-reference-library/chapters/08-automation-apis-data-formats-and-integration-reference.md
+        path: volumes/volume-99-reference-library/chapters/08-automation-apis-data-formats-and-integration-reference.md
       - id: 09
         title: "Standards, Certifications, Vendor Documentation, and Reference Governance"
-        path: volumes/volume-24-reference-library/chapters/09-standards-certifications-vendor-documentation-and-reference-governance.md
+        path: volumes/volume-99-reference-library/chapters/09-standards-certifications-vendor-documentation-and-reference-governance.md

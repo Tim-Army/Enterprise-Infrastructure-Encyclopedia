@@ -332,9 +332,9 @@ table of contents for that volume.
 8. Firmware, iDRAC, BIOS, Lifecycle Controller, and Platform Updates
 9. RACADM, Redfish, OpenManage, Automation, and Capstone Operations
 
-## Volume C — Reference Library
+## Volume XCIX — Reference Library
 
-[Volume README](volumes/volume-24-reference-library/README.md) · [Index](volumes/volume-24-reference-library/INDEX.md) · [Glossary](volumes/volume-24-reference-library/GLOSSARY.md)
+[Volume README](volumes/volume-99-reference-library/README.md) · [Index](volumes/volume-99-reference-library/INDEX.md) · [Glossary](volumes/volume-99-reference-library/GLOSSARY.md)
 
 1. Command Quick Reference and Safe Administration
 2. Ports, Protocols, Services, and Traffic Flows

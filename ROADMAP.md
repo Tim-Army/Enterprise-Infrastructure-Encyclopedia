@@ -30,7 +30,7 @@ as prerequisite reading.
 | 21 | XXI — Ubuntu Server and Cloud 26.04 LTS | `volume-21-ubuntu-server-cloud-26-04-lts` | 9 | Volume IV |
 | 22 | XXII — Dell OpenManage Enterprise | `volume-22-dell-openmanage-enterprise` | 9 | Volume IV |
 | 23 | XXIII — Dell iDRAC 9 and 10 Administration | `volume-23-dell-idrac-9-10-administration` | 9 | Volume IV |
-| 24 | C — Reference Library | `volume-24-reference-library` | 9 | Volumes I–XXIII |
+| 24 | XCIX — Reference Library | `volume-99-reference-library` | 9 | Volumes I–XXIII |
 
 ## Ownership and scope control
 

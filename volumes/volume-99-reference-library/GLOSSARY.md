@@ -1,6 +1,6 @@
-# Volume C Glossary
+# Volume XCIX Glossary
 
-Definitions for terms introduced in **Volume C — Reference
+Definitions for terms introduced in **Volume XCIX — Reference
 Library**, alphabetized. See also the [volume index](INDEX.md) for
 pointers back to the chapter section each term is drawn from, and the
 [master glossary](../../GLOSSARY.md) for cross-volume terminology.
