@@ -1,11 +1,12 @@
 # Chapter 10: Installing VMware NSX
 
-![Lab topology for this chapter: a single-node NSX Manager creates a transport zone, uplink profile, and TEP IP pool; an ESXi host with a Chapter 4 VDS is prepared as a transport node with a TEP interface; an NSX Edge VM is deployed, registers with NSX Manager, and gets its own TEP interface; NSX Manager and both nodes' management interfaces share a management network, while the two TEPs exchange Geneve-encapsulated overlay traffic on a separate transport VLAN at MTU 9000.](../../../diagrams/volume-05-vmware-virtualization/chapter-10-nsx-installation-lab-topology.svg)
+![Lab topology for this chapter: a single-node NSX Manager (10.10.50.11, cluster VIP 10.10.50.10) creates a transport zone, uplink profile, and TEP IP pool (10.10.60.0/24, VLAN 300); an ESXi host with a Chapter 4 VDS is prepared as a transport node with management interface 10.10.50.101 and TEP interface TEP-1 at 10.10.60.11; an NSX Edge VM is deployed at management address 10.10.50.21, registers with NSX Manager, and gets its own TEP interface TEP-2 at 10.10.60.21; NSX Manager and both nodes' management interfaces share the 10.10.50.0/24 management network, while the two TEPs exchange Geneve-encapsulated overlay traffic on the separate 10.10.60.0/24 transport VLAN at MTU 9000.](../../../diagrams/volume-05-vmware-virtualization/chapter-10-nsx-installation-lab-topology.svg)
 
 *Figure 10-1. Topology used throughout this chapter's Hands-On Lab: a
 single-node NSX Manager, one ESXi host prepared as a transport node, and
 one NSX Edge node, connected by a management network and an overlay
-transport VLAN.*
+transport VLAN. IP addresses match the examples used in Implementation
+and Automation and in the lab steps below.*
 
 ## Learning Objectives
 
