@@ -382,10 +382,10 @@ locally or in CI.
 
 **References**
 
-- ISO/IEC 27001 — information security management context, referenced
+- [ISO/IEC 27001](https://www.iso.org/standard/27001) — information security management context, referenced
   throughout this encyclopedia's security-adjacent chapters.
-- CIS Controls v8, Control 1 — Inventory and Control of Enterprise Assets.
-- Google SRE Book, *Service Level Objectives* chapter — SLA/SLO/SLI/error
+- [CIS Controls v8, Control 1](https://www.cisecurity.org/controls/v8) — Inventory and Control of Enterprise Assets.
+- [Google SRE Book, *Service Level Objectives* chapter](https://sre.google/sre-book/service-level-objectives/) — SLA/SLO/SLI/error
   budget vocabulary used throughout this chapter.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   encyclopedia's dated platform baseline, an example of the same

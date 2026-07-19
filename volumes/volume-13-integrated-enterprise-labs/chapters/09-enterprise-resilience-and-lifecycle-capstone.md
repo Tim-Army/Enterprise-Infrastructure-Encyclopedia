@@ -251,9 +251,9 @@ ansible-playbook decommission.yml --tags network,security,observability,identity
   availability, backup/DR engineering, resilience testing/chaos
   engineering, maintenance/patching, technical debt/modernization, and
   retirement/decommissioning.
-- NIST SP 800-88 Rev. 1 — *Guidelines for Media Sanitization*.
-- Microsoft's Active Directory Forest Recovery guidance (FSMO seizure and
-  USN rollback detection).
+- [NIST SP 800-88 Rev. 1](https://csrc.nist.gov/pubs/sp/800/88/r1/final) — *Guidelines for Media Sanitization*.
+- [Microsoft's Active Directory Forest Recovery guidance (FSMO seizure and
+  USN rollback detection).](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/forest-recovery-guide/ad-forest-recovery-guide)
 - Every chapter of this volume — this capstone assumes Chapters 01–08 are
   complete and their environments healthy.
 

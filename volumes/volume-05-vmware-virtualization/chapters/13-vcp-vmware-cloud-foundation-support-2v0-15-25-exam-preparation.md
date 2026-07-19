@@ -246,10 +246,10 @@ Get-VMHost -Name "esxi01.corp.example" | Select-Object Name, ConnectionState
 
 **References**
 
-- Broadcom Education Services — official 2V0-15.25 exam guide (current
+- [Broadcom Education Services](https://www.broadcom.com/support/education/vmware) — official 2V0-15.25 exam guide (current
   blueprint domains, item count, exam duration, and candidate profile —
   verify directly before scheduling).
-- VMware Cloud Foundation Documentation — *SDDC Manager*, *Fleet
+- [VMware Cloud Foundation Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1.html) — *SDDC Manager*, *Fleet
   Management*, *Identity Broker*, *VCF Operations*.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this repository's certification-to-volume mapping.

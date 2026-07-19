@@ -314,13 +314,13 @@ infrastructure.
 
 **References**
 
-- Fortinet, *FortiOS Administration Guide* — security profiles, SSL
+- [Fortinet, *FortiOS Administration Guide*](https://docs.fortinet.com/product/fortigate/8.0.0) — security profiles, SSL
   inspection, and FortiSandbox integration.
-- Fortinet, *FortiOS CLI Reference* — `config antivirus profile`,
+- [Fortinet, *FortiOS CLI Reference*](https://docs.fortinet.com/document/fortigate/8.0.0/cli-reference/84566/fortios-cli-reference) — `config antivirus profile`,
   `config ips sensor`, `config webfilter profile`,
   `config firewall ssl-ssh-profile`, `config system fortisandbox`.
-- Fortinet NSE Training Institute, *NSE 4: FortiGate Security* course
-  (security profiles and SSL inspection domains).
+- [Fortinet NSE Training Institute, *NSE 4: FortiGate Security* course
+  (security profiles and SSL inspection domains).](https://training.fortinet.com/local/staticpage/view.php?page=nse_4)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — FortiOS 7.6.x
   baseline used throughout this volume.
 

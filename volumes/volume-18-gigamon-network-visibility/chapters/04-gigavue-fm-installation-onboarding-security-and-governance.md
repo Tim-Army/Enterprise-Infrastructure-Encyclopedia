@@ -279,9 +279,9 @@ model for nodes carrying inline traffic).
 
 **References**
 
-- Gigamon, *GigaVUE-FM Fabric Manager Data Sheet* — capability overview
+- [Gigamon, *GigaVUE-FM Fabric Manager Data Sheet*](https://www.gigamon.com/content/dam/resource-library/english/data-sheet/ds-gigavue-fm-fabric-manager.pdf) — capability overview
   and deployment models.
-- Gigamon, *GigaVUE Fabric Management* documentation library — onboarding,
+- [Gigamon, *GigaVUE Fabric Management* documentation library](https://docs.gigamon.com/doclib/Content/GigaVUE_Fabric_Manager-allDocIntro.html) — onboarding,
   RBAC, and licensing workflows.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this volume's
   GigaVUE-FM 6.x baseline.

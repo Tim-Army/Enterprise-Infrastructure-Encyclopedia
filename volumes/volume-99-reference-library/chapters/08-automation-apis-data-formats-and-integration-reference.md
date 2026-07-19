@@ -235,10 +235,10 @@ curl -s -X GET https://api.example.com/v2/resources \
 
 **References**
 
-- RFC 7231 (HTTP/1.1 Semantics and Content — methods and status codes).
-- RFC 6749 (OAuth 2.0 Authorization Framework).
-- JSON Schema specification (`json-schema.org`).
-- YAML specification (`yaml.org/spec`).
+- [RFC 7231](https://www.rfc-editor.org/rfc/rfc7231) (HTTP/1.1 Semantics and Content — methods and status codes).
+- [RFC 6749](https://www.rfc-editor.org/rfc/rfc6749) (OAuth 2.0 Authorization Framework).
+- [JSON Schema specification (`json-schema.org`).](https://json-schema.org/)
+- [YAML specification (`yaml.org/spec`).](https://yaml.org/spec/)
 - [Volume VIII](../../volume-08-containers-platform-engineering/README.md) — Containers and Platform Engineering (Kubernetes API and
   manifest model in depth).
 - [Volume IX](../../volume-09-infrastructure-automation/README.md) — Infrastructure Automation (Ansible/Terraform in depth).

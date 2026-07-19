@@ -340,11 +340,11 @@ sudo iscsiadm -m node -T iqn.2026-01.com.example:target0 -p 10.20.40.10 --op upd
 
 **References**
 
-- `lvm(8)`, `pvcreate(8)`, `vgcreate(8)`, `lvcreate(8)` man pages.
-- `mkfs.ext4(8)`, `mkfs.xfs(8)`, OpenZFS documentation
-  (`openzfs.github.io`).
-- `exports(5)`, `smb.conf(5)`, `iscsiadm(8)` man pages.
-- Ubuntu Server Guide — Storage, and ZFS root guide.
+- [`lvm(8)`, `pvcreate(8)`, `vgcreate(8)`, `lvcreate(8)` man pages.](https://man7.org/linux/man-pages/man8/lvm.8.html)
+- [`mkfs.ext4(8)`, `mkfs.xfs(8)`, OpenZFS documentation
+  (`openzfs.github.io`).](https://openzfs.github.io/openzfs-docs/)
+- [`exports(5)`, `smb.conf(5)`, `iscsiadm(8)` man pages.](https://man7.org/linux/man-pages/man5/exports.5.html)
+- [Ubuntu Server Guide](https://ubuntu.com/server/docs/) — Storage, and ZFS root guide.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Ubuntu Server
   26.04 baseline referenced throughout this chapter.
 

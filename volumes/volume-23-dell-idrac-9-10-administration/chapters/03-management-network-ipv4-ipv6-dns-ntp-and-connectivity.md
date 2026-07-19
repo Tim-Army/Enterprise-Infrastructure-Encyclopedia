@@ -347,13 +347,13 @@ the address change has settled.
 
 **References**
 
-- Dell Technologies, *iDRAC9/iDRAC10 User's Guide* — Network settings
+- [Dell Technologies, *iDRAC9/iDRAC10 User's Guide*](https://www.dell.com/support/product-details/en-us/product/idrac10-lifecycle-controller-v1-xx-series/resources/manuals) — Network settings
   chapter (NIC selection, VLAN, IPv4/IPv6, DNS)
-- Dell Technologies, *iDRAC RACADM CLI Guide* — `iDRAC.NIC`, `iDRAC.IPv4`,
+- [Dell Technologies, *iDRAC RACADM CLI Guide*](https://www.dell.com/support/manuals/en-us/idrac9-lifecycle-controller-v4.x-series/idrac_4.00.00.00_racadm/supported-racadm-interfaces?guid=guid-a5747353-fc88-4438-b617-c50ca260448e&lang=en-us) — `iDRAC.NIC`, `iDRAC.IPv4`,
   `iDRAC.IPv6`, and `iDRAC.NTPConfigGroup` attribute groups
-- Dell Technologies, *iDRAC Redfish API Guide* — `EthernetInterfaces`
+- [Dell Technologies, *iDRAC Redfish API Guide*](https://www.dell.com/support/kbdoc/en-us/000178045/redfish-api-with-dell-integrated-remote-access-controller) — `EthernetInterfaces`
   resource
-- `SOFTWARE_VERSIONS.md` in this repository for the dated iDRAC9/iDRAC10
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated iDRAC9/iDRAC10
   baseline
 
 **Knowledge Checks**

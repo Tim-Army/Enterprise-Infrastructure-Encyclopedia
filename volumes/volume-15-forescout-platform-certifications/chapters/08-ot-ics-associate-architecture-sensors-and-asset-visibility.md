@@ -267,9 +267,9 @@ covered in depth in [Chapter 9](09-ot-ics-expert-design-deployment-curation-and-
 
 **References**
 
-- Forescout Technologies eyeInspect (OT/ICS) architecture and sensor
+- [Forescout Technologies eyeInspect (OT/ICS) architecture and sensor
   deployment documentation for the current release aligned with this
-  volume's 8.5.x platform baseline.
+  volume's 8.5.x platform baseline.](https://www.forescout.com/product/eyeinspect/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this volume.
 - Purdue Enterprise Reference Architecture (PERA) — the industry-standard

@@ -296,11 +296,11 @@ discrete snapshot or backup restore points from [Chapter 5](05-backup-architectu
 
 **References**
 
-- SNIA snapshot and replication terminology references.
-- Microsoft Volume Shadow Copy Service (VSS) architecture documentation,
-  for application-consistent snapshot coordination on Windows.
-- `lvcreate(8)`, `lvconvert(8)`, `lvs(8)` manual pages, RHEL 10 / Ubuntu
-  Server 26.04 LTS baseline per SOFTWARE_VERSIONS.md.
+- [SNIA snapshot and replication terminology references.](https://www.snia.org/education/dictionary/about-dictionary)
+- [Microsoft Volume Shadow Copy Service (VSS) architecture documentation,
+  for application-consistent snapshot coordination on Windows.](https://learn.microsoft.com/en-us/windows-server/storage/file-server/volume-shadow-copy-service)
+- [`lvcreate(8)`, `lvconvert(8)`, `lvs(8)` manual pages, RHEL 10 / Ubuntu
+  Server 26.04 LTS baseline per SOFTWARE_VERSIONS.md.](https://man7.org/linux/man-pages/man8/lvcreate.8.html)
 
 **Knowledge Checks**
 

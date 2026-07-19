@@ -266,14 +266,14 @@ sudo systemctl restart systemd-journald
 
 **References**
 
-- `systemd.unit(5)`, `systemd.timer(5)`, and `journalctl(1)` man pages.
+- [`systemd.unit(5)`, `systemd.timer(5)`, and `journalctl(1)` man pages.](https://man7.org/linux/man-pages/man5/systemd.unit.5.html)
 - Red Hat Enterprise Linux 10 documentation — System Administrator's Guide
   (see [Volume XIV](../../volume-14-red-hat-enterprise-linux-10/README.md) for the distribution-specific deep dive).
 - Ubuntu Server 26.04 LTS documentation (see [Volume XXI](../../volume-21-ubuntu-server-cloud-26-04-lts/README.md) for the
   distribution-specific deep dive).
-- SELinux User's and Administrator's Guide (Red Hat); AppArmor
-  documentation (Canonical/SUSE).
-- Filesystem Hierarchy Standard (FHS) 3.0, Linux Foundation.
+- [SELinux User's and Administrator's Guide (Red Hat); AppArmor
+  documentation (Canonical/SUSE).](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/using_selinux/index)
+- [Filesystem Hierarchy Standard (FHS) 3.0, Linux Foundation.](https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html)
 
 **Knowledge Checks**
 

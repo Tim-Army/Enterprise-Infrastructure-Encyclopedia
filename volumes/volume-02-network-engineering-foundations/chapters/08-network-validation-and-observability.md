@@ -74,7 +74,7 @@ the push-based, model-driven streaming telemetry model discussed below.
 
 ### Syslog: Centralized Logging Architecture
 
-Syslog, standardized in RFC 5424, transports log messages from a device
+Syslog, standardized in [RFC 5424](https://www.rfc-editor.org/rfc/rfc5424), transports log messages from a device
 (the sender) to a centralized collector, tagged with a **facility** (the
 subsystem generating the message — kernel, local application, and so on)
 and a **severity**:
@@ -92,7 +92,7 @@ and a **severity**:
 
 Syslog is most commonly transported over UDP, which is fast and simple but
 provides no delivery guarantee — a collector outage or network congestion
-silently drops messages with no retransmission. RFC 5425 defines syslog
+silently drops messages with no retransmission. [RFC 5425](https://www.rfc-editor.org/rfc/rfc5425) defines syslog
 over TLS for both confidentiality and reliable, connection-oriented
 delivery, which enterprises increasingly require for security-relevant log
 sources. Centralizing logs from every network device onto one (or a
@@ -111,7 +111,7 @@ to continuous, always-on collection.
 | Technology | Origin | Export Model | Notes |
 | --- | --- | --- | --- |
 | NetFlow (v5/v9) | Cisco-originated | Device exports flow records after flow expiration or timeout | v9 introduced flexible, template-based fields |
-| IPFIX | IETF standardization of NetFlow v9's model (RFC 7011) | Same template-based export model | Vendor-neutral standard; the modern default to design for |
+| IPFIX | IETF standardization of NetFlow v9's model ([RFC 7011](https://www.rfc-editor.org/rfc/rfc7011)) | Same template-based export model | Vendor-neutral standard; the modern default to design for |
 | sFlow | Independent standard, packet-sampled | Exports a statistical sample of packets (e.g., 1-in-1000) plus interface counters | Lower device overhead than full flow accounting; statistical rather than exact |
 
 Flow data answers "who talked to whom, how much, and when" — invaluable
@@ -286,7 +286,7 @@ incident cannot be reliably determined from logs alone.
   any network reachable outside a tightly controlled management segment —
   a cleartext community string observed on the wire grants read (and, if
   misconfigured, write) access to device state.
-- **Transport syslog over TLS (RFC 5425)** for security-relevant log
+- **Transport syslog over TLS ([RFC 5425](https://www.rfc-editor.org/rfc/rfc5425))** for security-relevant log
   sources, both to protect log content in transit and to gain reliable,
   connection-oriented delivery that plain UDP syslog cannot provide.
 - **Restrict management-plane access to monitoring infrastructure itself**
@@ -326,14 +326,14 @@ incident cannot be reliably determined from logs alone.
 4. Compare NetFlow/IPFIX and sFlow's export models, and explain when
    sFlow's sampling approach is an acceptable trade-off.
 5. Why does UDP-transported syslog risk silent message loss, and what does
-   RFC 5425 change about that?
+   [RFC 5425](https://www.rfc-editor.org/rfc/rfc5425) change about that?
 6. A multi-device incident's log timeline does not match the order
    engineers believe events actually occurred in. What should be checked
    first, and why?
 
 ## Hands-On Lab
 
-**Objective.** Build a minimal RFC 5424 syslog receiver, generate tagged
+**Objective.** Build a minimal [RFC 5424](https://www.rfc-editor.org/rfc/rfc5424) syslog receiver, generate tagged
 log messages at varying severities, and implement a simple alert
 correlation rule — demonstrating the centralized logging and alert-fatigue
 concepts from this chapter end to end.
@@ -343,7 +343,7 @@ concepts from this chapter end to end.
 - A Linux host with `python3` (standard library only — no external
   packages required).
 - The `logger` utility (part of `util-linux`/`bsdutils`, present on
-  virtually all Linux distributions) with RFC 5424 and UDP support.
+  virtually all Linux distributions) with [RFC 5424](https://www.rfc-editor.org/rfc/rfc5424) and UDP support.
   Confirm support first:
 
   ```bash
@@ -352,7 +352,7 @@ concepts from this chapter end to end.
 
 **Lab Steps**
 
-1. Write a minimal UDP syslog receiver that parses the RFC 5424 PRI field
+1. Write a minimal UDP syslog receiver that parses the [RFC 5424](https://www.rfc-editor.org/rfc/rfc5424) PRI field
    (facility/severity) and prints a human-readable summary:
 
    ```bash

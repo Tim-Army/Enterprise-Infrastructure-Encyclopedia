@@ -277,16 +277,16 @@ licensed 8.5.x build.
 
 **References**
 
-- Forescout Technologies official product documentation portal (Forescout
+- [Forescout Technologies official product documentation portal (Forescout
   Platform / Console administration and installation guides for the 8.5.x
-  release).
+  release).](https://docs.forescout.com/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this volume's
   dated baseline (Forescout eyeSight/eyeControl Console 8.5.x, 2026-07).
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   FSCA/FSCP/FSCE blueprint domain mapping for this volume.
-- Forescout Technologies certification and training catalog (official
+- [Forescout Technologies certification and training catalog (official
   source for current FSCA/FSCP/FSCE blueprint domains and exam
-  registration).
+  registration).](https://www.forescout.com/support-hub/training/)
 
 **Knowledge Checks**
 

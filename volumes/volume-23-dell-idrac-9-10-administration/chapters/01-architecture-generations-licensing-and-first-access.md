@@ -366,13 +366,13 @@ releases within both iDRAC9 and iDRAC10.
 
 **References**
 
-- Dell Technologies, *iDRAC9/iDRAC10 User's Guide* (version-specific,
-  aligned to the current baseline)
-- Dell Technologies, *iDRAC RACADM CLI Guide*
-- Dell Technologies, *iDRAC Redfish API Guide*
-- Dell Technologies, *PowerEdge Support Matrix* (for iDRAC-generation-to-
-  platform mapping)
-- `SOFTWARE_VERSIONS.md` in this repository for the dated iDRAC9/iDRAC10
+- [Dell Technologies, *iDRAC9/iDRAC10 User's Guide* (version-specific,
+  aligned to the current baseline)](https://www.dell.com/support/product-details/en-us/product/idrac10-lifecycle-controller-v1-xx-series/resources/manuals)
+- [Dell Technologies, *iDRAC RACADM CLI Guide*](https://www.dell.com/support/manuals/en-us/idrac9-lifecycle-controller-v4.x-series/idrac_4.00.00.00_racadm/supported-racadm-interfaces?guid=guid-a5747353-fc88-4438-b617-c50ca260448e&lang=en-us)
+- [Dell Technologies, *iDRAC Redfish API Guide*](https://www.dell.com/support/kbdoc/en-us/000178045/redfish-api-with-dell-integrated-remote-access-controller)
+- [Dell Technologies, *PowerEdge Support Matrix* (for iDRAC-generation-to-
+  platform mapping)](https://www.dell.com/support/kbdoc/en-us/000137343/how-to-identify-which-generation-your-dell-poweredge-server-belongs-to)
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated iDRAC9/iDRAC10
   baseline
 
 **Knowledge Checks**

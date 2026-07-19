@@ -371,13 +371,13 @@ aws budgets create-budget --account-id 111122223333 --budget '{
 
 **References**
 
-- Amazon CloudWatch documentation — metrics, alarms, Logs Insights, and
+- [Amazon CloudWatch documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) — metrics, alarms, Logs Insights, and
   composite alarms.
-- AWS X-Ray documentation — distributed tracing and service maps.
-- AWS Config documentation — rules, conformance packs, and remediation.
-- AWS Systems Manager documentation — Session Manager, Patch Manager, and
+- [AWS X-Ray documentation](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html) — distributed tracing and service maps.
+- [AWS Config documentation](https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html) — rules, conformance packs, and remediation.
+- [AWS Systems Manager documentation](https://docs.aws.amazon.com/systems-manager/latest/userguide/what-is-systems-manager.html) — Session Manager, Patch Manager, and
   Automation.
-- AWS Cost Management documentation — Cost Explorer, Budgets, Compute
+- [AWS Cost Management documentation](https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html) — Cost Explorer, Budgets, Compute
   Optimizer, and Savings Plans.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this chapter maps to the operational excellence, monitoring, and cost-

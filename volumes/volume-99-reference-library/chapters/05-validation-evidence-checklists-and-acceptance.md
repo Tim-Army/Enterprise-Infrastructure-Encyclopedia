@@ -205,7 +205,7 @@ partial acceptance.
   close out.
 - [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md) of this volume — compliance and retention drivers for
   evidence handling.
-- ISO/IEC 19011 — Guidelines for auditing management systems (general
+- [ISO/IEC 19011](https://www.iso.org/standard/70017.html) — Guidelines for auditing management systems (general
   audit-evidence principles referenced across frameworks).
 - [Volume XI](../../volume-11-observability-enterprise-operations/README.md) — Observability and Enterprise Operations (metric and log
   evidence sources).

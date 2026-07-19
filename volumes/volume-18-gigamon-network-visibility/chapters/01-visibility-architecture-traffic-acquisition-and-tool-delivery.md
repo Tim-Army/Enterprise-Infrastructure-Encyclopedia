@@ -307,11 +307,11 @@ sessions nobody can explain — from accumulating over the fabric's life.
 
 **References**
 
-- Gigamon, *GigaVUE-OS and GigaVUE-FM Documentation Library* —
+- [Gigamon, *GigaVUE-OS and GigaVUE-FM Documentation Library*](https://docs.gigamon.com/doclib/Content/Shared/Documentation_List.html) —
   architecture and Flow Mapping overview.
-- Gigamon, *GigaVUE Fabric Management Data Sheet* — GigaVUE-FM capability
+- [Gigamon, *GigaVUE Fabric Management Data Sheet*](https://www.gigamon.com/content/dam/resource-library/english/data-sheet/ds-gigavue-fm-fabric-manager.pdf) — GigaVUE-FM capability
   summary.
-- Gigamon, *Flow Mapping* product page — mapping engine concepts and
+- [Gigamon, *Flow Mapping* product page](https://www.gigamon.com/products/optimize-traffic/traffic-intelligence/gigavue-os/flow-mapping.html) — mapping engine concepts and
   terminology.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this volume's
   GigaVUE-FM 6.x baseline.

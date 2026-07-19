@@ -285,11 +285,11 @@ other acquisition points sharing the same GigaStream group.
 
 **References**
 
-- Gigamon, *Flow Mapping* product page and *Flow Mapping FAQ* —
+- [Gigamon, *Flow Mapping* product page and *Flow Mapping FAQ*](https://www.gigamon.com/products/optimize-traffic/traffic-intelligence/gigavue-os/flow-mapping.html) —
   map types, rule model, and chaining concepts.
-- Gigamon, *GigaStream* product page — load-balanced tool-group
+- [Gigamon, *GigaStream* product page](https://www.gigamon.com/products/optimize-traffic/traffic-intelligence/gigavue-os/gigastream.html) — load-balanced tool-group
   architecture.
-- Gigamon, *GigaVUE-OS CLI Reference* — map, gigastream, and rule command
+- [Gigamon, *GigaVUE-OS CLI Reference*](https://docs.gigamon.com/doclib/Content/GV-OS-CLI/GV_OS_CLI_Home.html) — map, gigastream, and rule command
   syntax for the release in use.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this volume's
   GigaVUE-FM 6.x baseline.

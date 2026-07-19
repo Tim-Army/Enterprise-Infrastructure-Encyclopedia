@@ -295,14 +295,14 @@ ISO 27001, PCI DSS) require evidence of.
 
 **References**
 
-- ITIL 4 Foundation (AXELOS/PeopleCert) — service management process
+- [ITIL 4 Foundation (AXELOS/PeopleCert)](https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-4-foundation-2565) — service management process
   definitions referenced above.
-- NIST SP 800-53 Rev. 5, control family CM (Configuration Management) and
-  AC (Access Control).
-- Microsoft Learn: "Privileged Access Workstations" and "Windows Admin
-  Center" documentation.
-- Red Hat and Canonical enterprise administration guides (see Volume XIV
-  and Volume XXI for distribution-specific references).
+- [NIST SP 800-53 Rev. 5, control family CM (Configuration Management) and
+  AC (Access Control).](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+- [Microsoft Learn: "Privileged Access Workstations" and "Windows Admin
+  Center" documentation.](https://learn.microsoft.com/en-us/security/privileged-access-workstations/)
+- [Red Hat and Canonical enterprise administration guides (see Volume XIV
+  and Volume XXI for distribution-specific references).](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10)
 
 **Knowledge Checks**
 

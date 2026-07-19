@@ -417,14 +417,14 @@ aws backup create-backup-selection \
 
 **References**
 
-- Amazon S3 documentation — storage classes, lifecycle, versioning, and
+- [Amazon S3 documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) — storage classes, lifecycle, versioning, and
   Object Lock.
-- Amazon RDS, Amazon Aurora, and Amazon DynamoDB documentation.
-- AWS KMS documentation — key policies, managed vs. customer-managed
+- [Amazon RDS, Amazon Aurora, and Amazon DynamoDB documentation.](https://docs.aws.amazon.com/rds/)
+- [AWS KMS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html) — key policies, managed vs. customer-managed
   keys, and key rotation.
-- Amazon Redshift, AWS Glue, Amazon Athena, and AWS Lake Formation
-  documentation.
-- AWS Backup documentation — backup plans, vaults, and cross-account/
+- [Amazon Redshift, AWS Glue, Amazon Athena, and AWS Lake Formation
+  documentation.](https://docs.aws.amazon.com/lake-formation/latest/dg/what-is-lake-formation.html)
+- [AWS Backup documentation](https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html) — backup plans, vaults, and cross-account/
   cross-Region copy.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this chapter maps to the data storage, database, and data-protection

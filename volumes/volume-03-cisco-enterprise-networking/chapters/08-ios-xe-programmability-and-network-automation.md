@@ -30,7 +30,7 @@ write against those models directly, without CLI screen-scraping.
 
 ### YANG data models
 
-**YANG (RFC 7950)** is a data modeling language that defines the
+**YANG ([RFC 7950](https://www.rfc-editor.org/rfc/rfc7950))** is a data modeling language that defines the
 structure, types, and constraints of configuration and operational data
 as a hierarchical, strongly typed tree. IOS XE ships three families of
 YANG models:
@@ -59,8 +59,8 @@ each suited to a different automation style:
 
 | Protocol | Transport/encoding | Operating model | Typical use |
 | --- | --- | --- | --- |
-| NETCONF (RFC 6241) | SSH, XML | Full transactional config (candidate/running datastores, validate, commit) | Configuration management tools needing atomic, validated changes |
-| RESTCONF (RFC 8040) | HTTPS, XML or JSON | Stateless REST-style CRUD over the same YANG models | Scripts and web-style integrations that want simple GET/PATCH/POST semantics |
+| NETCONF ([RFC 6241](https://www.rfc-editor.org/rfc/rfc6241)) | SSH, XML | Full transactional config (candidate/running datastores, validate, commit) | Configuration management tools needing atomic, validated changes |
+| RESTCONF ([RFC 8040](https://www.rfc-editor.org/rfc/rfc8040)) | HTTPS, XML or JSON | Stateless REST-style CRUD over the same YANG models | Scripts and web-style integrations that want simple GET/PATCH/POST semantics |
 | gNMI | gRPC (HTTP/2), Protobuf | Unified get/set/subscribe in one protocol | High-performance streaming telemetry and configuration from modern automation/observability platforms |
 
 NETCONF's candidate-datastore model is the closest analog to a database
@@ -359,7 +359,7 @@ DIST-01# guestshell status
 **Authoritative references**
 
 - Cisco, *IOS XE Programmability Configuration Guide*, current release.
-- RFC 7950 (YANG 1.1), RFC 6241 (NETCONF), RFC 8040 (RESTCONF).
+- [RFC 7950](https://www.rfc-editor.org/rfc/rfc7950) (YANG 1.1), [RFC 6241](https://www.rfc-editor.org/rfc/rfc6241) (NETCONF), [RFC 8040](https://www.rfc-editor.org/rfc/rfc8040) (RESTCONF).
 - OpenConfig Working Group, published YANG models (openconfig.net).
 - Cisco `cisco.ios` Ansible Collection documentation (Ansible Galaxy /
   Cisco DevNet).

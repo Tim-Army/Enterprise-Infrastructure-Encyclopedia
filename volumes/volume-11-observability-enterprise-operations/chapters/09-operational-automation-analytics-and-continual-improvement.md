@@ -451,14 +451,14 @@ if __name__ == "__main__":
 
 **References**
 
-- Google, *Site Reliability Engineering*, Chapter 5 ("Eliminating
+- [Google, *Site Reliability Engineering*, Chapter 5 ("Eliminating
   Toil") and *The Site Reliability Workbook*, Chapter 6, free online
-  editions.
-- AXELOS/PeopleCert, *ITIL 4 Foundation*, Continual Improvement
-  practice and the Continual Improvement Model.
-- Google, *Site Reliability Engineering*, Chapter 6 ("Monitoring
+  editions.](https://sre.google/sre-book/eliminating-toil/)
+- [AXELOS/PeopleCert, *ITIL 4 Foundation*, Continual Improvement
+  practice and the Continual Improvement Model.](https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-4-foundation-2565)
+- [Google, *Site Reliability Engineering*, Chapter 6 ("Monitoring
   Distributed Systems"), for the original threshold-versus-anomaly
-  detection discussion referenced in this chapter.
+  detection discussion referenced in this chapter.](https://sre.google/sre-book/monitoring-distributed-systems/)
 - FinOps Foundation and SRE community sources on operational analytics
   dashboards, for MTTA/MTTR trend reporting patterns referenced in this
   chapter (see also [Chapter 08](08-capacity-performance-and-cost-aware-operations.md) for the related capacity/cost trending

@@ -303,10 +303,10 @@ check.
 
 **References**
 
-- Git documentation, *Signing Your Work* — SSH and GPG commit signing.
-- GitHub CLI (`gh`) manual — `gh ssh-key`, `gh auth login`.
-- `mise` documentation — per-project runtime version management.
-- Podman documentation — `podman machine` for macOS/Windows container hosts.
+- [Git documentation, *Signing Your Work*](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work) — SSH and GPG commit signing.
+- [GitHub CLI (`gh`) manual](https://cli.github.com/manual/) — `gh ssh-key`, `gh auth login`.
+- [`mise` documentation](https://mise.jdx.dev/) — per-project runtime version management.
+- [Podman documentation](https://docs.podman.io/) — `podman machine` for macOS/Windows container hosts.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated baseline for
   Node.js and pnpm referenced throughout this volume.
 

@@ -353,13 +353,13 @@ before the next automatic cycle.
 
 **References**
 
-- Dell Technologies, *OpenManage Enterprise User's Guide* — discovery,
+- [Dell Technologies, *OpenManage Enterprise User's Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_4_5_online_help_user_guide/overview) — discovery,
   inventory, and group management
-- Dell Technologies, *OpenManage Enterprise RESTful API Guide* —
+- [Dell Technologies, *OpenManage Enterprise RESTful API Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_p_3.10_api_guide/preface) —
   DiscoveryConfigService, DeviceService, and GroupService resources
-- Dell Technologies, *OpenManage Enterprise Support Matrix* — supported
+- [Dell Technologies, *OpenManage Enterprise Support Matrix*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_4.x.x_support_matrix/openmanage-enterprise-4xx-support-matrix) — supported
   discovery protocols by device class
-- `SOFTWARE_VERSIONS.md` in this repository for the dated 4.7.x baseline
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated 4.7.x baseline
 
 **Knowledge Checks**
 

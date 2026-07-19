@@ -368,13 +368,13 @@ oscap xccdf generate fix \
 
 **References**
 
-- `chmod(1)`, `setfacl(1)`, `getfacl(1)` man pages.
-- `sestatus(8)`, `setsebool(8)`, `semanage(8)`, `restorecon(8)` man
-  pages.
-- `sealert(8)`, `ausearch(8)`, `audit2allow(1)` man pages.
-- `cryptsetup(8)`, `crypttab(5)` man pages.
-- `update-crypto-policies(8)` man page.
-- SCAP Security Guide project documentation (`scap-security-guide`).
+- [`chmod(1)`, `setfacl(1)`, `getfacl(1)` man pages.](https://man7.org/linux/man-pages/man1/chmod.1.html)
+- [`sestatus(8)`, `setsebool(8)`, `semanage(8)`, `restorecon(8)` man
+  pages.](https://man7.org/linux/man-pages/man8/sestatus.8.html)
+- [`sealert(8)`, `ausearch(8)`, `audit2allow(1)` man pages.](https://man7.org/linux/man-pages/man8/ausearch.8.html)
+- [`cryptsetup(8)`, `crypttab(5)` man pages.](https://man7.org/linux/man-pages/man8/cryptsetup.8.html)
+- [`update-crypto-policies(8)` man page.](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/security_hardening/using-system-wide-cryptographic-policies)
+- [SCAP Security Guide project documentation (`scap-security-guide`).](https://www.open-scap.org/security-policies/scap-security-guide/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — RHEL 10
   baseline referenced throughout this chapter.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —

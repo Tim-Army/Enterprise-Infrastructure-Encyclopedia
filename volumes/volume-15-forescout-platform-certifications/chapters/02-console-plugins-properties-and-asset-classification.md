@@ -233,14 +233,14 @@ workflow that resolves low-confidence classifications).
 
 **References**
 
-- Forescout Technologies Console administration and plugin/module
-  configuration guides for the 8.5.x release.
+- [Forescout Technologies Console administration and plugin/module
+  configuration guides for the 8.5.x release.](https://docs.forescout.com/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this volume.
 - [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md) of this volume for the underlying appliance and discovery
   architecture that plugins depend on.
-- Forescout Technologies eyeExtend module catalog (official source for the
-  current list of available integration plugins).
+- [Forescout Technologies eyeExtend module catalog (official source for the
+  current list of available integration plugins).](https://compatibility.forescout.com/eyeextend-products/)
 
 **Knowledge Checks**
 

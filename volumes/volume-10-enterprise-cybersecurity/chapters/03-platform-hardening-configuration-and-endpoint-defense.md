@@ -343,18 +343,18 @@ sudo ausearch -m execve -ts today | tail -20
 
 **References**
 
-- Center for Internet Security, *CIS Benchmarks* (RHEL, Ubuntu, and
-  platform-specific editions)
-- DISA, *Security Technical Implementation Guides (STIGs)*
-- NIST, *SCAP (Security Content Automation Protocol)* specifications
-- Red Hat, *SELinux User's and Administrator's Guide* (RHEL 10
-  documentation)
-- Canonical, *AppArmor documentation* (Ubuntu Server 26.04 LTS)
-- MITRE ATT&CK, techniques T1218 (System Binary Proxy Execution) and
+- [Center for Internet Security, *CIS Benchmarks* (RHEL, Ubuntu, and
+  platform-specific editions)](https://www.cisecurity.org/cis-benchmarks)
+- [DISA, *Security Technical Implementation Guides (STIGs)*](https://public.cyber.mil/stigs/)
+- [NIST, *SCAP (Security Content Automation Protocol)* specifications](https://csrc.nist.gov/projects/security-content-automation-protocol)
+- [Red Hat, *SELinux User's and Administrator's Guide* (RHEL 10
+  documentation)](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/using_selinux/index)
+- [Canonical, *AppArmor documentation* (Ubuntu Server 26.04 LTS)](https://apparmor.net/)
+- [MITRE ATT&CK, techniques T1218 (System Binary Proxy Execution) and
   T1562 (Impair Defenses) as reference points for LOLBin abuse and EDR
-  tampering detection coverage
-- CIS Controls v8.1, Control 4 (Secure Configuration) and Control 2
-  (Inventory and Control of Software Assets)
+  tampering detection coverage](https://attack.mitre.org/)
+- [CIS Controls v8.1, Control 4 (Secure Configuration) and Control 2
+  (Inventory and Control of Software Assets)](https://www.cisecurity.org/controls/v8-1)
 
 **Knowledge Checks**
 

@@ -347,7 +347,7 @@ DIST-01# show wireless fabric summary
 - Cisco, *Catalyst Center User Guide* and *SD-Access Solution Design
   Guide*, current release.
 - Cisco, *Software-Defined Access Deployment Guide*.
-- RFC 9300/9301 (LISP), RFC 7348 (VXLAN).
+- [RFC 9300](https://www.rfc-editor.org/rfc/rfc9300)/9301 (LISP), [RFC 7348](https://www.rfc-editor.org/rfc/rfc7348) (VXLAN).
 - Cisco Catalyst Center REST API reference (Cisco DevNet).
 
 **Knowledge checks**

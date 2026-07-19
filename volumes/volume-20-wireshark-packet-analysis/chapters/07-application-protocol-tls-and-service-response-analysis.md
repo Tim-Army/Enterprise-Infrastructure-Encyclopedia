@@ -263,10 +263,10 @@ tshark -r capture.pcapng -o "tls.keylog_file:tls-keys.log" \
 
 **References**
 
-- Wireshark User's Guide, "TLS Decryption" and protocol reference
+- [Wireshark User's Guide, "TLS Decryption" and protocol reference
   appendix (HTTP, HTTP/2, TLS dissectors) (current for the 4.4.x release
-  line).
-- IETF RFC 9110/9112 (HTTP semantics/HTTP\1.1), RFC 9113 (HTTP/2), RFC
+  line).](https://www.wireshark.org/docs/wsug_html_chunked/)
+- IETF [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110)/9112 (HTTP semantics/HTTP\1.1), [RFC 9113](https://www.rfc-editor.org/rfc/rfc9113) (HTTP/2), RFC
   8446 (TLS 1.3).
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   encyclopedia's dated baseline for Wireshark 4.4.x.

@@ -302,10 +302,10 @@ admin@panorama01# commit
 
 **References**
 
-- Palo Alto Networks, *Panorama Administrator's Guide* (version 11.1).
-- Palo Alto Networks, *Panorama Deployment Modes and Sizing* documentation.
-- Palo Alto Networks, *Manage Log Collection* documentation (Collector
-  Groups, Dedicated Log Collectors).
+- [Palo Alto Networks, *Panorama Administrator's Guide* (version 11.1).](https://docs.paloaltonetworks.com/panorama/11-1/panorama-admin)
+- [Palo Alto Networks, *Panorama Deployment Modes and Sizing* documentation.](https://docs.paloaltonetworks.com/panorama/11-1/panorama-admin/panorama-overview/panorama-models)
+- [Palo Alto Networks, *Manage Log Collection* documentation (Collector
+  Groups, Dedicated Log Collectors).](https://docs.paloaltonetworks.com/panorama/11-1/panorama-admin/manage-log-collection)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Panorama 11.x
   baseline used throughout this volume.
 

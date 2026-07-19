@@ -275,10 +275,10 @@ evidentiary use — file hashes, covered next.
 
 **References**
 
-- Wireshark User's Guide, "Building and Installing Wireshark" and
-  "Capture Privileges" chapters (current for the 4.4.x release line).
-- Npcap documentation, "Restricting Npcap driver's access."
-- `man dumpcap`, `man capinfos` (Wireshark 4.4.x manual pages).
+- [Wireshark User's Guide, "Building and Installing Wireshark" and
+  "Capture Privileges" chapters (current for the 4.4.x release line).](https://www.wireshark.org/docs/wsug_html_chunked/)
+- [Npcap documentation, "Restricting Npcap driver's access."](https://npcap.com/guide/npcap-users-guide.html)
+- [`man dumpcap`, `man capinfos` (Wireshark 4.4.x manual pages).](https://www.wireshark.org/docs/man-pages/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   encyclopedia's dated baseline for Wireshark 4.4.x.
 

@@ -221,10 +221,10 @@ sudo systemctl enable --now sssd
 - RFC 1035 — *Domain Names: Implementation and Specification*.
 - RFC 2131 — *Dynamic Host Configuration Protocol*.
 - RFC 4120 — *The Kerberos Network Authentication Service (V5)*.
-- Volume II, Chapter 05 — Core Network Services.
-- Volume IV, Chapters 02–04 — Enterprise Linux Administration, Windows
+- [Volume II, Chapter 05](../../volume-02-network-engineering-foundations/chapters/05-core-network-services.md) — Core Network Services.
+- [Volume IV](../../volume-04-enterprise-systems-administration/README.md), Chapters 02–04 — Enterprise Linux Administration, Windows
   Server Administration, and Enterprise Identity and Directory Services.
-- Volume X, Chapter 02 — Enterprise Identity, Zero Trust, and Privileged
+- [Volume X, Chapter 02](../../volume-10-enterprise-cybersecurity/chapters/02-enterprise-identity-zero-trust-and-privileged-access.md) — Enterprise Identity, Zero Trust, and Privileged
   Access.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this chapter's Windows Server and Linux hosts.

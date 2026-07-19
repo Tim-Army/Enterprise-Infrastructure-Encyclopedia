@@ -386,17 +386,17 @@ vcsa-deploy restore --accept-eula --no-ssl-certificate-verification \
 
 **References**
 
-- VMware vSphere 9.x Documentation — *vCenter Server Installation and
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *vCenter Server Installation and
   Setup* (VCSA deployment sizes, CLI installer, JSON templates).
-- VMware vSphere 9.x Documentation — *Platform Services* (SSO domain,
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Platform Services* (SSO domain,
   identity sources, identity federation, Enhanced Linked Mode).
-- VMware vSphere 9.x Documentation — *vCenter Server High Availability*.
-- VMware vSphere 9.x Documentation — *vCenter Server Appliance Management
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *vCenter Server High Availability*.
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *vCenter Server Appliance Management
   Interface (VAMI) file-based backup and restore*.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 1 for the vSphere inventory hierarchy vCenter Server manages.
-- See Chapter 8 for full certificate management, Lockdown Mode, and RBAC
+- See [Chapter 1](01-vmware-virtualization-architecture-and-design.md) for the vSphere inventory hierarchy vCenter Server manages.
+- See [Chapter 8](08-vsphere-and-nsx-security-architecture.md) for full certificate management, Lockdown Mode, and RBAC
   hardening depth.
 
 **Knowledge checks**

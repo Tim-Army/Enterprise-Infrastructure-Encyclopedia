@@ -285,11 +285,11 @@ SPAN can passively observe.
 
 **References**
 
-- Gigamon, *Configure Inline Bypass Solutions* documentation — inline
+- [Gigamon, *Configure Inline Bypass Solutions* documentation](https://docs.gigamon.com/doclib/Content/GV-FM-UG/Configure_Inline_Bypass_Solutions.html) — inline
   network, inline tool, and inline map configuration model.
-- Gigamon, *GigaSMART SSL/TLS Decryption* product page — centralized and
+- [Gigamon, *GigaSMART SSL/TLS Decryption* product page](https://www.gigamon.com/products/optimize-traffic/traffic-intelligence/gigasmart/ssl-tls-decryption.html) — centralized and
   inline decryption architecture.
-- Gigamon, *Precryption Technology* announcement and product materials —
+- [Gigamon, *Precryption Technology* announcement and product materials](https://www.gigamon.com/campaigns/precryption.html) —
   eBPF-based plaintext capture without key handling.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this volume's
   GigaVUE-FM 6.x baseline.

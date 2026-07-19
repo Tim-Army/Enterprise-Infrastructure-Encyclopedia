@@ -327,11 +327,11 @@ Invoke-RestMethod -Method Patch -Uri 'https://cmdb.example.internal/api/ci/web-l
 
 **References**
 
-- Brendan Gregg, "Systems Performance" — the USE method and Linux
+- [Brendan Gregg, "Systems Performance"](https://www.brendangregg.com/systems-performance-2nd-edition-book.html) — the USE method and Linux
   performance tooling.
-- `sar(1)`, `sysstat` package documentation, `pidstat(1)` man pages.
-- Microsoft Learn: "Windows Event Forwarding" and "Get-Counter."
-- Microsoft Learn: "Monitor and troubleshoot with Performance Monitor."
+- [`sar(1)`, `sysstat` package documentation, `pidstat(1)` man pages.](https://man7.org/linux/man-pages/man1/sar.1.html)
+- [Microsoft Learn: "Windows Event Forwarding" and "Get-Counter."](https://learn.microsoft.com/en-us/windows/win32/wec/windows-event-collector)
+- [Microsoft Learn: "Monitor and troubleshoot with Performance Monitor."](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-r2-and-2008/cc749154(v=ws.11))
 - NIST SP 800-88 — media sanitization guidance referenced in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md),
   [Chapter 08](08-systems-security-automation-and-compliance.md).
 

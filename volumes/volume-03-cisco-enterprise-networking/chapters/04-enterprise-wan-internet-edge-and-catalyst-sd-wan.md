@@ -71,7 +71,7 @@ typically combines:
 - **Dual-ISP peering** for transport redundancy, using either BGP
   ([Chapter 3](03-cisco-enterprise-routing-and-path-control.md)) for granular multihoming or a simpler floating-static/IP
   SLA–tracked design for smaller sites that don't need full-table policy.
-- **NAT/PAT** to translate internal RFC 1918 addressing to public address
+- **NAT/PAT** to translate internal [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) addressing to public address
   space for outbound sessions, and static/destination NAT for any
   internet-facing services.
 - **Perimeter security** (firewalling, intrusion prevention) — covered in
@@ -325,7 +325,7 @@ cEdge-01# show sdwan omp routes
 - Cisco, *Dynamic Multipoint VPN (DMVPN) Design Guide*.
 - Cisco, *Catalyst SD-WAN Design Guide* and *Catalyst SD-WAN Configuration
   Guide*, current release.
-- RFC 4271 (BGP-4), used at MPLS L3VPN and internet-edge boundaries
+- [RFC 4271](https://www.rfc-editor.org/rfc/rfc4271) (BGP-4), used at MPLS L3VPN and internet-edge boundaries
   ([Chapter 3](03-cisco-enterprise-routing-and-path-control.md)).
 - Cisco, *Catalyst 8000V Edge Software* and Catalyst 8200/8300 Series data
   sheets.

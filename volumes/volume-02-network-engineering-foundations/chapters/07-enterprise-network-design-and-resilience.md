@@ -95,7 +95,7 @@ active forwarder:
 
 | Protocol | Standard | Election Model | Notes |
 | --- | --- | --- | --- |
-| VRRP (Virtual Router Redundancy Protocol) | RFC 5798, open standard | Highest-priority router becomes Master; others are Backup | Multi-vendor interoperable |
+| VRRP (Virtual Router Redundancy Protocol) | [RFC 5798](https://www.rfc-editor.org/rfc/rfc5798), open standard | Highest-priority router becomes Master; others are Backup | Multi-vendor interoperable |
 | HSRP (Hot Standby Router Protocol) | Cisco-proprietary | Highest-priority router becomes Active; others are Standby | Covered in vendor-specific depth in [Volume III](../../volume-03-cisco-enterprise-networking/README.md) |
 | GLBP (Gateway Load Balancing Protocol) | Cisco-proprietary | All group members can actively forward simultaneously | Adds load balancing on top of FHRP's basic redundancy model |
 

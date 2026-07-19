@@ -264,14 +264,14 @@ url-filtering-version: 20260715.20123
 
 **References**
 
-- Palo Alto Networks, *Cloud-Delivered Security Services* datasheets
+- [Palo Alto Networks, *Cloud-Delivered Security Services* datasheets
   (Threat Prevention, Advanced Threat Prevention, WildFire, Advanced URL
-  Filtering, DNS Security, Enterprise DLP, SaaS Security).
-- Palo Alto Networks, *Strata Cloud Manager* documentation.
-- Palo Alto Networks, *Prisma Access* and *Prisma SD-WAN* architecture
-  guides.
-- Palo Alto Networks, *Cortex XDR*, *Cortex XSIAM*, *Cortex XSOAR*, and
-  *Cortex Xpanse* product documentation.
+  Filtering, DNS Security, Enterprise DLP, SaaS Security).](https://docs.paloaltonetworks.com/cdss)
+- [Palo Alto Networks, *Strata Cloud Manager* documentation.](https://docs.paloaltonetworks.com/strata-cloud-manager)
+- [Palo Alto Networks, *Prisma Access* and *Prisma SD-WAN* architecture
+  guides.](https://docs.paloaltonetworks.com/prisma-sd-wan)
+- [Palo Alto Networks, *Cortex XDR*, *Cortex XSIAM*, *Cortex XSOAR*, and
+  *Cortex Xpanse* product documentation.](https://www.paloaltonetworks.com/cortex)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — PAN-OS 11.x /
   Panorama 11.x baseline used throughout this volume.
 

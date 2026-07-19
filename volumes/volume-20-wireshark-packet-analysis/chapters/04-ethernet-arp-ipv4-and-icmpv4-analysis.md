@@ -266,9 +266,9 @@ icmp.type==11 || icmp.type==0 || icmp.type==8
 
 **References**
 
-- Wireshark User's Guide, "Protocol Reference" appendix (Ethernet, ARP,
-  IPv4, ICMPv4 dissectors).
-- IETF RFC 826 (ARP), RFC 791 (IPv4), RFC 792 (ICMP).
+- [Wireshark User's Guide, "Protocol Reference" appendix (Ethernet, ARP,
+  IPv4, ICMPv4 dissectors).](https://www.wireshark.org/docs/wsug_html_chunked/)
+- IETF [RFC 826](https://www.rfc-editor.org/rfc/rfc826) (ARP), [RFC 791](https://www.rfc-editor.org/rfc/rfc791) (IPv4), [RFC 792](https://www.rfc-editor.org/rfc/rfc792) (ICMP).
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   encyclopedia's dated baseline for Wireshark 4.4.x.
 

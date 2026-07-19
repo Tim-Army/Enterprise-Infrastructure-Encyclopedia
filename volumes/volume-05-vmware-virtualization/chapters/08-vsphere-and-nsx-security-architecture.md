@@ -650,20 +650,20 @@ Get-VM -Name "ora-db-01" | New-TagAssignment -Tag (Get-Tag -Name "db" -Category 
 
 **References**
 
-- VMware vSphere 9.x Documentation — *Security* (Lockdown Mode, Secure
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Security* (Lockdown Mode, Secure
   Boot, TPM, VM encryption, vTPM, certificate management, RBAC).
-- VMware vSphere 9.x Documentation — *vSphere Trust Authority*.
-- VMware NSX 4.x Documentation — *Distributed Firewall*, *Gateway
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *vSphere Trust Authority*.
+- [VMware NSX 4.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/nsx/vmware-nsx/4-2.html) — *Distributed Firewall*, *Gateway
   Firewall*, *NSX Distributed IDS/IPS*, *NSX Malware Prevention*, *Service
   Insertion*.
-- VMware NSX 4.x Documentation — *Groups and Tags* (dynamic membership
+- [VMware NSX 4.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/nsx/vmware-nsx/4-2.html) — *Groups and Tags* (dynamic membership
   criteria).
-- KMIP (Key Management Interoperability Protocol) specification — OASIS.
+- [KMIP (Key Management Interoperability Protocol) specification](https://docs.oasis-open.org/kmip/kmip-spec/v2.1/os/kmip-spec-v2.1-os.html) — OASIS.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 6 for vSAN data-at-rest encryption and its interaction with
+- See [Chapter 6](06-vsphere-storage-and-vsan.md) for vSAN data-at-rest encryption and its interaction with
   deduplication/compression.
-- See Chapter 3 (vCenter Server Deployment, Identity, and Recovery) for
+- See [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md) (vCenter Server Deployment, Identity, and Recovery) for
   full VMCA/PKI architecture, referenced here only for its security
   implications.
 

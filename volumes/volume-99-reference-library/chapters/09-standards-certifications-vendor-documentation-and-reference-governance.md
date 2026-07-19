@@ -95,7 +95,7 @@ except at series scale, across 23 other volumes' worth of material.
 
 | Body | Domain | Representative Standards Referenced in This Encyclopedia | Authoritative Source |
 | --- | --- | --- | --- |
-| IETF (Internet Engineering Task Force) | Internet protocols | RFC 793/768/792 (TCP/UDP/ICMP), RFC 1918 (private addressing), RFC 4291 (IPv6), RFC 5905 (NTP), RFC 6749 (OAuth 2.0), RFC 4120 (Kerberos) | `rfc-editor.org`, `ietf.org` |
+| IETF (Internet Engineering Task Force) | Internet protocols | [RFC 793](https://www.rfc-editor.org/rfc/rfc793)/768/792 (TCP/UDP/ICMP), [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) (private addressing), [RFC 4291](https://www.rfc-editor.org/rfc/rfc4291) (IPv6), [RFC 5905](https://www.rfc-editor.org/rfc/rfc5905) (NTP), [RFC 6749](https://www.rfc-editor.org/rfc/rfc6749) (OAuth 2.0), [RFC 4120](https://www.rfc-editor.org/rfc/rfc4120) (Kerberos) | `rfc-editor.org`, `ietf.org` |
 | IEEE (Institute of Electrical and Electronics Engineers) | Networking hardware/link-layer standards | 802.1Q (VLAN tagging), 802.1AB (LLDP), 802.3 (Ethernet), 802.11 (Wi-Fi) | `standards.ieee.org` |
 | ISO/IEC | Management systems and information security | ISO/IEC 27001 (information security management), ISO/IEC 20000 (IT service management), ISO/IEC 19011 (audit guidelines, [Chapter 05](05-validation-evidence-checklists-and-acceptance.md)) | `iso.org` |
 | NIST (National Institute of Standards and Technology) | US federal security and risk standards, widely adopted beyond federal use | SP 800-53 (controls), SP 800-61 (incident response, [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)), SP 800-88 (media sanitization, [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)), CSF (Cybersecurity Framework) | `csrc.nist.gov` |
@@ -231,16 +231,16 @@ shape so provenance and currency are both explicit:
 
 **References**
 
-- `CERTIFICATION_BLUEPRINTS.md` (repository root) — authoritative
+- [`CERTIFICATION_BLUEPRINTS.md`](../../../CERTIFICATION_BLUEPRINTS.md) (repository root) — authoritative
   certification mapping for this encyclopedia.
-- `SOFTWARE_VERSIONS.md` (repository root) — dated baseline every
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) (repository root) — dated baseline every
   version-specific reference in this encyclopedia cites.
-- `EDITORIAL_STANDARDS.md` (repository root) — the rule against
+- [`EDITORIAL_STANDARDS.md`](../../../EDITORIAL_STANDARDS.md) (repository root) — the rule against
   reproducing proprietary certification content, applied throughout this
   chapter.
-- IETF RFC Editor (`rfc-editor.org`).
-- NIST Computer Security Resource Center (`csrc.nist.gov`).
-- ISO (`iso.org`).
+- [IETF RFC Editor (`rfc-editor.org`).](https://www.rfc-editor.org/)
+- [NIST Computer Security Resource Center (`csrc.nist.gov`).](https://csrc.nist.gov/)
+- [ISO (`iso.org`).](https://www.iso.org/)
 - Vendor documentation portals listed in this chapter's reference table.
 
 **Knowledge checks**

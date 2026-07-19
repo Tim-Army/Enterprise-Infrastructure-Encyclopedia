@@ -319,13 +319,13 @@ aws cloudwatch describe-alarms --state-value ALARM --query "MetricAlarms[].Alarm
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   the authoritative pointer to AWS Training and Certification for current
   blueprint domains and weighting for both paths.
-- AWS Well-Architected Framework whitepaper and Well-Architected Tool —
+- [AWS Well-Architected Framework whitepaper and Well-Architected Tool](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) —
   the design vocabulary underlying both certification paths.
-- AWS Training and Certification official exam guides for AWS Certified
-  Solutions Architect and AWS Certified Security — confirm current domain
+- [AWS Training and Certification official exam guides for AWS Certified
+  Solutions Architect and AWS Certified Security](https://docs.aws.amazon.com/aws-certification/latest/examguides/aws-certification-exam-guides.html) — confirm current domain
   weighting directly from AWS before using any third-party material,
   including this volume, as final exam preparation.
-- AWS Skill Builder — official AWS digital training, including free
+- [AWS Skill Builder](https://skillbuilder.aws/) — official AWS digital training, including free
   digital courses and exam-readiness content for both certification
   paths.
 - Chapters 01–08 of this volume — the primary reference material this

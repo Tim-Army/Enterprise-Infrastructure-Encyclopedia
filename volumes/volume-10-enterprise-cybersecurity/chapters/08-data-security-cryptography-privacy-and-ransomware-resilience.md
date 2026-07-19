@@ -438,14 +438,14 @@ storage-cli object lock-status --bucket backup-prod-immutable --key nightly-2026
 
 **References**
 
-- NIST SP 800-57, *Recommendation for Key Management*
-- NIST SP 800-111, *Guide to Storage Encryption Technologies for
-  End User Devices*
-- NIST SP 800-175B, *Guideline for Using Cryptographic Standards*
-- CISA and partner agencies, *#StopRansomware Guide*
-- Regulation (EU) 2016/679 (GDPR), Articles 5, 15–22, and 33
-- CIS Controls v8.1, Control 3 (Data Protection) and Control 11
-  (Data Recovery)
+- [NIST SP 800-57, *Recommendation for Key Management*](https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final)
+- [NIST SP 800-111, *Guide to Storage Encryption Technologies for
+  End User Devices*](https://csrc.nist.gov/pubs/sp/800/111/final)
+- [NIST SP 800-175B, *Guideline for Using Cryptographic Standards*](https://csrc.nist.gov/pubs/sp/800/175/b/r1/final)
+- [CISA and partner agencies, *#StopRansomware Guide*](https://www.cisa.gov/stopransomware/ransomware-guide)
+- [Regulation (EU) 2016/679 (GDPR), Articles 5, 15–22, and 33](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng)
+- [CIS Controls v8.1, Control 3 (Data Protection) and Control 11
+  (Data Recovery)](https://www.cisecurity.org/controls/v8-1)
 
 **Knowledge Checks**
 

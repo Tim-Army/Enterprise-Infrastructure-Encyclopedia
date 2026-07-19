@@ -236,9 +236,9 @@ security review.
 
 **References**
 
-- Palo Alto Networks, *PCNSA Study Guide* and official blueprint page.
-- Palo Alto Networks, *PCNSE Study Guide* and official blueprint page.
-- Palo Alto Networks Beacon (training.paloaltonetworks.com) — role-based
+- [Palo Alto Networks, *PCNSA Study Guide* and official blueprint page.](https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/pdf/datasheets/education/pcnsa-study-guide.pdf)
+- [Palo Alto Networks, *PCNSE Study Guide* and official blueprint page.](https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/pdf/datasheets/education/pcnse-study-guide.pdf)
+- [Palo Alto Networks Beacon (training.paloaltonetworks.com)](https://beacon.paloaltonetworks.com/) — role-based
   learning paths and hands-on units.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this volume's certification mapping.

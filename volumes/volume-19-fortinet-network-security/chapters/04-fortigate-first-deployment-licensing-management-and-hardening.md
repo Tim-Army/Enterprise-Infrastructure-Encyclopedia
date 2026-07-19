@@ -293,13 +293,13 @@ resistant) exercise, consistent with [Chapter 01](01-nse-1-cybersecurity-awarene
 
 **References**
 
-- Fortinet, *FortiOS Administration Guide* — initial setup, licensing, and
+- [Fortinet, *FortiOS Administration Guide*](https://docs.fortinet.com/product/fortigate/8.0.0) — initial setup, licensing, and
   hardening.
-- Fortinet, *FortiOS CLI Reference* — `config system global`,
+- [Fortinet, *FortiOS CLI Reference*](https://docs.fortinet.com/document/fortigate/8.0.0/cli-reference/84566/fortios-cli-reference) — `config system global`,
   `config system interface`, `config system admin`,
   `config system password-policy`.
-- Fortinet NSE Training Institute, *NSE 4: FortiGate Security* course
-  (initial configuration and administrative access domains).
+- [Fortinet NSE Training Institute, *NSE 4: FortiGate Security* course
+  (initial configuration and administrative access domains).](https://training.fortinet.com/local/staticpage/view.php?page=nse_4)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — FortiOS 7.6.x
   baseline used throughout this volume.
 

@@ -170,15 +170,15 @@ sudo systemctl status nginx --no-pager  # verify
 
 **References**
 
-- `SOFTWARE_VERSIONS.md` (repository root) — dated baseline for every
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) (repository root) — dated baseline for every
   platform version cited in this chapter.
-- Cisco IOS XE Command Reference (Cisco.com, current release train).
-- PAN-OS CLI Reference and PAN-OS Web Interface Reference (Palo Alto
-  Networks TechDocs).
-- FortiOS CLI Reference (Fortinet Document Library).
-- Microsoft PowerShell documentation (`learn.microsoft.com/powershell`).
-- AWS CLI Command Reference (`docs.aws.amazon.com/cli`).
-- VMware PowerCLI and `esxcli` documentation (VMware by Broadcom TechDocs).
+- [Cisco IOS XE Command Reference (Cisco.com, current release train).](https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-command-reference-list.html)
+- [PAN-OS CLI Reference and PAN-OS Web Interface Reference (Palo Alto
+  Networks TechDocs).](https://docs.paloaltonetworks.com/pan-os)
+- [FortiOS CLI Reference (Fortinet Document Library).](https://docs.fortinet.com/document/fortigate/8.0.0/cli-reference/84566/fortios-cli-reference)
+- [Microsoft PowerShell documentation (`learn.microsoft.com/powershell`).](https://learn.microsoft.com/en-us/powershell/)
+- [AWS CLI Command Reference (`docs.aws.amazon.com/cli`).](https://docs.aws.amazon.com/cli/latest/)
+- [VMware PowerCLI and `esxcli` documentation (VMware by Broadcom TechDocs).](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/power-cli/latest/powercli.html)
 
 **Knowledge checks**
 

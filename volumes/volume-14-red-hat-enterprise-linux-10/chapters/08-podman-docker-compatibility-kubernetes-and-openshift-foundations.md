@@ -373,12 +373,12 @@ oc get routes
 
 **References**
 
-- `podman(1)`, `podman-run(1)`, `containers.conf(5)` man pages.
-- `quadlet(5)` man page — Quadlet unit file syntax.
-- Podman documentation — rootless containers and Docker compatibility,
+- [`podman(1)`, `podman-run(1)`, `containers.conf(5)` man pages.](https://docs.podman.io/en/latest/markdown/podman.1.html)
+- [`quadlet(5)` man page](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) — Quadlet unit file syntax.
+- [Podman documentation](https://docs.podman.io/) — rootless containers and Docker compatibility,
   podman.io.
-- Kubernetes documentation — Pods, Deployments, and Services concepts.
-- Red Hat OpenShift Container Platform documentation — Routes, S2I,
+- [Kubernetes documentation](https://kubernetes.io/docs/home/) — Pods, Deployments, and Services concepts.
+- [Red Hat OpenShift Container Platform documentation](https://docs.redhat.com/en/documentation/openshift_container_platform/) — Routes, S2I,
   Operators, and Security Context Constraints.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Kubernetes
   baseline referenced in this chapter.

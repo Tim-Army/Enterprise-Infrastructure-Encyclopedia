@@ -363,17 +363,17 @@ review evidence is captured where engineers already work:
 
 **References**
 
-- NIST, *Cybersecurity Framework 2.0* (2024)
-- NIST SP 800-37 Rev 2, *Risk Management Framework for Information Systems
-  and Organizations*
-- NIST SP 800-53 Rev 5, *Security and Privacy Controls for Information
-  Systems and Organizations*
-- NIST SP 800-207, *Zero Trust Architecture*
-- ISO/IEC 27001:2022, *Information Security Management Systems —
+- [NIST, *Cybersecurity Framework 2.0* (2024)](https://www.nist.gov/cyberframework)
+- [NIST SP 800-37 Rev 2, *Risk Management Framework for Information Systems
+  and Organizations*](https://csrc.nist.gov/pubs/sp/800/37/r2/final)
+- [NIST SP 800-53 Rev 5, *Security and Privacy Controls for Information
+  Systems and Organizations*](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+- [NIST SP 800-207, *Zero Trust Architecture*](https://csrc.nist.gov/pubs/sp/800/207/final)
+- [ISO/IEC 27001:2022, *Information Security Management Systems](https://www.iso.org/standard/27001) —
   Requirements*
-- CIS Controls v8.1, Center for Internet Security
-- PCI Security Standards Council, *PCI DSS v4.0.1*
-- FAIR Institute, *FAIR (Factor Analysis of Information Risk) Standard*
+- [CIS Controls v8.1, Center for Internet Security](https://www.cisecurity.org/controls/v8-1)
+- [PCI Security Standards Council, *PCI DSS v4.0.1*](https://www.pcisecuritystandards.org/document_library/)
+- [FAIR Institute, *FAIR (Factor Analysis of Information Risk) Standard*](https://www.fairinstitute.org/what-is-fair)
 
 **Knowledge Checks**
 

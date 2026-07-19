@@ -412,12 +412,12 @@ overrides:
 
 **References**
 
-- Grafana Loki documentation, `grafana.com/docs/loki/latest/`, for the
-  label-indexed storage model and LogQL.
-- Vector documentation, `vector.dev/docs/`, for pipeline transform (VRL)
-  syntax and sink configuration.
-- OpenTelemetry Logs specification, `opentelemetry.io/docs/specs/otel/logs/`,
-  for structured log data model and trace-context correlation.
+- [Grafana Loki documentation, `grafana.com/docs/loki/latest/`, for the
+  label-indexed storage model and LogQL.](https://grafana.com/docs/loki/latest/)
+- [Vector documentation, `vector.dev/docs/`, for pipeline transform (VRL)
+  syntax and sink configuration.](https://vector.dev/docs/)
+- [OpenTelemetry Logs specification, `opentelemetry.io/docs/specs/otel/logs/`,
+  for structured log data model and trace-context correlation.](https://opentelemetry.io/docs/specs/otel/logs/)
 - NIST SP 800-92, *Guide to Computer Security Log Management*, for
   general log management and retention guidance referenced further in
   [Volume X](../../volume-10-enterprise-cybersecurity/README.md).

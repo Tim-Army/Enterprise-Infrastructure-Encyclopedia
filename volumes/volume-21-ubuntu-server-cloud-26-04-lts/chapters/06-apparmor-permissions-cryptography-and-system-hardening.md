@@ -295,12 +295,12 @@ sudo usg audit cis_level1_server
 
 **References**
 
-- AppArmor documentation — `apparmor.net`, `apparmor.d(5)` man page.
-- `aa-genprof(8)`, `aa-logprof(8)`, `aa-status(8)` man pages.
-- `setfacl(1)`, `getfacl(1)`, `setfattr(1)` man pages.
-- `cryptsetup(8)`, `systemd-cryptenroll(1)` man pages.
-- CIS Ubuntu Linux Benchmark, Center for Internet Security.
-- Ubuntu Security Guide documentation, Canonical (Ubuntu Pro).
+- [AppArmor documentation](https://apparmor.net/) — `apparmor.net`, `apparmor.d(5)` man page.
+- [`aa-genprof(8)`, `aa-logprof(8)`, `aa-status(8)` man pages.](https://manpages.ubuntu.com/manpages/noble/man8/aa-genprof.8.html)
+- [`setfacl(1)`, `getfacl(1)`, `setfattr(1)` man pages.](https://man7.org/linux/man-pages/man1/setfacl.1.html)
+- [`cryptsetup(8)`, `systemd-cryptenroll(1)` man pages.](https://man7.org/linux/man-pages/man1/systemd-cryptenroll.1.html)
+- [CIS Ubuntu Linux Benchmark, Center for Internet Security.](https://www.cisecurity.org/benchmark/ubuntu_linux)
+- [Ubuntu Security Guide documentation, Canonical (Ubuntu Pro).](https://documentation.ubuntu.com/security/compliance/usg/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Ubuntu Server
   26.04 baseline referenced throughout this chapter.
 

@@ -10,7 +10,7 @@
   correct supernet route.
 - Explain the structure and scope of IPv6 addressing, including global
   unicast, link-local, unique local, and multicast address types.
-- Distinguish public, private (RFC 1918), and shared/carrier-grade address
+- Distinguish public, private ([RFC 1918](https://www.rfc-editor.org/rfc/rfc1918)), and shared/carrier-grade address
   space, and explain when NAT is and is not required.
 - Design an IP addressing plan for a multi-site enterprise that supports
   route summarization and future growth.
@@ -41,7 +41,7 @@ Usable range: 10.20.30.1 - 10.20.30.254
 
 ### CIDR and Prefix Notation
 
-Classless Inter-Domain Routing (CIDR), defined in RFC 4632, replaced the
+Classless Inter-Domain Routing (CIDR), defined in [RFC 4632](https://www.rfc-editor.org/rfc/rfc4632), replaced the
 rigid Class A/B/C boundaries of early IPv4 with arbitrary prefix lengths
 (`/1` through `/31` for point-to-point or host routes, `/32` for a single
 host route). CIDR is what makes route summarization and efficient address
@@ -108,8 +108,8 @@ Compressed:  2001:db8:0:1::100
 
 | Address Type | Prefix / Marker | Scope | Purpose |
 | --- | --- | --- | --- |
-| Global Unicast Address (GUA) | `2000::/3` | Global | Internet-routable, RFC 4291/RFC 3587 |
-| Unique Local Address (ULA) | `fc00::/7` (used: `fd00::/8`) | Site-local | RFC 1918-equivalent private addressing |
+| Global Unicast Address (GUA) | `2000::/3` | Global | Internet-routable, [RFC 4291](https://www.rfc-editor.org/rfc/rfc4291)/[RFC 3587](https://www.rfc-editor.org/rfc/rfc3587) |
+| Unique Local Address (ULA) | `fc00::/7` (used: `fd00::/8`) | Site-local | [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918)-equivalent private addressing |
 | Link-Local Address (LLA) | `fe80::/10` | Single link | Auto-assigned, required on every interface |
 | Multicast | `ff00::/8` | Varies by scope | Replaces IPv4 broadcast entirely |
 | Loopback | `::1/128` | Host | Equivalent to `127.0.0.1` |
@@ -117,14 +117,14 @@ Compressed:  2001:db8:0:1::100
 A standard enterprise IPv6 subnet uses a `/64` prefix regardless of expected
 host count; this is a deliberate design constant (not a VLSM decision) so
 that Stateless Address Autoconfiguration (SLAAC) and the 64-bit interface
-identifier space work as specified in RFC 4862. Enterprises typically
+identifier space work as specified in [RFC 4862](https://www.rfc-editor.org/rfc/rfc4862). Enterprises typically
 receive a `/48` or `/56` from their upstream provider or RIR and subnet on
 the boundary between `/48`/`/56` and `/64` — nibble-aligned on hex digit
 boundaries for readability.
 
 ### Public, Private, and Shared Address Space
 
-RFC 1918 reserves three IPv4 ranges for private use, none of which are
+[RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) reserves three IPv4 ranges for private use, none of which are
 globally routable:
 
 | Range | Prefix | Typical Use |
@@ -133,7 +133,7 @@ globally routable:
 | 172.16.0.0 – 172.31.255.255 | 172.16.0.0/12 | Medium networks, common in lab/vendor defaults |
 | 192.168.0.0 – 192.168.255.255 | 192.168.0.0/16 | Small office/branch/home |
 
-RFC 6598 additionally reserves `100.64.0.0/10` as Shared Address Space for
+[RFC 6598](https://www.rfc-editor.org/rfc/rfc6598) additionally reserves `100.64.0.0/10` as Shared Address Space for
 carrier-grade NAT (CGNAT), which enterprises must recognize as neither
 private nor safely assumed unique — overlapping use across an ISP's CGNAT
 customers is expected behavior, which affects VPN and merger/acquisition
@@ -264,10 +264,10 @@ cabling or switchport investigation.
 
 ## Security and Best Practices
 
-- Do not assume RFC 1918 space is inherently trusted; internal segmentation,
+- Do not assume [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) space is inherently trusted; internal segmentation,
   ACLs, and firewall policy must still enforce least privilege between
   subnets regardless of address family.
-- Avoid overlapping RFC 1918 ranges across sites that may eventually merge,
+- Avoid overlapping [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) ranges across sites that may eventually merge,
   peer, or connect via VPN/M&A activity; a deliberate, centrally tracked
   addressing plan prevents costly renumbering later.
 - Filter or rate-limit unnecessary broadcast/multicast traffic at Layer 3
@@ -302,7 +302,7 @@ cabling or switchport investigation.
    route, and which four `/24`s does it contain?
 4. Explain why a `/64` is the standard IPv6 subnet size even for a
    point-to-point link with only two hosts.
-5. What is the practical difference between RFC 1918 private space and RFC
+5. What is the practical difference between [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) private space and RFC
    6598 shared (CGNAT) space from an enterprise addressing-conflict
    perspective?
 6. Two hosts on the same physical segment are configured with different
@@ -448,5 +448,5 @@ like when it collides in practice.
 - [ ] Understands why `/64` is the standard IPv6 subnet size.
 - [ ] Implemented and validated a VLSM plan across simulated network
       namespaces, including a reproduced overlapping-allocation failure.
-- [ ] Can explain why RFC 1918 addressing is not itself a security
+- [ ] Can explain why [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) addressing is not itself a security
       boundary.

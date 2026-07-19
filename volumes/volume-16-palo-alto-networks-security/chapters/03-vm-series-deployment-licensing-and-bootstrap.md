@@ -314,10 +314,10 @@ Bootstrap: SUCCESS
 
 **References**
 
-- Palo Alto Networks, *VM-Series Deployment Guide* (version 11.1).
-- Palo Alto Networks, *VM-Series Bootstrap Guide*.
-- Palo Alto Networks, *VM-Series Licensing* documentation (BYOL, PAYG,
-  flexible vCPU credits).
+- [Palo Alto Networks, *VM-Series Deployment Guide* (version 11.1).](https://docs.paloaltonetworks.com/vm-series/11-0/vm-series-deployment)
+- [Palo Alto Networks, *VM-Series Bootstrap Guide*.](https://docs.paloaltonetworks.com/vm-series/getting-started/bootstrap-the-vm-series-firewall/prepare-the-bootstrap-package)
+- [Palo Alto Networks, *VM-Series Licensing* documentation (BYOL, PAYG,
+  flexible vCPU credits).](https://docs.paloaltonetworks.com/vm-series/11-1/vm-series-deployment/license-the-vm-series-firewall)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — PAN-OS 11.x
   baseline used throughout this volume.
 - [Volume V](../../volume-05-vmware-virtualization/README.md) — VMware Virtualization, for ESXi/vCenter deployment

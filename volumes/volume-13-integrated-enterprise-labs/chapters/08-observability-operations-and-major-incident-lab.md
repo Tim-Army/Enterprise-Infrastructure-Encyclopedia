@@ -214,7 +214,7 @@ echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) PAGE severity=$1 alert=$2" \
 - [Volume XI](../../volume-11-observability-enterprise-operations/README.md), Chapters 02–03, 05–07 — telemetry architecture, metrics/SLOs,
   distributed tracing, alerting/on-call, and incident/problem/change
   operations.
-- Google SRE Workbook — *Alerting on SLOs* (multi-window, multi-burn-rate
+- [Google SRE Workbook](https://sre.google/workbook/table-of-contents/) — *Alerting on SLOs* (multi-window, multi-burn-rate
   alerting).
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — platform
   baseline for the Kubernetes and host components instrumented in this

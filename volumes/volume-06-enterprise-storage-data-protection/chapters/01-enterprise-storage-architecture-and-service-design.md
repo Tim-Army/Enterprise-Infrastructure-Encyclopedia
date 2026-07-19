@@ -357,12 +357,12 @@ documentation alongside the service tier the device was provisioned against.
 
 **References**
 
-- SNIA (Storage Networking Industry Association) Dictionary and CDMI/SDS
-  reference architectures — vendor-neutral storage terminology and models.
-- SOFTWARE_VERSIONS.md — dated Linux baseline (RHEL 10 / Ubuntu Server
+- [SNIA (Storage Networking Industry Association) Dictionary and CDMI/SDS
+  reference architectures](https://www.snia.org/education/dictionary/about-dictionary) — vendor-neutral storage terminology and models.
+- [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated Linux baseline (RHEL 10 / Ubuntu Server
   26.04 LTS) used for CLI examples throughout this volume.
-- `fio(1)` and `iostat(1)` manual pages for the host toolchain used in this
-  chapter's benchmarking examples.
+- [`fio(1)` and `iostat(1)` manual pages for the host toolchain used in this
+  chapter's benchmarking examples.](https://fio.readthedocs.io/en/latest/fio_doc.html)
 
 **Knowledge Checks**
 

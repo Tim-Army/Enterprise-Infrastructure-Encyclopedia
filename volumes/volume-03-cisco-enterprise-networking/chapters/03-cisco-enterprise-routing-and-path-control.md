@@ -61,7 +61,7 @@ traffic there anyway.
 
 ### BGP in the enterprise
 
-BGP (RFC 4271) is a path-vector protocol built for policy-driven routing
+BGP ([RFC 4271](https://www.rfc-editor.org/rfc/rfc4271)) is a path-vector protocol built for policy-driven routing
 between administratively distinct domains. In an enterprise, BGP typically
 appears at three boundaries:
 
@@ -306,7 +306,7 @@ EDGE-01# show ip cef vrf GUEST
   (branch-to-core, extranet peer, internet edge) using prefix lists or
   distribute lists, not just at redistribution points.
 - At the internet edge, apply strict inbound and outbound prefix filters
-  and, at minimum, RFC 3704 (uRPF)/bogon filtering to reduce spoofed-source
+  and, at minimum, [RFC 3704](https://www.rfc-editor.org/rfc/rfc3704) (uRPF)/bogon filtering to reduce spoofed-source
   traffic and accidental route leaks.
 - Use BGP maximum-prefix limits on eBGP sessions to protect the router (and
   the network) from a misbehaving or compromised peer flooding excessive
@@ -324,8 +324,8 @@ EDGE-01# show ip cef vrf GUEST
 
 **Authoritative references**
 
-- RFC 2328, *OSPF Version 2*.
-- RFC 4271, *A Border Gateway Protocol 4 (BGP-4)*.
+- [RFC 2328](https://www.rfc-editor.org/rfc/rfc2328), *OSPF Version 2*.
+- [RFC 4271](https://www.rfc-editor.org/rfc/rfc4271), *A Border Gateway Protocol 4 (BGP-4)*.
 - Cisco, *IP Routing: EIGRP Configuration Guide*, IOS XE 17.x.
 - Cisco, *IP Routing: BGP Configuration Guide*, IOS XE 17.x.
 

@@ -189,11 +189,11 @@ New-VIReplication -VM dc02 -TargetVIServer esxi-br101.corp.meridian.example `
 
 **References**
 
-- Volume V, Chapters 02–04 and 06–07 — ESXi and vCenter deployment,
+- [Volume V](../../volume-05-vmware-virtualization/README.md), Chapters 02–04 and 06–07 — ESXi and vCenter deployment,
   virtual networking, vSAN, and availability/mobility.
-- Volume VI, Chapters 05–07 — backup architecture, snapshots/replication,
+- [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md), Chapters 05–07 — backup architecture, snapshots/replication,
   and recovery engineering.
-- Volume I, Chapter 08 — Infrastructure Lifecycle Management (migration
+- [Volume I, Chapter 08](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md) — Infrastructure Lifecycle Management (migration
   context).
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — vSphere 9.x
   baseline used throughout this chapter.

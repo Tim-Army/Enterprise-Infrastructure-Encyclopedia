@@ -262,9 +262,9 @@ data-plane visibility loss and enforcement-capability loss:
 
 **References**
 
-- Forescout Technologies appliance diagnostics, performance tuning, and
+- [Forescout Technologies appliance diagnostics, performance tuning, and
   high-availability/disaster-recovery administration guides for the
-  8.5.x release.
+  8.5.x release.](https://docs.forescout.com/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this volume.
 - Chapters 1 and 4 of this volume for the sizing and platform

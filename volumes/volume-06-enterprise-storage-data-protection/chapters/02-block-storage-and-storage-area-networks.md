@@ -256,11 +256,11 @@ event but still cause retransmits and latency spikes.
 
 **References**
 
-- SNIA Fibre Channel and iSCSI architecture references.
-- INCITS/NVM Express NVMe-oF specification (transport-agnostic NVMe over
-  fabrics command set).
-- `targetcli(8)`, `iscsiadm(8)` manual pages, RHEL 10 / Ubuntu Server 26.04
-  LTS baseline per SOFTWARE_VERSIONS.md.
+- [SNIA Fibre Channel and iSCSI architecture references.](https://www.snia.org/)
+- [INCITS/NVM Express NVMe-oF specification (transport-agnostic NVMe over
+  fabrics command set).](https://nvmexpress.org/specifications/)
+- [`targetcli(8)`, `iscsiadm(8)` manual pages, RHEL 10 / Ubuntu Server 26.04
+  LTS baseline per SOFTWARE_VERSIONS.md.](https://manpages.debian.org/bullseye/open-iscsi/iscsiadm.8)
 
 **Knowledge Checks**
 

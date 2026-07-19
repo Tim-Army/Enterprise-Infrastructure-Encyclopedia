@@ -195,9 +195,9 @@ action: alert
 
 **References**
 
-- RFC 3579 — *RADIUS Support for Extensible Authentication Protocol
+- [RFC 3579](https://www.rfc-editor.org/rfc/rfc3579) — *RADIUS Support for Extensible Authentication Protocol
   (EAP)*.
-- IEEE 802.1X — Port-Based Network Access Control.
+- [IEEE 802.1X](https://1.ieee802.org/security/802-1x/) — Port-Based Network Access Control.
 - [Volume III, Chapter 07](../../volume-03-cisco-enterprise-networking/chapters/07-cisco-identity-access-control-and-segmentation.md) — Cisco Identity, Access Control, and
   Segmentation.
 - [Volume X](../../volume-10-enterprise-cybersecurity/README.md), Chapters 02, 04, 06–07 — zero trust/privileged access, network

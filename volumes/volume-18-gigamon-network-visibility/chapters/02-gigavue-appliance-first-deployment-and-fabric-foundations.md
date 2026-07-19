@@ -291,11 +291,11 @@ Members: 2
 
 **References**
 
-- Gigamon, *GigaVUE HC Series Data Sheet* — HCT/HC1/HC1-Plus/HC3 platform
+- [Gigamon, *GigaVUE HC Series Data Sheet*](https://www.gigamon.com/content/dam/resource-library/english/data-sheet/ds-gigavue-hc-series.pdf) — HCT/HC1/HC1-Plus/HC3 platform
   specifications and GigaSMART engine capacity.
-- Gigamon, *About the GigaVUE HC Series and GigaVUE TA Series* —
+- [Gigamon, *About the GigaVUE HC Series and GigaVUE TA Series*](https://www.gigamon.com/products/access-traffic/physical-nodes/gigavue-hc-series.html) —
   platform overview and port-role documentation.
-- Gigamon, *GigaVUE-OS CLI Reference* — full command syntax for the
+- [Gigamon, *GigaVUE-OS CLI Reference*](https://docs.gigamon.com/doclib/Content/GV-OS-CLI/GV_OS_CLI_Home.html) — full command syntax for the
   GigaVUE-OS release in use.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this volume's
   GigaVUE-FM 6.x baseline (GigaVUE-OS versions are aligned to the same

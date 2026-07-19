@@ -429,11 +429,11 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PUT \
 
 **References**
 
-- VMware NSX 4.x Documentation — *NSX Manager Installation and Cluster
+- [VMware NSX 4.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/nsx/vmware-nsx/4-2.html) — *NSX Manager Installation and Cluster
   Configuration*.
-- VMware NSX 4.x Documentation — *Transport Zones, Uplink Profiles, and
+- [VMware NSX 4.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/nsx/vmware-nsx/4-2.html) — *Transport Zones, Uplink Profiles, and
   Host Preparation*.
-- VMware NSX 4.x Documentation — *NSX Edge Installation and Edge
+- [VMware NSX 4.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/nsx/vmware-nsx/4-2.html) — *NSX Edge Installation and Edge
   Clusters*.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.

@@ -321,13 +321,13 @@ policy cannot escalate beyond the boundary.
 
 **References**
 
-- AWS Organizations documentation — organizational units, SCPs, and
+- [AWS Organizations documentation](https://docs.aws.amazon.com/organizations/) — organizational units, SCPs, and
   consolidated billing.
-- AWS Control Tower documentation — landing zones, guardrails, and Account
+- [AWS Control Tower documentation](https://docs.aws.amazon.com/controltower/) — landing zones, guardrails, and Account
   Factory.
-- AWS IAM Identity Center documentation — permission sets and account
+- [AWS IAM Identity Center documentation](https://docs.aws.amazon.com/singlesignon/) — permission sets and account
   assignments.
-- AWS IAM documentation — policy evaluation logic, permission boundaries,
+- [AWS IAM documentation](https://docs.aws.amazon.com/iam/) — policy evaluation logic, permission boundaries,
   and the IAM Policy Simulator.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this chapter maps to the identity, governance, and multi-account domains

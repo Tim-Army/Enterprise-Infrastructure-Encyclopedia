@@ -245,9 +245,9 @@ segments rather than requiring a manual review pass.
 
 **References**
 
-- Wireshark User's Guide, "tshark," "editcap," "mergecap," and
-  "capinfos" reference chapters (current for the 4.4.x release line).
-- `man tshark`, `man editcap`, `man mergecap`, `man capinfos`.
+- [Wireshark User's Guide, "tshark," "editcap," "mergecap," and
+  "capinfos" reference chapters (current for the 4.4.x release line).](https://www.wireshark.org/docs/wsug_html_chunked/)
+- [`man tshark`, `man editcap`, `man mergecap`, `man capinfos`.](https://www.wireshark.org/docs/man-pages/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   encyclopedia's dated baseline for Wireshark 4.4.x.
 

@@ -78,7 +78,7 @@ solve this:
 | Protocol | Standard | Active/standby model | Load balancing |
 | --- | --- | --- | --- |
 | HSRP | Cisco proprietary | One active, one standby per group | Per-VLAN active router via multiple groups |
-| VRRP | IETF standard (RFC 5798) | One master, one+ backup per group | Per-VLAN master via multiple groups |
+| VRRP | IETF standard ([RFC 5798](https://www.rfc-editor.org/rfc/rfc5798)) | One master, one+ backup per group | Per-VLAN master via multiple groups |
 | GLBP | Cisco proprietary | One AVG, multiple AVFs | Per-host, within a single group |
 
 HSRP and VRRP both require multiple groups (one per VLAN, alternating the
@@ -313,7 +313,7 @@ DIST-01# show stackwise-virtual dual-active-detection
   17.x.
 - IEEE 802.1Q (VLAN tagging), 802.1w (Rapid Spanning Tree), 802.1s
   (Multiple Spanning Tree), 802.3ad (Link Aggregation).
-- RFC 5798, *Virtual Router Redundancy Protocol Version 3*.
+- [RFC 5798](https://www.rfc-editor.org/rfc/rfc5798), *Virtual Router Redundancy Protocol Version 3*.
 - Cisco, *StackWise Virtual Configuration Guide*.
 
 **Knowledge checks**

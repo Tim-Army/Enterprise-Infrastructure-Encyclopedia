@@ -331,12 +331,12 @@ result sets client-side.
 
 **References**
 
-- Dell Technologies, *OpenManage Enterprise User's Guide* — configuration
+- [Dell Technologies, *OpenManage Enterprise User's Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_4_5_online_help_user_guide/overview) — configuration
   templates and configuration compliance
-- Dell Technologies, *OpenManage Enterprise RESTful API Guide* —
+- [Dell Technologies, *OpenManage Enterprise RESTful API Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_p_3.10_api_guide/preface) —
   TemplateService resources
-- Dell Technologies, *iDRAC Server Configuration Profile (SCP) reference*
-- `SOFTWARE_VERSIONS.md` in this repository for the dated 4.7.x baseline
+- [Dell Technologies, *iDRAC Server Configuration Profile (SCP) reference*](https://infohub.delltechnologies.com/en-us/l/server-configuration-profiles-reference-guide/overview-4851/)
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated 4.7.x baseline
 
 **Knowledge Checks**
 

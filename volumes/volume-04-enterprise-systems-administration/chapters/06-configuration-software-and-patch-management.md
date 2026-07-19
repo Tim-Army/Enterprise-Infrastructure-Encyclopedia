@@ -334,15 +334,15 @@ sudo systemctl enable --now config-drift-check.timer
 
 **References**
 
-- Ansible documentation: "Ansible Vault," "ansible-pull," and the
+- [Ansible documentation: "Ansible Vault," "ansible-pull," and the
   `ansible.builtin.package` module reference (core 2.17 / `ansible` 10.x
-  baseline).
-- Microsoft Learn: "PowerShell Desired State Configuration Overview" and
-  "WSUS Deployment Guide."
-- Microsoft Learn: "Windows Update for Business deployment service."
-- Red Hat documentation: "Managing software with DNF" (versionlock
-  plugin).
-- HashiCorp Packer documentation: "Golden image workflows."
+  baseline).](https://docs.ansible.com/projects/ansible/latest/cli/ansible-vault.html)
+- [Microsoft Learn: "PowerShell Desired State Configuration Overview" and
+  "WSUS Deployment Guide."](https://learn.microsoft.com/en-us/powershell/dsc/overview)
+- [Microsoft Learn: "Windows Update for Business deployment service."](https://learn.microsoft.com/en-us/windows/deployment/update/deployment-service-overview)
+- [Red Hat documentation: "Managing software with DNF" (versionlock
+  plugin).](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/managing_software_with_the_dnf_tool/index)
+- [HashiCorp Packer documentation: "Golden image workflows."](https://developer.hashicorp.com/packer/tutorials/cloud-production/golden-image-with-hcp-packer)
 
 **Knowledge Checks**
 

@@ -383,13 +383,13 @@ implements them back to the record of why:
 
 **References**
 
-- The Open Group, *TOGAF Standard* — the Architecture Development Method
+- [The Open Group, *TOGAF Standard*](https://www.opengroup.org/togaf) — the Architecture Development Method
   in full detail.
-- John Zachman, *The Zachman Framework for Enterprise Architecture* —
+- [John Zachman, *The Zachman Framework for Enterprise Architecture*](https://en.wikipedia.org/wiki/Zachman_Framework) —
   origin of the classification matrix referenced in this chapter.
-- Michael Nygard, *Documenting Architecture Decisions* — the ADR format
+- [Michael Nygard, *Documenting Architecture Decisions*](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions) — the ADR format
   this chapter's template follows.
-- ISACA, *COBIT* — governance and control-objective framework referenced
+- [ISACA, *COBIT*](https://www.isaca.org/resources/cobit) — governance and control-objective framework referenced
   above.
 - [templates/technical-review-checklist.md](../../../templates/technical-review-checklist.md)
   — this encyclopedia's own governance gate, a worked example of a

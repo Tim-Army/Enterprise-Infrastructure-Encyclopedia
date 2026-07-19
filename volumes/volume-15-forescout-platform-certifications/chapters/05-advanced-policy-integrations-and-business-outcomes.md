@@ -248,8 +248,8 @@ monolithic rule.
 
 **References**
 
-- Forescout Technologies eyeExtend module catalog and eyeSegment
-  administration documentation for the 8.5.x release.
+- [Forescout Technologies eyeExtend module catalog and eyeSegment
+  administration documentation for the 8.5.x release.](https://docs.forescout.com/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this volume.
 - [Chapter 3](03-clarification-compliance-and-control-policies.md) of this volume for the policy condition/action model that

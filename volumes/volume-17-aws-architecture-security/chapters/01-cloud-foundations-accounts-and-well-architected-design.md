@@ -302,12 +302,12 @@ resource "aws_wellarchitected_workload" "payments_api" {
 
 **References**
 
-- AWS Well-Architected Framework — the six-pillar whitepaper and the
+- [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) — the six-pillar whitepaper and the
   Well-Architected Tool documentation.
-- AWS shared responsibility model — AWS Cloud Security documentation.
-- AWS Global Infrastructure documentation — Regions, Availability Zones,
+- [AWS shared responsibility model](https://aws.amazon.com/compliance/shared-responsibility-model/) — AWS Cloud Security documentation.
+- [AWS Global Infrastructure documentation](https://aws.amazon.com/about-aws/global-infrastructure/) — Regions, Availability Zones,
   Local Zones, and Wavelength.
-- AWS Billing and Cost Management documentation — AWS Budgets and cost
+- [AWS Billing and Cost Management documentation](https://docs.aws.amazon.com/account-billing/) — AWS Budgets and cost
   allocation tags.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — the dated AWS
   service-surface baseline referenced throughout this volume.

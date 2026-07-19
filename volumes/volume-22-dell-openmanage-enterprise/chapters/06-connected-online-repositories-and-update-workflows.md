@@ -304,13 +304,13 @@ def reevaluate_dependent_baselines(session, host, catalog_id):
 
 **References**
 
-- Dell Technologies, *OpenManage Enterprise User's Guide* — connected
+- [Dell Technologies, *OpenManage Enterprise User's Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_4_5_online_help_user_guide/overview) — connected
   (online) repository configuration
-- Dell Technologies, *OpenManage Enterprise RESTful API Guide* —
+- [Dell Technologies, *OpenManage Enterprise RESTful API Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_p_3.10_api_guide/preface) —
   UpdateService/Catalogs and ApplicationService/Network resources
-- Dell Technologies, *OpenManage Enterprise Installation and Deployment
-  Guide* — outbound connectivity and proxy requirements
-- `SOFTWARE_VERSIONS.md` in this repository for the dated 4.7.x baseline
+- [Dell Technologies, *OpenManage Enterprise Installation and Deployment
+  Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_4_1_online_help_and_user_guide/deployment) — outbound connectivity and proxy requirements
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated 4.7.x baseline
 
 **Knowledge Checks**
 

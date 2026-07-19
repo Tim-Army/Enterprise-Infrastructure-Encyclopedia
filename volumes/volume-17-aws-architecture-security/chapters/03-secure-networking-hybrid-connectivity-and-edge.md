@@ -491,13 +491,13 @@ resource "aws_cloudfront_distribution" "site" {
 
 **References**
 
-- Amazon VPC documentation — subnets, route tables, security groups, and
+- [Amazon VPC documentation](https://docs.aws.amazon.com/vpc/) — subnets, route tables, security groups, and
   network ACLs.
-- AWS Transit Gateway and AWS PrivateLink documentation.
-- AWS Direct Connect and AWS Site-to-Site VPN documentation, including the
-  Direct Connect resiliency toolkit.
-- Amazon Route 53, Amazon CloudFront, and AWS Global Accelerator
-  documentation.
+- [AWS Transit Gateway and AWS PrivateLink documentation.](https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html)
+- [AWS Direct Connect and AWS Site-to-Site VPN documentation, including the
+  Direct Connect resiliency toolkit.](https://docs.aws.amazon.com/directconnect/latest/UserGuide/resiliency_toolkit.html)
+- [Amazon Route 53, Amazon CloudFront, and AWS Global Accelerator
+  documentation.](https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html)
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this chapter maps to the networking and connectivity domains of the AWS
   Certified Solutions Architect and AWS Certified Security blueprints.

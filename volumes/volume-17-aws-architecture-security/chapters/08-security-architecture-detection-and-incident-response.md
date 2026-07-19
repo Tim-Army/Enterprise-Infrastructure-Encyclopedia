@@ -372,15 +372,15 @@ aws cloudtrail get-query-results --query-id "$QUERY_ID"
 
 **References**
 
-- Amazon GuardDuty, Amazon Inspector, and Amazon Macie documentation.
-- AWS Security Hub documentation — security standards and finding
+- [Amazon GuardDuty, Amazon Inspector, and Amazon Macie documentation.](https://docs.aws.amazon.com/decision-guides/latest/security-on-aws-how-to-choose/choosing-aws-security-services.html)
+- [AWS Security Hub documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html) — security standards and finding
   aggregation (ASFF).
-- AWS Secrets Manager and AWS KMS documentation — credential rotation
+- [AWS Secrets Manager and AWS KMS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) — credential rotation
   and key management.
-- AWS CloudTrail Lake documentation — event data stores and SQL-based
+- [AWS CloudTrail Lake documentation](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-lake.html) — event data stores and SQL-based
   querying.
-- AWS Security Incident Response guidance (AWS Well-Architected Security
-  Pillar and the AWS incident response whitepaper).
+- [AWS Security Incident Response guidance (AWS Well-Architected Security
+  Pillar and the AWS incident response whitepaper).](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/incident-response.html)
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this chapter maps to the detection, incident response, and data
   protection domains of the AWS Certified Security blueprint.

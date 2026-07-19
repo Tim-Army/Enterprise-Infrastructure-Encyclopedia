@@ -440,15 +440,15 @@ with a single PromQL expression:
 
 **References**
 
-- Google, *Site Reliability Engineering*, Chapter 4 ("Service Level
+- [Google, *Site Reliability Engineering*, Chapter 4 ("Service Level
   Objectives") and *The Site Reliability Workbook*, Chapter 5
-  ("Alerting on SLOs"), free online editions.
-- Prometheus documentation, `prometheus.io/docs/prometheus/latest/querying/`,
-  for PromQL functions and native histograms.
-- OpenSLO specification, `openslo.com`, for the vendor-neutral SLO
-  definition schema.
-- Sloth documentation, `sloth.dev`, for generating multi-window,
-  multi-burn-rate Prometheus rules from an SLO specification.
+  ("Alerting on SLOs"), free online editions.](https://sre.google/sre-book/service-level-objectives/)
+- [Prometheus documentation, `prometheus.io/docs/prometheus/latest/querying/`,
+  for PromQL functions and native histograms.](https://prometheus.io/docs/prometheus/latest/querying/basics/)
+- [OpenSLO specification, `openslo.com`, for the vendor-neutral SLO
+  definition schema.](https://openslo.com/)
+- [Sloth documentation, `sloth.dev`, for generating multi-window,
+  multi-burn-rate Prometheus rules from an SLO specification.](https://sloth.dev/)
 
 **Knowledge Checks**
 

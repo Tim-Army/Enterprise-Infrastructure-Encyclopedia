@@ -290,13 +290,13 @@ curl -sk -X GET \
 
 **References**
 
-- Palo Alto Networks, *Cortex Cloud* product and administrator
-  documentation.
-- Palo Alto Networks / Bridgecrew, *Checkov* open-source documentation.
-- Palo Alto Networks, *Cortex Cloud Compute* (container/twistcli) scanning
-  documentation.
-- Palo Alto Networks, *Cortex Cloud Security Professional* certification
-  blueprint.
+- [Palo Alto Networks, *Cortex Cloud* product and administrator
+  documentation.](https://docs-cortex.paloaltonetworks.com/)
+- [Palo Alto Networks / Bridgecrew, *Checkov* open-source documentation.](https://www.checkov.io/)
+- [Palo Alto Networks, *Cortex Cloud Compute* (container/twistcli) scanning
+  documentation.](https://docs-cortex.paloaltonetworks.com/r/Cortex-CLOUD/Cortex-Cloud-Runtime-Security-Documentation/Code-Security-scanners)
+- [Palo Alto Networks, *Cortex Cloud Security Professional* certification
+  blueprint.](https://www.paloaltonetworks.com/services/education/certification)
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this volume's certification mapping.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated baseline

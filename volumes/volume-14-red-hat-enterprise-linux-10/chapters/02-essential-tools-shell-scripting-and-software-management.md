@@ -310,10 +310,10 @@ dnf group remove -y "Development Tools"
 
 **References**
 
-- `bash(1)`, `grep(1)`, `sed(1)`, `gawk(1)`, `find(1)` man pages.
-- DNF5 documentation — command reference and plugin list, Red Hat
+- [`bash(1)`, `grep(1)`, `sed(1)`, `gawk(1)`, `find(1)` man pages.](https://man7.org/linux/man-pages/man1/bash.1.html)
+- [DNF5 documentation](https://dnf5.readthedocs.io/) — command reference and plugin list, Red Hat
   Customer Portal.
-- `rpm(8)` and `rpm --verify` documentation.
+- [`rpm(8)` and `rpm --verify` documentation.](https://rpm.org/documentation.html)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — RHEL 10
   baseline referenced throughout this chapter.
 

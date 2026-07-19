@@ -333,14 +333,14 @@ collection has added coverage for newer iDRAC features.
 
 **References**
 
-- Dell Technologies, *iDRAC RACADM CLI Guide*
-- Dell Technologies, *iDRAC Redfish API Guide*
-- Dell Technologies, `dellemc.openmanage` Ansible Collection documentation
-  (Ansible Galaxy / Dell GitHub)
+- [Dell Technologies, *iDRAC RACADM CLI Guide*](https://www.dell.com/support/manuals/en-us/idrac9-lifecycle-controller-v4.x-series/idrac_4.00.00.00_racadm/supported-racadm-interfaces?guid=guid-a5747353-fc88-4438-b617-c50ca260448e&lang=en-us)
+- [Dell Technologies, *iDRAC Redfish API Guide*](https://www.dell.com/support/kbdoc/en-us/000178045/redfish-api-with-dell-integrated-remote-access-controller)
+- [Dell Technologies, `dellemc.openmanage` Ansible Collection documentation
+  (Ansible Galaxy / Dell GitHub)](https://docs.ansible.com/projects/ansible/latest/collections/dellemc/openmanage/index.html)
 - Dell Technologies, *OpenManage Enterprise RESTful API Guide* (Volume
   XXII, [Chapter 1](01-architecture-generations-licensing-and-first-access.md) reference)
-- DMTF, *Redfish Specification* (DSP0266) and *Redfish Schema Supplement*
-- `SOFTWARE_VERSIONS.md` in this repository for the dated iDRAC9/iDRAC10
+- [DMTF, *Redfish Specification* (DSP0266) and *Redfish Schema Supplement*](https://www.dmtf.org/standards/redfish)
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated iDRAC9/iDRAC10
   baseline
 
 **Knowledge Checks**

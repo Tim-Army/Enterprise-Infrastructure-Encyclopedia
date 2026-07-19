@@ -47,7 +47,7 @@ chapter's negative test is built to demonstrate.
 
 This chapter adds one subnet to [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s topology manifest: the
 `CLOUD1` VPC private subnet, `10.13.90.0/24`, carved from the same lab
-supernet so traffic between HQ and the cloud stays RFC 1918-to-RFC 1918
+supernet so traffic between HQ and the cloud stays [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918)-to-[RFC 1918](https://www.rfc-editor.org/rfc/rfc1918)
 across the VPN without NAT.
 
 | Hostname | Role | Address |

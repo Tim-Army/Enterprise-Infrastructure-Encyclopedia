@@ -22,7 +22,7 @@
 
 Cisco enterprise wireless separates access point functions into two
 cooperating roles connected by the **Control and Provisioning of Wireless
-Access Points (CAPWAP)** protocol (RFC 5415):
+Access Points (CAPWAP)** protocol ([RFC 5415](https://www.rfc-editor.org/rfc/rfc5415)):
 
 - **Access points (APs)** in the default local mode handle only the
   time-sensitive, per-packet 802.11 MAC functions — beaconing, probe
@@ -338,7 +338,7 @@ WLC-01# show ap rf-profile summary
   Guide*, IOS XE 17.x.
 - Cisco, *Enterprise Mobility Design Guide*.
 - IEEE 802.11-2020 and amendments 802.11r, 802.11k, 802.11v.
-- RFC 5415, *Control and Provisioning of Wireless Access Points (CAPWAP)
+- [RFC 5415](https://www.rfc-editor.org/rfc/rfc5415), *Control and Provisioning of Wireless Access Points (CAPWAP)
   Protocol Specification*.
 
 **Knowledge checks**

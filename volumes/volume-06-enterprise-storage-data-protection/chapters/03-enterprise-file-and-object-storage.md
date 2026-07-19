@@ -294,11 +294,11 @@ any "why can't this user access this file" investigation.
 
 **References**
 
-- RFC 8881 (NFSv4.1) and the NFSv4.2 extensions.
-- SNIA Cloud Data Management Interface (CDMI) and object storage
-  architecture references.
-- `exports(5)`, `smb.conf(5)`, `showmount(8)`, `rpcinfo(8)` manual pages,
-  RHEL 10 / Ubuntu Server 26.04 LTS baseline per SOFTWARE_VERSIONS.md.
+- [RFC 8881](https://www.rfc-editor.org/rfc/rfc8881) (NFSv4.1) and the NFSv4.2 extensions.
+- [SNIA Cloud Data Management Interface (CDMI) and object storage
+  architecture references.](https://www.snia.org/)
+- [`exports(5)`, `smb.conf(5)`, `showmount(8)`, `rpcinfo(8)` manual pages,
+  RHEL 10 / Ubuntu Server 26.04 LTS baseline per SOFTWARE_VERSIONS.md.](https://man7.org/linux/man-pages/man5/exports.5.html)
 
 **Knowledge Checks**
 

@@ -254,8 +254,8 @@ Console access or query skill:
 
 **References**
 
-- Forescout Technologies Console administration, user/role management,
-  and reporting guides for the 8.5.x release.
+- [Forescout Technologies Console administration, user/role management,
+  and reporting guides for the 8.5.x release.](https://docs.forescout.com/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this volume.
 - Chapters 1–3 of this volume for the appliance, property, and policy

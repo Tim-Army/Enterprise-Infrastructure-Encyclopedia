@@ -281,14 +281,14 @@ exit "$fail"
 
 **References**
 
-- GitHub documentation — CODEOWNERS syntax and branch protection rules.
+- [GitHub documentation](https://docs.github.com/en) — CODEOWNERS syntax and branch protection rules.
 - [Structure.md](../../../Structure.md) — this encyclopedia's canonical
   path and naming rules, a working example of a documented directory
   contract.
 - [AUTOMATION.md](../../../AUTOMATION.md) — this repository's own
   validation and safe-automation rules.
-- Conventional Commits specification — `https://www.conventionalcommits.org`.
-- `pre-commit` framework documentation.
+- [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) — `https://www.conventionalcommits.org`.
+- [`pre-commit` framework documentation.](https://pre-commit.com/)
 
 **Knowledge checks**
 

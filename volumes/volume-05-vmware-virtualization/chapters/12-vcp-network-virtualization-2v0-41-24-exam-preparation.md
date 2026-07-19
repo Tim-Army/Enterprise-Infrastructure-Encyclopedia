@@ -217,11 +217,11 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' \
 
 **References**
 
-- Broadcom Education Services — official 2V0-41.24 exam guide (current
+- [Broadcom Education Services](https://www.broadcom.com/support/education/vmware) — official 2V0-41.24 exam guide (current
   blueprint domains, item count, exam duration, and registration
   requirements — verify directly before scheduling).
-- VMware NSX 4.x Documentation (the full documentation set referenced
-  throughout Chapters 8, 10, and 11).
+- [VMware NSX 4.x Documentation (the full documentation set referenced
+  throughout Chapters 8, 10, and 11).](https://techdocs.broadcom.com/us/en/vmware-cis/nsx/vmware-nsx/4-2.html)
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this repository's certification-to-volume mapping.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere

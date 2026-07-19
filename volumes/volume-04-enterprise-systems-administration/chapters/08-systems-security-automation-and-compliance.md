@@ -285,16 +285,16 @@ sudo systemctl enable --now compliance-scan.timer
 
 **References**
 
-- NIST SP 800-53 Rev. 5 — control catalog most CIS/STIG baselines map
+- [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final) — control catalog most CIS/STIG baselines map
   back to.
-- CIS Benchmarks (Center for Internet Security) — Linux and Windows Server
+- [CIS Benchmarks (Center for Internet Security)](https://www.cisecurity.org/cis-benchmarks) — Linux and Windows Server
   benchmark documents.
-- DISA STIG documents (Cyber Exchange) for RHEL and Windows Server.
-- Red Hat documentation: "Security hardening" (OpenSCAP, `scap-security-
-  guide`).
-- Microsoft Learn: "Advanced security audit policy settings" and
-  "SecurityPolicyDsc module."
-- `auditd(8)`, `auditctl(8)`, `ausearch(1)` man pages.
+- [DISA STIG documents (Cyber Exchange) for RHEL and Windows Server.](https://public.cyber.mil/stigs/downloads/)
+- [Red Hat documentation: "Security hardening" (OpenSCAP, `scap-security-
+  guide`).](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/security_hardening/index)
+- [Microsoft Learn: "Advanced security audit policy settings" and
+  "SecurityPolicyDsc module."](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/advanced-audit-policy-configuration)
+- [`auditd(8)`, `auditctl(8)`, `ausearch(1)` man pages.](https://man7.org/linux/man-pages/man8/auditd.8.html)
 
 **Knowledge Checks**
 

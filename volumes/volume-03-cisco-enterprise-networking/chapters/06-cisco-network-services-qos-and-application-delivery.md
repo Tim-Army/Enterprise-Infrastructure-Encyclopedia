@@ -337,8 +337,8 @@ ACCESS-01# show ip igmp snooping groups
 **Authoritative references**
 
 - Cisco, *Enterprise QoS Solution Reference Network Design (SRND)*.
-- RFC 2474/2475, *Definition of the Differentiated Services Field*.
-- RFC 4601, *Protocol Independent Multicast - Sparse Mode (PIM-SM)*.
+- [RFC 2474](https://www.rfc-editor.org/rfc/rfc2474)/2475, *Definition of the Differentiated Services Field*.
+- [RFC 4601](https://www.rfc-editor.org/rfc/rfc4601), *Protocol Independent Multicast - Sparse Mode (PIM-SM)*.
 - Cisco, *IP Multicast Design and Anycast RP Configuration Guide*.
 
 **Knowledge checks**

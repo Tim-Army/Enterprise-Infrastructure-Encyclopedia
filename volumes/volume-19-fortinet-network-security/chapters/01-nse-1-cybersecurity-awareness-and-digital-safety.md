@@ -267,12 +267,12 @@ training having been delivered.
 
 **References**
 
-- Fortinet NSE Training Institute, *NSE 1: Cybersecurity Awareness*
-  learning path.
-- Verizon, *Data Breach Investigations Report* (annual), human-element
-  breach statistics.
-- FIDO Alliance, *FIDO2/WebAuthn* specification overview.
-- NIST Special Publication 800-63B, *Digital Identity Guidelines —
+- [Fortinet NSE Training Institute, *NSE 1: Cybersecurity Awareness*
+  learning path.](https://training.fortinet.com/local/staticpage/view.php?page=nse_1)
+- [Verizon, *Data Breach Investigations Report* (annual), human-element
+  breach statistics.](https://www.verizon.com/business/resources/reports/dbir/)
+- [FIDO Alliance, *FIDO2/WebAuthn* specification overview.](https://fidoalliance.org/specifications/)
+- [NIST Special Publication 800-63B, *Digital Identity Guidelines](https://csrc.nist.gov/pubs/sp/800/63/b/upd2/final) —
   Authentication and Lifecycle Management*.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — encyclopedia-wide
   dated baseline reference.

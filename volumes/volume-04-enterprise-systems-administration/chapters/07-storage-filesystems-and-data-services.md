@@ -280,12 +280,12 @@ New-FsrmQuota -Path 'D:\AppData' -Size 100GB -SoftLimit `
 
 **References**
 
-- `xfs(5)`, `mkfs.xfs(8)`, `exports(5)`, `nfs(5)` man pages.
-- Microsoft Learn: "Storage Spaces overview," "ReFS overview," and "File
-  Server Resource Manager overview."
-- Microsoft Learn: "SMB security enhancements."
-- Red Hat documentation: "Managing file systems" (XFS/ext4) and
-  "Configuring an NFS server."
+- [`xfs(5)`, `mkfs.xfs(8)`, `exports(5)`, `nfs(5)` man pages.](https://man7.org/linux/man-pages/man8/mkfs.xfs.8.html)
+- [Microsoft Learn: "Storage Spaces overview," "ReFS overview," and "File
+  Server Resource Manager overview."](https://learn.microsoft.com/en-us/windows-server/storage/storage-spaces/overview)
+- [Microsoft Learn: "SMB security enhancements."](https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-security)
+- [Red Hat documentation: "Managing file systems" (XFS/ext4) and
+  "Configuring an NFS server."](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/managing_file_systems/index)
 
 **Knowledge Checks**
 

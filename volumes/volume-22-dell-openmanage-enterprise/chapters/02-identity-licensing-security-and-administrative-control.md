@@ -346,12 +346,12 @@ indefinitely long default.
 
 **References**
 
-- Dell Technologies, *OpenManage Enterprise User's Guide* — user, role,
+- [Dell Technologies, *OpenManage Enterprise User's Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_4_5_online_help_user_guide/overview) — user, role,
   and directory service administration
-- Dell Technologies, *OpenManage Enterprise Licensing Guide*
-  (version-specific, aligned to the 4.7.x baseline)
-- Dell Technologies, *OpenManage Enterprise RESTful API Guide*
-- `SOFTWARE_VERSIONS.md` in this repository for the dated 4.7.x baseline
+- [Dell Technologies, *OpenManage Enterprise Licensing Guide*
+  (version-specific, aligned to the 4.7.x baseline)](https://www.delltechnologies.com/asset/en-us/products/servers/industry-market/openmanage-portfolio-software-licensing-guide.pdf)
+- [Dell Technologies, *OpenManage Enterprise RESTful API Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_p_3.10_api_guide/preface)
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated 4.7.x baseline
 
 **Knowledge Checks**
 

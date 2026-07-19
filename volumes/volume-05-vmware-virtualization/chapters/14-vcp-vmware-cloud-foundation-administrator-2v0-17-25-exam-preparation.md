@@ -237,21 +237,21 @@ esxcli software acceptance get
 
 **References**
 
-- Broadcom Education Services — official 2V0-17.25 exam guide (current
+- [Broadcom Education Services](https://www.broadcom.com/support/education/vmware) — official 2V0-17.25 exam guide (current
   blueprint domains, item count, exam duration, and candidate profile —
   verify directly before scheduling).
-- VMware Cloud Foundation Documentation — *SDDC Manager*, *Cloud
+- [VMware Cloud Foundation Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1.html) — *SDDC Manager*, *Cloud
   Builder*, *Workload Domain Management*, *Fleet Management*,
   *Certificate Management*.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this repository's certification-to-volume mapping.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 1 for the conceptual introduction to VCF, SDDC Manager,
+- See [Chapter 1](01-vmware-virtualization-architecture-and-design.md) for the conceptual introduction to VCF, SDDC Manager,
   Cloud Builder, and workload domains.
 - See Chapters 2, 3, and 4 for the ESXi, vCenter Server, and networking
   foundations workload domain deployment builds on.
-- See Chapter 13 for the support-role troubleshooting perspective on
+- See [Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md) for the support-role troubleshooting perspective on
   many of these same VCF components.
 
 **Knowledge checks** *(original conceptual review questions — not

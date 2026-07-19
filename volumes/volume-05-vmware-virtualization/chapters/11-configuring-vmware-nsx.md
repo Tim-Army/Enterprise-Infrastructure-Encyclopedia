@@ -412,11 +412,11 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PUT \
 
 **References**
 
-- VMware NSX 4.x Documentation — *Segments*.
-- VMware NSX 4.x Documentation — *Tier-0 and Tier-1 Gateways*, *Routing*
+- [VMware NSX 4.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/nsx/vmware-nsx/4-2.html) — *Segments*.
+- [VMware NSX 4.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/nsx/vmware-nsx/4-2.html) — *Tier-0 and Tier-1 Gateways*, *Routing*
   (BGP), *NAT*, *DHCP*.
-- VMware NSX 4.x Documentation — *Distributed Firewall* and *Traceflow*.
-- VMware NSX 4.x Documentation — *NSX Federation*.
+- [VMware NSX 4.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/nsx/vmware-nsx/4-2.html) — *Distributed Firewall* and *Traceflow*.
+- [VMware NSX 4.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/nsx/vmware-nsx/4-2.html) — *NSX Federation*.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
 - See [Chapter 8](08-vsphere-and-nsx-security-architecture.md) for the DFW/Gateway Firewall security-architecture

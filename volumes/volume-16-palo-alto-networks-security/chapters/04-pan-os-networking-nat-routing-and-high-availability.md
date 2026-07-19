@@ -319,10 +319,10 @@ admin@pa-fw01# commit
 
 **References**
 
-- Palo Alto Networks, *PAN-OS Administrator's Guide* — Networking, NAT, and
+- [Palo Alto Networks, *PAN-OS Administrator's Guide*](https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin) — Networking, NAT, and
   High Availability chapters (version 11.1).
-- Palo Alto Networks, *NAT Configuration Examples* documentation.
-- Palo Alto Networks, *High Availability* technical documentation.
+- [Palo Alto Networks, *NAT Configuration Examples* documentation.](https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-networking-admin/nat/nat-configuration-examples)
+- [Palo Alto Networks, *High Availability* technical documentation.](https://docs.paloaltonetworks.com/ngfw/administration/high-availability)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — PAN-OS 11.x
   baseline used throughout this volume.
 

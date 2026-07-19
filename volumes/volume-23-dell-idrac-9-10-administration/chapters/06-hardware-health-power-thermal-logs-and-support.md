@@ -348,14 +348,14 @@ racadm techsupreport collect -t idrac,raidcontroller,systeminfo \
 
 **References**
 
-- Dell Technologies, *iDRAC9/iDRAC10 User's Guide* — Power, Thermal, Logs,
+- [Dell Technologies, *iDRAC9/iDRAC10 User's Guide*](https://www.dell.com/support/product-details/en-us/product/idrac10-lifecycle-controller-v1-xx-series/resources/manuals) — Power, Thermal, Logs,
   and Alerts chapters
-- Dell Technologies, *iDRAC RACADM CLI Guide* — `iDRAC.Power`,
+- [Dell Technologies, *iDRAC RACADM CLI Guide*](https://www.dell.com/support/manuals/en-us/idrac9-lifecycle-controller-v4.x-series/idrac_4.00.00.00_racadm/supported-racadm-interfaces?guid=guid-a5747353-fc88-4438-b617-c50ca260448e&lang=en-us) — `iDRAC.Power`,
   `iDRAC.ThermalSettings`, `getsel`, `lclog`, and `techsupreport` command
   reference
-- Dell Technologies, *iDRAC Redfish API Guide* — `Chassis`, `LogServices`,
+- [Dell Technologies, *iDRAC Redfish API Guide*](https://www.dell.com/support/kbdoc/en-us/000178045/redfish-api-with-dell-integrated-remote-access-controller) — `Chassis`, `LogServices`,
   and `EventService` resources
-- `SOFTWARE_VERSIONS.md` in this repository for the dated iDRAC9/iDRAC10
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated iDRAC9/iDRAC10
   baseline
 
 **Knowledge Checks**

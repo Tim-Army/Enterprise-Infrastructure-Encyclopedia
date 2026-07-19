@@ -340,13 +340,13 @@ the same local or directory-service credentials as SSH.
 
 **References**
 
-- Red Hat Enterprise Linux 10 Installation Guide — Anaconda and
+- [Red Hat Enterprise Linux 10 Installation Guide](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10) — Anaconda and
   Kickstart reference, Red Hat Customer Portal.
-- Red Hat Subscription Management documentation — registration, Simple
+- [Red Hat Subscription Management documentation](https://access.redhat.com/products/red-hat-subscription-management) — registration, Simple
   Content Access, and activation keys.
-- Image Builder / `osbuild-composer` documentation — blueprint syntax
+- [Image Builder / `osbuild-composer` documentation](https://osbuild.org/docs/on-premises/overview/) — blueprint syntax
   and supported output image types.
-- Cockpit Project documentation — module list and PAM integration.
+- [Cockpit Project documentation](https://cockpit-project.org/documentation) — module list and PAM integration.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   chapter's RHEL 10 baseline.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —

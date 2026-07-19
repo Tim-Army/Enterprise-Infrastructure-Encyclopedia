@@ -228,9 +228,9 @@ Install-ADDSDomainController -DomainName "corp.meridian.example" `
 
 **References**
 
-- RFC 2338 — *Virtual Router Redundancy Protocol* (HSRP is Cisco's
+- [RFC 2338](https://www.rfc-editor.org/rfc/rfc2338) — *Virtual Router Redundancy Protocol* (HSRP is Cisco's
   proprietary predecessor; VRRP concepts apply directly).
-- RFC 2328 — *OSPF Version 2*.
+- [RFC 2328](https://www.rfc-editor.org/rfc/rfc2328) — *OSPF Version 2*.
 - [Volume II](../../volume-02-network-engineering-foundations/README.md), Chapters 03–04, 06–07 — Layer 2 resilience, IP routing,
   wireless foundations, and enterprise network design and resilience.
 - [Volume III](../../volume-03-cisco-enterprise-networking/README.md), Chapters 02–05 — Catalyst campus switching, enterprise

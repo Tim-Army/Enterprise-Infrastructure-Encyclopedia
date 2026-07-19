@@ -318,12 +318,12 @@ with different `device_ids` lists and a validation gate between them.
 
 **References**
 
-- Dell Technologies, *OpenManage Enterprise User's Guide* — firmware and
+- [Dell Technologies, *OpenManage Enterprise User's Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_4_5_online_help_user_guide/overview) — firmware and
   driver update management
-- Dell Technologies, *OpenManage Enterprise RESTful API Guide* —
+- [Dell Technologies, *OpenManage Enterprise RESTful API Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_p_3.10_api_guide/preface) —
   UpdateService resources (Catalogs, Baselines, DeviceComplianceReports)
-- Dell Technologies, *Dell Update Package (DUP) reference documentation*
-- `SOFTWARE_VERSIONS.md` in this repository for the dated 4.7.x baseline
+- [Dell Technologies, *Dell Update Package (DUP) reference documentation*](https://www.dell.com/support/kbdoc/en-us/000127316/dell-update-package)
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated 4.7.x baseline
 
 **Knowledge Checks**
 

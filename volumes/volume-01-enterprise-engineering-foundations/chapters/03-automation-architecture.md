@@ -366,11 +366,11 @@ pattern as `terraform plan`.
 
 **References**
 
-- GitHub Actions documentation — reusable workflows, OIDC, and environment
+- [GitHub Actions documentation](https://docs.github.com/en/actions) — reusable workflows, OIDC, and environment
   protection rules.
-- HashiCorp Terraform documentation — `terraform plan`, `terraform apply`,
+- [HashiCorp Terraform documentation](https://developer.hashicorp.com/terraform/docs) — `terraform plan`, `terraform apply`,
   and the `lifecycle` meta-argument.
-- Ansible documentation — check mode and idempotency guarantees per module.
+- [Ansible documentation](https://docs.ansible.com/) — check mode and idempotency guarantees per module.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Terraform 1.9.x
   and Ansible core 2.17 / ansible 10.x baseline used throughout this
   encyclopedia.

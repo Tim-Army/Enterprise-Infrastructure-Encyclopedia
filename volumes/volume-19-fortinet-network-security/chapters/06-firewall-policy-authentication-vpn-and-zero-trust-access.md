@@ -378,14 +378,14 @@ this lab's scope and is addressed at a design level only in this chapter.
 
 **References**
 
-- Fortinet, *FortiOS Administration Guide* — firewall policy,
+- [Fortinet, *FortiOS Administration Guide*](https://docs.fortinet.com/product/fortigate/8.0.0) — firewall policy,
   authentication, IPsec VPN, SSL VPN, and ZTNA.
-- Fortinet, *FortiOS CLI Reference* — `config firewall policy`,
+- [Fortinet, *FortiOS CLI Reference*](https://docs.fortinet.com/document/fortigate/8.0.0/cli-reference/84566/fortios-cli-reference) — `config firewall policy`,
   `config user group`, `config vpn ipsec phase1-interface`,
   `config vpn ssl settings`, `config firewall access-proxy`.
-- Fortinet NSE Training Institute, *NSE 4: FortiGate Security* course
+- [Fortinet NSE Training Institute, *NSE 4: FortiGate Security* course
   (firewall policy, authentication, SSL VPN, and Zero Trust Access
-  domains).
+  domains).](https://training.fortinet.com/local/staticpage/view.php?page=nse_4)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — FortiOS 7.6.x
   baseline used throughout this volume.
 

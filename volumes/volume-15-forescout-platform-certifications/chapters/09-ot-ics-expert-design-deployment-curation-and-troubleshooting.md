@@ -283,18 +283,18 @@ physical safety consequences, not only an access-disruption consequence:
 
 **References**
 
-- Forescout Technologies eyeInspect advanced deployment, asset curation,
+- [Forescout Technologies eyeInspect advanced deployment, asset curation,
   and threat detection documentation for the current release aligned
-  with this volume's 8.5.x platform baseline.
+  with this volume's 8.5.x platform baseline.](https://www.forescout.com/product/eyeinspect/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this volume.
 - [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md) of this volume for the Purdue model, sensor architecture, and
   protocol dissection foundation this chapter builds on.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   FSCA: OT/ICS and FSCE: OT/ICS blueprint domain mapping for this volume.
-- Forescout Technologies certification and training catalog (official
+- [Forescout Technologies certification and training catalog (official
   source for current FSCA: OT/ICS and FSCE: OT/ICS blueprint domains and
-  exam registration).
+  exam registration).](https://www.forescout.com/support-hub/training/)
 
 **Knowledge Checks**
 

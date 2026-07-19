@@ -308,8 +308,8 @@ gh api --method PUT \
 
 **References**
 
-- GitHub documentation — Projects (v2), issue forms, and merge queue.
-- GitHub CLI (`gh`) manual — `gh project`, `gh issue`, `gh pr`.
+- [GitHub documentation](https://docs.github.com/en) — Projects (v2), issue forms, and merge queue.
+- [GitHub CLI (`gh`) manual](https://cli.github.com/manual/) — `gh project`, `gh issue`, `gh pr`.
 - [templates/technical-review-checklist.md](../../../templates/technical-review-checklist.md)
   — this encyclopedia's own review gate, an example of a documented,
   enforceable workflow checklist.

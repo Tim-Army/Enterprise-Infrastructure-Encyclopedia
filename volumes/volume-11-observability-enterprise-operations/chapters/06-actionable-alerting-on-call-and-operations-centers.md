@@ -416,13 +416,13 @@ the service's escalation policy.
 
 **References**
 
-- Google, *The Site Reliability Workbook*, Chapter 5 ("Alerting on
-  SLOs") and Chapter 6 ("Eliminating Toil"), free online edition.
-- Prometheus Alertmanager documentation,
+- [Google, *The Site Reliability Workbook*, Chapter 5 ("Alerting on
+  SLOs") and Chapter 6 ("Eliminating Toil"), free online edition.](https://sre.google/workbook/table-of-contents/)
+- [Prometheus Alertmanager documentation,
   `prometheus.io/docs/alerting/latest/alertmanager/`, for routing,
-  grouping, and inhibition configuration reference.
-- PagerDuty, *Incident Response Documentation*, for escalation policy
-  and on-call scheduling patterns referenced in this chapter.
+  grouping, and inhibition configuration reference.](https://prometheus.io/docs/alerting/latest/alertmanager/)
+- [PagerDuty, *Incident Response Documentation*, for escalation policy
+  and on-call scheduling patterns referenced in this chapter.](https://response.pagerduty.com/)
 - Allspaw, J., "Blameless PostMortems and a Just Culture" (Etsy
   engineering blog), for the cultural foundation [Chapter 07](07-service-management-incident-problem-and-change-operations.md) builds on.
 

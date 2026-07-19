@@ -165,7 +165,7 @@ to rotate without disrupting every connected device.
 **WPA2/WPA3-Enterprise** uses **802.1X** port-based access control with the
 **Extensible Authentication Protocol (EAP)**: the AP acts as an 802.1X
 authenticator, relaying the client's (supplicant's) credentials to a
-**RADIUS** server (the authentication server) defined in RFC 2865. Common
+**RADIUS** server (the authentication server) defined in [RFC 2865](https://www.rfc-editor.org/rfc/rfc2865). Common
 EAP methods:
 
 | EAP Method | Credential | Notes |

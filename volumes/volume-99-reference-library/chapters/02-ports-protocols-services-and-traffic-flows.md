@@ -77,7 +77,7 @@ TCP/443 to B," and stateful firewalls ([Chapter 07](07-security-hardening-incide
   FTP (20/21) to SFTP (22) or FTPS (990), HTTP (80) to HTTPS (443), SNMPv1/
   v2c (161/162, community-string authentication) to SNMPv3 (same ports,
   authenticated/encrypted), and syslog over UDP (514) to syslog over TLS
-  (6514, RFC 5425).
+  (6514, [RFC 5425](https://www.rfc-editor.org/rfc/rfc5425)).
 - **Plan for NAT/PAT port rewriting when documenting flows that cross a
   NAT boundary.** The source port a downstream device observes is not the
   source port the originating host used; only the destination port
@@ -115,7 +115,7 @@ normal operation); state-changing/administrative ports are marked
 | LDAPS | 636 | TCP | Client → directory server | Admin/authentication, encrypted. |
 | HTTPS | 443 | TCP | Client → server | Encrypted; default for web UIs, REST APIs, most vendor management consoles (vCenter, Panorama, FortiGate, iDRAC, OpenManage Enterprise). |
 | SMB | 445 | TCP | Client → server | File sharing; a frequent lateral-movement target and common candidate for east-west segmentation. |
-| Syslog | 514 | UDP (traditional), TCP (reliable delivery, RFC 6587) | Sender → collector | RO-adjacent (log shipping). Prefer 6514 (TLS) where the collector supports it. |
+| Syslog | 514 | UDP (traditional), TCP (reliable delivery, [RFC 6587](https://www.rfc-editor.org/rfc/rfc6587)) | Sender → collector | RO-adjacent (log shipping). Prefer 6514 (TLS) where the collector supports it. |
 | LDAP GC (Global Catalog) | 3268 / 3269 (SSL) | TCP | Client → domain controller | Forest-wide directory queries. |
 | RADIUS | 1812 (auth), 1813 (accounting); legacy 1645/1646 | UDP | NAS/device → RADIUS server | Admin/authentication. AAA for network device and VPN logins. |
 | TACACS+ | 49 | TCP | Device → TACACS+ server | Admin/authentication, encrypted payload. Preferred over RADIUS for command-level device authorization/accounting ([Chapter 01](01-command-quick-reference-and-safe-administration.md), [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)). |
@@ -246,17 +246,17 @@ need — only the syntax differs, not the five facts.
 
 **References**
 
-- IANA Service Name and Transport Protocol Port Number Registry
-  (`iana.org/assignments/service-names-port-numbers`).
-- RFC 793 (TCP), RFC 768 (UDP), RFC 792 (ICMP), RFC 4443 (ICMPv6).
-- RFC 5425 (syslog over TLS), RFC 6587 (syslog over TCP framing).
+- [IANA Service Name and Transport Protocol Port Number Registry
+  (`iana.org/assignments/service-names-port-numbers`).](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml)
+- [RFC 793](https://www.rfc-editor.org/rfc/rfc793) (TCP), [RFC 768](https://www.rfc-editor.org/rfc/rfc768) (UDP), [RFC 792](https://www.rfc-editor.org/rfc/rfc792) (ICMP), [RFC 4443](https://www.rfc-editor.org/rfc/rfc4443) (ICMPv6).
+- [RFC 5425](https://www.rfc-editor.org/rfc/rfc5425) (syslog over TLS), [RFC 6587](https://www.rfc-editor.org/rfc/rfc6587) (syslog over TCP framing).
 - [Volume II](../../volume-02-network-engineering-foundations/README.md) — Network Engineering Foundations (transport-layer theory).
 - [Volume V](../../volume-05-vmware-virtualization/README.md) — VMware Virtualization (full vSphere/ESXi port matrix).
 - [Volume X](../../volume-10-enterprise-cybersecurity/README.md) — Enterprise Cybersecurity (segmentation and Zero Trust
   architecture).
 - [Volume XX](../../volume-20-wireshark-packet-analysis/README.md) — Wireshark and Packet Analysis (packet-level validation of
   every flow in this chapter).
-- `SOFTWARE_VERSIONS.md` (repository root) — dated baseline for
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) (repository root) — dated baseline for
   vendor-specific port references.
 
 **Knowledge checks**

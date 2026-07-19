@@ -330,10 +330,10 @@ Administration > Integrations > SIEM Export
 
 **References**
 
-- Gigamon, *GigaVUE-FM REST API Reference* — full endpoint and
+- [Gigamon, *GigaVUE-FM REST API Reference*](https://docs.gigamon.com/ref-api/Content/apiref/apiref.html) — full endpoint and
   authentication documentation for the release in use.
-- Gigamon, Terraform and Ansible integration documentation and published
-  provider/module repositories.
+- [Gigamon, Terraform and Ansible integration documentation and published
+  provider/module repositories.](https://docs.gigamon.com/gvd-preview/Content/GigamonValidatedDesigns/GVDs/GigaVUE-FMAutomationUsingAnsbile.html)
 - [Volume I — Enterprise Engineering Foundations](../../volume-01-enterprise-engineering-foundations/README.md),
   [Chapter 03](03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md) (Automation Architecture) — plan/apply separation, OIDC
   federation, and declarative-versus-imperative automation principles

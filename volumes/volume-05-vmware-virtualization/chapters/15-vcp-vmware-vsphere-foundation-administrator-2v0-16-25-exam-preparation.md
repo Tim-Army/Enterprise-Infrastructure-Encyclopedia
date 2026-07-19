@@ -217,11 +217,11 @@ esxtop
 
 **References**
 
-- Broadcom Education Services — official 2V0-16.25 exam guide (current
+- [Broadcom Education Services](https://www.broadcom.com/support/education/vmware) — official 2V0-16.25 exam guide (current
   blueprint domains, item count, exam duration, and candidate profile —
   verify directly before scheduling).
-- VMware vSphere 9.x Documentation and VMware vSAN Documentation (the
-  full documentation set referenced throughout Chapters 1–9).
+- [VMware vSphere 9.x Documentation and VMware vSAN Documentation (the
+  full documentation set referenced throughout Chapters 1–9).](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html)
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this repository's certification-to-volume mapping.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere

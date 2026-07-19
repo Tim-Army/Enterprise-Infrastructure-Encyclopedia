@@ -302,14 +302,14 @@ resource "panos_address_object" "app_server" {
 
 **References**
 
-- Palo Alto Networks, *PAN-OS Upgrade/Downgrade Considerations*
-  documentation (version 11.1).
-- Palo Alto Networks, *PAN-OS and Panorama API* reference (XML API and
-  REST API).
-- Palo Alto Networks, *Terraform Provider for PAN-OS* and *Ansible
-  Collection for PAN-OS* documentation.
-- Palo Alto Networks, *Packet Capture and Troubleshooting* technical
-  documentation.
+- [Palo Alto Networks, *PAN-OS Upgrade/Downgrade Considerations*
+  documentation (version 11.1).](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-upgrade/upgrade-pan-os/upgradedowngrade-considerations)
+- [Palo Alto Networks, *PAN-OS and Panorama API* reference (XML API and
+  REST API).](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-panorama-api)
+- [Palo Alto Networks, *Terraform Provider for PAN-OS* and *Ansible
+  Collection for PAN-OS* documentation.](https://registry.terraform.io/providers/PaloAltoNetworks/panos/latest/docs)
+- [Palo Alto Networks, *Packet Capture and Troubleshooting* technical
+  documentation.](https://docs.paloaltonetworks.com/ngfw/administration/monitoring/take-packet-captures)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — PAN-OS 11.x /
   Panorama 11.x baseline; Terraform and Ansible baselines used in the
   automation examples above.

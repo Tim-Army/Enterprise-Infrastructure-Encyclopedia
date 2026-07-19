@@ -361,11 +361,11 @@ generally faster for a running investigation than repeatedly parsing
 
 **References**
 
-- SNIA Multipath I/O and ALUA specification references.
-- INCITS/NVM Express Asymmetric Namespace Access (ANA) specification.
-- `multipath.conf(5)`, `multipathd(8)`, `nvme(1)`, `lvm.conf(5)` manual
+- [SNIA Multipath I/O and ALUA specification references.](https://www.snia.org/)
+- [INCITS/NVM Express Asymmetric Namespace Access (ANA) specification.](https://nvmexpress.org/specifications/)
+- [`multipath.conf(5)`, `multipathd(8)`, `nvme(1)`, `lvm.conf(5)` manual
   pages, RHEL 10 / Ubuntu Server 26.04 LTS baseline per
-  SOFTWARE_VERSIONS.md.
+  SOFTWARE_VERSIONS.md.](https://manpages.debian.org/unstable/multipath-tools/multipath.conf.5.en.html)
 
 **Knowledge Checks**
 

@@ -303,12 +303,12 @@ an active incident can make the situation worse.
 
 **References**
 
-- NIST SP 800-53 and NIST SP 800-209 (Security Guidelines for Storage
-  Infrastructure) for storage-specific security control references.
-- OASIS Key Management Interoperability Protocol (KMIP) specification.
+- [NIST SP 800-53 and NIST SP 800-209 (Security Guidelines for Storage
+  Infrastructure) for storage-specific security control references.](https://csrc.nist.gov/pubs/sp/800/209/final)
+- [OASIS Key Management Interoperability Protocol (KMIP) specification.](https://docs.oasis-open.org/kmip/kmip-spec/v2.1/os/kmip-spec-v2.1-os.html)
 - NIST SP 800-88 (Guidelines for Media Sanitization), referenced from
   [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)'s infrastructure lifecycle management chapter.
-- SOFTWARE_VERSIONS.md — dated baseline referenced for platform examples
+- [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated baseline referenced for platform examples
   in this chapter.
 
 **Knowledge Checks**

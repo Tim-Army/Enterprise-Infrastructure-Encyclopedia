@@ -125,8 +125,8 @@ application).
 Enterprise interoperability depends on open, versioned specifications:
 
 - **IETF (Internet Engineering Task Force)** publishes Requests for Comments
-  (RFCs) that define Internet and TCP/IP protocols — RFC 791 (IPv4),
-  RFC 8200 (IPv6), RFC 9293 (TCP), RFC 768 (UDP). RFCs progress through
+  (RFCs) that define Internet and TCP/IP protocols — [RFC 791](https://www.rfc-editor.org/rfc/rfc791) (IPv4),
+  [RFC 8200](https://www.rfc-editor.org/rfc/rfc8200) (IPv6), [RFC 9293](https://www.rfc-editor.org/rfc/rfc9293) (TCP), [RFC 768](https://www.rfc-editor.org/rfc/rfc768) (UDP). RFCs progress through
   Internet-Draft, Proposed Standard, and Internet Standard maturity levels.
 - **IEEE 802** working groups define Layer 1/2 standards for LANs, including
   802.3 (Ethernet) and 802.11 (wireless LAN).

@@ -325,14 +325,14 @@ if __name__ == "__main__":
 
 **References**
 
-- Dell Technologies, *iDRAC9/iDRAC10 User's Guide* — Storage Devices
+- [Dell Technologies, *iDRAC9/iDRAC10 User's Guide*](https://www.dell.com/support/product-details/en-us/product/idrac10-lifecycle-controller-v1-xx-series/resources/manuals) — Storage Devices
   chapter
-- Dell Technologies, *PERC Family Technical Guide*
-- Dell Technologies, *iDRAC RACADM CLI Guide* — `storage` command
+- [Dell Technologies, *PERC Family Technical Guide*](https://www.dell.com/support/manuals/en-us/poweredge-r6525/perc11_ug/documentation-resources)
+- [Dell Technologies, *iDRAC RACADM CLI Guide*](https://www.dell.com/support/manuals/en-us/idrac9-lifecycle-controller-v4.x-series/idrac_4.00.00.00_racadm/supported-racadm-interfaces?guid=guid-a5747353-fc88-4438-b617-c50ca260448e&lang=en-us) — `storage` command
   reference
-- Dell Technologies, *iDRAC Redfish API Guide* — `Storage`, `Volumes`, and
+- [Dell Technologies, *iDRAC Redfish API Guide*](https://www.dell.com/support/kbdoc/en-us/000178045/redfish-api-with-dell-integrated-remote-access-controller) — `Storage`, `Volumes`, and
   `DellRaidService` OEM resources
-- `SOFTWARE_VERSIONS.md` in this repository for the dated iDRAC9/iDRAC10
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated iDRAC9/iDRAC10
   baseline
 
 **Knowledge Checks**

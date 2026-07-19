@@ -380,12 +380,12 @@ landscape-api get-computers --with-annotations --query "hostname:app01*"
 
 **References**
 
-- cloud-init documentation, `cloudinit.readthedocs.io`.
-- MAAS documentation, `maas.io/docs`.
-- Juju documentation, `juju.is/docs`.
-- Ansible documentation — `ansible.builtin.apt`,
+- [cloud-init documentation, `cloudinit.readthedocs.io`.](https://cloudinit.readthedocs.io/)
+- [MAAS documentation, `maas.io/docs`.](https://maas.io/docs)
+- [Juju documentation, `juju.is/docs`.](https://canonical-juju.readthedocs-hosted.com/en/latest/)
+- [Ansible documentation](https://docs.ansible.com/) — `ansible.builtin.apt`,
   `ansible.builtin.systemd_service` module references.
-- Landscape documentation and API reference, `ubuntu.com/landscape`.
+- [Landscape documentation and API reference, `ubuntu.com/landscape`.](https://documentation.ubuntu.com/landscape/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Ubuntu Server
   26.04 LTS and Ansible baselines referenced throughout this volume.
 

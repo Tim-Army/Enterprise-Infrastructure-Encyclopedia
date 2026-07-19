@@ -382,10 +382,10 @@ sudo snap remove lxd
 
 **References**
 
-- `bash(1)`, `grep(1)`, `sed(1)`, `gawk(1)`, `find(1)` man pages.
-- `apt(8)`, `apt-get(8)`, `apt-cache(8)`, `dpkg(1)` man pages, Ubuntu
-  Server Guide — Package management.
-- `snap(1)` man page and Snapcraft documentation — confinement and
+- [`bash(1)`, `grep(1)`, `sed(1)`, `gawk(1)`, `find(1)` man pages.](https://man7.org/linux/man-pages/man1/bash.1.html)
+- [`apt(8)`, `apt-get(8)`, `apt-cache(8)`, `dpkg(1)` man pages, Ubuntu
+  Server Guide](https://ubuntu.com/server/docs/) — Package management.
+- [`snap(1)` man page and Snapcraft documentation](https://snapcraft.io/docs/) — confinement and
   channels reference.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Ubuntu Server
   26.04 baseline referenced throughout this chapter.

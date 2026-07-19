@@ -333,10 +333,10 @@ sudo nft list ruleset | less
 
 **References**
 
-- `useradd(8)`, `adduser(8)`, `sudoers(5)`, `visudo(8)` man pages.
-- `sshd_config(5)` man page, OpenSSH hardening guidance.
-- Netplan documentation — `netplan.io`, `netplan(5)`.
-- `ufw(8)` man page, Ubuntu Server Guide — Firewall.
+- [`useradd(8)`, `adduser(8)`, `sudoers(5)`, `visudo(8)` man pages.](https://man7.org/linux/man-pages/man8/useradd.8.html)
+- [`sshd_config(5)` man page, OpenSSH hardening guidance.](https://man7.org/linux/man-pages/man5/sshd_config.5.html)
+- [Netplan documentation](https://netplan.readthedocs.io/) — `netplan.io`, `netplan(5)`.
+- [`ufw(8)` man page, Ubuntu Server Guide](https://ubuntu.com/server/docs/) — Firewall.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Ubuntu Server
   26.04 baseline referenced throughout this chapter.
 

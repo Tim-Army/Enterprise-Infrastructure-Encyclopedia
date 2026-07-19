@@ -412,16 +412,16 @@ spec:
 
 **References**
 
-- OpenTelemetry Tracing specification, `opentelemetry.io/docs/specs/otel/trace/`,
-  for span structure, span kinds, and status semantics.
-- Grafana Tempo documentation, `grafana.com/docs/tempo/latest/`, for
+- [OpenTelemetry Tracing specification, `opentelemetry.io/docs/specs/otel/trace/`,
+  for span structure, span kinds, and status semantics.](https://opentelemetry.io/docs/specs/otel/trace/)
+- [Grafana Tempo documentation, `grafana.com/docs/tempo/latest/`, for
   tail sampling and the service-graph metrics generator referenced in
-  this chapter's PromQL example.
-- Grafana Pyroscope documentation, `grafana.com/docs/pyroscope/latest/`,
-  for eBPF and language-runtime continuous profiling.
-- Sigelman et al., "Dapper, a Large-Scale Distributed Systems Tracing
+  this chapter's PromQL example.](https://grafana.com/docs/tempo/latest/)
+- [Grafana Pyroscope documentation, `grafana.com/docs/pyroscope/latest/`,
+  for eBPF and language-runtime continuous profiling.](https://grafana.com/docs/pyroscope/latest/)
+- [Sigelman et al., "Dapper, a Large-Scale Distributed Systems Tracing
   Infrastructure" (Google technical report), for the foundational trace
-  data model most modern tracing systems still follow.
+  data model most modern tracing systems still follow.](https://research.google/pubs/dapper-a-large-scale-distributed-systems-tracing-infrastructure/)
 
 **Knowledge Checks**
 

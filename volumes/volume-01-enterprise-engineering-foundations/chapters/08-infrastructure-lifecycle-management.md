@@ -391,12 +391,12 @@ jq -r --arg cutoff "$(date -u -v+180d +%Y-%m-%d 2>/dev/null || date -u -d '+180 
 
 **References**
 
-- AXELOS/PeopleCert, *ITIL 4 Foundation* — the service value chain model
+- [AXELOS/PeopleCert, *ITIL 4 Foundation*](https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-4-foundation-2565) — the service value chain model
   referenced in this chapter.
-- NIST Special Publication 800-88 Rev. 1, *Guidelines for Media
-  Sanitization* — the Clear/Purge/Destroy model used in the
+- [NIST Special Publication 800-88 Rev. 1, *Guidelines for Media
+  Sanitization*](https://csrc.nist.gov/pubs/sp/800/88/r1/final) — the Clear/Purge/Destroy model used in the
   Decommissioning section.
-- ITIL 4 Practice Guide — *Change Enablement* — the standard/normal/
+- [ITIL 4 Practice Guide](https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-4-foundation-2565) — *Change Enablement* — the standard/normal/
   emergency change categorization used in this chapter.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   encyclopedia's dated baseline, the direct analog of the EOL/EOS tracking

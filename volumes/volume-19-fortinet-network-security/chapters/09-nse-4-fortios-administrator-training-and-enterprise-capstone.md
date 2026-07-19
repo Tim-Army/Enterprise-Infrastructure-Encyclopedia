@@ -300,11 +300,11 @@ and working through layers in order avoids chasing the wrong control.
 
 **References**
 
-- Fortinet NSE Training Institute, *NSE 4: FortiGate Security* and
-  *NSE 4: FortiGate Infrastructure* self-paced courses.
-- Fortinet, *FortiOS Administration Guide* — configuration backup/restore
+- [Fortinet NSE Training Institute, *NSE 4: FortiGate Security* and
+  *NSE 4: FortiGate Infrastructure* self-paced courses.](https://training.fortinet.com/local/staticpage/view.php?page=nse_4)
+- [Fortinet, *FortiOS Administration Guide*](https://docs.fortinet.com/product/fortigate/8.0.0) — configuration backup/restore
   and revision management.
-- Fortinet, *FortiOS CLI Reference* — `execute backup config`,
+- [Fortinet, *FortiOS CLI Reference*](https://docs.fortinet.com/document/fortigate/8.0.0/cli-reference/84566/fortios-cli-reference) — `execute backup config`,
   `execute restore config`, `diagnose sniffer packet`.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   current blueprint mapping guidance and caution against reproducing

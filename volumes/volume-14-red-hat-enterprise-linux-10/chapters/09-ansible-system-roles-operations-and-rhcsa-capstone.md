@@ -375,11 +375,11 @@ ansible-playbook -i inventory.ini site.yml --ask-vault-pass
 
 **References**
 
-- `ansible-playbook(1)`, `ansible-doc(1)` man pages and command help.
-- Ansible documentation — Playbooks, Roles, and Templating
+- [`ansible-playbook(1)`, `ansible-doc(1)` man pages and command help.](https://docs.ansible.com/projects/ansible/latest/cli/ansible-playbook.html)
+- [Ansible documentation](https://docs.ansible.com/) — Playbooks, Roles, and Templating
   (docs.ansible.com).
-- RHEL System Roles documentation, Red Hat Customer Portal.
-- Red Hat Ansible Automation Platform documentation — execution
+- [RHEL System Roles documentation, Red Hat Customer Portal.](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html-single/automating_system_administration_by_using_rhel_system_roles/index)
+- [Red Hat Ansible Automation Platform documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/) — execution
   environments, credentials, and role-based access control.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Ansible
   baseline referenced in this chapter.

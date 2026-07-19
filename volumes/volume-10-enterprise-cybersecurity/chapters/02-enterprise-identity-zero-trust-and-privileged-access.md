@@ -321,14 +321,14 @@ leaked, would remain valid indefinitely.
 
 **References**
 
-- NIST SP 800-207, *Zero Trust Architecture*
-- NIST SP 800-63B, *Digital Identity Guidelines: Authentication and
-  Lifecycle Management*
-- CISA, *Zero Trust Maturity Model*
-- FIDO Alliance, *FIDO2/WebAuthn Specifications*
-- OpenID Foundation, *OpenID Connect Core 1.0*
-- CIS Controls v8.1, Control 5 (Account Management) and Control 6 (Access
-  Control Management)
+- [NIST SP 800-207, *Zero Trust Architecture*](https://csrc.nist.gov/pubs/sp/800/207/final)
+- [NIST SP 800-63B, *Digital Identity Guidelines: Authentication and
+  Lifecycle Management*](https://csrc.nist.gov/pubs/sp/800/63/b/upd2/final)
+- [CISA, *Zero Trust Maturity Model*](https://www.cisa.gov/zero-trust-maturity-model)
+- [FIDO Alliance, *FIDO2/WebAuthn Specifications*](https://fidoalliance.org/specifications/)
+- [OpenID Foundation, *OpenID Connect Core 1.0*](https://openid.net/specs/openid-connect-core-1_0.html)
+- [CIS Controls v8.1, Control 5 (Account Management) and Control 6 (Access
+  Control Management)](https://www.cisecurity.org/controls/v8-1)
 
 **Knowledge Checks**
 

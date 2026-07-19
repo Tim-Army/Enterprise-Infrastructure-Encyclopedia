@@ -281,10 +281,10 @@ tshark -r capture.pcapng -Y "dns.flags.response==1" -T fields -e dns.flags.rcode
 
 **References**
 
-- Wireshark User's Guide, "Protocol Reference" appendix (IPv6, ICMPv6,
-  UDP, DHCP, DHCPv6, DNS dissectors).
-- IETF RFC 8200 (IPv6), RFC 4861 (Neighbor Discovery Protocol), RFC 2131
-  (DHCP), RFC 8415 (DHCPv6), RFC 1035 (DNS).
+- [Wireshark User's Guide, "Protocol Reference" appendix (IPv6, ICMPv6,
+  UDP, DHCP, DHCPv6, DNS dissectors).](https://www.wireshark.org/docs/wsug_html_chunked/)
+- IETF [RFC 8200](https://www.rfc-editor.org/rfc/rfc8200) (IPv6), [RFC 4861](https://www.rfc-editor.org/rfc/rfc4861) (Neighbor Discovery Protocol), [RFC 2131](https://www.rfc-editor.org/rfc/rfc2131)
+  (DHCP), [RFC 8415](https://www.rfc-editor.org/rfc/rfc8415) (DHCPv6), [RFC 1035](https://www.rfc-editor.org/rfc/rfc1035) (DNS).
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   encyclopedia's dated baseline for Wireshark 4.4.x.
 

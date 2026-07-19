@@ -338,9 +338,9 @@ structurally broken source tree can never reach a published deployment.
 
 **References**
 
-- Pandoc User's Guide — format conversion options and metadata handling.
-- `epubcheck` — the reference EPUB validation tool.
-- Lychee documentation — external link-checking configuration.
+- [Pandoc User's Guide](https://pandoc.org/MANUAL.html) — format conversion options and metadata handling.
+- [`epubcheck`](https://github.com/w3c/epubcheck) — the reference EPUB validation tool.
+- [Lychee documentation](https://lychee.cli.rs/) — external link-checking configuration.
 - [EDITORIAL_STANDARDS.md](../../../EDITORIAL_STANDARDS.md) — Markdown and
   accessibility conventions this pipeline enforces.
 - [README.md](../../../README.md#validation) — this repository's own

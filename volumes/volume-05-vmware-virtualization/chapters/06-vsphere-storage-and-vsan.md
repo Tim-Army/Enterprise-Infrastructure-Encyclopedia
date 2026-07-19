@@ -622,14 +622,14 @@ Set-VsanClusterConfiguration -Cluster $cluster -StretchedClusterEnabled:$true `
 
 **References**
 
-- VMware vSphere 9.x Documentation — *Storage* (VMFS6, NFS, iSCSI, FC,
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Storage* (VMFS6, NFS, iSCSI, FC,
   NVMe-oF, PSA/NMP/SATP/PSP).
-- VMware vSAN 9.x (aligned to the vSphere 9.x / NSX 4.x baseline)
-  Documentation — *vSAN Planning and Deployment*, *vSAN Administration*
+- [VMware vSAN 9.x (aligned to the vSphere 9.x / NSX 4.x baseline)
+  Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsan/vsan/9-0.html) — *vSAN Planning and Deployment*, *vSAN Administration*
   (OSA, ESA, storage policies, stretched clusters, 2-node ROBO).
-- VMware vSphere 9.x Documentation — *Storage Policy Based Management* and
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Storage Policy Based Management* and
   *vSphere Virtual Volumes*.
-- VMware Compatibility Guide — vSAN OSA and ESA hardware qualification.
+- [VMware Compatibility Guide](https://compatibilityguide.broadcom.com/) — vSAN OSA and ESA hardware qualification.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
 - See [Chapter 5](05-virtual-machine-lifecycle-and-resource-management.md) for the conceptual introduction to VM storage policy

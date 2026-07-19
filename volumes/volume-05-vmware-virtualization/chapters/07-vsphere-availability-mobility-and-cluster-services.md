@@ -645,15 +645,15 @@ Move-VM -VM (Get-VM -Name "app-web-05") `
 
 **References**
 
-- VMware vSphere 9.x Documentation — *Availability* (vSphere HA, Fault
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Availability* (vSphere HA, Fault
   Domain Manager, admission control).
-- VMware vSphere 9.x Documentation — *vCenter Server and Host Management*
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *vCenter Server and Host Management*
   (vMotion, Storage vMotion, Enhanced vMotion Compatibility).
-- VMware vSphere 9.x Documentation — *Fault Tolerance* (lockstep execution,
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Fault Tolerance* (lockstep execution,
   Fast Checkpointing, current vCPU/VM limits).
-- VMware vSphere 9.x Documentation — *Resource Management* (Proactive HA,
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Resource Management* (Proactive HA,
   DRS/HA integration, vSphere Cluster Services).
-- VMware Knowledge Base — vSphere Cluster Services (vCLS) operational
+- [VMware Knowledge Base](https://knowledge.broadcom.com/) — vSphere Cluster Services (vCLS) operational
   guidance.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.

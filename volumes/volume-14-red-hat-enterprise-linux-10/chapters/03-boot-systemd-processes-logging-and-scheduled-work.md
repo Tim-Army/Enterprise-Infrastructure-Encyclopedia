@@ -450,11 +450,11 @@ the timer equivalent of `anacron`'s catch-up behavior for cron.
 
 **References**
 
-- `bootup(7)`, `systemd.unit(5)`, `systemd.service(5)`,
-  `systemd.timer(5)` man pages.
-- `journalctl(1)`, `journald.conf(5)` man pages.
-- `crontab(5)`, `crontab(1)`, `at(1)` man pages.
-- Red Hat Enterprise Linux 10 System Administrator's Guide — Managing
+- [`bootup(7)`, `systemd.unit(5)`, `systemd.service(5)`,
+  `systemd.timer(5)` man pages.](https://man7.org/linux/man-pages/man7/bootup.7.html)
+- [`journalctl(1)`, `journald.conf(5)` man pages.](https://man7.org/linux/man-pages/man1/journalctl.1.html)
+- [`crontab(5)`, `crontab(1)`, `at(1)` man pages.](https://man7.org/linux/man-pages/man5/crontab.5.html)
+- [Red Hat Enterprise Linux 10 System Administrator's Guide](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10) — Managing
   Systemd, Configuring Basic System Settings.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — RHEL 10
   baseline referenced throughout this chapter.

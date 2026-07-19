@@ -245,12 +245,12 @@ budget request against a named, unaddressed kill-chain stage.
 
 **References**
 
-- Fortinet NSE Training Institute, *NSE 2: Network Security Associate*
-  learning path (threat landscape and technology modules).
-- Lockheed Martin, *Cyber Kill Chain* framework.
-- MITRE ATT&CK, tactics and techniques matrix.
-- Fortinet, *Security Fabric* architecture and product portfolio
-  documentation.
+- [Fortinet NSE Training Institute, *NSE 2: Network Security Associate*
+  learning path (threat landscape and technology modules).](https://training.fortinet.com/local/staticpage/view.php?page=nse_2)
+- [Lockheed Martin, *Cyber Kill Chain* framework.](https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html)
+- [MITRE ATT&CK, tactics and techniques matrix.](https://attack.mitre.org/)
+- [Fortinet, *Security Fabric* architecture and product portfolio
+  documentation.](https://docs.fortinet.com/security-fabric)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — encyclopedia-wide
   dated baseline reference.
 

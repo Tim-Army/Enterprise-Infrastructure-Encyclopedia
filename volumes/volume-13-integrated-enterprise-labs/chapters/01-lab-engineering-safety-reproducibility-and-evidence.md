@@ -47,13 +47,13 @@ requiring an implausibly large lab budget.
 
 | Element | Value | Notes |
 | --- | --- | --- |
-| Internal AD DNS domain / Kerberos realm | `corp.meridian.example` | NetBIOS `CORP`; uses the IANA-reserved `.example` TLD (RFC 2606), never a real domain |
+| Internal AD DNS domain / Kerberos realm | `corp.meridian.example` | NetBIOS `CORP`; uses the IANA-reserved `.example` TLD ([RFC 2606](https://www.rfc-editor.org/rfc/rfc2606)), never a real domain |
 | Public-facing DNS zone (illustrative) | `meridian.example` | Also reserved; used for any "internet-facing" record in later chapters |
-| Lab supernet | `10.13.0.0/16` | RFC 1918 space, chosen to key off the volume number |
+| Lab supernet | `10.13.0.0/16` | [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) space, chosen to key off the volume number |
 | HQ site code | `HQ` | Primary site: identity, core network, virtualization, security, observability |
 | Branch/DR site code | `BR1` | Secondary site: WAN/VPN peer, DR target, resilience-test target |
 | Cloud landing zone | `CLOUD1` | Hybrid connectivity target for Chapters 05 and 09 |
-| Illustrative internet/public ranges | `192.0.2.0/24`, `198.51.100.0/24`, `203.0.113.0/24` | RFC 5737 documentation ranges for HQ, BR1, and cloud internet edges |
+| Illustrative internet/public ranges | `192.0.2.0/24`, `198.51.100.0/24`, `203.0.113.0/24` | [RFC 5737](https://www.rfc-editor.org/rfc/rfc5737) documentation ranges for HQ, BR1, and cloud internet edges |
 
 VLAN and subnet assignments used from [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) onward:
 
@@ -87,7 +87,7 @@ equivalent of a production IP address management (IPAM) record.
 - **Isolation from production and from the internet uplink.** The lab
   supernet must never be routed toward a real corporate network. Terminate
   it behind NAT on a dedicated lab router/firewall interface, and use the
-  RFC 5737 ranges from the table above for anything meant to represent "the
+  [RFC 5737](https://www.rfc-editor.org/rfc/rfc5737) ranges from the table above for anything meant to represent "the
   internet" so no lab traffic can be mistaken for a real destination.
 - **Reproducibility model.** Following the pattern established in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md),
   Chapter 01, this volume combines a declarative topology manifest (below)
@@ -230,9 +230,9 @@ wraps expected-result checks in it so the checkpoint has a saved artifact.
 
 **References**
 
-- RFC 1918 — *Address Allocation for Private Internets*.
-- RFC 5737 — *IPv4 Address Blocks Reserved for Documentation*.
-- RFC 2606 — *Reserved Top Level DNS Names*.
+- [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) — *Address Allocation for Private Internets*.
+- [RFC 5737](https://www.rfc-editor.org/rfc/rfc5737) — *IPv4 Address Blocks Reserved for Documentation*.
+- [RFC 2606](https://www.rfc-editor.org/rfc/rfc2606) — *Reserved Top Level DNS Names*.
 - [Volume I](../../volume-01-enterprise-engineering-foundations/README.md), Chapters 02–03 and 08 — repository architecture, automation
   architecture, and infrastructure lifecycle management.
 - [Volume XII, Chapter 01](../../volume-12-resilience-lifecycle-management/chapters/01-resilience-engineering-and-critical-service-design.md) — resilience engineering and critical-service
@@ -242,7 +242,7 @@ wraps expected-result checks in it so the checkpoint has a saved artifact.
 
 **Knowledge checks**
 
-1. Why does this volume use RFC 5737 documentation ranges for anything
+1. Why does this volume use [RFC 5737](https://www.rfc-editor.org/rfc/rfc5737) documentation ranges for anything
    representing "the internet" instead of real public IP addresses?
 2. What two artifacts does this chapter establish that every later chapter's
    Hands-On Lab depends on?
@@ -357,7 +357,7 @@ volume builds on.
    test depends on this mechanism working.
 
 9. **Negative test:** Intentionally attempt to route lab traffic where it
-   should not go — add a static route on `ctrl01` pointing the RFC 5737
+   should not go — add a static route on `ctrl01` pointing the [RFC 5737](https://www.rfc-editor.org/rfc/rfc5737)
    `203.0.113.0/24` range at your real default gateway instead of the lab
    router, then repeat the ping from step 6:
 

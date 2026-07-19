@@ -335,13 +335,13 @@ Register-ScheduledTask -TaskName 'NightlyReconcile' -Action $action `
 
 **References**
 
-- `systemd.resource-control(5)`, `systemd.timer(5)`, `cgroups(7)` man
-  pages.
-- Microsoft Learn: "Job Objects," "Scheduling Priorities," and "Task
-  Scheduler Schema."
-- Brendan Gregg, "Systems Performance" — CPU scheduling and resource
+- [`systemd.resource-control(5)`, `systemd.timer(5)`, `cgroups(7)` man
+  pages.](https://man7.org/linux/man-pages/man5/systemd.resource-control.5.html)
+- [Microsoft Learn: "Job Objects," "Scheduling Priorities," and "Task
+  Scheduler Schema."](https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-schema)
+- [Brendan Gregg, "Systems Performance"](https://www.brendangregg.com/systems-performance-2nd-edition-book.html) — CPU scheduling and resource
   control chapters.
-- IIS documentation: "Application Pool CPU Throttling."
+- [IIS documentation: "Application Pool CPU Throttling."](https://learn.microsoft.com/en-us/iis/get-started/whats-new-in-iis-8/iis-80-cpu-throttling-sand-boxing-sites-and-applications)
 
 **Knowledge Checks**
 

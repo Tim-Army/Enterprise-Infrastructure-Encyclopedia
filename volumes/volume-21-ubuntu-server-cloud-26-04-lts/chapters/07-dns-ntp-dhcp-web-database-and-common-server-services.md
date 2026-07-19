@@ -318,12 +318,12 @@ sudo grep -v '^#' /etc/postgresql/*/main/pg_hba.conf | grep -v '^$'
 
 **References**
 
-- BIND9 Administrator Reference Manual, ISC.
-- `chrony.conf(5)`, `chronyc(1)` man pages.
-- Kea Administrator Reference Manual, ISC.
-- Apache2 and Nginx documentation; Certbot documentation
-  (`certbot.eff.org`).
-- MariaDB and PostgreSQL official documentation.
+- [BIND9 Administrator Reference Manual, ISC.](https://bind9.readthedocs.io/)
+- [`chrony.conf(5)`, `chronyc(1)` man pages.](https://chrony-project.org/doc/4.0/chrony.conf.html)
+- [Kea Administrator Reference Manual, ISC.](https://kea.readthedocs.io/)
+- [Apache2 and Nginx documentation; Certbot documentation
+  (`certbot.eff.org`).](https://certbot.eff.org/)
+- [MariaDB and PostgreSQL official documentation.](https://mariadb.com/kb/en/documentation/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Ubuntu Server
   26.04 baseline referenced throughout this chapter.
 

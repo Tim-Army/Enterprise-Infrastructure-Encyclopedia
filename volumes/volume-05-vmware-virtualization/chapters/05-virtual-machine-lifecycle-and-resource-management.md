@@ -694,18 +694,18 @@ vsish -e get /memory/comprehensive
 
 **References**
 
-- VMware vSphere 9.x Documentation — *Virtual Machine Administration*
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Virtual Machine Administration*
   (hardware versions, cloning, templates, Content Library).
-- VMware vSphere 9.x Documentation — *Resource Management* (shares,
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Resource Management* (shares,
   reservations, limits, resource pools, DRS).
-- VMware vSphere 9.x Documentation — *vCenter Server and Host Management*
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *vCenter Server and Host Management*
   (guest OS customization specifications).
-- VMware Knowledge Base — Transparent Page Sharing and inter-VM salting
+- [VMware Knowledge Base](https://knowledge.broadcom.com/) — Transparent Page Sharing and inter-VM salting
   guidance.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere 9.x /
   NSX 4.x baseline referenced throughout this volume.
-- See Chapter 6 for full SPBM, vSAN, and VASA storage-policy detail.
-- See Chapter 7 for vMotion mechanics, HA admission control, and vCLS.
+- See [Chapter 6](06-vsphere-storage-and-vsan.md) for full SPBM, vSAN, and VASA storage-policy detail.
+- See [Chapter 7](07-vsphere-availability-mobility-and-cluster-services.md) for vMotion mechanics, HA admission control, and vCLS.
 
 **Knowledge checks**
 

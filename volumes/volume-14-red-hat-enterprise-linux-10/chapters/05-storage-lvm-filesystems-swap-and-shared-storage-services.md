@@ -392,12 +392,12 @@ systemctl enable --now autofs
 
 **References**
 
-- `parted(8)`, `lsblk(8)`, `blkid(8)` man pages.
-- `pvcreate(8)`, `vgcreate(8)`, `lvcreate(8)`, `lvextend(8)` man pages.
-- `xfs_growfs(8)`, `xfs_repair(8)`, `mkfs.ext4(8)`, `fsck(8)` man
-  pages.
-- `exports(5)`, `nfs(5)`, `smb.conf(5)` man pages.
-- Red Hat Enterprise Linux 10 Managing Storage Devices guide — LVM,
+- [`parted(8)`, `lsblk(8)`, `blkid(8)` man pages.](https://man7.org/linux/man-pages/man8/parted.8.html)
+- [`pvcreate(8)`, `vgcreate(8)`, `lvcreate(8)`, `lvextend(8)` man pages.](https://man7.org/linux/man-pages/man8/pvcreate.8.html)
+- [`xfs_growfs(8)`, `xfs_repair(8)`, `mkfs.ext4(8)`, `fsck(8)` man
+  pages.](https://man7.org/linux/man-pages/man8/fsck.8.html)
+- [`exports(5)`, `nfs(5)`, `smb.conf(5)` man pages.](https://man7.org/linux/man-pages/man5/exports.5.html)
+- [Red Hat Enterprise Linux 10 Managing Storage Devices guide](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/managing_storage_devices/index) — LVM,
   Stratis, and VDO chapters, Red Hat Customer Portal.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — RHEL 10
   baseline referenced throughout this chapter.

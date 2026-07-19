@@ -510,15 +510,15 @@ curl -sk -H "vmware-api-session-id: ${SESSION//\"/}" \
 
 **References**
 
-- VMware vSphere 9.x Documentation — vSphere Concepts and Planning
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — vSphere Concepts and Planning
   Guide, vSphere Virtual Machine Administration Guide, and vSphere
   Resource Management Guide.
-- VMware govmomi project documentation and `govc` CLI reference
-  (open-source, github.com/vmware/govmomi).
-- VMware PowerCLI User's Guide and cmdlet reference.
-- Broadcom VMware Cloud Foundation and VMware vSphere Foundation product
+- [VMware govmomi project documentation and `govc` CLI reference
+  (open-source, github.com/vmware/govmomi).](https://github.com/vmware/govmomi)
+- [VMware PowerCLI User's Guide and cmdlet reference.](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/power-cli/latest/powercli.html)
+- [Broadcom VMware Cloud Foundation and VMware vSphere Foundation product
   documentation for current workload-domain and bill-of-materials
-  details.
+  details.](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1.html)
 
 **Knowledge Checks**
 

@@ -280,8 +280,8 @@ licensed 8.5.x build.
 
 **References**
 
-- Forescout Technologies policy authoring and Clarify/compliance/control
-  policy template documentation for the 8.5.x release.
+- [Forescout Technologies policy authoring and Clarify/compliance/control
+  policy template documentation for the 8.5.x release.](https://docs.forescout.com/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this volume.
 - [Chapter 2](02-console-plugins-properties-and-asset-classification.md) of this volume for the classification and property model that

@@ -312,17 +312,17 @@ rather than chasing every new tool:
 
 **References**
 
-- Google, *Site Reliability Engineering* and *The Site Reliability
+- [Google, *Site Reliability Engineering* and *The Site Reliability
   Workbook* (free online editions), particularly the chapters on
-  monitoring philosophy and embedding SRE.
-- Skelton, M. and Pais, M., *Team Topologies* (2019) for the
+  monitoring philosophy and embedding SRE.](https://sre.google/sre-book/table-of-contents/)
+- [Skelton, M. and Pais, M., *Team Topologies* (2019) for the
   stream-aligned/platform/enabling/complicated-subsystem vocabulary used
-  in this chapter.
-- CNCF, *OpenTelemetry* project documentation, `opentelemetry.io`.
-- AXELOS/PeopleCert, *ITIL 4 Foundation* practice guides for service
-  management vocabulary referenced throughout this volume.
-- Backstage (CNCF project) documentation, `backstage.io`, for the
-  `catalog-info.yaml` schema used in this chapter's examples.
+  in this chapter.](https://teamtopologies.com/book)
+- [CNCF, *OpenTelemetry* project documentation, `opentelemetry.io`.](https://opentelemetry.io/docs/)
+- [AXELOS/PeopleCert, *ITIL 4 Foundation* practice guides for service
+  management vocabulary referenced throughout this volume.](https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-4-foundation-2565)
+- [Backstage (CNCF project) documentation, `backstage.io`, for the
+  `catalog-info.yaml` schema used in this chapter's examples.](https://backstage.io/docs/)
 
 **Knowledge Checks**
 

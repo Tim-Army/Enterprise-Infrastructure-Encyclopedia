@@ -269,9 +269,9 @@ daemon (`rpcapd`) on the target host.
 
 **References**
 
-- Wireshark User's Guide, "Capturing Live Network Data" and "Remote
-  Packet Capture" chapters (current for the 4.4.x release line).
-- `man dumpcap`, `man pcap-filter` (BPF syntax reference).
+- [Wireshark User's Guide, "Capturing Live Network Data" and "Remote
+  Packet Capture" chapters (current for the 4.4.x release line).](https://www.wireshark.org/docs/wsug_html_chunked/)
+- [`man dumpcap`, `man pcap-filter` (BPF syntax reference).](https://www.wireshark.org/docs/man-pages/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   encyclopedia's dated baseline for Wireshark 4.4.x.
 - [Volume XVIII](../../volume-18-gigamon-network-visibility/README.md) (Gigamon Network Visibility) — network packet broker

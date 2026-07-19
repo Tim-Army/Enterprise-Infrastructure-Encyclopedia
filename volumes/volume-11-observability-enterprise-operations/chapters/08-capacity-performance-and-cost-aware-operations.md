@@ -429,14 +429,14 @@ print('Right-sizing check passed.')
 
 **References**
 
-- Google, *Site Reliability Engineering*, Chapter 17 ("Testing for
-  Reliability") and Chapter 21 ("Managing Load"), free online edition.
-- Kubernetes documentation, `kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/`,
-  for HPA behavior configuration.
-- KEDA documentation, `keda.sh/docs/`, for event-driven and scale-to-
-  zero scaling patterns.
-- FinOps Foundation, *FinOps Framework*, `finops.org`, for showback,
-  chargeback, and unit economics definitions used in this chapter.
+- [Google, *Site Reliability Engineering*, Chapter 17 ("Testing for
+  Reliability") and Chapter 21 ("Managing Load"), free online edition.](https://sre.google/sre-book/table-of-contents/)
+- [Kubernetes documentation, `kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/`,
+  for HPA behavior configuration.](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
+- [KEDA documentation, `keda.sh/docs/`, for event-driven and scale-to-
+  zero scaling patterns.](https://keda.sh/docs/)
+- [FinOps Foundation, *FinOps Framework*, `finops.org`, for showback,
+  chargeback, and unit economics definitions used in this chapter.](https://www.finops.org/framework/)
 
 **Knowledge Checks**
 

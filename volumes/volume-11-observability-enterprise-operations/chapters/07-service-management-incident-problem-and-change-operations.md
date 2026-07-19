@@ -412,14 +412,14 @@ Elevated 5xx error rate on /checkout, peaking at 8% of requests, for
 
 **References**
 
-- AXELOS/PeopleCert, *ITIL 4 Foundation*, practices for Incident
-  Management, Problem Management, and Change Enablement.
-- Google, *Site Reliability Engineering*, Chapter 15 ("Postmortem
-  Culture: Learning from Failure"), free online edition.
-- Allspaw, J., "Blameless PostMortems and a Just Culture" (Etsy
-  engineering blog), for the foundational blameless-postmortem argument.
-- PagerDuty, *Incident Response Documentation*, for incident commander
-  and major-incident role definitions referenced in this chapter.
+- [AXELOS/PeopleCert, *ITIL 4 Foundation*, practices for Incident
+  Management, Problem Management, and Change Enablement.](https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-4-foundation-2565)
+- [Google, *Site Reliability Engineering*, Chapter 15 ("Postmortem
+  Culture: Learning from Failure"), free online edition.](https://sre.google/sre-book/postmortem-culture/)
+- [Allspaw, J., "Blameless PostMortems and a Just Culture" (Etsy
+  engineering blog), for the foundational blameless-postmortem argument.](https://www.etsy.com/codeascraft/blameless-postmortems)
+- [PagerDuty, *Incident Response Documentation*, for incident commander
+  and major-incident role definitions referenced in this chapter.](https://response.pagerduty.com/)
 
 **Knowledge Checks**
 

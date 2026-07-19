@@ -346,14 +346,14 @@ racadm get iDRAC.OS-BMC.OSInfo
 
 **References**
 
-- Dell Technologies, *iDRAC9/iDRAC10 User's Guide* — iDRAC Direct, Quick
+- [Dell Technologies, *iDRAC9/iDRAC10 User's Guide*](https://www.dell.com/support/product-details/en-us/product/idrac10-lifecycle-controller-v1-xx-series/resources/manuals) — iDRAC Direct, Quick
   Sync, Virtual Console, and Virtual Media chapters
-- Dell Technologies, *iDRAC Service Module Installation Guide*
-- Dell Technologies, *iDRAC RACADM CLI Guide* — `remoteimage`,
+- [Dell Technologies, *iDRAC Service Module Installation Guide*](https://www.dell.com/support/manuals/en-us/dell-idrac-service-module-2.0/ism_ig_2.5/introduction)
+- [Dell Technologies, *iDRAC RACADM CLI Guide*](https://www.dell.com/support/manuals/en-us/idrac9-lifecycle-controller-v4.x-series/idrac_4.00.00.00_racadm/supported-racadm-interfaces?guid=guid-a5747353-fc88-4438-b617-c50ca260448e&lang=en-us) — `remoteimage`,
   `iDRAC.VirtualConsole`, and `iDRAC.QuickSync` command/attribute
   reference
-- Dell Technologies, *iDRAC Redfish API Guide* — `VirtualMedia` resource
-- `SOFTWARE_VERSIONS.md` in this repository for the dated iDRAC9/iDRAC10
+- [Dell Technologies, *iDRAC Redfish API Guide*](https://www.dell.com/support/kbdoc/en-us/000178045/redfish-api-with-dell-integrated-remote-access-controller) — `VirtualMedia` resource
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated iDRAC9/iDRAC10
   baseline
 
 **Knowledge Checks**

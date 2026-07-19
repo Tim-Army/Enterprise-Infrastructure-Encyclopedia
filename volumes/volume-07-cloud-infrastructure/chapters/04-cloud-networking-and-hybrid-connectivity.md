@@ -34,7 +34,7 @@ and peering configuration simultaneously.
 
 Plan address space top-down, before creating a single subnet:
 
-1. Reserve a sufcient private address range (commonly from RFC 1918 space)
+1. Reserve a sufcient private address range (commonly from [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) space)
    per environment or region, sized generously — undersizing here is the
    single most common cloud networking mistake, because a virtual
    network's primary CIDR block is difficult or impossible to expand in
@@ -380,8 +380,8 @@ resource "cloud_vpn_connection" "failover" {
 
 ### References
 
-- RFC 1918, *Address Allocation for Private Internets*.
-- RFC 4271, *A Border Gateway Protocol 4 (BGP-4)*.
+- [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918), *Address Allocation for Private Internets*.
+- [RFC 4271](https://www.rfc-editor.org/rfc/rfc4271), *A Border Gateway Protocol 4 (BGP-4)*.
 - Each major provider's virtual network, peering, transit gateway, and
   dedicated-connection documentation — consult the current vendor source
   for exact limits and CLI/API syntax.

@@ -113,7 +113,7 @@ changes. Three families matter for enterprise design:
 
 ### OSPF Area Design Fundamentals
 
-OSPF (Open Shortest Path First, RFC 2328 for OSPFv2/IPv4, RFC 5340 for
+OSPF (Open Shortest Path First, [RFC 2328](https://www.rfc-editor.org/rfc/rfc2328) for OSPFv2/IPv4, [RFC 5340](https://www.rfc-editor.org/rfc/rfc5340) for
 OSPFv3/IPv6) organizes a routing domain into **areas** to bound the size of
 the link-state database any single router must maintain. **Area 0** (the
 backbone) is mandatory, and every other area must connect to it directly
@@ -137,7 +137,7 @@ instead of every internal prefix.
 
 ### BGP Fundamentals
 
-Border Gateway Protocol (BGP, RFC 4271) is the path-vector protocol that
+Border Gateway Protocol (BGP, [RFC 4271](https://www.rfc-editor.org/rfc/rfc4271)) is the path-vector protocol that
 routes the global Internet and is used at the enterprise edge to exchange
 routes with one or more Internet Service Providers, and increasingly
 internally (iBGP) as a scalable alternative to link-state protocols in

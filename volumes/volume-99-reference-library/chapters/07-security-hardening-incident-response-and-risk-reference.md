@@ -209,13 +209,13 @@ most organizations, executive/board-level visibility.
 
 **References**
 
-- NIST SP 800-61 Rev. 2 — Computer Security Incident Handling Guide.
-- NIST SP 800-53 — Security and Privacy Controls for Information Systems
+- [NIST SP 800-61 Rev. 2](https://csrc.nist.gov/pubs/sp/800/61/r2/final) — Computer Security Incident Handling Guide.
+- [NIST SP 800-53](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final) — Security and Privacy Controls for Information Systems
   and Organizations.
-- CIS Benchmarks (`cisecurity.org/cis-benchmarks`) — per-platform
+- [CIS Benchmarks (`cisecurity.org/cis-benchmarks`)](https://www.cisecurity.org/cis-benchmarks) — per-platform
   hardening guides referenced throughout this table.
-- FIRST CVSS v3.1/v4.0 specification (`first.org/cvss`).
-- DISA STIGs (`public.cyber.mil/stigs`).
+- [FIRST CVSS v3.1/v4.0 specification (`first.org/cvss`).](https://www.first.org/cvss/)
+- [DISA STIGs (`public.cyber.mil/stigs`).](https://public.cyber.mil/stigs/)
 - [Chapter 04](04-configuration-templates-baselines-and-change-records.md) of this volume — baselines that incident recovery restores
   systems to.
 - [Chapter 05](05-validation-evidence-checklists-and-acceptance.md) of this volume — evidence and acceptance discipline applied

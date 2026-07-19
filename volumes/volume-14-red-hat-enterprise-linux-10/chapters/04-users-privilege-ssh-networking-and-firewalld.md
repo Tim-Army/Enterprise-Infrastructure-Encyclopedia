@@ -371,12 +371,12 @@ firewall-cmd --reload
 
 **References**
 
-- `useradd(8)`, `usermod(8)`, `chage(1)`, `sudoers(5)`, `visudo(8)` man
-  pages.
-- `pam.d(5)`, `pam_faillock(8)`, `authselect(8)` man pages.
-- `sshd_config(5)`, `ssh-keygen(1)` man pages.
-- `nmcli(1)`, NetworkManager documentation, Red Hat Customer Portal.
-- `firewalld.zones(5)`, `firewall-cmd(1)` man pages.
+- [`useradd(8)`, `usermod(8)`, `chage(1)`, `sudoers(5)`, `visudo(8)` man
+  pages.](https://man7.org/linux/man-pages/man8/useradd.8.html)
+- [`pam.d(5)`, `pam_faillock(8)`, `authselect(8)` man pages.](https://man7.org/linux/man-pages/man5/pam.d.5.html)
+- [`sshd_config(5)`, `ssh-keygen(1)` man pages.](https://man7.org/linux/man-pages/man5/sshd_config.5.html)
+- [`nmcli(1)`, NetworkManager documentation, Red Hat Customer Portal.](https://networkmanager.dev/docs/)
+- [`firewalld.zones(5)`, `firewall-cmd(1)` man pages.](https://firewalld.org/documentation/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — RHEL 10
   baseline referenced throughout this chapter.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —

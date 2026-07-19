@@ -270,15 +270,15 @@ certification-level design questions.
 
 **References**
 
-- Forescout Technologies Web API reference and automation/scripting
-  documentation for the 8.5.x release.
+- [Forescout Technologies Web API reference and automation/scripting
+  documentation for the 8.5.x release.](https://docs.forescout.com/)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this volume.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   FSCA/FSCP/FSCE blueprint domain mapping for this volume.
-- Forescout Technologies certification and training catalog (official
+- [Forescout Technologies certification and training catalog (official
   source for current FSCA/FSCP/FSCE blueprint domains and exam
-  registration).
+  registration).](https://www.forescout.com/support-hub/training/)
 - [Volume IX](../../volume-09-infrastructure-automation/README.md) of this encyclopedia (Infrastructure Automation) for the
   general automation architecture patterns this chapter applies to the
   Forescout Web API.

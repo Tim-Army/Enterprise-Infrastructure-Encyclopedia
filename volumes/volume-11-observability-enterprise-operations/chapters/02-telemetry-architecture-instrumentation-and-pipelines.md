@@ -364,13 +364,13 @@ processors:
 
 **References**
 
-- CNCF OpenTelemetry documentation and specification, `opentelemetry.io`.
-- W3C Trace Context Recommendation and W3C Baggage specification,
-  `w3.org/TR/trace-context/` and the associated Baggage draft.
-- OpenTelemetry Collector Contrib repository documentation for receiver,
-  processor, and exporter reference configuration.
-- Prometheus documentation, `prometheus.io/docs`, for the pull-based
-  scrape model referenced in Design Considerations.
+- [CNCF OpenTelemetry documentation and specification, `opentelemetry.io`.](https://opentelemetry.io/docs/)
+- [W3C Trace Context Recommendation and W3C Baggage specification,
+  `w3.org/TR/trace-context/` and the associated Baggage draft.](https://www.w3.org/TR/trace-context/)
+- [OpenTelemetry Collector Contrib repository documentation for receiver,
+  processor, and exporter reference configuration.](https://github.com/open-telemetry/opentelemetry-collector-contrib)
+- [Prometheus documentation, `prometheus.io/docs`, for the pull-based
+  scrape model referenced in Design Considerations.](https://prometheus.io/docs/)
 
 **Knowledge Checks**
 

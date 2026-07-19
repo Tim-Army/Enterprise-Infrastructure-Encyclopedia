@@ -255,11 +255,11 @@ traffic to its final tool destination:
 
 **References**
 
-- Gigamon, *GigaSMART for Network Traffic Intelligence* product page —
+- [Gigamon, *GigaSMART for Network Traffic Intelligence* product page](https://www.gigamon.com/products/optimize-traffic/traffic-intelligence/gigasmart.html) —
   full application catalog and architecture.
-- Gigamon, *Packet Slicing*, *Data Masking*, and *De-Duplication* product
-  pages — per-application behavior detail.
-- Gigamon, *GigaSMART Data Sheet* — licensing and platform capacity
+- [Gigamon, *Packet Slicing*, *Data Masking*, and *De-Duplication* product
+  pages](https://www.gigamon.com/products/optimize-traffic/traffic-intelligence/gigasmart/packet-slicing.html) — per-application behavior detail.
+- [Gigamon, *GigaSMART Data Sheet*](https://www.gigamon.com/content/dam/resource-library/english/data-sheet/ds-gigasmart.pdf) — licensing and platform capacity
   reference.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this volume's
   GigaVUE-FM 6.x baseline.

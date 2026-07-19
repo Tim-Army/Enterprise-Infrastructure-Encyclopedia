@@ -263,11 +263,11 @@ enforced check.
 
 **References**
 
-- Gigamon, *Gigamon Certified Professional Certification Program* data
-  sheet — exam structure, prerequisites, and validity period.
-- Gigamon Community, *Training & Certification* portal — current course
+- [Gigamon, *Gigamon Certified Professional Certification Program* data
+  sheet](https://www.gigamon.com/content/dam/resource-library/english/data-sheet/ds-professional-certification-program.pdf) — exam structure, prerequisites, and validity period.
+- [Gigamon Community, *Training & Certification* portal](https://community.gigamon.com/gigamoncp/s/training) — current course
   and exam scheduling.
-- Gigamon, GigaVUE-FM and GigaVUE-OS documentation library — consolidated
+- [Gigamon, GigaVUE-FM and GigaVUE-OS documentation library](https://docs.gigamon.com/doclib/Content/Shared/Documentation_List.html) — consolidated
   operational and troubleshooting reference for the release in use.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this volume's
   GigaVUE-FM 6.x baseline.

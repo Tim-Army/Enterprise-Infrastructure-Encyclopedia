@@ -310,14 +310,14 @@ events before enabling the `ban-ip` action against production traffic.
 
 **References**
 
-- Fortinet, *FortiOS Administration Guide* — SD-WAN, central management,
+- [Fortinet, *FortiOS Administration Guide*](https://docs.fortinet.com/product/fortigate/8.0.0) — SD-WAN, central management,
   and automation stitches.
-- Fortinet, *FortiManager Administration Guide* — ADOMs, Device Manager,
+- [Fortinet, *FortiManager Administration Guide*](https://docs.fortinet.com/product/fortimanager/8.0) — ADOMs, Device Manager,
   and policy packages.
-- Fortinet, *FortiOS REST API* reference documentation.
-- Fortinet, `fortinet.fortios` Ansible Collection documentation.
-- Fortinet NSE Training Institute, *NSE 4: FortiGate Infrastructure*
-  course (SD-WAN and central management domains).
+- [Fortinet, *FortiOS REST API* reference documentation.](https://docs.fortinet.com/document/fortigate/8.0.0/administration-guide/940602/using-apis)
+- [Fortinet, `fortinet.fortios` Ansible Collection documentation.](https://galaxy.ansible.com/fortinet/fortios)
+- [Fortinet NSE Training Institute, *NSE 4: FortiGate Infrastructure*
+  course (SD-WAN and central management domains).](https://training.fortinet.com/local/staticpage/view.php?page=nse_4)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — FortiOS 7.6.x
   baseline used throughout this volume.
 

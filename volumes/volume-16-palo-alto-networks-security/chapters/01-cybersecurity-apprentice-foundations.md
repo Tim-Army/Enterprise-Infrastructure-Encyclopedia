@@ -279,11 +279,11 @@ firewall feels slow."
 
 **References**
 
-- Palo Alto Networks, *PAN-OS Administrator's Guide* (version 11.1) —
+- [Palo Alto Networks, *PAN-OS Administrator's Guide* (version 11.1)](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin) —
   initial configuration and CLI fundamentals.
-- Palo Alto Networks Beacon (training.paloaltonetworks.com) — Cybersecurity
+- [Palo Alto Networks Beacon (training.paloaltonetworks.com)](https://beacon.paloaltonetworks.com/) — Cybersecurity
   Apprentice learning path and hands-on units.
-- Palo Alto Networks, *Zero Trust Enterprise* solution overview.
+- [Palo Alto Networks, *Zero Trust Enterprise* solution overview.](https://www.paloaltonetworks.com/zero-trust)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this volume's
   PAN-OS 11.x / Panorama 11.x baseline.
 

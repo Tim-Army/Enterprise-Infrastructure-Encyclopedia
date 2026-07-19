@@ -348,11 +348,11 @@ shifted slightly across OME releases as the API surface has grown.
 
 **References**
 
-- Dell Technologies, *OpenManage Enterprise Installation and Deployment
-  Guide* (version-specific, aligned to the 4.7.x baseline)
-- Dell Technologies, *OpenManage Enterprise Support Matrix*
-- Dell Technologies, *OpenManage Enterprise RESTful API Guide*
-- `SOFTWARE_VERSIONS.md` in this repository for the dated 4.7.x baseline
+- [Dell Technologies, *OpenManage Enterprise Installation and Deployment
+  Guide* (version-specific, aligned to the 4.7.x baseline)](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_4_1_online_help_and_user_guide/deployment)
+- [Dell Technologies, *OpenManage Enterprise Support Matrix*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_4.x.x_support_matrix/openmanage-enterprise-4xx-support-matrix)
+- [Dell Technologies, *OpenManage Enterprise RESTful API Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_p_3.10_api_guide/preface)
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated 4.7.x baseline
 
 **Knowledge Checks**
 

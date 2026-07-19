@@ -365,13 +365,13 @@ most common reason two devices fail to form a cluster.
 
 **References**
 
-- Fortinet, *FortiOS Administration Guide* — interfaces, routing, NAT,
+- [Fortinet, *FortiOS Administration Guide*](https://docs.fortinet.com/product/fortigate/8.0.0) — interfaces, routing, NAT,
   VDOMs, and FGCP high availability.
-- Fortinet, *FortiOS CLI Reference* — `config system interface`,
+- [Fortinet, *FortiOS CLI Reference*](https://docs.fortinet.com/document/fortigate/8.0.0/cli-reference/84566/fortios-cli-reference) — `config system interface`,
   `config router static`, `config router policy`, `config firewall vip`,
   `config vdom`, `config system ha`.
-- Fortinet NSE Training Institute, *NSE 4: FortiGate Infrastructure*
-  course (routing, VDOM, and HA domains).
+- [Fortinet NSE Training Institute, *NSE 4: FortiGate Infrastructure*
+  course (routing, VDOM, and HA domains).](https://training.fortinet.com/local/staticpage/view.php?page=nse_4)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — FortiOS 7.6.x
   baseline used throughout this volume.
 

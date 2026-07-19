@@ -401,14 +401,14 @@ aws resiliencehub start-app-assessment \
 
 **References**
 
-- AWS Well-Architected Reliability Pillar whitepaper — the four DR
+- [AWS Well-Architected Reliability Pillar whitepaper](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html) — the four DR
   strategies and design principles.
-- Amazon Route 53 documentation — health checks and routing policies.
-- Amazon Aurora Global Database and Amazon DynamoDB Global Tables
-  documentation.
-- AWS Application Migration Service (MGN) and AWS Database Migration
-  Service (DMS) documentation.
-- AWS Resilience Hub documentation.
+- [Amazon Route 53 documentation](https://docs.aws.amazon.com/Route53/) — health checks and routing policies.
+- [Amazon Aurora Global Database and Amazon DynamoDB Global Tables
+  documentation.](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GlobalTables.html)
+- [AWS Application Migration Service (MGN) and AWS Database Migration
+  Service (DMS) documentation.](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html)
+- [AWS Resilience Hub documentation.](https://docs.aws.amazon.com/resilience-hub/latest/userguide/what-is.html)
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this chapter maps to the reliability, migration, and business-
   continuity domains of the AWS Certified Solutions Architect blueprint.

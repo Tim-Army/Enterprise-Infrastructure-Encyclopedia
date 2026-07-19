@@ -313,10 +313,10 @@ admin@pa-fw01> test security-policy-match from trust to untrust source 10.10.20.
 
 **References**
 
-- Palo Alto Networks, *PAN-OS Administrator's Guide* — Security Policy,
+- [Palo Alto Networks, *PAN-OS Administrator's Guide*](https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin) — Security Policy,
   App-ID, User-ID, Content-ID, and Decryption chapters (version 11.1).
-- Palo Alto Networks, *Decryption Best Practices* documentation.
-- Palo Alto Networks, *App-ID Technology Brief*.
+- [Palo Alto Networks, *Decryption Best Practices* documentation.](https://docs.paloaltonetworks.com/best-practices/10-2/decryption-best-practices)
+- [Palo Alto Networks, *App-ID Technology Brief*.](https://www.paloaltonetworks.com/resources/techbriefs/app-id-tech-brief)
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — PAN-OS 11.x
   baseline used throughout this volume.
 

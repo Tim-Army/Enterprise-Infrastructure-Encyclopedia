@@ -382,12 +382,12 @@ esxtop -b -d 5 -n 12 > /tmp/esxtop-capture.csv
 
 **References**
 
-- VMware vSphere 9.x Documentation — *vSphere Lifecycle Manager* (cluster
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *vSphere Lifecycle Manager* (cluster
   images, Hardware Support Manager, remediation).
-- VMware vSphere 9.x Documentation — *Auto Deploy*.
-- VMware vSphere 9.x Documentation — *vCenter Server Events, Alarms, and
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Auto Deploy*.
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *vCenter Server Events, Alarms, and
   Automation* (Automation API, PowerCLI).
-- Broadcom Skyline Documentation — *Skyline Health Diagnostics* and
+- [Broadcom Skyline Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/skyline/health-diagnostics/4-0-7/installation-instructions.html) — *Skyline Health Diagnostics* and
   *Skyline Advisor*.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline, plus Terraform and Ansible tooling baselines,

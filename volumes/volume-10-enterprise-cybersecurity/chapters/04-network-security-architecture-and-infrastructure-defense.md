@@ -387,16 +387,16 @@ if __name__ == "__main__":
 
 **References**
 
-- NIST SP 800-41 Rev 1, *Guidelines on Firewalls and Firewall Policy*
-- NIST SP 800-207, *Zero Trust Architecture*
-- NIST SP 800-207 companion guidance and CISA, *Zero Trust Maturity
-  Model*
-- CISA, *Guidance on Securing DNS and Protective DNS*
-- MITRE ATT&CK Enterprise, techniques T1071 (Application Layer Protocol)
+- [NIST SP 800-41 Rev 1, *Guidelines on Firewalls and Firewall Policy*](https://csrc.nist.gov/pubs/sp/800/41/r1/final)
+- [NIST SP 800-207, *Zero Trust Architecture*](https://csrc.nist.gov/pubs/sp/800/207/final)
+- [NIST SP 800-207 companion guidance and CISA, *Zero Trust Maturity
+  Model*](https://www.cisa.gov/zero-trust-maturity-model)
+- [CISA, *Guidance on Securing DNS and Protective DNS*](https://www.cisa.gov/resources-tools/services/protective-domain-name-system-dns-resolver)
+- [MITRE ATT&CK Enterprise, techniques T1071 (Application Layer Protocol)
   and T1071.004 (DNS) as reference points for detection coverage, and
-  T1498 (Network Denial of Service) for DDoS-related mitigations
-- CIS Controls v8.1, Control 12 (Network Infrastructure Management) and
-  Control 13 (Network Monitoring and Defense)
+  T1498 (Network Denial of Service) for DDoS-related mitigations](https://attack.mitre.org/)
+- [CIS Controls v8.1, Control 12 (Network Infrastructure Management) and
+  Control 13 (Network Monitoring and Defense)](https://www.cisecurity.org/controls/v8-1)
 
 **Knowledge Checks**
 

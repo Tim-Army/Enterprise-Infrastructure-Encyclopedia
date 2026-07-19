@@ -242,12 +242,12 @@ Get-WinEvent -FilterHashtable @{
 
 **References**
 
-- Microsoft Learn: "Windows Server documentation" and "PowerShell
-  Remoting Overview."
-- Microsoft Learn: "Group Managed Service Accounts Overview."
-- Microsoft Learn: "Windows Admin Center overview."
-- DISA STIG for Microsoft Windows Server (Server Core and Member Server
-  documents).
+- [Microsoft Learn: "Windows Server documentation" and "PowerShell
+  Remoting Overview."](https://learn.microsoft.com/en-us/powershell/scripting/learn/ps101/08-powershell-remoting)
+- [Microsoft Learn: "Group Managed Service Accounts Overview."](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-managed-service-accounts/group-managed-service-accounts/group-managed-service-accounts-overview)
+- [Microsoft Learn: "Windows Admin Center overview."](https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/overview)
+- [DISA STIG for Microsoft Windows Server (Server Core and Member Server
+  documents).](https://public.cyber.mil/stigs/downloads/)
 
 **Knowledge Checks**
 

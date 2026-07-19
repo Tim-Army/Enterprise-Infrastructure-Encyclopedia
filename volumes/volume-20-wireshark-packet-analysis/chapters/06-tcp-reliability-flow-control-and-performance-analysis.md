@@ -281,10 +281,10 @@ tshark -r capture.pcapng -Y "tcp.analysis.retransmission" -T fields -e tcp.strea
 
 **References**
 
-- Wireshark User's Guide, "TCP Analysis" and "Statistics" chapters
-  (current for the 4.4.x release line).
-- IETF RFC 9293 (TCP), RFC 7323 (TCP Extensions for High Performance —
-  window scaling and timestamps), RFC 2018 (TCP Selective Acknowledgment).
+- [Wireshark User's Guide, "TCP Analysis" and "Statistics" chapters
+  (current for the 4.4.x release line).](https://www.wireshark.org/docs/wsug_html_chunked/)
+- IETF [RFC 9293](https://www.rfc-editor.org/rfc/rfc9293) (TCP), [RFC 7323](https://www.rfc-editor.org/rfc/rfc7323) (TCP Extensions for High Performance —
+  window scaling and timestamps), [RFC 2018](https://www.rfc-editor.org/rfc/rfc2018) (TCP Selective Acknowledgment).
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   encyclopedia's dated baseline for Wireshark 4.4.x.
 

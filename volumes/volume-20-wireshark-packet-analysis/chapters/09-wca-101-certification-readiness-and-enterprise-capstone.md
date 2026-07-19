@@ -190,7 +190,7 @@ echo "${fields[$RANDOM % ${#fields[@]}]}"
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this encyclopedia's mapping of Volume XX to the WCA-101 credential and
   pointer to the controlling vendor source.
-- Wireshark Certified Analyst Program — official current blueprint,
+- [Wireshark Certified Analyst Program](https://www.wireshark.org/certifications/) — official current blueprint,
   exam objectives, and registration (verify directly with the program
   before scheduling an exam).
 - Chapters 01–08 of this volume, and their individual References and

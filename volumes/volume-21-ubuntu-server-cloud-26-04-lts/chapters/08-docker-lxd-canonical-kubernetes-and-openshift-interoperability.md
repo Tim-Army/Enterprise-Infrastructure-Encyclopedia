@@ -321,9 +321,9 @@ oc logs deployment/demo
 
 **References**
 
-- Docker Engine documentation, `docker.com`.
-- LXD documentation, `documentation.ubuntu.com/lxd`.
-- Canonical Kubernetes documentation, `documentation.ubuntu.com/canonical-kubernetes`.
+- [Docker Engine documentation, `docker.com`.](https://docs.docker.com/engine/)
+- [LXD documentation, `documentation.ubuntu.com/lxd`.](https://documentation.ubuntu.com/lxd/latest/)
+- [Canonical Kubernetes documentation, `documentation.ubuntu.com/canonical-kubernetes`.](https://documentation.ubuntu.com/canonical-kubernetes/latest/)
 - OpenShift Security Context Constraints documentation, Red Hat
   (cross-referenced with [Volume XIV](../../volume-14-red-hat-enterprise-linux-10/README.md)).
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Ubuntu Server

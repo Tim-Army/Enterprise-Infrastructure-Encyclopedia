@@ -249,11 +249,11 @@ automatically generates the underlying stream-index filter
 
 **References**
 
-- Wireshark User's Guide, "User Interface," "Working with Captured
+- [Wireshark User's Guide, "User Interface," "Working with Captured
   Packets," and "Configuration Profiles" chapters (current for the 4.4.x
-  release line).
-- Wireshark Display Filter Reference (`https://www.wireshark.org/docs/dfref/`).
-- `man tshark` — `-Y`, `-z` option reference.
+  release line).](https://www.wireshark.org/docs/wsug_html_chunked/)
+- [Wireshark Display Filter Reference (`https://www.wireshark.org/docs/dfref/`).](https://www.wireshark.org/docs/dfref/)
+- [`man tshark`](https://www.wireshark.org/docs/man-pages/tshark.html) — `-Y`, `-z` option reference.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   encyclopedia's dated baseline for Wireshark 4.4.x.
 

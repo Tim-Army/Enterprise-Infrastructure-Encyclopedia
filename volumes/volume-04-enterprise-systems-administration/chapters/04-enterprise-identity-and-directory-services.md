@@ -297,15 +297,15 @@ repadmin /showrepl * /csv | ConvertFrom-Csv |
 
 **References**
 
-- Microsoft Learn: "Active Directory Domain Services Overview" and
-  "Understanding FSMO Roles in Active Directory."
-- Microsoft Learn: "Group Policy Overview" and "How Core Group Policy
-  Works."
+- [Microsoft Learn: "Active Directory Domain Services Overview" and
+  "Understanding FSMO Roles in Active Directory."](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-fsmo-roles)
+- [Microsoft Learn: "Group Policy Overview" and "How Core Group Policy
+  Works."](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview)
 - RFC 4511 (LDAP: The Protocol) and RFC 4120 (Kerberos Network
   Authentication Service V5).
-- Red Hat documentation: "Integrating RHEL Systems Directly with Windows
-  Active Directory" (SSSD/realmd).
-- Microsoft Learn: "Group Managed Service Accounts Overview."
+- [Red Hat documentation: "Integrating RHEL Systems Directly with Windows
+  Active Directory" (SSSD/realmd).](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/integrating_rhel_systems_directly_with_windows_active_directory/connecting-rhel-systems-directly-to-ad-using-sssd)
+- [Microsoft Learn: "Group Managed Service Accounts Overview."](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-managed-service-accounts/group-managed-service-accounts/group-managed-service-accounts-overview)
 
 **Knowledge Checks**
 

@@ -356,13 +356,13 @@ mapped_detections:
 
 **References**
 
-- MITRE ATT&CK Enterprise Matrix
-- SigmaHQ, *Sigma Detection Rule Specification*
-- NIST SP 800-92, *Guide to Computer Security Log Management*
-- NIST SP 800-137, *Information Security Continuous Monitoring (ISCM)*
-- CISA, *Recommended Practices for Security Operations Centers*
-- FIRST.org, *Traffic Light Protocol (TLP)* for threat intelligence
-  handling
+- [MITRE ATT&CK Enterprise Matrix](https://attack.mitre.org/matrices/enterprise/)
+- [SigmaHQ, *Sigma Detection Rule Specification*](https://github.com/SigmaHQ/sigma-specification)
+- [NIST SP 800-92, *Guide to Computer Security Log Management*](https://csrc.nist.gov/pubs/sp/800/92/final)
+- [NIST SP 800-137, *Information Security Continuous Monitoring (ISCM)*](https://csrc.nist.gov/pubs/sp/800/137/final)
+- [CISA, *Recommended Practices for Security Operations Centers*](https://www.cisa.gov/resources-tools/services/security-operations-center-soc-optimization-advisory-service)
+- [FIRST.org, *Traffic Light Protocol (TLP)* for threat intelligence
+  handling](https://www.first.org/tlp/)
 
 **Knowledge Checks**
 

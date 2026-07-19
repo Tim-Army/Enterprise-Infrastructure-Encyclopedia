@@ -315,13 +315,13 @@ sudo landscape-config --is-registered
 
 **References**
 
-- Ubuntu Server Guide — Installation, Canonical documentation.
-- Subiquity and autoinstall reference, Canonical `ubuntu/subiquity`
-  project documentation.
-- Ubuntu Pro documentation — `ubuntu.com/pro` and `pro status`/`pro
+- [Ubuntu Server Guide](https://ubuntu.com/server/docs/) — Installation, Canonical documentation.
+- [Subiquity and autoinstall reference, Canonical `ubuntu/subiquity`
+  project documentation.](https://canonical-subiquity.readthedocs-hosted.com/en/latest/)
+- [Ubuntu Pro documentation](https://documentation.ubuntu.com/pro/) — `ubuntu.com/pro` and `pro status`/`pro
   help` command output.
-- Debian/Ubuntu Repository Format ("deb822") specification.
-- Landscape documentation — `ubuntu.com/landscape`.
+- [Debian/Ubuntu Repository Format ("deb822") specification.](https://repolib.readthedocs.io/en/latest/deb822-format.html)
+- [Landscape documentation](https://documentation.ubuntu.com/landscape/) — `ubuntu.com/landscape`.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Ubuntu Server
   26.04 LTS baseline referenced throughout this volume.
 

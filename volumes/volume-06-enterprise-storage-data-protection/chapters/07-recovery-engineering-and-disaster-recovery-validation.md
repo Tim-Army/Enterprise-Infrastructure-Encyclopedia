@@ -312,9 +312,9 @@ test should produce this timeline as a baseline artifact.
 
 - NIST SP 800-34 (Contingency Planning Guide for Federal Information
   Systems), the same source underpinning [Chapter 5](05-backup-architecture-and-data-protection-policy.md)'s RPO/RTO definitions.
-- ISO 22301 (Business Continuity Management Systems) for organizational DR
-  program structure references.
-- SOFTWARE_VERSIONS.md — dated Linux baseline used for this chapter's
+- [ISO 22301 (Business Continuity Management Systems) for organizational DR
+  program structure references.](https://www.iso.org/standard/75106.html)
+- [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated Linux baseline used for this chapter's
   orchestration and lab examples.
 
 **Knowledge Checks**

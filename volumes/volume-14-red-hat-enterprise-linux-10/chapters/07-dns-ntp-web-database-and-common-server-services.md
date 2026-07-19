@@ -388,13 +388,13 @@ firewall-cmd --reload
 
 **References**
 
-- `chrony.conf(5)`, `chronyc(1)` man pages.
-- BIND 9 Administrator Reference Manual; `named.conf(5)`, `dig(1)` man
-  pages.
-- Apache HTTP Server documentation — virtual hosts and `mod_ssl`
+- [`chrony.conf(5)`, `chronyc(1)` man pages.](https://chrony-project.org/doc/4.0/chrony.conf.html)
+- [BIND 9 Administrator Reference Manual; `named.conf(5)`, `dig(1)` man
+  pages.](https://bind9.readthedocs.io/)
+- [Apache HTTP Server documentation](https://httpd.apache.org/docs/) — virtual hosts and `mod_ssl`
   configuration.
-- MariaDB Server documentation; `mysql_secure_installation(1)`.
-- PostgreSQL documentation — `pg_hba.conf` authentication
+- [MariaDB Server documentation; `mysql_secure_installation(1)`.](https://mariadb.com/kb/en/documentation/)
+- [PostgreSQL documentation](https://www.postgresql.org/docs/) — `pg_hba.conf` authentication
   configuration.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — RHEL 10
   baseline referenced throughout this chapter.

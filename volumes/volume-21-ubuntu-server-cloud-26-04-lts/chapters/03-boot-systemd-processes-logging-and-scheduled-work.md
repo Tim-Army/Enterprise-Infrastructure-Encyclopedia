@@ -354,11 +354,11 @@ atrm 3
 
 **References**
 
-- `systemd(1)`, `systemctl(1)`, `systemd.unit(5)`, `systemd.timer(5)`
-  man pages.
-- `journalctl(1)`, `journald.conf(5)` man pages.
-- `crontab(5)`, `at(1)` man pages.
-- Ubuntu Server Guide — systemd essentials and log management.
+- [`systemd(1)`, `systemctl(1)`, `systemd.unit(5)`, `systemd.timer(5)`
+  man pages.](https://man7.org/linux/man-pages/man1/systemctl.1.html)
+- [`journalctl(1)`, `journald.conf(5)` man pages.](https://man7.org/linux/man-pages/man1/journalctl.1.html)
+- [`crontab(5)`, `at(1)` man pages.](https://man7.org/linux/man-pages/man5/crontab.5.html)
+- [Ubuntu Server Guide](https://ubuntu.com/server/docs/) — systemd essentials and log management.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Ubuntu Server
   26.04 baseline referenced throughout this chapter.
 

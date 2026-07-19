@@ -253,11 +253,11 @@ back toward the physical fabric for centralized delivery.
 
 **References**
 
-- Gigamon, *GigaVUE V Series* product page — virtual node architecture and
+- [Gigamon, *GigaVUE V Series* product page](https://www.gigamon.com/products/access-traffic/virtual-nodes/gigavue-v-series.html) — virtual node architecture and
   supported platforms.
-- Gigamon, *GigaVUE Cloud Suite* product page — AWS, Azure, GCP,
+- [Gigamon, *GigaVUE Cloud Suite* product page](https://www.gigamon.com/products/access-traffic/cloud-suite.html) — AWS, Azure, GCP,
   OpenStack, VMware, and Kubernetes acquisition models.
-- Gigamon, *GigaVUE Cloud Suite for Kubernetes Data Sheet* — container-aware
+- [Gigamon, *GigaVUE Cloud Suite for Kubernetes Data Sheet*](https://www.gigamon.com/content/dam/resource-library/english/data-sheet/ds-gigavue-cloud-suite-for-kubernetes.pdf) — container-aware
   tapping architecture.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this volume's
   GigaVUE-FM 6.x baseline, which governs supported V Series and cloud

@@ -349,12 +349,12 @@ this chapter's restore test previews.
 
 **References**
 
-- SNIA Data Protection and Backup terminology references.
-- NIST SP 800-34 (Contingency Planning Guide), the source of the RPO/RTO
-  vocabulary used throughout this volume.
-- `restic` official documentation (restic.net) for repository, snapshot,
-  and retention command reference.
-- SOFTWARE_VERSIONS.md — dated Linux baseline (RHEL 10 / Ubuntu Server
+- [SNIA Data Protection and Backup terminology references.](https://www.snia.org/education/dictionary/about-dictionary)
+- [NIST SP 800-34 (Contingency Planning Guide), the source of the RPO/RTO
+  vocabulary used throughout this volume.](https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final)
+- [`restic` official documentation (restic.net) for repository, snapshot,
+  and retention command reference.](https://restic.readthedocs.io/)
+- [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated Linux baseline (RHEL 10 / Ubuntu Server
   26.04 LTS) used for this chapter's CLI examples.
 
 **Knowledge Checks**

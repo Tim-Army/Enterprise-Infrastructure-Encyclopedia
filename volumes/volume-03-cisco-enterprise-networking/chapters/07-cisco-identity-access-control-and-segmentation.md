@@ -313,7 +313,7 @@ DIST-01# show cts role-based permissions
 - Cisco, *Identity Services Engine Administrator Guide*, current release.
 - Cisco, *TrustSec Configuration Guide* for IOS XE Catalyst 9000 switches.
 - IEEE 802.1X-2020, *Port-Based Network Access Control*.
-- RFC 2865/2866 (RADIUS), RFC 8907 (TACACS+ protocol specification).
+- [RFC 2865](https://www.rfc-editor.org/rfc/rfc2865)/2866 (RADIUS), [RFC 8907](https://www.rfc-editor.org/rfc/rfc8907) (TACACS+ protocol specification).
 
 **Knowledge checks**
 

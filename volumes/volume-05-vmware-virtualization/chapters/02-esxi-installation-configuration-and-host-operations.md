@@ -420,19 +420,19 @@ Add-VMHost -Name "esxi21.corp.example" -Location (Get-Cluster -Name "prod-cluste
 
 **References**
 
-- VMware vSphere 9.x Documentation — *Installing and Setting Up ESXi* (interactive,
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Installing and Setting Up ESXi* (interactive,
   scripted, PXE/UEFI HTTP boot, and Auto Deploy installation methods).
-- VMware vSphere 9.x Documentation — *ESXi Installation and Boot Options* (boot
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *ESXi Installation and Boot Options* (boot
   bank architecture, ESX-OSData sizing guidance).
-- VMware vSphere 9.x Documentation — *Host Profiles*.
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Host Profiles*.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 1 for ESXi's internal process architecture (VMkernel, VMM,
+- See [Chapter 1](01-vmware-virtualization-architecture-and-design.md) for ESXi's internal process architecture (VMkernel, VMM,
   hostd/vpxa).
-- See Chapter 3 for vCenter Server identity integration that replaces
+- See [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md) for vCenter Server identity integration that replaces
   direct root-account host administration.
-- See Chapter 8 for Lockdown Mode and full host security hardening.
-- See Chapter 9 for vSphere Lifecycle Manager images, cluster-scale
+- See [Chapter 8](08-vsphere-and-nsx-security-architecture.md) for Lockdown Mode and full host security hardening.
+- See [Chapter 9](09-vsphere-lifecycle-automation-observability-and-troubleshooting.md) for vSphere Lifecycle Manager images, cluster-scale
   remediation, and Auto Deploy's desired-state image lifecycle.
 
 **Knowledge checks**

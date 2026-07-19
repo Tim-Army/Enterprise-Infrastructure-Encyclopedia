@@ -385,10 +385,10 @@ Get-VDPortgroup -Name "pg-vm-app-tier" | Get-VDSecurityPolicy |
 
 **References**
 
-- VMware vSphere 9.x Documentation — *vSphere Networking* (standard and
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *vSphere Networking* (standard and
   distributed switches, port groups, VLAN tagging modes, NIC teaming).
-- VMware vSphere 9.x Documentation — *Network I/O Control*.
-- VMware vSphere 9.x Documentation — *Private VLANs* and *Custom TCP/IP
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Network I/O Control*.
+- [VMware vSphere 9.x Documentation](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0.html) — *Private VLANs* and *Custom TCP/IP
   Stacks*.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.

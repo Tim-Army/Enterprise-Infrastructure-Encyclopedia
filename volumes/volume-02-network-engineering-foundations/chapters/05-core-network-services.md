@@ -33,7 +33,7 @@ peripheral topics.
 
 ### DNS: Namespace, Resolution, and Records
 
-The Domain Name System (DNS), defined in RFC 1035, maps hierarchical,
+The Domain Name System (DNS), defined in [RFC 1035](https://www.rfc-editor.org/rfc/rfc1035), maps hierarchical,
 human-readable names to IP addresses (and other resource data) through a
 distributed, delegated namespace. No single server holds the entire
 namespace; instead, authority is delegated downward from the root zone
@@ -82,14 +82,14 @@ non-publicly-resolvable zone for private resource names.
 **Split-horizon (split-brain) DNS** serves different answers for the same
 name depending on whether the query originates from inside or outside the
 enterprise network — for example, an internal query for `app.example.com`
-returns a private RFC 1918 address, while an external query returns a
+returns a private [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) address, while an external query returns a
 public, NAT'd or load-balanced address. This is implemented as two separate
 zones (internal-view and external-view) served by different resolver
 infrastructure, not as a single zone with conditional records.
 
 ### DHCP: Automatic Address Assignment
 
-Dynamic Host Configuration Protocol (DHCP), defined in RFC 2131, automates
+Dynamic Host Configuration Protocol (DHCP), defined in [RFC 2131](https://www.rfc-editor.org/rfc/rfc2131), automates
 IPv4 address assignment along with related configuration (default gateway,
 DNS servers, domain name, NTP servers, and vendor-specific options) so hosts
 do not require manual addressing. The exchange is a four-message process
@@ -139,7 +139,7 @@ tracking mechanism supplements it, which complicates IPAM and forensics.
 
 ### NTP: Time Synchronization and Stratum Hierarchy
 
-Network Time Protocol (NTP), currently NTPv4 per RFC 5905, synchronizes
+Network Time Protocol (NTP), currently NTPv4 per [RFC 5905](https://www.rfc-editor.org/rfc/rfc5905), synchronizes
 clocks across a network using a hierarchical stratum model:
 
 | Stratum | Description |
@@ -167,9 +167,9 @@ attack surface.
 
 ### NAT and PAT: Address Translation Mechanisms
 
-Network Address Translation (NAT), defined conceptually in RFC 3022,
+Network Address Translation (NAT), defined conceptually in [RFC 3022](https://www.rfc-editor.org/rfc/rfc3022),
 rewrites IP addresses (and, for PAT, transport-layer ports) as traffic
-crosses a translation boundary, most commonly between private RFC 1918
+crosses a translation boundary, most commonly between private [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918)
 address space and public, internet-routable address space.
 
 | Term | Behavior |

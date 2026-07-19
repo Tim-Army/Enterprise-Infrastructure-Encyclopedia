@@ -420,16 +420,16 @@ next_review: 2026-08-15
 
 **References**
 
-- NIST SP 800-53 Rev 5, control family CA (Assessment, Authorization,
-  and Monitoring)
-- NIST SP 800-137, *Information Security Continuous Monitoring (ISCM)*
-- MITRE ATT&CK Enterprise Matrix and MITRE, *purple teaming and
-  detection validation guidance*
-- SANS Institute, *A Practical Model for Conducting Cyber Threat
-  Hunting* (Hunting Maturity Model)
-- OWASP, *DevSecOps Guideline*
-- CIS Controls v8.1, Control 18 (Penetration Testing) and Control 17
-  (Incident Response Management)
+- [NIST SP 800-53 Rev 5, control family CA (Assessment, Authorization,
+  and Monitoring)](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+- [NIST SP 800-137, *Information Security Continuous Monitoring (ISCM)*](https://csrc.nist.gov/pubs/sp/800/137/final)
+- [MITRE ATT&CK Enterprise Matrix and MITRE, *purple teaming and
+  detection validation guidance*](https://attack.mitre.org/matrices/enterprise/)
+- [SANS Institute, *A Practical Model for Conducting Cyber Threat
+  Hunting* (Hunting Maturity Model)](https://www.sans.org/white-papers/38710)
+- [OWASP, *DevSecOps Guideline*](https://owasp.org/www-project-devsecops-guideline/)
+- [CIS Controls v8.1, Control 18 (Penetration Testing) and Control 17
+  (Incident Response Management)](https://www.cisecurity.org/controls/v8-1)
 
 **Knowledge Checks**
 

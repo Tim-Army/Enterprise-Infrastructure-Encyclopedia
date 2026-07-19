@@ -309,12 +309,12 @@ window timing immediately before initiating it.
 
 **References**
 
-- Dell Technologies, *OpenManage Enterprise User's Guide* — backup,
+- [Dell Technologies, *OpenManage Enterprise User's Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_4_5_online_help_user_guide/overview) — backup,
   restore, and appliance upgrade
-- Dell Technologies, *OpenManage Enterprise Release Notes* (version-
-  specific, for supported upgrade paths)
-- Dell Technologies, *OpenManage Enterprise RESTful API Guide*
-- `SOFTWARE_VERSIONS.md` in this repository for the dated 4.7.x baseline
+- [Dell Technologies, *OpenManage Enterprise Release Notes* (version-
+  specific, for supported upgrade paths)](https://www.dell.com/support/home/en-us/product-support/product/dell-openmanage-enterprise/drivers)
+- [Dell Technologies, *OpenManage Enterprise RESTful API Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_p_3.10_api_guide/preface)
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated 4.7.x baseline
 
 **Knowledge Checks**
 

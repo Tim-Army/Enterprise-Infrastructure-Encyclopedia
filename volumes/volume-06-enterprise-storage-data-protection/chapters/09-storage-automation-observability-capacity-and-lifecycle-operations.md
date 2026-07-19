@@ -322,11 +322,11 @@ if __name__ == "__main__":
 - [Volume I, Chapter 3](../../volume-01-enterprise-engineering-foundations/chapters/03-automation-architecture.md) (Automation Architecture) and [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)
   (Infrastructure Lifecycle Management), for the automation and lifecycle
   disciplines this chapter applies specifically to storage.
-- SNIA Storage Management Initiative Specification (SMI-S) and current
+- [SNIA Storage Management Initiative Specification (SMI-S) and current
   vendor REST API documentation patterns for storage telemetry and
-  management.
-- `python3(1)` standard library `csv` module documentation, RHEL 10 /
-  Ubuntu Server 26.04 LTS baseline per SOFTWARE_VERSIONS.md.
+  management.](https://www.snia.org/)
+- [`python3(1)` standard library `csv` module documentation, RHEL 10 /
+  Ubuntu Server 26.04 LTS baseline per SOFTWARE_VERSIONS.md.](https://docs.python.org/3/library/csv.html)
 
 **Knowledge Checks**
 

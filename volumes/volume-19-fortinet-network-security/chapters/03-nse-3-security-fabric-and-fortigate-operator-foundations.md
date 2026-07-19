@@ -263,11 +263,11 @@ the purpose of this exercise, so each relevant group is set explicitly.
 
 **References**
 
-- Fortinet NSE Training Institute, *NSE 3: Fortinet Security Fabric* and
-  associated product-introduction modules.
-- Fortinet, *FortiOS Administration Guide* — Security Fabric setup and
+- [Fortinet NSE Training Institute, *NSE 3: Fortinet Security Fabric* and
+  associated product-introduction modules.](https://training.fortinet.com/local/staticpage/view.php?page=nse_3)
+- [Fortinet, *FortiOS Administration Guide*](https://docs.fortinet.com/product/fortigate/8.0.0) — Security Fabric setup and
   Security Rating.
-- Fortinet, *FortiOS CLI Reference* — `config system accprofile`,
+- [Fortinet, *FortiOS CLI Reference*](https://docs.fortinet.com/document/fortigate/8.0.0/cli-reference/84566/fortios-cli-reference) — `config system accprofile`,
   `config system admin`.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — FortiOS 7.6.x
   baseline used throughout this volume.

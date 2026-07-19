@@ -5,7 +5,7 @@
 - Calculate subnet boundaries, host counts, and wildcard masks for any
   IPv4 CIDR prefix without a calculator, and map IPv6 prefix lengths to
   their conventional use (point-to-point, subnet, site).
-- Identify RFC 1918 private IPv4 ranges, IPv6 address scopes, and the
+- Identify [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) private IPv4 ranges, IPv6 address scopes, and the
   reserved/special-use ranges that must never be assigned to production
   hosts.
 - Apply a consistent enterprise naming convention (hostname, FQDN, DNS
@@ -29,13 +29,13 @@ theoretical foundation covered in depth elsewhere ([Volume II](../../volume-02-n
 
 - **IPv4 addressing** is a 32-bit space divided by a prefix length (CIDR)
   into a network portion and a host portion. Classless Inter-Domain
-  Routing (CIDR, RFC 4632) replaced the old class A/B/C system; the prefix
+  Routing (CIDR, [RFC 4632](https://www.rfc-editor.org/rfc/rfc4632)) replaced the old class A/B/C system; the prefix
   length, not the leading bits of the address, now determines the network
   boundary.
 - **IPv6 addressing** is a 128-bit space designed around abundant address
   space rather than conservation: the conventional allocation is a /64 per
   subnet (leaving 64 bits for host/interface identifiers, often derived
-  from EUI-64 or randomized per RFC 7217), a /56 or /48 per site, and a
+  from EUI-64 or randomized per [RFC 7217](https://www.rfc-editor.org/rfc/rfc7217)), a /56 or /48 per site, and a
   /127 or /64 for point-to-point links depending on operator convention.
 - **DNS naming** is a hierarchical, delegated namespace; an FQDN reads
   right-to-left in authority (root, top-level domain, registered domain,
@@ -57,7 +57,7 @@ theoretical foundation covered in depth elsewhere ([Volume II](../../volume-02-n
 - **Size subnets for the actual host count plus planned growth, not for
   round numbers.** A /24 (254 usable hosts) is a habit, not a requirement;
   right-sizing VLANs and subnets ([Volume II](../../volume-02-network-engineering-foundations/README.md)) reduces broadcast domain size
-  and conserves address space in environments running out of RFC 1918
+  and conserves address space in environments running out of [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918)
   space across many sites or environments (dev/stage/prod × multiple
   regions).
 - **Reserve address ranges for function, not for convenience at
@@ -99,13 +99,13 @@ theoretical foundation covered in depth elsewhere ([Volume II](../../volume-02-n
 | /23 | 255.255.254.0 | 0.0.1.255 | 510 | Large user VLAN, two /24s combined |
 | /22 | 255.255.252.0 | 0.0.3.255 | 1022 | Campus/site aggregate |
 | /16 | 255.255.0.0 | 0.0.255.255 | 65534 | Site-wide or regional summary block |
-| /8 | 255.0.0.0 | 0.255.255.255 | 16777214 | Enterprise-wide RFC 1918 allocation |
+| /8 | 255.0.0.0 | 0.255.255.255 | 16777214 | Enterprise-wide [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) allocation |
 
 Usable hosts = 2^(32 − prefix) − 2 (network and broadcast addresses
-reserved), except for /31 (RFC 3021, point-to-point, both addresses
+reserved), except for /31 ([RFC 3021](https://www.rfc-editor.org/rfc/rfc3021), point-to-point, both addresses
 usable, 2 hosts) and /32 (a single host route, 1 address).
 
-### RFC 1918 and other special-use IPv4 ranges
+### [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) and other special-use IPv4 ranges
 
 | Range | CIDR | Purpose |
 | --- | --- | --- |
@@ -114,7 +114,7 @@ usable, 2 hosts) and /32 (a single host route, 1 address).
 | 192.168.0.0 – 192.168.255.255 | 192.168.0.0/16 | Private use (small office/branch allocation) |
 | 169.254.0.0 – 169.254.255.255 | 169.254.0.0/16 | Link-local (APIPA); indicates failed DHCP, not a routable assignment |
 | 127.0.0.0 – 127.255.255.255 | 127.0.0.0/8 | Loopback |
-| 100.64.0.0 – 100.127.255.255 | 100.64.0.0/10 | Carrier-Grade NAT (RFC 6598); increasingly used inside cloud/Kubernetes fabrics to avoid RFC 1918 collisions |
+| 100.64.0.0 – 100.127.255.255 | 100.64.0.0/10 | Carrier-Grade NAT ([RFC 6598](https://www.rfc-editor.org/rfc/rfc6598)); increasingly used inside cloud/Kubernetes fabrics to avoid [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) collisions |
 | 192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24 | — | TEST-NET-1/2/3; reserved for documentation and examples (used throughout this encyclopedia's sample configs) |
 | 224.0.0.0 – 239.255.255.255 | 224.0.0.0/4 | Multicast |
 
@@ -123,7 +123,7 @@ usable, 2 hosts) and /32 (a single host route, 1 address).
 | Address Type | Prefix / Pattern | Scope | Notes |
 | --- | --- | --- | --- |
 | Global unicast | 2000::/3 | Global | Publicly routable; typically allocated by an RIR/ISP as a /32–/48 to an organization. |
-| Unique local address (ULA) | fc00::/7 (fd00::/8 in practice) | Site-local, not globally routed | The IPv6 analog to RFC 1918 space for internal-only addressing. |
+| Unique local address (ULA) | fc00::/7 (fd00::/8 in practice) | Site-local, not globally routed | The IPv6 analog to [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) space for internal-only addressing. |
 | Link-local | fe80::/10 | Single link only | Auto-configured on every interface; required for Neighbor Discovery and never routed. |
 | Loopback | ::1/128 | Host-local | Equivalent to IPv4 127.0.0.1. |
 | Unspecified | ::/128 | N/A | Source address before an address is assigned (used during DHCPv6/SLAAC). |
@@ -204,7 +204,7 @@ ntp server 10.10.1.11
 - **Confirm IPv6 reachability separately from IPv4** on dual-stack hosts;
   `ping` (IPv4) succeeding does not confirm `ping6`/`ping -6` will, and
   silently broken IPv6 is a common source of intermittent, hard-to-explain
-  latency when an application prefers IPv6 (Happy Eyeballs, RFC 8305) but
+  latency when an application prefers IPv6 (Happy Eyeballs, [RFC 8305](https://www.rfc-editor.org/rfc/rfc8305)) but
   the path is actually broken.
 
 ## Security and Best Practices
@@ -238,14 +238,14 @@ ntp server 10.10.1.11
 
 **References**
 
-- RFC 1918 (private IPv4 address allocation), RFC 4632 (CIDR), RFC 3021
+- [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) (private IPv4 address allocation), [RFC 4632](https://www.rfc-editor.org/rfc/rfc4632) (CIDR), [RFC 3021](https://www.rfc-editor.org/rfc/rfc3021)
   (/31 point-to-point).
-- RFC 4291 (IPv6 addressing architecture), RFC 4193 (unique local
-  addresses), RFC 7217 (privacy-stable IPv6 interface identifiers).
-- RFC 5905 (NTPv4), RFC 8915 (Network Time Security for NTP).
-- RFC 4120 (Kerberos V5), Microsoft Active Directory technical
-  documentation (`learn.microsoft.com/windows-server/identity`).
-- AWS ARN format reference (`docs.aws.amazon.com/IAM` — ARN general
+- [RFC 4291](https://www.rfc-editor.org/rfc/rfc4291) (IPv6 addressing architecture), [RFC 4193](https://www.rfc-editor.org/rfc/rfc4193) (unique local
+  addresses), [RFC 7217](https://www.rfc-editor.org/rfc/rfc7217) (privacy-stable IPv6 interface identifiers).
+- [RFC 5905](https://www.rfc-editor.org/rfc/rfc5905) (NTPv4), [RFC 8915](https://www.rfc-editor.org/rfc/rfc8915) (Network Time Security for NTP).
+- [RFC 4120 (Kerberos V5), Microsoft Active Directory technical
+  documentation (`learn.microsoft.com/windows-server/identity`).](https://learn.microsoft.com/en-us/windows-server/identity/identity-and-access)
+- [AWS ARN format reference (`docs.aws.amazon.com/IAM`](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html) — ARN general
   syntax).
 - [Volume II](../../volume-02-network-engineering-foundations/README.md) — Network Engineering Foundations.
 - [Volume IV](../../volume-04-enterprise-systems-administration/README.md) — Enterprise Systems Administration (identity and directory
@@ -314,14 +314,14 @@ This chapter consolidated four systems an enterprise engineer moves
 between constantly: IPv4/IPv6 addressing and subnetting math, DNS/hostname
 naming conventions, NTP stratum design, and the identity namespace formats
 (DN, UPN, SPN, ARN, X.509 Subject) used by directory services, Kerberos,
-and cloud IAM. The CIDR and RFC 1918/IPv6 scope tables function as a
+and cloud IAM. The CIDR and [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918)/IPv6 scope tables function as a
 standing calculator; the naming and identity tables function as a syntax
 reference for reading and writing correctly formed names without
 consulting the full per-volume treatment.
 
 - [ ] I can calculate usable host count and boundaries for any IPv4 CIDR
       prefix without a lookup table.
-- [ ] I can identify RFC 1918, link-local, and documentation-range
+- [ ] I can identify [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918), link-local, and documentation-range
       addresses on sight and explain why each must not appear in
       production.
 - [ ] I can distinguish IPv6 global unicast, unique local, and link-local

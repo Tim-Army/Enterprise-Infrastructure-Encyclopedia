@@ -294,12 +294,12 @@ drop-in for every build.
 
 **References**
 
-- Dell Technologies, *Dell Repository Manager User's Guide*
-- Dell Technologies, *OpenManage Enterprise User's Guide* — custom/
+- [Dell Technologies, *Dell Repository Manager User's Guide*](https://www.dell.com/support/manuals/en-us/repository-manager/drm_3.4.7_ug/about-dell-repository-manager)
+- [Dell Technologies, *OpenManage Enterprise User's Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_4_5_online_help_user_guide/overview) — custom/
   isolated repository configuration
-- Dell Technologies, *OpenManage Enterprise RESTful API Guide* —
+- [Dell Technologies, *OpenManage Enterprise RESTful API Guide*](https://www.dell.com/support/manuals/en-us/dell-openmanage-enterprise/ome_p_3.10_api_guide/preface) —
   UpdateService/Catalogs custom repository resources
-- `SOFTWARE_VERSIONS.md` in this repository for the dated 4.7.x baseline
+- [`SOFTWARE_VERSIONS.md`](../../../SOFTWARE_VERSIONS.md) in this repository for the dated 4.7.x baseline
 
 **Knowledge Checks**
 

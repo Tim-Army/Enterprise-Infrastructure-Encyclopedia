@@ -381,14 +381,14 @@ if __name__ == "__main__":
 
 **References**
 
-- NIST SP 800-61, *Incident Handling Guide*
-- NIST SP 800-86, *Guide to Integrating Forensic Techniques into
-  Incident Response*
-- ISO/IEC 27035, *Information Security Incident Management*
-- SANS Institute, *Incident Handler's Handbook*
-- CISA, *Federal Government Cybersecurity Incident and Vulnerability
-  Response Playbooks*
-- Article 33, GDPR — breach notification requirements
+- [NIST SP 800-61, *Incident Handling Guide*](https://csrc.nist.gov/pubs/sp/800/61/r2/final)
+- [NIST SP 800-86, *Guide to Integrating Forensic Techniques into
+  Incident Response*](https://csrc.nist.gov/pubs/sp/800/86/final)
+- [ISO/IEC 27035, *Information Security Incident Management*](https://www.iso.org/standard/78973.html)
+- [SANS Institute, *Incident Handler's Handbook*](https://www.sans.org/white-papers/33901)
+- [CISA, *Federal Government Cybersecurity Incident and Vulnerability
+  Response Playbooks*](https://www.cisa.gov/resources-tools/resources/federal-government-cybersecurity-incident-and-vulnerability-response-playbooks)
+- [Article 33, GDPR](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng) — breach notification requirements
 
 **Knowledge Checks**
 

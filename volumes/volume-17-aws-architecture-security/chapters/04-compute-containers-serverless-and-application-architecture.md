@@ -422,14 +422,14 @@ aws lambda update-function-code \
 
 **References**
 
-- Amazon EC2 Auto Scaling documentation — launch templates and scaling
+- [Amazon EC2 Auto Scaling documentation](https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html) — launch templates and scaling
   policies.
-- Amazon ECS and Amazon EKS documentation, including the Fargate launch
-  type.
-- AWS Lambda documentation — execution roles, VPC networking, and
+- [Amazon ECS and Amazon EKS documentation, including the Fargate launch
+  type.](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html)
+- [AWS Lambda documentation](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) — execution roles, VPC networking, and
   concurrency controls.
-- AWS Step Functions and Amazon EventBridge documentation.
-- Elastic Load Balancing documentation — Application, Network, and
+- [AWS Step Functions and Amazon EventBridge documentation.](https://docs.aws.amazon.com/step-functions/latest/dg/eventbridge-integration.html)
+- [Elastic Load Balancing documentation](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html) — Application, Network, and
   Gateway Load Balancers.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this chapter maps to the compute and application-architecture domains of

@@ -263,10 +263,10 @@ system referenced by ID.
 - [Volume I, Chapter 03](../../volume-01-enterprise-engineering-foundations/chapters/03-automation-architecture.md) — Automation Architecture (plan/apply separation).
 - [Volume IX](../../volume-09-infrastructure-automation/README.md) — Infrastructure Automation (full Ansible/Terraform template
   and module design treatment).
-- Ansible Jinja2 templating documentation
-  (`docs.ansible.com/ansible/latest/playbook_guide`).
-- Terraform Configuration Language documentation
-  (`developer.hashicorp.com/terraform/language`).
+- [Ansible Jinja2 templating documentation
+  (`docs.ansible.com/ansible/latest/playbook_guide`).](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html)
+- [Terraform Configuration Language documentation
+  (`developer.hashicorp.com/terraform/language`).](https://developer.hashicorp.com/terraform/language)
 - CIS Benchmarks (`cisecurity.org/cis-benchmarks`) — external baseline
   source referenced in [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md).
 - [Chapter 01](01-command-quick-reference-and-safe-administration.md) of this volume — the four safe-administration gates that
