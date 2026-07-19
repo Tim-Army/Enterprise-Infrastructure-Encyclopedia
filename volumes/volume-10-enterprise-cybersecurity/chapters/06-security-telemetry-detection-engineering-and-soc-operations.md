@@ -1,5 +1,9 @@
 # Chapter 06: Security Telemetry, Detection Engineering, and SOC Operations
 
+![Lab flow for this chapter: detect_credential_stuffing.py flags a user with 8 or more authentication failures followed by a success within a 15-minute window; a user with 8 tightly clustered failures then a success triggers an ALERT, while a user's single clean sign-in does not. As a negative test, a benign dataset with the same user's failures spread across hours produces no alert, and trimming the malicious dataset to exactly 7 failures (one below the threshold) also produces no alert — confirming the rule's tuning correctly distinguishes automated credential stuffing from benign retry behavior without over-firing at the threshold boundary.](../../../diagrams/volume-10-enterprise-cybersecurity/chapter-06-credential-stuffing-detection-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: a credential-stuffing detection rule tuned against benign and threshold-boundary datasets to avoid false positives.*
+
 ## Learning Objectives
 
 - Explain the SIEM data pipeline from log collection through

@@ -1,5 +1,9 @@
 # Chapter 01: Cybersecurity Governance, Risk, and Architecture
 
+![Lab flow for this chapter: compute_risk.py ranks three sample risks by residual score; RISK-0144 (no mapped controls) shows a residual score equal to its inherent score, while RISK-0142 (two mapped controls) shows a materially reduced residual score. As a negative test, a validate() guard requiring every risk have an assigned owner is patched in ahead of main(); re-running against the unmodified register exits with 'VALIDATION FAILED: RISK-0144 has no owner' and a nonzero exit code, blocking the ranked report from printing until the governance gap is fixed.](../../../diagrams/volume-10-enterprise-cybersecurity/chapter-01-risk-register-ownership-guard-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: risk-register scoring guarded by a data-quality check that blocks an unowned risk from reaching the ranked report.*
+
 ## Learning Objectives
 
 - Explain how enterprise cybersecurity governance connects board-level risk

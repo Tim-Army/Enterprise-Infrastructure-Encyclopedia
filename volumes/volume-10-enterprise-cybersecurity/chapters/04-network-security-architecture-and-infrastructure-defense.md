@@ -1,5 +1,9 @@
 # Chapter 04: Network Security Architecture and Infrastructure Defense
 
+![Lab topology for this chapter: lab-segmentation.nft implements a default-drop inbound chain allowing only established/related traffic, loopback, TCP 22, and TCP 443, logging every other drop with prefix SEG-DENY; from a second host, a request to the permitted port succeeds. As a negative test, a request to an unlisted port times out or is refused, and dmesg shows the SEG-DENY log entry. Separately, the CI policy validator passes cleanly against a compliant policy but fails with 'no explicit default-deny egress rule' and a nonzero exit against a broken policy missing that rule — the same fail-closed CI gate pattern used for the OSCAP remediation review.](../../../diagrams/volume-10-enterprise-cybersecurity/chapter-04-nftables-segmentation-ci-validator-topology.svg)
+
+*Figure 4-1. Topology used throughout this chapter's Hands-On Lab: an nftables default-drop segmentation policy validated by permitted and denied connectivity, plus a CI policy check catching a missing default-deny rule.*
+
 ## Learning Objectives
 
 - Explain how network security architecture has shifted from a

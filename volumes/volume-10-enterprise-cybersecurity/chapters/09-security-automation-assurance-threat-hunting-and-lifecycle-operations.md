@@ -1,5 +1,9 @@
 # Chapter 09: Security Automation, Assurance, Threat Hunting, and Lifecycle Operations
 
+![Lab flow for this chapter: control_validation.py checks three simulated controls — default-deny segmentation, no standing privileged access, and a verified backup restore — all printing PASS, with a summary of 3 passed, 0 failed and exit 0. As a negative test, a standing (non-expiring) grant is added, simulating an emergency-access exception that was never converted back to time-boxed JIT access; re-running now shows that check as FAIL, with the summary dropping to 2 passed, 1 failed and exit 1 — exactly the nonzero exit a CI pipeline would use to block promotion. Removing the standing grant restores the scorecard to 3 passed, 0 failed.](../../../diagrams/volume-10-enterprise-cybersecurity/chapter-09-control-validation-scorecard-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: a continuous control-validation scorecard covering segmentation, JIT access, and backup restore, gating CI/CD promotion on its exit code.*
+
 ## Learning Objectives
 
 - Design security automation and orchestration that reduces analyst toil

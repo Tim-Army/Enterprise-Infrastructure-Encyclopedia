@@ -1,5 +1,9 @@
 # Chapter 08: Data Security, Cryptography, Privacy, and Ransomware Resilience
 
+![Lab flow for this chapter: envelope_encrypt.py encrypts a sample file into a JSON envelope carrying a wrapped data-encryption key; decrypting produces output identical to the original. As a negative test, the ciphertext field is tampered by flipping its last character; attempting to decrypt the tampered envelope raises an AES-GCM authentication-tag exception and exits nonzero, refusing to produce output rather than silently returning corrupted plaintext. No output file is written at all, confirming the failure occurs before any potentially corrupted plaintext reaches disk.](../../../diagrams/volume-10-enterprise-cybersecurity/chapter-08-envelope-encryption-tamper-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: an envelope-encryption round trip verified byte-for-byte, then an authenticated-encryption tamper rejection.*
+
 ## Learning Objectives
 
 - Apply data classification to drive encryption, access, and retention

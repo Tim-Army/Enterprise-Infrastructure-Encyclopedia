@@ -1,5 +1,9 @@
 # Chapter 02: Enterprise Identity, Zero Trust, and Privileged Access
 
+![Lab flow for this chapter: request_elevation grants a 60-minute db-admin role with a ticket justification; the grant shows active=True immediately and active=False once 61 minutes have elapsed, confirming automatic expiry with no manual revocation step. As a negative test, a request with no justification raises a ValueError requiring a ticket reference, and a separate request for a 600-minute duration raises a ValueError for exceeding the 8-hour policy maximum — both failures occur before any credential is ever issued.](../../../diagrams/volume-10-enterprise-cybersecurity/chapter-02-jit-elevation-policy-guard-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: a just-in-time privileged elevation workflow that expires automatically and rejects policy-violating requests before issuance.*
+
 ## Learning Objectives
 
 - Explain the NIST SP 800-207 Zero Trust Architecture model and its policy

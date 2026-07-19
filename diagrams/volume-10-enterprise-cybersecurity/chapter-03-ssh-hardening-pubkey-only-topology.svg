@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 3 lab topology: an SSH hardening baseline validated by a successful key-based login and a rejected password login</title>
+  <desc>
+    A hardening drop-in (PermitRootLogin no, PasswordAuthentication no, MaxAuthTries 4, and more) is applied to sshd and reloaded; sshd -T confirms the settings are active. From a second host, key-based access succeeds normally. As a negative test, an explicit password-authentication attempt is refused with 'Permission denied (publickey)' — rejected at the protocol level rather than prompting for a password — confirming the hardening control is enforced. SELinux is confirmed Enforcing, and an OpenSCAP CIS evaluation independently marks the SSH-related rules as passing.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: SSH Hardening That Rejects Password Auth at the Protocol Level</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Key-based access succeeds; an explicit password-authentication attempt is refused before any prompt appears</text>
+  <rect x="60" y="150" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="200.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Second host</text>
+  <text x="170.0" y="218.6" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">ssh -o PreferredAuthentications=publickey</text>
+  <rect x="380" y="130" width="240" height="150" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="500.0" y="173.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Lab host — sshd hardened</text>
+  <text x="500.0" y="191.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">PasswordAuthentication no</text>
+  <text x="500.0" y="209.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">PermitRootLogin no</text>
+  <text x="500.0" y="227.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">SELinux: Enforcing</text>
+  <text x="500.0" y="245.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">OpenSCAP CIS: sshd rules pass</text>
+  <line x1="280" y1="200" x2="380" y2="200" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="336.0" y="200.0" font-size="10.5" fill="#166534">pubkey auth: succeeds</text>
+  <rect x="700" y="150" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="191.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="209.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">password auth attempt</text>
+  <text x="810.0" y="227.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">&quot;Permission denied (publickey)&quot;</text>
+  <line x1="620" y1="200" x2="700" y2="200" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="666.0" y="200.0" font-size="10.5" fill="#b91c1c">password auth: refused</text>
+  <rect x="60" y="340" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="380.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">rejected at the protocol level, not with a password prompt — confirming PasswordAuthentication no is enforced,</text>
+  <text x="490.0" y="398.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">not merely configured.</text>
+  <line x1="60" y1="470" x2="100" y2="470" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="474" font-size="11" fill="#33415c">Client</text>
+  <line x1="192" y1="470" x2="232" y2="470" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="240" y="474" font-size="11" fill="#166534">Hardened server state</text>
+  <line x1="459" y1="470" x2="499" y2="470" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="507" y="474" font-size="11" fill="#b91c1c">Rejected auth method</text>
+</svg>

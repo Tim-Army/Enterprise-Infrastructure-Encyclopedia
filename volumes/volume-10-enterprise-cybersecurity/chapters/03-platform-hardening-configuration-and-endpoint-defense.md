@@ -1,5 +1,9 @@
 # Chapter 03: Platform Hardening, Configuration, and Endpoint Defense
 
+![Lab topology for this chapter: an SSH hardening drop-in (PermitRootLogin no, PasswordAuthentication no, and more) is applied and reloaded; from a second host, key-based access succeeds normally. As a negative test, an explicit password-authentication attempt is refused with 'Permission denied (publickey)' — rejected at the protocol level rather than prompting for a password — confirming the hardening control is enforced. SELinux is confirmed Enforcing, and an OpenSCAP CIS evaluation independently marks the SSH-related rules as passing.](../../../diagrams/volume-10-enterprise-cybersecurity/chapter-03-ssh-hardening-pubkey-only-topology.svg)
+
+*Figure 3-1. Topology used throughout this chapter's Hands-On Lab: an SSH hardening baseline validated by a successful key-based login and a rejected password-authentication attempt.*
+
 ## Learning Objectives
 
 - Apply CIS Benchmarks and DISA STIGs to harden server and endpoint

@@ -1,5 +1,9 @@
 # Chapter 07: Cybersecurity Incident Response and Digital Evidence
 
+![Lab flow for this chapter: evidence_custody.py logs the initial collection of a sample artifact as evidence, recording a SHA-256 digest into a custody log; verifying against the unmodified artifact prints 'Integrity verified'. As a negative test, one line is appended to the artifact after collection; re-running verify now exits with an INTEGRITY FAILURE hash-mismatch message and a nonzero exit code — demonstrating the custody log detects post-collection tampering rather than silently accepting a modified artifact. Restoring the artifact to its original state confirms verification succeeds again, deterministically.](../../../diagrams/volume-10-enterprise-cybersecurity/chapter-07-chain-of-custody-tamper-detection-flow.svg)
+
+*Figure 7-1. Flow used throughout this chapter's Hands-On Lab: a chain-of-custody evidence log recording a SHA-256 baseline hash and detecting subsequent tampering.*
+
 ## Learning Objectives
 
 - Apply the NIST SP 800-61 incident response lifecycle to structure
