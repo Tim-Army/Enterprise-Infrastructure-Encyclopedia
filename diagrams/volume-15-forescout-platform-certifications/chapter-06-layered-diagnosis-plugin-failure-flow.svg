@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 6 lab flow: baseline resource metrics, a layered diagnostic model, and a validated backup/restore, tested against a plugin credential failure</title>
+  <desc>
+    Baseline CPU, memory, and disk metrics are recorded during idle operation; increasing active-scan intensity produces an observable (or documented) resource-metric effect that reverts toward baseline once the change is undone. A layered diagnostic write-up for 'Console feels slow' works down from network delivery through appliance health, plugin, and policy layers. A configuration backup is taken, restored (onto a second instance or as a documented dry run), and validated by confirming at least one policy and one custom property survived correctly. As a negative test, the Switch plugin's SNMP community string is changed only in the plugin configuration (not on the switch itself); the plugin layer surfaces a clear authentication/connectivity failure distinct from a network-delivery failure, and reverting the credential restores clean operation.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 6 Hands-On Lab: A Layered Diagnosis, a Validated Restore, and a Plugin Failure Isolated From the Network</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A revoked SNMP credential surfaces as a plugin-layer failure, distinct from a network-delivery problem, and recovers cleanly once reverted</text>
+  <rect x="60" y="130" width="240" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="175.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Baseline metrics</text>
+  <text x="180.0" y="193.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">CPU/mem/disk, idle operation</text>
+  <rect x="380" y="130" width="240" height="100" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="500.0" y="166.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Layered diagnostic model</text>
+  <text x="500.0" y="184.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">network → appliance → plugin →</text>
+  <text x="500.0" y="202.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">property/policy → downstream</text>
+  <line x1="300" y1="180" x2="380" y2="180" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="130" width="220" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="166.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Backup / restore</text>
+  <text x="810.0" y="184.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">validated: policy + property</text>
+  <text x="810.0" y="202.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">present post-restore</text>
+  <line x1="620" y1="180" x2="700" y2="180" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <rect x="60" y="310" width="860" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="352.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="370.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">Switch plugin's SNMP community string changed only in plugin config, not on the switch itself</text>
+  <text x="490.0" y="388.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">plugin layer surfaces a clear authentication/connectivity failure — distinct from a network-delivery failure</text>
+  <text x="490.0" y="406.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">reverting the credential restores clean operation, confirming the failure was correctly isolated</text>
+  <line x1="60" y1="480" x2="100" y2="480" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="484" font-size="11" fill="#33415c">Baseline</text>
+  <line x1="210" y1="480" x2="250" y2="480" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="258" y="484" font-size="11" fill="#6b7280">Diagnostic layers</text>
+  <line x1="441" y1="480" x2="481" y2="480" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="489" y="484" font-size="11" fill="#166534">Validated recovery</text>
+</svg>

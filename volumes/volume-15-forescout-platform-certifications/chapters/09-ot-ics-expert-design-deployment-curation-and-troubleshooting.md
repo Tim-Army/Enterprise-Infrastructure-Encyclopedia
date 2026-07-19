@@ -1,5 +1,9 @@
 # Chapter 09: OT/ICS Expert Design, Deployment, Curation, and Troubleshooting
 
+![Lab topology for this chapter: a second simulated cell/area zone extends the prior chapter's single zone, each independently visible through its own SPAN session and sensor; a curation pass compares sensor-observed assets against a manually maintained asset register, producing at least one documented discrepancy finding. A behavioral baseline defines one zone as reads-only under normal operation, and a deliberate write/program-download operation is confirmed distinguishable from that baseline. As a negative test, the anomalous operation is correlated against a change ticket that deliberately does not exist yet, correctly escalating as unapproved; creating a matching change record after the fact causes the same operation to now correlate as approved.](../../../diagrams/volume-15-forescout-platform-certifications/chapter-09-ot-two-zone-curation-baseline-topology.svg)
+
+*Figure 9-1. Topology used throughout this chapter's Hands-On Lab: a two-zone OT visibility extension with an asset-register curation pass and a behavioral baseline, tested against change-ticket correlation.*
+
 ## Learning Objectives
 
 - Design a multi-site eyeInspect sensor topology sized to zone-level

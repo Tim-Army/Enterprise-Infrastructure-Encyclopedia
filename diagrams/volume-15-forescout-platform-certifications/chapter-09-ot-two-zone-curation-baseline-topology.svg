@@ -1,0 +1,44 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 9 lab topology: a two-zone OT visibility extension with an asset-register curation pass and a behavioral baseline, tested against change-ticket correlation</title>
+  <desc>
+    Chapter 8's single zone extends to a second simulated cell/area zone (Line 2), each independently visible through its own SPAN session and sensor. A curation pass compares sensor-observed assets against a manually maintained asset register, producing at least one documented discrepancy finding. A behavioral baseline defines one zone as reads-only under normal operation; a deliberate write/program-download operation is then generated and confirmed distinguishable from that baseline. As a negative test, the anomalous operation is correlated against a change ticket that deliberately does not exist yet; the documented process correctly escalates it as unapproved. Creating a matching change record after the fact causes the same operation to now correlate as approved, demonstrating that the escalation logic's accuracy depends entirely on timely change-management data.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: Two-Zone Curation, a Behavioral Baseline, and Escalation That Depends on Timely Change Data</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">An anomalous write operation escalates as unapproved until a matching change ticket exists, then correlates cleanly</text>
+  <rect x="60" y="130" width="240" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="175.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Zone 1 (Line 1)</text>
+  <text x="180.0" y="193.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">PLC + SPAN + sensor</text>
+  <rect x="320" y="130" width="240" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="440.0" y="175.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Zone 2 (Line 2)</text>
+  <text x="440.0" y="193.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">second PLC + SPAN + sensor</text>
+  <rect x="600" y="130" width="300" height="100" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="750.0" y="166.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Curation pass</text>
+  <text x="750.0" y="184.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">sensor-observed vs. asset register</text>
+  <text x="750.0" y="202.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">≥1 documented discrepancy</text>
+  <line x1="280" y1="185" x2="320" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="560" y1="180" x2="600" y2="180" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <rect x="60" y="280" width="400" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="260.0" y="316.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Behavioral baseline</text>
+  <text x="260.0" y="334.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">reads-only expected in Zone 1</text>
+  <text x="260.0" y="352.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">anomalous write operation → distinguishable</text>
+  <rect x="500" y="280" width="400" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="700.0" y="316.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="700.0" y="334.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">no matching change ticket → escalates as unapproved</text>
+  <text x="700.0" y="352.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7c2d12">matching ticket created after the fact → now correlates as approved</text>
+  <line x1="460" y1="330" x2="500" y2="330" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="60" y1="440" x2="100" y2="440" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="444" font-size="11" fill="#33415c">Independent zone visibility</text>
+  <line x1="381" y1="440" x2="421" y2="440" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="429" y="444" font-size="11" fill="#6b7280">Curation finding</text>
+  <line x1="603" y1="440" x2="643" y2="440" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="651" y="444" font-size="11" fill="#166534">Baseline + anomaly</text>
+  <line x1="843" y1="440" x2="883" y2="440" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="891" y="444" font-size="11" fill="#b91c1c">Change-correlation dependency</text>
+</svg>

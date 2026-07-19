@@ -1,5 +1,9 @@
 # Chapter 03: Clarification, Compliance, and Control Policies
 
+![Lab flow for this chapter: toggling a custom property triggers a compliance policy to set Non-Compliant status after a grace period; the paired control policy, first in monitor mode, logs the VLAN reassignment it would have taken. Switching to live enforcement actually reassigns the endpoint's VLAN, and restoring the underlying property returns it to its original VLAN. As a negative test, the endpoint is added to an exclusion group and the non-compliant condition forced again; the control policy does not act despite matching, confirming the exclusion-group safeguard takes precedence — the same mechanism production deployments rely on to protect sensitive hosts.](../../../diagrams/volume-15-forescout-platform-certifications/chapter-03-compliance-control-exclusion-flow.svg)
+
+*Figure 3-1. Flow used throughout this chapter's Hands-On Lab: a compliance and control policy pair staged through monitor mode to live enforcement, tested against an exclusion group.*
+
 ## Learning Objectives
 
 - Describe the shared condition/action structure the policy engine uses

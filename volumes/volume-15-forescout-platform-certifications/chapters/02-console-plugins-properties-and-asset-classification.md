@@ -1,5 +1,9 @@
 # Chapter 02: Console, Plugins, Properties, and Asset Classification
 
+![Lab flow for this chapter: a custom property is created and set on a test endpoint, and a classification rule with a condition specific to that device type correctly updates its Function property, with an inventory view filtered on that value showing only the intended endpoint. As a negative test, the rule's condition is deliberately broadened to match only a single common open port with no other qualifier; reapplying it now incorrectly matches at least one other host on the segment, demonstrating why rule specificity and ordering matter before the rule is reverted to its specific form.](../../../diagrams/volume-15-forescout-platform-certifications/chapter-02-classification-rule-specificity-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: a custom property and classification policy validated for precision, then deliberately over-broadened.*
+
 ## Learning Objectives
 
 - Navigate the major functional areas of the Forescout Console at a

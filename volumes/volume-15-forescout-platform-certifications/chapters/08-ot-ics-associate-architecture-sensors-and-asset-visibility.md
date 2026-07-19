@@ -1,5 +1,9 @@
 # Chapter 08: OT/ICS Associate Architecture, Sensors, and Asset Visibility
 
+![Lab topology for this chapter: a simulated PLC and an HMI/engineering workstation simulator exchange Modbus TCP traffic mirrored to a sensor's receive-only monitor interface at the Purdue-model boundary between them; the sensor correctly identifies the protocol and function codes, and its configuration confirms no active probing capability is enabled. As a negative test, the SPAN destination interface is disconnected; the sensor immediately loses visibility of the simulated PLC traffic entirely, with no compensating active technique attempting to reach the PLC directly — passive OT visibility degrades to silence, not to an active fallback. Re-enabling SPAN restores visibility.](../../../diagrams/volume-15-forescout-platform-certifications/chapter-08-ot-purdue-passive-sensor-topology.svg)
+
+*Figure 8-1. Topology used throughout this chapter's Hands-On Lab: a passive OT sensor placed at a Purdue-model boundary, observing Modbus traffic and tested against an interrupted SPAN feed.*
+
 ## Learning Objectives
 
 - Explain why enterprise IT visibility techniques (Chapters 1–2) are

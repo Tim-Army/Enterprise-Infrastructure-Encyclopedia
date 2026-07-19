@@ -1,5 +1,9 @@
 # Chapter 07: Expert Automation, API Governance, and Capstone
 
+![Lab flow for this chapter: a read-only-scoped API credential queries the inventory and a reconciliation script compares a reference file against live property values, printing a discrepancy report with no writes. Re-issuing the credential with write scope for exactly one custom property lets the script correct that discrepancy, and running it twice in succession shows the second run makes no additional changes. As a negative test, the same write-scoped credential attempts an API call outside its granted scope — modifying a control policy; the platform denies the call, confirming API scope enforcement constrains the automation, not just its documentation.](../../../diagrams/volume-15-forescout-platform-certifications/chapter-07-api-reconciliation-scope-flow.svg)
+
+*Figure 7-1. Flow used throughout this chapter's Hands-On Lab: a scoped API reconciliation script proven idempotent and bounded by credential scope, feeding the volume's capstone design document.*
+
 ## Learning Objectives
 
 - Describe the Forescout Web API's role as a programmatic alternative to

@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab topology: passive host discovery over a SPAN session, tested against an interrupted mirror feed</title>
+  <desc>
+    A lab switch mirrors three test endpoints (Windows, Linux, and an IoT simulator) to the Forescout appliance's monitor interface. Within minutes all three appear in the inventory with MAC, IP, and a provisional classification; enabling scoped active scanning adds more specific detail such as OS version. As a negative test, the SPAN destination interface is shut down on the switch; the Console reports the monitor interface down and no new host activity registers at all, demonstrating the platform's total dependency on a correctly delivered mirror feed. Re-enabling the interface resumes host updates immediately.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Hands-On Lab: Passive Visibility That Goes Silent Exactly When the Mirror Feed Does</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Three endpoints classify from a SPAN feed alone; shutting the SPAN destination interface stops all new host activity</text>
+  <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Lab switch — SPAN session</text>
+  <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">mirrors 3 test endpoints</text>
+  <text x="190.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(Windows, Linux, IoT)</text>
+  <rect x="400" y="140" width="260" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="530.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Forescout appliance</text>
+  <text x="530.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">monitor interface (passive)</text>
+  <text x="530.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">MAC + IP + classification within minutes</text>
+  <line x1="320" y1="200" x2="400" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="366.0" y="200.0" font-size="10.5" fill="#33415c">mirrored traffic</text>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="810.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Active scan (scoped)</text>
+  <text x="810.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">adds OS version detail</text>
+  <text x="810.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">to the same 3 hosts</text>
+  <line x1="660" y1="200" x2="700" y2="200" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="340" width="860" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="372.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="390.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">SPAN destination interface shut down on the switch</text>
+  <text x="490.0" y="408.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">Console reports the monitor interface down; no new host activity registers at all</text>
+  <text x="490.0" y="426.4" text-anchor="middle" font-size="11" font-weight="400" fill="#14532d">re-enabling the interface resumes host updates immediately</text>
+  <line x1="60" y1="500" x2="100" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="504" font-size="11" fill="#33415c">Mirror feed</text>
+  <line x1="237" y1="500" x2="277" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="285" y="504" font-size="11" fill="#166534">Passive classification</text>
+  <line x1="513" y1="500" x2="553" y2="500" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="561" y="504" font-size="11" fill="#6b7280">Active-scan refinement</text>
+</svg>

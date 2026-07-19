@@ -1,5 +1,9 @@
 # Chapter 06: Advanced Troubleshooting, Performance, and Resilience
 
+![Lab flow for this chapter: baseline resource metrics are recorded, increased active-scan intensity produces an observable effect that reverts once undone, and a layered diagnostic write-up for a slow Console works down from network delivery through appliance health, plugin, and policy layers. A configuration backup is taken, restored, and validated by confirming at least one policy and one custom property survived correctly. As a negative test, a plugin's credential is changed only in its own configuration, not on the target device; the plugin layer surfaces a clear authentication/connectivity failure distinct from a network-delivery failure, and reverting the credential restores clean operation.](../../../diagrams/volume-15-forescout-platform-certifications/chapter-06-layered-diagnosis-plugin-failure-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: baseline resource metrics, a layered diagnostic model, and a validated backup/restore, tested against a plugin credential failure.*
+
 ## Learning Objectives
 
 - Apply a structured diagnostic method to platform issues that spans

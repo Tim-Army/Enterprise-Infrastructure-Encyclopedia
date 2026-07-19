@@ -1,5 +1,9 @@
 # Chapter 04: Host Management, Administration, Inventory, and Reporting
 
+![Lab flow for this chapter: a custom role scoped to a single lab group is assigned to a second test user, and logging in as that user shows only the scoped population; a dynamic group updates membership automatically as an underlying property is toggled, and a report scoped to that group exports and schedules correctly. As a negative test, the scoped read-only account attempts to modify a policy or host property outside its granted permissions; the platform denies the action, confirming RBAC scope restriction is enforced at the write layer, not merely cosmetic in the inventory view.](../../../diagrams/volume-15-forescout-platform-certifications/chapter-04-rbac-scope-enforcement-flow.svg)
+
+*Figure 4-1. Flow used throughout this chapter's Hands-On Lab: a role-scoped read-only user, a dynamic group, and a scheduled report, tested against an out-of-scope write attempt.*
+
 ## Learning Objectives
 
 - Perform day-to-day host management actions (manual property overrides,

@@ -1,5 +1,9 @@
 # Chapter 05: Advanced Policy, Integrations, and Business Outcomes
 
+![Lab flow for this chapter: a custom property standing in for an imported vulnerability-scanner field drives a policy that sets Non-Compliant status and delivers a simulated ITSM notification when set to Critical; returning it to None fires a paired resolution rule that clears the compliance state and sends a resolved notification, completing the simulated closed loop. As a negative test, the endpoint is placed in an exclusion group and the severity forced to Critical again; the policy does not escalate the excluded host, confirming integration-triggered policies respect the same exclusion-group safeguard as directly authored control policies.](../../../diagrams/volume-15-forescout-platform-certifications/chapter-05-integration-closed-loop-exclusion-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: a simulated inbound enrichment property driving a policy-triggered notification, closed by a resolution rule, tested against an exclusion group.*
+
 ## Learning Objectives
 
 - Explain the eyeExtend integration model and how bidirectional data

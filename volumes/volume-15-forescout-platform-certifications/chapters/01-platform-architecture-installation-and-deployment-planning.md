@@ -1,5 +1,9 @@
 # Chapter 01: Platform Architecture, Installation, and Deployment Planning
 
+![Lab topology for this chapter: a lab switch mirrors three test endpoints of distinct device types to the Forescout appliance's monitor interface; within minutes all three appear in the inventory with MAC, IP, and a provisional classification, and enabling scoped active scanning adds more specific detail. As a negative test, the SPAN destination interface is shut down on the switch; the Console reports the monitor interface down and no new host activity registers at all, demonstrating the platform's total dependency on a correctly delivered mirror feed. Re-enabling the interface resumes host updates immediately.](../../../diagrams/volume-15-forescout-platform-certifications/chapter-01-passive-visibility-span-topology.svg)
+
+*Figure 1-1. Topology used throughout this chapter's Hands-On Lab: passive host discovery over a SPAN session, tested against an interrupted mirror feed.*
+
 ## Learning Objectives
 
 - Describe the core components of the Forescout Platform architecture:

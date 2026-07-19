@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 7 lab flow: a scoped API reconciliation script proven idempotent and bounded by credential scope, feeding the volume's capstone design document</title>
+  <desc>
+    A read-only-scoped API credential queries the inventory for hosts matching a filter; a reconciliation script compares a reference CSV against live property values and prints a discrepancy report with no writes. Re-issuing the credential with write scope for exactly one custom property lets the script correct that discrepancy; running the extended script twice in succession shows the second run makes no additional changes, and the audit log attributes both runs to the scoped credential. As a negative test, the same write-scoped credential attempts an API call outside its granted scope — modifying a control policy; the platform denies the call, confirming API scope enforcement constrains the automation, not just its documentation. The lab closes with a capstone design document cross-referencing all seven synthesis steps.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: An Idempotent API Reconciliation Script Bounded by Its Own Credential Scope</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">The second run of the corrective script makes no additional changes, and the same credential is refused for anything outside its one granted property</text>
+  <rect x="60" y="140" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Read-only API credential</text>
+  <text x="180.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">queries inventory + reference CSV</text>
+  <text x="180.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">discrepancy report, no writes</text>
+  <rect x="380" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="500.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Write-scoped credential</text>
+  <text x="500.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(1 custom property only)</text>
+  <text x="500.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">2nd run: no additional changes</text>
+  <line x1="300" y1="195" x2="380" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="172.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="190.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">same credential attempts</text>
+  <text x="810.0" y="208.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">to modify a control policy</text>
+  <text x="810.0" y="226.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ denied (out of scope)</text>
+  <line x1="620" y1="195" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="320" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="360.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">API scope enforcement blocks the out-of-scope call at the platform level — the credential's grant is</text>
+  <text x="490.0" y="378.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">what actually constrains the automation, not merely how the script itself was written to behave.</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="464" font-size="11" fill="#33415c">Read-only phase</text>
+  <line x1="273" y1="460" x2="313" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="321" y="464" font-size="11" fill="#166534">Idempotent write phase</text>
+  <line x1="549" y1="460" x2="589" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="597" y="464" font-size="11" fill="#b91c1c">Scope-enforced denial</text>
+</svg>
