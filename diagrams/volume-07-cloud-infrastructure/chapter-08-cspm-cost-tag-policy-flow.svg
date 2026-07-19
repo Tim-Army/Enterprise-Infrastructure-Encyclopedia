@@ -1,0 +1,41 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 8 lab flow: CSPM-style encryption and cost-tag governance policies evaluated against simulated resource inventories</title>
+  <desc>
+    Two conftest policies — encryption_required.rego and required_cost_tags.rego — evaluate simulated resource inventories. inventory-compliant.json (encrypted storage bucket and database, both fully tagged) passes both policies with zero failures. inventory-noncompliant.json (unencrypted, missing cost_center and environment tags) fails with two findings. As a negative test, inventory-out-of-scope.json (a log_group resource type neither policy governs) passes cleanly, confirming CSPM and tag-governance policies scoped to specific resource types do not produce false positives against resource types outside their intended scope.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: CSPM Encryption and Cost-Tag Policy Evaluation</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">An unencrypted, untagged resource fails two policies at once; an out-of-scope resource type correctly passes both</text>
+  <rect x="370" y="110" width="220" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="150.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Two conftest policies</text>
+  <text x="480.0" y="168.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">encryption + cost-tags</text>
+  <rect x="80" y="250" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="200.0" y="291.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">inventory-compliant.json</text>
+  <text x="200.0" y="309.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">encrypted + fully tagged</text>
+  <text x="200.0" y="327.2" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">PASS — 0 failures</text>
+  <rect x="370" y="250" width="240" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="291.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">inventory-noncompliant.json</text>
+  <text x="490.0" y="309.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">unencrypted, missing tags</text>
+  <text x="490.0" y="327.0" text-anchor="middle" font-size="11" font-weight="700" fill="#7f1d1d">FAIL — 2 findings</text>
+  <rect x="660" y="250" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="780.0" y="291.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">inventory-out-of-scope.json</text>
+  <text x="780.0" y="309.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">log_group (ungoverned type)</text>
+  <text x="780.0" y="327.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">PASS — out of scope</text>
+  <line x1="430" y1="200" x2="200" y2="250" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <line x1="480" y1="200" x2="490" y2="250" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="560" y1="200" x2="780" y2="250" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="80" y="420" width="820" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="460.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">Negative test: a log_group resource matches neither policy's resource-type scope, so it passes cleanly —</text>
+  <text x="490.0" y="478.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">confirming type-scoped CSPM/tag policies do not create false-positive friction outside their governed scope.</text>
+  <line x1="80" y1="540" x2="120" y2="540" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="128" y="544" font-size="11" fill="#166534">Compliant resources</text>
+  <line x1="329" y1="540" x2="369" y2="540" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="377" y="544" font-size="11" fill="#b91c1c">Noncompliant (caught)</text>
+  <line x1="596" y1="540" x2="636" y2="540" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="644" y="544" font-size="11" fill="#33415c">Out-of-scope type</text>
+</svg>

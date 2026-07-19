@@ -1,5 +1,9 @@
 # Chapter 08: Cloud Governance, Security, and FinOps
 
+![Lab flow for this chapter: two conftest policies — an encryption requirement and a required-cost-tags rule — evaluate simulated resource inventories; inventory-compliant.json (encrypted and fully tagged) passes both policies with zero failures, while inventory-noncompliant.json (unencrypted, missing tags) fails with two findings. As a negative test, inventory-out-of-scope.json (a log_group resource type neither policy governs) passes cleanly, confirming CSPM and tag-governance policies scoped to specific resource types do not produce false positives against resource types outside their intended scope.](../../../diagrams/volume-07-cloud-infrastructure/chapter-08-cspm-cost-tag-policy-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: CSPM-style encryption and cost-tag governance policies evaluated against simulated resource inventories.*
+
 ## Learning Objectives
 
 - Design a cloud security posture management practice that continuously

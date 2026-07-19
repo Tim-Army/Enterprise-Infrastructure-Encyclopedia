@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab flow: a Terraform check block validating that proposed CIDR allocations do not overlap</title>
+  <desc>
+    Three candidate /20 allocations (hub, payments, platform) are compared pairwise by network address inside a Terraform check block, entirely with local values and no cloud account. terraform plan succeeds with No changes and no check failure, confirming the three allocations are distinct. As a negative test, the platform allocation is edited to exactly duplicate the payments allocation (10.20.16.0/20); re-running plan reports the check failure naming the overlap, catching the accidental duplicate before it is ever applied to a real network — though the lab notes this simplified check only detects identical network addresses, not partial overlap between differently sized blocks.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: CIDR Allocation Overlap Detection with a Terraform check Block</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Three distinct /20 allocations pass; duplicating one to match another trips the overlap check</text>
+  <rect x="60" y="140" width="260" height="130" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="182.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Candidate allocations</text>
+  <text x="190.0" y="200.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">hub: 10.20.0.0/20</text>
+  <text x="190.0" y="218.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">payments: 10.20.16.0/20</text>
+  <text x="190.0" y="236.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">platform: 10.20.32.0/20</text>
+  <rect x="380" y="140" width="240" height="130" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="500.0" y="191.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">check &quot;no_cidr_overlap&quot;</text>
+  <text x="500.0" y="209.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">pairwise cidrhost comparison</text>
+  <text x="500.0" y="227.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">terraform plan</text>
+  <line x1="320" y1="205" x2="380" y2="205" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="680" y="140" width="240" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="800.0" y="191.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Result</text>
+  <text x="800.0" y="209.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">No changes.</text>
+  <text x="800.0" y="227.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">no check failure</text>
+  <line x1="620" y1="205" x2="680" y2="205" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="340" width="860" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="382.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="400.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">platform allocation edited to 10.20.16.0/20 — an exact duplicate of the payments allocation</text>
+  <text x="490.0" y="418.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">terraform plan reports: &quot;Two or more allocations share an identical network address; investigate for overlap.&quot;</text>
+  <text x="490.0" y="436.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">catches the accidental duplicate before it is ever applied to a real network</text>
+  <line x1="60" y1="500" x2="100" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="504" font-size="11" fill="#33415c">Candidate input</text>
+  <line x1="273" y1="500" x2="313" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="321" y="504" font-size="11" fill="#166534">Validated, no overlap</text>
+  <line x1="540" y1="500" x2="580" y2="500" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="588" y="504" font-size="11" fill="#b91c1c">Detected overlap</text>
+</svg>

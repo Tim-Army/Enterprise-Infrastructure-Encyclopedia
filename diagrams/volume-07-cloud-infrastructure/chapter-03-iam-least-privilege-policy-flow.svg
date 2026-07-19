@@ -1,0 +1,41 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 3 lab flow: a local policy engine catching an overly broad IAM permission grant before it is ever attached</title>
+  <desc>
+    policy/no_wildcard_actions.rego denies any Allow statement combining a literal wildcard action with a literal wildcard resource. policy-scoped.json (database:Reboot and database:Describe* scoped to specific prod database ARNs) passes with zero failures. policy-overbroad.json (a single EmergencyAccess statement granting action:* on resource:*) fails, naming the offending statement. As a negative test, policy-prefix-wildcard.json — a legitimate action-prefix wildcard (database:Describe*) scoped to a specific resource — passes, confirming the guardrail targets only the literal double-wildcard pattern and does not false-positive on scoped prefix wildcards.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: Least-Privilege IAM Policy Evaluation Catching a Wildcard Over-Grant</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A wildcard-action-on-wildcard-resource statement fails; a legitimate prefix wildcard correctly passes</text>
+  <rect x="370" y="110" width="220" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="150.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">no_wildcard_actions.rego</text>
+  <text x="480.0" y="168.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">conftest test --policy policy</text>
+  <rect x="80" y="250" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="200.0" y="291.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">policy-scoped.json</text>
+  <text x="200.0" y="309.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Reboot/Describe* on prod-* ARN</text>
+  <text x="200.0" y="327.4" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">PASS — 0 failures</text>
+  <rect x="370" y="250" width="240" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="291.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">policy-overbroad.json</text>
+  <text x="490.0" y="309.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">EmergencyAccess: action:* resource:*</text>
+  <text x="490.0" y="327.4" text-anchor="middle" font-size="11" font-weight="700" fill="#7f1d1d">FAIL — exit code 1</text>
+  <rect x="660" y="250" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="780.0" y="291.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">policy-prefix-wildcard.json</text>
+  <text x="780.0" y="309.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Describe* on specific ARN</text>
+  <text x="780.0" y="327.4" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">PASS — legitimate prefix</text>
+  <line x1="430" y1="200" x2="200" y2="250" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <line x1="480" y1="200" x2="490" y2="250" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="560" y1="200" x2="780" y2="250" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="80" y="420" width="820" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="460.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">Negative test: a scoped action-prefix wildcard is a common, legitimate least-privilege pattern —</text>
+  <text x="490.0" y="478.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the policy targets only the literal &quot;*&quot; action combined with the literal &quot;*&quot; resource, not any wildcard use.</text>
+  <line x1="80" y1="540" x2="120" y2="540" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="128" y="544" font-size="11" fill="#166534">Scoped, compliant policy</text>
+  <line x1="374" y1="540" x2="414" y2="540" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="422" y="544" font-size="11" fill="#b91c1c">Over-broad grant (caught)</text>
+  <line x1="677" y1="540" x2="717" y2="540" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="725" y="544" font-size="11" fill="#33415c">Legitimate wildcard (no false positive)</text>
+</svg>

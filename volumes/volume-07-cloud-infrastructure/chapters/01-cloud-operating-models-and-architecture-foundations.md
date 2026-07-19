@@ -1,5 +1,9 @@
 # Chapter 01: Cloud Operating Models and Architecture Foundations
 
+![Lab flow for this chapter: a fully local Terraform root module (local and random providers only, no cloud account) defines a validated environment variable (must be dev/test/stage/prod) and owner_tag; applying with environment=dev and owner_tag=platform-team succeeds, creating a local_file standing in for a real cloud resource, stamped with the validated tags. As a negative test, applying with environment=production (not in the allowed set) is refused before any resource is touched, with Terraform reporting the exact custom validation error message.](../../../diagrams/volume-07-cloud-infrastructure/chapter-01-tagging-contract-validation-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: a tagging contract enforced at the Terraform module boundary before any resource — simulated or real — is created.*
+
 ## Learning Objectives
 
 - Differentiate IaaS, PaaS, SaaS, and FaaS service models and identify which

@@ -1,0 +1,44 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 9 lab flow: a Terraform drift-detection cycle from baseline through out-of-band drift to reconciliation</title>
+  <desc>
+    terraform apply establishes a baseline managed_config.json with replicas=3. A drift check (plan -detailed-exitcode) returns exit code 0, confirming no drift. An out-of-band edit via jq (bypassing plan/apply entirely) sets replicas=5; the drift check now returns exit code 2, the signal a scheduled drift-detection job would alert on. Applying the saved drift plan restores replicas=3 and a follow-up check returns to exit code 0. As a negative test, a legitimate, code-reviewed change (editing main.tf to replicas=4 and applying normally) is confirmed to still report exit code 0 afterward — proving the drift check does not false-positive against changes made correctly through code and apply, only against out-of-band divergence.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: Drift Detection, Reconciliation, and a False-Positive Negative Test</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">An out-of-band edit is detected as drift (exit code 2) and reconciled; a legitimate code-applied change is not</text>
+  <rect x="60" y="130" width="220" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="166.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Baseline</text>
+  <text x="170.0" y="184.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">terraform apply</text>
+  <text x="170.0" y="202.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">replicas=3</text>
+  <rect x="340" y="130" width="220" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="450.0" y="166.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Drift check #1</text>
+  <text x="450.0" y="184.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">plan -detailed-exitcode</text>
+  <text x="450.0" y="202.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">exit code 0 (no drift)</text>
+  <line x1="280" y1="180" x2="340" y2="180" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="620" y="130" width="260" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="750.0" y="166.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Out-of-band edit</text>
+  <text x="750.0" y="184.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">jq sets replicas=5 (bypasses IaC)</text>
+  <text x="750.0" y="202.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">drift check #2: exit code 2</text>
+  <line x1="560" y1="180" x2="620" y2="180" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="340" y="280" width="260" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="470.0" y="316.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Reconciled</text>
+  <text x="470.0" y="334.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">terraform apply drift.plan</text>
+  <text x="470.0" y="352.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">replicas=3 restored, exit 0</text>
+  <line x1="750" y1="230" x2="470" y2="280" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="420" width="860" height="130" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="462.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Negative Test</text>
+  <text x="490.0" y="480.4" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">legitimate change: main.tf edited to replicas=4, applied normally through terraform apply</text>
+  <text x="490.0" y="498.4" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">follow-up drift check: exit code 0 — no false positive</text>
+  <text x="490.0" y="516.4" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">confirms the check only fires on out-of-band divergence, not on changes made correctly through code</text>
+  <line x1="60" y1="590" x2="100" y2="590" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="594" font-size="11" fill="#33415c">Baseline</text>
+  <line x1="210" y1="590" x2="250" y2="590" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="258" y="594" font-size="11" fill="#166534">Healthy / reconciled state</text>
+  <line x1="522" y1="590" x2="562" y2="590" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="570" y="594" font-size="11" fill="#b91c1c">Drift detected</text>
+</svg>

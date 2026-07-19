@@ -1,5 +1,9 @@
 # Chapter 07: Hybrid and Multicloud Architecture
 
+![Lab flow for this chapter: a root module calls modules/object-storage with a provider_target variable and a fixed calling interface (bucket_name, lifecycle_days_to_archive); with provider_target=provider-a, the module dispatches to a local_file resource simulating provider A's bucket, and switching only provider_target to provider-b dispatches to a differently shaped simulated resource — the calling interface never changed. As a negative test, provider_target=provider-c is refused with a custom validation error naming the two implemented targets, rather than silently doing nothing.](../../../diagrams/volume-07-cloud-infrastructure/chapter-07-provider-abstracted-dispatch-flow.svg)
+
+*Figure 7-1. Flow used throughout this chapter's Hands-On Lab: a provider-abstracted Terraform module whose calling interface stays identical across two simulated backends.*
+
 ## Learning Objectives
 
 - Distinguish the drivers for hybrid cloud from the drivers for

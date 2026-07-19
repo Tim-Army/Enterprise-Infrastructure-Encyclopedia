@@ -1,5 +1,9 @@
 # Chapter 04: Cloud Networking and Hybrid Connectivity
 
+![Lab flow for this chapter: three candidate /20 allocations (hub, payments, platform) are compared pairwise by network address inside a Terraform check block, entirely with local values and no cloud account; terraform plan succeeds with No changes and no check failure, confirming the three allocations are distinct. As a negative test, the platform allocation is edited to exactly duplicate the payments allocation; re-running plan reports the check failure naming the overlap, catching the accidental duplicate before it is ever applied to a real network.](../../../diagrams/volume-07-cloud-infrastructure/chapter-04-cidr-overlap-check-flow.svg)
+
+*Figure 4-1. Flow used throughout this chapter's Hands-On Lab: a Terraform check block validating that proposed CIDR allocations do not overlap before any real network is touched.*
+
 ## Learning Objectives
 
 - Design a virtual network address plan (CIDR allocation, subnetting, and

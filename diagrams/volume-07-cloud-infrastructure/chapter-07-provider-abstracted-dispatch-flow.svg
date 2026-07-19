@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 7 lab flow: a provider-abstracted Terraform module whose calling interface stays identical across two simulated backends</title>
+  <desc>
+    A root module calls modules/object-storage with a provider_target variable and a fixed calling interface (bucket_name, lifecycle_days_to_archive). With provider_target=provider-a (the default), the module dispatches to a local_file resource simulating provider A's bucket, producing endpoint &quot;provider-a://app-data&quot;. Switching only provider_target to provider-b dispatches to a differently shaped simulated resource, producing &quot;provider-b://app-data&quot; — the calling interface never changed. As a negative test, provider_target=provider-c is refused with a custom validation error naming the two implemented targets, rather than silently doing nothing.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: Provider-Abstracted Module Dispatch with Simulated Backends</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">The same bucket_name/lifecycle_days_to_archive interface dispatches to provider-a or provider-b unchanged</text>
+  <rect x="370" y="110" width="220" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="150.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Root module call</text>
+  <text x="480.0" y="168.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">bucket_name, lifecycle_days</text>
+  <line x1="480" y1="200" x2="480" y2="240" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="486.0" y="220.0" font-size="10.5" fill="#6b7280">provider_target</text>
+  <rect x="80" y="260" width="260" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="210.0" y="301.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">provider_target=provider-a</text>
+  <text x="210.0" y="319.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">local_file: provider-a-app-data.json</text>
+  <text x="210.0" y="337.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">endpoint: provider-a://app-data</text>
+  <rect x="620" y="260" width="260" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="750.0" y="301.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">provider_target=provider-b</text>
+  <text x="750.0" y="319.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">local_file: provider-b-app-data.json</text>
+  <text x="750.0" y="337.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">endpoint: provider-b://app-data</text>
+  <line x1="430" y1="240" x2="210" y2="260" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <line x1="530" y1="240" x2="750" y2="260" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="80" y="420" width="800" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="452.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="470.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">provider_target=provider-c (unimplemented)</text>
+  <text x="480.0" y="488.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">refused: &quot;provider_target must be one of: provider-a, provider-b.&quot;</text>
+  <text x="480.0" y="506.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">rejects an unimplemented target explicitly rather than silently doing nothing</text>
+  <line x1="80" y1="570" x2="120" y2="570" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="128" y="574" font-size="11" fill="#6b7280">Fixed calling interface</text>
+  <line x1="365" y1="570" x2="405" y2="570" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="413" y="574" font-size="11" fill="#166534">Implemented backend</text>
+  <line x1="614" y1="570" x2="654" y2="570" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="662" y="574" font-size="11" fill="#b91c1c">Unimplemented target (rejected)</text>
+</svg>

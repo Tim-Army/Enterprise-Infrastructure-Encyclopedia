@@ -1,5 +1,9 @@
 # Chapter 06: Cloud Storage, Databases, and Data Services
 
+![Lab flow for this chapter: two independent Terraform check blocks validate a proposed storage lifecycle policy — tier ordering (archive after must exceed infrequent-access after) and backup-interval RPO compliance. With default values, the ordering check passes but the RPO check correctly fails, since a 60-minute backup interval cannot satisfy a 15-minute RPO; supplying a 10-minute backup interval makes both checks pass. As a negative test, independently supplying an archive_after_days below the infrequent-access threshold fails the ordering check regardless of the backup interval, confirming the two checks validate independently.](../../../diagrams/volume-07-cloud-infrastructure/chapter-06-storage-lifecycle-rpo-checks-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: two Terraform check blocks validating storage lifecycle tier ordering and RPO-satisfying backup interval, independently.*
+
 ## Learning Objectives
 
 - Differentiate object, block, and file storage and choose correctly among

@@ -1,5 +1,9 @@
 # Chapter 05: Cloud Compute and Workload Placement
 
+![Lab flow for this chapter: from observed minimum and peak instance counts and a proposed reserved floor, a Terraform check block asserts the reserved floor never exceeds observed minimum demand; the default plan passes with no check failure, and the purchasing_mix output shows a validated reserved/on-demand/spot split. As a negative test, re-planning with a reserved floor double the observed minimum fails the check, reporting that the proposal commits to paying for capacity that is never used — an automated guardrail against over-committing reserved capacity before any real financial commitment is made.](../../../diagrams/volume-07-cloud-infrastructure/chapter-05-purchasing-mix-guardrail-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: an on-demand/reserved/spot purchasing-mix calculation validated against observed demand, with a reserved-floor guardrail.*
+
 ## Learning Objectives
 
 - Compare virtual machines, containers, and serverless/function compute as

@@ -1,5 +1,9 @@
 # Chapter 03: Cloud Identity, Access, and Cryptographic Services
 
+![Lab flow for this chapter: policy/no_wildcard_actions.rego denies any Allow statement combining a literal wildcard action with a literal wildcard resource; policy-scoped.json (actions scoped to specific prod database ARNs) passes with zero failures, while policy-overbroad.json (a single statement granting action:* on resource:*) fails, naming the offending statement. As a negative test, policy-prefix-wildcard.json — a legitimate action-prefix wildcard scoped to a specific resource — passes, confirming the guardrail targets only the literal double-wildcard pattern and does not false-positive on scoped prefix wildcards.](../../../diagrams/volume-07-cloud-infrastructure/chapter-03-iam-least-privilege-policy-flow.svg)
+
+*Figure 3-1. Flow used throughout this chapter's Hands-On Lab: a local policy engine catching an overly broad IAM permission grant before it is ever attached to a real identity.*
+
 ## Learning Objectives
 
 - Distinguish human, workload, and federated identity, and explain why

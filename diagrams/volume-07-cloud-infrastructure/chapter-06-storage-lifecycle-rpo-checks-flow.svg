@@ -1,0 +1,39 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 6 lab flow: two independent Terraform check blocks validating lifecycle tier ordering and backup-interval RPO compliance</title>
+  <desc>
+    Two check blocks run against a proposed storage lifecycle policy: lifecycle_transitions_ordered (archive_after_days must exceed infrequent_access_after_days) and backup_interval_meets_rpo (backup_interval_minutes must not exceed required_rpo_minutes). With defaults (30/90 days, 60-minute backups, 15-minute RPO), the ordering check passes but the RPO check correctly fails — a 60-minute backup cannot satisfy a 15-minute RPO. Supplying backup_interval_minutes=10 makes both checks pass. As a negative test, independently supplying archive_after_days=20 (below the 30-day infrequent-access threshold) fails the ordering check regardless of the backup interval, confirming the two checks validate independently.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 6 Hands-On Lab: Storage Lifecycle Ordering and RPO-Satisfying Backup Interval Checks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A default hourly backup interval fails a 15-minute RPO requirement until corrected to 10 minutes</text>
+  <rect x="60" y="130" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Default proposal</text>
+  <text x="190.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">IA: 30d, archive: 90d</text>
+  <text x="190.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">backup: 60min, RPO: 15min</text>
+  <rect x="380" y="130" width="260" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="510.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Two check blocks</text>
+  <text x="510.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">ordering: PASS (90 &gt; 30)</text>
+  <text x="510.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">RPO: FAIL (60 &gt; 15)</text>
+  <line x1="320" y1="185" x2="380" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Corrected</text>
+  <text x="810.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">backup_interval_minutes=10</text>
+  <text x="810.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">both checks PASS</text>
+  <line x1="640" y1="185" x2="700" y2="185" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="340" width="860" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="382.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="400.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">independently: archive_after_days=20, below infrequent_access_after_days=30</text>
+  <text x="490.0" y="418.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">lifecycle_transitions_ordered fails: &quot;tiers must transition in increasing order.&quot;</text>
+  <text x="490.0" y="436.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">confirms the ordering check fires regardless of the backup interval value</text>
+  <line x1="60" y1="500" x2="100" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="504" font-size="11" fill="#33415c">Default proposal</text>
+  <line x1="282" y1="500" x2="322" y2="500" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="330" y="504" font-size="11" fill="#b91c1c">Mixed result (one check fails)</text>
+  <line x1="630" y1="500" x2="670" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="678" y="504" font-size="11" fill="#166534">Corrected, both pass</text>
+</svg>

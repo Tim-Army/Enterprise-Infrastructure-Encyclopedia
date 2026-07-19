@@ -1,5 +1,9 @@
 # Chapter 09: Cloud Automation, Observability, Resilience, and Lifecycle Operations
 
+![Lab flow for this chapter: terraform apply establishes a baseline managed resource; a drift check (plan -detailed-exitcode) returns exit code 0. An out-of-band edit bypassing plan/apply entirely changes the managed value; the drift check now returns exit code 2, the signal a scheduled drift-detection job would alert on, and applying the saved drift plan restores the code-defined state. As a negative test, a legitimate, code-reviewed change applied normally through terraform apply is confirmed to still report exit code 0 afterward, proving the drift check does not false-positive against changes made correctly through code.](../../../diagrams/volume-07-cloud-infrastructure/chapter-09-drift-detection-reconciliation-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: a full drift-detection cycle from baseline through out-of-band drift to reconciliation, with a false-positive negative test.*
+
 ## Learning Objectives
 
 - Design a CI/CD pipeline for infrastructure as code that separates plan

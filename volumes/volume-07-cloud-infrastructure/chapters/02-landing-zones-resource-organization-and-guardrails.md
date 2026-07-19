@@ -1,5 +1,9 @@
 # Chapter 02: Landing Zones, Resource Organization, and Guardrails
 
+![Lab flow for this chapter: policy/required_tags.rego is evaluated with conftest against two sample Terraform plan representations; plan-compliant.json (a create action with all required tags) passes with zero failures, while plan-noncompliant.json (missing cost_center) fails, reporting the resource address and the missing tag with a nonzero exit code. As a negative test, plan-delete.json — a delete-only action with no tags at all — still passes, because the policy is intentionally scoped to evaluate only create actions, avoiding unnecessary friction against untagged legacy resources being removed.](../../../diagrams/volume-07-cloud-infrastructure/chapter-02-conftest-required-tags-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: a policy-as-code guardrail evaluating a Terraform plan for required tags, correctly scoped to create actions only.*
+
 ## Learning Objectives
 
 - Define a cloud landing zone and enumerate the components a production-ready

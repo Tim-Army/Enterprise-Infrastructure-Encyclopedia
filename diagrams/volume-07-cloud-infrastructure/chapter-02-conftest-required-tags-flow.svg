@@ -1,0 +1,41 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 2 lab flow: a policy-as-code guardrail evaluating a Terraform plan JSON for required tags</title>
+  <desc>
+    policy/required_tags.rego is evaluated with conftest against two sample Terraform plan representations. plan-compliant.json (a create action with environment, owner, and cost_center tags) passes with zero failures. plan-noncompliant.json (missing cost_center) fails, reporting the resource address and the specific missing tag, with a nonzero exit code. As a negative test, plan-delete.json — a delete-only action with no tags at all — still passes, because the policy is intentionally scoped to evaluate only create actions, avoiding unnecessary friction against untagged legacy resources being removed.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 2 Hands-On Lab: conftest Guardrail on a Terraform Plan's Required Tags</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A missing cost_center tag fails the guardrail; a tagless delete-only change correctly passes</text>
+  <rect x="370" y="110" width="220" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="150.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">policy/required_tags.rego</text>
+  <text x="480.0" y="168.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">conftest test --policy policy</text>
+  <rect x="80" y="250" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="200.0" y="291.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">plan-compliant.json</text>
+  <text x="200.0" y="309.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">create, all tags present</text>
+  <text x="200.0" y="327.4" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">PASS — 0 failures</text>
+  <rect x="370" y="250" width="240" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="291.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">plan-noncompliant.json</text>
+  <text x="490.0" y="309.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">create, missing cost_center</text>
+  <text x="490.0" y="327.4" text-anchor="middle" font-size="11" font-weight="700" fill="#7f1d1d">FAIL — exit code 1</text>
+  <rect x="660" y="250" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="780.0" y="291.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">plan-delete.json</text>
+  <text x="780.0" y="309.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">delete action, no tags</text>
+  <text x="780.0" y="327.4" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">PASS — out of policy scope</text>
+  <line x1="430" y1="200" x2="200" y2="250" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <line x1="480" y1="200" x2="490" y2="250" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="560" y1="200" x2="780" y2="250" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="80" y="420" width="820" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="460.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">Negative test: the delete-only change has no tags but still passes — the policy evaluates create actions only,</text>
+  <text x="490.0" y="478.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">proving a guardrail scoped too broadly would create friction the actual policy correctly avoids.</text>
+  <line x1="80" y1="540" x2="120" y2="540" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="128" y="544" font-size="11" fill="#166534">Compliant create</text>
+  <line x1="302" y1="540" x2="342" y2="540" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="350" y="544" font-size="11" fill="#b91c1c">Noncompliant create (caught)</text>
+  <line x1="632" y1="540" x2="672" y2="540" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="680" y="544" font-size="11" fill="#33415c">Out-of-scope action</text>
+</svg>
