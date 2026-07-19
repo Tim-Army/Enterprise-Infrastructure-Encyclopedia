@@ -53,6 +53,19 @@ pre {
   cursor: pointer;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* The cover is a tall 1024x1536 raster; cap it so the title page reads as a
+   book cover rather than a full-bleed banner. */
+#title-page + p img {
+  display: block;
+  max-width: 24rem;
+  margin: 1.5rem auto 2rem;
+}
+
 #repo-link {
   margin-top: 3rem;
   padding-top: 1rem;

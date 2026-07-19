@@ -91,6 +91,12 @@ if [[ -d diagrams ]]; then
   cp -r diagrams/. "$link_tmp/diagrams/"
 fi
 
+# The cover image is referenced from the rendered title page, so it needs to
+# resolve inside the rewrite workspace too. $link_tmp is on the resource path
+# for the series build, which is the only build the title page appears in.
+mkdir -p "$link_tmp/publishing"
+cp publishing/cover.png "$link_tmp/publishing/cover.png"
+
 # Rewrite chapter links in $1 for $2 (html-flat|html-root|epub-absolute),
 # optionally scoped to volume $3 for html-flat. Prints the path to a
 # rewritten temp copy of the file.
@@ -117,6 +123,12 @@ title_page_for() {
     publishing/title-page.md \
     "CREATED_DATE=$title_page_created" \
     "UPDATED_DATE=$title_page_updated" > "$dest"
+  # EPUB supplies the cover through --epub-cover-image, which produces a real
+  # cover document. Leaving the image in the title page as well would package
+  # the same 2.6 MB file twice and show the artwork twice on opening.
+  if [[ "${1:-}" == "--no-cover" ]]; then
+    grep -v '^!\[' "$dest" > "$dest.stripped" && mv "$dest.stripped" "$dest"
+  fi
   printf '%s' "$dest"
 }
 
@@ -249,8 +261,9 @@ build_series_epub() {
     rewritten_chapters+=("$(rewrite_file "$ch" epub-absolute)")
   done
   rewritten_colophon="$(rewrite_file "publishing/colophon.md" epub-absolute)"
-  rewritten_title_page="$(title_page_for)"
+  rewritten_title_page="$(title_page_for --no-cover)"
   pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" "$rewritten_colophon" \
+    --epub-cover-image=publishing/cover.png \
     --toc --toc-depth=2 \
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
