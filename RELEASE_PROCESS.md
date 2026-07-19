@@ -19,8 +19,8 @@ to a GitHub release.
    git push origin vX.Y.Z
    ```
 
-5. The [release workflow](.github/workflows/release.yml) builds DOCX, HTML,
-   PDF/UA-1, EPUB 3, and website-ZIP editions and attaches them to the
+5. The [release workflow](.github/workflows/release.yml) builds the
+   complete-encyclopedia HTML and EPUB 3 editions and attaches them to the
    GitHub release automatically.
 6. Verify the attached artifacts and the published
    [Pages portal](https://derg20.github.io/Enterprise-Infrastructure-Encyclopedia/)

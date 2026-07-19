@@ -29,13 +29,10 @@ jobs:
       - name: Validate
         run: scripts/bash/validate.sh
 
-      - name: Install Pandoc and Typst
+      - name: Install Pandoc
         run: |
           sudo apt-get update
           sudo apt-get install -y pandoc
-          curl -fsSL https://github.com/typst/typst/releases/latest/download/typst-x86_64-unknown-linux-musl.tar.xz -o typst.tar.xz
-          tar -xf typst.tar.xz
-          sudo mv typst-x86_64-unknown-linux-musl/typst /usr/local/bin/typst
 
       - name: Build complete-encyclopedia artifacts
         run: scripts/bash/build-book.sh --format all
@@ -44,8 +41,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            output/docx/*
-            output/html/*
-            output/pdf/*
-            output/epub/*
-            output/website-zip/*
+            output/html/complete-encyclopedia.html
+            output/epub/complete-encyclopedia.epub

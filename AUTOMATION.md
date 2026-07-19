@@ -16,11 +16,12 @@ publishing builds, and link checking — and the safety rules for running it.
 
 ## Publishing builds
 
-`scripts/bash/build-book.sh` generates DOCX, self-contained HTML, offline
-website ZIP, tagged PDF/UA-1, and EPUB 3 editions from Markdown sources using
-Pandoc and Typst. It accepts `--format`, `--volume`, and `--chapter` scoping
-flags. Only volumes marked `build_eligible: true` in `book.yml` are included
-in a complete-series edition.
+`scripts/bash/build-book.sh` generates self-contained HTML and EPUB 3
+editions from Markdown sources using Pandoc. It accepts `--format`
+(`all`, `html`, or `epub`), `--volume`, and `--chapter` scoping flags.
+Chapter and volume order comes directly from the `volumes/` directory
+structure. With no scoping flag it builds every chapter, every volume
+(combined into one document), and the complete-series edition.
 
 `scripts/bash/build-download-site.sh` builds the combined reading and
 download portal (`_site/`) that the Pages workflow deploys.

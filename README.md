@@ -159,15 +159,14 @@ scripts/bash/build-book.sh --format all \
 scripts/bash/build-book.sh --format all \
   --chapter volumes/volume-02-network-engineering-foundations/chapters/01-network-models-and-protocol-architecture.md
 
-# Build the complete reading and download portal.
+# Build the complete reading and download portal (requires build-book.sh
+# to have run first, since it copies output/html/ and output/epub/).
 scripts/bash/build-download-site.sh --output _site
 ```
 
 Follow [SETUP.md](SETUP.md) for the pinned Node.js, pnpm, ShellCheck, Pandoc,
-Typst, and Lychee installation. Complete-volume, series, and published-chapter
-editions are generated only from volumes that passed the completed-volume gate.
-Generated DOCX, self-contained HTML, offline website ZIP, tagged PDF/UA-1,
-EPUB 3, and checksum-manifest files are written below `output/`.
+and Lychee installation. Generated self-contained HTML and EPUB 3 files are
+written below `output/`.
 
 ## HTML edition build instructions
 
@@ -185,30 +184,35 @@ from the repository root:
 # Validate all source and publishing prerequisites first.
 scripts/bash/validate.sh
 
-# Build the self-contained HTML edition for the complete encyclopedia.
-scripts/bash/build-book.sh --format html
+# Build self-contained HTML and EPUB for the complete encyclopedia, every
+# volume, and every chapter — output/html/ and output/epub/.
+scripts/bash/build-book.sh --format all
 
-# Build the HTML edition for one completed volume.
-scripts/bash/build-book.sh --format html \
+# Or scope to one completed volume.
+scripts/bash/build-book.sh --format all \
   --volume volume-02-network-engineering-foundations
 
-# Build the HTML edition for one published chapter.
-scripts/bash/build-book.sh --format html \
+# Or scope to one published chapter.
+scripts/bash/build-book.sh --format all \
   --chapter volumes/volume-02-network-engineering-foundations/chapters/01-network-models-and-protocol-architecture.md
 
-# Build the offline website ZIP, which contains that scope's HTML edition.
-scripts/bash/build-book.sh --format website-zip
-
-# Build and validate the HTML reading and download portal.
+# Build and verify the HTML reading and download portal (run build-book.sh
+# first — this copies its output/ into _site/ and adds navigation pages).
 scripts/bash/build-download-site.sh --output _site
 ```
 
-HTML files are written to `output/html/`; offline website archives are written
-to `output/website-zip/`. The portal build writes static pages, its CSS, and
-theme script below `_site/`, verifies every catalog page and download link, and
-is the artifact deployed by the Pages workflow. Do not manually edit generated
-files in `output/` or `_site/`; change the Markdown source, publishing assets,
-or build scripts and regenerate instead.
+HTML files are written to `output/html/`; EPUB files are written to
+`output/epub/`. The portal build copies both into `_site/`, generates a root
+index and a per-volume index page linking every chapter and download, and
+verifies every generated link resolves before it succeeds — this is the
+artifact deployed by the Pages workflow. Do not manually edit generated files
+in `output/` or `_site/`; change the Markdown source, publishing assets, or
+build scripts and regenerate instead.
+
+Known limitation: cross-chapter and cross-volume links inside the Markdown
+source still point at `.md` paths, so links between chapters are not yet
+rewritten to their `.html` targets in the generated output. Fixing that
+requires a link-rewriting pass in `build-book.sh` and has not been done yet.
 
 External references can be checked separately with:
 
@@ -217,11 +221,11 @@ scripts/bash/check-external-links.sh
 ```
 
 GitHub Actions runs repository structure, editorial, Markdown, spelling,
-internal-link, external-link, and multi-format publication checks on `main`.
-The Pages workflow publishes an accessible portal with online reading and all
-five download formats for the complete encyclopedia, every volume, and every
-chapter. Version tags matching `v*` publish the verified complete-encyclopedia
-artifacts to a GitHub release under the [release process](RELEASE_PROCESS.md).
+internal-link, and external-link checks on `main`. The Pages workflow
+publishes an accessible portal with online reading and EPUB download for the
+complete encyclopedia, every volume, and every chapter. Version tags matching
+`v*` publish the complete-encyclopedia HTML and EPUB to a GitHub release under
+the [release process](RELEASE_PROCESS.md).
 
 ## Encyclopedia operating instructions
 
@@ -275,9 +279,9 @@ used for every volume and chapter.
 
 - Document all build instructions in this `README.md` whenever a build,
   publishing workflow, format, dependency, or command is added or changed.
-- Generate DOCX, HTML, PDF, EPUB, and offline website editions only after the
-  entire applicable volume has passed its completed-volume gate; complete-series
-  editions require every volume to pass.
+- Generate HTML and EPUB editions for a volume once it has a complete
+  chapter set plus README, INDEX, and GLOSSARY; complete-series editions
+  cover every volume.
 - Maintain the download portal so readers can obtain the full encyclopedia,
   individual volumes, and individual chapters in each supported format.
 - Run the relevant repository validation and publication checks before each

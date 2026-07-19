@@ -9,9 +9,12 @@ Pinned local tooling for validation and publishing builds.
 | Node.js | 22.x LTS (see `.node-version`) | Validation and lint tooling |
 | pnpm | 11.9.0 | Package management (via Corepack) |
 | ShellCheck | latest stable | Lint `scripts/bash/*.sh` |
-| Pandoc | 3.x | DOCX, HTML, and EPUB generation |
-| Typst | latest stable | Tagged PDF/UA-1 generation |
+| Pandoc | 3.x | HTML and EPUB 3 generation |
 | Lychee | latest stable | External link checking |
+
+Node.js 24 and later no longer bundle Corepack; if `corepack enable` fails
+with "command not found," install it separately first:
+`npm install -g corepack`.
 
 ## Install
 
@@ -21,9 +24,9 @@ corepack prepare pnpm@11.9.0 --activate
 pnpm install --frozen-lockfile
 ```
 
-Install ShellCheck, Pandoc, Typst, and Lychee with your platform's package
-manager (for example `brew install shellcheck pandoc typst lychee` on
-macOS, or the equivalent `apt`/`dnf` packages on Linux).
+Install ShellCheck, Pandoc, and Lychee with your platform's package manager
+(for example `brew install shellcheck pandoc lychee` on macOS, or the
+equivalent `apt`/`dnf` packages on Linux).
 
 ## Verify
 
