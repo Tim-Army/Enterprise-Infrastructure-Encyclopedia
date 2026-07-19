@@ -1,5 +1,9 @@
 # Chapter 07: Cisco Identity, Access Control, and Segmentation
 
+![Lab topology for this chapter: CLI administration on DIST-01 authenticates via TACACS+, confirmed by incrementing request/response counters after an SSH login; ACCESS-01 has three identically configured open-mode 802.1X/MAB ports — Gi1/0/1 with an 802.1X-capable client authenticates via dot1x with a RADIUS/ISE-returned VLAN and dACL, Gi1/0/2 with a non-802.1X device falls back to MAB after the dot1x timeout, and Gi1/0/3 is the negative test. As a negative test, RADIUS reachability is removed and a new client on Gi1/0/3 either lands in the critical-authentication VLAN or stays unauthenticated per the port's server-dead action, rather than being silently granted access.](../../../diagrams/volume-03-cisco-enterprise-networking/chapter-07-8021x-mab-tacacs-topology.svg)
+
+*Figure 7-1. Topology used throughout this chapter's Hands-On Lab: TACACS+-authenticated device administration alongside three access ports demonstrating 802.1X success, MAB fallback, and RADIUS-dead behavior.*
+
 ## Learning Objectives
 
 - Explain AAA architecture and compare TACACS+ and RADIUS for device

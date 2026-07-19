@@ -1,5 +1,9 @@
 # Chapter 06: Cisco Network Services, QoS, and Application Delivery
 
+![Lab flow for this chapter: an IP phone on ACCESS-01's trust boundary (trust device cisco-phone) marks voice traffic, which flows through DIST-01 to a WAN-edge device applying the WAN-EDGE-OUT policy-map (VOICE, VIDEO, CALL-SIGNALING, BUSINESS-CRITICAL classes with LLQ/CBWFQ) outbound; under sustained best-effort congestion plus a DSCP EF-marked test stream, the VOICE class shows near-zero drops while class-default absorbs tail-drops. As a negative test, removing the service-policy from the WAN interface and repeating the test shows the EF stream now drops/jitters proportionally to the congestion, proving the queuing policy — not the marking alone — protected voice.](../../../diagrams/volume-03-cisco-enterprise-networking/chapter-06-qos-trust-boundary-wan-edge-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: QoS marking at the access trust boundary carried through to a WAN-edge LLQ/CBWFQ policy, tested under congestion with and without the queuing policy applied.*
+
 ## Learning Objectives
 
 - Configure core network services — DHCP snooping/relay, NTP, and IP

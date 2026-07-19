@@ -1,0 +1,46 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 9 lab topology: a Catalyst Center-provisioned SD-Access fabric with two edge nodes and SGACL enforcement</title>
+  <desc>
+    Catalyst Center discovers a seed device and runs LAN Automation to provision the underlay to two candidate switches, then assigns fabric roles: the seed device as Control Plane + Border (CTRL-01), and the two candidates as Edge nodes (EDGE-01, EDGE-02). EDGE-01's LISP session establishes to CTRL-01's RLOC, and a test endpoint on EDGE-01 registers on the Control Plane Node. Assurance Path Trace between endpoints on EDGE-01 and EDGE-02 confirms VXLAN encapsulation at the edge/border and reports the SGT-pair policy applied. As a negative test, an explicit deny SGACL is applied between the two endpoints' SGTs in Catalyst Center's Policy application, and Path Trace/ping then shows the traffic denied at the enforcing node.
+  </desc>
+  <defs>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: Catalyst Center SD-Access Fabric Provisioning and Assurance</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Discovery, LAN Automation, and fabric roles provisioned centrally, verified with Assurance Path Trace</text>
+  <rect x="370" y="100" width="220" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="131.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#111827">Catalyst Center</text>
+  <text x="480.0" y="149.7" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Discovery + LAN Automation</text>
+  <text x="480.0" y="167.7" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">+ fabric/policy provisioning</text>
+  <rect x="370" y="250" width="220" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="286.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">CTRL-01</text>
+  <text x="480.0" y="304.9" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">Control Plane + Border</text>
+  <text x="480.0" y="322.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">RLOC for edge sessions</text>
+  <rect x="90" y="400" width="220" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="200.0" y="436.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">EDGE-01</text>
+  <text x="200.0" y="454.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">LISP session → CTRL-01</text>
+  <text x="200.0" y="472.6" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">test endpoint registered</text>
+  <rect x="650" y="400" width="220" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="760.0" y="436.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">EDGE-02</text>
+  <text x="760.0" y="454.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">second test endpoint</text>
+  <text x="760.0" y="472.6" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">Path Trace target</text>
+  <line x1="430" y1="190" x2="460" y2="250" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="451.0" y="220.0" font-size="10.5" fill="#6b7280">provision</text>
+  <line x1="370" y1="300" x2="200" y2="400" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="291.0" y="350.0" font-size="10.5" fill="#33415c">LISP + VXLAN</text>
+  <line x1="590" y1="300" x2="760" y2="400" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="681.0" y="350.0" font-size="10.5" fill="#33415c">LISP + VXLAN</text>
+  <line x1="310" y1="450" x2="650" y2="450" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="486.0" y="450.0" font-size="10.5" fill="#b45309">Path Trace: EDGE-01 ⇄ EDGE-02 (VXLAN)</text>
+  <rect x="90" y="540" width="780" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="576.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="594.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">deny SGACL applied between the two endpoints' SGTs in Catalyst Center Policy</text>
+  <text x="480.0" y="612.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">Path Trace / ping now shows traffic denied at the enforcing node (BORDER-01 role on CTRL-01)</text>
+  <line x1="90" y1="620" x2="130" y2="620" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="138" y="624" font-size="11" fill="#33415c">Fabric control plane (LISP)</text>
+  <line x1="411" y1="620" x2="451" y2="620" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="459" y="624" font-size="11" fill="#b45309">Endpoint-to-endpoint data path</text>
+</svg>

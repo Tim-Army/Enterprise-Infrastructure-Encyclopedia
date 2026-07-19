@@ -1,5 +1,9 @@
 # Chapter 03: Cisco Enterprise Routing and Path Control
 
+![Lab topology for this chapter: CORE-01 runs OSPF Area 0 toward DIST-01 (Area 10, totally stubby) and EIGRP AS 100 toward BRANCH-01, mutually redistributing routes between the two protocols with route tags so each side learns the opposite protocol's subnet as an external route. Separately, CORE-01 policy-routes the GUEST VRF (10.30.0.0/24) to an alternate next hop using IP SLA object 10. As a negative test, shutting down the tracked next hop transitions track 10 to Down, and PBR falls back to normal destination-based routing instead of black-holing traffic.](../../../diagrams/volume-03-cisco-enterprise-networking/chapter-03-ospf-eigrp-redistribution-pbr-topology.svg)
+
+*Figure 3-1. Topology used throughout this chapter's Hands-On Lab: an OSPF/EIGRP redistribution boundary on a single ASBR, plus IP SLA-tracked policy-based routing for a guest VRF.*
+
 ## Learning Objectives
 
 - Configure and tune OSPFv2 in a multi-area enterprise topology.

@@ -1,0 +1,48 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 5 lab topology: a Catalyst 9800 WLC joining an AP and authenticating an 802.1X client</title>
+  <desc>
+    WLC-01's wireless management interface is on Vlan100. An access point joins the controller and shows State Registered, tagged with CORP-POLICY-TAG/CAMPUS-SITE-TAG/CAMPUS-RF-TAG. CORP-WLAN (802.1X, CORP-POLICY) is applied to the AP; a test client associates, authenticates against the RADIUS/ISE server, and lands on VLAN 20 in State: Run. As a negative test, a second client using an intentionally wrong 802.1X password never reaches Run state, and a failed-authentication event is logged.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: Catalyst 9800 WLC, AP Join, and 802.1X WLAN</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">CORP-WLAN on VLAN 20, authenticated against RADIUS/ISE, with fast roaming enabled</text>
+  <rect x="370" y="120" width="220" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="156.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">WLC-01</text>
+  <text x="480.0" y="174.9" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">mgmt: Vlan100</text>
+  <text x="480.0" y="192.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">CORP-WLAN / CORP-POLICY</text>
+  <rect x="370" y="260" width="220" height="90" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="291.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Access Point</text>
+  <text x="480.0" y="309.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">State: Registered</text>
+  <text x="480.0" y="327.6" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">CORP-POLICY-TAG applied</text>
+  <rect x="700" y="120" width="220" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="156.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">RADIUS / ISE</text>
+  <text x="810.0" y="174.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">802.1X policy server</text>
+  <text x="810.0" y="192.6" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">returns VLAN 20 + dACL</text>
+  <rect x="60" y="260" width="240" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="180.0" y="296.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Test Client</text>
+  <text x="180.0" y="314.6" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">State: Run</text>
+  <text x="180.0" y="332.6" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">VLAN 20, correct 802.1X creds</text>
+  <line x1="480" y1="220" x2="480" y2="260" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="486.0" y="240.0" font-size="10.5" fill="#33415c">AP join (CAPWAP)</text>
+  <line x1="590" y1="170" x2="700" y2="170" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="651.0" y="170.0" font-size="10.5" fill="#166534">RADIUS authc</text>
+  <line x1="370" y1="310" x2="300" y2="300" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="341.0" y="305.0" font-size="10.5" fill="#166534">associate + 802.1X</text>
+  <rect x="370" y="440" width="340" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="540.0" y="472.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="540.0" y="490.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">2nd client, wrong 802.1X password</text>
+  <text x="540.0" y="508.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">never reaches State: Run</text>
+  <text x="540.0" y="526.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">failed-authentication event logged</text>
+  <line x1="370" y1="360" x2="460" y2="440" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="60" y1="600" x2="100" y2="600" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="604" font-size="11" fill="#33415c">Join / control-plane</text>
+  <line x1="318" y1="600" x2="358" y2="600" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="366" y="604" font-size="11" fill="#166534">Successful client path</text>
+  <line x1="594" y1="600" x2="634" y2="600" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="642" y="604" font-size="11" fill="#b91c1c">Negative-test path</text>
+</svg>

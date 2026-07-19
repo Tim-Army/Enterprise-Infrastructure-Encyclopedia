@@ -1,5 +1,9 @@
 # Chapter 08: IOS XE Programmability and Network Automation
 
+![Lab flow for this chapter: a workstation queries DIST-01's Vlan10 interface over RESTCONF with curl, receiving a JSON response matching the CLI's running-config; a model-driven telemetry subscription (ID 101) streams state to the workstation, showing State Valid and an incrementing Sent Records counter; an Ansible playbook run against the cisco.ios collection reports changed on its first run (VLANs created) and ok with no changed tasks on a second, identical run, confirming idempotency. As a negative test, the same RESTCONF query repeated with an intentionally wrong password returns HTTP 401 Unauthorized, confirming RESTCONF enforces the same AAA credentials as CLI/SSH.](../../../diagrams/volume-03-cisco-enterprise-networking/chapter-08-netconf-restconf-telemetry-ansible-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: programmatic access to a Catalyst 9000 switch over RESTCONF, model-driven telemetry, and an idempotent Ansible playbook run.*
+
 ## Learning Objectives
 
 - Explain the model-driven programmability stack — YANG data models,

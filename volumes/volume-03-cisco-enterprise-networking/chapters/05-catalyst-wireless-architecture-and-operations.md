@@ -1,5 +1,9 @@
 # Chapter 05: Catalyst Wireless Architecture and Operations
 
+![Lab topology for this chapter: WLC-01's wireless management interface is on Vlan100; an access point joins the controller and shows State Registered, tagged with CORP-POLICY-TAG/CAMPUS-SITE-TAG/CAMPUS-RF-TAG; CORP-WLAN (802.1X, CORP-POLICY) is applied to the AP, and a test client associates, authenticates against the RADIUS/ISE server, and lands on VLAN 20 in State: Run. As a negative test, a second client using an intentionally wrong 802.1X password never reaches Run state, and a failed-authentication event is logged.](../../../diagrams/volume-03-cisco-enterprise-networking/chapter-05-catalyst-9800-wlc-8021x-topology.svg)
+
+*Figure 5-1. Topology used throughout this chapter's Hands-On Lab: a Catalyst 9800 WLC joining an access point and authenticating a client against an 802.1X WLAN backed by RADIUS/ISE.*
+
 ## Learning Objectives
 
 - Explain the split-MAC CAPWAP architecture and the role of the Catalyst

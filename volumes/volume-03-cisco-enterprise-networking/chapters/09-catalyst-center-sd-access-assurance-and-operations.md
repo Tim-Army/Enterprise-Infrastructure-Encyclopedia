@@ -1,5 +1,9 @@
 # Chapter 09: Catalyst Center, SD-Access, Assurance, and Operations
 
+![Lab topology for this chapter: Catalyst Center discovers a seed device and runs LAN Automation to provision the underlay to two candidate switches, then assigns fabric roles — the seed device as Control Plane + Border (CTRL-01), and the two candidates as Edge nodes (EDGE-01, EDGE-02); EDGE-01's LISP session establishes to CTRL-01's RLOC, and a test endpoint on EDGE-01 registers on the Control Plane Node. Assurance Path Trace between endpoints on EDGE-01 and EDGE-02 confirms VXLAN encapsulation at the edge/border and reports the SGT-pair policy applied. As a negative test, an explicit deny SGACL is applied between the two endpoints' SGTs, and Path Trace/ping then shows the traffic denied at the enforcing node.](../../../diagrams/volume-03-cisco-enterprise-networking/chapter-09-catalyst-center-sd-access-fabric-topology.svg)
+
+*Figure 9-1. Topology used throughout this chapter's Hands-On Lab: a Catalyst Center-provisioned SD-Access fabric with two edge nodes, verified end to end with Assurance Path Trace and SGACL enforcement.*
+
 ## Learning Objectives
 
 - Explain Cisco Catalyst Center's role as the single management,

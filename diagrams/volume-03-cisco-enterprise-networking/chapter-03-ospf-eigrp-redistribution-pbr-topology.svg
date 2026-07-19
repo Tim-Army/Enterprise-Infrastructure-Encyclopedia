@@ -1,0 +1,48 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 3 lab topology: OSPF and EIGRP domains joined by mutual redistribution on an ASBR, plus IP SLA-tracked PBR</title>
+  <desc>
+    CORE-01 runs OSPF Area 0 toward DIST-01 (Area 10, totally stubby) and EIGRP AS 100 toward BRANCH-01, mutually redistributing routes between the two protocols with route tags. DIST-01 learns BRANCH-01's subnet as an OSPF external route; BRANCH-01 learns DIST-01's subnet as an EIGRP external route. Separately, CORE-01 policy-routes the GUEST VRF (10.30.0.0/24) to an alternate next hop using IP SLA object 10, tracking a simulated exit path. As a negative test, shutting down the tracked next hop transitions track 10 to Down, and PBR falls back to normal destination-based routing instead of black-holing traffic.
+  </desc>
+  <defs>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: Two-Area OSPF, EIGRP Redistribution, and Tracked PBR</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">CORE-01 redistributes between OSPF Area 0/10 and EIGRP AS 100, then policy-routes GUEST VRF traffic</text>
+  <rect x="370" y="140" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="181.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">CORE-01</text>
+  <text x="480.0" y="199.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Area 0 / EIGRP AS 100 ASBR</text>
+  <text x="480.0" y="217.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">mutual redistribution + tags</text>
+  <rect x="80" y="300" width="220" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="336.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">DIST-01</text>
+  <text x="190.0" y="354.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Area 10 (totally stubby)</text>
+  <text x="190.0" y="372.6" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">learns BRANCH subnet (OSPF ext)</text>
+  <rect x="660" y="300" width="220" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="770.0" y="336.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">BRANCH-01</text>
+  <text x="770.0" y="354.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">EIGRP AS 100</text>
+  <text x="770.0" y="372.6" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">learns DIST subnet (EIGRP ext)</text>
+  <line x1="400" y1="250" x2="220" y2="300" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="316.0" y="275.0" font-size="10.5" fill="#33415c">OSPF Area 0 ⇄ Area 10</text>
+  <line x1="560" y1="250" x2="740" y2="300" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="656.0" y="275.0" font-size="10.5" fill="#33415c">EIGRP AS 100</text>
+  <rect x="370" y="440" width="220" height="110" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="481.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7c2d12">GUEST VRF PBR</text>
+  <text x="480.0" y="499.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7c2d12">10.30.0.0/24 → tracked next hop</text>
+  <text x="480.0" y="517.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7c2d12">IP SLA object: track 10</text>
+  <line x1="480" y1="250" x2="480" y2="440" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <rect x="60" y="440" width="260" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="190.0" y="473.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="190.0" y="491.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">tracked next hop shut down</text>
+  <text x="190.0" y="509.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">track 10 → Down</text>
+  <text x="190.0" y="527.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">PBR falls back to normal</text>
+  <text x="190.0" y="545.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">destination-based routing</text>
+  <line x1="320" y1="500" x2="370" y2="495" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="80" y1="610" x2="120" y2="610" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="128" y="614" font-size="11" fill="#33415c">IGP adjacency</text>
+  <line x1="275" y1="610" x2="315" y2="610" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="323" y="614" font-size="11" fill="#b45309">PBR / tracked path</text>
+  <line x1="515" y1="610" x2="555" y2="610" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="563" y="614" font-size="11" fill="#b91c1c">Negative-test path</text>
+</svg>

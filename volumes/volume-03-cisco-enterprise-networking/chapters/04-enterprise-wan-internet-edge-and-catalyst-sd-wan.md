@@ -1,5 +1,9 @@
 # Chapter 04: Enterprise WAN, Internet Edge, and Catalyst SD-WAN
 
+![Lab topology for this chapter: HUB-01 runs a multipoint GRE Tunnel0 (NHRP network-id 100) over IPsec, with SPOKE-01 (tunnel 172.16.0.11) and SPOKE-02 (tunnel 172.16.0.12) registered as NHRP peers and EIGRP neighbors; traffic between the spokes is initially hub-relayed, then NHRP shortcut resolves a dynamic spoke-to-spoke tunnel directly between them. Separately, HUB-01's internet edge uses IP SLA-tracked dual paths (ISP-A primary, ISP-B floating static). As a negative test, shutting down the ISP-A transport interface transitions the tracked object to Down and the floating static route through ISP-B becomes the active default route.](../../../diagrams/volume-03-cisco-enterprise-networking/chapter-04-dmvpn-phase3-hub-spoke-topology.svg)
+
+*Figure 4-1. Topology used throughout this chapter's Hands-On Lab: a DMVPN Phase 3 hub-and-spoke overlay with dynamic spoke-to-spoke tunneling and a dual-ISP, IP SLA-tracked internet edge on the hub.*
+
 ## Learning Objectives
 
 - Compare traditional MPLS L3VPN, DMVPN, and Catalyst SD-WAN transport

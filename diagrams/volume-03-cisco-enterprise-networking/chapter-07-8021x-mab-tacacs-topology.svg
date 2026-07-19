@@ -1,0 +1,51 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 7 lab topology: 802.1X/MAB open-mode authentication with a TACACS+-authenticated management plane</title>
+  <desc>
+    CLI administration on DIST-01 authenticates via TACACS+, confirmed by incrementing request/response counters after an SSH login. ACCESS-01 has three identically configured open-mode 802.1X/MAB ports: Gi1/0/1 with an 802.1X-capable client authenticates via dot1x with a RADIUS/ISE-returned VLAN and dACL; Gi1/0/2 with a non-802.1X device falls back to MAB after the dot1x timeout; Gi1/0/3 is the negative test. As a negative test, RADIUS reachability is removed and a new client on Gi1/0/3 either lands in the critical-authentication VLAN or stays unauthenticated per the port's server-dead action, rather than being silently granted access.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: 802.1X with MAB Fallback and TACACS+ Administration</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Three identically configured ports show dot1x success, MAB fallback, and RADIUS-dead behavior</text>
+  <rect x="370" y="100" width="220" height="90" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="140.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">TACACS+ / RADIUS-ISE</text>
+  <text x="480.0" y="158.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">device admin + 802.1X/MAB</text>
+  <rect x="60" y="240" width="220" height="80" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="275.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">DIST-01</text>
+  <text x="170.0" y="293.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">CLI admin via TACACS+</text>
+  <rect x="370" y="240" width="220" height="100" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="276.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">ACCESS-01</text>
+  <text x="480.0" y="294.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Gi1/0/1, Gi1/0/2, Gi1/0/3</text>
+  <text x="480.0" y="312.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">open-mode 802.1X + MAB</text>
+  <line x1="170" y1="240" x2="400" y2="190" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="291.0" y="215.0" font-size="10.5" fill="#166534">TACACS+ (admin)</text>
+  <line x1="480" y1="190" x2="480" y2="240" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="486.0" y="215.0" font-size="10.5" fill="#166534">RADIUS (dot1x/MAB)</text>
+  <rect x="60" y="400" width="240" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="436.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">Gi1/0/1: dot1x client</text>
+  <text x="180.0" y="454.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Authc Success, method dot1x</text>
+  <text x="180.0" y="472.0" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">RADIUS-returned VLAN/dACL</text>
+  <rect x="360" y="400" width="240" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="436.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">Gi1/0/2: non-802.1X device</text>
+  <text x="480.0" y="454.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">Authc Success, method mab</text>
+  <text x="480.0" y="472.0" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">after dot1x timeout tx-period</text>
+  <rect x="660" y="400" width="240" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="780.0" y="433.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7f1d1d">Gi1/0/3: Negative Test</text>
+  <text x="780.0" y="451.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">RADIUS server down</text>
+  <text x="780.0" y="469.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">critical-auth VLAN, or</text>
+  <text x="780.0" y="487.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">stays unauthenticated —</text>
+  <text x="780.0" y="505.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">never silently granted access</text>
+  <line x1="480" y1="340" x2="180" y2="400" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="480" y1="340" x2="480" y2="400" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <line x1="480" y1="340" x2="780" y2="400" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="60" y1="600" x2="100" y2="600" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="604" font-size="11" fill="#33415c">802.1X path</text>
+  <line x1="237" y1="600" x2="277" y2="600" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="285" y="604" font-size="11" fill="#166534">MAB fallback path</text>
+  <line x1="468" y1="600" x2="508" y2="600" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="516" y="604" font-size="11" fill="#b91c1c">Negative-test path</text>
+</svg>

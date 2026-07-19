@@ -1,5 +1,9 @@
 # Chapter 02: Catalyst Campus Switching and Resiliency
 
+![Lab topology for this chapter: DIST-01 and DIST-02 form an HSRP pair across VLANs 10 and 20 with active/standby roles reversed per VLAN (DIST-01 Active for VLAN 10 and Standby for VLAN 20; DIST-02 the inverse), both connected to ACCESS-01 by independent two-member LACP EtherChannel trunks carrying VLANs 10, 20, and 99 with native VLAN 999; DIST-01 is Rapid PVST+ root for all three VLANs. As a negative test, attaching an unauthorized switch that emits BPDUs to ACCESS-01's BPDU Guard-protected access port causes it to transition to err-disabled, logging a SPANTREE-2-BLOCK_BPDUGUARD event.](../../../diagrams/volume-03-cisco-enterprise-networking/chapter-02-hsrp-distribution-lacp-topology.svg)
+
+*Figure 2-1. Topology used throughout this chapter's Hands-On Lab: an HSRP distribution pair with load spread across two VLANs, LACP-trunked to an access switch with BPDU Guard on its edge port.*
+
 ## Learning Objectives
 
 - Configure VLANs, 802.1Q trunking, and VLAN Trunking Protocol (VTP) modes

@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 8 lab flow: programmatic access to a Catalyst 9000 switch over RESTCONF, telemetry, and Ansible</title>
+  <desc>
+    A workstation queries DIST-01's Vlan10 interface over RESTCONF with curl, receiving a JSON response matching the CLI's running-config. A model-driven telemetry subscription (ID 101) streams state to the workstation, showing State Valid and an incrementing Sent Records counter. An Ansible playbook run against the cisco.ios collection reports changed on its first run (VLANs created) and ok with no changed tasks on a second, identical run, confirming idempotency. As a negative test, the same RESTCONF query repeated with an intentionally wrong password returns HTTP 401 Unauthorized, confirming RESTCONF enforces the same AAA credentials as CLI/SSH.
+  </desc>
+  <defs>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: NETCONF/RESTCONF, Model-Driven Telemetry, and Idempotent Ansible</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">RESTCONF read/auth-enforcement, a telemetry subscription, and a two-run idempotency check</text>
+  <rect x="60" y="180" width="260" height="140" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="236.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#111827">Workstation</text>
+  <text x="190.0" y="254.7" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">curl, python3, ansible-core</text>
+  <text x="190.0" y="272.7" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">cisco.ios collection</text>
+  <rect x="400" y="160" width="260" height="180" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="530.0" y="227.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">DIST-01</text>
+  <text x="530.0" y="245.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">NETCONF + RESTCONF enabled</text>
+  <text x="530.0" y="263.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">telemetry subscription 101:</text>
+  <text x="530.0" y="281.9" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">State Valid, Sent Records ↑</text>
+  <rect x="720" y="160" width="200" height="100" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="820.0" y="196.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Ansible runs</text>
+  <text x="820.0" y="214.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">run 1: changed</text>
+  <text x="820.0" y="232.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">run 2: ok (idempotent)</text>
+  <line x1="320" y1="220" x2="400" y2="220" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="366.0" y="220.0" font-size="10.5" fill="#33415c">RESTCONF GET Vlan10</text>
+  <line x1="400" y1="280" x2="320" y2="280" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="366.0" y="280.0" font-size="10.5" fill="#b45309">telemetry push</text>
+  <line x1="660" y1="210" x2="720" y2="210" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="696.0" y="210.0" font-size="10.5" fill="#33415c">ansible-playbook</text>
+  <rect x="60" y="420" width="840" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="461.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="479.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">curl RESTCONF GET repeated with an intentionally wrong password</text>
+  <text x="480.0" y="497.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">HTTP 401 Unauthorized — RESTCONF enforces the same AAA credentials as CLI/SSH</text>
+  <line x1="60" y1="590" x2="100" y2="590" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="594" font-size="11" fill="#33415c">Request/response</text>
+  <line x1="282" y1="590" x2="322" y2="590" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="330" y="594" font-size="11" fill="#b45309">Telemetry stream</text>
+</svg>

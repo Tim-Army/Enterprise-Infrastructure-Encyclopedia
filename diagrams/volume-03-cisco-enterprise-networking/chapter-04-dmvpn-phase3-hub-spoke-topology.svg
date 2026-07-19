@@ -1,0 +1,50 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab topology: a DMVPN Phase 3 overlay with two spokes and a dual-ISP internet edge on the hub</title>
+  <desc>
+    HUB-01 runs a multipoint GRE Tunnel0 (NHRP network-id 100) over IPsec, with SPOKE-01 (172.16.0.11) and SPOKE-02 (172.16.0.12) registered as NHRP peers and EIGRP neighbors. Traffic from SPOKE-01 to SPOKE-02's loopback is initially hub-relayed, then NHRP shortcut resolves a dynamic spoke-to-spoke tunnel directly between them, confirmed with 'show ip nhrp'. Separately, HUB-01's internet edge uses IP SLA-tracked dual paths (ISP-A primary, ISP-B floating static). As a negative test, shutting down the ISP-A transport interface transitions the tracked object to Down and the floating static route through ISP-B becomes the active default route.
+  </desc>
+  <defs>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: DMVPN Phase 3 Hub-and-Spoke with Dual-Path Internet Edge</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Dynamic spoke-to-spoke tunnel formation over mGRE/NHRP, plus IP SLA-tracked ISP failover on the hub</text>
+  <rect x="370" y="130" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="171.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">HUB-01</text>
+  <text x="480.0" y="189.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Tunnel0 mGRE, NHRP nid 100</text>
+  <text x="480.0" y="207.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">ISP-A (primary) / ISP-B (float)</text>
+  <rect x="80" y="300" width="220" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="336.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">SPOKE-01</text>
+  <text x="190.0" y="354.6" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">tunnel 172.16.0.11</text>
+  <text x="190.0" y="372.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">NHS: HUB-01</text>
+  <rect x="660" y="300" width="220" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="770.0" y="336.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">SPOKE-02</text>
+  <text x="770.0" y="354.6" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">tunnel 172.16.0.12</text>
+  <text x="770.0" y="372.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">NHS: HUB-01</text>
+  <line x1="400" y1="240" x2="210" y2="300" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="311.0" y="270.0" font-size="10.5" fill="#33415c">mGRE/NHRP + EIGRP</text>
+  <line x1="560" y1="240" x2="750" y2="300" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="661.0" y="270.0" font-size="10.5" fill="#33415c">mGRE/NHRP + EIGRP</text>
+  <line x1="300" y1="330" x2="660" y2="330" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="486.0" y="330.0" font-size="10.5" fill="#b45309">dynamic spoke-to-spoke (NHRP shortcut)</text>
+  <rect x="80" y="460" width="260" height="110" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="210.0" y="501.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">ISP-A (primary transport)</text>
+  <text x="210.0" y="519.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">tracked by IP SLA (track 1)</text>
+  <text x="210.0" y="537.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">normal default route</text>
+  <rect x="390" y="460" width="260" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="520.0" y="492.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="520.0" y="510.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">ISP-A shut down → track 1 Down</text>
+  <text x="520.0" y="528.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">floating static via ISP-B becomes</text>
+  <text x="520.0" y="546.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">the active default route</text>
+  <line x1="430" y1="240" x2="210" y2="460" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <line x1="430" y1="570" x2="520" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="80" y1="610" x2="120" y2="610" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="128" y="614" font-size="11" fill="#33415c">DMVPN control-plane path</text>
+  <line x1="374" y1="610" x2="414" y2="610" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="422" y="614" font-size="11" fill="#b45309">Dynamic data-plane tunnel</text>
+  <line x1="677" y1="610" x2="717" y2="610" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="725" y="614" font-size="11" fill="#b91c1c">Negative-test path</text>
+</svg>

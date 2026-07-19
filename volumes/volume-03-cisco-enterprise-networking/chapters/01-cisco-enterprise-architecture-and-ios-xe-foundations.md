@@ -1,5 +1,9 @@
 # Chapter 01: Cisco Enterprise Architecture and IOS XE Foundations
 
+![Lab flow for this chapter: a Catalyst 9000 switch starting in bundle mode is converted to install mode and reloaded, then hardened with a hostname, local credentials, and SSH/console/vty lockdown as CAMPUS-ACCESS-01; VLAN 99 and its SVI (10.10.99.10/24) are created and confirmed up with a successful gateway ping, then Smart Licensing is registered against CSSM. As a negative test, an SSH login with an intentionally wrong password is rejected after three attempts and the failure is confirmed in the device's logging output.](../../../diagrams/volume-03-cisco-enterprise-networking/chapter-01-catalyst-9000-bringup-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: bringing a Catalyst 9000 switch from factory defaults to a hardened, licensed, install-mode device.*
+
 ## Learning Objectives
 
 - Describe the Cisco Enterprise Architecture model and map its functional
