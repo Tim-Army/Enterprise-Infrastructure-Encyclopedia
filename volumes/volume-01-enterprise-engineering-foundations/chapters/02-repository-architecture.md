@@ -1,5 +1,9 @@
 # Chapter 02: Repository Architecture
 
+![Lab flow for this chapter: a scratch repository's directory contract is enforced both locally by a pre-commit hook and remotely by branch protection; a unit that satisfies the contract commits successfully, while a unit missing its required README.md is rejected by the pre-commit hook before it ever reaches GitHub.](../../../diagrams/volume-01-enterprise-engineering-foundations/chapter-02-repository-contract-enforcement-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: the structural contract enforced by CODEOWNERS, branch protection, and a local pre-commit gate, including the missing-README negative test.*
+
 ## Learning Objectives
 
 - Compare monorepo, polyrepo, and hybrid source-control topologies against

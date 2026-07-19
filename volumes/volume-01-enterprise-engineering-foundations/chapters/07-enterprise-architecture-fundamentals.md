@@ -1,5 +1,9 @@
 # Chapter 07: Enterprise Architecture Fundamentals
 
+![Lab flow for this chapter: ADR-0001 is later superseded by ADR-0002, with both decisions validated for four required sections and a controlled status vocabulary; a third, malformed ADR missing two sections and using an invalid status value is rejected with all three problems reported together.](../../../diagrams/volume-01-enterprise-engineering-foundations/chapter-07-adr-log-supersession-flow.svg)
+
+*Figure 7-1. Flow used throughout this chapter's Hands-On Lab: an ADR log with one decision superseding another, validated for structure and status, including the malformed-ADR negative test.*
+
 ## Learning Objectives
 
 - Explain what enterprise architecture is for, and distinguish it from

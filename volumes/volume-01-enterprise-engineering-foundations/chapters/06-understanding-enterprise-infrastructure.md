@@ -1,5 +1,9 @@
 # Chapter 06: Understanding Enterprise Infrastructure
 
+![Lab flow for this chapter: a git-tracked domain inventory is validated against required fields and controlled vocabularies; a valid inventory passes with no errors, while a record with a missing field and two invalid vocabulary values is rejected with all four problems reported in the same run.](../../../diagrams/volume-01-enterprise-engineering-foundations/chapter-06-domain-inventory-schema-validation-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: the domain inventory's required-field and controlled-vocabulary validation gate, including the malformed-record negative test.*
+
 ## Learning Objectives
 
 - Define enterprise infrastructure and explain what distinguishes it from

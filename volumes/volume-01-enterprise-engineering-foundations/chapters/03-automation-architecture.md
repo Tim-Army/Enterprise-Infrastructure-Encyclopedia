@@ -1,5 +1,9 @@
 # Chapter 03: Automation Architecture
 
+![Lab flow for this chapter: every pull request triggers a read-only Validate workflow automatically, while merging to main triggers a separate Deploy workflow that pauses until a configured reviewer approves it; removing the only eligible reviewer demonstrates the approval gate fails closed rather than open.](../../../diagrams/volume-01-enterprise-engineering-foundations/chapter-03-two-stage-pipeline-approval-gate-flow.svg)
+
+*Figure 3-1. Flow used throughout this chapter's Hands-On Lab: the two-stage pipeline's validation job, merge, and approval-gated deploy job, including the no-reviewer negative test.*
+
 ## Learning Objectives
 
 - Describe the layered automation model that spans workstation, repository,

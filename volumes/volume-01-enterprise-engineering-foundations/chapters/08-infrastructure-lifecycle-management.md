@@ -1,5 +1,9 @@
 # Chapter 08: Infrastructure Lifecycle Management
 
+![Lab flow for this chapter: a CMDB asset record moves through its legal lifecycle states from planned through decommissioned, with every transition checked against a table of legal state pairs before the record is modified; an attempt to bring a decommissioned asset back into service is rejected without corrupting the record.](../../../diagrams/volume-01-enterprise-engineering-foundations/chapter-08-cmdb-lifecycle-state-machine-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: the CMDB lifecycle state machine driving an asset from planned to decommissioned, including the illegal-transition negative test.*
+
 ## Learning Objectives
 
 - Describe the infrastructure lifecycle stages from planning through

@@ -1,5 +1,9 @@
 # Chapter 01: Building the Enterprise Developer Workstation
 
+![Lab flow for this chapter: a lab-only ed25519 key is generated on the developer workstation and registered with GitHub as a signing key; a commit made with that key verifies as a Good signature locally and Verified on GitHub, while a commit signed with an unregistered key still signs locally but shows as Unverified on GitHub.](../../../diagrams/volume-01-enterprise-engineering-foundations/chapter-01-signed-commit-workstation-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: generating and registering an SSH signing key, then verifying signed commits, including the unregistered-key negative test.*
+
 ## Learning Objectives
 
 - Explain why a reproducible, version-controlled workstation configuration

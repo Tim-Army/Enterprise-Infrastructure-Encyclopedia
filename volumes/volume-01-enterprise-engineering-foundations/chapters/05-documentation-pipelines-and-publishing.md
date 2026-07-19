@@ -1,5 +1,9 @@
 # Chapter 05: Documentation Pipelines and Publishing
 
+![Lab flow for this chapter: an internal-link checker validates a small markdown source tree before Pandoc builds standalone HTML; with valid links the build proceeds, while a deliberately broken link is caught by the checker and the build never runs.](../../../diagrams/volume-01-enterprise-engineering-foundations/chapter-05-documentation-pipeline-link-validation-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: the internal-link validation gate that must pass before the Pandoc HTML build runs, including the broken-link negative test.*
+
 ## Learning Objectives
 
 - Explain the docs-as-code model and why Markdown-as-source-of-truth

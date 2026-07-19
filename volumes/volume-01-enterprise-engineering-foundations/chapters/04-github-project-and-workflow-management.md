@@ -1,5 +1,9 @@
 # Chapter 04: GitHub Project and Workflow Management
 
+![Lab flow for this chapter: an issue is linked to a GitHub Project board, and a pull request whose body uses the documented closing-keyword syntax auto-closes the issue on merge, while a pull request that only references the issue inside a code comment leaves it open.](../../../diagrams/volume-01-enterprise-engineering-foundations/chapter-04-linked-issue-pull-request-flow.svg)
+
+*Figure 4-1. Flow used throughout this chapter's Hands-On Lab: an issue linked to a Project board and closed automatically only via the documented closing-keyword syntax, including the informal-reference negative test.*
+
 ## Learning Objectives
 
 - Structure work using issues, labels, milestones, and GitHub Projects (v2)

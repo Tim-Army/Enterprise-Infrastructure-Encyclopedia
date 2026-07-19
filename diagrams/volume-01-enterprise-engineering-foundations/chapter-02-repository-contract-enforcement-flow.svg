@@ -1,0 +1,43 @@
+<svg viewBox="0 0 920 480" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 2 lab flow: a scratch repository's structural contract enforced locally by pre-commit and remotely by branch protection</title>
+  <desc>
+    A scratch GitHub repository is created with a directory contract (every unit/ directory must contain a README.md), a CODEOWNERS file, GitHub branch protection on main, and a local pre-commit hook that runs the same structure check before any commit is made. A unit that satisfies the contract commits successfully. As a negative test, a unit missing its required README.md is rejected by the pre-commit hook locally, before it ever reaches GitHub.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="920" height="480" fill="#ffffff"/>
+  <text x="460.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 2 Hands-On Lab: Repository Contract Enforcement Flow</text>
+  <text x="460.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Directory contract, CODEOWNERS, branch protection, and a pre-commit structural gate</text>
+  <rect x="40" y="60" width="260" height="70" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="90.5" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Scratch GitHub Repo</text>
+  <text x="170.0" y="108.5" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">CODEOWNERS + branch protection</text>
+  <line x1="170" y1="130" x2="170" y2="180" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="176.0" y="155.0" font-size="10.5" fill="#33415c">pre-commit install</text>
+  <rect x="40" y="180" width="260" height="60" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="205.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Local Pre-Commit Hook</text>
+  <text x="170.0" y="223.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">scripts/validate-structure.sh</text>
+  <line x1="170" y1="240" x2="170" y2="290" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <rect x="40" y="290" width="260" height="60" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="170.0" y="315.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7c2d12">git commit</text>
+  <text x="170.0" y="333.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7c2d12">runs the structure-check hook</text>
+  <line x1="300" y1="320" x2="420" y2="260" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="366.0" y="290.0" font-size="10.5" fill="#166534">unit-02/README.md present</text>
+  <rect x="420" y="230" width="260" height="60" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="550.0" y="255.2" text-anchor="middle" font-size="12" font-weight="700" fill="#14532d">Commit accepted</text>
+  <text x="550.0" y="273.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#14532d">contract satisfied</text>
+  <line x1="300" y1="340" x2="420" y2="400" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="366.0" y="370.0" font-size="10.5" fill="#b91c1c">unit-03/README.md missing (negative test)</text>
+  <rect x="420" y="370" width="260" height="70" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="550.0" y="400.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Commit rejected locally</text>
+  <text x="550.0" y="418.2" text-anchor="middle" font-size="10" font-weight="400" fill="#7f1d1d">MISSING: units/unit-03-broken/README.md</text>
+  <line x1="40" y1="450" x2="80" y2="450" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="88" y="454" font-size="11" fill="#33415c">Setup step</text>
+  <line x1="208" y1="450" x2="248" y2="450" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="256" y="454" font-size="11" fill="#166534">Passing commit</text>
+  <line x1="412" y1="450" x2="452" y2="450" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="460" y="454" font-size="11" fill="#b91c1c">Blocked commit (negative test)</text>
+</svg>

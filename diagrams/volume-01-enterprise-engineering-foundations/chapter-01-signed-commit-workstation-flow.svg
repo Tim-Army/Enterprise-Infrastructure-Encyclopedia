@@ -1,0 +1,47 @@
+<svg viewBox="0 0 920 480" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab flow: generating and registering an SSH signing key, then verifying signed commits</title>
+  <desc>
+    A lab-only ed25519 key is generated on the developer workstation and registered with GitHub as a signing key via the gh CLI. A commit made with that key shows as a Good signature when verified locally and as Verified on GitHub. As a negative test, a commit signed with a key that was never registered with GitHub still produces a local signature but shows as Unverified on GitHub, demonstrating that registration -- not just local signing -- is the control that matters.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="920" height="480" fill="#ffffff"/>
+  <text x="460.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Hands-On Lab: Signed-Commit Workstation Flow</text>
+  <text x="460.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">SSH commit signing, key registration, and verification</text>
+  <rect x="40" y="90" width="220" height="90" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="150.0" y="130.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Developer Workstation</text>
+  <text x="150.0" y="148.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">bash, git, ssh-keygen, gh CLI</text>
+  <line x1="260" y1="120" x2="380" y2="120" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="326.0" y="120.0" font-size="10.5" fill="#33415c">ssh-keygen -t ed25519</text>
+  <rect x="380" y="75" width="200" height="60" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="100.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Lab SSH Key</text>
+  <text x="480.0" y="118.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">id_ed25519_lab</text>
+  <line x1="480" y1="135" x2="480" y2="190" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="486.0" y="162.5" font-size="10.5" fill="#33415c">gh ssh-key add --type signing</text>
+  <rect x="380" y="190" width="200" height="60" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="215.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">GitHub Account</text>
+  <text x="480.0" y="233.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#14532d">registered signing key</text>
+  <line x1="150" y1="180" x2="150" y2="260" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="156.0" y="220.0" font-size="10.5" fill="#33415c">git commit (gpgsign)</text>
+  <rect x="40" y="260" width="260" height="70" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="170.0" y="290.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7c2d12">Local Repo Commit</text>
+  <text x="170.0" y="308.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7c2d12">git config commit.gpgsign true</text>
+  <line x1="170" y1="330" x2="170" y2="380" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="176.0" y="355.0" font-size="10.5" fill="#b45309">git log --show-signature</text>
+  <rect x="40" y="380" width="260" height="60" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="170.0" y="413.9" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">Registered key -&gt; &quot;Good signature&quot;</text>
+  <line x1="480" y1="260" x2="620" y2="380" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="556.0" y="320.0" font-size="10.5" fill="#b91c1c">unregistered key (negative test)</text>
+  <rect x="620" y="380" width="260" height="60" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="750.0" y="413.9" text-anchor="middle" font-size="11" font-weight="700" fill="#7f1d1d">Unregistered key -&gt; &quot;Unverified&quot; on GitHub</text>
+  <line x1="40" y1="450" x2="80" y2="450" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="88" y="454" font-size="11" fill="#33415c">Setup / registration step</text>
+  <line x1="343" y1="450" x2="383" y2="450" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="391" y="454" font-size="11" fill="#166534">Expected (passing) outcome</text>
+  <line x1="655" y1="450" x2="695" y2="450" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="703" y="454" font-size="11" fill="#b91c1c">Negative-test outcome</text>
+</svg>
