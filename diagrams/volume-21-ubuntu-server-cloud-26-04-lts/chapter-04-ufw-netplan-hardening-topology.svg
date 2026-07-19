@@ -1,0 +1,37 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab topology: a scoped admin account, hardened SSH, a safe Netplan rollback, and a default-deny ufw policy, tested against an unlisted port</title>
+  <desc>
+    labadmin authenticates by key; sshd is hardened (PermitRootLogin no, PasswordAuthentication no) and reloaded only after sshd -t confirms valid syntax. A static Netplan configuration applies via netplan try, which auto-rolls-back if connectivity isn't confirmed within its countdown. ufw enables with a default-deny inbound policy and an explicit OpenSSH allow. As a negative test, a listener is started on an unlisted port (8080) and a connection attempt from a second host times out or is refused, confirming ufw's default-deny policy actually blocks traffic to ports with no explicit allow rule, while SSH on port 22 continues to succeed throughout.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: ufw's Default-Deny Policy Confirmed Against an Unlisted Port</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">SSH keeps working through a hardened, Netplan-safe configuration while an unlisted listener port is actually unreachable</text>
+  <rect x="60" y="140" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">labadmin + hardened sshd</text>
+  <text x="180.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">key-based auth, password auth off</text>
+  <text x="180.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">Netplan applied via netplan try</text>
+  <rect x="400" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">ufw: default deny incoming</text>
+  <text x="520.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">OpenSSH explicitly allowed</text>
+  <text x="520.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">SSH continues to succeed</text>
+  <line x1="320" y1="195" x2="400" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">nc listener on port 8080</text>
+  <text x="810.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ connection times out/refused</text>
+  <line x1="640" y1="195" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="300" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="340.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the unlisted port is genuinely unreachable while SSH on the explicitly allowed port keeps working —</text>
+  <text x="490.0" y="358.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">confirming ufw's default-deny policy is enforced, not merely configured.</text>
+  <line x1="60" y1="430" x2="100" y2="430" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="434" font-size="11" fill="#33415c">Hardened access baseline</text>
+  <line x1="354" y1="430" x2="394" y2="430" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="402" y="434" font-size="11" fill="#166534">Explicitly allowed service</text>
+  <line x1="666" y1="430" x2="706" y2="430" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="714" y="434" font-size="11" fill="#b91c1c">Default-denied port</text>
+</svg>

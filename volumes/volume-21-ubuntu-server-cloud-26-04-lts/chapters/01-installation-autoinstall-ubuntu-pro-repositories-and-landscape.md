@@ -1,5 +1,9 @@
 # Chapter 01: Installation, Autoinstall, Ubuntu Pro, Repositories, and Landscape
 
+![Flow diagram showing an unattended Ubuntu autoinstall completing from a NoCloud seed, a real Ubuntu Pro token enabling ESM, and a deliberately invalid token being rejected with no changes to repository configuration.](../../diagrams/volume-21-ubuntu-server-cloud-26-04-lts/chapter-01-autoinstall-pro-attach-flow.svg)
+
+*Figure 1-1. The autoinstall and Ubuntu Pro attach flow exercised in this chapter's lab, including the invalid-token negative test.*
+
 ## Learning Objectives
 
 - Explain Ubuntu Server's LTS release model, support timeline, and how

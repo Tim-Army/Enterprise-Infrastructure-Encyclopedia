@@ -1,0 +1,43 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 8 lab flow: the same web app run as a Docker container and an LXD system container, then two image-build patterns tested against an arbitrary UID</title>
+  <desc>
+    A Docker container and an independent LXD system container both serve the same simple web application from their own addresses, proving the two container technologies coexist without interfering with each other. Two variants of a minimal app image are built: a naive one owned by root with mode 700, and a portable one using chgrp 0 plus chmod g=u. As a negative test, both images run under an arbitrary UID (543210) that was never part of the build; the naive image exits non-zero with a permission error writing its output file, because that UID belongs to neither root nor any group with write access, while the portable image exits 0, because the root-group ownership pattern grants write access to any UID as long as it belongs to group 0 — exactly how OpenShift assigns UIDs to containers by default.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: The chgrp-0/chmod-g=u Pattern Is What Makes an Image Survive an Arbitrary UID</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Docker and LXD both serve the same app independently; a naively built image fails under an OpenShift-style random UID while the portable one succeeds</text>
+  <rect x="60" y="130" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Docker container</text>
+  <text x="170.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">nginx on :8080</text>
+  <rect x="360" y="130" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="470.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">LXD system container</text>
+  <text x="470.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">own IP, own nginx</text>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="810.0" y="171.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Both serve independently</text>
+  <text x="810.0" y="189.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">no interference between</text>
+  <text x="810.0" y="207.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">the two container technologies</text>
+  <line x1="280" y1="185" x2="360" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="580" y1="185" x2="700" y2="185" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <rect x="60" y="300" width="400" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="260.0" y="342.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Naive image (chown root, mode 700)</text>
+  <text x="260.0" y="360.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">run --user 543210</text>
+  <text x="260.0" y="378.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ PermissionError writing output.txt</text>
+  <text x="260.0" y="396.2" text-anchor="middle" font-size="10" font-weight="400" fill="#7f1d1d">(UID in neither root nor a writable group)</text>
+  <rect x="500" y="300" width="400" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="700.0" y="342.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Portable image (chgrp 0, chmod g=u)</text>
+  <text x="700.0" y="360.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">run --user 543210</text>
+  <text x="700.0" y="378.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">→ exit 0, write succeeds</text>
+  <text x="700.0" y="396.2" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">(any UID in group 0 can write)</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="464" font-size="11" fill="#33415c">Independent container runtimes</text>
+  <line x1="408" y1="460" x2="448" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="456" y="464" font-size="11" fill="#b91c1c">Fails under arbitrary UID</text>
+  <line x1="711" y1="460" x2="751" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="759" y="464" font-size="11" fill="#166534">Survives arbitrary UID</text>
+</svg>

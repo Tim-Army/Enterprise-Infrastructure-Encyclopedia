@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 9 lab flow: a cloud-init minimal hand-off completed by an Ansible baseline playbook, tested against Ansible's check-mode dry run</title>
+  <desc>
+    A cloud-init seed creates only an Ansible-manageable user and installs no hardening at all; cloud-init status shows done while ufw reports inactive or not installed, confirming hardening was deliberately left to Ansible rather than cloud-init. An Ansible baseline playbook installs chrony and ufw, sets a default-deny inbound firewall policy with an OpenSSH allow rule, and enables both services. As a negative test, the playbook first runs in --check mode; it reports tasks as changed (what would happen), but an immediate live SSH check shows ufw is still inactive, proving check mode made no real change to the host. Applying the playbook for real brings ufw active and chrony running, and re-running it shows changed=0 for every task, confirming end-to-end idempotency across the whole provisioning chain.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: The Capstone — Ansible's --check Mode Proven to Change Nothing</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">cloud-init hands off a deliberately minimal host; Ansible completes the baseline, and its dry run is confirmed to leave the live system untouched</text>
+  <rect x="60" y="130" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">cloud-init minimal seed</text>
+  <text x="190.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">creates ansible user only</text>
+  <text x="190.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">status: done, ufw not yet configured</text>
+  <rect x="400" y="130" width="240" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="520.0" y="171.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test: --check --diff</text>
+  <text x="520.0" y="189.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">reports tasks as &quot;changed&quot;</text>
+  <text x="520.0" y="207.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">live ufw status: still inactive</text>
+  <line x1="320" y1="185" x2="400" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Real apply</text>
+  <text x="810.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">ufw active, default-deny + SSH</text>
+  <text x="810.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">chrony active</text>
+  <line x1="640" y1="185" x2="700" y2="185" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="320" width="860" height="100" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="356.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">--check mode reported the pending changes accurately but genuinely applied none of them —</text>
+  <text x="490.0" y="374.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">re-running the playbook for real afterward shows changed=0 for every task, confirming full idempotency</text>
+  <text x="490.0" y="392.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">end to end across cloud-init hand-off and Ansible convergence together.</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="464" font-size="11" fill="#33415c">Minimal cloud-init hand-off</text>
+  <line x1="381" y1="460" x2="421" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="429" y="464" font-size="11" fill="#b91c1c">Dry run (no real change)</text>
+  <line x1="675" y1="460" x2="715" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="723" y="464" font-size="11" fill="#166534">Applied, idempotent baseline</text>
+</svg>

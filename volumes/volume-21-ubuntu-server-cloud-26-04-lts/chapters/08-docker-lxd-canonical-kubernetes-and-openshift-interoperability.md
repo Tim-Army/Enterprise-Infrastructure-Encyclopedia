@@ -1,5 +1,9 @@
 # Chapter 08: Docker, LXD, Canonical Kubernetes, and OpenShift Interoperability
 
+![Flow diagram showing a Docker container and an independent LXD system container each serving the same application, alongside a naive container image that fails under an arbitrary UID and a portable chgrp-0/chmod-g=u image that succeeds under the same UID.](../../diagrams/volume-21-ubuntu-server-cloud-26-04-lts/chapter-08-docker-lxd-arbitrary-uid-flow.svg)
+
+*Figure 8-1. The Docker-and-LXD coexistence and OpenShift-compatible image pattern exercised in this chapter's lab, including the arbitrary-UID negative test.*
+
 ## Learning Objectives
 
 - Install and operate Docker Engine on Ubuntu Server, including Compose

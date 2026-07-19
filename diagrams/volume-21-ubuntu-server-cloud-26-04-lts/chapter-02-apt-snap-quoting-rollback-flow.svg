@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 2 lab flow: an administrative audit script exercised against real package activity, then deliberately broken to demonstrate a quoting bug, alongside a snap rollback</title>
+  <desc>
+    disk-and-pkg-report.sh prints disk usage, recent dpkg installs, and largest /var directories cleanly; installing a small test package makes it appear in the next run automatically. As a negative test, a copy of the script replaces a quoted path with an unquoted multi-word variable; running it word-splits the value into two separate arguments, and du reports it cannot access a directory literally named audit in the current working directory. Separately, a test snap is installed and reverted; snap list --all shows the prior revision retained alongside the current one, confirming rollback preserves history rather than discarding it.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 2 Hands-On Lab: A Quoting Bug Demonstrated Live, Then a Clean Snap Rollback</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">An unquoted variable word-splits into two arguments; snap revert cleanly restores a prior working revision</text>
+  <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">disk-and-pkg-report.sh</text>
+  <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">apt install tree → new dpkg.log entry</text>
+  <text x="190.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">re-run picks it up automatically</text>
+  <rect x="400" y="140" width="240" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">snap revert hello-world</text>
+  <text x="520.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">prior revision retained</text>
+  <text x="520.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">alongside the current one</text>
+  <line x1="320" y1="200" x2="400" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="177.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="195.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">$TESTDIR left unquoted</text>
+  <text x="810.0" y="213.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">word-splits into 2 arguments</text>
+  <text x="810.0" y="231.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">du: cannot access &quot;audit&quot;</text>
+  <line x1="640" y1="200" x2="700" y2="200" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="330" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="370.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">&quot;$TESTDIR&quot; (quoted) would pass one intact argument to du — the unquoted version demonstrates</text>
+  <text x="490.0" y="388.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">exactly why shell quoting around multi-word variables matters.</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="464" font-size="11" fill="#33415c">Audit script + real package activity</text>
+  <line x1="462" y1="460" x2="502" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="510" y="464" font-size="11" fill="#166534">Snap rollback</text>
+  <line x1="657" y1="460" x2="697" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="705" y="464" font-size="11" fill="#b91c1c">Quoting bug (negative test)</text>
+</svg>

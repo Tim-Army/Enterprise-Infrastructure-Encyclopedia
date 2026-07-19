@@ -1,5 +1,9 @@
 # Chapter 05: Storage, LVM, Filesystems, Swap, and Shared-Storage Services
 
+![Topology diagram showing an LVM-backed filesystem grown online without unmounting, exported over NFS to a permitted subnet, and refused when mounted from a host outside that subnet.](../../diagrams/volume-21-ubuntu-server-cloud-26-04-lts/chapter-05-lvm-nfs-export-topology.svg)
+
+*Figure 5-1. The LVM growth and NFS export topology exercised in this chapter's lab, including the out-of-subnet negative test.*
+
 ## Learning Objectives
 
 - Partition block devices and build an LVM stack (PV, VG, LV) that

@@ -1,5 +1,9 @@
 # Chapter 09: Cloud-init, MAAS, Juju, Ansible, Landscape, Operations, and Capstone
 
+![Flow diagram showing a minimal cloud-init hand-off completed by an idempotent Ansible baseline playbook, with an Ansible check-mode dry run confirmed to leave the live system unchanged before the real, idempotent apply.](../../diagrams/volume-21-ubuntu-server-cloud-26-04-lts/chapter-09-cloudinit-ansible-checkmode-flow.svg)
+
+*Figure 9-1. The capstone cloud-init-to-Ansible provisioning chain exercised in this chapter's lab, including the check-mode negative test.*
+
 ## Learning Objectives
 
 - Explain cloud-init's datasource, module, and stage architecture, and

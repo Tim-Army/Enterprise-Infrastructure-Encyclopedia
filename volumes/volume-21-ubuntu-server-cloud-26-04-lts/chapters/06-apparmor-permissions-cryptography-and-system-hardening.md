@@ -1,5 +1,9 @@
 # Chapter 06: AppArmor, Permissions, Cryptography, and System Hardening
 
+![Flow diagram showing an AppArmor profile generated interactively that allows a permitted file read while blocking and logging an attempted read of /etc/shadow, alongside a LUKS-encrypted loop volume.](../../diagrams/volume-21-ubuntu-server-cloud-26-04-lts/chapter-06-apparmor-luks-confinement-flow.svg)
+
+*Figure 6-1. The AppArmor profile generation and enforcement flow exercised in this chapter's lab, including the denied-and-logged negative test.*
+
 ## Learning Objectives
 
 - Explain AppArmor's profile-based confinement model and how it differs

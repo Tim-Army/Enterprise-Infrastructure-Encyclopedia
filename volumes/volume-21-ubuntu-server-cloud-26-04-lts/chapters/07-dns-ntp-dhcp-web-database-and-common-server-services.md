@@ -1,5 +1,9 @@
 # Chapter 07: DNS, NTP, DHCP, Web, Database, and Common Server Services
 
+![Flow diagram showing an authoritative BIND9 zone resolving a defined hostname to a working Nginx virtual host end to end, and returning an authoritative NXDOMAIN for a name that was never defined in the zone.](../../diagrams/volume-21-ubuntu-server-cloud-26-04-lts/chapter-07-bind9-nginx-nxdomain-flow.svg)
+
+*Figure 7-1. The DNS-to-HTTP resolution chain exercised in this chapter's lab, including the authoritative NXDOMAIN negative test.*
+
 ## Learning Objectives
 
 - Deploy an authoritative BIND9 zone and understand `systemd-resolved`'s
