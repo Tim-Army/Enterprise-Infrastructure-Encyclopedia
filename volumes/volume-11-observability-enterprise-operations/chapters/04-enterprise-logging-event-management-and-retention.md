@@ -1,5 +1,9 @@
 # Chapter 04: Enterprise Logging, Event Management, and Retention
 
+![Lab flow for this chapter: a script writes structured JSON log lines, one carrying an authorization bearer token; Vector parses each line as JSON and removes the authorization field before shipping to Loki, and querying Loki confirms all entries arrived with the field absent even from the one that originally carried it. As a negative test, querying specifically for a non-empty authorization field returns zero results, confirming enforcement rather than mere display omission; commenting out the redaction transform, restarting Vector, and re-emitting logs causes the same query to return the previously redacted value in plain text.](../../../diagrams/volume-11-observability-enterprise-operations/chapter-04-vector-loki-pii-redaction-flow.svg)
+
+*Figure 4-1. Flow used throughout this chapter's Hands-On Lab: a Vector-to-Loki log pipeline redacting a sensitive field before ingestion, tested with the redaction transform removed.*
+
 ## Learning Objectives
 
 - Differentiate structured logs, unstructured logs, and discrete events,

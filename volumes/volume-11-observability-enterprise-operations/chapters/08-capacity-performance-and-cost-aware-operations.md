@@ -1,5 +1,9 @@
 # Chapter 08: Capacity, Performance, and Cost-Aware Operations
 
+![Lab flow for this chapter: a sample service bounded to 8 concurrent workers is load-tested at increasing concurrency; average latency stays flat through concurrency 8, then jumps sharply beyond it, locating the real saturation point. As a negative test, a shallow traffic model using only very low concurrency levels is run instead; latency stays flat with no degradation, never approaching the worker pool limit — producing a false-confidence 'handles load fine' conclusion, the exact traffic-model risk this chapter's Validation section describes.](../../../diagrams/volume-11-observability-enterprise-operations/chapter-08-load-test-saturation-point-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: a load test that locates a service's real saturation point, contrasted with a shallow test that misses it entirely.*
+
 ## Learning Objectives
 
 - Forecast capacity demand from historical utilization trends and

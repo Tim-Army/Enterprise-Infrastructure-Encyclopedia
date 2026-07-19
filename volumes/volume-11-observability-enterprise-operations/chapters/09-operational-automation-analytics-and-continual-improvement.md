@@ -1,5 +1,9 @@
 # Chapter 09: Operational Automation, Analytics, and Continual Improvement
 
+![Lab flow for this chapter: a fault-injection script marks a simulated pod unhealthy every 0.2 seconds for about 24 seconds while a remediation script restarts it, but only up to 3 restarts per rolling 10-second window; the audit log contains both restart and escalate entries. As a negative test, counting actual restart entries against the fault-injection rate confirms the restart count is well under the number of fault events, with escalations accounting for the remainder — confirming the guardrail genuinely bounds the action count rather than merely logging a warning while still restarting every cycle.](../../../diagrams/volume-11-observability-enterprise-operations/chapter-09-rate-limited-remediation-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: a rate-limited closed-loop remediation script tested against sustained fault injection, escalating instead of looping forever.*
+
 ## Learning Objectives
 
 - Classify operational toil and select the automation pattern —

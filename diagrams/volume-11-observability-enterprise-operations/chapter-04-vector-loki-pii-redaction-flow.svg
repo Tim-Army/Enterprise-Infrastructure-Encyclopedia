@@ -1,0 +1,36 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab flow: a Vector-to-Loki log pipeline redacting a sensitive field before ingestion, tested with the transform removed</title>
+  <desc>
+    emit-logs.sh writes 21 structured JSON log lines, one carrying an authorization bearer token. Vector parses each line as JSON and removes the authorization field before shipping to Loki. Querying Loki confirms all 21 entries arrived and the authorization field is absent even from the one entry that originally carried it. As a negative test, querying specifically for a non-empty authorization field returns zero results, confirming enforcement rather than mere display omission. Commenting out the del(.authorization) line in vector.toml, restarting Vector, and re-emitting logs causes the same query to return the previously redacted value in plain text — the pipeline does not protect sensitive fields on its own, the transform does.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: PII Redaction Enforced by the Pipeline Transform, Not by Convention</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">The authorization field never reaches Loki while the redact transform is active — and reappears the instant it is removed</text>
+  <rect x="60" y="140" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">emit-logs.sh</text>
+  <text x="180.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">21 JSON lines, 1 with</text>
+  <text x="180.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7c2d12">authorization: Bearer ...</text>
+  <rect x="380" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="500.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Vector: parse + redact</text>
+  <text x="500.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">del(.authorization) transform</text>
+  <text x="500.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">field removed before Loki sink</text>
+  <line x1="300" y1="195" x2="380" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Loki</text>
+  <text x="810.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">21 entries, authorization</text>
+  <text x="810.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">absent from all of them</text>
+  <line x1="620" y1="195" x2="700" y2="195" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="330" width="860" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="372.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="390.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">query specifically for authorization != &quot;&quot; against Loki → zero results (redaction is enforced)</text>
+  <text x="490.0" y="408.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">del(.authorization) commented out, Vector restarted, logs re-emitted →</text>
+  <text x="490.0" y="426.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">same query now returns the token in plain text — the transform, not the pipeline, was protecting it</text>
+  <line x1="60" y1="500" x2="100" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="504" font-size="11" fill="#33415c">Raw log source</text>
+  <line x1="264" y1="500" x2="304" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="312" y="504" font-size="11" fill="#166534">Redacted, enforced</text>
+</svg>

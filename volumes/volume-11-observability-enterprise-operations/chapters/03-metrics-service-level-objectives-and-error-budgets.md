@@ -1,5 +1,9 @@
 # Chapter 03: Metrics, Service-Level Objectives, and Error Budgets
 
+![Lab flow for this chapter: a sample service injecting a 2% error rate produces a measured error ratio that exceeds the 14.4x0.1% page threshold, so the LabAppAvailabilitySLOBurn alert is firing. As a negative test, the error probability is lowered to well under the 0.1% SLO and the app rebuilt and restarted; after five minutes, the measured error ratio drops well under the burn-rate threshold and the alert returns to inactive — confirming the alert distinguishes a genuine fast-burn condition from normal, budget-compliant operation rather than firing on any nonzero error rate.](../../../diagrams/volume-11-observability-enterprise-operations/chapter-03-slo-burn-rate-alert-flow.svg)
+
+*Figure 3-1. Flow used throughout this chapter's Hands-On Lab: a Prometheus multi-window burn-rate SLO alert validated against both a burning and a healthy error rate.*
+
 ## Learning Objectives
 
 - Differentiate the four Prometheus metric types (counter, gauge,

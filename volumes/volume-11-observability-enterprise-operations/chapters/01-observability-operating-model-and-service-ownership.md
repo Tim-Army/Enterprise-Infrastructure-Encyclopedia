@@ -1,5 +1,9 @@
 # Chapter 01: Observability Operating Model and Service Ownership
 
+![Lab flow for this chapter: checkout-api and inventory-service catalog entries are complete with an owner and an escalation annotation, while legacy-reporting deliberately omits both; audit-catalog.sh reports missing owner and missing escalation route for legacy-reporting, '2 issue(s) found', and exits 2. As a negative test, confirming echo $? returns 2 (not 0) shows a CI gate would correctly fail the build; separately, truncating a valid entry's YAML to corrupt it and re-running confirms the script errors clearly rather than silently treating the broken entry as compliant.](../../../diagrams/volume-11-observability-enterprise-operations/chapter-01-service-catalog-audit-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: an automated service-catalog completeness audit that fails closed on missing ownership metadata.*
+
 ## Learning Objectives
 
 - Distinguish monitoring from observability and explain why high-cardinality,

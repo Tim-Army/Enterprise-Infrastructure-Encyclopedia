@@ -1,5 +1,9 @@
 # Chapter 02: Telemetry Architecture, Instrumentation, and Pipelines
 
+![Lab topology for this chapter: a synthetic trace sent to the Collector's OTLP receiver is exported to Jaeger and confirmed via search, and a Prometheus counter confirms the span was accepted end to end. As a negative test, the Jaeger container is stopped and another trace is sent; the Collector still returns HTTP 200 to the sender rather than erroring, and the Collector's own self-telemetry shows the exporter's queue size growing nonzero with each additional send — the buffering-under-backpressure behavior. Restarting Jaeger drains the queue back toward zero within the configured retry interval.](../../../diagrams/volume-11-observability-enterprise-operations/chapter-02-otel-collector-backpressure-topology.svg)
+
+*Figure 2-1. Topology used throughout this chapter's Hands-On Lab: an OpenTelemetry Collector pipeline exporting to Prometheus and Jaeger, tested against a Jaeger outage.*
+
 ## Learning Objectives
 
 - Describe the OpenTelemetry architecture: API, SDK, Collector,

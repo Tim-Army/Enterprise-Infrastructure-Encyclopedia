@@ -1,5 +1,9 @@
 # Chapter 05: Distributed Tracing, Profiling, and Dependency Analysis
 
+![Lab flow for this chapter: 100 synthetic traces are sent — 90 fast/successful, 5 slow, and 5 errors — against a tail-sampling policy that retains every error and every slow trace while sampling only 10% of everything else; Jaeger shows approximately 19-20 retained traces total. As a negative test, counting the retained fast/successful traces specifically confirms the count is well under 90 rather than close to it — a count near 90 would mean the probabilistic policy was unreachable due to an inverted earlier policy, defeating the cost control tail sampling exists to provide.](../../../diagrams/volume-11-observability-enterprise-operations/chapter-05-tail-sampling-retention-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: a tail-sampling policy retaining every error and slow trace while probabilistically discarding routine traffic.*
+
 ## Learning Objectives
 
 - Describe the structural model of a distributed trace: spans, span

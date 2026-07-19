@@ -1,5 +1,9 @@
 # Chapter 06: Actionable Alerting, On-Call, and Operations Centers
 
+![Lab flow for this chapter: three PodUnavailable alerts for different pods on the same node are fired together, and the webhook sink receives a single grouped notification containing all three. As a negative test, a NodeDown alert for that node is fired, then a new PodUnavailable alert for the same node; the count of PodUnavailable notifications after NodeDown fired is zero, inhibited because the matching NodeDown alert shares the node label. Repeating with PodUnavailable on a different node with no active NodeDown confirms that notification is delivered, showing the inhibition correctly scopes to the matching node rather than suppressing globally.](../../../diagrams/volume-11-observability-enterprise-operations/chapter-06-alertmanager-grouping-inhibition-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: Alertmanager grouping three related alerts into one notification, then a node-scoped inhibition rule tested against two different nodes.*
+
 ## Learning Objectives
 
 - Apply the actionability test to distinguish a page-worthy alert from

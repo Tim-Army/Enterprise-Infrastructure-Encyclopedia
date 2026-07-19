@@ -1,0 +1,41 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 9 lab flow: a rate-limited closed-loop remediation script tested against sustained fault injection, plus an MTTA/MTTR trend</title>
+  <desc>
+    inject_fault.py marks a simulated pod unhealthy every 0.2 seconds for about 24 seconds (roughly 120 fault events) while auto_remediate.py restarts it, but only up to 3 restarts per rolling 10-second window. audit.jsonl contains both restart and escalate entries. As a negative test, counting actual restart entries against the fault-injection rate confirms restart_count is well under 120 (bounded to roughly 6-9, matching the two-to-three 10-second windows the run spans), with escalate_count accounting for the remainder — confirming the guardrail genuinely bounds the action count rather than merely logging a warning while still restarting every cycle. Separately, a monthly MTTA/MTTR trend computed from sample incident data shows MTTR rising from roughly 34 minutes in May to roughly 87 minutes in July.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: A Rate-Limited Auto-Remediation Loop That Escalates Instead of Looping Forever</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Restarts are capped at 3 per 10-second window under sustained fault injection; the remainder escalate to on-call</text>
+  <rect x="60" y="140" width="260" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="190.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">inject_fault.py</text>
+  <text x="190.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">marks pod unhealthy every 0.2s</text>
+  <text x="190.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">~120 fault events over ~24s</text>
+  <rect x="380" y="140" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="510.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">auto_remediate.py</text>
+  <text x="510.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">rate limit: 3 restarts / 10s window</text>
+  <text x="510.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">beyond limit → escalate to on-call</text>
+  <line x1="320" y1="195" x2="380" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">audit.jsonl</text>
+  <text x="810.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">restarts: ~6-9 (bounded)</text>
+  <text x="810.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">escalations: remainder</text>
+  <line x1="640" y1="195" x2="700" y2="195" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="320" width="860" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="356.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="374.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">restart_count counted directly against ~120 fault events → well under 120, not close to it</text>
+  <text x="490.0" y="392.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">confirms the rate limiter genuinely bounds actions under sustained pressure, not just warns while acting</text>
+  <rect x="60" y="460" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="500.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">Separately: MTTA/MTTR trend from sample incidents shows MTTR rising ~34min (May) → ~87min (July),</text>
+  <text x="490.0" y="518.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">an upward trend that would warrant the operational-analytics investigation this chapter describes.</text>
+  <line x1="60" y1="590" x2="100" y2="590" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="108" y="594" font-size="11" fill="#b91c1c">Sustained fault pressure</text>
+  <line x1="354" y1="590" x2="394" y2="590" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="402" y="594" font-size="11" fill="#33415c">Rate-limited response</text>
+  <line x1="621" y1="590" x2="661" y2="590" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="669" y="594" font-size="11" fill="#166534">Bounded, audited outcome</text>
+</svg>

@@ -1,5 +1,9 @@
 # Chapter 07: Service Management, Incident, Problem, and Change Operations
 
+![Lab flow for this chapter: a SEV1 incident with a linked postmortem and a SEV3 incident that doesn't require one both pass the coverage audit with zero issues; a fully approved change passes the change gate while an under-approved change is BLOCKED with a nonzero exit. As a negative test, the SEV1 incident's postmortem file is moved aside to simulate an incident closed without one; re-running the audit now reports a missing postmortem and exits non-zero, demonstrating the gate would fail a CI check rather than silently allowing the incident to close unreviewed. Restoring the file returns the audit to passing.](../../../diagrams/volume-11-observability-enterprise-operations/chapter-07-postmortem-change-gate-flow.svg)
+
+*Figure 7-1. Flow used throughout this chapter's Hands-On Lab: a postmortem-completeness audit and a change-approval gate, each validated against a compliant and a violating record.*
+
 ## Learning Objectives
 
 - Distinguish incident management, problem management, and change
