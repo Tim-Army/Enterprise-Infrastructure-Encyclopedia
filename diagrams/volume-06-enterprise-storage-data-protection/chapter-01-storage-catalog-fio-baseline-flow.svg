@@ -1,0 +1,41 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab flow: a storage service catalog's gold tier validated against a measured fio baseline, with a queue-depth negative test</title>
+  <desc>
+    A 4 GB loopback device stands in for a spare block device. storage-service-catalog.yaml defines a gold tier (SSD, RAID10, 5ms target latency, 7500 IOPS/TB). fio runs a 70/30 read/write random 4k profile at queue depth 32, and the measured IOPS and p99 latency are recorded next to the catalog's targets. As a negative test, the same job re-run at queue depth 1 shows IOPS dropping sharply even though per-operation latency looks similar, demonstrating that queue depth — not just raw device speed — determines achievable IOPS, and why a host misconfigured with a shallow queue depth under-performs its provisioned storage tier.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Hands-On Lab: Storage Service Catalog Validated Against a Measured fio Baseline</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A queue-depth-32 baseline is recorded against the gold tier's targets, then compared to a starved queue-depth-1 run</text>
+  <rect x="60" y="140" width="240" height="100" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="180.0" y="176.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">storage-service-catalog.yaml</text>
+  <text x="180.0" y="194.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">gold tier: SSD, RAID10</text>
+  <text x="180.0" y="212.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">target: 5ms, 7500 IOPS/TB</text>
+  <rect x="380" y="140" width="240" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="500.0" y="176.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">fio (iodepth=32)</text>
+  <text x="500.0" y="194.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">randrw, rwmixread=70, bs=4k</text>
+  <text x="500.0" y="212.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">measured IOPS + p99 latency</text>
+  <line x1="300" y1="190" x2="380" y2="190" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="346.0" y="190.0" font-size="10.5" fill="#6b7280">compare against</text>
+  <rect x="700" y="140" width="220" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="176.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Recorded Baseline</text>
+  <text x="810.0" y="194.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">results appended to catalog</text>
+  <text x="810.0" y="212.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">(as a companion results: block)</text>
+  <line x1="620" y1="190" x2="700" y2="190" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="60" y="320" width="840" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="357.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="375.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">same job re-run at iodepth=1, numjobs=1 against the same loop device</text>
+  <text x="480.0" y="393.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">IOPS drops sharply vs. the iodepth=32 run, even though per-operation latency looks similar</text>
+  <text x="480.0" y="411.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">proves queue depth — not raw device speed — bounds achievable IOPS</text>
+  <line x1="60" y1="500" x2="100" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="504" font-size="11" fill="#33415c">Measured baseline</text>
+  <line x1="291" y1="500" x2="331" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="339" y="504" font-size="11" fill="#166534">Catalog comparison</text>
+  <line x1="531" y1="500" x2="571" y2="500" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="579" y="504" font-size="11" fill="#b91c1c">Queue-depth negative test</text>
+</svg>

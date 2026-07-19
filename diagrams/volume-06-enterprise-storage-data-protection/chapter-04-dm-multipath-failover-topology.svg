@@ -1,0 +1,43 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab topology: DM-Multipath aggregating two iSCSI paths to one LUN, tested against a simulated path failure</title>
+  <desc>
+    storage01 presents one 2 GB LUN through two independent portals (ip_A and ip_B). client01 logs into both, producing two raw block devices for the same LUN; multipathd aggregates them into mpatha with round-robin path selection, both paths active ready running. mpatha is formatted and mounted, proving it behaves as one consistent block device. As a negative test, client01 logs out of the session on ip_A only; multipath -ll shows that path as failed faulty running while the remaining path stays active ready running, and the mounted filesystem's file reads continue without interruption — multipath failover, not the application, absorbed the path loss. Restoring the path returns it to active ready running via failback immediate.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: DM-Multipath Over Dual iSCSI Paths, Surviving a Path Failure</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">mpatha stays mounted and readable when one of its two iSCSI paths is logged out</text>
+  <rect x="370" y="110" width="220" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="146.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#111827">storage01</text>
+  <text x="480.0" y="164.7" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">LUN01 (2G) — 2 portals</text>
+  <text x="480.0" y="182.7" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">ip_A:3260, ip_B:3260</text>
+  <rect x="370" y="260" width="220" height="140" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="307.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">client01 — mpatha</text>
+  <text x="480.0" y="325.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">path A: active ready running</text>
+  <text x="480.0" y="343.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">path B: active ready running</text>
+  <text x="480.0" y="361.6" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">round-robin, /mnt/multipath-lab</text>
+  <line x1="430" y1="210" x2="430" y2="260" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="436.0" y="235.0" font-size="10.5" fill="#33415c">path A</text>
+  <line x1="530" y1="210" x2="530" y2="260" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="536.0" y="235.0" font-size="10.5" fill="#33415c">path B</text>
+  <rect x="700" y="260" width="220" height="140" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="298.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="316.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">path A: iSCSI logout</text>
+  <text x="810.0" y="334.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">multipath -ll: path A</text>
+  <text x="810.0" y="352.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">failed faulty running</text>
+  <text x="810.0" y="370.2" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">path B alone keeps mpatha up</text>
+  <line x1="590" y1="330" x2="700" y2="330" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="370" y="460" width="550" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="645.0" y="500.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">cat testfile.txt succeeds without interruption — application never saw the path loss</text>
+  <text x="645.0" y="518.0" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">path A restored → failback immediate returns it to active ready running</text>
+  <line x1="60" y1="590" x2="100" y2="590" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="594" font-size="11" fill="#33415c">Dual iSCSI portals</text>
+  <line x1="300" y1="590" x2="340" y2="590" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="348" y="594" font-size="11" fill="#166534">Multipath device (healthy)</text>
+  <line x1="612" y1="590" x2="652" y2="590" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="660" y="594" font-size="11" fill="#b91c1c">One path failed</text>
+</svg>

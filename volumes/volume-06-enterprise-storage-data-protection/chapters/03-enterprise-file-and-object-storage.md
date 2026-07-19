@@ -1,5 +1,9 @@
 # Chapter 3: Enterprise File and Object Storage
 
+![Lab topology for this chapter: nfs-server01 exports /export/lab to nfs-client01 with the default, secure root_squash option; the client mounts the export and creates a file as root, and on the server that file is owned by the anonymous UID/GID (typically 65534, nobody/nogroup), confirming root-squash maps the client's root user to an unprivileged account. As a negative test, the export is changed to no_root_squash and reapplied; after remounting, the same root-created-file operation now produces a file genuinely owned by UID 0 on the server.](../../../diagrams/volume-06-enterprise-storage-data-protection/chapter-03-nfs-root-squash-topology.svg)
+
+*Figure 3-1. Topology used throughout this chapter's Hands-On Lab: an NFS export's root-squash behavior proven positive, then reversed as a negative test.*
+
 ## Learning Objectives
 
 - Compare NFS and SMB as enterprise file-sharing protocols, including their

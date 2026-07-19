@@ -1,5 +1,9 @@
 # Chapter 1: Enterprise Storage Architecture and Service Design
 
+![Lab flow for this chapter: a 4 GB loopback device stands in for a spare block device; storage-service-catalog.yaml defines a gold tier (SSD, RAID10, 5ms target latency, 7500 IOPS/TB); fio runs a 70/30 read/write random 4k profile at queue depth 32, and the measured IOPS and p99 latency are recorded next to the catalog's targets. As a negative test, the same job re-run at queue depth 1 shows IOPS dropping sharply even though per-operation latency looks similar, demonstrating that queue depth — not just raw device speed — determines achievable IOPS.](../../../diagrams/volume-06-enterprise-storage-data-protection/chapter-01-storage-catalog-fio-baseline-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: a storage service catalog validated against a measured fio baseline, with a queue-depth negative test proving why depth matters.*
+
 ## Learning Objectives
 
 - Classify enterprise storage into block, file, and object access models and

@@ -1,5 +1,9 @@
 # Chapter 7: Recovery Engineering and Disaster Recovery Validation
 
+![Lab topology for this chapter: app01 (primary, port 8080) serves content replicated asynchronously to app02 (DR site, port 8081) via rsync, representing the RPO-defining schedule; a timeline log records the failover trigger and execution-complete timestamps. app01's service is killed to simulate failure; app02 is promoted and confirmed serving traffic, with the timeline log giving the measured execution-phase duration. As a negative test, new data written at app02 during the outage is discarded when a careless failback runs a naive reverse rsync without any diff/reconciliation step — any independent change app01 had accumulated would be silently overwritten with no warning.](../../../diagrams/volume-06-enterprise-storage-data-protection/chapter-07-dr-failover-failback-topology.svg)
+
+*Figure 7-1. Topology used throughout this chapter's Hands-On Lab: a two-site application failover measured against a timeline log, followed by a careless failback shown discarding data.*
+
 ## Learning Objectives
 
 - Compare cold, warm, hot, and active-active DR site models on RTO, cost,

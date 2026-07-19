@@ -1,5 +1,9 @@
 # Chapter 4: Host Storage Integration and Multipathing
 
+![Lab topology for this chapter: storage01 presents one 2 GB LUN through two independent portals; client01 logs into both, producing two raw block devices for the same LUN, which multipathd aggregates into mpatha with round-robin path selection, both paths active ready running. As a negative test, client01 logs out of the session on one portal only; multipath -ll shows that path as failed faulty running while the remaining path stays active ready running, and the mounted filesystem's file reads continue without interruption — multipath failover, not the application, absorbed the path loss. Restoring the path returns it to active ready running via failback immediate.](../../../diagrams/volume-06-enterprise-storage-data-protection/chapter-04-dm-multipath-failover-topology.svg)
+
+*Figure 4-1. Topology used throughout this chapter's Hands-On Lab: DM-Multipath aggregating two iSCSI paths to one LUN, tested against a simulated path failure and recovery.*
+
 ## Learning Objectives
 
 - Explain why host-side multipathing is required even when the SAN fabric

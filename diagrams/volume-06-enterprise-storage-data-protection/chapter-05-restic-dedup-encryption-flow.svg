@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 5 lab flow: a restic backup repository proven to deduplicate, restore correctly, and enforce its encryption</title>
+  <desc>
+    A restic repository is initialized with a password and two source files. The first backup creates one snapshot tagged daily; after one file is modified, a second backup adds a second snapshot whose repository growth (via restic stats --mode raw-data) matches only the changed file's size, not a full second copy — direct evidence of block-level deduplication. Restoring the latest snapshot to a separate directory produces a file identical to the current source (diff shows no output). As a negative test, listing snapshots with an intentionally wrong repository password fails with a decryption/authentication error rather than returning any data, confirming the repository's encryption actually protects its contents.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: Deduplicated restic Backups with Verified Restore and Encryption Enforcement</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A second backup grows the repository by only the changed file's size; a wrong password cannot read any snapshot</text>
+  <rect x="60" y="140" width="240" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Source data</text>
+  <text x="180.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">file1.txt, file2.txt</text>
+  <text x="180.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">backup #1 → snapshot (daily)</text>
+  <rect x="380" y="140" width="240" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="500.0" y="177.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">restic repository</text>
+  <text x="500.0" y="195.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">file1.txt modified → backup #2</text>
+  <text x="500.0" y="213.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">growth ≈ changed file only</text>
+  <text x="500.0" y="231.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">(block-level dedup)</text>
+  <line x1="300" y1="200" x2="380" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="810.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Restore</text>
+  <text x="810.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">restic restore latest</text>
+  <text x="810.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">diff: no output (exact match)</text>
+  <line x1="620" y1="200" x2="700" y2="200" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="380" width="840" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="412.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="430.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">restic snapshots run with RESTIC_PASSWORD set to an intentionally wrong value</text>
+  <text x="480.0" y="448.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">fails with a decryption/authentication error — no snapshot data returned</text>
+  <text x="480.0" y="466.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">confirms the repository's encryption actually protects its contents, not cosmetically</text>
+  <line x1="60" y1="550" x2="100" y2="550" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="554" font-size="11" fill="#33415c">Source + first backup</text>
+  <line x1="327" y1="550" x2="367" y2="550" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="375" y="554" font-size="11" fill="#166534">Deduplicated increment</text>
+  <line x1="603" y1="550" x2="643" y2="550" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="651" y="554" font-size="11" fill="#b91c1c">Encryption enforcement</text>
+</svg>

@@ -1,5 +1,9 @@
 # Chapter 8: Storage Security, Ransomware Resilience, and Data Governance
 
+![Lab flow for this chapter: two identical files are created, mutable-backup.tar and locked-backup.tar, the latter given the immutable attribute (chattr +i) as a locally reproducible stand-in for object-lock/retention-lock behavior. Deleting the mutable file as root succeeds normally; deleting the locked file as the same root account fails with 'Operation not permitted', and modifying its contents also fails. As a negative test simulating a ransomware-style mass-deletion attempt, a wildcard rm of all .tar files removes any remaining mutable files but reports an error for the locked file, which remains present and intact.](../../../diagrams/volume-06-enterprise-storage-data-protection/chapter-08-immutable-backup-deletion-resistance-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: a filesystem-immutable backup copy tested against direct deletion and a simulated mass-deletion attack.*
+
 ## Learning Objectives
 
 - Explain encryption at rest and in flight for storage platforms, and the

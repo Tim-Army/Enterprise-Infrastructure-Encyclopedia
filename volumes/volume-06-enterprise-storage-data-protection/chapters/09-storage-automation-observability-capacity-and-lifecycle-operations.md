@@ -1,5 +1,9 @@
 # Chapter 9: Storage Automation, Observability, Capacity, and Lifecycle Operations
 
+![Lab flow for this chapter: a 300 MB loopback filesystem is grown across four simulated days via roughly 50 MB increments, with used-percentage sampled after each. At day 4, a naive static-threshold check (alerts only at 85% or higher) reports no alert, since current utilization is still below the line; a trend-based forecast run against the same data instead reports a projected number of days until 90% utilization, surfacing the exhaustion risk well before the static threshold would ever fire. As a negative test, one more simulated day of growth finally trips the static alert at day 5 — several days later than the trend-based forecast had already projected the same risk.](../../../diagrams/volume-06-enterprise-storage-data-protection/chapter-09-capacity-trend-forecast-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: a static capacity threshold compared against a trend-based forecast on the same growth data, showing the forecast's earlier warning.*
+
 ## Learning Objectives
 
 - Explain infrastructure-as-code applied to storage provisioning and why

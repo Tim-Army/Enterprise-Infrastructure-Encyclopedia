@@ -1,0 +1,39 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 9 lab flow: a static capacity threshold compared against a trend-based forecast on the same growth data</title>
+  <desc>
+    A 300 MB loopback filesystem is grown across four simulated days via ~50 MB increments, with used-percentage sampled into samples.csv after each. At day 4, a naive static-threshold check (alerts only at 85% or higher) reports no alert, since current utilization is still below the line. A trend-based forecast run against the same data instead reports a projected number of days until 90% utilization, surfacing the exhaustion risk well before the static threshold would ever fire. As a negative test, one more simulated day of growth (100 MB) finally trips the static alert at day 5 — several days later than the trend-based forecast had already projected the same risk.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: Trend-Based Capacity Forecast Outpaces a Static Threshold Alert</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A static 85% check stays silent through day 4 while the trend-based forecast already projects exhaustion</text>
+  <rect x="60" y="140" width="260" height="110" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="190.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">samples.csv</text>
+  <text x="190.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">day 1-4: used_percent rising</text>
+  <text x="190.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">~50 MB growth per sample</text>
+  <rect x="380" y="140" width="240" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="500.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Static threshold check</text>
+  <text x="500.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">fires only at ≥ 85%</text>
+  <text x="500.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">day 4: no alert (below 85%)</text>
+  <rect x="680" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="800.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Trend-based forecast</text>
+  <text x="800.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">forecast.py on same data</text>
+  <text x="800.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">projects days to 90% now</text>
+  <line x1="320" y1="195" x2="380" y2="195" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <line x1="320" y1="195" x2="680" y2="195" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <rect x="60" y="380" width="860" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="412.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="430.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">one more day of growth (100 MB) added, sample 5 recorded</text>
+  <text x="490.0" y="448.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">static alert finally fires at day 5 — several days after the trend forecast already projected the risk</text>
+  <text x="490.0" y="466.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">concrete evidence that trend-based monitoring detects capacity risk earlier than a static threshold</text>
+  <line x1="60" y1="550" x2="100" y2="550" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="108" y="554" font-size="11" fill="#6b7280">Sampled growth data</text>
+  <line x1="309" y1="550" x2="349" y2="550" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="357" y="554" font-size="11" fill="#166534">Trend forecast (early warning)</text>
+  <line x1="657" y1="550" x2="697" y2="550" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="705" y="554" font-size="11" fill="#b91c1c">Static threshold (late warning)</text>
+</svg>

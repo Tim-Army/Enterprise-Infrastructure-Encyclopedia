@@ -1,5 +1,9 @@
 # Chapter 6: Snapshots, Replication, and Continuous Data Protection
 
+![Lab flow for this chapter: lv_lab (1 GB origin) is written with point-in-time A data, then a 100 MB snapshot lv_lab_snap is taken and the origin is modified to point-in-time B; the snapshot mounted read-only still shows point-in-time A while the origin shows point-in-time B, proving independent preservation. As a negative test, enough new data is written to the origin to exceed the snapshot's 100 MB reserve; data_percent reaches 100%, the snapshot's lv_attr shows an invalidated state, and mounting it afterward fails or exposes a partial image — demonstrating why proactive snapshot-reserve monitoring is required, not optional.](../../../diagrams/volume-06-enterprise-storage-data-protection/chapter-06-lvm-snapshot-exhaustion-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: an LVM snapshot's copy-on-write behavior proven correct, then deliberately exhausted to observe the failure mode.*
+
 ## Learning Objectives
 
 - Compare copy-on-write and redirect-on-write snapshot mechanisms and

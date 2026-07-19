@@ -1,5 +1,9 @@
 # Chapter 2: Block Storage and Storage Area Networks
 
+![Lab topology for this chapter: storage01 exposes a 2 GB fileio-backed LUN through target IQN iqn.2026-07.lab.example:storage01, with an ACL for client01's IQN and CHAP credentials on portal 3260; client01 discovers and logs in, reaching state LOGGED_IN with a new block device matching the 2 GB LUN. As a negative test, client01 logs out, sets an intentionally wrong CHAP password, and attempts to log back in; the login fails with an authentication error and journalctl shows the rejected CHAP negotiation, confirming the ACL and CHAP configuration actively enforce authentication.](../../../diagrams/volume-06-enterprise-storage-data-protection/chapter-02-iscsi-chap-auth-topology.svg)
+
+*Figure 2-1. Topology used throughout this chapter's Hands-On Lab: an iSCSI target/initiator pair authenticated with CHAP, verified positive and then tested against a wrong password.*
+
 ## Learning Objectives
 
 - Compare Fibre Channel, iSCSI, FCoE, and NVMe-oF as SAN transports and

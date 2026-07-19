@@ -1,0 +1,35 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 8 lab flow: a filesystem-immutable backup copy standing in for object-lock retention, tested against deletion and mass deletion</title>
+  <desc>
+    Two identical files are created: mutable-backup.tar and locked-backup.tar, the latter given the immutable attribute (chattr +i) as a locally reproducible stand-in for object-lock/retention-lock behavior. Deleting the mutable file as root succeeds normally; deleting the locked file as the same root account fails with 'Operation not permitted', and modifying its contents also fails — proving the lock resists both deletion and modification even under root privilege. As a negative test simulating a ransomware-style mass-deletion attempt, a wildcard rm of all .tar files removes any remaining mutable files but reports an error for the locked file, which remains present and intact.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: Immutable Backup Copy Resists Deletion, Even by Root</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A chattr +i locked file survives a wildcard mass deletion that destroys its mutable twin</text>
+  <rect x="80" y="140" width="260" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="210.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">mutable-backup.tar</text>
+  <text x="210.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">no chattr flag</text>
+  <text x="210.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7c2d12">rm as root → deletes normally</text>
+  <rect x="620" y="140" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="750.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">locked-backup.tar</text>
+  <text x="750.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">chattr +i (immutable)</text>
+  <text x="750.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">rm as root → Operation not permitted</text>
+  <rect x="80" y="320" width="800" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="352.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test — Mass Deletion</text>
+  <text x="480.0" y="370.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">sudo rm -f *.tar (simulated ransomware-style wildcard mass deletion)</text>
+  <text x="480.0" y="388.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">mutable-backup.tar (if present) is destroyed; locked-backup.tar remains present and intact</text>
+  <text x="480.0" y="406.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">even a compromised root account cannot remove the locked copy before its retention window</text>
+  <line x1="210" y1="250" x2="210" y2="320" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <line x1="750" y1="250" x2="750" y2="320" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="80" y1="500" x2="120" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="128" y="504" font-size="11" fill="#33415c">Immutable (protected)</text>
+  <line x1="347" y1="500" x2="387" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="395" y="504" font-size="11" fill="#166534">Mutable (unprotected)</text>
+  <line x1="614" y1="500" x2="654" y2="500" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="662" y="504" font-size="11" fill="#b91c1c">Mass-deletion attempt</text>
+</svg>

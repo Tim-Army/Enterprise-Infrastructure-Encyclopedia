@@ -1,5 +1,9 @@
 # Chapter 5: Backup Architecture and Data Protection Policy
 
+![Lab flow for this chapter: a restic repository is initialized with a password and two source files; the first backup creates one snapshot, and after one file is modified, a second backup adds a second snapshot whose repository growth matches only the changed file's size — direct evidence of block-level deduplication. Restoring the latest snapshot to a separate directory produces a file identical to the current source. As a negative test, listing snapshots with an intentionally wrong repository password fails with a decryption/authentication error rather than returning any data, confirming the repository's encryption actually protects its contents.](../../../diagrams/volume-06-enterprise-storage-data-protection/chapter-05-restic-dedup-encryption-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: a restic backup repository proven to deduplicate, restore correctly, and enforce its encryption against a wrong-password negative test.*
+
 ## Learning Objectives
 
 - Define Recovery Point Objective (RPO) and Recovery Time Objective (RTO)

@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 7 lab topology: a two-site application failover measured end to end, then a careless failback shown discarding data</title>
+  <desc>
+    app01 (primary, port 8080) serves content replicated asynchronously to app02 (DR site, port 8081) via rsync, representing the RPO-defining schedule. A timeline log records the failover trigger and execution-complete timestamps. app01's service is killed to simulate failure; app02 is promoted by updating its content and is confirmed serving traffic, with the timeline log giving the measured execution-phase duration (the demonstrable RTO component). As a negative test, new data written at app02 during the outage is discarded when a careless failback runs a naive reverse rsync without any diff/reconciliation step — any independent change app01 had accumulated would be silently overwritten with no warning and no conflict report.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: Timed Application Failover and a Careless Failback</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">app02 is promoted and measured against a timeline log; reversing rsync without reconciliation silently discards data</text>
+  <rect x="60" y="150" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="200.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">app01 (primary, :8080)</text>
+  <text x="180.0" y="218.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">PRIMARY - content version 1</text>
+  <rect x="380" y="150" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="500.0" y="191.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">app02 (DR, :8081)</text>
+  <text x="500.0" y="209.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">rsync replica, then PROMOTED</text>
+  <text x="500.0" y="227.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">now serving as primary</text>
+  <line x1="300" y1="205" x2="380" y2="205" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="346.0" y="205.0" font-size="10.5" fill="#33415c">rsync -avz --delete (async replication)</text>
+  <rect x="700" y="150" width="220" height="110" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="810.0" y="191.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Timeline Log</text>
+  <text x="810.0" y="209.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">trigger → execution-complete</text>
+  <text x="810.0" y="227.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">measured execution-phase RTO</text>
+  <line x1="620" y1="205" x2="700" y2="205" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <rect x="60" y="340" width="860" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="382.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test — Careless Failback</text>
+  <text x="490.0" y="400.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">new data written at app02 during the outage window (&quot;NEW ORDER RECORD&quot;)</text>
+  <text x="490.0" y="418.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">naive rsync app02 → app01, --delete, with no diff/reconciliation step</text>
+  <text x="490.0" y="436.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">app01's file now reflects only app02's final state — any local app01 change is silently discarded</text>
+  <line x1="60" y1="610" x2="100" y2="610" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="614" font-size="11" fill="#33415c">Primary site</text>
+  <line x1="246" y1="610" x2="286" y2="610" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="294" y="614" font-size="11" fill="#166534">Promoted DR site</text>
+  <line x1="468" y1="610" x2="508" y2="610" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="516" y="614" font-size="11" fill="#b91c1c">Careless failback (negative test)</text>
+</svg>
