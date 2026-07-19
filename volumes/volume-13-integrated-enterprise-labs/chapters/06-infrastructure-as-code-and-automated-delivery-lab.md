@@ -1,5 +1,9 @@
 # Chapter 06: Infrastructure as Code and Automated Delivery Lab
 
+![Lab flow for this chapter: a secrets manager centralizes the DHCP failover secret and both IPsec pre-shared keys; Terraform imports the existing cloud landing zone and HQ vSphere cluster with a clean plan, and the earlier chapter's manual DHCP configuration converts to an idempotent Ansible playbook whose second run reports zero changed tasks. A compliant pull request adding a resource tag runs plan, passes the policy gate, and applies only after merge and approval. As a negative test, a second pull request introduces a security group rule permitting SSH from anywhere; the policy gate reports the specific deny message and the pipeline blocks the apply stage from running, confirmed in the pipeline UI itself, not just local output.](../../../diagrams/volume-13-integrated-enterprise-labs/chapter-06-iac-policy-gate-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: Terraform, Ansible, and centralized secrets brought under a CI pipeline with a policy gate, tested against a policy-violating pull request.*
+
 ## Learning Objectives
 
 - Convert the manually built `CLOUD1` landing zone and vSphere inventory

@@ -1,5 +1,9 @@
 # Chapter 02: Integrated Identity, DNS, Time, and Core Services Lab
 
+![Lab topology for this chapter: dc01 (forest root) and dc02 (additional domain controller and global catalog) replicate with zero failures, share a converged time hierarchy, and load-balance a DHCP scope in Normal state; linux01 joins the domain via realm, and its Kerberos ticket confirms DNS SRV lookup, Kerberos, and LDAP all work from a non-Windows client. As a negative test, dc01 is powered off to simulate an unplanned failure; linux01's Kerberos authentication still succeeds because dc02 answers the KDC request, and DHCP failover reports a degraded partner but keeps leasing from dc02 alone. Powering dc01 back on brings both replication and DHCP failover back to a fully healthy state.](../../../diagrams/volume-13-integrated-enterprise-labs/chapter-02-ad-forest-dc-failure-topology.svg)
+
+*Figure 2-1. Topology used throughout this chapter's Hands-On Lab: a two-node Active Directory forest with DHCP failover and a domain-joined Linux client, tested against a domain controller outage.*
+
 ## Learning Objectives
 
 - Deploy a two-node Active Directory Domain Services forest for

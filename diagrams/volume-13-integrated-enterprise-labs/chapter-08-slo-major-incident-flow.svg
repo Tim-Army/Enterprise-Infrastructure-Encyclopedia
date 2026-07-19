@@ -1,0 +1,39 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 8 lab flow: complete environment instrumentation, an SLO burn-rate alert, and a full major-incident cycle against an injected resource-exhaustion failure</title>
+  <desc>
+    obs01 scrapes every host, network device, and Kubernetes component with 100% target health; meridian-web exposes a /metrics endpoint feeding the meridian-web-availability SLO and its multi-window burn-rate alert rules, and a synthetic test alert confirms the paging webhook reaches the simulated pager before the real test runs. As a negative test, a resource-exhaustion workload is injected on k8s-wk01; meridian-web's SLI drops below its SLO and MeridianWebFastBurn fires within the fast-burn window, logging a page. A major incident is declared and an incident commander assigned; cordoning and draining k8s-wk01 lets the scheduler move meridian-web elsewhere, and the SLI recovers to at least 99.5% within a few minutes, clearing the burn-rate alert. The postmortem is reconstructed entirely from dashboards, the paging log, and evidence.sh output — not from memory.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: A Full Major-Incident Cycle From Injected Failure to Verified Recovery</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Resource exhaustion trips the SLO burn-rate alert and pages on-call; draining the affected node restores the SLI within minutes</text>
+  <rect x="60" y="140" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">obs01</text>
+  <text x="180.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">100% target health</text>
+  <text x="180.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">meridian-web SLO + burn-rate</text>
+  <rect x="380" y="140" width="240" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="500.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Negative Test: k8s-wk01</text>
+  <text x="500.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">stress-ng resource exhaustion</text>
+  <text x="500.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">SLI drops, MeridianWebFastBurn fires</text>
+  <line x1="300" y1="195" x2="380" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Page logged</text>
+  <text x="810.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">major incident declared</text>
+  <text x="810.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">incident commander assigned</text>
+  <line x1="620" y1="195" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="330" width="860" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="490.0" y="372.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Resolve + Recover</text>
+  <text x="490.0" y="390.4" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">k8s-wk01 cordoned and drained — scheduler moves meridian-web pods to healthy nodes</text>
+  <text x="490.0" y="408.4" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">SLI recovers to ≥ 99.5% within a few minutes, burn-rate alert clears</text>
+  <text x="490.0" y="426.4" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">postmortem reconstructed entirely from dashboards, paging log, and evidence.sh — not memory</text>
+  <line x1="60" y1="500" x2="100" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="504" font-size="11" fill="#33415c">Healthy baseline</text>
+  <line x1="282" y1="500" x2="322" y2="500" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="330" y="504" font-size="11" fill="#b91c1c">Injected failure + paging</text>
+  <line x1="585" y1="500" x2="625" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="633" y="504" font-size="11" fill="#166534">Verified recovery</text>
+</svg>

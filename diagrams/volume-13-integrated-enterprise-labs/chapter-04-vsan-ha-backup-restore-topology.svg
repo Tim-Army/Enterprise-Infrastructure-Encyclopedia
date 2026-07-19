@@ -1,0 +1,48 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab topology: an HQ vSphere/vSAN cluster with HA and a backup/replication pipeline, tested against a host failure and a restore</title>
+  <desc>
+    esxi-a01 and esxi-a02, backed by vsan-witness01, form HQ-Cluster with vSAN, HA (HAFailoverLevel 1), and DRS fully automated; dc01, dc02, ctrl01, and linux01 migrate in without losing domain authentication. bkp01 exports a verified backup of dc02, and esxi-br101 receives a vSphere Replication copy within its configured RPO window. As a negative test, esxi-a01 is forced offline while running dc01; vSphere HA detects the unreachable host and restarts dc01 on esxi-a02 within a few minutes, and once esxi-a01 rejoins, vSAN resynchronizes to a green health state. A restore test deliberately corrupts a file on dc02, then imports the bkp01 export to a temporary VM and confirms the file matches its pre-corruption state before that temporary VM is deleted.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: vSAN HA Restarts a Failed Host's VMs, and a Backup Actually Restores</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">dc01 relocates to esxi-a02 automatically after a simulated host failure; a corrupted file is recovered from a verified export</text>
+  <rect x="60" y="130" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="170.0" y="171.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">esxi-a01 (negative test)</text>
+  <text x="170.0" y="189.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">forced offline while</text>
+  <text x="170.0" y="207.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">running dc01</text>
+  <rect x="320" y="130" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="430.0" y="171.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">esxi-a02</text>
+  <text x="430.0" y="189.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">HA restarts dc01 here</text>
+  <text x="430.0" y="207.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">within a few minutes</text>
+  <line x1="280" y1="185" x2="320" y2="185" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="306.0" y="185.0" font-size="10.5" fill="#b91c1c">HA restart</text>
+  <rect x="600" y="130" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="710.0" y="171.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">HQ-Cluster (vSAN + HA + DRS)</text>
+  <text x="710.0" y="189.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">vsan-witness01 quorum</text>
+  <text x="710.0" y="207.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">resyncs green on rejoin</text>
+  <rect x="60" y="300" width="260" height="120" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="190.0" y="346.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">bkp01</text>
+  <text x="190.0" y="364.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">vm-backup.sh dc02 → verified</text>
+  <text x="190.0" y="382.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">.ovf export + manifest</text>
+  <rect x="360" y="300" width="260" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="490.0" y="346.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Restore test</text>
+  <text x="490.0" y="364.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">dc02 file corrupted →</text>
+  <text x="490.0" y="382.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">imported to temp VM, file intact</text>
+  <line x1="320" y1="360" x2="360" y2="360" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <rect x="660" y="300" width="220" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="770.0" y="346.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">esxi-br101</text>
+  <text x="770.0" y="364.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">vSphere Replication target</text>
+  <text x="770.0" y="382.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">sync within RPO window</text>
+  <line x1="60" y1="470" x2="100" y2="470" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="474" font-size="11" fill="#33415c">Cluster / replication</text>
+  <line x1="327" y1="470" x2="367" y2="470" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="375" y="474" font-size="11" fill="#166534">Recovery outcome</text>
+  <line x1="549" y1="470" x2="589" y2="470" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="597" y="474" font-size="11" fill="#b91c1c">Simulated host failure</text>
+</svg>

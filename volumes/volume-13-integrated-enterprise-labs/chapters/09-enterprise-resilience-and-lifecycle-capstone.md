@@ -1,5 +1,9 @@
 # Chapter 09: Enterprise Resilience and Lifecycle Capstone
 
+![Lab flow for this chapter: a simulated HQ outage takes the WAN peer unreachable and drops OSPF from the branch site's view, confirming a directory write against the read-only domain controller alone fails as the expected limitation. The replicated domain controller image at the branch site is recovered and seizes all five FSMO roles; the branch's DHCP relay and replication partner repoint to it, and a minimal Kubernetes control plane is rebuilt there, with elapsed time recorded as the measured RTO. On failback, the original domain controller is checked for a USN rollback condition before rejoining replication, and a metadata cleanup removes its stale FSMO claims. The volume then tears down every system built, in strict reverse-dependency order, with disk sanitization and a final verified evidence manifest.](../../../diagrams/volume-13-integrated-enterprise-labs/chapter-09-capstone-dr-failback-decommission-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: the volume's capstone chaos exercise — HQ outage, disaster recovery failover, measured RTO/RPO, failback, and full reverse-dependency decommission.*
+
 ## Learning Objectives
 
 - Translate a business impact analysis of every service built in this

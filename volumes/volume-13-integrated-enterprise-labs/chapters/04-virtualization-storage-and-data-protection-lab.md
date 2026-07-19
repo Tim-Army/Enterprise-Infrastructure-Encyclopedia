@@ -1,5 +1,9 @@
 # Chapter 04: Virtualization, Storage, and Data Protection Lab
 
+![Lab topology for this chapter: two ESXi hosts backed by a vSAN witness form the HQ cluster with vSAN, HA, and DRS fully automated; the domain controllers, control host, and Linux client migrate in without losing domain authentication. A backup host exports a verified backup of one domain controller, and a branch-site host receives a vSphere Replication copy within its configured RPO window. As a negative test, one ESXi host is forced offline while running a domain controller; vSphere HA detects the unreachable host and restarts that VM on the surviving host within a few minutes, and vSAN resynchronizes to green once the failed host rejoins. A restore test deliberately corrupts a file, then imports the verified backup to a temporary VM and confirms the file matches its pre-corruption state before that temporary VM is deleted.](../../../diagrams/volume-13-integrated-enterprise-labs/chapter-04-vsan-ha-backup-restore-topology.svg)
+
+*Figure 4-1. Topology used throughout this chapter's Hands-On Lab: an HQ vSphere/vSAN cluster with HA and a backup/replication pipeline, tested against a host failure and a real restore.*
+
 ## Learning Objectives
 
 - Build a two-node vSphere cluster with a vSAN witness appliance, and

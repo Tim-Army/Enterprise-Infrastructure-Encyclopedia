@@ -1,5 +1,9 @@
 # Chapter 08: Observability, Operations, and Major-Incident Lab
 
+![Lab flow for this chapter: the observability stack scrapes every host, network device, and Kubernetes component with complete target health; the sample web workload's SLO and multi-window burn-rate alert rules are defined, and a synthetic test alert confirms the paging webhook reaches the simulated pager before the real test runs. As a negative test, a resource-exhaustion workload is injected on one Kubernetes worker; the workload's SLI drops below its SLO and the fast-burn alert fires within the fast-burn window, logging a page. A major incident is declared; cordoning and draining the affected node lets the scheduler move the workload elsewhere, and the SLI recovers to at least 99.5% within a few minutes, clearing the alert. The postmortem is reconstructed entirely from dashboards, the paging log, and captured evidence — not from memory.](../../../diagrams/volume-13-integrated-enterprise-labs/chapter-08-slo-major-incident-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: complete environment instrumentation and an SLO burn-rate alert exercised through a full major-incident cycle against an injected resource-exhaustion failure.*
+
 ## Learning Objectives
 
 - Deploy a metrics, tracing, and alerting stack that instruments every

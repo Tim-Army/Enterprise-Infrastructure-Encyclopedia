@@ -1,5 +1,9 @@
 # Chapter 07: Zero Trust, Detection, and Incident Response Lab
 
+![Lab topology for this chapter: 802.1X and RADIUS authenticate access-switch ports, and a default-deny ACL between the user and core-services VLANs blocks an RDP probe while Kerberos authentication still succeeds. A SIEM ingests logs from every system built so far and runs a Kerberos pre-authentication brute-force detection rule tuned above the measured baseline. As a negative test, an attacker host on the user VLAN runs 15 rapid Kerberos pre-authentication attempts; the SIEM raises an alert naming the attacker's address within the rule's evaluation window. Containment shuts the attacker's switch port, immediately cutting all connectivity; eradication confirms no lateral movement occurred before the attacker host is removed from the network entirely.](../../../diagrams/volume-13-integrated-enterprise-labs/chapter-07-zero-trust-incident-response-topology.svg)
+
+*Figure 7-1. Topology used throughout this chapter's Hands-On Lab: 802.1X and default-deny microsegmentation paired with SIEM detection, exercised through a full detect-contain-eradicate-recover cycle.*
+
 ## Learning Objectives
 
 - Implement microsegmentation between the HQ user and core-services VLANs

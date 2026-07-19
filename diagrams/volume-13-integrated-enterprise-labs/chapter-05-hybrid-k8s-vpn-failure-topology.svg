@@ -1,0 +1,36 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 5 lab topology: a hybrid Kubernetes cluster spanning HQ and a CLOUD1 landing zone over VPN, tested against a hybrid-link failure</title>
+  <desc>
+    rtr-hq01 extends its crypto map to cloud-vpgw01, establishing an IPsec SA into the CLOUD1 VPC (10.13.90.0/24). k8s-cp01 and k8s-wk01 run as HQ-Cluster VMs; k8s-wk02 runs as a CLOUD1 compute instance; all three join one cluster, zone-labeled, and meridian-web deploys with a topology spread constraint placing replicas on both zones. As a negative test, the cloud VPN crypto map entry is removed to simulate a hybrid link outage; k8s-wk02 transitions to NotReady within the node-heartbeat timeout, but k8s-cp01 and k8s-wk01 remain Ready and the control plane keeps responding throughout, since it never depended on the VPN. Pods that were on k8s-wk02 reschedule onto k8s-wk01 once their grace period expires, and meridian-web continues answering requests — degraded scheduling flexibility, not an outage. Restoring the crypto map returns k8s-wk02 to Ready.
+  </desc>
+  <defs>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: A Hybrid Kubernetes Cluster That Degrades Safely When the VPN Fails</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Losing the CLOUD1 tunnel drops one worker to NotReady; the control plane and workload availability both survive because neither depended on the VPN</text>
+  <rect x="60" y="140" width="240" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="186.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">HQ-Cluster</text>
+  <text x="180.0" y="204.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">k8s-cp01 (control plane)</text>
+  <text x="180.0" y="222.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">k8s-wk01 — stays Ready</text>
+  <rect x="400" y="130" width="220" height="100" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="510.0" y="175.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">rtr-hq01 ⇄ cloud-vpgw01</text>
+  <text x="510.0" y="193.0" text-anchor="middle" font-size="10" font-weight="700" fill="#7f1d1d">IPsec SA (negative test: torn down)</text>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="186.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">k8s-wk02 (CLOUD1)</text>
+  <text x="810.0" y="204.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">VPC 10.13.90.0/24</text>
+  <text x="810.0" y="222.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ NotReady on VPN loss</text>
+  <line x1="300" y1="195" x2="400" y2="180" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="620" y1="180" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="320" width="860" height="150" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="363.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="381.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">crypto map entry removed on rtr-hq01 — VPN tunnel down, simulating a hybrid link outage</text>
+  <text x="490.0" y="399.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">k8s-wk02 → NotReady within the heartbeat timeout; k8s-cp01/k8s-wk01 stay Ready, control plane keeps responding</text>
+  <text x="490.0" y="417.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">meridian-web pods on k8s-wk02 reschedule onto k8s-wk01 and keep answering — degraded flexibility, not an outage</text>
+  <text x="490.0" y="435.4" text-anchor="middle" font-size="11" font-weight="400" fill="#14532d">recovery: crypto map restored, tunnel re-establishes, k8s-wk02 returns to Ready</text>
+  <line x1="60" y1="500" x2="100" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="504" font-size="11" fill="#33415c">Unaffected by VPN loss</text>
+  <line x1="336" y1="500" x2="376" y2="500" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="384" y="504" font-size="11" fill="#b91c1c">Cloud-side, affected by VPN loss</text>
+</svg>

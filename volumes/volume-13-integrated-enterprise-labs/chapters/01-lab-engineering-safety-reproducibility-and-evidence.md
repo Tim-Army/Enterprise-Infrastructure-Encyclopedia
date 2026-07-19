@@ -1,5 +1,9 @@
 # Chapter 01: Lab Engineering, Safety, Reproducibility, and Evidence
 
+![Lab flow for this chapter: ctrl01 runs evidence.sh, which wraps every lab command, captures its output to a timestamped log, and appends a SHA-256 checksum to a manifest. Isolation is confirmed: a traceroute toward a real internet address never shows a lab address once it leaves ctrl01, and a ping to an illustrative RFC 5737 address fails to route anywhere outside the lab. A hypervisor snapshot is taken, a marker file is created, and reverting to the snapshot removes the marker, proving rollback actually works before any later chapter's negative test depends on it. As a negative test, a static route misdirecting lab traffic at the real gateway still fails to reach anything, confirming the isolation holds even under a misconfiguration attempt.](../../../diagrams/volume-13-integrated-enterprise-labs/chapter-01-lab-scaffold-evidence-rollback-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: the reference lab's evidence-capture pipeline and a hypervisor snapshot/rollback cycle, verified before the volume's later chapters rely on it.*
+
 ## Learning Objectives
 
 - Explain why Volume XIII uses a single, versioned reference lab topology

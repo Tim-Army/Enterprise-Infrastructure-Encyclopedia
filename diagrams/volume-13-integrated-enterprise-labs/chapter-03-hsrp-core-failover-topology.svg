@@ -1,0 +1,50 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 3 lab topology: a Catalyst core/WAN/wireless build with HSRP, OSPF/IPsec to BR1, and an RODC, tested against a core switch failure</title>
+  <desc>
+    sw-core01 (HSRP priority 110, active) and sw-core02 (priority 90, standby) share every HQ VLAN's gateway; rtr-hq01 and rtr-br101 form an OSPF-FULL, IPsec-protected WAN link to a read-only domain controller (dc-br101) at BR1, which replicates cleanly from dc01. wlc01 serves two SSIDs mapped to their own VLANs and DHCP scopes. As a negative test, VLAN 110's SVI on sw-core01 is shut down; sw-core02 transitions to Active for every group within the standby timer window, and linux01 keeps routing through the same 10.13.10.1 gateway address with no local reconfiguration — the outage is visible only as a brief pause, not a routing change on the endpoint. Re-enabling sw-core01's SVI and its preempt setting returns it to Active.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: HSRP Core Failover Transparent to Every Endpoint on the Gateway</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Failing the active core switch moves gateway duty to the standby within the timer window — linux01 never reconfigures anything</text>
+  <rect x="60" y="130" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="171.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">sw-core01</text>
+  <text x="170.0" y="189.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">HSRP priority 110</text>
+  <text x="170.0" y="207.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">negative test: VLAN 110 shut</text>
+  <rect x="320" y="130" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="430.0" y="171.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">sw-core02</text>
+  <text x="430.0" y="189.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">HSRP priority 90</text>
+  <text x="430.0" y="207.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">→ becomes Active on failure</text>
+  <line x1="280" y1="185" x2="320" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="306.0" y="185.0" font-size="10.5" fill="#33415c">HSRP peer</text>
+  <rect x="600" y="130" width="200" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="700.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">rtr-hq01 ⇄ rtr-br101</text>
+  <text x="700.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">OSPF FULL, IPsec SA up</text>
+  <rect x="820" y="130" width="120" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="880.0" y="180.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">dc-br101</text>
+  <text x="880.0" y="198.0" text-anchor="middle" font-size="9.5" font-weight="400" fill="#374151">RODC, replicates</text>
+  <line x1="800" y1="185" x2="820" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="60" y="300" width="220" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="170.0" y="336.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">linux01</text>
+  <text x="170.0" y="354.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">gateway 10.13.10.1 unchanged</text>
+  <text x="170.0" y="372.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">through the failover</text>
+  <line x1="170" y1="240" x2="170" y2="300" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="176.0" y="270.0" font-size="10.5" fill="#b91c1c">brief pause only</text>
+  <rect x="320" y="300" width="220" height="100" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="430.0" y="336.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">wlc01</text>
+  <text x="430.0" y="354.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">MERIDIAN-CORP → VLAN 120</text>
+  <text x="430.0" y="372.4" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">MERIDIAN-GUEST → VLAN 140</text>
+  <rect x="60" y="450" width="860" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="482.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="500.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">sw-core01: VLAN 110 SVI shut down — sw-core02 transitions to Active within the standby timer window</text>
+  <text x="490.0" y="518.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">linux01 continues routing through the same 10.13.10.1 gateway with no local reconfiguration</text>
+  <text x="490.0" y="536.4" text-anchor="middle" font-size="11" font-weight="400" fill="#14532d">recovery: SVI re-enabled, standby preempt returns sw-core01 to Active (higher priority)</text>
+  <line x1="60" y1="610" x2="100" y2="610" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="614" font-size="11" fill="#33415c">Active gateway</text>
+  <line x1="264" y1="610" x2="304" y2="610" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="312" y="614" font-size="11" fill="#166534">Standby, then failover</text>
+</svg>

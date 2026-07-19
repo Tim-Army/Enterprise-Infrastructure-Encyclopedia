@@ -1,5 +1,9 @@
 # Chapter 05: Hybrid Cloud, Kubernetes, and Platform Services Lab
 
+![Lab topology for this chapter: the HQ router extends its crypto map to a cloud VPN gateway, establishing an IPsec SA into the cloud landing zone; a control-plane node and one worker run as HQ cluster VMs, a second worker runs as a cloud compute instance, and all three join one zone-labeled cluster with a workload spread across both zones. As a negative test, the cloud VPN crypto map entry is removed to simulate a hybrid link outage; the cloud-side worker transitions to NotReady within the heartbeat timeout, but the HQ-side nodes remain Ready and the control plane keeps responding throughout, since it never depended on the VPN. Pods reschedule onto the surviving HQ worker and the workload keeps answering — degraded scheduling flexibility, not an outage. Restoring the crypto map returns the cloud worker to Ready.](../../../diagrams/volume-13-integrated-enterprise-labs/chapter-05-hybrid-k8s-vpn-failure-topology.svg)
+
+*Figure 5-1. Topology used throughout this chapter's Hands-On Lab: a hybrid Kubernetes cluster spanning HQ and a cloud landing zone over VPN, tested against a hybrid-link failure.*
+
 ## Learning Objectives
 
 - Stand up the `CLOUD1` landing zone from [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s topology as a real

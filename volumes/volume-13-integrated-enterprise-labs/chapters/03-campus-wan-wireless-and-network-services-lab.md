@@ -1,5 +1,9 @@
 # Chapter 03: Campus, WAN, Wireless, and Network Services Lab
 
+![Lab topology for this chapter: sw-core01 (HSRP active) and sw-core02 (HSRP standby) share every HQ VLAN's gateway; rtr-hq01 and rtr-br101 form an OSPF-FULL, IPsec-protected WAN link to a read-only domain controller at BR1, and a WLC serves two SSIDs mapped to their own VLANs and DHCP scopes. As a negative test, the active core switch's gateway interface is shut down; the standby transitions to Active within the timer window, and the Linux client keeps routing through the same gateway address with no local reconfiguration — the outage is visible only as a brief pause, not a routing change on the endpoint. Re-enabling the interface and its preempt setting returns the original switch to Active.](../../../diagrams/volume-13-integrated-enterprise-labs/chapter-03-hsrp-core-failover-topology.svg)
+
+*Figure 3-1. Topology used throughout this chapter's Hands-On Lab: a Catalyst core/WAN/wireless build with HSRP, OSPF/IPsec to a branch site, and a read-only domain controller, tested against a core switch failure.*
+
 ## Learning Objectives
 
 - Replace the ad hoc lab gateway from [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) with a resilient Cisco
