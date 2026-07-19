@@ -1,5 +1,9 @@
 # Chapter 07: Inline Bypass, TLS Decryption, and Production Safety
 
+![Lab topology for this chapter: an inline network group and inline tool group with heartbeat monitoring pass continuous traffic between two lab hosts through a healthy inline tool. Failing the tool with fail-mode set to open causes a brief interruption during heartbeat detection, after which traffic resumes flowing in bypass. As a negative test, fail-mode is changed to closed and the same tool failure repeated; this time traffic stops entirely and does not resume until the tool is restored, demonstrating the fail-closed trade-off is a deliberate configuration choice, not a default. Manually invoking maintenance mode bypasses the tool immediately, independent of heartbeat detection entirely.](../../../diagrams/volume-18-gigamon-network-visibility/chapter-07-inline-bypass-failover-topology.svg)
+
+*Figure 7-1. Topology used throughout this chapter's Hands-On Lab: an inline bypass deployment with heartbeat-based failover, tested under both fail-open and fail-closed modes, plus manual maintenance mode.*
+
 ## Learning Objectives
 
 - Explain how inline deployment differs from the out-of-band model used in

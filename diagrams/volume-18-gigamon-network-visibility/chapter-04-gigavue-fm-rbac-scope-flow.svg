@@ -1,0 +1,31 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab flow: GigaVUE-FM onboarding and scoped RBAC roles, tested against a role's access to a fabric group outside its scope</title>
+  <desc>
+    A lab GigaVUE node onboards into fabric group lab-fabric-01, appearing healthy in GigaVUE-FM's inventory. A lab-read-only role is denied when attempting to create a Flow Map, while a lab-flow-author role successfully creates one on the same fabric group, confirming both roles' granted permissions function as intended. As a negative test, the lab-flow-author user attempts to access a second, unrelated fabric group (lab-fabric-02) not included in that role's scope; access is denied, confirming role scoping is enforced per fabric group and not merely per capability — write permission on one fabric group does not imply write permission on another. The audit log correctly attributes every login, denial, and successful write to the right identity.
+  </desc>
+  <defs>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: GigaVUE-FM RBAC Scoped Per Fabric Group, Not Just Per Capability</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A flow-author role writes successfully on its own fabric group and is still denied on a second, unrelated one</text>
+  <rect x="60" y="140" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">lab-fabric-01 (onboarded node)</text>
+  <text x="190.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">lab-read-only: write denied</text>
+  <text x="190.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">lab-flow-author: write succeeds</text>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="172.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="190.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">lab-flow-author attempts</text>
+  <text x="810.0" y="208.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">lab-fabric-02 (out of scope)</text>
+  <text x="810.0" y="226.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ access denied</text>
+  <line x1="320" y1="195" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="516.0" y="195.0" font-size="10.5" fill="#b91c1c">cross-fabric-group attempt</text>
+  <rect x="60" y="300" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="340.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">write permission scoped to lab-fabric-01 does not extend to lab-fabric-02 — role scoping is enforced</text>
+  <text x="490.0" y="358.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">per fabric group, not merely per capability, and every action is attributed correctly in the audit log.</text>
+  <line x1="60" y1="430" x2="100" y2="430" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="434" font-size="11" fill="#33415c">In-scope fabric group</text>
+  <line x1="327" y1="430" x2="367" y2="430" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="375" y="434" font-size="11" fill="#b91c1c">Out-of-scope access attempt</text>
+</svg>

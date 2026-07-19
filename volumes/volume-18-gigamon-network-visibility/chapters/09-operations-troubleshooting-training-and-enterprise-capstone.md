@@ -1,5 +1,9 @@
 # Chapter 09: Operations, Troubleshooting, Training, and Enterprise Capstone
 
+![Lab flow for this chapter: an acquisition source feeds a first-level map into a GigaSMART group performing slicing and metadata export, delivered by a second-level map to an out-of-band capture tool; a separate inline network and tool group with fail-open heartbeat failover runs on a distinct lab link. A full-chain trace confirms traffic at every stage end to end, with the inline path separately confirmed passing traffic. A multi-stage negative test narrows the first-level map to exclude test traffic and separately fails the inline tool; both reproduce their own chapter's isolated failure mode with no cross-stage interaction. An API diff against the pre-capstone baseline confirms no configuration drift, and the documented rollback plan is executed and validated.](../../../diagrams/volume-18-gigamon-network-visibility/chapter-09-capstone-integrated-chain-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: the volume's integrated capstone composing acquisition, mapping, GigaSMART, and inline resiliency together, validated with a multi-stage negative test and a documented rollback.*
+
 ## Learning Objectives
 
 - Describe the day-2 operational disciplines a production Gigamon fabric

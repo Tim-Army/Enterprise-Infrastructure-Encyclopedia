@@ -1,5 +1,9 @@
 # Chapter 08: Hybrid Cloud Visibility, Automation, APIs, and Integrations
 
+![Lab flow for this chapter: a service account scoped to read-only access authenticates to the GigaVUE-FM API and successfully queries node inventory and health status. As a negative test, the same read-only token attempts a write operation, creating a new Flow Map; the API rejects the call with an authorization error, confirming the scoped role enforces least privilege at the API layer itself, not merely in the web UI. A second, write-scoped service account performs the identical call successfully, and the new map is visible both via the API and in the web UI, correctly attributed in the audit log.](../../../diagrams/volume-18-gigamon-network-visibility/chapter-08-gigavue-fm-api-scope-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: GigaVUE-FM REST API access scoped by service-account role, tested against a write attempt using a read-only token.*
+
 ## Learning Objectives
 
 - Explain why a hybrid enterprise fabric — spanning data center, private

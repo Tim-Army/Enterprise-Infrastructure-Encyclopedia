@@ -1,5 +1,9 @@
 # Chapter 03: GigaVUE Virtual Nodes and Virtual Traffic Acquisition
 
+![Lab topology for this chapter: two workload VMs on the same virtual switch communicate directly — traffic no physical TAP could ever observe. A virtual tap agent on the first workload VM tunnels its traffic to a V Series node, where an all-pass Flow Map delivers it to a capture tool that confirms the inter-VM session end to end. As a negative test, the virtual tap agent is stopped on the first workload VM while the map and node stay unchanged; no new traffic reaches the capture tool, confirming acquisition coverage — not the mapping or the node — was the point of failure, the same partial-coverage failure mode as a Kubernetes DaemonSet not covering every node.](../../../diagrams/volume-18-gigamon-network-visibility/chapter-03-virtual-tap-east-west-topology.svg)
+
+*Figure 3-1. Topology used throughout this chapter's Hands-On Lab: a virtual tap agent tunneling east-west VM traffic to a V Series node, tested against a disabled agent representing a coverage gap.*
+
 ## Learning Objectives
 
 - Explain why physical TAPs and SPAN ports cannot solve east-west

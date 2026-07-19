@@ -1,5 +1,9 @@
 # Chapter 02: GigaVUE Appliance First Deployment and Fabric Foundations
 
+![Lab flow for this chapter: a lab GigaVUE node is configured with a network port and a tool port, and a minimal all-pass Flow Map forwards tapped traffic between them; a capture tool on the tool port confirms packets matching the tapped source. As a negative test, the map's rule is narrowed from pass any to a specific host IP not present in the lab traffic; the capture tool now shows zero new packets, confirming the map — not the physical cabling or port configuration, both unchanged — is the actual traffic-selection control point.](../../../diagrams/volume-18-gigamon-network-visibility/chapter-02-gigavue-first-touch-flow-map-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: a first-touch GigaVUE node with a minimal Flow Map validated end to end, then narrowed to demonstrate the map as the actual traffic-selection control.*
+
 ## Learning Objectives
 
 - Identify the physical GigaVUE node families (TA Series and HC Series),

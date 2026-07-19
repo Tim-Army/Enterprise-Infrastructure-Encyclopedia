@@ -1,5 +1,9 @@
 # Chapter 05: Ports, Flow Mapping, Traffic Policy, and Tool Delivery
 
+![Lab flow for this chapter: a first-level map filters one network source down to a specific subnet, and a second-level map forwards that output to a GigaStream group of tool ports with an egress VLAN tag applied; matching traffic appears at both tools correctly tagged, and traffic outside the filter correctly produces no output. As a negative test, a broad pass-any rule is added at a lower priority number than the existing filter; the previously excluded traffic now appears at the tool farm, reproducing the rule-order failure mode where a badly prioritized rule silently reopens a path the filter was designed to close.](../../../diagrams/volume-18-gigamon-network-visibility/chapter-05-two-level-map-rule-order-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: a two-level filtered Flow Map feeding a tagged GigaStream tool group, tested against a rule-order defect.*
+
 ## Learning Objectives
 
 - Explain the Flow Mapping rule model in depth: map types, rule matching

@@ -1,5 +1,9 @@
 # Chapter 06: GigaSMART Traffic Intelligence and Packet Transformation
 
+![Lab flow for this chapter: a GigaSMART group slices packets shortly after the TCP/IP header and masks a known test payload pattern at its correct offset; captured packets show the correct truncation and the test pattern masked with the configured fixed value. As a negative test, the masking operation's offset is shifted so it no longer aligns with the test pattern's actual position; the captured packets now show the original, unmasked test pattern in plain sight at its true offset, proving offset and length must be validated against actual observed traffic, not assumed from documentation alone.](../../../diagrams/volume-18-gigamon-network-visibility/chapter-06-gigasmart-masking-offset-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: a GigaSMART slicing and masking chain validated against a known test pattern, then deliberately misaligned.*
+
 ## Learning Objectives
 
 - Explain GigaSMART's role as a processing engine distinct from Flow

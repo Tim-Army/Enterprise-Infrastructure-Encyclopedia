@@ -1,5 +1,9 @@
 # Chapter 04: GigaVUE-FM Installation, Onboarding, Security, and Governance
 
+![Lab flow for this chapter: a lab GigaVUE node onboards into one fabric group, appearing healthy in GigaVUE-FM's inventory; a read-only role is denied when attempting to create a Flow Map, while a flow-author role successfully creates one on the same fabric group. As a negative test, the flow-author user attempts to access a second, unrelated fabric group not included in that role's scope; access is denied, confirming role scoping is enforced per fabric group and not merely per capability — write permission on one fabric group does not imply write permission on another.](../../../diagrams/volume-18-gigamon-network-visibility/chapter-04-gigavue-fm-rbac-scope-flow.svg)
+
+*Figure 4-1. Flow used throughout this chapter's Hands-On Lab: GigaVUE-FM onboarding and scoped RBAC roles, tested against a role's access to a fabric group outside its scope.*
+
 ## Learning Objectives
 
 - Explain GigaVUE-FM's role as the centralized control plane for a

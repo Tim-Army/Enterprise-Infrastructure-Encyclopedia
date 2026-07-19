@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 5 lab flow: a two-level filtered Flow Map feeding a tagged GigaStream tool group, tested against a rule-order defect</title>
+  <desc>
+    A first-level map filters one network source down to a specific subnet; a second-level map forwards that output to a GigaStream group of two tool ports with an egress VLAN tag applied. Matching traffic appears at both capture tools with the correct tag, and traffic outside the filter correctly produces no output. As a negative test, a broad pass any rule is added at a lower priority number (evaluated first) than the first-level map's existing filter; the previously excluded traffic now appears at the tool farm, reproducing the rule-order failure mode where a badly prioritized rule silently reopens a path the filter was designed to close. Removing the defect rule restores correct exclusion.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: A Rule-Order Defect That Silently Reopens an Excluded Path</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Matching traffic reaches the GigaStream tool farm tagged correctly; a lower-priority pass-any rule leaks traffic the filter should have excluded</text>
+  <rect x="60" y="140" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">First-level map</text>
+  <text x="190.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">filters to specific subnet</text>
+  <text x="190.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">excluded traffic → no output</text>
+  <rect x="380" y="140" width="260" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="510.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">GigaStream group (2 tools)</text>
+  <text x="510.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">VLAN-tagged, matching traffic</text>
+  <text x="510.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">visible at both tools</text>
+  <line x1="320" y1="195" x2="380" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="172.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="190.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">pass-any rule added at</text>
+  <text x="810.0" y="208.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">lower priority (evaluated first)</text>
+  <text x="810.0" y="226.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ excluded traffic now leaks</text>
+  <line x1="640" y1="195" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="300" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="340.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">removing the defect rule restores correct exclusion — the map's filtering behavior depends entirely</text>
+  <text x="490.0" y="358.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">on rule priority order, not just on which rules exist.</text>
+  <line x1="60" y1="430" x2="100" y2="430" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="434" font-size="11" fill="#33415c">First-level filter</text>
+  <line x1="300" y1="430" x2="340" y2="430" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="348" y="434" font-size="11" fill="#166534">Correctly delivered, tagged traffic</text>
+  <line x1="693" y1="430" x2="733" y2="430" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="741" y="434" font-size="11" fill="#b91c1c">Rule-order defect (leaked traffic)</text>
+</svg>

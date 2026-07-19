@@ -1,0 +1,47 @@
+<svg viewBox="0 0 960 680" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 9 lab flow: the volume's integrated capstone — acquisition, mapping, GigaSMART, and inline resiliency composed together, validated with a multi-stage negative test and a documented rollback</title>
+  <desc>
+    An acquisition source feeds a first-level map into a GigaSMART group performing slicing and Application Metadata Intelligence export, delivered by a second-level map to an out-of-band capture tool; a separate inline network and tool group with fail-open heartbeat failover runs on a distinct lab link. A full-chain trace confirms traffic at every stage — acquisition, mapping, GigaSMART processing, delivery, and metadata export — end to end, with the inline path separately confirmed passing traffic. A multi-stage negative test narrows the first-level map to exclude the test traffic (out-of-band chain correctly shows no output, then restored) and separately fails the inline tool (inline path fails open, then restored); both reproduce their own chapter's isolated failure mode with no cross-stage interaction — the out-of-band change never touched the inline path, and the inline failure never touched the out-of-band chain. An API diff against the pre-capstone baseline confirms no configuration drift, and the documented rollback plan is executed and validated.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="680" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: The Capstone — a Full Acquisition-to-Delivery Chain That Fails in Isolation, Not Together</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Every stage traces correctly end to end; the out-of-band rule change and the inline tool failure each reproduce their own chapter's exact failure with no cross-stage interaction</text>
+  <rect x="60" y="120" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="161.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Acquisition → 1st-level map</text>
+  <text x="190.0" y="179.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">→ GigaSMART (slice + AMI export)</text>
+  <text x="190.0" y="197.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">→ 2nd-level map → OOB capture</text>
+  <rect x="360" y="120" width="260" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="490.0" y="161.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Full-chain trace</text>
+  <text x="490.0" y="179.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">every stage shows expected</text>
+  <text x="490.0" y="197.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">traffic/output end to end</text>
+  <line x1="320" y1="175" x2="360" y2="175" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="680" y="120" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="800.0" y="161.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Inline path (distinct link)</text>
+  <text x="800.0" y="179.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">fail-open heartbeat</text>
+  <text x="800.0" y="197.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">passes traffic through tool</text>
+  <rect x="60" y="280" width="400" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="260.0" y="331.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test (a): OOB path</text>
+  <text x="260.0" y="349.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">1st-level map narrowed to exclude</text>
+  <text x="260.0" y="367.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">test traffic → no output, restored</text>
+  <rect x="500" y="280" width="400" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="700.0" y="331.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test (b): inline path</text>
+  <text x="700.0" y="349.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">inline tool failed → fails open,</text>
+  <text x="700.0" y="367.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">restored per Chapter 7's behavior</text>
+  <rect x="60" y="440" width="840" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="480.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">neither negative test affects the other path — confirming no unexpected cross-stage interaction</text>
+  <text x="480.0" y="498.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">was introduced by integrating the mechanisms together into one deployment.</text>
+  <rect x="60" y="550" width="840" height="90" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="590.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#14532d">API diff against the pre-capstone baseline confirms zero configuration drift</text>
+  <text x="480.0" y="608.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the documented rollback plan is executed and validated to restore the exact pre-capstone state</text>
+  <line x1="60" y1="660" x2="100" y2="660" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="664" font-size="11" fill="#33415c">Integrated pipeline</text>
+  <line x1="309" y1="660" x2="349" y2="660" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="357" y="664" font-size="11" fill="#166534">Verified trace / rollback</text>
+  <line x1="612" y1="660" x2="652" y2="660" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="660" y="664" font-size="11" fill="#b91c1c">Isolated negative tests</text>
+</svg>

@@ -1,5 +1,9 @@
 # Chapter 01: Visibility Architecture, Traffic Acquisition, and Tool Delivery
 
+![Lab flow for this chapter: a tap inventory documents two acquisition points — a SPAN source at the access-to-core uplink and a physical TAP at the internet edge, each with subscribed tools and, for the TAP, both monitor-port directions. A tabletop trace of a hypothetical outbound HTTPS session confirms every subscribed tool has an unbroken, documented acquisition path. As a negative test, one direction's entry is removed from the internet-edge TAP and the trace re-run for a bidirectional handshake; the trace now shows only one direction of traffic reaching the tools, reproducing the asymmetric-visibility failure mode entirely on paper before any hardware is touched.](../../../diagrams/volume-18-gigamon-network-visibility/chapter-01-visibility-fabric-tabletop-trace-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: a visibility fabric acquisition plan validated by tracing a session through a tap inventory, tested against a missing TAP direction.*
+
 ## Learning Objectives
 
 - Explain why a dedicated visibility fabric exists between the production
