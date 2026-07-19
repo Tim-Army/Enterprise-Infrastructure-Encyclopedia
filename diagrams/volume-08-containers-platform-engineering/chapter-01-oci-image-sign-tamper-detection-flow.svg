@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab flow: building, scanning, and cosign-signing a non-root OCI image, then detecting a tampered re-push</title>
+  <desc>
+    A minimal distroless Go image is built, pushed to a local registry (localhost:5000/app:1.0.0), confirmed running as a non-root user, scanned with syft/trivy, and signed with cosign using a local key pair. cosign verify against the signed digest succeeds. As a negative test, the Dockerfile is modified and the image rebuilt and pushed under the same tag; verifying the original signature against the new digest fails with 'no matching signatures', because the tag moved but the digest it now points to was never signed — the mechanism that makes digest-pinned, signature-verified deployments safe against a compromised or overwritten tag.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Hands-On Lab: OCI Image Build, Sign, and a Detected Tampering Attempt</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">cosign verifies the original signed digest; the same tag re-pushed with new content has no valid signature</text>
+  <rect x="60" y="140" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Build + Push v1.0.0</text>
+  <text x="170.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">distroless, non-root</text>
+  <text x="170.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">localhost:5000/app:1.0.0</text>
+  <rect x="370" y="140" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Scan + Sign</text>
+  <text x="480.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">syft/trivy: few HIGH/CRITICAL</text>
+  <text x="480.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">cosign sign --key cosign.key</text>
+  <line x1="280" y1="195" x2="370" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="680" y="140" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="790.0" y="190.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">cosign verify</text>
+  <text x="790.0" y="208.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">verified claims, exit 0</text>
+  <line x1="590" y1="195" x2="680" y2="195" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="340" width="840" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="382.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="400.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">Dockerfile modified, rebuilt, and pushed under the same tag 1.0.0 (new digest, same tag)</text>
+  <text x="480.0" y="418.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">cosign verify against the new digest → &quot;no matching signatures&quot; (the new digest was never signed)</text>
+  <text x="480.0" y="436.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">digest-pinned, signature-verified deployment is safe against a compromised or overwritten tag</text>
+  <line x1="60" y1="510" x2="100" y2="510" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="514" font-size="11" fill="#33415c">Build/push</text>
+  <line x1="228" y1="510" x2="268" y2="510" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="276" y="514" font-size="11" fill="#166534">Signed + verified</text>
+  <line x1="459" y1="510" x2="499" y2="510" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="507" y="514" font-size="11" fill="#b91c1c">Tampered re-push (caught)</text>
+</svg>

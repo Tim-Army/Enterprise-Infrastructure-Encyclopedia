@@ -1,5 +1,9 @@
 # Chapter 04: Kubernetes Networking, Service Delivery, and Traffic Policy
 
+![Lab topology for this chapter: client and server pods in the netpol-lab namespace initially reach each other freely, with no NetworkPolicy in place. A default-deny-all policy is applied; the same request now times out and fails, confirming Calico is actually enforcing the policy rather than it being merely configured. A scoped allow-client-to-server policy permitting only that pair on port 8080 is then added; connectivity is restored for exactly that path, while any other pod added later to the namespace remains denied by default.](../../../diagrams/volume-08-containers-platform-engineering/chapter-04-networkpolicy-default-deny-topology.svg)
+
+*Figure 4-1. Topology used throughout this chapter's Hands-On Lab: a NetworkPolicy default-deny baseline enforced by Calico, then narrowed back open with a single scoped allow rule.*
+
 ## Learning Objectives
 
 - Explain the Kubernetes networking model's four addressing problems and

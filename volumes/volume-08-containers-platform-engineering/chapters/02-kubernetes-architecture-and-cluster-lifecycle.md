@@ -1,5 +1,9 @@
 # Chapter 02: Kubernetes Architecture and Cluster Lifecycle
 
+![Lab topology for this chapter: a three-node kind cluster runs etcd, kube-apiserver, kube-scheduler, and kube-controller-manager as static pods on the control-plane node; etcd cluster health is confirmed and a snapshot is taken and verified as structurally valid. As a negative test, one worker's container is stopped; the node transitions to NotReady after the default node-monitor-grace-period, and any pods scheduled there are marked for eviction and rescheduled onto the remaining worker. Restarting the stopped worker returns it to Ready within about a minute as kubelet re-registers.](../../../diagrams/volume-08-containers-platform-engineering/chapter-02-kind-cluster-etcd-node-loss-topology.svg)
+
+*Figure 2-1. Topology used throughout this chapter's Hands-On Lab: a kind cluster's control-plane static pods and etcd snapshot, tested against a simulated worker-node failure and recovery.*
+
 ## Learning Objectives
 
 - Identify every control plane and node component in a Kubernetes 1.31.x

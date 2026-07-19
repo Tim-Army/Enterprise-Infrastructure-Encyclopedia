@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 9 lab topology: a Prometheus-observed workload tested with a scoped Chaos Mesh experiment and an over-broad negative test</title>
+  <desc>
+    demo-api runs 3 replicas with a PodDisruptionBudget requiring minAvailable 2, observed by kube-state-metrics through Prometheus. A tightly scoped Chaos Mesh PodChaos experiment (mode: one) kills exactly one demo-api pod; a replacement schedules within seconds and total pod count never drops below 2, consistent with the PDB. As a negative test, an over-broad experiment (mode: all) force-kills all three demo-api pods nearly simultaneously, briefly dropping available replicas to 0 despite the minAvailable 2 PDB — because PodChaos kills pods directly rather than through the API server's eviction subresource that PDBs actually govern; PDBs protect only voluntary, eviction-based disruption, not this kind of direct chaos action.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: Scoped Chaos Respects the PDB; an Over-Broad Selector Bypasses It</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A single-pod kill stays above minAvailable; killing all pods at once drops replicas to zero despite the PDB</text>
+  <rect x="60" y="130" width="220" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="170.0" y="170.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Prometheus stack</text>
+  <text x="170.0" y="188.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">kube-state-metrics: replicas=3</text>
+  <rect x="370" y="130" width="220" height="90" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="170.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">demo-api (3 replicas)</text>
+  <text x="480.0" y="188.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">PDB: minAvailable 2</text>
+  <line x1="280" y1="175" x2="370" y2="175" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <rect x="660" y="130" width="240" height="90" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="780.0" y="161.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Scoped chaos: mode: one</text>
+  <text x="780.0" y="179.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">1 pod killed, replaced fast</text>
+  <text x="780.0" y="197.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">never below 2 (PDB respected)</text>
+  <line x1="590" y1="175" x2="660" y2="175" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="320" width="840" height="150" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="372.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test — mode: all</text>
+  <text x="480.0" y="390.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">PodChaos force-kills all 3 demo-api pods nearly simultaneously (direct kill, not eviction)</text>
+  <text x="480.0" y="408.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">available replicas briefly drop to 0, despite minAvailable: 2 — the PDB never engages</text>
+  <text x="480.0" y="426.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">PDBs govern the eviction subresource only; they do not protect against direct force-kill actions</text>
+  <rect x="60" y="500" width="840" height="60" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="534.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">Experiment deleted immediately after observation; recovery time compared against the scoped mode: one run</text>
+  <line x1="60" y1="590" x2="100" y2="590" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="594" font-size="11" fill="#33415c">PDB-governed workload</text>
+  <line x1="327" y1="590" x2="367" y2="590" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="375" y="594" font-size="11" fill="#166534">Scoped chaos (respects PDB)</text>
+  <line x1="648" y1="590" x2="688" y2="590" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="696" y="594" font-size="11" fill="#b91c1c">Over-broad chaos (bypasses PDB)</text>
+</svg>

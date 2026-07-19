@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 3 lab topology: a workload with required anti-affinity and an HPA, tested against a PodDisruptionBudget-blocked drain</title>
+  <desc>
+    demo-api deploys 3 replicas with required pod anti-affinity (one pod per node) and a PodDisruptionBudget requiring minAvailable 2. An HPA targeting 50% CPU confirms live metrics and scales replicas out under generated load. As a negative test, draining the node holding one demo-api pod while only 3 replicas exist is refused: the drain reports 'Cannot evict pod as it would violate the pod's disruption budget', because removing that pod would drop available replicas below minAvailable 2 and the deployment cannot immediately reschedule a replacement onto the now-cordoned node. Uncordoning the node restores normal scheduling.
+  </desc>
+  <defs>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: Anti-Affinity, HPA Scale-Out, and a PDB-Blocked Drain</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Three demo-api pods spread across three nodes scale out under load, then a drain is refused below minAvailable</text>
+  <rect x="60" y="140" width="220" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="185.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Node A</text>
+  <text x="170.0" y="203.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">demo-api pod (1/3)</text>
+  <rect x="370" y="140" width="220" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="185.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Node B</text>
+  <text x="480.0" y="203.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">demo-api pod (2/3)</text>
+  <rect x="680" y="140" width="220" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="790.0" y="185.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Node C (negative test)</text>
+  <text x="790.0" y="203.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">demo-api pod (3/3)</text>
+  <rect x="280" y="280" width="400" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="320.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">PodDisruptionBudget: minAvailable 2</text>
+  <text x="480.0" y="338.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">required anti-affinity: 1 pod per node</text>
+  <line x1="170" y1="240" x2="400" y2="280" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <line x1="480" y1="240" x2="460" y2="280" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <line x1="790" y1="240" x2="560" y2="280" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="420" width="840" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="462.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="480.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">kubectl drain Node C while only 3 replicas exist total</text>
+  <text x="480.0" y="498.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">refused: &quot;Cannot evict pod as it would violate the pod's disruption budget&quot;</text>
+  <text x="480.0" y="516.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">node cordoned but the pod remains; uncordon restores normal scheduling</text>
+  <line x1="60" y1="600" x2="100" y2="600" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="604" font-size="11" fill="#33415c">Anti-affinity-spread pod</text>
+  <line x1="354" y1="600" x2="394" y2="600" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="402" y="604" font-size="11" fill="#b91c1c">Drain target (blocked by PDB)</text>
+  <line x1="693" y1="600" x2="733" y2="600" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="741" y="604" font-size="11" fill="#6b7280">Guardrail</text>
+</svg>

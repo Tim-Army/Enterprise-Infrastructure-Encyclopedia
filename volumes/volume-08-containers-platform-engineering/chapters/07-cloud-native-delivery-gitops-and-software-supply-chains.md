@@ -1,5 +1,9 @@
 # Chapter 07: Cloud-Native Delivery, GitOps, and Software Supply Chains
 
+![Lab flow for this chapter: Argo CD's demo-api Application, synced from a local Git repository with automated sync and self-heal enabled, reaches Synced/Healthy. Manually scaling the deployment directly against the cluster is reverted back to the Git-declared value within about 30 seconds — self-healing reconciliation. As a negative test, a Kyverno policy requiring every pod's image to carry a valid cosign signature from a deliberately impossible signer identity is applied; restarting the deployment causes the new pods to be rejected at admission with 'image verification failed', even though Argo CD's Application still reports the manifest as Synced — GitOps sync success and admission-time policy enforcement are independent controls.](../../../diagrams/volume-08-containers-platform-engineering/chapter-07-argocd-selfheal-kyverno-signature-flow.svg)
+
+*Figure 7-1. Flow used throughout this chapter's Hands-On Lab: Argo CD GitOps self-healing reconciliation, blocked at admission by an independent Kyverno image-signature policy.*
+
 ## Learning Objectives
 
 - Package and template application manifests with Helm and Kustomize, and

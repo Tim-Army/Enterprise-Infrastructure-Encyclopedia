@@ -1,5 +1,9 @@
 # Chapter 03: Kubernetes Workloads, Scheduling, and Capacity
 
+![Lab topology for this chapter: demo-api deploys 3 replicas with required pod anti-affinity spreading one pod per node and a PodDisruptionBudget requiring minAvailable 2; an HPA targeting 50% CPU confirms live metrics and scales replicas out under generated load. As a negative test, draining the node holding one demo-api pod while only 3 replicas exist is refused: the drain reports 'Cannot evict pod as it would violate the pod's disruption budget', because removing that pod would drop available replicas below minAvailable 2. Running uncordon on the node restores normal scheduling.](../../../diagrams/volume-08-containers-platform-engineering/chapter-03-hpa-pdb-drain-topology.svg)
+
+*Figure 3-1. Topology used throughout this chapter's Hands-On Lab: an anti-affinity-spread, HPA-scaled workload whose PodDisruptionBudget correctly blocks a node drain.*
+
 ## Learning Objectives
 
 - Select the correct workload controller — Deployment, StatefulSet,

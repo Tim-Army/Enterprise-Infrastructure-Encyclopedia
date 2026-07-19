@@ -1,5 +1,9 @@
 # Chapter 08: Internal Developer Platforms and Platform Products
 
+![Lab flow for this chapter: a WebService CustomResourceDefinition and a bash reconciliation loop stand in for a compiled operator, watching WebService objects and creating matching Deployments; a hello-service claim reconciles to status ready:true and a running 2-replica Deployment. A tenant ResourceQuota (pods: 3) is then applied. As a negative test, a second, oversized claim (replicas: 5) is accepted by the CRD but its ReplicaSet cannot bring all pods up — events show 'exceeded quota: tenant-quota' once existing plus new pods would cross the ceiling, demonstrating that tenant isolation is enforced by the shared quota regardless of what the self-service claim requested.](../../../diagrams/volume-08-containers-platform-engineering/chapter-08-platform-crd-tenant-quota-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: a self-service platform claim reconciled by a minimal operator, with a tenant ResourceQuota blocking an over-limit claim.*
+
 ## Learning Objectives
 
 - Explain platform engineering as a discipline distinct from traditional

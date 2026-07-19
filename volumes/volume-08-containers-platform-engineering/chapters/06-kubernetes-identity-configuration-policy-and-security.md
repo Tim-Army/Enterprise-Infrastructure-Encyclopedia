@@ -1,5 +1,9 @@
 # Chapter 06: Kubernetes Identity, Configuration, Policy, and Security
 
+![Lab flow for this chapter: ServiceAccount reader is bound to a Role permitting only get/list/watch on ConfigMaps, confirmed yes for ConfigMaps and no for Secrets. The namespace is labeled for Pod Security admission in audit/warn=restricted first: a non-compliant pod is created but flagged, not blocked; raising enforce=restricted then rejects a second non-compliant pod outright. As a negative test, a ValidatingAdmissionPolicy requiring every container to declare a memory limit is applied; a pod that fully satisfies restricted Pod Security but omits the memory limit is still rejected, citing the CEL policy — demonstrating that admission controls compose rather than substitute for one another.](../../../diagrams/volume-08-containers-platform-engineering/chapter-06-rbac-pod-security-vap-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: RBAC least privilege and Pod Security admission raised from audit to enforce, alongside an independent, composable CEL admission policy.*
+
 ## Learning Objectives
 
 - Explain Kubernetes RBAC's Role/ClusterRole/RoleBinding/ClusterRoleBinding

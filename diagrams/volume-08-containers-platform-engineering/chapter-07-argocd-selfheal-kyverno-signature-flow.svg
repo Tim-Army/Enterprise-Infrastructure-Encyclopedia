@@ -1,0 +1,39 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 7 lab flow: Argo CD GitOps self-healing reconciliation, with an independent Kyverno image-signature policy blocking admission</title>
+  <desc>
+    Argo CD's demo-api Application, synced from a local Git repository with automated sync and self-heal enabled, reaches Synced/Healthy. Manually scaling the deployment to 5 replicas directly against the cluster (bypassing Git) is reverted back to the Git-declared value of 2 within about 30 seconds — self-healing reconciliation. As a negative test, a Kyverno policy requiring every pod's image to carry a valid cosign signature from a deliberately impossible signer identity is applied; restarting the deployment causes the new ReplicaSet's pods to be rejected at admission with 'image verification failed', even though Argo CD's Application still reports the manifest as Synced — GitOps sync success and admission-time policy enforcement are independent controls.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: Argo CD GitOps Self-Healing, Blocked by an Independent Signature Policy</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Argo CD reverts manual drift automatically, but Kyverno still blocks pods whose image was never signed</text>
+  <rect x="60" y="140" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Local Git repo</text>
+  <text x="170.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">app/deployment.yaml</text>
+  <text x="170.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">replicas: 2 (declared)</text>
+  <rect x="370" y="140" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Argo CD Application</text>
+  <text x="480.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">Synced / Healthy</text>
+  <text x="480.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">automated: prune+selfHeal</text>
+  <line x1="280" y1="195" x2="370" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="680" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="790.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Manual drift</text>
+  <text x="790.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">kubectl scale → replicas=5</text>
+  <text x="790.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">self-heal reverts to 2 (~30s)</text>
+  <line x1="590" y1="195" x2="680" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="340" width="840" height="150" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="392.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test — Kyverno Signature Policy</text>
+  <text x="480.0" y="410.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">require-signed-images-lab: every pod image must carry a cosign signature from an impossible signer</text>
+  <text x="480.0" y="428.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">deployment restart → new ReplicaSet's pods rejected: &quot;image verification failed&quot; (FailedCreate)</text>
+  <text x="480.0" y="446.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">Argo CD Application still shows Synced — GitOps sync and admission policy enforcement are independent</text>
+  <line x1="60" y1="570" x2="100" y2="570" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="574" font-size="11" fill="#33415c">Declared source of truth</text>
+  <line x1="354" y1="570" x2="394" y2="570" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="402" y="574" font-size="11" fill="#166534">GitOps-reconciled state</text>
+  <line x1="639" y1="570" x2="679" y2="570" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="687" y="574" font-size="11" fill="#b91c1c">Drift / admission-blocked</text>
+</svg>

@@ -1,5 +1,9 @@
 # Chapter 01: Container Architecture, Images, Runtimes, and Registries
 
+![Lab flow for this chapter: a minimal distroless Go image is built, pushed to a local registry, confirmed running as a non-root user, scanned with syft/trivy, and signed with cosign using a local key pair; cosign verify against the signed digest succeeds. As a negative test, the Dockerfile is modified and the image rebuilt and pushed under the same tag; verifying the original signature against the new digest fails with 'no matching signatures', because the tag moved but the digest it now points to was never signed — the mechanism that makes digest-pinned, signature-verified deployments safe against a compromised or overwritten tag.](../../../diagrams/volume-08-containers-platform-engineering/chapter-01-oci-image-sign-tamper-detection-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: building, scanning, and cosign-signing a non-root OCI image, then detecting a tampered re-push under the same tag.*
+
 ## Learning Objectives
 
 - Explain how Linux namespaces, control groups (cgroups v2), and capabilities

@@ -1,5 +1,9 @@
 # Chapter 05: Kubernetes Storage and Stateful Platforms
 
+![Lab topology for this chapter: data-svc-0 and data-svc-1 each write their own hostname identity to their own bound PVC. Deleting data-svc-1's pod directly causes the StatefulSet controller to recreate it reattached to the same PVC — the identity file still reads data-svc-1, not empty. As a negative test, the StatefulSet itself is deleted with --cascade=orphan; both PVCs and their bound PVs survive the controller's own deletion. Only deleting a PVC directly afterward actually destroys or releases its bound PV, demonstrating that reclaim policy governs PVC deletion specifically, not StatefulSet deletion.](../../../diagrams/volume-08-containers-platform-engineering/chapter-05-statefulset-pvc-reclaim-topology.svg)
+
+*Figure 5-1. Topology used throughout this chapter's Hands-On Lab: a StatefulSet's stable per-ordinal storage identity, tested through pod, controller, and direct PVC deletion.*
+
 ## Learning Objectives
 
 - Explain the Container Storage Interface (CSI) architecture and how it

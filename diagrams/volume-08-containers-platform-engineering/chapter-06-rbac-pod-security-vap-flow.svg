@@ -1,0 +1,39 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 6 lab flow: RBAC least privilege, Pod Security admission raised from audit to enforce, and a ValidatingAdmissionPolicy negative test</title>
+  <desc>
+    ServiceAccount reader is bound to a Role permitting only get/list/watch on ConfigMaps; kubectl auth can-i confirms yes for ConfigMaps and no for Secrets. The namespace is labeled for Pod Security admission in audit/warn=restricted first: a non-compliant pod is created but flagged, not blocked. Raising enforce=restricted then rejects a second non-compliant pod outright. As a negative test, a ValidatingAdmissionPolicy requiring every container to declare a memory limit is applied; a pod that fully satisfies restricted Pod Security (non-root, dropped capabilities, seccomp) but omits the memory limit is still rejected, citing the CEL policy — demonstrating that admission controls compose rather than substitute for one another.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 6 Hands-On Lab: RBAC, Pod Security Admission Escalation, and a Composable CEL Policy</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A pod that satisfies restricted Pod Security is still independently blocked for missing a memory limit</text>
+  <rect x="60" y="130" width="240" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="166.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">ServiceAccount: reader</text>
+  <text x="180.0" y="184.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">can-i configmaps: yes</text>
+  <text x="180.0" y="202.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">can-i secrets: no</text>
+  <rect x="360" y="130" width="240" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="166.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Pod Security: audit/warn</text>
+  <text x="480.0" y="184.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">noncompliant pod: created</text>
+  <text x="480.0" y="202.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(flagged, not blocked)</text>
+  <rect x="660" y="130" width="240" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="780.0" y="166.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Pod Security: enforce</text>
+  <text x="780.0" y="184.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">noncompliant-2: rejected</text>
+  <text x="780.0" y="202.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">outright, at admission</text>
+  <line x1="300" y1="180" x2="360" y2="180" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="600" y1="180" x2="660" y2="180" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="320" width="840" height="150" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="372.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test — ValidatingAdmissionPolicy</text>
+  <text x="480.0" y="390.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">require-memory-limit VAP: every container must declare resources.limits.memory (CEL expression)</text>
+  <text x="480.0" y="408.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">no-limit-pod: non-root, seccomp RuntimeDefault, capabilities dropped — fully satisfies restricted PSS</text>
+  <text x="480.0" y="426.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">still rejected: &quot;Every container must declare a memory limit.&quot; — independent, composable controls</text>
+  <line x1="60" y1="550" x2="100" y2="550" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="554" font-size="11" fill="#33415c">RBAC-scoped identity</text>
+  <line x1="318" y1="550" x2="358" y2="550" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="366" y="554" font-size="11" fill="#166534">Pod Security admission</text>
+  <line x1="594" y1="550" x2="634" y2="550" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="642" y="554" font-size="11" fill="#b91c1c">Independent CEL policy (negative test)</text>
+</svg>

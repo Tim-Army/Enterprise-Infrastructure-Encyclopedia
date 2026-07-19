@@ -1,0 +1,39 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 8 lab flow: a WebService CRD reconciled by a shell-based operator, with a tenant ResourceQuota blocking an over-limit claim</title>
+  <desc>
+    A WebService CustomResourceDefinition and a bash reconciliation loop stand in for a compiled operator, watching WebService objects and creating matching Deployments. A hello-service claim (image + replicas: 2) reconciles to status ready:true and a running 2-replica Deployment — the same watch-and-reconcile contract a real operator implements. A tenant ResourceQuota (pods: &quot;3&quot;) is then applied to the team-payments namespace. As a negative test, a second claim (oversized-service, replicas: 5) is accepted by the CRD but its ReplicaSet cannot bring all pods up — events show 'exceeded quota: tenant-quota' once existing plus new pods would cross the pods: 3 ceiling, demonstrating that tenant isolation is enforced by the shared quota regardless of what the self-service claim requested.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: A Minimal Platform CRD, Self-Service Claims, and Tenant Quota Enforcement</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A WebService claim reconciles into a running Deployment; a second, oversized claim is blocked by the shared ResourceQuota</text>
+  <rect x="60" y="130" width="240" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="175.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">WebService CRD</text>
+  <text x="180.0" y="193.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">+ bash reconcile.sh loop</text>
+  <rect x="360" y="130" width="240" height="100" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="166.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">hello-service claim</text>
+  <text x="480.0" y="184.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">image + replicas: 2</text>
+  <text x="480.0" y="202.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">status: ready=true</text>
+  <line x1="300" y1="180" x2="360" y2="180" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="660" y="130" width="240" height="100" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="780.0" y="175.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">tenant-quota</text>
+  <text x="780.0" y="193.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">ResourceQuota: pods &quot;3&quot;</text>
+  <line x1="600" y1="180" x2="660" y2="180" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="320" width="840" height="150" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="372.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="390.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">oversized-service claim: image + replicas: 5, submitted to the same team-payments namespace</text>
+  <text x="480.0" y="408.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">Deployment created, but ReplicaSet cannot bring all 5 pods up</text>
+  <text x="480.0" y="426.4" text-anchor="middle" font-size="11" font-weight="700" fill="#7f1d1d">events: &quot;exceeded quota: tenant-quota, requested: pods=1, used: pods=3, limited: pods=3&quot;</text>
+  <rect x="60" y="500" width="840" height="60" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="534.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">tenant isolation is enforced by the shared ResourceQuota, regardless of what the self-service claim requested</text>
+  <line x1="60" y1="590" x2="100" y2="590" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="594" font-size="11" fill="#33415c">Platform CRD/operator</text>
+  <line x1="327" y1="590" x2="367" y2="590" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="375" y="594" font-size="11" fill="#166534">Reconciled claim</text>
+  <line x1="549" y1="590" x2="589" y2="590" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="597" y="594" font-size="11" fill="#b91c1c">Quota-blocked claim</text>
+</svg>

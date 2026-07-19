@@ -1,5 +1,9 @@
 # Chapter 09: Platform Observability, Reliability, and Lifecycle Operations
 
+![Lab topology for this chapter: demo-api runs 3 replicas with a PodDisruptionBudget requiring minAvailable 2, observed by kube-state-metrics through Prometheus. A tightly scoped Chaos Mesh experiment (mode: one) kills exactly one demo-api pod; a replacement schedules within seconds and total pod count never drops below 2. As a negative test, an over-broad experiment (mode: all) force-kills all three demo-api pods nearly simultaneously, briefly dropping available replicas to 0 despite the minAvailable 2 PDB — because PodChaos kills pods directly rather than through the eviction subresource that PDBs actually govern, and PDBs protect only voluntary, eviction-based disruption.](../../../diagrams/volume-08-containers-platform-engineering/chapter-09-chaos-mesh-pdb-scope-topology.svg)
+
+*Figure 9-1. Topology used throughout this chapter's Hands-On Lab: a Prometheus-observed workload where a scoped chaos experiment respects the PodDisruptionBudget and an over-broad one bypasses it entirely.*
+
 ## Learning Objectives
 
 - Assemble the Prometheus-based metrics stack (`kube-state-metrics`,
