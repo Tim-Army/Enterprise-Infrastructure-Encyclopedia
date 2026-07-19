@@ -1,5 +1,9 @@
 # Chapter 06: Panorama Installation, Central Management, and Logging
 
+![Lab topology for this chapter: Panorama's Global-Baseline device group holds a Shared pre-rule blocking known-malicious categories; its Branch-Offices child holds a device-group-scoped allow rule. Pushing both the device group and a template stack to an onboarded firewall causes both pushed rules to appear in the firewall's rulebase, and test traffic appears in Panorama's log viewer. As a negative test, a rule is added directly on the managed firewall's own CLI, not through Panorama; the local rule persists alongside the Panorama-pushed rules, confirming that uncontrolled local changes are exactly how policy drift enters a Panorama-managed fleet.](../../../diagrams/volume-16-palo-alto-networks-security/chapter-06-panorama-device-group-drift-topology.svg)
+
+*Figure 6-1. Topology used throughout this chapter's Hands-On Lab: a two-level Panorama device-group hierarchy with a template stack pushed to a managed firewall, tested against local configuration drift.*
+
 ## Learning Objectives
 
 - Describe Panorama's deployment modes (Panorama, Log Collector, Management

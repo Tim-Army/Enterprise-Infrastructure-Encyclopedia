@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 6 lab topology: a two-level Panorama device-group hierarchy with a template stack pushed to a managed firewall, tested against local configuration drift</title>
+  <desc>
+    Panorama's Global-Baseline device group holds a Shared pre-rule (Block-Known-Malicious); its Branch-Offices child holds a device-group-scoped allow rule (Allow-Branch-Web). A template stack supplies DNS and, once configured, points the firewall's panorama-server setting back at Panorama for log forwarding. Pushing both the device group and template stack to an onboarded firewall causes show rulebase security rules to list both pushed rules, and test traffic appears in Panorama's log viewer. As a negative test, a rule is added directly on the managed firewall's own CLI, not through Panorama; show config running on the firewall shows this local rule persisting alongside the Panorama-pushed rules, confirming that uncontrolled local changes are exactly how policy drift enters a Panorama-managed fleet.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 6 Hands-On Lab: A Local Firewall Rule That Persists Independently of Panorama's Push</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Panorama pushes a Shared deny and a device-group allow rule cleanly; a rule added directly on the firewall survives alongside them, demonstrating drift risk</text>
+  <rect x="60" y="120" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="161.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Panorama: Global-Baseline</text>
+  <text x="190.0" y="179.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Shared pre-rule:</text>
+  <text x="190.0" y="197.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">Block-Known-Malicious</text>
+  <rect x="360" y="120" width="260" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="490.0" y="161.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Branch-Offices (child DG)</text>
+  <text x="490.0" y="179.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">Allow-Branch-Web</text>
+  <text x="490.0" y="197.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">+ Branch-Stack template</text>
+  <line x1="320" y1="175" x2="360" y2="175" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="680" y="120" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="800.0" y="161.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Onboarded firewall</text>
+  <text x="800.0" y="179.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">both rules pushed and present</text>
+  <text x="800.0" y="197.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">traffic logs reach Panorama</text>
+  <line x1="620" y1="175" x2="680" y2="175" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="656.0" y="175.0" font-size="10.5" fill="#166534">batch-push</text>
+  <rect x="60" y="300" width="860" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="342.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="360.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">Local-Test-Rule added directly on the managed firewall's CLI, bypassing Panorama entirely</text>
+  <text x="490.0" y="378.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">show config running shows it persisting alongside the Panorama-pushed rules — not overwritten, not rejected</text>
+  <text x="490.0" y="396.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">confirms uncontrolled local changes are how policy drift enters a Panorama-managed fleet</text>
+  <line x1="60" y1="470" x2="100" y2="470" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="474" font-size="11" fill="#33415c">Shared / global policy</text>
+  <line x1="336" y1="470" x2="376" y2="470" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="384" y="474" font-size="11" fill="#166534">Device-group / pushed policy</text>
+  <line x1="666" y1="470" x2="706" y2="470" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="714" y="474" font-size="11" fill="#b91c1c">Local drift (negative test)</text>
+</svg>

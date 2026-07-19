@@ -1,5 +1,9 @@
 # Chapter 07: Firewall Operations, Troubleshooting, Upgrades, and Automation
 
+![Lab flow for this chapter: suspending the passive HA member for upgrade preparation leaves the active peer serving traffic uninterrupted; returning the member to functional state completes the sequence. A filtered packet-diag capture confirms matching packets for a specific test flow, an XML API request retrieves system info matching the CLI's output, and a REST API call creates an address object confirmed at the CLI. As a negative test, the same system info request is repeated with a deliberately invalid API key; the API returns an authentication failure rather than falling back to an unauthenticated default, confirming key validation is actually enforced.](../../../diagrams/volume-16-palo-alto-networks-security/chapter-07-ha-upgrade-api-key-validation-flow.svg)
+
+*Figure 7-1. Flow used throughout this chapter's Hands-On Lab: an HA-aware upgrade sequence, packet-diag capture, and XML/REST API operations, tested against an invalid API key.*
+
 ## Learning Objectives
 
 - Plan and execute a PAN-OS software upgrade across an HA pair with zero

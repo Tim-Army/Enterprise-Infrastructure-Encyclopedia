@@ -1,5 +1,9 @@
 # Chapter 05: Application, Identity, Threat, and Data Security Policy
 
+![Lab flow for this chapter: an App-ID security policy scoped to web-browsing, ssl, and dns with an attached inspection profile group matches a simulated SSL session from the trust zone. As a negative test, the same lookup for a peer-to-peer file-sharing application matches no rule but the default deny, confirming the scoped rule does not implicitly permit unrelated applications. A decryption rule pair — decrypt everything except financial-services, with the exclusion ordered first — is validated by browsing to a non-excluded site (decrypted, logged) and a financial-services site (not decrypted, no certificate warning, logged as no-decrypt).](../../../diagrams/volume-16-palo-alto-networks-security/chapter-05-app-id-decryption-scope-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: an App-ID security policy with an attached inspection profile, validated for scope and paired with a category-excluded decryption rule.*
+
 ## Learning Objectives
 
 - Write App-ID- and User-ID-based security policy rules that enforce

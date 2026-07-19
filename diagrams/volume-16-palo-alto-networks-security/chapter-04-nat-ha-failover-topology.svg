@@ -1,0 +1,50 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab topology: Layer 3 interfaces, source NAT, and an active/passive HA pair, tested against an unpublished destination NAT lookup and a failover</title>
+  <desc>
+    ethernet1/1 (untrust, 203.0.113.2/30) and ethernet1/2 (trust, 10.10.20.1/24) route a default route via 203.0.113.1; a dynamic-IP-and-port source NAT rule translates outbound sessions to ethernet1/1's address, confirmed in the session table. As a negative test, a NAT policy lookup for an inbound destination NAT rule that does not yet exist reports no matching rule, confirming an unpublished internal service is not reachable inbound. Two firewalls in active/passive HA show one active and one passive with both HA links Running; disabling the active member's monitored uplink causes the peer to transition to active within the failure-detection interval while the trust-zone test host stays reachable throughout, and restoring the interface returns the original member to a synchronized state.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: Outbound NAT Confirmed, an Unpublished Service Confirmed Unreachable, and a Clean HA Failover</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A destination NAT lookup with no matching rule proves inbound exposure is intentional, not implicit</text>
+  <rect x="60" y="130" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">eth1/2 (trust)</text>
+  <text x="170.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">10.10.20.1/24</text>
+  <text x="170.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">DIPP source NAT → eth1/1</text>
+  <rect x="360" y="130" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="470.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">eth1/1 (untrust)</text>
+  <text x="470.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">203.0.113.2/30</text>
+  <text x="470.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">default route via .1</text>
+  <line x1="280" y1="185" x2="360" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="326.0" y="185.0" font-size="10.5" fill="#33415c">outbound, NAT'd</text>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="162.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="180.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">test nat-policy-match for</text>
+  <text x="810.0" y="198.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">nonexistent dest-NAT rule</text>
+  <text x="810.0" y="216.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ no matching rule</text>
+  <line x1="580" y1="185" x2="700" y2="185" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="300" width="260" height="130" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="351.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">pa-fw01 (active)</text>
+  <text x="190.0" y="369.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">uplink disabled (negative test)</text>
+  <text x="190.0" y="387.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ peer takes over</text>
+  <rect x="400" y="300" width="260" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="530.0" y="351.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">pa-fw01-b (was passive)</text>
+  <text x="530.0" y="369.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">→ becomes active within</text>
+  <text x="530.0" y="387.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">the detection interval</text>
+  <line x1="320" y1="365" x2="400" y2="365" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="366.0" y="365.0" font-size="10.5" fill="#b91c1c">HA1/HA2 failover</text>
+  <rect x="700" y="300" width="220" height="130" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="810.0" y="351.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Trust-zone test host</text>
+  <text x="810.0" y="369.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">stays reachable throughout</text>
+  <text x="810.0" y="387.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">the failover</text>
+  <line x1="60" y1="470" x2="100" y2="470" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="474" font-size="11" fill="#33415c">Trust-side / active member</text>
+  <line x1="372" y1="470" x2="412" y2="470" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="420" y="474" font-size="11" fill="#166534">Untrust-side / failover target</text>
+  <line x1="720" y1="470" x2="760" y2="470" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="768" y="474" font-size="11" fill="#b91c1c">Negative test / failed uplink</text>
+</svg>

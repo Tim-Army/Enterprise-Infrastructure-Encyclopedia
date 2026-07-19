@@ -1,5 +1,9 @@
 # Chapter 02: Cybersecurity Practitioner and Platform Portfolio
 
+![Lab flow for this chapter: an auth code activates a subscription license, confirmed by its expiration date appearing in the license info output, and a content upgrade check lists available Applications and Threats versions. As a negative test, installing a specific content version that has not been downloaded to this system fails, with PAN-OS reporting the package is not present locally — confirming download and install are two distinct, sequential actions rather than one combined operation. Downloading and then installing the latest content correctly updates the installed version, and a weekly automatic download-and-install schedule is committed for ongoing currency.](../../../diagrams/volume-16-palo-alto-networks-security/chapter-02-content-update-download-install-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: license activation and dynamic content updates, tested against installing a content version that was never downloaded.*
+
 ## Learning Objectives
 
 - Describe the cloud-delivered security services (CDSS) subscriptions that

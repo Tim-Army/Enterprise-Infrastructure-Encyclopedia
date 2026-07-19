@@ -1,5 +1,9 @@
 # Chapter 09: Cortex Cloud Security Professional
 
+![Lab flow for this chapter: a sample Terraform file with an unrestricted SSH ingress rule and an unencrypted S3 bucket is scanned with Checkov, reporting at least one failed check for the open ingress rule — the expected, correct behavior for a known-bad configuration, since a scan reporting no findings against this specific file would indicate a broken Checkov installation, not a secure configuration. Narrowing the security group's CIDR block to a lab subnet and re-scanning shows the finding now passing, and a documented suppression is added for the remaining S3 finding. Pushed to a CI/CD pipeline, the unremediated branch fails the check and the remediated branch passes.](../../../diagrams/volume-16-palo-alto-networks-security/chapter-09-checkov-iac-scan-remediation-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: a Terraform configuration scanned with Checkov, deliberately failing first, then remediated and gated in CI/CD.*
+
 ## Learning Objectives
 
 - Describe Cortex Cloud's cloud-native application protection platform

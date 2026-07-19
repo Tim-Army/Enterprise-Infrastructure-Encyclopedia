@@ -1,5 +1,9 @@
 # Chapter 01: Cybersecurity Apprentice Foundations
 
+![Lab flow for this chapter: the lab firewall's hostname and management IP commit successfully, confirmed by SSH reachability from the workstation, and a second, role-based administrator account is created for daily use instead of admin. As a negative test, the management IP is set to a broadcast-adjacent address outside any valid host range for the configured netmask and committed; PAN-OS either rejects the commit outright or the interface becomes unreachable at that address, confirming candidate-configuration validation catches the invalid value rather than silently accepting it. Reverting to the working address restores management access.](../../../diagrams/volume-16-palo-alto-networks-security/chapter-01-panos-first-touch-commit-validation-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: first-touch PAN-OS configuration committed successfully, then a deliberately invalid management address tested against commit validation.*
+
 ## Learning Objectives
 
 - Explain the CIA triad and defense-in-depth as they map onto the Palo Alto

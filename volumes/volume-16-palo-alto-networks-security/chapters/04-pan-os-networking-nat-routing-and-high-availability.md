@@ -1,5 +1,9 @@
 # Chapter 04: PAN-OS Networking, NAT, Routing, and High Availability
 
+![Lab topology for this chapter: Layer 3 interfaces route a default route out the untrust side, and a dynamic-IP-and-port source NAT rule translates outbound sessions, confirmed in the session table. As a negative test, a NAT policy lookup for an inbound destination NAT rule that does not yet exist reports no matching rule, confirming an unpublished internal service is not reachable inbound. Two firewalls in active/passive HA show one active and one passive with both HA links running; disabling the active member's monitored uplink causes the peer to transition to active within the failure-detection interval while the trust-zone test host stays reachable throughout, and restoring the interface returns the original member to a synchronized state.](../../../diagrams/volume-16-palo-alto-networks-security/chapter-04-nat-ha-failover-topology.svg)
+
+*Figure 4-1. Topology used throughout this chapter's Hands-On Lab: Layer 3 interfaces, source NAT, and an active/passive HA pair, tested against an unpublished destination NAT lookup and a failover.*
+
 ## Learning Objectives
 
 - Configure Layer 3 interfaces, subinterfaces, and security zones, and

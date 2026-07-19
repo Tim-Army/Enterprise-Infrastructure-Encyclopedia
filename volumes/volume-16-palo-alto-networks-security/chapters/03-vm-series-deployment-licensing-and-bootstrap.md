@@ -1,5 +1,9 @@
 # Chapter 03: VM-Series Deployment, Licensing, and Bootstrap
 
+![Lab flow for this chapter: a bootstrap ISO built from init-cfg.txt is attached to a freshly deployed VM-Series instance; bootstrap status reports SUCCESS and the hostname/management IP match init-cfg.txt exactly, with no manual configuration entered at the console. As a negative test, init-cfg.txt is edited to introduce a malformed netmask value and rebuilt into a second ISO attached to a new instance; the instance either fails bootstrap validation outright or falls back to its factory default management IP, confirming PAN-OS does not silently accept invalid bootstrap values.](../../../diagrams/volume-16-palo-alto-networks-security/chapter-03-vmseries-bootstrap-validation-flow.svg)
+
+*Figure 3-1. Flow used throughout this chapter's Hands-On Lab: a VM-Series bootstrap package validated end to end, then a deliberately malformed init-cfg.txt tested against bootstrap validation.*
+
 ## Learning Objectives
 
 - Describe the VM-Series architecture, its supported hypervisor and cloud

@@ -1,5 +1,9 @@
 # Chapter 08: Role-Based Certification Portfolio and Enterprise Capstone
 
+![Lab topology for this chapter: a data-center HA pair and a branch firewall bootstrap into Panorama-defined device groups and template stacks under a Global-Baseline hierarchy; a Shared pre-rule blocks known-malicious categories globally while device-group-scoped allow rules with attached inspection profiles permit legitimate traffic at each site, a phased decryption rule pair excludes financial-services, centralized logging confirms traffic from all three firewalls, and a bulk API script creates address objects on the branch firewall. As a negative test, a local rule added directly on the branch firewall attempts to permit the category the Shared pre-rule blocks; the policy match still reports the Shared pre-rule as the matching rule, not the local override, confirming Shared pre-rules evaluate ahead of local firewall rules and cannot be bypassed by local configuration.](../../../diagrams/volume-16-palo-alto-networks-security/chapter-08-capstone-panorama-prerule-override-topology.svg)
+
+*Figure 8-1. Topology used throughout this chapter's Hands-On Lab: the full Panorama-governed capstone — data-center HA pair and branch firewall — validated end to end, tested against a local policy-override attempt.*
+
 ## Learning Objectives
 
 - Map the role-based PCNSA (Certified Network Security Administrator) and

@@ -1,0 +1,37 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 2 lab flow: license activation and dynamic content updates, tested against installing a content version that was never downloaded</title>
+  <desc>
+    An auth code activates a subscription license, confirmed by its expiration date appearing in request license info. A content upgrade check lists available Applications and Threats versions. As a negative test, installing a specific content version that has not been downloaded to this system fails, with PAN-OS reporting the package is not present locally — confirming download and install are two distinct, sequential actions rather than one combined operation. Downloading and then installing the latest content correctly updates app-version, and a weekly automatic download-and-install schedule is committed for ongoing currency.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 2 Hands-On Lab: Content Updates Require an Explicit Download Before Install</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Installing a version not yet on the firewall fails outright — download and install are two distinct actions, never one</text>
+  <rect x="60" y="140" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Auth code activation</text>
+  <text x="180.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">subscription license confirmed</text>
+  <text x="180.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">expiration date appears</text>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">install version &lt;not downloaded&gt;</text>
+  <text x="810.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ package not present locally</text>
+  <rect x="380" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="500.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">download latest → install latest</text>
+  <text x="500.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">app-version updates correctly</text>
+  <text x="500.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">weekly auto schedule committed</text>
+  <line x1="300" y1="195" x2="380" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="620" y1="195" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="320" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="360.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">download then install — never a single combined action — is the dependency the negative test proves;</text>
+  <text x="490.0" y="378.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the weekly schedule automates both steps together going forward.</text>
+  <line x1="60" y1="450" x2="100" y2="450" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="454" font-size="11" fill="#33415c">License activation</text>
+  <line x1="300" y1="450" x2="340" y2="450" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="348" y="454" font-size="11" fill="#166534">Correct download-then-install</text>
+  <line x1="639" y1="450" x2="679" y2="450" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="687" y="454" font-size="11" fill="#b91c1c">Install-without-download (rejected)</text>
+</svg>
