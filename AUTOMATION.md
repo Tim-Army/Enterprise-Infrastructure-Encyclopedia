@@ -23,6 +23,14 @@ Chapter and volume order comes directly from the `volumes/` directory
 structure. With no scoping flag it builds every chapter, every volume
 (combined into one document), and the complete-series edition.
 
+Before each Pandoc invocation, `scripts/bash/lib/rewrite_chapter_links.py`
+rewrites links that point at another chapter's `.md` file into a working
+link for that output: a relative link to the sibling `.html` page in HTML
+output, or an absolute link to the deployed Pages portal in EPUB output
+(EPUB can't address a separate `output/html/` file). Links to anything
+else — root docs, volume or root README/INDEX/GLOSSARY — are left
+unchanged, since none of those are built into their own output page.
+
 `scripts/bash/build-download-site.sh` builds the combined reading and
 download portal (`_site/`) that the Pages workflow deploys.
 

@@ -209,10 +209,14 @@ artifact deployed by the Pages workflow. Do not manually edit generated files
 in `output/` or `_site/`; change the Markdown source, publishing assets, or
 build scripts and regenerate instead.
 
-Known limitation: cross-chapter and cross-volume links inside the Markdown
-source still point at `.md` paths, so links between chapters are not yet
-rewritten to their `.html` targets in the generated output. Fixing that
-requires a link-rewriting pass in `build-book.sh` and has not been done yet.
+Links between chapters (same-volume or cross-volume) are rewritten by
+[scripts/bash/lib/rewrite_chapter_links.py](scripts/bash/lib/rewrite_chapter_links.py)
+before each Pandoc invocation: in HTML output they become relative links to
+that chapter's own page; in EPUB output — which cannot address a separate
+`output/html/` file — they become absolute links to the deployed Pages
+portal. Links to anything other than a chapter file (root docs, volume or
+root README/INDEX/GLOSSARY) are left pointing at their `.md` path, since
+those don't have a generated-output page to point at instead.
 
 External references can be checked separately with:
 

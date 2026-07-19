@@ -13,10 +13,14 @@
 # chapters plus the combined volume edition). --chapter builds only that
 # one chapter.
 #
-# Known limitation: internal links between chapters/volumes point at the
-# original .md paths and are not rewritten to .html targets, so
-# cross-chapter links in the generated output are not clickable. Fixing
-# that requires a link-rewriting pass and is not yet implemented.
+# Links to other chapters (volumes/*/chapters/*.md) are rewritten by
+# scripts/bash/lib/rewrite_chapter_links.py before each Pandoc invocation:
+# in HTML output they become relative links to that chapter's own .html
+# file; in EPUB output (which cannot address a separate output/html/ file)
+# they become absolute links to the deployed Pages portal. Links to
+# anything other than a chapter file (root docs, volume/root README,
+# INDEX, GLOSSARY) are left as-is, since those have no generated-output
+# equivalent to point at.
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -39,6 +43,10 @@ if ! command -v pandoc >/dev/null 2>&1; then
   echo "build-book.sh: 'pandoc' not found. See SETUP.md." >&2
   exit 1
 fi
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "build-book.sh: 'python3' not found (needed for chapter-link rewriting)." >&2
+  exit 1
+fi
 
 want_html=0
 want_epub=0
@@ -54,18 +62,33 @@ mkdir -p output/html output/epub
 series_title="Enterprise Infrastructure Encyclopedia"
 author="Enterprise Infrastructure Encyclopedia Project"
 
+link_tmp="$(mktemp -d)"
+trap 'rm -rf "$link_tmp"' EXIT
+
+# Rewrite chapter links in $1 for $2 (html-flat|html-root|epub-absolute),
+# optionally scoped to volume $3 for html-flat. Prints the path to a
+# rewritten temp copy of the file.
+rewrite_file() {
+  local src="$1" mode="$2" vol="${3:-}" dest
+  dest="$link_tmp/$src"
+  mkdir -p "$(dirname "$dest")"
+  python3 "$repo_root/scripts/bash/lib/rewrite_chapter_links.py" "$src" "$mode" "$vol" > "$dest"
+  printf '%s' "$dest"
+}
+
 first_line_title() {
   head -1 "$1" | sed -E 's/^# (Chapter [0-9]+: )?//'
 }
 
 build_chapter_html() {
   local chapter_file="$1" volume_slug="$2"
-  local base title outdir
+  local base title outdir rewritten
   base="$(basename "$chapter_file" .md)"
   title="$(first_line_title "$chapter_file")"
   outdir="output/html/$volume_slug"
   mkdir -p "$outdir"
-  pandoc "$chapter_file" \
+  rewritten="$(rewrite_file "$chapter_file" html-flat "$volume_slug")"
+  pandoc "$rewritten" \
     --standalone --embed-resources \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
@@ -77,12 +100,13 @@ build_chapter_html() {
 
 build_chapter_epub() {
   local chapter_file="$1" volume_slug="$2"
-  local base title outdir
+  local base title outdir rewritten
   base="$(basename "$chapter_file" .md)"
   title="$(first_line_title "$chapter_file")"
   outdir="output/epub/$volume_slug"
   mkdir -p "$outdir"
-  pandoc "$chapter_file" \
+  rewritten="$(rewrite_file "$chapter_file" epub-absolute)"
+  pandoc "$rewritten" \
     --toc --toc-depth=2 \
     --css=publishing/web.css \
     --metadata "title=$title" \
@@ -91,14 +115,19 @@ build_chapter_epub() {
 }
 
 build_volume_html() {
-  local volume_dir="$1" volume_slug title chapters
+  local volume_dir="$1" volume_slug title chapters ch rewritten_readme rewritten_chapters
   volume_dir="${1%/}"
   volume_slug="$(basename "$volume_dir")"
   title="$(first_line_title "$volume_dir/README.md")"
   mkdir -p "output/html/$volume_slug"
+  rewritten_readme="$(rewrite_file "$volume_dir/README.md" html-flat "$volume_slug")"
   chapters=()
   while IFS= read -r f; do chapters+=("$f"); done < <(find "$volume_dir/chapters" -name "*.md" | sort)
-  pandoc "$volume_dir/README.md" "${chapters[@]}" \
+  rewritten_chapters=()
+  for ch in "${chapters[@]}"; do
+    rewritten_chapters+=("$(rewrite_file "$ch" html-flat "$volume_slug")")
+  done
+  pandoc "$rewritten_readme" "${rewritten_chapters[@]}" \
     --standalone --embed-resources \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
@@ -109,13 +138,18 @@ build_volume_html() {
 }
 
 build_volume_epub() {
-  local volume_dir="$1" volume_slug title chapters
+  local volume_dir="$1" volume_slug title chapters ch rewritten_readme rewritten_chapters
   volume_dir="${1%/}"
   volume_slug="$(basename "$volume_dir")"
   title="$(first_line_title "$volume_dir/README.md")"
+  rewritten_readme="$(rewrite_file "$volume_dir/README.md" epub-absolute)"
   chapters=()
   while IFS= read -r f; do chapters+=("$f"); done < <(find "$volume_dir/chapters" -name "*.md" | sort)
-  pandoc "$volume_dir/README.md" "${chapters[@]}" \
+  rewritten_chapters=()
+  for ch in "${chapters[@]}"; do
+    rewritten_chapters+=("$(rewrite_file "$ch" epub-absolute)")
+  done
+  pandoc "$rewritten_readme" "${rewritten_chapters[@]}" \
     --toc --toc-depth=2 \
     --css=publishing/web.css \
     --metadata "title=$title" \
@@ -124,10 +158,15 @@ build_volume_epub() {
 }
 
 build_series_html() {
-  local chapters
+  local chapters ch rewritten_readme rewritten_chapters
+  rewritten_readme="$(rewrite_file "README.md" html-root)"
   chapters=()
   while IFS= read -r f; do chapters+=("$f"); done < <(find volumes -path "*/chapters/*.md" | sort)
-  pandoc README.md "${chapters[@]}" \
+  rewritten_chapters=()
+  for ch in "${chapters[@]}"; do
+    rewritten_chapters+=("$(rewrite_file "$ch" html-root)")
+  done
+  pandoc "$rewritten_readme" "${rewritten_chapters[@]}" \
     --standalone --embed-resources \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
@@ -138,10 +177,15 @@ build_series_html() {
 }
 
 build_series_epub() {
-  local chapters
+  local chapters ch rewritten_readme rewritten_chapters
+  rewritten_readme="$(rewrite_file "README.md" epub-absolute)"
   chapters=()
   while IFS= read -r f; do chapters+=("$f"); done < <(find volumes -path "*/chapters/*.md" | sort)
-  pandoc README.md "${chapters[@]}" \
+  rewritten_chapters=()
+  for ch in "${chapters[@]}"; do
+    rewritten_chapters+=("$(rewrite_file "$ch" epub-absolute)")
+  done
+  pandoc "$rewritten_readme" "${rewritten_chapters[@]}" \
     --toc --toc-depth=2 \
     --css=publishing/web.css \
     --metadata "title=$series_title — Complete Edition" \
