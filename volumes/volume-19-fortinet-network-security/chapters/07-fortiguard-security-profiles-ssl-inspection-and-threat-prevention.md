@@ -1,5 +1,9 @@
 # Chapter 07: FortiGuard Security Profiles, SSL Inspection, and Threat Prevention
 
+![Lab flow for this chapter: antivirus, IPS, web-filter, and application-control profiles attach to the outbound policy with SSL certificate inspection; downloading a standard antivirus test file is blocked and logged, and browsing a filtered category is blocked and logged. Switching to full deep inspection without installing the firewall's CA certificate produces a browser trust warning; installing the certificate removes the warning and gives antivirus and IPS visibility into HTTPS content they couldn't inspect before. As a negative test, an explicit allow override is added for the previously blocked category; the site becomes reachable, confirming the override mechanism works, before it is reverted.](../../../diagrams/volume-19-fortinet-network-security/chapter-07-security-profiles-ssl-inspection-flow.svg)
+
+*Figure 7-1. Flow used throughout this chapter's Hands-On Lab: AV/IPS/web-filter/app-control profiles and SSL inspection validated against real test traffic, tested against a category-allow override.*
+
 ## Learning Objectives
 
 - Describe the FortiGuard security services and how flow-based and

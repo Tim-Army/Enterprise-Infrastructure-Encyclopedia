@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 6 lab flow: firewall policy, authentication, and site-to-site/SSL VPN configuration, tested against a deliberate pre-shared key mismatch</title>
+  <desc>
+    Outbound and inbound firewall policies complete the NAT design from the prior chapter, confirmed by a translated source address in the session list. LDAP and local authentication feed a VPN-Users group, and a site-to-site IPsec tunnel to a second FortiGate peer establishes with confirmed phase1 and phase2 security associations. As a negative test, the phase1-interface's pre-shared key is changed to an incorrect value on one side only, and the tunnel is brought up again; IKE negotiation fails and debug output explicitly reports an authentication/proposal failure, confirming the mismatch is detectable rather than failing silently. Restoring the correct key re-establishes the tunnel. SSL VPN separately confirms a connected session with the authenticated username and assigned tunnel IP.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 6 Hands-On Lab: A Pre-Shared Key Mismatch That Fails Loudly, Not Silently</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">The site-to-site tunnel establishes normally; a deliberately wrong PSK produces an explicit IKE authentication failure in debug output</text>
+  <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">LAN-to-WAN-Outbound policy</text>
+  <text x="180.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">outbound NAT confirmed</text>
+  <text x="180.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">in session list</text>
+  <rect x="360" y="130" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">to-Branch02 IPsec tunnel</text>
+  <text x="480.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">phase1 + phase2 SA established</text>
+  <line x1="300" y1="185" x2="360" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="680" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="800.0" y="171.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">SSL VPN (VPN-Users)</text>
+  <text x="800.0" y="189.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">connected session, tunnel IP</text>
+  <text x="800.0" y="207.2" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">assigned from SSLVPN_TUNNEL_ADDR1</text>
+  <rect x="60" y="300" width="860" height="140" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="338.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="356.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">psksecret on FGT-LAB-01's phase1-interface changed to an incorrect value (one side only)</text>
+  <text x="490.0" y="374.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">IKE negotiation fails; debug output explicitly reports an authentication/proposal failure —</text>
+  <text x="490.0" y="392.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">the mismatch is detectable, not silent</text>
+  <text x="490.0" y="410.4" text-anchor="middle" font-size="11" font-weight="400" fill="#14532d">correct key restored → tunnel re-establishes cleanly</text>
+  <line x1="60" y1="470" x2="100" y2="470" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="474" font-size="11" fill="#33415c">Policy / NAT layer</text>
+  <line x1="300" y1="470" x2="340" y2="470" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="348" y="474" font-size="11" fill="#166534">Established VPN</text>
+  <line x1="513" y1="470" x2="553" y2="470" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="561" y="474" font-size="11" fill="#b91c1c">PSK mismatch (detected loudly)</text>
+</svg>

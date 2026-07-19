@@ -1,5 +1,9 @@
 # Chapter 05: Interfaces, Routing, NAT, Virtual Domains, and High Availability
 
+![Lab topology for this chapter: two firewalls form an FGCP HA cluster with heartbeat interfaces connected between them; within minutes the cluster shows one primary and one secondary, with configuration changes synchronizing automatically. Separately, multi-VDOM mode connects two virtual domains over an inter-VDOM link with confirmed connectivity. As a negative test, both heartbeat interfaces on the secondary are disconnected simultaneously; each member may independently report itself as primary — a split-brain condition — until the heartbeat links are reconnected, at which point the cluster automatically resynchronizes to a single primary.](../../../diagrams/volume-19-fortinet-network-security/chapter-05-fgcp-ha-split-brain-topology.svg)
+
+*Figure 5-1. Topology used throughout this chapter's Hands-On Lab: interfaces, multi-VDOM routing, and a two-member FGCP HA cluster, tested against a dual-heartbeat-link failure.*
+
 ## Learning Objectives
 
 - Configure physical interfaces, VLAN sub-interfaces, and static/policy

@@ -1,5 +1,9 @@
 # Chapter 08: SD-WAN, Operations, Central Management, Automation, and Troubleshooting
 
+![Lab topology for this chapter: an SD-WAN zone with two members and a health-check reports both within SLA thresholds, with a critical-application rule currently selecting the primary WAN member. As a negative test, the primary WAN interface is administratively brought down to simulate an outage; the health-check reports that member failed, and the rule automatically selects the secondary WAN member with no manual intervention. Restoring the primary interface returns path selection to it once its SLA is met again. Separately, the device registers to central management and a read-only-scoped API token successfully retrieves system status via the REST API.](../../../diagrams/volume-19-fortinet-network-security/chapter-08-sdwan-failover-topology.svg)
+
+*Figure 8-1. Topology used throughout this chapter's Hands-On Lab: an SD-WAN zone with SLA-based path selection, tested against a simulated WAN outage, plus central management and REST API validation.*
+
 ## Learning Objectives
 
 - Configure an SD-WAN zone with multiple WAN members, a performance SLA

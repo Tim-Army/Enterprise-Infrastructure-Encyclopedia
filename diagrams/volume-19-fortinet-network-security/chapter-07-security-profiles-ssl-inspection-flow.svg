@@ -1,0 +1,35 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 7 lab flow: AV/IPS/web-filter/app-control profiles and SSL inspection validated against real test traffic, tested against a category-allow override</title>
+  <desc>
+    AV-Standard, IPS-Standard, WebFilter-Standard, and AppCtrl-Standard profiles attach to the outbound policy with Certificate-Inspection SSL scanning. Downloading the EICAR test file is blocked and logged against AV-Standard; browsing a filtered category is blocked and logged against WebFilter-Standard. Switching to Full-Deep-Inspection without installing the FortiGate's CA certificate produces a browser trust warning; installing the CA certificate in the test client's trust store removes the warning and gives AV/IPS visibility into HTTPS-delivered content they couldn't inspect before. As a negative test, an explicit allow override is added to WebFilter-Standard for the previously blocked category; the site becomes reachable, confirming the override mechanism works before it is reverted.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: SSL Deep Inspection Requires Real CA Trust Distribution, Not Just Policy Configuration</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">EICAR and a blocked category are stopped before HTTPS inspection even starts; switching to deep inspection breaks trust until the CA is installed</text>
+  <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">EICAR download attempt</text>
+  <text x="180.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">blocked, AV-Standard logged</text>
+  <rect x="360" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Filtered category browse</text>
+  <text x="480.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">blocked, WebFilter-Standard logged</text>
+  <rect x="680" y="130" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="800.0" y="171.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Full-Deep-Inspection + CA trust</text>
+  <text x="800.0" y="189.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">cert warning until CA installed</text>
+  <text x="800.0" y="207.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">then AV/IPS see HTTPS content</text>
+  <rect x="60" y="300" width="860" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="342.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="360.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">WebFilter-Standard given an explicit allow override for the previously blocked category</text>
+  <text x="490.0" y="378.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">re-attempt of the browse test now succeeds — the site is reachable, confirming the exception</text>
+  <text x="490.0" y="396.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">mechanism took effect; the override is reverted immediately afterward</text>
+  <line x1="60" y1="470" x2="100" y2="470" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="474" font-size="11" fill="#33415c">Blocked by default profile</text>
+  <line x1="372" y1="470" x2="412" y2="470" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="420" y="474" font-size="11" fill="#166534">Deep inspection trust path</text>
+  <line x1="684" y1="470" x2="724" y2="470" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="732" y="474" font-size="11" fill="#b91c1c">Deliberate exception (reverted)</text>
+</svg>

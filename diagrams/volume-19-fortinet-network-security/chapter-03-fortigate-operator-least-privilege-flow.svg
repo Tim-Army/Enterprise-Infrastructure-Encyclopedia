@@ -1,0 +1,36 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 3 lab flow: a factory-default FortiGate explored read-only as an operator, then a least-privilege account tested against a configuration write attempt</title>
+  <desc>
+    A factory-default FortiGate is explored read-only: status commands, Security Fabric topology (showing the single local device), and Security Rating (a low initial score with findings tied to the unlicensed, unhardened state). A least-privilege operator1 account and accprofile are created and logged into. As a negative test, operator1 attempts a configuration write (editing an interface); FortiOS denies it with a permission error, while get system status and other read commands continue to succeed in the same session — confirming the profile's read/write boundary is enforced precisely. The lab account and profile are removed afterward, returning the device to a clean baseline.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: A Least-Privilege Operator Account That Reads Everything and Writes Nothing</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">operator1's status commands succeed while a configuration write is denied outright in the same session</text>
+  <rect x="60" y="140" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Factory-default FortiGate</text>
+  <text x="190.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">read-only status + Security Rating</text>
+  <text x="190.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(low score, unhardened findings)</text>
+  <rect x="400" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="190.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">operator1 (least-privilege)</text>
+  <text x="520.0" y="208.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">read commands succeed normally</text>
+  <line x1="320" y1="195" x2="400" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">operator1: config write attempt</text>
+  <text x="810.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ permission error</text>
+  <line x1="640" y1="195" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="320" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="360.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the write is denied while read commands keep succeeding in the exact same session — the profile's</text>
+  <text x="490.0" y="378.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">read/write boundary is precise, not an all-or-nothing lockout.</text>
+  <line x1="60" y1="450" x2="100" y2="450" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="454" font-size="11" fill="#33415c">Unhardened baseline</text>
+  <line x1="309" y1="450" x2="349" y2="450" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="357" y="454" font-size="11" fill="#166534">Permitted read access</text>
+  <line x1="576" y1="450" x2="616" y2="450" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="624" y="454" font-size="11" fill="#b91c1c">Denied write attempt</text>
+</svg>

@@ -1,5 +1,9 @@
 # Chapter 09: NSE 4 FortiOS Administrator Training and Enterprise Capstone
 
+![Lab flow for this chapter: a full validation checklist across licensing, HA, routing, SD-WAN health, and VPN sessions is recorded as a dated baseline, and a configuration backup exports to external storage. As a negative test, a specific, realistic misconfiguration is introduced without being documented in advance; the resulting symptom is worked through the layered troubleshooting decision tree step by step until the actual root cause is correctly identified without guessing. The fault is corrected and the affected traffic flow confirmed restored, and the original backup is restored as a final validation that recovery returns the device to the exact baseline state.](../../../diagrams/volume-19-fortinet-network-security/chapter-09-capstone-troubleshooting-restore-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: full end-to-end capstone validation with a configuration backup, tested against a deliberately undocumented misconfiguration and restored via backup.*
+
 ## Learning Objectives
 
 - Map this volume's chapters to the NSE 4 FortiGate Security and FortiGate

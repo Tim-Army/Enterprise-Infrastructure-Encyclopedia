@@ -1,5 +1,9 @@
 # Chapter 01: NSE 1 Cybersecurity Awareness and Digital Safety
 
+![Lab flow for this chapter: a password manager's breach report identifies reused or weak credentials, and the highest-value reused account gets a unique generated password and authenticator-app MFA. As a negative test, signing in from a fresh private browser session using only the password is rejected or paused pending the second factor, confirming MFA is actually enforced rather than merely available but optional. Separately, a sample phishing message is analyzed without clicking any link, producing a written analysis of its structural indicators.](../../../diagrams/volume-19-fortinet-network-security/chapter-01-security-hygiene-mfa-enforcement-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: a personal security hygiene audit culminating in an MFA enforcement check, with a structural phishing-message analysis.*
+
 ## Learning Objectives
 
 - Describe the categories of threats an individual user encounters (phishing,

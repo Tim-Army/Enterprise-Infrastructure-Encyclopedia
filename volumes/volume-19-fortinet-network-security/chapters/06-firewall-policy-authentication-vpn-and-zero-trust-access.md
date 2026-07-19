@@ -1,5 +1,9 @@
 # Chapter 06: Firewall Policy, Authentication, VPN, and Zero-Trust Access
 
+![Lab flow for this chapter: outbound and inbound firewall policies complete the prior chapter's NAT design, confirmed by a translated source address in the session list, and a site-to-site IPsec tunnel to a second firewall peer establishes with confirmed security associations. As a negative test, the tunnel's pre-shared key is changed to an incorrect value on one side only, and the tunnel is brought up again; IKE negotiation fails and debug output explicitly reports an authentication failure, confirming the mismatch is detectable rather than failing silently. Restoring the correct key re-establishes the tunnel, and SSL VPN separately confirms a connected, authenticated session.](../../../diagrams/volume-19-fortinet-network-security/chapter-06-ipsec-psk-mismatch-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: firewall policy, authentication, and site-to-site/SSL VPN configuration, tested against a deliberate pre-shared key mismatch.*
+
 ## Learning Objectives
 
 - Explain FortiGate's sequential firewall policy match model and build

@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 8 lab topology: an SD-WAN zone with SLA-based path selection, tested against a simulated WAN1 outage, plus FortiManager and REST API validation</title>
+  <desc>
+    An SD-WAN zone with two members (WAN1/port1 and WAN2/port6) and an Internet health-check reports both members within SLA thresholds; the Critical-Apps rule currently selects WAN1. As a negative test, port1 is administratively brought down to simulate a WAN1 outage; the health-check reports member 1 as failed/out of SLA, and Critical-Apps automatically selects WAN2 with no manual intervention. Restoring port1 returns path selection to WAN1 once its SLA is met again. Separately, the device registers to FortiManager and appears managed and in-sync, and a read-only-scoped API token successfully retrieves system status via the REST API.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: SD-WAN Failover That Actually Reroutes Critical Traffic Automatically</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Bringing WAN1 down flips the SLA-based rule to WAN2 without any manual intervention, then reverts once WAN1 recovers</text>
+  <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">SD-WAN zone: WAN1 + WAN2</text>
+  <text x="180.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Internet health-check: both healthy</text>
+  <text x="180.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">Critical-Apps → currently WAN1</text>
+  <rect x="680" y="130" width="240" height="110" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="800.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">FortiManager + REST API</text>
+  <text x="800.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">device managed + in-sync</text>
+  <text x="800.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">read-only API returns status JSON</text>
+  <rect x="60" y="280" width="400" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="260.0" y="322.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="260.0" y="340.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">port1 (WAN1) brought down</text>
+  <text x="260.0" y="358.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">health-check: member 1 failed/out of SLA</text>
+  <text x="260.0" y="376.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">Critical-Apps auto-selects WAN2</text>
+  <rect x="500" y="280" width="400" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="700.0" y="322.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Recovery</text>
+  <text x="700.0" y="340.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">port1 restored, SLA met again</text>
+  <text x="700.0" y="358.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">Critical-Apps reverts to preferring</text>
+  <text x="700.0" y="376.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">WAN1 automatically</text>
+  <line x1="460" y1="345" x2="500" y2="345" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <line x1="60" y1="440" x2="100" y2="440" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="444" font-size="11" fill="#33415c">Healthy SD-WAN baseline</text>
+  <line x1="345" y1="440" x2="385" y2="440" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="393" y="444" font-size="11" fill="#6b7280">Central management/API</text>
+  <line x1="621" y1="440" x2="661" y2="440" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="669" y="444" font-size="11" fill="#b91c1c">Simulated outage + failover</text>
+</svg>

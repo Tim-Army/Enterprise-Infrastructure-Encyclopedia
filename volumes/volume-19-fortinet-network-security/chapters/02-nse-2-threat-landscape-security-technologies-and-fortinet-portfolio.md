@@ -1,5 +1,9 @@
 # Chapter 02: NSE 2 Threat Landscape, Security Technologies, and Fortinet Portfolio
 
+![Lab flow for this chapter: a technology-to-risk inventory for a scenario organization marks each security technology category deployed, partial, or not deployed, with each gap's uncovered kill-chain stage mapped against one current, real attack technique from public threat intelligence. As a negative test, one category is deliberately marked deployed with no corresponding real enforcement point; re-reading the inventory as an independent reviewer, the unsupported claim is identifiable from the coverage notes alone, proving coverage notes must describe actual enforcement, not just product ownership.](../../../diagrams/volume-19-fortinet-network-security/chapter-02-technology-risk-inventory-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: a technology-to-risk inventory validated against public threat intelligence, tested against a deliberately unsupported coverage claim.*
+
 ## Learning Objectives
 
 - Describe the evolution of cybercrime from individual actors to organized,

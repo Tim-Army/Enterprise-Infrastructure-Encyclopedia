@@ -1,5 +1,9 @@
 # Chapter 04: FortiGate First Deployment, Licensing, Management, and Hardening
 
+![Lab flow for this chapter: the lab firewall receives hostname, DNS, NTP, FortiCare licensing, a hardened management interface, a strong password policy, and a trusted-host restriction scoped to the lab management subnet. As a negative test, a workstation on a different subnet attempts to reach the GUI or SSH; the connection is refused or times out, confirming the trusted-host restriction is actively enforcing access rather than merely being configured. Two-factor authentication is then enabled on the admin account, and final validation confirms every hardening element together.](../../../diagrams/volume-19-fortinet-network-security/chapter-04-fortigate-trusthost-hardening-flow.svg)
+
+*Figure 4-1. Flow used throughout this chapter's Hands-On Lab: FortiGate first deployment and hardening, tested against a management-access attempt from outside the trusted subnet.*
+
 ## Learning Objectives
 
 - Describe FortiGate form factors and the FortiOS configuration model

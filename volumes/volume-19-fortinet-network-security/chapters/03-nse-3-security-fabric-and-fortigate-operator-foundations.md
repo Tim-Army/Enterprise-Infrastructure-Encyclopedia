@@ -1,5 +1,9 @@
 # Chapter 03: NSE 3 Security Fabric and FortiGate Operator Foundations
 
+![Lab flow for this chapter: a factory-default FortiGate is explored read-only, including its Security Fabric topology and a low initial Security Rating tied to its unlicensed, unhardened state. A least-privilege operator account is created and logged into. As a negative test, that account attempts a configuration write; FortiOS denies it with a permission error, while read commands continue to succeed in the same session, confirming the profile's read/write boundary is enforced precisely. The lab account is removed afterward, returning the device to a clean baseline.](../../../diagrams/volume-19-fortinet-network-security/chapter-03-fortigate-operator-least-privilege-flow.svg)
+
+*Figure 3-1. Flow used throughout this chapter's Hands-On Lab: a factory-default FortiGate explored read-only as an operator, then a least-privilege account tested against a configuration write attempt.*
+
 ## Learning Objectives
 
 - Describe the five pillars of the Fortinet Security Fabric architecture

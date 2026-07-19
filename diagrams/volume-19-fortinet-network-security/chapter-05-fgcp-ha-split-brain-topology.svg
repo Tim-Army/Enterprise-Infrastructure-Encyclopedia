@@ -1,0 +1,39 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 5 lab topology: interfaces, multi-VDOM routing, and a two-member FGCP HA cluster, tested against a dual-heartbeat-link failure</title>
+  <desc>
+    FGT-LAB-01 and FGT-LAB-02 form an FGCP HA cluster (priority 200 and 100) with heartbeat interfaces port4 and port5 connected between them; within minutes the cluster shows FGT-LAB-01 as primary and FGT-LAB-02 as secondary, with configuration changes synchronizing automatically between them. Separately, multi-VDOM mode connects VDOM-CORP and VDOM-DMZ over an inter-VDOM link with confirmed connectivity. As a negative test, both heartbeat interfaces on the secondary are disconnected simultaneously; each member may independently report itself as primary — a split-brain condition — until the heartbeat links are reconnected, at which point the cluster automatically resynchronizes to a single primary within a short interval.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: FGCP HA Split-Brain Reproduced, Then Automatically Resolved</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Cutting both heartbeat links at once lets each member claim primary; reconnecting them resynchronizes to a single primary again</text>
+  <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">FGT-LAB-01 (priority 200)</text>
+  <text x="180.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">primary, HA cluster healthy</text>
+  <rect x="360" y="130" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">FGT-LAB-02 (priority 100)</text>
+  <text x="480.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">secondary, config synced</text>
+  <text x="480.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">(negative test: heartbeat cut)</text>
+  <line x1="300" y1="185" x2="360" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="336.0" y="185.0" font-size="10.5" fill="#33415c">heartbeat port4/port5</text>
+  <rect x="680" y="130" width="240" height="110" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="800.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">VDOM-CORP ⇄ VDOM-DMZ</text>
+  <text x="800.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">inter-VDOM link, confirmed</text>
+  <text x="800.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">connectivity</text>
+  <rect x="60" y="300" width="860" height="150" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="343.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="361.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">both heartbeat interfaces on FGT-LAB-02 disconnected simultaneously</text>
+  <text x="490.0" y="379.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">each member may independently report itself as primary — split-brain, since neither can see the other</text>
+  <text x="490.0" y="397.4" text-anchor="middle" font-size="11" font-weight="400" fill="#14532d">heartbeat links reconnected → cluster automatically resynchronizes to a single primary within a short</text>
+  <text x="490.0" y="415.4" text-anchor="middle" font-size="11" font-weight="400" fill="#14532d">interval, demonstrating both the failure mode and FGCP's automatic recovery</text>
+  <line x1="60" y1="480" x2="100" y2="480" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="484" font-size="11" fill="#33415c">Primary member</text>
+  <line x1="264" y1="480" x2="304" y2="480" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="312" y="484" font-size="11" fill="#166534">Secondary member</text>
+  <line x1="486" y1="480" x2="526" y2="480" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="534" y="484" font-size="11" fill="#6b7280">Independent VDOM routing</text>
+</svg>
