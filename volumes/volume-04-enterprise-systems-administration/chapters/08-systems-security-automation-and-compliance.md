@@ -1,5 +1,9 @@
 # Chapter 08: Systems Security, Automation, and Compliance
 
+![Lab flow for this chapter: a baseline oscap xccdf eval against the CIS profile records a nonzero fail count on a fresh VM; harden-ssh.yml sets PermitRootLogin no via lineinfile and reloads sshd, and a re-scan shows the root-login rule now passing where it previously failed. As a negative test, PermitRootLogin is manually reverted to yes and sshd reloaded; a targeted re-scan catches the regression, showing the same rule failing again, demonstrating why the automation feedback loop must include re-scanning rather than trusting a one-time remediation.](../../../diagrams/volume-04-enterprise-systems-administration/chapter-08-openscap-ansible-remediation-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: an OpenSCAP baseline scan driving a targeted Ansible fix, with a regression re-scan proving the feedback loop actually closes.*
+
 ## Learning Objectives
 
 - Apply CIS Benchmark and DISA STIG hardening baselines through

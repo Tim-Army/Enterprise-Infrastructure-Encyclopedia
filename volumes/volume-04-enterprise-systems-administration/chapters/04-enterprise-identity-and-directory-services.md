@@ -1,5 +1,9 @@
 # Chapter 04: Enterprise Identity and Directory Services
 
+![Lab topology for this chapter: a Linux VM discovers and joins the example.com Active Directory domain using realmd/sssd/adcli with the svc-joiner account, then restricts interactive login to the linux-admins@example.com group; jdoe@example.com, a group member, resolves identity and obtains a Kerberos ticket successfully. Separately, a GPO named 'Lab Baseline' is created and linked to OU=Windows,OU=Servers,DC=example,DC=com; a Windows Server VM in that OU applies the policy after gpupdate /force. As a negative test, an AD user who is not a member of linux-admins is refused interactive login to the Linux host, while jdoe@example.com logs in successfully.](../../../diagrams/volume-04-enterprise-systems-administration/chapter-04-ad-domain-join-gpo-topology.svg)
+
+*Figure 4-1. Topology used throughout this chapter's Hands-On Lab: one Active Directory domain governing both a group-restricted Linux login and a GPO applied to a Windows Server in the same OU.*
+
 ## Learning Objectives
 
 - Explain Active Directory Domain Services (AD DS) architecture: forests,

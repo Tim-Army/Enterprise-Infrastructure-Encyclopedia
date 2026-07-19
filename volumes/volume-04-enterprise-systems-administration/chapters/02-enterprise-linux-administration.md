@@ -1,5 +1,9 @@
 # Chapter 02: Enterprise Linux Administration
 
+![Lab flow for this chapter: a system account labsvc owns /var/lib/labsvc/data (mode 750) and runs labsvc-heartbeat.timer, which writes a timestamp every minute via a oneshot service; the volume group backing / is extended with an attached disk (pvcreate, vgextend, lvextend +2G, filesystem grow), increasing available space; a sudoers rule scopes the labops group to only restart or check the status of labsvc-heartbeat.timer. As a negative test, a user outside labops is refused when attempting to restart the timer via sudo; after being added to labops, the same command succeeds.](../../../diagrams/volume-04-enterprise-systems-administration/chapter-02-confined-service-account-flow.svg)
+
+*Figure 2-1. Flow used throughout this chapter's Hands-On Lab: a confined service account, its systemd timer, an LVM storage extension, and a group-scoped sudo rule, all on a single lab VM.*
+
 ## Learning Objectives
 
 - Describe the common architecture shared by enterprise Linux

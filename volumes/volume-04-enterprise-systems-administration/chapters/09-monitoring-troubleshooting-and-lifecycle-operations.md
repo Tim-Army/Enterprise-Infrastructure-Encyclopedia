@@ -1,5 +1,9 @@
 # Chapter 09: Monitoring, Troubleshooting, and Lifecycle Operations
 
+![Lab flow for this chapter: a mock collector (nc -ul 2514) listens on UDP 2514; rsyslog is configured to forward only local0.crit messages to 127.0.0.1:2514. disk-healthcheck.sh, run with an intentionally low threshold (1%), logs at local0.crit and the message is received by the mock collector within seconds. As a negative test, the threshold is raised to 99% (unreachable by real usage); the script now logs at local0.info instead, and the mock collector receives nothing, while the local system log still records the informational entry — confirming the forwarding rule matches on severity specifically.](../../../diagrams/volume-04-enterprise-systems-administration/chapter-09-rsyslog-severity-forwarding-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: severity-filtered log forwarding, proven positive (crit forwarded) and negative (info stays local) in the same lab.*
+
 ## Learning Objectives
 
 - Build a host-level monitoring baseline that feeds the enterprise

@@ -1,5 +1,9 @@
 # Chapter 06: Configuration, Software, and Patch Management
 
+![Lab flow for this chapter: baseline.yml, run against localhost, uses the copy module to enforce /etc/lab-baseline.conf's content; the first real run reports changed=1 and the second reports changed=0, proving idempotency, and out-of-band drift is corrected automatically by re-running the same playbook. As a negative test, a copy of the playbook with an added shell append task reports changed=1 on every run and grows the file with a new timestamped line each time, demonstrating the anti-pattern the chapter's Design Considerations section warns against.](../../../diagrams/volume-04-enterprise-systems-administration/chapter-06-ansible-idempotent-baseline-flow.svg)
+
+*Figure 6-1. Flow used throughout this chapter's Hands-On Lab: an idempotent Ansible baseline that self-heals drift, contrasted with a non-idempotent shell-append anti-pattern.*
+
 ## Learning Objectives
 
 - Distinguish configuration management, software deployment, and patch

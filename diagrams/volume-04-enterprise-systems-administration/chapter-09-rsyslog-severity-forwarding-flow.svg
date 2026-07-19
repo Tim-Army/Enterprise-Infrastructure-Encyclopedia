@@ -1,0 +1,41 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 9 lab flow: a disk health-check script whose critical alerts are forwarded by rsyslog while informational logs are not</title>
+  <desc>
+    A mock collector (nc -ul 2514) listens on UDP 2514. rsyslog is configured to forward only local0.crit messages to 127.0.0.1:2514. disk-healthcheck.sh, run with an intentionally low threshold (1%), logs at local0.crit and the message is received by the mock collector within seconds. As a negative test, the threshold is raised to 99% (unreachable by real usage); the script now logs at local0.info instead, and the mock collector receives nothing, while the local system log still records the informational entry — confirming the forwarding rule matches on severity specifically, not on every script invocation.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: Severity-Filtered Log Forwarding to a Mock Collector</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">rsyslog forwards only local0.crit to a UDP listener; local0.info stays local, proving severity-based filtering</text>
+  <rect x="60" y="160" width="260" height="130" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="211.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">disk-healthcheck.sh</text>
+  <text x="190.0" y="229.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">threshold=1 → local0.crit</text>
+  <text x="190.0" y="247.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">threshold=99 → local0.info</text>
+  <rect x="380" y="160" width="260" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="510.0" y="202.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#111827">rsyslog</text>
+  <text x="510.0" y="220.7" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">60-forward-critical.conf</text>
+  <text x="510.0" y="238.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">local0.crit → omfwd UDP 2514</text>
+  <text x="510.0" y="256.7" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">local0.info → local only</text>
+  <rect x="700" y="160" width="220" height="130" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="810.0" y="211.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Mock Collector</text>
+  <text x="810.0" y="229.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">nc -ul 2514</text>
+  <text x="810.0" y="247.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">receives crit only</text>
+  <line x1="320" y1="225" x2="380" y2="225" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="356.0" y="225.0" font-size="10.5" fill="#33415c">logger -p local0.crit/.info</text>
+  <line x1="640" y1="225" x2="700" y2="225" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="676.0" y="225.0" font-size="10.5" fill="#166534">UDP 2514 (crit only)</text>
+  <rect x="60" y="400" width="860" height="100" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="436.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="454.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">threshold=99 → script logs at local0.info instead of local0.crit</text>
+  <text x="490.0" y="472.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">mock collector receives nothing; local journal/syslog still shows the &quot;(OK)&quot; entry</text>
+  <line x1="60" y1="570" x2="100" y2="570" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="574" font-size="11" fill="#33415c">Health-check output</text>
+  <line x1="309" y1="570" x2="349" y2="570" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="357" y="574" font-size="11" fill="#166534">Severity-filtered forwarding</text>
+  <line x1="639" y1="570" x2="679" y2="570" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="687" y="574" font-size="11" fill="#6b7280">Remote collector</text>
+</svg>

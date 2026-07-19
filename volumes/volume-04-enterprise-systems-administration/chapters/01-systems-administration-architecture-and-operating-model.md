@@ -1,5 +1,9 @@
 # Chapter 01: Systems Administration Architecture and Operating Model
 
+![Lab topology for this chapter: the administrator workstation's SSH config routes all access to web01 through bastion01 via ProxyJump, using a dedicated lab key; web01's hosts.allow/hosts.deny restrict sshd to only accept connections from bastion01's address (10.0.0.10). A simple inventory-drift check compares a static inventory file (web01, web02) against hosts that actually respond: web01 is OK, web02 is flagged as DRIFT because it does not exist. As a negative test, a direct connection attempt to web01 that bypasses bastion01 times out or is refused, confirming the management-plane control is enforced at the network layer, not by convention.](../../../diagrams/volume-04-enterprise-systems-administration/chapter-01-bastion-mediated-access-topology.svg)
+
+*Figure 1-1. Topology used throughout this chapter's Hands-On Lab: a bastion-mediated access pattern enforced at the network layer, plus a one-line inventory-drift check.*
+
 ## Learning Objectives
 
 - Describe the organizational and technical operating model that enterprise

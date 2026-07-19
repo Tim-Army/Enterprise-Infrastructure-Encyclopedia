@@ -1,0 +1,47 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab topology: a bastion host mediating SSH access to a workload host, with an inventory-drift check</title>
+  <desc>
+    The administrator workstation's SSH config routes all access to web01 through bastion01 via ProxyJump, using a dedicated lab key. web01's hosts.allow/hosts.deny restrict sshd to only accept connections from bastion01's address (10.0.0.10). A simple inventory-drift check compares a static inventory file (web01, web02) against hosts that actually respond: web01 is OK, web02 is flagged as DRIFT because it does not exist. As a negative test, a direct connection attempt to web01 that bypasses bastion01 (ProxyJump removed) times out or is refused, confirming the management-plane control is enforced at the network layer, not by convention.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Hands-On Lab: Bastion-Mediated Access and Inventory-Drift Check</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">web01 is reachable only via a ProxyJump through bastion01, enforced at the network layer by hosts.allow</text>
+  <rect x="60" y="160" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="201.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Administrator Workstation</text>
+  <text x="170.0" y="219.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">~/.ssh/config: ProxyJump</text>
+  <text x="170.0" y="237.4" text-anchor="middle" font-size="10" font-weight="400" fill="#6b7280">id_ed25519_lab</text>
+  <rect x="380" y="160" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="490.0" y="201.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">bastion01</text>
+  <text x="490.0" y="219.9" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1d4ed8">10.0.0.10</text>
+  <text x="490.0" y="237.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">management-plane host</text>
+  <rect x="700" y="160" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="201.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">web01</text>
+  <text x="810.0" y="219.9" text-anchor="middle" font-size="11" font-weight="700" fill="#14532d">sshd: allow 10.0.0.10 only</text>
+  <text x="810.0" y="237.9" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">(hosts.allow / hosts.deny)</text>
+  <line x1="280" y1="215" x2="380" y2="215" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="336.0" y="215.0" font-size="10.5" fill="#33415c">ssh -&gt; bastion01</text>
+  <line x1="600" y1="215" x2="700" y2="215" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="656.0" y="215.0" font-size="10.5" fill="#33415c">ProxyJump -&gt; web01</text>
+  <line x1="810" y1="270" x2="240" y2="340" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="531.0" y="305.0" font-size="10.5" fill="#b91c1c">direct connect, bypassing bastion01 (negative test)</text>
+  <rect x="60" y="340" width="240" height="90" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="180.0" y="371.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="180.0" y="389.0" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">ProxyJump removed, direct</text>
+  <text x="180.0" y="407.0" text-anchor="middle" font-size="10" font-weight="400" fill="#7f1d1d">connect to web01 → refused/timeout</text>
+  <rect x="380" y="340" width="540" height="110" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="650.0" y="372.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Inventory-Drift Check</text>
+  <text x="650.0" y="390.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">inventory.txt: web01, web02</text>
+  <text x="650.0" y="408.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">OK: web01 reachable</text>
+  <text x="650.0" y="426.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7c2d12">DRIFT: web02 in inventory but unreachable</text>
+  <line x1="60" y1="610" x2="100" y2="610" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="614" font-size="11" fill="#33415c">Mediated access path</text>
+  <line x1="318" y1="610" x2="358" y2="610" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="366" y="614" font-size="11" fill="#166534">Restricted destination</text>
+  <line x1="594" y1="610" x2="634" y2="610" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="642" y="614" font-size="11" fill="#b91c1c">Negative-test path</text>
+</svg>

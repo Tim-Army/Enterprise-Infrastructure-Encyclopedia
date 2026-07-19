@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 5 lab flow: CPU resource control with systemd CPUQuota, and job-overlap prevention with flock</title>
+  <desc>
+    cpu-burn.service runs a tight CPU-burning loop under systemd with CPUQuota=50%; systemd-cgtop confirms usage stabilizes near 50% of one core. As a negative test, removing CPUQuota= entirely and re-running the same service shows usage rise to approximately 100%, proving the earlier 50% figure came from the configured limit rather than an unrelated ceiling. Separately, slow-job.sh is launched twice back to back, each invocation guarded by flock on the same lock file; the second invocation is correctly refused while the first is still running, and the log shows only one start/finish pair.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: systemd CPU Quota Enforcement and flock Overlap Prevention</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">cpu-burn.service is capped at 50% of one core by CPUQuota; flock refuses a second overlapping job run</text>
+  <rect x="60" y="130" width="260" height="130" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">cpu-burn.service</text>
+  <text x="190.0" y="199.4" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">CPUQuota=50%</text>
+  <text x="190.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">systemd-cgtop: ~50% of 1 core</text>
+  <rect x="370" y="130" width="260" height="130" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="500.0" y="172.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="500.0" y="190.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#7f1d1d">CPUQuota= removed, re-run</text>
+  <text x="500.0" y="208.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">systemd-cgtop: ~100% of 1 core</text>
+  <text x="500.0" y="226.2" text-anchor="middle" font-size="10" font-weight="400" fill="#7f1d1d">confirms the 50% cap was real</text>
+  <line x1="320" y1="195" x2="370" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="680" y="130" width="240" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="800.0" y="172.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">slow-job.sh (20s runtime)</text>
+  <text x="800.0" y="190.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">flock /var/lock/slow-job.lock</text>
+  <text x="800.0" y="208.2" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">run #1: acquires lock, executes</text>
+  <text x="800.0" y="226.2" text-anchor="middle" font-size="10" font-weight="700" fill="#14532d">run #2: &quot;lock held&quot;, refused</text>
+  <rect x="60" y="340" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="380.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">/var/log/slow-job.log shows only one started/finished pair for the overlapping window</text>
+  <text x="490.0" y="398.0" text-anchor="middle" font-size="11" font-weight="400" fill="#374151">confirming flock prevented the second invocation from ever running concurrently</text>
+  <line x1="60" y1="570" x2="100" y2="570" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="574" font-size="11" fill="#33415c">CPU-bounded (enforced)</text>
+  <line x1="336" y1="570" x2="376" y2="570" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="384" y="574" font-size="11" fill="#b91c1c">Unbounded (negative test)</text>
+  <line x1="639" y1="570" x2="679" y2="570" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="687" y="574" font-size="11" fill="#166534">Overlap-safe job</text>
+</svg>

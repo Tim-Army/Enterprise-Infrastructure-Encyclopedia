@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 6 lab flow: an idempotent Ansible playbook enforcing and reconciling a configuration baseline</title>
+  <desc>
+    baseline.yml, run against localhost, uses the copy module to enforce /etc/lab-baseline.conf's content. Check mode shows the planned change without applying it; the first real run reports changed=1 and the second reports changed=0, proving idempotency. Out-of-band drift (sed-tampering the file) is corrected automatically by re-running the same playbook. As a negative test, a copy of the playbook with an added ansible.builtin.shell append task reports changed=1 on every run and grows the file with a new timestamped line each time, demonstrating the anti-pattern the chapter's Design Considerations section warns against.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 6 Hands-On Lab: Idempotent Ansible Baseline, Drift Correction, and a Non-Idempotent Anti-Pattern</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">baseline.yml converges /etc/lab-baseline.conf and self-heals drift; a shell-append task never converges</text>
+  <rect x="60" y="150" width="280" height="150" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="200.0" y="202.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">baseline.yml (localhost)</text>
+  <text x="200.0" y="220.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">copy: /etc/lab-baseline.conf</text>
+  <text x="200.0" y="238.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">run 1: changed=1</text>
+  <text x="200.0" y="256.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">run 2: changed=0 (idempotent)</text>
+  <rect x="400" y="150" width="260" height="150" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="530.0" y="202.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Drift + Reconciliation</text>
+  <text x="530.0" y="220.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">sed tampers baseline_version</text>
+  <text x="530.0" y="238.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">re-run baseline.yml</text>
+  <text x="530.0" y="256.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">file restored to baseline</text>
+  <line x1="340" y1="225" x2="400" y2="225" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="150" width="220" height="150" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="202.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">bad-baseline.yml</text>
+  <text x="810.0" y="220.2" text-anchor="middle" font-size="10" font-weight="400" fill="#7f1d1d">shell: echo &gt;&gt; ... (anti-pattern)</text>
+  <text x="810.0" y="238.2" text-anchor="middle" font-size="10" font-weight="400" fill="#7f1d1d">run 1: changed=1</text>
+  <text x="810.0" y="256.2" text-anchor="middle" font-size="10" font-weight="700" fill="#7f1d1d">run 2: changed=1 (again!)</text>
+  <line x1="660" y1="225" x2="700" y2="225" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="380" width="860" height="90" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="490.0" y="420.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="490.0" y="438.2" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">/etc/lab-baseline.conf grows a new timestamped line on every run — never converges, unlike baseline.yml</text>
+  <line x1="60" y1="570" x2="100" y2="570" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="574" font-size="11" fill="#33415c">Idempotent module</text>
+  <line x1="291" y1="570" x2="331" y2="570" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="339" y="574" font-size="11" fill="#166534">Drift self-healing</text>
+  <line x1="531" y1="570" x2="571" y2="570" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="579" y="574" font-size="11" fill="#b91c1c">Non-idempotent shell task</text>
+</svg>

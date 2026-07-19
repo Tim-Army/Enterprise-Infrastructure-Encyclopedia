@@ -1,5 +1,9 @@
 # Chapter 03: Windows Server Administration
 
+![Lab topology for this chapter: an administrator workstation running PowerShell 7.4+ uses WinRM to reach winsrv-lab — Test-WSMan confirms connectivity, Install-WindowsFeature adds the File Server role, and Invoke-Command creates an SMB share and registers a scheduled task that writes a heartbeat file every minute; the WinRM listener is then hardened by disabling Basic authentication and unencrypted traffic. As a negative test, an explicit Basic-authentication connection attempt from the workstation is rejected after the hardening step, while a subsequent Kerberos/Negotiate attempt with valid credentials succeeds.](../../../diagrams/volume-04-enterprise-systems-administration/chapter-03-winrm-remoting-hardening-topology.svg)
+
+*Figure 3-1. Topology used throughout this chapter's Hands-On Lab: PowerShell Remoting used end to end to provision a Windows Server role and then harden the WinRM listener that provisioned it.*
+
 ## Learning Objectives
 
 - Describe the Windows Server architecture: installation options, the

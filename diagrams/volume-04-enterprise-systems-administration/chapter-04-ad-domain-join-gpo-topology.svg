@@ -1,0 +1,42 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab topology: a Linux host and a Windows Server both governed by the same Active Directory domain</title>
+  <desc>
+    A Linux VM discovers and joins the example.com Active Directory domain using realmd/sssd/adcli with the svc-joiner account, then restricts interactive login to the linux-admins@example.com group. jdoe@example.com, a group member, resolves identity and obtains a Kerberos ticket successfully. Separately, a GPO named 'Lab Baseline' is created and linked to OU=Windows,OU=Servers,DC=example,DC=com, setting a screen-lock inactivity timeout; a Windows Server VM in that OU applies the policy after gpupdate /force. As a negative test, an AD user who is not a member of linux-admins is refused interactive login to the Linux host, while jdoe@example.com logs in successfully.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: Active Directory Domain Join, Group-Restricted Login, and GPO Application</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A Linux host joins example.com via realmd/sssd; a GPO applies to a Windows Server in the same OU</text>
+  <rect x="370" y="110" width="220" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="141.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">example.com</text>
+  <text x="480.0" y="159.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Active Directory domain</text>
+  <text x="480.0" y="177.9" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">domain controller</text>
+  <rect x="90" y="260" width="260" height="130" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="220.0" y="302.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#111827">Linux VM</text>
+  <text x="220.0" y="320.7" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">realm join --user=svc-joiner</text>
+  <text x="220.0" y="338.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">realm permit -g linux-admins</text>
+  <text x="220.0" y="356.7" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">jdoe@example.com → valid TGT</text>
+  <rect x="610" y="260" width="260" height="130" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="740.0" y="302.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#111827">Windows Server VM</text>
+  <text x="740.0" y="320.7" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">OU=Windows,OU=Servers</text>
+  <text x="740.0" y="338.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">GPO 'Lab Baseline' applied</text>
+  <text x="740.0" y="356.7" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">gpupdate /force → gpresult /r</text>
+  <line x1="430" y1="200" x2="250" y2="260" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="346.0" y="230.0" font-size="10.5" fill="#6b7280">realm join / Kerberos</text>
+  <line x1="530" y1="200" x2="710" y2="260" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="626.0" y="230.0" font-size="10.5" fill="#6b7280">GPO link (OU=Windows,OU=Servers)</text>
+  <rect x="90" y="440" width="780" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="480.0" y="486.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="480.0" y="504.4" text-anchor="middle" font-size="11" font-weight="400" fill="#7f1d1d">AD user NOT in linux-admins attempts interactive login to the Linux VM → refused</text>
+  <text x="480.0" y="522.4" text-anchor="middle" font-size="11" font-weight="400" fill="#14532d">jdoe@example.com (linux-admins member) attempts the same login → succeeds</text>
+  <line x1="220" y1="390" x2="220" y2="440" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <line x1="90" y1="610" x2="130" y2="610" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="138" y="614" font-size="11" fill="#33415c">Linux domain integration</text>
+  <line x1="384" y1="610" x2="424" y2="610" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="432" y="614" font-size="11" fill="#166534">Windows GPO application</text>
+</svg>

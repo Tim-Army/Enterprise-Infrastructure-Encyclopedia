@@ -1,5 +1,9 @@
 # Chapter 05: Compute, Process, and Service Management
 
+![Lab flow for this chapter: cpu-burn.service runs a tight CPU-burning loop under systemd with CPUQuota=50%, and systemd-cgtop confirms usage stabilizes near 50% of one core. As a negative test, removing CPUQuota= entirely and re-running the same service shows usage rise to approximately 100%, proving the earlier 50% figure came from the configured limit. Separately, slow-job.sh is launched twice back to back, each invocation guarded by flock on the same lock file; the second invocation is correctly refused while the first is still running, and the log shows only one start/finish pair.](../../../diagrams/volume-04-enterprise-systems-administration/chapter-05-cpu-quota-flock-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: systemd CPU quota enforcement proven by its own negative test, alongside flock-guarded overlap prevention for a scheduled job.*
+
 ## Learning Objectives
 
 - Explain the process lifecycle on Linux (fork/exec, process states) and

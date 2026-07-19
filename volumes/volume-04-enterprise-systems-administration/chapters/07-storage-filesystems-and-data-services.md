@@ -1,5 +1,9 @@
 # Chapter 07: Storage, Filesystems, and Data Services
 
+![Lab topology for this chapter: nfs01 exports /data/labexport read-write to the 10.20.30.0/24 subnet only; nfsclient01, inside that subnet, mounts the export over NFSv4 and reads the seeded file successfully. nfs01 applies an XFS project quota (10 MiB hard limit) to the exported directory; writing 15 MiB from nfsclient01 fails partway with 'Disk quota exceeded' once the limit is reached. As a negative test, a third host outside 10.20.30.0/24 attempting the same mount is refused, confirming the subnet restriction is enforced by the NFS server itself.](../../../diagrams/volume-04-enterprise-systems-administration/chapter-07-nfsv4-export-quota-topology.svg)
+
+*Figure 7-1. Topology used throughout this chapter's Hands-On Lab: a subnet-restricted NFSv4 export with an XFS project quota, verified from both an authorized and an unauthorized client.*
+
 ## Learning Objectives
 
 - Compare enterprise-relevant filesystems — ext4, XFS, and Btrfs on
