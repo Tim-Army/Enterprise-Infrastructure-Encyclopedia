@@ -87,14 +87,14 @@ for volume_dir in volumes/*/; do
     echo "<h2>Complete volume</h2>"
     echo "<ul>"
     echo "<li><a href=\"complete-volume.html\">Read online (HTML)</a></li>"
-    echo "<li><a href=\"../../epub/$slug.epub\">Download (EPUB)</a></li>"
+    echo "<li><a href=\"../../epub/complete-encyclopedia.epub\">Download the complete encyclopedia (EPUB)</a></li>"
     echo "</ul>"
     echo "<h2>Chapters</h2>"
     echo "<ul>"
     for chapter in "$volume_dir"chapters/*.md; do
       base="$(basename "$chapter" .md)"
       chtitle="$(head -1 "$chapter" | sed -E 's/^# //')"
-      echo "<li><a href=\"$base.html\">$chtitle</a> (<a href=\"../../epub/$slug/$base.epub\">EPUB</a>)</li>"
+      echo "<li><a href=\"$base.html\">$chtitle</a></li>"
     done
     echo "</ul>"
     page_tail

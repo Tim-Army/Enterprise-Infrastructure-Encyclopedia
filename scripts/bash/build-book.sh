@@ -13,6 +13,10 @@
 # chapters plus the combined volume edition). --chapter builds only that
 # one chapter.
 #
+# HTML is produced per chapter, per volume and for the complete series.
+# EPUB is produced only as a single complete-encyclopedia.epub: the whole
+# work is one book, so --volume/--chapter scoping affects HTML alone.
+#
 # Links to other chapters (volumes/*/chapters/*.md) and to volume READMEs
 # (volumes/*/README.md) are rewritten by
 # scripts/bash/lib/rewrite_chapter_links.py before each Pandoc invocation:
@@ -102,32 +106,30 @@ first_line_title() {
   head -1 "$1" | sed -E 's/^# (Chapter [0-9]+: )?//'
 }
 
-# The deployed portal URL, read from the link-rewriting library so the two
-# never drift apart.
-portal_base_url="$(python3 -c 'import sys; sys.path.insert(0, "scripts/bash/lib"); import rewrite_chapter_links; print(rewrite_chapter_links.PORTAL_BASE_URL)')"
-
-# Renders publishing/title-page.md with its date placeholders filled in and
-# prints the path to the rendered copy. Prepended as the first input file to
-# every build so it becomes the first Table of Contents entry.
+# Renders publishing/title-page.md and prints the path to the rendered copy.
 #
-# Any arguments are appended as up-navigation links, each given as
-# "Label|href". Only EPUB builds pass them: an EPUB nav document may only
-# reference resources inside the book, so a chapter's link up to its volume
-# has to live in the title page body instead. HTML gets the same navigation
-# as real table-of-contents entries via inject_toc_links.py.
+# This is the cover page of the encyclopedia as a whole, so it is built into
+# the complete-encyclopedia editions only. Chapters do not carry a copy of
+# any title page; they link up to this one and to their volume's instead.
 title_page_for() {
-  local dest="$link_tmp/title-page.md" pair label href
-  sed -e "s/{{CREATED_DATE}}/$title_page_created/" \
-      -e "s/{{UPDATED_DATE}}/$title_page_updated/" \
-      publishing/title-page.md > "$dest"
-  if [[ $# -gt 0 ]]; then
-    printf '\n' >> "$dest"
-    for pair in "$@"; do
-      label="${pair%%|*}"
-      href="${pair#*|}"
-      printf -- '- [%s](%s)\n' "$label" "$href" >> "$dest"
-    done
-  fi
+  local dest="$link_tmp/title-page.md"
+  python3 "$repo_root/scripts/bash/lib/render_template.py" \
+    publishing/title-page.md \
+    "CREATED_DATE=$title_page_created" \
+    "UPDATED_DATE=$title_page_updated" > "$dest"
+  printf '%s' "$dest"
+}
+
+# Renders the title page for a single volume, given that volume's title, and
+# prints the path to the rendered copy. Each volume edition opens with its
+# own title page; chapters of that volume link up to it.
+volume_title_page_for() {
+  local vol_title="$1" dest="$link_tmp/volume-title-page.md"
+  python3 "$repo_root/scripts/bash/lib/render_template.py" \
+    publishing/volume-title-page.md \
+    "VOLUME_TITLE=$vol_title" \
+    "CREATED_DATE=$title_page_created" \
+    "UPDATED_DATE=$title_page_updated" > "$dest"
   printf '%s' "$dest"
 }
 
@@ -163,14 +165,13 @@ resource_path_for() {
 
 build_chapter_html() {
   local chapter_file="$1" volume_slug="$2"
-  local base title outdir rewritten rewritten_title_page
+  local base title outdir rewritten
   base="$(basename "$chapter_file" .md)"
   title="$(first_line_title "$chapter_file")"
   outdir="output/html/$volume_slug"
   mkdir -p "$outdir"
   rewritten="$(rewrite_file "$chapter_file" html-flat "$volume_slug")"
-  rewritten_title_page="$(title_page_for)"
-  pandoc "$rewritten_title_page" "$rewritten" \
+  pandoc "$rewritten" \
     --standalone --embed-resources \
     --resource-path="$(resource_path_for "$rewritten")" \
     --css=publishing/web.css \
@@ -186,31 +187,6 @@ build_chapter_html() {
     "Volume title page|complete-volume.html#title-page"
 }
 
-build_chapter_epub() {
-  local chapter_file="$1" volume_slug="$2"
-  local base title outdir rewritten rewritten_title_page rewritten_colophon
-  base="$(basename "$chapter_file" .md)"
-  title="$(first_line_title "$chapter_file")"
-  outdir="output/epub/$volume_slug"
-  mkdir -p "$outdir"
-  rewritten="$(rewrite_file "$chapter_file" epub-absolute)"
-  rewritten_title_page="$(title_page_for \
-    "Encyclopedia title page|$portal_base_url/html/complete-encyclopedia.html#title-page" \
-    "Volume title page|$portal_base_url/html/$volume_slug/complete-volume.html#title-page")"
-  # Leading/trailing sections rather than --include-after-body: EPUB output
-  # splits into one XHTML file per top-level section, and an after-body
-  # include is appended to every one of them, which would repeat the GitHub
-  # link on the title page as well as the chapter.
-  rewritten_colophon="$(rewrite_file "publishing/colophon.md" epub-absolute)"
-  pandoc "$rewritten_title_page" "$rewritten" "$rewritten_colophon" \
-    --toc --toc-depth=2 \
-    --resource-path="$(resource_path_for "$rewritten")" \
-    --css=publishing/web.css \
-    --metadata "title=$title" \
-    --metadata "author=$author" \
-    -o "$outdir/$base.epub"
-}
-
 build_volume_html() {
   local volume_dir="$1" volume_slug title chapters ch rewritten_readme rewritten_chapters rewritten_title_page
   volume_dir="${1%/}"
@@ -224,7 +200,7 @@ build_volume_html() {
   for ch in "${chapters[@]}"; do
     rewritten_chapters+=("$(rewrite_file "$ch" html-flat "$volume_slug")")
   done
-  rewritten_title_page="$(title_page_for)"
+  rewritten_title_page="$(volume_title_page_for "$title")"
   pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" \
     --standalone --embed-resources \
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
@@ -238,35 +214,6 @@ build_volume_html() {
     -o "output/html/$volume_slug/complete-volume.html"
   inject_toc_links "output/html/$volume_slug/complete-volume.html" \
     "Encyclopedia title page|../complete-encyclopedia.html#title-page"
-}
-
-build_volume_epub() {
-  local volume_dir="$1" volume_slug title chapters ch rewritten_readme rewritten_chapters rewritten_colophon rewritten_title_page
-  volume_dir="${1%/}"
-  volume_slug="$(basename "$volume_dir")"
-  title="$(first_line_title "$volume_dir/README.md")"
-  rewritten_readme="$(rewrite_file "$volume_dir/README.md" epub-absolute)"
-  chapters=()
-  while IFS= read -r f; do chapters+=("$f"); done < <(find "$volume_dir/chapters" -name "*.md" | sort)
-  rewritten_chapters=()
-  for ch in "${chapters[@]}"; do
-    rewritten_chapters+=("$(rewrite_file "$ch" epub-absolute)")
-  done
-  # A trailing colophon section, not --include-after-body, so the GitHub
-  # link appears exactly once at the end of the book instead of once per
-  # internal chapter-split XHTML file. The title page is prepended the same
-  # way, as a leading section, so it becomes the first Table of Contents
-  # entry rather than repeating on every chapter's own split file.
-  rewritten_colophon="$(rewrite_file "publishing/colophon.md" epub-absolute)"
-  rewritten_title_page="$(title_page_for \
-    "Encyclopedia title page|$portal_base_url/html/complete-encyclopedia.html#title-page")"
-  pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" "$rewritten_colophon" \
-    --toc --toc-depth=2 \
-    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
-    --css=publishing/web.css \
-    --metadata "title=$title" \
-    --metadata "author=$author" \
-    -o "output/epub/$volume_slug.epub"
 }
 
 build_series_html() {
@@ -312,11 +259,17 @@ build_series_epub() {
     -o "output/epub/complete-encyclopedia.epub"
 }
 
+# The EPUB edition is the encyclopedia as a single book, so it is only ever
+# produced by an unscoped build. Say so rather than silently emitting nothing.
+if [[ "$want_epub" -eq 1 && ( -n "$chapter" || -n "$volume" ) ]]; then
+  echo "build-book.sh: note — EPUB is built only for the complete encyclopedia;" >&2
+  echo "build-book.sh:        --volume/--chapter affects HTML output only." >&2
+fi
+
 if [[ -n "$chapter" ]]; then
   volume_slug="$(basename "$(dirname "$(dirname "$chapter")")")"
   echo "build-book.sh: building chapter $chapter"
   [[ "$want_html" -eq 1 ]] && build_chapter_html "$chapter" "$volume_slug"
-  [[ "$want_epub" -eq 1 ]] && build_chapter_epub "$chapter" "$volume_slug"
 elif [[ -n "$volume" ]]; then
   volume_dir="volumes/$volume"
   if [[ ! -d "$volume_dir" ]]; then
@@ -326,20 +279,16 @@ elif [[ -n "$volume" ]]; then
   echo "build-book.sh: building volume $volume"
   for ch in "$volume_dir"/chapters/*.md; do
     [[ "$want_html" -eq 1 ]] && build_chapter_html "$ch" "$volume"
-    [[ "$want_epub" -eq 1 ]] && build_chapter_epub "$ch" "$volume"
   done
   [[ "$want_html" -eq 1 ]] && build_volume_html "$volume_dir"
-  [[ "$want_epub" -eq 1 ]] && build_volume_epub "$volume_dir"
 else
   echo "build-book.sh: building all 24 volumes and the complete series"
   for volume_dir in volumes/*/; do
     volume_slug="$(basename "${volume_dir%/}")"
     for ch in "$volume_dir"chapters/*.md; do
       [[ "$want_html" -eq 1 ]] && build_chapter_html "$ch" "$volume_slug"
-      [[ "$want_epub" -eq 1 ]] && build_chapter_epub "$ch" "$volume_slug"
     done
     [[ "$want_html" -eq 1 ]] && build_volume_html "$volume_dir"
-    [[ "$want_epub" -eq 1 ]] && build_volume_epub "$volume_dir"
     echo "build-book.sh: built $volume_slug"
   done
   [[ "$want_html" -eq 1 ]] && build_series_html
