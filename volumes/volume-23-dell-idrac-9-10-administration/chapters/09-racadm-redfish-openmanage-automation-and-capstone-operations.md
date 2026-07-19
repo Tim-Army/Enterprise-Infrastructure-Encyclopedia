@@ -1,5 +1,9 @@
 # Chapter 09: RACADM, Redfish, OpenManage, Automation, and Capstone Operations
 
+![Flow diagram showing a full provisioning runbook combining network, identity, storage, and firmware baselines from every prior chapter into a Virtual Media OS deployment recorded end to end in the Lifecycle Log, with the Virtual Media fail-safe from Chapter 5 re-verified inside the combined sequence.](../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-09-capstone-provisioning-runbook-flow.svg)
+
+*Figure 9-1. The capstone provisioning runbook exercised in this chapter's lab, including the re-verified Virtual Media negative test.*
+
 ## Learning Objectives
 
 - Compare RACADM, Redfish, and WS-Management as iDRAC automation

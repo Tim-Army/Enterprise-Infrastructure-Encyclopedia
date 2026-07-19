@@ -1,5 +1,9 @@
 # Chapter 08: Firmware, iDRAC, BIOS, Lifecycle Controller, and Platform Updates
 
+![Flow diagram showing an iDRAC firmware update staged, applied through a controller restart, and confirmed in the Lifecycle Log, alongside a staged update referencing a nonexistent image URI that fails before being applied.](../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-08-idrac-firmware-update-rollback-flow.svg)
+
+*Figure 8-1. The firmware update and rollback flow exercised in this chapter's lab, including the unreachable-image negative test.*
+
 ## Learning Objectives
 
 - Explain how firmware update responsibility is divided between the

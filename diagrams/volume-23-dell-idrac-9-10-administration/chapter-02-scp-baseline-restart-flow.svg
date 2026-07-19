@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 2 lab flow: an iDRAC configuration baseline exported and preserved across a soft controller restart, tested against an SCP import targeting a component group the hardware does not have</title>
+  <desc>
+    The full iDRAC configuration exports to a network share as an XML baseline, alongside a smaller iDRAC-only component export for comparison. A soft controller restart drops the current session and makes the GUI and API briefly unreachable, with no effect on host OS uptime; once the controller returns, the configuration matches the baseline exported before the restart. As a negative test, an SCP import targets a RAID component group on hardware that does not have a PERC controller; the job reports a component-level failure rather than succeeding, confirming SCP import validates against actual present hardware before applying anything.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 2 Hands-On Lab: SCP Import Validates Against Actual Present Hardware Rather Than Succeeding Silently</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A known-good configuration baseline survives a non-disruptive controller restart intact; an import for hardware that isn't there fails at the component level</text>
+  <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">systemconfig export → XML baseline</text>
+  <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">racreset soft</text>
+  <text x="190.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">brief unreachability, no host reboot</text>
+  <rect x="400" y="140" width="240" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Controller returns</text>
+  <text x="520.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">configuration matches</text>
+  <text x="520.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">pre-restart baseline exactly</text>
+  <line x1="320" y1="200" x2="400" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="177.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="195.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">import RAID component group</text>
+  <text x="810.0" y="213.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">onto hardware without a PERC</text>
+  <text x="810.0" y="231.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ component-level failure</text>
+  <line x1="640" y1="200" x2="700" y2="200" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="330" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="370.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">lab-baseline.xml is retained for reuse in later chapters, where specific component groups are</text>
+  <text x="490.0" y="388.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">imported after deliberate configuration changes are made.</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="464" font-size="11" fill="#33415c">Baseline export + restart</text>
+  <line x1="363" y1="460" x2="403" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="411" y="464" font-size="11" fill="#166534">Preserved configuration</text>
+  <line x1="648" y1="460" x2="688" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="696" y="464" font-size="11" fill="#b91c1c">Rejected unsupported import</text>
+</svg>

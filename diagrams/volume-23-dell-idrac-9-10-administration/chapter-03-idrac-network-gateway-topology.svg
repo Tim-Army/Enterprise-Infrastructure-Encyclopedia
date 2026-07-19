@@ -1,0 +1,41 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 3 lab topology: static IPv4 addressing, DNS registration, and NTP configured on a lab iDRAC and cross-validated over Redfish, tested against a deliberately wrong gateway</title>
+  <desc>
+    A static IPv4 address replaces DHCP addressing, DNS registration makes the iDRAC resolvable by hostname within minutes, and NTP configuration brings its reported time in line with real time. Querying the Redfish EthernetInterfaces resource confirms the same address, mask, and gateway configured through RACADM. As a negative test, the gateway is deliberately set wrong; the iDRAC remains reachable from the same local subnet, since local-subnet traffic never needs a gateway, while any off-subnet or routed test fails — isolating the fault precisely to the deliberately broken gateway rather than the network configuration as a whole. The correct gateway is restored afterward.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: A Wrong Gateway Isolates the Fault to Routed Traffic, Not the Whole Network Path</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Static IPv4, DNS registration, and NTP are all confirmed consistent between RACADM and Redfish; a bad gateway breaks only what a gateway is responsible for</text>
+  <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Static IPv4 + DNS registration</text>
+  <text x="180.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">idrac-lab-01 resolves to new IP</text>
+  <rect x="360" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">NTP configured</text>
+  <text x="480.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">reported time matches</text>
+  <text x="480.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">real time within seconds</text>
+  <line x1="300" y1="185" x2="360" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Redfish EthernetInterfaces</text>
+  <text x="810.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">confirms same address,</text>
+  <text x="810.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">mask, and gateway</text>
+  <line x1="600" y1="185" x2="700" y2="185" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="360" y="300" width="400" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="560.0" y="341.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="560.0" y="359.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">wrong gateway set</text>
+  <text x="560.0" y="377.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">local subnet: reachable / off-subnet: fails</text>
+  <line x1="480" y1="240" x2="480" y2="300" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="460" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="500.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the fault is scoped precisely to routed reachability, not local connectivity — exactly what a</text>
+  <text x="490.0" y="518.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">gateway is and isn't responsible for.</text>
+  <line x1="60" y1="590" x2="100" y2="590" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="594" font-size="11" fill="#33415c">Network + time baseline</text>
+  <line x1="345" y1="590" x2="385" y2="590" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="393" y="594" font-size="11" fill="#166534">Redfish cross-check</text>
+  <line x1="594" y1="590" x2="634" y2="590" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="642" y="594" font-size="11" fill="#b91c1c">Gateway-scoped fault</text>
+</svg>

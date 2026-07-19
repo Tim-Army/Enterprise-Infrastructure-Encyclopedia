@@ -1,5 +1,9 @@
 # Chapter 06: Hardware Health, Power, Thermal, Logs, and Support
 
+![Flow diagram showing an email alert delivered end to end and confirmed in the Lifecycle Log alongside a generated Tech Support Report bundle, and an unreachable SMTP relay causing the same test alert to fail with a delivery error instead of silently succeeding.](../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-06-idrac-alerting-lifecycle-log-flow.svg)
+
+*Figure 6-1. The alerting pipeline and Lifecycle Log validation flow exercised in this chapter's lab, including the unreachable-relay negative test.*
+
 ## Learning Objectives
 
 - Interpret iDRAC's hardware health rollup and sensor data for CPU,

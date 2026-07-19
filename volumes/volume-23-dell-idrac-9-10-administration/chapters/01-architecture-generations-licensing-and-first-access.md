@@ -1,5 +1,9 @@
 # Chapter 01: Architecture, Generations, Licensing, and First Access
 
+![Flow diagram showing first access to a lab iDRAC validated identically from RACADM and Redfish after a mandatory password change, then the retired factory-default password confirmed to fail authentication.](../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-01-idrac-first-access-validation-flow.svg)
+
+*Figure 1-1. The first-access and dual-path identity validation flow exercised in this chapter's lab, including the retired-credential negative test.*
+
 ## Learning Objectives
 
 - Explain what the integrated Dell Remote Access Controller (iDRAC) is, how
