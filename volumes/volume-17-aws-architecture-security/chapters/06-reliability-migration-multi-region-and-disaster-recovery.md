@@ -1,5 +1,9 @@
 # Chapter 06: Reliability, Migration, Multi-Region, and Disaster Recovery
 
+![Lab topology for this chapter: a health check against a primary endpoint reports healthy, and a DNS record resolves via CNAME to that primary endpoint. As a negative test, the primary endpoint is made to fail its health check; after the configured failure threshold, the health check reports unhealthy and the same DNS query now resolves to the secondary endpoint instead, confirming automatic failover occurred with no manual DNS record change.](../../../diagrams/volume-17-aws-architecture-security/chapter-06-route53-failover-topology.svg)
+
+*Figure 6-1. Topology used throughout this chapter's Hands-On Lab: Route 53 failover routing between a primary and secondary endpoint, tested against a failed health check.*
+
 ## Learning Objectives
 
 - Define Recovery Time Objective (RTO) and Recovery Point Objective (RPO)

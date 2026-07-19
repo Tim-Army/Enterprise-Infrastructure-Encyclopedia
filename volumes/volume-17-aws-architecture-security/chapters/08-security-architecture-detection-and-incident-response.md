@@ -1,5 +1,9 @@
 # Chapter 08: Security Architecture, Detection, and Incident Response
 
+![Lab flow for this chapter: GuardDuty generates sample findings covering every finding type; an EventBridge rule matching all GuardDuty findings routes them to SNS, and the subscribed email receives a notification. As a negative test, the EventBridge rule's pattern is tightened to match only critical severity, and sample findings are regenerated, most of which fall below that severity; no new SNS notification arrives, confirming the tightened pattern correctly filters out findings below the new threshold rather than notifying on everything regardless of the pattern.](../../../diagrams/volume-17-aws-architecture-security/chapter-08-guardduty-eventbridge-severity-flow.svg)
+
+*Figure 8-1. Flow used throughout this chapter's Hands-On Lab: GuardDuty sample findings routed through EventBridge to SNS, tested against a severity-tightened event pattern.*
+
 ## Learning Objectives
 
 - Enable and interpret Amazon GuardDuty findings across account,

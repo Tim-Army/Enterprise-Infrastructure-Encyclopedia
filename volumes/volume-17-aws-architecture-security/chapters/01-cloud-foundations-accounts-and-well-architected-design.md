@@ -1,5 +1,9 @@
 # Chapter 01: Cloud Foundations, Accounts, and Well-Architected Design
 
+![Lab flow for this chapter: caller identity and Region defaults are confirmed, root is verified to have no access keys, and a monthly cost guardrail budget is created and confirmed with a near-zero actual spend; a sample workload registers in the Well-Architected Tool. As a negative test, a second budget is submitted with an invalid time unit; the Budgets API returns a validation error rather than creating a partially configured guardrail, confirming malformed input is rejected outright.](../../../diagrams/volume-17-aws-architecture-security/chapter-01-account-baseline-budget-guardrail-flow.svg)
+
+*Figure 1-1. Flow used throughout this chapter's Hands-On Lab: an AWS account baseline hardened with a cost guardrail and a registered Well-Architected workload, tested against malformed budget input.*
+
 ## Learning Objectives
 
 - Explain the AWS shared responsibility model and identify which controls

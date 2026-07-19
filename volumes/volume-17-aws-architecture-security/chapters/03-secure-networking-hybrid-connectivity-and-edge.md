@@ -1,5 +1,9 @@
 # Chapter 03: Secure Networking, Hybrid Connectivity, and Edge
 
+![Lab topology for this chapter: a two-AZ VPC with public and private subnets hosts a test instance behind a security group; a Reachability Analyzer path to the app instance's permitted port succeeds, confirming the security group permits that path. As a negative test, the identical analysis is re-run against a port the security group does not permit; the analysis succeeds but reports no path found, with the explanation identifying the security group as the specific blocking component — proving the boundary is enforced, not merely assumed from the rule definitions.](../../../diagrams/volume-17-aws-architecture-security/chapter-03-vpc-reachability-analyzer-topology.svg)
+
+*Figure 3-1. Topology used throughout this chapter's Hands-On Lab: a two-AZ VPC with security groups validated by VPC Reachability Analyzer, tested against a blocked port.*
+
 ## Learning Objectives
 
 - Design a multi-AZ Amazon VPC with public, private, and isolated subnet

@@ -1,5 +1,9 @@
 # Chapter 04: Compute, Containers, Serverless, and Application Architecture
 
+![Lab flow for this chapter: a Lambda function scoped to only one DynamoDB write permission and basic logging sits behind an HTTP API Gateway route; invoking the endpoint writes a record successfully. As a negative test, that permission is deleted from the function's execution role and the endpoint invoked again; the API now returns a server error, and the function's logs show an access-denied error from DynamoDB specifically — confirming the least-privilege grant, not an implicit broader permission, was what allowed the write to succeed in the first place.](../../../diagrams/volume-17-aws-architecture-security/chapter-04-lambda-least-privilege-flow.svg)
+
+*Figure 4-1. Flow used throughout this chapter's Hands-On Lab: a Lambda function behind an HTTP API Gateway with a least-privilege execution role, tested against a revoked IAM permission.*
+
 ## Learning Objectives
 
 - Select among Amazon EC2, Amazon ECS, Amazon EKS, and AWS Lambda for a

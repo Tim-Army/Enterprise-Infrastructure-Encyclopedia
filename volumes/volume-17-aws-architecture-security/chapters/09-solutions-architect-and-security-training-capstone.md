@@ -1,5 +1,9 @@
 # Chapter 09: Solutions Architect and Security Training Capstone
 
+![Lab flow for this chapter: the capstone Terraform stack applies cleanly, and posting to the deployed API endpoint writes a database item end to end; a posture-check script reports account guardrail status, storage exposure, detection-service enrollment, and active alarms, flagging any gap honestly, and the workload registers in the Well-Architected Tool with at least one real cost-optimization finding recorded. As a negative test, the Lambda function is invoked with an unsupported action; it is rejected in application logic or denied at the IAM layer, confirming the scoped policy from the individual chapter's lab still blocks anything beyond its granted actions in this fully composed stack.](../../../diagrams/volume-17-aws-architecture-security/chapter-09-capstone-posture-check-iam-boundary-flow.svg)
+
+*Figure 9-1. Flow used throughout this chapter's Hands-On Lab: the volume's minimal secure serverless capstone stack exercised end to end, audited by a posture-check script, and tested against an out-of-scope Lambda action.*
+
 ## Learning Objectives
 
 - Synthesize the account, identity, network, compute, data, reliability,

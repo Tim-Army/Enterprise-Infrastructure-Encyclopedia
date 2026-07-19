@@ -1,5 +1,9 @@
 # Chapter 02: Multi-Account Identity, Governance, and Landing Zones
 
+![Lab topology for this chapter: a Service Control Policy attached to a sandbox organizational unit denies all actions outside one approved Region, with narrow exceptions for IAM, Organizations, STS, and Support; a sandbox account moved into that OU can describe VPCs normally inside the approved Region. As a negative test, the identical call is repeated against a different Region; it returns an access-denied error, confirming the SCP guardrail blocks the out-of-Region call regardless of what the account's own IAM policy would otherwise permit.](../../../diagrams/volume-17-aws-architecture-security/chapter-02-scp-region-restriction-topology.svg)
+
+*Figure 2-1. Topology used throughout this chapter's Hands-On Lab: an AWS Organizations Region-restriction SCP attached to a sandbox OU, tested against an out-of-Region API call.*
+
 ## Learning Objectives
 
 - Design a multi-account structure using AWS Organizations organizational

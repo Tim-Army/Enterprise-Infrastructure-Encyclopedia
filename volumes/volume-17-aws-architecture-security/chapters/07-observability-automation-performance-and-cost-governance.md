@@ -1,5 +1,9 @@
 # Chapter 07: Observability, Automation, Performance, and Cost Governance
 
+![Lab flow for this chapter: an alarm on a custom metric transitions to ALARM after two consecutive above-threshold data points are published, and an SNS email notification arrives. As a negative test, two data points back under the threshold are published; the alarm returns to OK and a second SNS notification confirms the recovery — proving the alarm evaluates the metric bidirectionally rather than latching in the ALARM state once triggered.](../../../diagrams/volume-17-aws-architecture-security/chapter-07-cloudwatch-alarm-bidirectional-flow.svg)
+
+*Figure 7-1. Flow used throughout this chapter's Hands-On Lab: a CloudWatch alarm on a custom metric firing and clearing through SNS, tested for bidirectional (non-latching) behavior.*
+
 ## Learning Objectives
 
 - Configure Amazon CloudWatch metrics, alarms, dashboards, and log

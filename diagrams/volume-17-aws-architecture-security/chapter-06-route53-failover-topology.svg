@@ -1,0 +1,37 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 6 lab topology: Route 53 failover routing between a primary and secondary endpoint, tested against a failed health check</title>
+  <desc>
+    A health check against the primary endpoint reports healthy, and app.lab-dr-test.example.com resolves via CNAME to the primary endpoint, confirmed with dig. As a negative test, the primary endpoint is made to fail its health check; after the configured failure threshold (roughly two minutes at a 30-second interval with a threshold of 2), the health check reports unhealthy and the same dig query now resolves to the secondary endpoint instead — confirming automatic failover occurred with no manual DNS record change.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 6 Hands-On Lab: Route 53 Failover That Shifts DNS Automatically, With No Manual Change</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A healthy primary resolves normally; once its health check fails the threshold, resolution shifts to the secondary on its own</text>
+  <rect x="60" y="140" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Health check: primary</text>
+  <text x="180.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">30s interval, threshold 2</text>
+  <text x="180.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">status: healthy</text>
+  <rect x="380" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="500.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">app.lab-dr-test... CNAME</text>
+  <text x="500.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">resolves to primary-endpoint</text>
+  <text x="500.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(PRIMARY failover record)</text>
+  <line x1="300" y1="195" x2="380" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">primary fails health check</text>
+  <text x="810.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ resolves to secondary</text>
+  <line x1="620" y1="195" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="320" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="360.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the SECONDARY failover record has no health check of its own — it becomes authoritative purely</text>
+  <text x="490.0" y="378.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">because the PRIMARY record's health check failed, with no administrator touching a DNS record.</text>
+  <line x1="60" y1="450" x2="100" y2="450" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="454" font-size="11" fill="#33415c">Health check state</text>
+  <line x1="300" y1="450" x2="340" y2="450" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="348" y="454" font-size="11" fill="#166534">Primary DNS resolution</text>
+  <line x1="576" y1="450" x2="616" y2="450" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="624" y="454" font-size="11" fill="#b91c1c">Automatic failover</text>
+</svg>

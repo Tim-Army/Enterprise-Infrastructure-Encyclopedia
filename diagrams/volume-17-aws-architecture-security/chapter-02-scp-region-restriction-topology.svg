@@ -1,0 +1,37 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 2 lab topology: an AWS Organizations Region-restriction SCP attached to a sandbox OU, tested against an out-of-Region API call</title>
+  <desc>
+    A Sandbox-Test OU receives a Service Control Policy denying all actions outside us-east-1 (with narrow exceptions for IAM, Organizations, STS, and Support). A sandbox account moved into that OU can describe VPCs normally in us-east-1. As a negative test, the identical call is repeated against eu-west-1; it returns an AccessDenied/UnauthorizedOperation error, confirming the SCP guardrail blocks the out-of-Region call regardless of what the account's own IAM policy would otherwise permit — Organizations-level policy is the ceiling, not merely advisory.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 2 Hands-On Lab: A Region-Restriction SCP That Overrides the Account's Own IAM Policy</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Calls inside the approved Region succeed normally; the same call outside it is denied regardless of what the account's IAM allows</text>
+  <rect x="60" y="140" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Sandbox-Test OU</text>
+  <text x="180.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">SCP: deny outside us-east-1</text>
+  <text x="180.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(narrow IAM/STS exceptions)</text>
+  <rect x="400" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">describe-vpcs, us-east-1</text>
+  <text x="520.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">normal JSON output</text>
+  <text x="520.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(inside approved Region)</text>
+  <line x1="300" y1="195" x2="400" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">describe-vpcs, eu-west-1</text>
+  <text x="810.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ AccessDenied</text>
+  <line x1="640" y1="195" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="320" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="360.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the SCP denial applies regardless of the sandbox account's own IAM policy — Organizations-level</text>
+  <text x="490.0" y="378.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">guardrails are a hard ceiling on what any identity in the account can do, not an additional suggestion.</text>
+  <line x1="60" y1="450" x2="100" y2="450" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="454" font-size="11" fill="#33415c">Organizational guardrail</text>
+  <line x1="354" y1="450" x2="394" y2="450" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="402" y="454" font-size="11" fill="#166534">Permitted Region</text>
+  <line x1="576" y1="450" x2="616" y2="450" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="624" y="454" font-size="11" fill="#b91c1c">Denied out-of-Region call</text>
+</svg>

@@ -1,5 +1,9 @@
 # Chapter 05: Storage, Databases, Analytics, and Data Protection
 
+![Lab flow for this chapter: a customer-managed KMS key backs a new S3 bucket with Block Public Access, versioning, and default encryption all enabled; a test object uploads encrypted with the key, and a lifecycle rule transitions objects to a cheaper storage tier after 30 days. As a negative test, a bucket policy explicitly granting public read access to any principal is submitted; the call fails, stating the action is blocked by the bucket's Block Public Access configuration — confirming the control prevents accidental public exposure even when a policy document explicitly tries to grant it.](../../../diagrams/volume-17-aws-architecture-security/chapter-05-s3-block-public-access-flow.svg)
+
+*Figure 5-1. Flow used throughout this chapter's Hands-On Lab: an encrypted, versioned S3 bucket with Block Public Access enforced, tested against an explicit public-read policy attempt.*
+
 ## Learning Objectives
 
 - Select among Amazon S3, Amazon EBS, and Amazon EFS for a given

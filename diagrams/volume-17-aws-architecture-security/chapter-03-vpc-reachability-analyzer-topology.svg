@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 3 lab topology: a two-AZ VPC with security groups validated by VPC Reachability Analyzer, tested against a blocked port</title>
+  <desc>
+    A two-AZ VPC with public and private subnets hosts a test instance in the private subnet behind the sg-app security group. A Reachability Analyzer path from the ALB's security group to the app instance's ENI on port 8443 succeeds with NetworkPathFound true, confirming the security group permits that path. As a negative test, the identical analysis is re-run against port 3389, which the app security group does not permit; the analysis succeeds but reports NetworkPathFound false, with the ExplanationCode identifying the security group as the specific blocking component — proving the boundary is enforced, not merely assumed from the rule definitions.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: Reachability Analyzer Proves the Security Group Boundary, Not Just Assumes It</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">The permitted port finds a valid path; a port the security group doesn't allow reports no path found, with the SG named as the blocker</text>
+  <rect x="60" y="150" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="170.0" y="200.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">ALB security group</text>
+  <text x="170.0" y="218.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(notional source)</text>
+  <rect x="360" y="150" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="191.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">App instance (private subnet)</text>
+  <text x="480.0" y="209.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">sg-app: allows 8443</text>
+  <text x="480.0" y="227.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">blocks 3389</text>
+  <line x1="280" y1="205" x2="360" y2="205" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="326.0" y="205.0" font-size="10.5" fill="#166534">port 8443: path found</text>
+  <rect x="700" y="150" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="191.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="209.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">Reachability path :3389</text>
+  <text x="810.0" y="227.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ NetworkPathFound: false</text>
+  <line x1="600" y1="205" x2="700" y2="205" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="656.0" y="205.0" font-size="10.5" fill="#b91c1c">blocked by sg-app</text>
+  <rect x="60" y="340" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="380.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the analysis succeeds either way (the tool itself works); ExplanationCode identifies the security group</text>
+  <text x="490.0" y="398.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">as the specific component blocking port 3389 — the enforcement boundary is proven, not assumed.</text>
+  <line x1="60" y1="470" x2="100" y2="470" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="474" font-size="11" fill="#33415c">Traffic source</text>
+  <line x1="264" y1="470" x2="304" y2="470" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="312" y="474" font-size="11" fill="#166534">Security-group-governed destination</text>
+  <line x1="657" y1="470" x2="697" y2="470" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="705" y="474" font-size="11" fill="#b91c1c">Confirmed-blocked path</text>
+</svg>

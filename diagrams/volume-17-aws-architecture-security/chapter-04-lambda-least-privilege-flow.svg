@@ -1,0 +1,37 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 4 lab flow: a Lambda function behind an HTTP API Gateway with a least-privilege execution role, tested against a revoked IAM permission</title>
+  <desc>
+    A Lambda function scoped to only dynamodb:PutItem and basic logging permissions sits behind an HTTP API Gateway route; invoking the endpoint returns 'order recorded' and the DynamoDB table's item count increases. As a negative test, the PutItem permission is deleted from the function's execution role and the endpoint invoked again; the API now returns HTTP 502, and the function's CloudWatch Logs show an AccessDeniedException from DynamoDB specifically — confirming the least-privilege grant, not an implicit broader permission, was what allowed the write to succeed in the first place.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: A Least-Privilege Lambda Role Proven by Removing It Mid-Lab</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">The API writes to DynamoDB successfully with the scoped role in place, and fails specifically at the DynamoDB layer the moment PutItem is revoked</text>
+  <rect x="60" y="140" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">API Gateway → Lambda</text>
+  <text x="180.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">execution role: PutItem only</text>
+  <text x="180.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">+ basic log permissions</text>
+  <rect x="380" y="140" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="500.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">DynamoDB write succeeds</text>
+  <text x="500.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">curl → &quot;order recorded&quot;</text>
+  <text x="500.0" y="217.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">table item count increases</text>
+  <line x1="300" y1="195" x2="380" y2="195" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="181.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="199.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">PutItem permission deleted</text>
+  <text x="810.0" y="217.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ HTTP 502, AccessDeniedException</text>
+  <line x1="620" y1="195" x2="700" y2="195" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="320" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="360.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">CloudWatch Logs name DynamoDB specifically as the denial source — the scoped role was what made</text>
+  <text x="490.0" y="378.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">the earlier write work, not a broader grant the application happened not to exercise.</text>
+  <line x1="60" y1="450" x2="100" y2="450" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="454" font-size="11" fill="#33415c">Scoped execution role</text>
+  <line x1="327" y1="450" x2="367" y2="450" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="375" y="454" font-size="11" fill="#166534">Permitted write</text>
+  <line x1="540" y1="450" x2="580" y2="450" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="588" y="454" font-size="11" fill="#b91c1c">Revoked permission (denied)</text>
+</svg>
