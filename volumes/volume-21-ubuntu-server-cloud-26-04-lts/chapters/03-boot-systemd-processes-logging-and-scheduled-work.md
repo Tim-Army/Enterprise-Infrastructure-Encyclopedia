@@ -1,6 +1,6 @@
 # Chapter 03: Boot, systemd, Processes, Logging, and Scheduled Work
 
-![Flow diagram showing a systemd timer triggering a service that logs successfully under a dedicated account, then a missing ExecStart target producing an explicit 203/EXEC failure in the journal.](../../diagrams/volume-21-ubuntu-server-cloud-26-04-lts/chapter-03-systemd-timer-exec-failure-flow.svg)
+![Flow diagram showing a systemd timer triggering a service that logs successfully under a dedicated account, then a missing ExecStart target producing an explicit 203/EXEC failure in the journal.](../../../diagrams/volume-21-ubuntu-server-cloud-26-04-lts/chapter-03-systemd-timer-exec-failure-flow.svg)
 
 *Figure 3-1. The systemd service and timer lifecycle, including the missing-binary negative test, exercised in this chapter's lab.*
 

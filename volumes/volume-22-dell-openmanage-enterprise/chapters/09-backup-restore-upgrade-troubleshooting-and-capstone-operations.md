@@ -1,6 +1,6 @@
 # Chapter 09: Backup, Restore, Upgrade, Troubleshooting, and Capstone Operations
 
-![Flow diagram showing an on-demand backup to a validated NFS share and a pre/post-change operational snapshot diff confirming only expected changes across a cross-chapter operational sequence, alongside the same snapshot script failing on an intentionally invalid password.](../../diagrams/volume-22-dell-openmanage-enterprise/chapter-09-capstone-backup-snapshot-flow.svg)
+![Flow diagram showing an on-demand backup to a validated NFS share and a pre/post-change operational snapshot diff confirming only expected changes across a cross-chapter operational sequence, alongside the same snapshot script failing on an intentionally invalid password.](../../../diagrams/volume-22-dell-openmanage-enterprise/chapter-09-capstone-backup-snapshot-flow.svg)
 
 *Figure 9-1. The capstone backup and operational snapshot flow exercised in this chapter's lab, including the invalid-credentials negative test.*
 

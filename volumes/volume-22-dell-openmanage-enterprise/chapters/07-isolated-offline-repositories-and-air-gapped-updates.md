@@ -1,6 +1,6 @@
 # Chapter 07: Isolated Offline Repositories and Air-Gapped Updates
 
-![Flow diagram showing a synthetic offline catalog export verified by checksum, hosted over HTTP, and registered in OME as a custom catalog, alongside a deliberately corrupted package file that the checksum verification catches and reports as failed.](../../diagrams/volume-22-dell-openmanage-enterprise/chapter-07-offline-catalog-integrity-flow.svg)
+![Flow diagram showing a synthetic offline catalog export verified by checksum, hosted over HTTP, and registered in OME as a custom catalog, alongside a deliberately corrupted package file that the checksum verification catches and reports as failed.](../../../diagrams/volume-22-dell-openmanage-enterprise/chapter-07-offline-catalog-integrity-flow.svg)
 
 *Figure 7-1. The offline catalog transfer-integrity and registration flow exercised in this chapter's lab, including the tampered-file negative test.*
 

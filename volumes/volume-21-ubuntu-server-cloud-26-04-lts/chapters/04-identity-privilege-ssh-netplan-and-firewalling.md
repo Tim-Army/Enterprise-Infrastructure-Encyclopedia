@@ -1,6 +1,6 @@
 # Chapter 04: Identity, Privilege, SSH, Netplan, and Firewalling
 
-![Topology diagram showing a scoped admin account with hardened SSH and a Netplan configuration applied via the safe netplan try rollback path, alongside a default-deny ufw policy tested by an unreachable unlisted port.](../../diagrams/volume-21-ubuntu-server-cloud-26-04-lts/chapter-04-ufw-netplan-hardening-topology.svg)
+![Topology diagram showing a scoped admin account with hardened SSH and a Netplan configuration applied via the safe netplan try rollback path, alongside a default-deny ufw policy tested by an unreachable unlisted port.](../../../diagrams/volume-21-ubuntu-server-cloud-26-04-lts/chapter-04-ufw-netplan-hardening-topology.svg)
 
 *Figure 4-1. The identity, SSH hardening, Netplan, and ufw topology exercised in this chapter's lab, including the unlisted-port negative test.*
 

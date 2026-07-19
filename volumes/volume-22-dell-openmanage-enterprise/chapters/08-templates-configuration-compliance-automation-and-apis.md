@@ -1,6 +1,6 @@
 # Chapter 08: Templates, Configuration Compliance, Automation, and APIs
 
-![Flow diagram showing a configuration template captured from a reference device with a device-unique attribute pruned from compliance evaluation, confirmed excluded from drift reporting, alongside a compliance check against a nonexistent template ID that is rejected with an HTTP error.](../../diagrams/volume-22-dell-openmanage-enterprise/chapter-08-template-compliance-prune-flow.svg)
+![Flow diagram showing a configuration template captured from a reference device with a device-unique attribute pruned from compliance evaluation, confirmed excluded from drift reporting, alongside a compliance check against a nonexistent template ID that is rejected with an HTTP error.](../../../diagrams/volume-22-dell-openmanage-enterprise/chapter-08-template-compliance-prune-flow.svg)
 
 *Figure 8-1. The template capture and attribute-pruning compliance flow exercised in this chapter's lab, including the nonexistent-template negative test.*
 

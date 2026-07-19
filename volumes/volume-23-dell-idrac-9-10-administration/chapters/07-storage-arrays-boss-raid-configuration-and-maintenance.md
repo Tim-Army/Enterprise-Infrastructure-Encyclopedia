@@ -1,6 +1,6 @@
 # Chapter 07: Storage Arrays, BOSS, RAID Configuration, and Maintenance
 
-![Flow diagram showing a RAID 1 test virtual disk built with a dedicated hot spare and confirmed healthy, a delete request against a nonexistent virtual disk ID rejected with an error, and the real virtual disk successfully deleted afterward.](../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-07-idrac-raid-hotspare-flow.svg)
+![Flow diagram showing a RAID 1 test virtual disk built with a dedicated hot spare and confirmed healthy, a delete request against a nonexistent virtual disk ID rejected with an error, and the real virtual disk successfully deleted afterward.](../../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-07-idrac-raid-hotspare-flow.svg)
 
 *Figure 7-1. The RAID virtual disk and hot spare lifecycle exercised in this chapter's lab, including the invalid-target negative test.*
 

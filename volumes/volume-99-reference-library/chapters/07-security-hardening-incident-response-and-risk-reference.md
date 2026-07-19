@@ -1,6 +1,6 @@
 # Chapter 07: Security, Hardening, Incident Response, and Risk Reference
 
-![Flow diagram showing a CIS Benchmark hardening check scored, risk-rated, and remediated alongside a simulated incident walked through all five NIST 800-61 phases in order, tested against an attempt to skip the Containment phase and go straight to Eradication.](../../diagrams/volume-99-reference-library/chapter-07-hardening-incident-phase-order-flow.svg)
+![Flow diagram showing a CIS Benchmark hardening check scored, risk-rated, and remediated alongside a simulated incident walked through all five NIST 800-61 phases in order, tested against an attempt to skip the Containment phase and go straight to Eradication.](../../../diagrams/volume-99-reference-library/chapter-07-hardening-incident-phase-order-flow.svg)
 
 *Figure 7-1. The hardening assessment and incident-response phase flow exercised in this chapter's lab, including the skipped-phase negative test.*
 

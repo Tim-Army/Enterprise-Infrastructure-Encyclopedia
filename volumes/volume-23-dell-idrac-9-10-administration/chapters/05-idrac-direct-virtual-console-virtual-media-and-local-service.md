@@ -1,6 +1,6 @@
 # Chapter 05: iDRAC Direct, Virtual Console, Virtual Media, and Local Service
 
-![Flow diagram showing iDRAC Direct local USB access reaching the same controller as the network path, and a Virtual Media mount successfully booting a test image, alongside a nonexistent image path that fails the mount safely without an unpredictable boot.](../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-05-idrac-direct-virtual-media-flow.svg)
+![Flow diagram showing iDRAC Direct local USB access reaching the same controller as the network path, and a Virtual Media mount successfully booting a test image, alongside a nonexistent image path that fails the mount safely without an unpredictable boot.](../../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-05-idrac-direct-virtual-media-flow.svg)
 
 *Figure 5-1. The iDRAC Direct and Virtual Media boot flow exercised in this chapter's lab, including the missing-image negative test.*
 

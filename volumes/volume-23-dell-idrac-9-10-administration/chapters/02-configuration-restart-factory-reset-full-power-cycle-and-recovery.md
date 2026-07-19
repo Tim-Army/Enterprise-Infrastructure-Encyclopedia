@@ -1,6 +1,6 @@
 # Chapter 02: Configuration, Restart, Factory Reset, Full Power Cycle, and Recovery
 
-![Flow diagram showing an iDRAC configuration baseline exported and preserved intact across a soft controller restart, alongside an SCP import targeting a RAID component group on hardware without a PERC controller that fails at the component level.](../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-02-scp-baseline-restart-flow.svg)
+![Flow diagram showing an iDRAC configuration baseline exported and preserved intact across a soft controller restart, alongside an SCP import targeting a RAID component group on hardware without a PERC controller that fails at the component level.](../../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-02-scp-baseline-restart-flow.svg)
 
 *Figure 2-1. The SCP baseline export and controller restart flow exercised in this chapter's lab, including the unsupported-component-import negative test.*
 

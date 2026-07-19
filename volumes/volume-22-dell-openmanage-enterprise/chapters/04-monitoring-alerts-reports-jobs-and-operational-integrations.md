@@ -1,6 +1,6 @@
 # Chapter 04: Monitoring, Alerts, Reports, Jobs, and Operational Integrations
 
-![Flow diagram showing a Warning-and-above alert policy forwarding a qualifying event to a syslog listener and the job engine's execution history confirming it, alongside a Critical-only policy that correctly stays silent for the same below-threshold event.](../../diagrams/volume-22-dell-openmanage-enterprise/chapter-04-alert-policy-severity-filtering-flow.svg)
+![Flow diagram showing a Warning-and-above alert policy forwarding a qualifying event to a syslog listener and the job engine's execution history confirming it, alongside a Critical-only policy that correctly stays silent for the same below-threshold event.](../../../diagrams/volume-22-dell-openmanage-enterprise/chapter-04-alert-policy-severity-filtering-flow.svg)
 
 *Figure 4-1. The alert policy forwarding and job engine cross-check flow exercised in this chapter's lab, including the severity-filtering negative test.*
 

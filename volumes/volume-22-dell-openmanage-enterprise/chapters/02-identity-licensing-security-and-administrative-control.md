@@ -1,6 +1,6 @@
 # Chapter 02: Identity, Licensing, Security, and Administrative Control
 
-![Flow diagram showing a scoped Viewer-tier local account created and authenticated successfully, then denied with HTTP 403 when its token attempts to create a second account, an action outside its role.](../../diagrams/volume-22-dell-openmanage-enterprise/chapter-02-scoped-account-rbac-flow.svg)
+![Flow diagram showing a scoped Viewer-tier local account created and authenticated successfully, then denied with HTTP 403 when its token attempts to create a second account, an action outside its role.](../../../diagrams/volume-22-dell-openmanage-enterprise/chapter-02-scoped-account-rbac-flow.svg)
 
 *Figure 2-1. The scoped-account creation and role-based access control flow exercised in this chapter's lab, including the denied-administrative-action negative test.*
 

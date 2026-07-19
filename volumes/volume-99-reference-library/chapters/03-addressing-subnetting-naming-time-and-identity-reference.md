@@ -1,6 +1,6 @@
 # Chapter 03: Addressing, Subnetting, Naming, Time, and Identity Reference
 
-![Flow diagram showing addressing math verified against a calculation tool and DNS, time, and identity values validated against real lab infrastructure, alongside a reverse DNS lookup of a documentation-range address confirmed to return no authoritative answer.](../../diagrams/volume-99-reference-library/chapter-03-addressing-identity-verification-flow.svg)
+![Flow diagram showing addressing math verified against a calculation tool and DNS, time, and identity values validated against real lab infrastructure, alongside a reverse DNS lookup of a documentation-range address confirmed to return no authoritative answer.](../../../diagrams/volume-99-reference-library/chapter-03-addressing-identity-verification-flow.svg)
 
 *Figure 3-1. The addressing, naming, time, and identity verification flow exercised in this chapter's lab, including the reserved-range negative test.*
 

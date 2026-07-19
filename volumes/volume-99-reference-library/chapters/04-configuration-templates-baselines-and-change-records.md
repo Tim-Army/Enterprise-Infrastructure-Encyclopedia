@@ -1,6 +1,6 @@
 # Chapter 04: Configuration Templates, Baselines, and Change Records
 
-![Flow diagram showing a parameterized template rendered into an approved baseline and applied through a documented change record matching the running system exactly, alongside a manually introduced configuration drift that the platform's drift detection method correctly detects and reconciles.](../../diagrams/volume-99-reference-library/chapter-04-template-baseline-drift-flow.svg)
+![Flow diagram showing a parameterized template rendered into an approved baseline and applied through a documented change record matching the running system exactly, alongside a manually introduced configuration drift that the platform's drift detection method correctly detects and reconciles.](../../../diagrams/volume-99-reference-library/chapter-04-template-baseline-drift-flow.svg)
 
 *Figure 4-1. The template, baseline, and change record flow exercised in this chapter's lab, including the introduced-drift negative test.*
 

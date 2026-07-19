@@ -1,6 +1,6 @@
 # Chapter 03: Discovery, Onboarding, Inventory, Groups, and Device Control
 
-![Topology diagram showing an SNMP-discovered lab host onboarded into static and dynamic groups with inventory refresh, alongside a wrong-community-string discovery that never onboards the device and a power-control action rejected for lacking an iDRAC interface.](../../diagrams/volume-22-dell-openmanage-enterprise/chapter-03-snmp-discovery-onboarding-topology.svg)
+![Topology diagram showing an SNMP-discovered lab host onboarded into static and dynamic groups with inventory refresh, alongside a wrong-community-string discovery that never onboards the device and a power-control action rejected for lacking an iDRAC interface.](../../../diagrams/volume-22-dell-openmanage-enterprise/chapter-03-snmp-discovery-onboarding-topology.svg)
 
 *Figure 3-1. The SNMP discovery and onboarding topology exercised in this chapter's lab, including both negative tests.*
 

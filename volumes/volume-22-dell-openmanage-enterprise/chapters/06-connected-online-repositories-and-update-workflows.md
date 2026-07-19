@@ -1,6 +1,6 @@
 # Chapter 06: Connected Online Repositories and Update Workflows
 
-![Flow diagram showing a connected catalog manually refreshed with its timestamp advancing and a dependent baseline's compliance evaluation succeeding afterward, alongside a refresh that fails with a connectivity error when the appliance's proxy is pointed at an unreachable address.](../../diagrams/volume-22-dell-openmanage-enterprise/chapter-06-connected-catalog-refresh-flow.svg)
+![Flow diagram showing a connected catalog manually refreshed with its timestamp advancing and a dependent baseline's compliance evaluation succeeding afterward, alongside a refresh that fails with a connectivity error when the appliance's proxy is pointed at an unreachable address.](../../../diagrams/volume-22-dell-openmanage-enterprise/chapter-06-connected-catalog-refresh-flow.svg)
 
 *Figure 6-1. The connected catalog refresh flow exercised in this chapter's lab, including the broken-egress negative test.*
 

@@ -1,6 +1,6 @@
 # Chapter 03: Management Network, IPv4, IPv6, DNS, NTP, and Connectivity
 
-![Topology diagram showing static IPv4, DNS registration, and NTP configured and cross-validated over Redfish, alongside a deliberately wrong gateway that breaks only off-subnet reachability while local-subnet access remains intact.](../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-03-idrac-network-gateway-topology.svg)
+![Topology diagram showing static IPv4, DNS registration, and NTP configured and cross-validated over Redfish, alongside a deliberately wrong gateway that breaks only off-subnet reachability while local-subnet access remains intact.](../../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-03-idrac-network-gateway-topology.svg)
 
 *Figure 3-1. The management network configuration topology exercised in this chapter's lab, including the wrong-gateway negative test.*
 

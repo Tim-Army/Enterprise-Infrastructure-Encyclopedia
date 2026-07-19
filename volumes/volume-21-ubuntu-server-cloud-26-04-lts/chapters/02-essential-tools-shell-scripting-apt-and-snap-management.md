@@ -1,6 +1,6 @@
 # Chapter 02: Essential Tools, Shell Scripting, APT, and Snap Management
 
-![Flow diagram showing the disk-and-package audit script running cleanly against real package activity, a snap revert retaining a prior revision, and an unquoted variable word-splitting into two arguments during the quoting-bug negative test.](../../diagrams/volume-21-ubuntu-server-cloud-26-04-lts/chapter-02-apt-snap-quoting-rollback-flow.svg)
+![Flow diagram showing the disk-and-package audit script running cleanly against real package activity, a snap revert retaining a prior revision, and an unquoted variable word-splitting into two arguments during the quoting-bug negative test.](../../../diagrams/volume-21-ubuntu-server-cloud-26-04-lts/chapter-02-apt-snap-quoting-rollback-flow.svg)
 
 *Figure 2-1. The audit script, snap rollback, and shell quoting-bug negative test exercised in this chapter's lab.*
 

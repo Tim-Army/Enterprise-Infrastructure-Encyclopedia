@@ -1,6 +1,6 @@
 # Chapter 05: Firmware and Driver Catalogs, Baselines, Compliance, and Updates
 
-![Flow diagram showing a firmware baseline created against a catalog and device group, evaluated for compliance to identify a non-compliant device and component, and rejected with an HTTP error when evaluation is attempted against a nonexistent baseline ID.](../../diagrams/volume-22-dell-openmanage-enterprise/chapter-05-firmware-baseline-compliance-flow.svg)
+![Flow diagram showing a firmware baseline created against a catalog and device group, evaluated for compliance to identify a non-compliant device and component, and rejected with an HTTP error when evaluation is attempted against a nonexistent baseline ID.](../../../diagrams/volume-22-dell-openmanage-enterprise/chapter-05-firmware-baseline-compliance-flow.svg)
 
 *Figure 5-1. The firmware baseline creation and compliance evaluation flow exercised in this chapter's lab, including the nonexistent-baseline negative test.*
 

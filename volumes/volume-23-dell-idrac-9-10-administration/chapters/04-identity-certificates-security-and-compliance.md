@@ -1,6 +1,6 @@
 # Chapter 04: Identity, Certificates, Security, and Compliance
 
-![Flow diagram showing a scoped Operator-tier local account and a CA-signed certificate installed on a lab iDRAC with Secure Boot status cross-validated, alongside the scoped account's attempt to change a network setting being denied.](../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-04-idrac-identity-certificate-flow.svg)
+![Flow diagram showing a scoped Operator-tier local account and a CA-signed certificate installed on a lab iDRAC with Secure Boot status cross-validated, alongside the scoped account's attempt to change a network setting being denied.](../../../diagrams/volume-23-dell-idrac-9-10-administration/chapter-04-idrac-identity-certificate-flow.svg)
 
 *Figure 4-1. The scoped identity and certificate replacement flow exercised in this chapter's lab, including the denied-configuration-attempt negative test.*
 
