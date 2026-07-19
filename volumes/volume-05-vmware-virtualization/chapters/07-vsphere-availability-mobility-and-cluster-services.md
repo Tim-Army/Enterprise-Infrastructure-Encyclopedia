@@ -24,7 +24,7 @@
 
 Availability and mobility in vSphere rest on two distinct but tightly
 coupled cluster services: **vSphere HA**, which restarts VMs elsewhere in
-the cluster after a host failure, and **DRS**, introduced in Chapter 5 for
+the cluster after a host failure, and **DRS**, introduced in [Chapter 5](05-virtual-machine-lifecycle-and-resource-management.md) for
 its resource-balancing role, which also governs where HA restarts land and
 cooperates with HA on maintenance and hardware-health events. Layered above
 both is **vMotion**, the live-migration mechanism that makes both planned
@@ -657,9 +657,9 @@ Move-VM -VM (Get-VM -Name "app-web-05") `
   guidance.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 5 for VM/Host and VM/VM affinity rule mechanics referenced
+- See [Chapter 5](05-virtual-machine-lifecycle-and-resource-management.md) for VM/Host and VM/VM affinity rule mechanics referenced
   in HA restart placement.
-- See Chapter 6 for vSAN stretched-cluster witness-host architecture.
+- See [Chapter 6](06-vsphere-storage-and-vsan.md) for vSAN stretched-cluster witness-host architecture.
 
 **Knowledge checks**
 

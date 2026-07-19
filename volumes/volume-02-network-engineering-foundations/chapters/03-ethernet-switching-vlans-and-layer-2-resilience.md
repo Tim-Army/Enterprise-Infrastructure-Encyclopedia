@@ -78,7 +78,7 @@ uncontrolled VLAN propagation has caused well-documented outages when a
 switch with a higher revision number and an empty or wrong VLAN database
 joined a domain. This volume treats explicit, automated VLAN configuration
 as the default approach; vendor-specific trunking protocol behavior is
-covered in Volume III.
+covered in [Volume III](../../volume-03-cisco-enterprise-networking/README.md).
 
 ### Spanning Tree Protocol (STP)
 
@@ -144,13 +144,13 @@ flows, not with any single flow's speed.
   discovery, IPv6 Neighbor Discovery) is delivered to every port in that
   VLAN; oversized VLANs (a `/16` flattened onto Layer 2, for instance)
   degrade performance and enlarge the fault domain of any single Layer 2
-  issue. Right-size VLANs to the addressing plan from Chapter 2, not the
+  issue. Right-size VLANs to the addressing plan from [Chapter 2](02-ip-addressing-and-subnetting.md), not the
   reverse.
 - **Redundant topology vs. spanning-tree complexity.** A design that relies
   purely on STP blocking to handle redundancy (a "traditional" hierarchical
   design with STP-blocked uplinks) trades wasted bandwidth on the blocked
   path for architectural simplicity; multi-chassis link aggregation or
-  fabric-based designs (introduced conceptually in Chapter 7) instead keep
+  fabric-based designs (introduced conceptually in [Chapter 7](07-enterprise-network-design-and-resilience.md)) instead keep
   all redundant links active, at the cost of additional design and
   operational complexity.
 - **Trunk VLAN pruning.** Only allow the VLANs actually required on a given
@@ -164,7 +164,7 @@ flows, not with any single flow's speed.
 - **Where to terminate Layer 2 vs. Layer 3.** Deciding how far VLANs extend
   before being terminated at a Layer 3 boundary (access/distribution vs.
   routed access) materially changes STP's scope, failure domain, and
-  convergence behavior — this decision is developed further in Chapter 7.
+  convergence behavior — this decision is developed further in [Chapter 7](07-enterprise-network-design-and-resilience.md).
 
 ## Implementation and Automation
 
@@ -322,7 +322,7 @@ otherwise cause a storm.
 
 - A Linux host with `sudo` access and `iproute2` (the `ip` and `bridge`
   commands).
-- Familiarity with Chapter 2's network namespace conventions.
+- Familiarity with [Chapter 2](02-ip-addressing-and-subnetting.md)'s network namespace conventions.
 
 **Lab Steps**
 

@@ -217,7 +217,7 @@ racadm storage get pdisks -o -c RAID.Integrated.1-1 | grep -i "predictive\|statu
 
 A Python script to poll storage health and flag any physical disk in a
 degraded or predictive-failure state, suitable for a scheduled monitoring
-job independent of whether alerting (Chapter 6) is also configured:
+job independent of whether alerting ([Chapter 6](06-hardware-health-power-thermal-logs-and-support.md)) is also configured:
 
 ```python
 #!/usr/bin/env python3
@@ -303,7 +303,7 @@ if __name__ == "__main__":
   high-consequence, effectively irreversible-in-practice operations
   (data loss, in the case of deletion; a disruptive reconfiguration
   requiring OS-level adjustment, in the case of mode change).
-- Monitor predictive failure and degraded-state alerts (Chapter 6)
+- Monitor predictive failure and degraded-state alerts ([Chapter 6](06-hardware-health-power-thermal-logs-and-support.md))
   specifically for storage, and treat them as a higher operational
   priority than most other Warning-level events, given the compounding
   risk of a second failure during an active rebuild window.
@@ -311,14 +311,14 @@ if __name__ == "__main__":
   a technician replacing a failed drive removes the correct physical unit
   — pulling the wrong drive from a degraded array can convert a
   single-drive failure into a data-loss event.
-- Where System Erase (Chapter 4) includes storage-level secure erase,
+- Where System Erase ([Chapter 4](04-identity-certificates-security-and-compliance.md)) includes storage-level secure erase,
   confirm it covers every physical disk intended for sanitization,
   including any drives outside the primary data array (BOSS boot drives
   in particular are easy to overlook in a decommissioning checklist
   focused on the "main" array).
 - Document RAID level, hot spare policy, and RAID/HBA mode per server (or
   per platform standard) as part of your configuration baseline (SCP
-  export, Chapter 2), so storage configuration is recoverable and
+  export, [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md)), so storage configuration is recoverable and
   auditable the same way network and identity configuration are.
 
 ## References and Knowledge Checks

@@ -13,8 +13,8 @@
 - Perform remote administration with PowerShell Remoting (WinRM) and
   understand its trust model.
 - Explain how this chapter's cross-platform Windows Server coverage
-  complements the Linux coverage in Chapter 02 and the identity coverage
-  in Chapter 04.
+  complements the Linux coverage in [Chapter 02](02-enterprise-linux-administration.md) and the identity coverage
+  in [Chapter 04](04-enterprise-identity-and-directory-services.md).
 
 ## Theory and Architecture
 
@@ -41,7 +41,7 @@ management consoles:
 Enterprise fleets should default to Server Core and reserve Desktop
 Experience for the narrow set of workloads whose management tooling has
 no PowerShell or Server Core-compatible path. A smaller installation
-footprint directly reduces patch volume and reboot frequency (Chapter 06).
+footprint directly reduces patch volume and reboot frequency ([Chapter 06](06-configuration-software-and-patch-management.md)).
 
 ### The services model
 
@@ -52,8 +52,8 @@ identity (Local System, Network Service, Local Service, or a dedicated
 service account — often a Group Managed Service Account, or gMSA, in an
 Active Directory environment), and a recovery policy governing what
 happens after a crash. This is the direct Windows analog to a `systemd`
-service unit covered in Chapter 02, and the two are compared side by side
-in Chapter 05.
+service unit covered in [Chapter 02](02-enterprise-linux-administration.md), and the two are compared side by side
+in [Chapter 05](05-compute-process-and-service-management.md).
 
 ### PowerShell as the primary administration surface
 
@@ -64,7 +64,7 @@ Nearly every GUI action in Server Manager or Windows Admin Center is
 backed by a PowerShell cmdlet, and every cmdlet can be scripted,
 version-controlled, and run unattended — which is why automation-first
 enterprises standardize on PowerShell (and its Desired State Configuration
-extension, covered in Chapter 06) as the primary administration surface,
+extension, covered in [Chapter 06](06-configuration-software-and-patch-management.md)) as the primary administration surface,
 with the GUI reserved for exploration and troubleshooting.
 
 ### Fleet-level management tools
@@ -91,7 +91,7 @@ with the GUI reserved for exploration and troubleshooting.
   Service Accounts (gMSA) deliberately. gMSA is the preferred pattern for
   domain-joined services because Active Directory manages password
   rotation automatically, eliminating a common source of expired-password
-  outages (see Chapter 04 for AD-integrated identity design).
+  outages (see [Chapter 04](04-enterprise-identity-and-directory-services.md) for AD-integrated identity design).
   Which pattern a given service supports is a factor in role placement,
   not an afterthought.
 - **WinRM trust boundary.** Decide whether PowerShell Remoting traverses
@@ -101,7 +101,7 @@ with the GUI reserved for exploration and troubleshooting.
   for remoting that crosses network segments.
 - **Update ring placement.** Decide which servers land in early validation
   rings versus broad deployment rings before you need WSUS/Windows Update
-  for Business groups configured (Chapter 06) — retrofitting ring
+  for Business groups configured ([Chapter 06](06-configuration-software-and-patch-management.md)) — retrofitting ring
   membership after an incident is reactive, not designed.
 - **Cluster-eligible roles.** Roles that support Failover Clustering
   (file services, Hyper-V, SQL Server as a clustered role) should be
@@ -230,13 +230,13 @@ Get-WinEvent -FilterHashtable @{
   `SYSTEM` unless the task genuinely requires system-level access.
 - Forward Security and System event logs to a centralized collector
   (Windows Event Forwarding or a SIEM agent) rather than relying on local
-  retention alone (Chapter 09).
+  retention alone ([Chapter 09](09-monitoring-troubleshooting-and-lifecycle-operations.md)).
 - Disable legacy protocols still present for compatibility (SMBv1, as
   shown above) unless a specific, documented legacy dependency requires
   them.
 - Apply DISA STIG or CIS Benchmark hardening baselines for Windows Server
   through Group Policy or Desired State Configuration, not manual
-  per-server edits (Chapter 08).
+  per-server edits ([Chapter 08](08-systems-security-automation-and-compliance.md)).
 
 ## References and Knowledge Checks
 
@@ -274,7 +274,7 @@ enforcement — using PowerShell Remoting end to end.
   targets the current Windows Server LTSC release) reachable from an
   administrator workstation running PowerShell 7.4+.
 - A local administrator account on the target server (a domain is not
-  required for this lab; gMSA steps are described in Chapter 04's lab
+  required for this lab; gMSA steps are described in [Chapter 04](04-enterprise-identity-and-directory-services.md)'s lab
   once Active Directory is introduced).
 - WinRM enabled on the target (`Enable-PSRemoting -Force`, run once at the
   console or via existing remote access).

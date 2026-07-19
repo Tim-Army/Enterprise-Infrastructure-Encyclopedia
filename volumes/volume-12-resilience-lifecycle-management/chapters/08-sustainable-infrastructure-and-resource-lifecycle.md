@@ -7,13 +7,13 @@
 - Apply the circular hardware lifecycle (reduce, reuse, refurbish, recycle) to enterprise hardware refresh decisions.
 - Right-size infrastructure using observed utilization data and explain right-sizing's dual role as both a cost and a sustainability lever.
 - Design carbon-aware or time-shifted workload scheduling for deferrable batch workloads.
-- Build an asset lifecycle tracking process that captures sustainability-relevant data (utilization, age, refresh eligibility) alongside the CMDB fields established in Volume I.
+- Build an asset lifecycle tracking process that captures sustainability-relevant data (utilization, age, refresh eligibility) alongside the CMDB fields established in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md).
 
 ## Theory and Architecture
 
 ### Why Sustainability Belongs in a Resilience and Lifecycle Volume
 
-Sustainable infrastructure practice sits naturally alongside the rest of this volume because it shares its core discipline: measure the actual resource consumed against actual need, and manage the full lifecycle of an asset deliberately rather than by default. An over-provisioned, never-right-sized fleet is not only a cost problem — it is wasted embodied carbon and wasted energy sustained indefinitely because nobody revisited a sizing decision made at launch, the same "silent capacity drift" anti-pattern named in Chapter 1, viewed through a different lens. Sustainability and resilience occasionally trade off directly (extra redundant capacity has both a cost and a carbon cost) and this chapter treats that trade-off explicitly rather than treating sustainability as a purely separate initiative layered on top of infrastructure engineering.
+Sustainable infrastructure practice sits naturally alongside the rest of this volume because it shares its core discipline: measure the actual resource consumed against actual need, and manage the full lifecycle of an asset deliberately rather than by default. An over-provisioned, never-right-sized fleet is not only a cost problem — it is wasted embodied carbon and wasted energy sustained indefinitely because nobody revisited a sizing decision made at launch, the same "silent capacity drift" anti-pattern named in [Chapter 1](01-resilience-engineering-and-critical-service-design.md), viewed through a different lens. Sustainability and resilience occasionally trade off directly (extra redundant capacity has both a cost and a carbon cost) and this chapter treats that trade-off explicitly rather than treating sustainability as a purely separate initiative layered on top of infrastructure engineering.
 
 ### Data Center Efficiency Metrics
 
@@ -46,7 +46,7 @@ refresh is very likely carbon-negative over that life, even if it reduces
 the electricity bill.
 ```
 
-This does not mean equipment should never be refreshed early — a security-driven, EOL-driven refresh (Chapter 6, Chapter 7) is often necessary regardless of the carbon payback calculation — but a refresh justified purely on operational-efficiency or cost grounds should include this calculation rather than assuming newer is automatically better for total lifecycle impact.
+This does not mean equipment should never be refreshed early — a security-driven, EOL-driven refresh ([Chapter 6](06-maintenance-patching-and-upgrade-engineering.md), [Chapter 7](07-technical-debt-modernization-and-platform-renewal.md)) is often necessary regardless of the carbon payback calculation — but a refresh justified purely on operational-efficiency or cost grounds should include this calculation rather than assuming newer is automatically better for total lifecycle impact.
 
 ### The Circular Hardware Lifecycle
 
@@ -55,7 +55,7 @@ Circular economy principles reframe the hardware lifecycle away from a linear "b
 1. **Reduce** — right-size and consolidate before acquiring new capacity at all; the least-carbon-intensive unit of compute is the one never purchased because existing capacity was fully utilized instead.
 2. **Reuse** — redeploy existing hardware for a different, less demanding workload (a retired production server repurposed for a development or test environment) rather than retiring it outright.
 3. **Refurbish** — component-level repair or upgrade (replacing drives, adding memory) to extend a system's productive life beyond its original refresh cycle.
-4. **Recycle** — at true end of life, route hardware through a certified electronics recycler that recovers materials responsibly, connecting directly to the secure-decommissioning practices in Chapter 9.
+4. **Recycle** — at true end of life, route hardware through a certified electronics recycler that recovers materials responsibly, connecting directly to the secure-decommissioning practices in [Chapter 9](09-retirement-decommissioning-and-lifecycle-governance.md).
 
 Each stage deferred is embodied carbon amortized over a longer useful life, and a mature asset lifecycle program measures and reports how much equipment moves through reuse and refurbishment rather than treating "recycle" as the only stage worth tracking.
 
@@ -63,11 +63,11 @@ Each stage deferred is embodied carbon amortized over a longer useful life, and 
 
 ### Right-Sizing as a Dual-Purpose Lever
 
-Right-sizing — matching provisioned capacity to observed demand rather than a conservative guess made at launch — reduces both cost and energy consumption simultaneously, making it one of the few sustainability levers with no inherent trade-off against the resilience goals elsewhere in this volume, provided redundancy requirements from Chapter 1 are respected during right-sizing rather than eroded by it. A right-sizing review should distinguish genuinely idle or over-provisioned capacity from capacity intentionally held as HA or DR headroom (Chapters 3 and 4) — the latter looks "wasted" by a naive utilization metric but is a deliberate resilience investment, not waste, and right-sizing automation must be able to tell the two apart or it will silently degrade availability while chasing an efficiency metric.
+Right-sizing — matching provisioned capacity to observed demand rather than a conservative guess made at launch — reduces both cost and energy consumption simultaneously, making it one of the few sustainability levers with no inherent trade-off against the resilience goals elsewhere in this volume, provided redundancy requirements from [Chapter 1](01-resilience-engineering-and-critical-service-design.md) are respected during right-sizing rather than eroded by it. A right-sizing review should distinguish genuinely idle or over-provisioned capacity from capacity intentionally held as HA or DR headroom (Chapters 3 and 4) — the latter looks "wasted" by a naive utilization metric but is a deliberate resilience investment, not waste, and right-sizing automation must be able to tell the two apart or it will silently degrade availability while chasing an efficiency metric.
 
 ### Redundancy vs. Efficiency Trade-off
 
-Every additional unit of standby or redundant capacity carries an energy and embodied-carbon cost proportional to its size, independent of whether it is ever called upon to absorb a failure. This is not an argument against redundancy — Chapter 1 already established that redundancy investment should match criticality tier — but it is an argument for being deliberate: a Tier 3 service over-provisioned to a Tier 0 redundancy level pays a sustainability cost with no corresponding resilience benefit, exactly mirroring the cost argument made in Chapter 1 for the same scenario.
+Every additional unit of standby or redundant capacity carries an energy and embodied-carbon cost proportional to its size, independent of whether it is ever called upon to absorb a failure. This is not an argument against redundancy — [Chapter 1](01-resilience-engineering-and-critical-service-design.md) already established that redundancy investment should match criticality tier — but it is an argument for being deliberate: a Tier 3 service over-provisioned to a Tier 0 redundancy level pays a sustainability cost with no corresponding resilience benefit, exactly mirroring the cost argument made in [Chapter 1](01-resilience-engineering-and-critical-service-design.md) for the same scenario.
 
 ### Carbon-Aware and Time-Shifted Workload Placement
 
@@ -165,7 +165,7 @@ def select_run_window(hourly_intensity: dict[str, float], deadline_hour: int, wi
   disposition_at_refresh: "certified-recycle"
 ```
 
-Extending the CMDB-style asset record from Volume I with utilization and disposition fields lets the same inventory that tracks configuration items also drive right-sizing review, refresh scheduling, and the reuse/refurbish/recycle decision at end of life — one authoritative record rather than a separate, easily-out-of-sync sustainability spreadsheet.
+Extending the CMDB-style asset record from [Volume I](../../volume-01-enterprise-engineering-foundations/README.md) with utilization and disposition fields lets the same inventory that tracks configuration items also drive right-sizing review, refresh scheduling, and the reuse/refurbish/recycle decision at end of life — one authoritative record rather than a separate, easily-out-of-sync sustainability spreadsheet.
 
 ## Validation and Troubleshooting
 
@@ -183,7 +183,7 @@ Extending the CMDB-style asset record from Volume I with utilization and disposi
 | Right-sizing automation reduces capacity on an HA pair, causing a subsequent outage | Standby/redundant role tagging missing or not honored by the automation |
 | Carbon-aware scheduling delays a job past a business-critical deadline | Deferrability was assumed rather than confirmed with the process owner; deadline field was set too loosely |
 | Early hardware refresh reduces the electricity bill but net sustainability reporting worsens | Embodied carbon of the replacement was not accounted for; carbon payback period exceeded remaining useful life |
-| Asset register shows systems well past expected refresh date with no action taken | No forcing function or review cadence tied to the register, mirroring the same "register exists but nothing gets prioritized" failure from Chapter 7 |
+| Asset register shows systems well past expected refresh date with no action taken | No forcing function or review cadence tied to the register, mirroring the same "register exists but nothing gets prioritized" failure from [Chapter 7](07-technical-debt-modernization-and-platform-renewal.md) |
 
 ### Troubleshooting Utilization Data Quality
 
@@ -191,10 +191,10 @@ Right-sizing and PUE conclusions are only as good as the underlying utilization 
 
 ## Security and Best Practices
 
-- Extend the secure decommissioning practices from Chapter 9 to every hardware disposition path in the circular lifecycle, not only final recycling — a reused or refurbished system redeployed to a lower-trust environment (production hardware repurposed for development) must still have its data sanitized to the same standard as a system going to disposal.
+- Extend the secure decommissioning practices from [Chapter 9](09-retirement-decommissioning-and-lifecycle-governance.md) to every hardware disposition path in the circular lifecycle, not only final recycling — a reused or refurbished system redeployed to a lower-trust environment (production hardware repurposed for development) must still have its data sanitized to the same standard as a system going to disposal.
 - Vet electronics recyclers and refurbishment partners for data destruction certification and chain-of-custody practices; a recycling vendor that cannot provide a certificate of data destruction is a data-exfiltration risk regardless of its environmental credentials.
-- Do not let carbon-aware time-shifting introduce an unreviewed dependency on an external carbon-intensity data API becoming a new operational SPOF for otherwise-independent batch processing; apply the same dependency-mapping discipline from Chapter 1 to this new external dependency.
-- Review right-sizing and asset-disposition automation changes through the same change-management process as any other production infrastructure change (Volume I, Chapter 8); a script that silently resizes or redeploys hardware without change review can just as easily cause an outage as manual misconfiguration.
+- Do not let carbon-aware time-shifting introduce an unreviewed dependency on an external carbon-intensity data API becoming a new operational SPOF for otherwise-independent batch processing; apply the same dependency-mapping discipline from [Chapter 1](01-resilience-engineering-and-critical-service-design.md) to this new external dependency.
+- Review right-sizing and asset-disposition automation changes through the same change-management process as any other production infrastructure change ([Volume I, Chapter 8](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md)); a script that silently resizes or redeploys hardware without change review can just as easily cause an outage as manual misconfiguration.
 - Report sustainability metrics (PUE, refresh rates, reuse/refurbish/recycle proportions) with the same rigor and auditability as financial or security metrics; unverified or self-reported figures used externally (in ESG disclosures) carry reputational and, increasingly, regulatory risk if later found inaccurate.
 
 ## References and Knowledge Checks
@@ -205,7 +205,7 @@ Right-sizing and PUE conclusions are only as good as the underlying utilization 
 - [Chapter 9](09-retirement-decommissioning-and-lifecycle-governance.md) for the secure data sanitization practices that apply across every hardware disposition path in this chapter.
 - The Green Grid, *PUE: A Comprehensive Examination of the Metric*, for PUE methodology and known reporting pitfalls.
 - ISO/IEC 30134 series, data center resource-efficiency metrics (PUE, WUE, and related standards).
-- Volume I, Chapter 8, *Infrastructure Lifecycle Management*, for the CMDB and asset lifecycle foundation this chapter extends with sustainability fields.
+- [Volume I, Chapter 8](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md), *Infrastructure Lifecycle Management*, for the CMDB and asset lifecycle foundation this chapter extends with sustainability fields.
 
 ### Knowledge Checks
 
@@ -213,7 +213,7 @@ Right-sizing and PUE conclusions are only as good as the underlying utilization 
 2. Given an embodied carbon figure and an annual operational carbon savings figure, walk through the carbon payback period calculation and explain what it means if the payback period exceeds the equipment's remaining useful life.
 3. Why must right-sizing automation distinguish HA/DR standby capacity from genuinely idle capacity, and what happens if it does not?
 4. Describe the four stages of the circular hardware lifecycle (reduce, reuse, refurbish, recycle) and give an infrastructure-specific example of each.
-5. Explain why carbon-aware time-shifted scheduling is appropriate for some workloads but not others, using the criticality tiers from Chapter 1.
+5. Explain why carbon-aware time-shifted scheduling is appropriate for some workloads but not others, using the criticality tiers from [Chapter 1](01-resilience-engineering-and-critical-service-design.md).
 
 ## Hands-On Lab
 
@@ -332,7 +332,7 @@ No shared or production systems were modified; all data was a local YAML fixture
 
 ## Summary and Completion Checklist
 
-Sustainable infrastructure practice extends the same discipline this volume has applied to availability and cost throughout: measure actual consumption against actual need, and manage every stage of an asset's lifecycle deliberately. PUE and related efficiency metrics describe delivery efficiency, not utilization, and must be read alongside right-sizing data that itself must be redundancy-aware to avoid silently eroding the resilience investments from earlier chapters. The embodied-versus-operational carbon distinction reframes "replace it, it's more efficient" as a calculation rather than an assumption, and the circular hardware lifecycle (reduce, reuse, refurbish, recycle) extends useful asset life before final disposition — which Chapter 9 covers in full, including the secure data sanitization every disposition path in this chapter ultimately depends on.
+Sustainable infrastructure practice extends the same discipline this volume has applied to availability and cost throughout: measure actual consumption against actual need, and manage every stage of an asset's lifecycle deliberately. PUE and related efficiency metrics describe delivery efficiency, not utilization, and must be read alongside right-sizing data that itself must be redundancy-aware to avoid silently eroding the resilience investments from earlier chapters. The embodied-versus-operational carbon distinction reframes "replace it, it's more efficient" as a calculation rather than an assumption, and the circular hardware lifecycle (reduce, reuse, refurbish, recycle) extends useful asset life before final disposition — which [Chapter 9](09-retirement-decommissioning-and-lifecycle-governance.md) covers in full, including the secure data sanitization every disposition path in this chapter ultimately depends on.
 
 **Completion checklist:**
 
@@ -341,4 +341,4 @@ Sustainable infrastructure practice extends the same discipline this volume has 
 - [ ] Can describe the four stages of the circular hardware lifecycle with an infrastructure-specific example of each.
 - [ ] Implemented a right-sizing scan that correctly excludes tagged HA/DR standby capacity from its recommendations.
 - [ ] Designed a carbon-aware scheduling approach limited to explicitly deferrable workloads.
-- [ ] Understands why redundancy and sustainability trade off directly, and how criticality tiering from Chapter 1 resolves that trade-off.
+- [ ] Understands why redundancy and sustainability trade off directly, and how criticality tiering from [Chapter 1](01-resilience-engineering-and-critical-service-design.md) resolves that trade-off.

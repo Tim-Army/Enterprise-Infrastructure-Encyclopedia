@@ -41,7 +41,7 @@ acceleration architecture — to offload work from the general-purpose CPU.
 A FortiGate-VM lab instance runs entirely in software with no ASIC
 offload, which is sufficient for learning configuration and behavior but
 is not representative of the throughput a comparably specified hardware
-appliance would deliver; this distinction matters when Chapter 07's
+appliance would deliver; this distinction matters when [Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md)'s
 SSL deep inspection discussion addresses performance.
 
 ### FortiOS configuration model
@@ -60,8 +60,8 @@ with `config`/`edit`/`set`/`next`/`end`:
 Configuration lives in a **running configuration** held in memory and
 persisted to flash; `show` and `show full-configuration` display it, and
 `execute backup config` exports it for external storage — covered further
-in Chapter 09's configuration lifecycle discussion. On a device with
-multiple VDOMs enabled (Chapter 05), most `config` commands operate within
+in [Chapter 09](09-nse-4-fortios-administrator-training-and-enterprise-capstone.md)'s configuration lifecycle discussion. On a device with
+multiple VDOMs enabled ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)), most `config` commands operate within
 the currently selected VDOM scope unless issued from `config global`,
 which is why VDOM-aware devices show a `global` vs. per-VDOM CLI prompt
 distinction.
@@ -69,7 +69,7 @@ distinction.
 ### FortiGuard licensing model
 
 A FortiGate's base unit runs without any subscription, but its full
-security-profile capability (Chapter 07) depends on FortiGuard
+security-profile capability ([Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md)) depends on FortiGuard
 subscriptions activated through **FortiCare**, Fortinet's device
 registration and support portal:
 
@@ -89,7 +89,7 @@ FortiGuard subscription activation.
 ## Design Considerations
 
 - **Licensing bundle selection against the technology inventory.**
-  Chapter 02's technology-to-risk inventory should directly inform bundle
+  [Chapter 02](02-nse-2-threat-landscape-security-technologies-and-fortinet-portfolio.md)'s technology-to-risk inventory should directly inform bundle
   selection — an organization that has identified sandboxing and IPS as
   coverage gaps needs UTP or Enterprise Protection content, not the bare
   FortiCare support tier.
@@ -106,7 +106,7 @@ FortiGuard subscription activation.
 - **Hostname and naming standards.** Apply the organization's naming
   convention (site, role, sequence number) at first deployment rather than
   leaving a default hostname; hostname appears in HA configuration
-  (Chapter 05), FortiManager device lists (Chapter 08), and every log
+  ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)), FortiManager device lists ([Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md)), and every log
   record, so a late rename has downstream cleanup cost.
 - **Password policy vs. operational friction.** A password policy that is
   too strict for the administrative team's actual workflow invites
@@ -117,7 +117,7 @@ FortiGuard subscription activation.
 
 ## Implementation and Automation
 
-The lab environment introduced in Chapter 03 continues here as
+The lab environment introduced in [Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md) continues here as
 **FGT-LAB-01**, a FortiGate-VM64 instance. This chapter performs the
 device's first formal deployment: hostname, DNS/NTP, FortiCare
 registration, licensing, and baseline hardening.
@@ -140,8 +140,8 @@ FGT-LAB-01 (ntp) # end
 ```
 
 Accurate time synchronization is a prerequisite for correct log
-timestamps, certificate validation (Chapter 07), and IPsec/SSL VPN session
-negotiation (Chapter 06); configure NTP before any feature that depends on
+timestamps, certificate validation ([Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md)), and IPsec/SSL VPN session
+negotiation ([Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)); configure NTP before any feature that depends on
 it rather than as an afterthought.
 
 ### Assigning a management interface address
@@ -236,7 +236,7 @@ FGT-LAB-01 (admin) # end
 
 A lab environment without a provisioned FortiToken can substitute
 `two-factor email` for a functionally similar (though less phishing
-resistant) exercise, consistent with Chapter 01's MFA guidance.
+resistant) exercise, consistent with [Chapter 01](01-nse-1-cybersecurity-awareness-and-digital-safety.md)'s MFA guidance.
 
 ## Validation and Troubleshooting
 
@@ -254,7 +254,7 @@ resistant) exercise, consistent with Chapter 01's MFA guidance.
   administering workstation's subnet was not included in `trusthost1`/
   `trusthost2`, access is denied immediately upon the next login attempt;
   recover via console access and correct the `trusthost` values, which is
-  exactly why console access (Chapter 03) is treated as the durable
+  exactly why console access ([Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md)) is treated as the durable
   fallback access path.
 - **NTP not synchronizing.** `diagnose sys ntp status` reports current
   sync state; certificate and log-timestamp problems downstream (Chapters
@@ -277,16 +277,16 @@ resistant) exercise, consistent with Chapter 01's MFA guidance.
   internal or out-of-band networks.
 - Pair password policy with FortiToken (or an equivalent phishing-resistant
   second factor) for every administrator account, not password complexity
-  alone, consistent with Chapter 01's MFA guidance.
+  alone, consistent with [Chapter 01](01-nse-1-cybersecurity-awareness-and-digital-safety.md)'s MFA guidance.
 - Rename the default `admin` account's role going forward to a named,
   individually attributable administrator account per person where the
   organization's scale supports it, rather than multiple staff sharing one
   `admin` login — this materially improves audit trail quality.
 - Keep FortiGuard content and firmware update schedules current
-  (Chapter 08 covers scheduled and centrally managed update automation);
+  ([Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md) covers scheduled and centrally managed update automation);
   an under-licensed or stale device silently degrades protection exactly
   as described for other vendors' platforms elsewhere in this encyclopedia
-  (see Volume XVI, Chapter 02, for the equivalent Palo Alto Networks
+  (see [Volume XVI, Chapter 02](../../volume-16-palo-alto-networks-security/chapters/02-cybersecurity-practitioner-and-platform-portfolio.md), for the equivalent Palo Alto Networks
   licensing-currency discussion).
 
 ## References and Knowledge Checks
@@ -323,7 +323,7 @@ policy.
 
 **Prerequisites**
 
-- FGT-LAB-01 from Chapter 03, reachable via console or its factory-default
+- FGT-LAB-01 from [Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md), reachable via console or its factory-default
   management IP, with the `admin` password already set.
 - A free Fortinet Developer Network or FortiCare account for evaluation
   registration.
@@ -393,12 +393,12 @@ policy.
 
 ## Summary and Completion Checklist
 
-This chapter took FGT-LAB-01 from Chapter 03's factory-default state
+This chapter took FGT-LAB-01 from [Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md)'s factory-default state
 through a complete first deployment: hostname and time synchronization,
 FortiCare registration and FortiGuard licensing, a properly restricted
 management interface, and baseline hardening covering password policy,
 trusted hosts, and MFA on the administrator account. This hardened,
-licensed baseline is the foundation Chapter 05 builds on for interfaces,
+licensed baseline is the foundation [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md) builds on for interfaces,
 routing, NAT, VDOMs, and high availability.
 
 - [ ] Can explain the FortiOS `config`/`edit`/`set`/`next`/`end` model and

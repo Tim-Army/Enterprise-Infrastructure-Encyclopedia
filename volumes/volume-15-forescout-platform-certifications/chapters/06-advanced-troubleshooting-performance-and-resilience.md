@@ -39,7 +39,7 @@ guessing at the specific policy or plugin first:
 
 1. **Network delivery layer.** Is the relevant traffic (SPAN/mirror
    feed, active scan path, plugin management-interface reachability)
-   actually arriving at the appliance? Chapter 1 covered this layer for
+   actually arriving at the appliance? [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md) covered this layer for
    initial deployment; it remains the first check for any later
    "hosts stopped updating" symptom too.
 2. **Appliance health layer.** Is the appliance itself healthy — CPU,
@@ -47,15 +47,15 @@ guessing at the specific policy or plugin first:
    silently degrading its ability to process what it is receiving?
 3. **Plugin layer.** Is the specific plugin expected to supply the
    affected data actually connected, authenticated, and polling on
-   schedule? (Chapter 2's plugin status/diagnostic pane is the primary
+   schedule? ([Chapter 2](02-console-plugins-properties-and-asset-classification.md)'s plugin status/diagnostic pane is the primary
    tool here.)
 4. **Property/policy layer.** Given correct plugin data, is the
    classification, compliance, or control policy evaluating the property
-   correctly and in the expected order? (Chapter 3's action history is
+   correctly and in the expected order? ([Chapter 3](03-clarification-compliance-and-control-policies.md)'s action history is
    the primary tool here.)
 5. **Downstream/integration layer.** For control actions or eyeExtend
    integrations, did the downstream system (switch, firewall, external
-   platform) actually receive and apply the requested change? (Chapter 5's
+   platform) actually receive and apply the requested change? ([Chapter 5](05-advanced-policy-integrations-and-business-outcomes.md)'s
    integration status views are the primary tool here.)
 
 Working through these layers in order avoids the common troubleshooting
@@ -64,7 +64,7 @@ resource ceiling two layers below it.
 
 ### Appliance-level diagnostics
 
-Beyond the health dashboards covered in Chapter 4, deeper diagnosis
+Beyond the health dashboards covered in [Chapter 4](04-host-management-administration-inventory-and-reporting.md), deeper diagnosis
 sometimes requires appliance-native tools:
 
 - **System and plugin logs.** Each appliance retains logs for its own
@@ -76,7 +76,7 @@ sometimes requires appliance-native tools:
   throughput trends over time (not just current-instant values) are what
   distinguish a transient spike from a sustained capacity ceiling.
 - **Targeted packet capture.** For SPAN/mirror delivery problems that
-  survive the basic checks in Chapter 1 (link up, correct VLAN sourced),
+  survive the basic checks in [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md) (link up, correct VLAN sourced),
   a time-boxed packet capture on the monitor interface confirms whether
   expected traffic is actually arriving, and at what volume relative to
   the interface's capacity.
@@ -87,7 +87,7 @@ sometimes requires appliance-native tools:
 
 ### Performance tuning drivers
 
-As established in Chapter 1, appliance capacity is driven primarily by
+As established in [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md), appliance capacity is driven primarily by
 concurrent host count and property update churn rather than raw link
 bandwidth. Performance tuning therefore concentrates on:
 
@@ -124,17 +124,17 @@ data-plane visibility loss and enforcement-capability loss:
   reporting even if individual appliances continue local enforcement.
 - **Appliance redundancy for critical enforcement points.** For any
   segment where a control action is compliance- or security-critical
-  (Chapter 1), determine whether a single appliance failure removes that
+  ([Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)), determine whether a single appliance failure removes that
   enforcement capability entirely, and pair critical appliances or define
   a compensating manual procedure if hardware redundancy is not
   practical.
 - **Graceful degradation on central-management loss.** Because policy
-  evaluation happens locally on each appliance (Chapter 1), a temporary
+  evaluation happens locally on each appliance ([Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)), a temporary
   EM outage should not halt in-progress enforcement on healthy
   appliances — confirm this behavior is understood and tested rather than
   assumed.
 - **Disaster recovery.** A documented, periodically tested procedure for
-  rebuilding an appliance or the EM from backup (Chapter 4) onto
+  rebuilding an appliance or the EM from backup ([Chapter 4](04-host-management-administration-inventory-and-reporting.md)) onto
   replacement hardware or a new virtual instance, including how long a
   full rebuild is expected to take and what visibility/enforcement gap
   exists during that window.
@@ -175,7 +175,7 @@ data-plane visibility loss and enforcement-capability loss:
    EM during known-healthy operation, so future degradation has a
    reference point rather than only an absolute threshold.
 2. **Configure alerting thresholds** for CPU, memory, disk, and
-   monitor-interface state (extending Chapter 4's health monitoring)
+   monitor-interface state (extending [Chapter 4](04-host-management-administration-inventory-and-reporting.md)'s health monitoring)
    tuned against that baseline rather than generic defaults.
 3. **Build and rehearse the layered diagnostic runbook** covering network
    delivery, appliance health, plugin state, property/policy state, and
@@ -204,7 +204,7 @@ data-plane visibility loss and enforcement-capability loss:
 - **Console or EM is slow under normal load.** Work the layered model
   top-down: confirm EM resource metrics against baseline before assuming
   a database or query-performance problem; a resource ceiling reached
-  from unplanned host-count growth (Chapter 1) is a more common root
+  from unplanned host-count growth ([Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)) is a more common root
   cause than a software defect.
 - **Hosts intermittently drop out of the inventory and reappear.** Check
   monitor-interface link stability and SPAN/tap delivery consistency
@@ -242,7 +242,7 @@ data-plane visibility loss and enforcement-capability loss:
   longer than necessary.
 - Protect DR backup and restore infrastructure with the same access
   controls and encryption-at-rest expectations as production
-  (Chapter 4), since a DR environment is a full copy of the platform's
+  ([Chapter 4](04-host-management-administration-inventory-and-reporting.md)), since a DR environment is a full copy of the platform's
   sensitive configuration and, potentially, inventory data.
 - Ensure HA/DR failover procedures preserve, rather than silently
   bypass, RBAC and audit-logging configuration — a rebuilt appliance or
@@ -323,7 +323,7 @@ and perform a validated backup/restore drill.
    what you would conclude if that layer were the fault.
 4. Revert the scan intensity change and confirm metrics return toward
    baseline.
-5. Trigger a configuration backup (reuse the Chapter 4 lab's backup step
+5. Trigger a configuration backup (reuse the [Chapter 4](04-host-management-administration-inventory-and-reporting.md) lab's backup step
    if still valid, or take a fresh one) and record its completion
    timestamp and size.
 6. Restore the backup — onto a second instance if available, or as a

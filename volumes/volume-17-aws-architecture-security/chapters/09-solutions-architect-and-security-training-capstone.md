@@ -84,17 +84,17 @@ production implementation of this volume's guidance converges on.
 **AWS Certified Solutions Architect** weights design and trade-off
 judgment across nearly every domain in this table, with particular depth
 in compute/storage/database selection (Chapters 04–05), resilient
-architecture (Chapter 06), and cost-aware design (Chapter 07).
+architecture ([Chapter 06](06-reliability-migration-multi-region-and-disaster-recovery.md)), and cost-aware design ([Chapter 07](07-observability-automation-performance-and-cost-governance.md)).
 **AWS Certified Security** weights identity, detection, incident response,
 and data protection more heavily, with particular depth in Chapters 02,
 05, and 08. Both paths draw on the Well-Architected Framework introduced
-in Chapter 01 as their underlying design vocabulary — trade-off questions
+in [Chapter 01](01-cloud-foundations-accounts-and-well-architected-design.md) as their underlying design vocabulary — trade-off questions
 on either exam are, at their core, Well-Architected pillar trade-off
 questions applied to a specific scenario.
 
 ### Using the Well-Architected Tool as a capstone self-assessment
 
-Chapter 01 introduced the **AWS Well-Architected Tool** for a single
+[Chapter 01](01-cloud-foundations-accounts-and-well-architected-design.md) introduced the **AWS Well-Architected Tool** for a single
 workload review. As a capstone practice, running a full six-pillar review
 against a defined workload — ideally the workload built in this chapter's
 hands-on lab, or a workload from the reader's own environment — is the
@@ -268,7 +268,7 @@ aws cloudwatch describe-alarms --state-value ALARM --query "MetricAlarms[].Alarm
 ## Validation and Troubleshooting
 
 - **Reconciling conflicting design guidance across chapters.** A scenario
-  that seems to call for both a centralized egress VPC (Chapter 03, for
+  that seems to call for both a centralized egress VPC ([Chapter 03](03-secure-networking-hybrid-connectivity-and-edge.md), for
   cost and inspection) and per-account NAT gateways (for account
   isolation) is a Well-Architected trade-off, not a contradiction —
   resolve it by asking which pillar the specific requirement optimizes
@@ -290,7 +290,7 @@ aws cloudwatch describe-alarms --state-value ALARM --query "MetricAlarms[].Alarm
 - **Capstone Lambda function times out on cold start under a VPC
   configuration.** If the capstone stack is extended into a VPC for
   private RDS/Aurora access, confirm ENI provisioning latency
-  (Chapter 04) is accounted for in the function's configured timeout, or
+  ([Chapter 04](04-compute-containers-serverless-and-application-architecture.md)) is accounted for in the function's configured timeout, or
   use RDS Proxy to reduce connection-establishment overhead.
 
 ## Security and Best Practices
@@ -302,8 +302,8 @@ aws cloudwatch describe-alarms --state-value ALARM --query "MetricAlarms[].Alarm
   certification scenarios and real operational work.
 - Treat the cross-chapter posture-check pattern as a template for a real
   recurring compliance job (a scheduled Lambda function or Config
-  conformance pack, per Chapter 07), not a one-time manual script.
-- Use a dedicated sandbox account (Chapter 02's Sandbox OU) for
+  conformance pack, per [Chapter 07](07-observability-automation-performance-and-cost-governance.md)), not a one-time manual script.
+- Use a dedicated sandbox account ([Chapter 02](02-multi-account-identity-governance-and-landing-zones.md)'s Sandbox OU) for
   certification practice and capstone experimentation, never a shared
   production account, and apply the same Region-restriction and
   cost-guardrail SCPs used elsewhere in the Organization.
@@ -335,7 +335,7 @@ aws cloudwatch describe-alarms --state-value ALARM --query "MetricAlarms[].Alarm
 
 1. Explain, in Well-Architected pillar terms, the trade-off between a
    centralized egress VPC and per-account NAT gateways introduced in
-   Chapter 03.
+   [Chapter 03](03-secure-networking-hybrid-connectivity-and-edge.md).
 2. Which chapters in this volume most directly support AWS Certified
    Security preparation, and why do they still depend on the networking
    and compute chapters?
@@ -371,7 +371,7 @@ per-month key charge.
 **Steps**
 
 1. Apply the capstone Terraform from the Implementation section above
-   (adapting the Lambda function code from Chapter 04's lab), and confirm
+   (adapting the Lambda function code from [Chapter 04](04-compute-containers-serverless-and-application-architecture.md)'s lab), and confirm
    all resources were created:
 
    ```bash
@@ -429,7 +429,7 @@ per-month key charge.
    workload" — is expected and correct for a small lab workload).
 
 5. **Negative test:** Attempt an action the Lambda execution role does
-   not permit, confirming the least-privilege boundary from Chapter 04
+   not permit, confirming the least-privilege boundary from [Chapter 04](04-compute-containers-serverless-and-application-architecture.md)
    still holds in this composed stack:
 
    ```bash

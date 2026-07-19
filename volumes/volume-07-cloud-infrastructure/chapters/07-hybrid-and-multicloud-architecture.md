@@ -112,7 +112,7 @@ availability benefit of tested active redundancy.
 - **Containers and Kubernetes** — a container image runs identically
   regardless of the underlying provider, and Kubernetes provides a
   provider-neutral scheduling and networking API surface (detailed in
-  Volume VIII). This genuinely abstracts the *compute runtime* layer, but
+  [Volume VIII](../../volume-08-containers-platform-engineering/README.md)). This genuinely abstracts the *compute runtime* layer, but
   does not abstract the managed services (databases, object storage,
   managed queues, identity) a real application depends on around that
   runtime — those remain provider-specific unless deliberately
@@ -128,7 +128,7 @@ availability benefit of tested active redundancy.
 - **Multicloud management platforms** — third-party tooling that
   presents a unified console, policy engine, or cost view across
   providers. Genuinely useful for governance and visibility (extending
-  the guardrail patterns from Chapter 02 across providers), but does not
+  the guardrail patterns from [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md) across providers), but does not
   by itself make workloads portable or redundant — it is an operations
   layer, not an application architecture.
 
@@ -144,15 +144,15 @@ A workload spanning providers or spanning on-premises and cloud needs
 three specific forms of consistency to function coherently:
 
 - **Identity consistency** — a single federated identity source of truth
-  (Chapter 03) that every provider or environment trusts, rather than
+  ([Chapter 03](03-cloud-identity-access-and-cryptographic-services.md)) that every provider or environment trusts, rather than
   separate identity stores per provider that drift out of sync and
   produce inconsistent access reviews.
 - **Network consistency** — routable, non-overlapping address space
-  (Chapter 04) and consistent DNS resolution across every environment,
+  ([Chapter 04](04-cloud-networking-and-hybrid-connectivity.md)) and consistent DNS resolution across every environment,
   so a workload's dependency lookups behave identically regardless of
   where the workload currently runs.
 - **Data consistency** — a defined replication or synchronization
-  mechanism (Chapter 06) with an explicit RPO across the hybrid or
+  mechanism ([Chapter 06](06-cloud-storage-databases-and-data-services.md)) with an explicit RPO across the hybrid or
   multicloud boundary, since data is usually the hardest and most
   expensive layer to keep consistent across providers, and inconsistent
   data undermines every other consistency effort.
@@ -353,7 +353,7 @@ echo "Replication lag ${LAG_MINUTES}m within ${REQUIRED_RPO_MINUTES}m RPO."
   layer named in the "abstraction layer options" section independently.
 - **Monitor replication lag continuously against the stated RPO**, using
   a check similar to the script above wired into standing observability
-  (Chapter 09), rather than discovering a replication lag breach only
+  ([Chapter 09](09-cloud-automation-observability-resilience-and-lifecycle-operations.md)), rather than discovering a replication lag breach only
   during an actual failover attempt.
 - **Validate identity consistency by auditing for orphaned,
   provider-local identities** — an identity created directly in a
@@ -367,16 +367,16 @@ echo "Replication lag ${LAG_MINUTES}m within ${REQUIRED_RPO_MINUTES}m RPO."
 
 ## Security and Best Practices
 
-- Apply the identity model from Chapter 03 as a single federated source of
+- Apply the identity model from [Chapter 03](03-cloud-identity-access-and-cryptographic-services.md) as a single federated source of
   truth across every provider and environment; do not allow
   provider-local identity stores to accumulate as an exception.
-- Extend the guardrail and policy-as-code discipline from Chapter 02
+- Extend the guardrail and policy-as-code discipline from [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md)
   across every provider a workload touches — a guardrail enforced on only
   one of two providers a workload runs on is a governance gap, not a
   partial mitigation.
 - Encrypt data in transit across every hybrid connectivity path and every
   cross-provider replication link, in addition to the connectivity-layer
-  protections established in Chapter 04.
+  protections established in [Chapter 04](04-cloud-networking-and-hybrid-connectivity.md).
 - Scope credentials and network access for edge sites tightly, and assume
   an edge site is physically less secure than a provider region — design
   for the edge site being compromised or physically accessed by an
@@ -567,9 +567,9 @@ multi-provider redundancy, evaluated the real, bounded scope of
 abstraction layers like Kubernetes and provider-abstracted IaC modules,
 and covered the identity, network, and data consistency work required to
 make a hybrid or multicloud boundary function coherently, including the
-autonomy and reconciliation design edge computing adds on top. Chapter 08
+autonomy and reconciliation design edge computing adds on top. [Chapter 08](08-cloud-governance-security-and-finops.md)
 covers governing this multi-provider estate with consistent policy and
-cost management, and Chapter 09 covers the automation and observability
+cost management, and [Chapter 09](09-cloud-automation-observability-resilience-and-lifecycle-operations.md) covers the automation and observability
 practices that keep it operationally sound.
 
 - [ ] Can articulate a concrete, workload-specific driver for a proposed

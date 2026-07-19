@@ -3,16 +3,16 @@
 ## Learning Objectives
 
 - Build a host-level monitoring baseline that feeds the enterprise
-  observability stack covered in depth in Volume XI.
+  observability stack covered in depth in [Volume XI](../../volume-11-observability-enterprise-operations/README.md).
 - Use platform-native performance tools — `sar`/`vmstat`/`iostat`/
   `pidstat` on Linux, Performance Monitor/`Get-Counter` on Windows — to
   diagnose CPU, memory, disk, and I/O bottlenecks.
 - Apply a structured troubleshooting methodology to cross-platform
   incidents rather than ad hoc investigation.
 - Centralize logs from both platforms into a common pipeline, extending
-  the `journald` forwarding introduced in Chapter 02 with Windows Event
+  the `journald` forwarding introduced in [Chapter 02](02-enterprise-linux-administration.md) with Windows Event
   Forwarding.
-- Operate a host through the full lifecycle model introduced in Volume I
+- Operate a host through the full lifecycle model introduced in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)
   — build, patch, monitor, and decommission — as a closed loop rather than
   a series of disconnected tasks.
 
@@ -24,7 +24,7 @@ not, how logs and metrics leave the host to reach a central pipeline, and
 how a host's operational life ends in a controlled way rather than as an
 afterthought. Full observability platform architecture — metrics
 pipelines, distributed tracing, dashboarding, and alerting design at
-scale — is covered in Volume XI; this chapter stays at what a single host
+scale — is covered in [Volume XI](../../volume-11-observability-enterprise-operations/README.md); this chapter stays at what a single host
 produces and how an administrator reasons about it directly.
 
 ### The monitoring stack, from a single host's perspective
@@ -33,7 +33,7 @@ Enterprise observability is commonly described in three data types:
 **metrics** (numeric time-series — CPU percent, queue depth), **logs**
 (discrete structured or unstructured event records), and **traces**
 (request-level causal chains through distributed systems, most relevant
-to application-layer observability and covered in Volume XI). A host
+to application-layer observability and covered in [Volume XI](../../volume-11-observability-enterprise-operations/README.md)). A host
 participates in this stack either through an **agent** that pushes or
 exposes data, or **agentlessly**, where a central collector pulls data
 over an existing protocol (SSH, WinRM, SNMP). This chapter's examples use
@@ -66,7 +66,7 @@ identified. This chapter recommends a repeatable sequence:
 1. **Define the problem and scope.** What is the observed symptom,
    which hosts/services are affected, and since when?
 2. **Gather evidence before forming a hypothesis.** Pull metrics, logs,
-   and recent change history (tying back to Chapter 01's change-management
+   and recent change history (tying back to [Chapter 01](01-systems-administration-architecture-and-operating-model.md)'s change-management
    process) for the affected window.
 3. **Form a specific, testable hypothesis.** "Disk I/O saturation on the
    database volume," not "something is slow."
@@ -75,7 +75,7 @@ identified. This chapter recommends a repeatable sequence:
 5. **Implement the fix, then verify it resolved the original symptom** —
    not just that the diagnostic metric improved.
 6. **Document the finding** as a runbook update or a problem record
-   (Chapter 01), so the next occurrence is faster to resolve.
+   ([Chapter 01](01-systems-administration-architecture-and-operating-model.md)), so the next occurrence is faster to resolve.
 
 A useful lens for step 3, borrowed from performance engineering, is the
 **USE method** (Utilization, Saturation, Errors): for every resource —
@@ -85,7 +85,7 @@ guessing which resource is the bottleneck.
 
 ### Log centralization
 
-- **Linux**: Chapter 02 showed `journald` forwarding to syslog
+- **Linux**: [Chapter 02](02-enterprise-linux-administration.md) showed `journald` forwarding to syslog
   (`ForwardToSyslog=yes`). At fleet scale, hosts typically forward to a
   local `rsyslog`/`syslog-ng` relay, which batches and ships to the
   central collector, rather than every host connecting directly to a
@@ -96,14 +96,14 @@ guessing which resource is the bottleneck.
   **subscription**, created on the collector with `wecutil`, defines which
   event log/query to forward and from which source computers.
 - Both mechanisms feed the same downstream pipeline in a mature
-  environment (Volume XI); the choice of agentless-native forwarding
+  environment ([Volume XI](../../volume-11-observability-enterprise-operations/README.md)); the choice of agentless-native forwarding
   versus a shipping agent (Beats, Fluent Bit, and similar) is itself an
   architectural decision made at the observability-platform layer, not
   in this chapter.
 
 ### Lifecycle operations
 
-Volume I, Chapter 08 defined the infrastructure lifecycle: plan, build,
+[Volume I, Chapter 08](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md) defined the infrastructure lifecycle: plan, build,
 operate, maintain, and decommission. Applied to a single host in this
 volume's scope:
 
@@ -118,17 +118,17 @@ volume's scope:
 
 A host is never "done" until it is decommissioned; monitoring is the
 stage that occupies most of a host's operational life and is what
-produces the evidence that a change (Chapter 06/08) succeeded or a
-problem (Chapter 01) needs escalation.
+produces the evidence that a change ([Chapter 06](06-configuration-software-and-patch-management.md)/08) succeeded or a
+problem ([Chapter 01](01-systems-administration-architecture-and-operating-model.md)) needs escalation.
 
 ## Design Considerations
 
 - **Alert on symptoms, not just raw thresholds.** An alert tied to SLO
-  burn rate (Volume I's availability vocabulary) is more actionable than
+  burn rate ([Volume I](../../volume-01-enterprise-engineering-foundations/README.md)'s availability vocabulary) is more actionable than
   a static "CPU > 80%" threshold that fires during entirely expected
   batch-processing windows.
 - **Design retention deliberately.** Balance log/metric retention cost
-  against investigative and compliance need (Chapter 08's audit evidence
+  against investigative and compliance need ([Chapter 08](08-systems-security-automation-and-compliance.md)'s audit evidence
   requirements are a lower bound, not a target); keep high-resolution data
   for a shorter window and downsampled/aggregated data longer.
 - **Design for alert fatigue explicitly.** Every alert that does not
@@ -137,11 +137,11 @@ problem (Chapter 01) needs escalation.
   consistently fire without a corresponding action.
 - **Runbooks over tribal knowledge.** A troubleshooting runbook committed
   to the same documentation pipeline as the rest of this encyclopedia
-  (Volume I, Chapter 05) survives staff turnover; an experienced
+  ([Volume I, Chapter 05](../../volume-01-enterprise-engineering-foundations/chapters/05-documentation-pipelines-and-publishing.md)) survives staff turnover; an experienced
   administrator's memory does not.
 - **Decommission checklists must be complete, not just "delete the VM."**
   A rushed decommission leaves orphaned DNS records, stale AD computer
-  objects (Chapter 04), monitoring targets alerting on an unreachable
+  objects ([Chapter 04](04-enterprise-identity-and-directory-services.md)), monitoring targets alerting on an unreachable
   host, and CMDB entries that no longer reflect reality — each an
   operational and audit liability.
 - **Edge/disconnected sites need a monitoring design decision, not a
@@ -304,15 +304,15 @@ Invoke-RestMethod -Method Patch -Uri 'https://cmdb.example.internal/api/ci/web-l
 
 - Use least-privilege, dedicated service accounts for monitoring
   collection and WEF, distinct from interactive administrator accounts
-  (consistent with the identity separation guidance in Chapter 01/04).
-- Forward security-relevant logs (audit trails from Chapter 08, failed
+  (consistent with the identity separation guidance in [Chapter 01](01-systems-administration-architecture-and-operating-model.md)/04).
+- Forward security-relevant logs (audit trails from [Chapter 08](08-systems-security-automation-and-compliance.md), failed
   logons) before local retention expires, so a compromised host cannot
   destroy the only copy of its own evidence.
 - Encrypt log transport where it crosses an untrusted network segment —
   WinRM over HTTPS for WEF, TLS-wrapped syslog (`omfwd` with
   `protocol="tcp"` plus a TLS driver) rather than plaintext UDP, in
   production.
-- Sanitize storage media per NIST SP 800-88 (Volume I, Chapter 08) as part
+- Sanitize storage media per NIST SP 800-88 ([Volume I, Chapter 08](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md)) as part
   of decommissioning, and revoke any certificates or credentials issued
   to the retired host rather than leaving them valid and unmonitored.
 - Tune alert thresholds from measured evidence (the USE method) rather
@@ -332,8 +332,8 @@ Invoke-RestMethod -Method Patch -Uri 'https://cmdb.example.internal/api/ci/web-l
 - `sar(1)`, `sysstat` package documentation, `pidstat(1)` man pages.
 - Microsoft Learn: "Windows Event Forwarding" and "Get-Counter."
 - Microsoft Learn: "Monitor and troubleshoot with Performance Monitor."
-- NIST SP 800-88 — media sanitization guidance referenced in Volume I,
-  Chapter 08.
+- NIST SP 800-88 — media sanitization guidance referenced in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md),
+  [Chapter 08](08-systems-security-automation-and-compliance.md).
 
 **Knowledge Checks**
 
@@ -464,9 +464,9 @@ performance tools that answer "what is actually happening on this host
 right now, and what happened during the incident window," a structured
 (USE-method-informed) troubleshooting methodology instead of ad hoc
 guessing, log centralization patterns — `journald`/`rsyslog` forwarding
-and Windows Event Forwarding — that feed the Volume XI observability
+and Windows Event Forwarding — that feed the [Volume XI](../../volume-11-observability-enterprise-operations/README.md) observability
 stack, and a complete decommission runbook that closes the lifecycle loop
-Volume I opened.
+[Volume I](../../volume-01-enterprise-engineering-foundations/README.md) opened.
 
 - [ ] Can use at least two Linux and two Windows tools to diagnose CPU,
       memory, and disk contention, including retrospective analysis.

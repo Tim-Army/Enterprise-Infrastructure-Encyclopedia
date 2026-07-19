@@ -22,14 +22,14 @@
 
 ### Security automation and orchestration, expanded
 
-Chapter 6 introduced SOAR for alert-triage automation. Security
+[Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md) introduced SOAR for alert-triage automation. Security
 automation extends further across the program: automated evidence
-collection for audits (feeding the control crosswalk from Chapter 1),
-automated compliance scanning (Chapter 3's OpenSCAP pattern), automated
-vulnerability prioritization (Chapter 5), and automated backup
-verification (Chapter 8). The unifying architectural principle across all
+collection for audits (feeding the control crosswalk from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md)),
+automated compliance scanning ([Chapter 3](03-platform-hardening-configuration-and-endpoint-defense.md)'s OpenSCAP pattern), automated
+vulnerability prioritization ([Chapter 5](05-vulnerability-exposure-and-patch-risk-management.md)), and automated backup
+verification ([Chapter 8](08-data-security-cryptography-privacy-and-ransomware-resilience.md)). The unifying architectural principle across all
 of these is the same one established for JIT privileged elevation in
-Chapter 2: automation should handle the mechanical, well-defined,
+[Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md): automation should handle the mechanical, well-defined,
 high-volume work, and route judgment calls — anything with meaningful
 business impact or genuine ambiguity — to a human, with an explicit
 approval gate rather than either full manual toil or unchecked automatic
@@ -40,7 +40,7 @@ action.
 Security historically operated as a gate at the end of the software
 delivery lifecycle — a penetration test or architecture review shortly
 before release, catching design flaws too late to fix cheaply, the same
-problem the SDLC-placement design consideration in Chapter 1 raised for
+problem the SDLC-placement design consideration in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md) raised for
 the security architecture review board. **DevSecOps** shifts security
 checks earlier and distributes them across the pipeline:
 
@@ -48,14 +48,14 @@ checks earlier and distributes them across the pipeline:
   known-insecure patterns before it is ever built or run.
 - **Software Composition Analysis (SCA)** checks third-party and
   open-source dependencies against known-vulnerability databases,
-  directly consuming the SBOM practice from Chapter 5.
+  directly consuming the SBOM practice from [Chapter 5](05-vulnerability-exposure-and-patch-risk-management.md).
 - **Dynamic Application Security Testing (DAST)** exercises a running
   application (in a test environment) for exploitable behavior without
   access to source code.
 - **Infrastructure-as-code scanning** validates Terraform, Kubernetes
   manifests, and similar declarative configuration against security
   baselines before they are ever applied, extending the hardening-baseline
-  discipline from Chapter 3 to infrastructure definitions themselves.
+  discipline from [Chapter 3](03-platform-hardening-configuration-and-endpoint-defense.md) to infrastructure definitions themselves.
 - **Container image scanning** checks built container images for
   known-vulnerable base layers and packages before deployment, and can
   block promotion of an image that fails policy.
@@ -65,7 +65,7 @@ or warn and track) calibrated to the gate's false-positive rate and the
 pipeline stage — a rapidly maturing SAST integration commonly starts in
 warn-only mode and moves to blocking only once tuned, mirroring the
 audit-mode-then-enforce rollout pattern used for application allow-listing
-in Chapter 3 and DLP in Chapter 8.
+in [Chapter 3](03-platform-hardening-configuration-and-endpoint-defense.md) and DLP in [Chapter 8](08-data-security-cryptography-privacy-and-ransomware-resilience.md).
 
 ### Continuous control validation and breach-and-attack simulation
 
@@ -76,12 +76,12 @@ checks against production or production-representative systems to
 confirm controls are functioning as designed — for example, confirming
 an EDR agent actually blocks a benign, clearly-labeled test file matching
 a known detection pattern, or confirming a segmentation rule from
-Chapter 4 still blocks a specific denied path.
+[Chapter 4](04-network-security-architecture-and-infrastructure-defense.md) still blocks a specific denied path.
 
 **Breach and Attack Simulation (BAS)** platforms extend this into
 scheduled, safe, non-destructive simulation of specific adversary
 techniques (mapped to MITRE ATT&CK, the same taxonomy introduced in
-Chapter 6) against production-representative environments, verifying that
+[Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)) against production-representative environments, verifying that
 the expected detection or prevention control actually fires — without
 using working exploit code or causing real impact. This is fundamentally
 a **defensive assurance activity**: it validates that a documented
@@ -91,7 +91,7 @@ rather than genuine attack tooling. A control that looks correctly
 configured but fails a BAS validation check has a real, previously
 invisible gap — this is why continuous validation is treated as
 distinct from, and complementary to, the CTEM validation stage in
-Chapter 5, which focuses on exposure rather than control efficacy.
+[Chapter 5](05-vulnerability-exposure-and-patch-risk-management.md), which focuses on exposure rather than control efficacy.
 
 ### Purple teaming
 
@@ -104,7 +104,7 @@ caught. Unlike an adversarial penetration test conducted without SOC
 awareness (which tests detection blindly), purple teaming is explicitly
 collaborative and its primary output is closing detection gaps
 immediately, feeding directly back into the detection engineering
-lifecycle from Chapter 6 rather than producing a report reviewed weeks
+lifecycle from [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md) rather than producing a report reviewed weeks
 later. This volume treats purple teaming strictly as a defensive
 assurance and detection-engineering practice — the techniques exercised
 are pre-scoped, authorized, and safe, run to validate defense, not to
@@ -118,11 +118,11 @@ starting from a hypothesis rather than an alert. A hunt typically
 follows:
 
 1. **Hypothesis formation** — grounded in current threat intelligence,
-   an ATT&CK coverage gap identified in Chapter 6, or an anomaly noticed
+   an ATT&CK coverage gap identified in [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md), or an anomaly noticed
    during unrelated investigation ("if a living-off-the-land technique
-   from Chapter 3 were used here, what telemetry would it leave, and do
+   from [Chapter 3](03-platform-hardening-configuration-and-endpoint-defense.md) were used here, what telemetry would it leave, and do
    we have it").
-2. **Data investigation** — querying available telemetry (Chapter 6's
+2. **Data investigation** — querying available telemetry ([Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)'s
    SIEM/data platform) to test the hypothesis, often iteratively refining
    the query as results come back.
 3. **Pattern identification** — distinguishing genuinely suspicious
@@ -130,9 +130,9 @@ follows:
    skill and institutional context about what is actually normal in the
    specific environment.
 4. **Response or rule creation** — a confirmed finding triggers the
-   incident response process (Chapter 7); a validated hypothesis with no
+   incident response process ([Chapter 7](07-cybersecurity-incident-response-and-digital-evidence.md)); a validated hypothesis with no
    current finding, but real detection value, is converted into a
-   permanent detection rule, closing the loop back into Chapter 6's
+   permanent detection rule, closing the loop back into [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)'s
    detection engineering lifecycle.
 
 The **Hunting Maturity Model (HMM)**, developed by threat-hunting
@@ -147,16 +147,16 @@ investment should be.
 
 A security program needs a small number of metrics that actually drive
 decisions, echoing the "metrics must drive a decision" principle from
-Chapter 1:
+[Chapter 1](01-cybersecurity-governance-risk-and-architecture.md):
 
 | Metric | What it reflects |
 | --- | --- |
-| Mean Time to Detect (MTTD) | Detection pipeline effectiveness (Chapter 6) |
-| Mean Time to Respond/Contain (MTTR) | IR process effectiveness (Chapter 7) |
-| Patch SLA compliance, KEV-specific MTTR | Exposure management discipline (Chapter 5) |
-| ATT&CK technique coverage percentage | Detection engineering breadth (Chapter 6) |
-| Backup restore test success rate | Ransomware resilience (Chapter 8) |
-| Percentage of privileged access using JIT | Identity control maturity (Chapter 2) |
+| Mean Time to Detect (MTTD) | Detection pipeline effectiveness ([Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)) |
+| Mean Time to Respond/Contain (MTTR) | IR process effectiveness ([Chapter 7](07-cybersecurity-incident-response-and-digital-evidence.md)) |
+| Patch SLA compliance, KEV-specific MTTR | Exposure management discipline ([Chapter 5](05-vulnerability-exposure-and-patch-risk-management.md)) |
+| ATT&CK technique coverage percentage | Detection engineering breadth ([Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)) |
+| Backup restore test success rate | Ransomware resilience ([Chapter 8](08-data-security-cryptography-privacy-and-ransomware-resilience.md)) |
+| Percentage of privileged access using JIT | Identity control maturity ([Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md)) |
 
 Metrics should be reviewed for whether they are still meaningful, not
 just tracked indefinitely — a metric the organization has plateaued
@@ -164,12 +164,12 @@ against for years may indicate either a genuinely mature control or a
 metric that has stopped reflecting real risk and should be replaced.
 
 **Security tool lifecycle management** applies the same discipline
-Chapter 1 applies to infrastructure generally: every security tool has an
+[Chapter 1](01-cybersecurity-governance-risk-and-architecture.md) applies to infrastructure generally: every security tool has an
 owner, a documented purpose, an end-of-life/renewal decision point, and a
 formal retirement process when superseded or no longer justified.
 Uncontrolled tool accumulation — each solving a narrow problem, with
 overlapping capability and no consolidated data model — increases both
-cost and the integration burden on the SIEM pipeline in Chapter 6 without
+cost and the integration burden on the SIEM pipeline in [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md) without
 a proportional security benefit.
 
 ## Design Considerations
@@ -208,7 +208,7 @@ a proportional security benefit.
   consolidated security platform simplifies integration and reduces
   SIEM pipeline complexity but can lag best-of-breed point solutions in
   any specific capability. This is a periodic architecture review
-  decision (Chapter 1's SARB process), not a one-time platform choice —
+  decision ([Chapter 1](01-cybersecurity-governance-risk-and-architecture.md)'s SARB process), not a one-time platform choice —
   reassess as the vendor landscape and organizational risk profile
   change.
 
@@ -355,7 +355,7 @@ next_review: 2026-08-15
   SOAR playbook or CI/CD gate that has only ever run against staging
   data can behave unexpectedly against real production edge cases;
   require a staged rollout for any new automation with production
-  impact, mirroring the canary-ring pattern from Chapter 5.
+  impact, mirroring the canary-ring pattern from [Chapter 5](05-vulnerability-exposure-and-patch-risk-management.md).
 - **Common failure: gate fatigue leads to bypass culture.** If a
   blocking CI/CD gate has a persistently high false-positive rate,
   engineering teams will find or request ways around it, quietly
@@ -366,7 +366,7 @@ next_review: 2026-08-15
   continuous control validation program that reports failures nobody
   acts on provides no more real assurance than not running it at all —
   route every failed check through the same risk register and
-  ownership discipline from Chapter 1, with a tracked remediation
+  ownership discipline from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md), with a tracked remediation
   deadline.
 - **Common failure: hunting findings never become detections.** A
   threat hunting program that repeatedly rediscovers the same gap
@@ -378,11 +378,11 @@ next_review: 2026-08-15
   corresponding process or control change, investigate whether the
   measurement methodology changed (a narrower reporting scope, an
   excluded category) before crediting a genuine improvement — the same
-  scrutiny applied to self-attested control status in Chapter 1.
+  scrutiny applied to self-attested control status in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md).
 - **Diagnosing tool sprawl symptoms**: overlapping alerts for the same
   underlying event from multiple tools, inconsistent asset naming across
   platforms, and rising SIEM normalization-mapping maintenance burden
-  (Chapter 6) are all downstream symptoms of unmanaged tool lifecycle;
+  ([Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)) are all downstream symptoms of unmanaged tool lifecycle;
   address them at the tool-rationalization level, not by adding
   more normalization logic indefinitely.
 
@@ -391,7 +391,7 @@ next_review: 2026-08-15
 - Require human approval for any automated action with meaningful
   business impact, and reserve full automation for narrow, high-
   confidence, low-blast-radius actions — the guardrail principle applied
-  consistently from Chapter 2's JIT elevation through this chapter's
+  consistently from [Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md)'s JIT elevation through this chapter's
   SOAR and CI/CD gates.
 - Roll out new CI/CD security gates and automation in warn-only or
   staging-scoped mode before enforcing in production, and track the
@@ -399,15 +399,15 @@ next_review: 2026-08-15
   blocking.
 - Run continuous control validation on a recurring schedule against
   production-representative environments, and route every failure
-  through the risk register from Chapter 1 with an owner and deadline —
+  through the risk register from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md) with an owner and deadline —
   a validation program that is not acted on provides no real assurance.
 - Convert validated threat-hunting findings into permanent detection
   rules, closing the loop into the detection engineering lifecycle from
-  Chapter 6, and track that conversion rate as a maturity indicator.
+  [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md), and track that conversion rate as a maturity indicator.
 - Report a small set of outcome-oriented metrics (MTTD, MTTR, patch SLA
   compliance, restore test success rate) to governance rather than
   activity-volume metrics, consistent with the actionable-KRI principle
-  from Chapter 1.
+  from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md).
 - Maintain a formal security tool inventory with an owner, purpose, and
   renewal/retirement decision point for every tool, and retire
   overlapping or superseded tools deliberately rather than allowing
@@ -543,7 +543,7 @@ that prove controls work rather than assuming it from configuration
 alone, hypothesis-driven threat hunting that closes the loop back into
 detection engineering, and outcome-oriented metrics and tool lifecycle
 management that keep the program itself accountable to the governance
-model established in Chapter 1. The hands-on lab built a working control
+model established in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md). The hands-on lab built a working control
 validation scorecard spanning identity, network, and data-resilience
 controls from across the volume, and proved — with a negative test — that
 a real regression is caught and correctly fails a CI-style gate.

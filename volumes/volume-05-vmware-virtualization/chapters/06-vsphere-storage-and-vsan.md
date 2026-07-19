@@ -594,7 +594,7 @@ Set-VsanClusterConfiguration -Cluster $cluster -StretchedClusterEnabled:$true `
   held within the vSphere/vCenter trust boundary) meets policy; regulated
   environments requiring separation of duties between infrastructure
   administrators and key custodians should use an external KMIP-compliant
-  KMS instead — this decision is covered in depth in Chapter 8.
+  KMS instead — this decision is covered in depth in [Chapter 8](08-vsphere-and-nsx-security-architecture.md).
 - Restrict iSCSI target and NFS export access with array-side or NAS-side
   IP/initiator allow-lists in addition to VMkernel network segmentation;
   do not rely on network segmentation alone as the only access control
@@ -632,9 +632,9 @@ Set-VsanClusterConfiguration -Cluster $cluster -StretchedClusterEnabled:$true `
 - VMware Compatibility Guide — vSAN OSA and ESA hardware qualification.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 5 for the conceptual introduction to VM storage policy
+- See [Chapter 5](05-virtual-machine-lifecycle-and-resource-management.md) for the conceptual introduction to VM storage policy
   placement.
-- See Chapter 8 for full key-management-server architecture (Native Key
+- See [Chapter 8](08-vsphere-and-nsx-security-architecture.md) for full key-management-server architecture (Native Key
   Provider versus external KMIP KMS).
 
 **Knowledge checks**

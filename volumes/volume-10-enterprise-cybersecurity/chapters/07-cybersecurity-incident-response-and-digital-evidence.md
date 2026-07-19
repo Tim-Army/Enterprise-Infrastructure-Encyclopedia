@@ -35,7 +35,7 @@ incident response into four phases:
 2. **Detection and Analysis** — identifying that an incident is
    occurring, scoping its extent, and classifying its severity. This
    phase consumes the telemetry and detection capability built in
-   Chapter 6; incident response does not have a separate detection
+   [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md); incident response does not have a separate detection
    pipeline, it consumes the same one.
 3. **Containment, Eradication, and Recovery** — limiting further damage
    (containment), removing the adversary's presence and access
@@ -52,7 +52,7 @@ incident response into four phases:
 
 This lifecycle is cyclical, not linear: Post-Incident Activity findings
 should measurably change Preparation (updated playbooks, closed detection
-gaps fed back to Chapter 6, corrected authority gaps), and Detection and
+gaps fed back to [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md), corrected authority gaps), and Detection and
 Analysis frequently loops back on itself as scope expands during
 investigation.
 
@@ -60,7 +60,7 @@ investigation.
 
 A useful severity model combines **scope** (how many systems/users
 affected), **data sensitivity** (what data is at risk, informed by the
-classification scheme in Chapter 8), and **business impact** (is a
+classification scheme in [Chapter 8](08-data-security-cryptography-privacy-and-ransomware-resilience.md)), and **business impact** (is a
 revenue-generating or safety-critical system affected) into a small
 number of severity tiers, each with a defined response posture:
 
@@ -118,7 +118,7 @@ Preparation, not improvised under pressure during an active incident:
   unit owners.
 - **External notification** — regulatory bodies (GDPR's 72-hour breach
   notification requirement, state breach notification laws, sector
-  regulators referenced in Chapter 1's regulatory landscape), affected
+  regulators referenced in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md)'s regulatory landscape), affected
   customers or individuals, cyber insurance carriers (often with their
   own mandatory notification and vendor-selection requirements), and law
   enforcement where appropriate.
@@ -138,7 +138,7 @@ incident does. Effective tabletop exercises:
 
 - Use a scenario relevant to the organization's actual threat profile and
   architecture (informed by the ATT&CK-based coverage review in
-  Chapter 6), not a generic template.
+  [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)), not a generic template.
 - Include a decision point requiring genuine judgment (should we take a
   production system offline, do we have legal authority to isolate a
   third-party-managed system) rather than a purely technical walkthrough.
@@ -165,7 +165,7 @@ incident does. Effective tabletop exercises:
   headcount — most mature programs use both.
 - **Evidence retention vs. privacy and storage cost.** Retaining full
   forensic images indefinitely is expensive and can itself create
-  privacy and data-minimization exposure (Chapter 8). Define a retention
+  privacy and data-minimization exposure ([Chapter 8](08-data-security-cryptography-privacy-and-ransomware-resilience.md)). Define a retention
   period aligned to realistic legal, regulatory, and insurance
   requirements, and dispose of evidence according to a documented
   schedule rather than either deleting prematurely or retaining
@@ -348,7 +348,7 @@ if __name__ == "__main__":
 - **Post-incident review process failure**: if the same root cause or
   gap appears across multiple post-incident reviews without a completed
   remediation, that is itself a governance failure — feed unresolved
-  post-incident findings into the risk register from Chapter 1 with an
+  post-incident findings into the risk register from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md) with an
   assigned owner, the same discipline applied to any other risk.
 
 ## Security and Best Practices
@@ -365,16 +365,16 @@ if __name__ == "__main__":
   systems' integrity is in question.
 - Encode playbooks as structured, version-controlled artifacts with
   explicit time targets and owners, consistent with the detection
-  engineering discipline in Chapter 6 and the automation practices in
-  Chapter 9.
+  engineering discipline in [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md) and the automation practices in
+  [Chapter 9](09-security-automation-assurance-threat-hunting-and-lifecycle-operations.md).
 - Hash and log every evidence artifact at collection and every
   subsequent handoff; treat the custody log itself as evidence requiring
   integrity protection.
 - Run tabletop exercises at least annually, and after any significant
   architecture change, using scenarios grounded in the organization's
-  actual ATT&CK coverage gaps from Chapter 6.
+  actual ATT&CK coverage gaps from [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md).
 - Feed every post-incident review finding into the risk register from
-  Chapter 1 with a named owner, and track remediation to closure rather
+  [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md) with a named owner, and track remediation to closure rather
   than treating the review document itself as the deliverable.
 
 ## References and Knowledge Checks
@@ -494,7 +494,7 @@ cd ~ && rm -rf ~/labs/vol10-ch07
 ## Summary and Completion Checklist
 
 This chapter built the incident response and digital evidence discipline
-that activates when Chapter 6's detection pipeline confirms a genuine
+that activates when [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)'s detection pipeline confirms a genuine
 incident: the four-phase NIST SP 800-61 lifecycle, severity
 classification driving response posture, digital forensics fundamentals
 (order of volatility, chain of custody, forensically sound collection),

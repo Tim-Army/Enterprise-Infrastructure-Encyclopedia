@@ -22,9 +22,9 @@
 
 Every preceding chapter in this volume produces telemetry that detection
 depends on: identity provider sign-in logs and conditional access
-decisions (Chapter 2), EDR process and file-system telemetry (Chapter 3),
-NetFlow/IPFIX and IDS/IPS alerts (Chapter 4), and vulnerability and
-exposure state (Chapter 5). A **Security Information and Event Management
+decisions ([Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md)), EDR process and file-system telemetry ([Chapter 3](03-platform-hardening-configuration-and-endpoint-defense.md)),
+NetFlow/IPFIX and IDS/IPS alerts ([Chapter 4](04-network-security-architecture-and-infrastructure-defense.md)), and vulnerability and
+exposure state ([Chapter 5](05-vulnerability-exposure-and-patch-risk-management.md)). A **Security Information and Event Management
 (SIEM)** platform — or, increasingly, a security data lake with a SIEM
 query layer on top — exists to collect, normalize, correlate, and retain
 that telemetry so it can be searched and alerted on as a unified body of
@@ -45,7 +45,7 @@ The pipeline has four stages:
    detection (typically a shorter hot-tier window) and historical
    investigation and compliance (a longer, often cheaper cold-tier
    window), with retention periods aligned to the incident-investigation
-   and regulatory timelines in Chapter 1 and Chapter 8.
+   and regulatory timelines in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md) and [Chapter 8](08-data-security-cryptography-privacy-and-ransomware-resilience.md).
 
 A SIEM that collects everything but normalizes and correlates nothing is
 an expensive log archive, not a detection capability — the value is in
@@ -67,7 +67,7 @@ ad hoc vendor-default rules nobody has reviewed in years. The lifecycle:
 3. **Rule authoring** — write the detection logic, ideally in a
    vendor-neutral format that can be translated to the target platform.
 4. **Testing** — validate the rule fires on known-true-positive telemetry
-   (from a controlled, authorized test — see Chapter 9's coverage of
+   (from a controlled, authorized test — see [Chapter 9](09-security-automation-assurance-threat-hunting-and-lifecycle-operations.md)'s coverage of
    continuous control validation) and does not fire excessively on normal
    baseline traffic.
 5. **Tuning** — adjust thresholds and exclusions based on real
@@ -96,7 +96,7 @@ techniques are most relevant to the organization's actual threat profile
 (informed by industry-specific threat intelligence) but remain uncovered.
 This chapter uses ATT&CK strictly as that defensive planning and coverage
 tool — the same purpose the security architecture review board in
-Chapter 1 uses it for during design review — not as a how-to reference for
+[Chapter 1](01-cybersecurity-governance-risk-and-architecture.md) uses it for during design review — not as a how-to reference for
 performing techniques.
 
 ### SOC operating model
@@ -106,8 +106,8 @@ A **Security Operations Center (SOC)** is commonly organized in tiers:
 | Tier | Role | Typical activity |
 | --- | --- | --- |
 | Tier 1 | Triage | Initial alert review, enrichment, and disposition (escalate, close as benign, close as false positive) |
-| Tier 2 | Investigation | Deeper analysis of escalated alerts, scoping, and initial containment coordination with the incident response process (Chapter 7) |
-| Tier 3 | Engineering and hunting | Detection engineering (the lifecycle above), proactive threat hunting (Chapter 9), and complex investigation support |
+| Tier 2 | Investigation | Deeper analysis of escalated alerts, scoping, and initial containment coordination with the incident response process ([Chapter 7](07-cybersecurity-incident-response-and-digital-evidence.md)) |
+| Tier 3 | Engineering and hunting | Detection engineering (the lifecycle above), proactive threat hunting ([Chapter 9](09-security-automation-assurance-threat-hunting-and-lifecycle-operations.md)), and complex investigation support |
 
 Organizations vary this model — some flatten Tier 1/2, some fully
 outsource Tier 1 to a managed detection and response (MDR) provider while
@@ -135,7 +135,7 @@ mitigations:
   standard containment actions for high-confidence detections, and case
   creation — so Tier 1 analyst time concentrates on judgment calls rather
   than mechanical lookups. SOAR playbooks should include human approval
-  gates for any action with meaningful business impact (Chapter 9
+  gates for any action with meaningful business impact ([Chapter 9](09-security-automation-assurance-threat-hunting-and-lifecycle-operations.md)
   covers this automation-guardrail design consideration further).
 
 ### Threat intelligence and UEBA as enrichment
@@ -167,14 +167,14 @@ compromise activity that never trips a single high-confidence rule.
   cold-tier archival retention. Calibrate hot-tier retention to the
   realistic detection and initial-investigation window (often 30–90
   days) and cold-tier retention to the incident-investigation and
-  regulatory timelines from Chapter 1 and Chapter 8, rather than
+  regulatory timelines from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md) and [Chapter 8](08-data-security-cryptography-privacy-and-ransomware-resilience.md), rather than
   applying one retention period uniformly regardless of cost.
 - **Coverage prioritization using ATT&CK.** Building comprehensive
   coverage across all ATT&CK techniques is not a realistic goal for most
   programs. Prioritize coverage for techniques most relevant to the
   organization's actual threat profile and highest-value assets, and
   treat the resulting heatmap as a living planning artifact reviewed
-  alongside the risk register in Chapter 1.
+  alongside the risk register in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md).
 - **Alert-to-analyst ratio and staffing.** A SOC with more detection
   rules than analyst capacity to review inevitably develops a growing
   backlog or unreviewed-alert blind spot. Detection engineering
@@ -289,7 +289,7 @@ mapped_detections:
 - **Validate detection rules against known-true-positive telemetry
   before trusting them in production.** A rule that has never fired
   against a controlled test event is unproven; use authorized, scoped
-  test events (Chapter 9 covers continuous control validation and purple
+  test events ([Chapter 9](09-security-automation-assurance-threat-hunting-and-lifecycle-operations.md) covers continuous control validation and purple
   teaming) to confirm a rule actually detects the pattern it claims to.
 - **Common failure: silent log source outage.** A telemetry source that
   stops forwarding events produces no alerts at all — which looks
@@ -297,7 +297,7 @@ mapped_detections:
   (event volume against an expected baseline) as its own detection
   category, and treat an unexpected drop to zero from a previously
   healthy source as a high-priority finding in itself, following the
-  same principle as the EDR agent-silence detection in Chapter 3.
+  same principle as the EDR agent-silence detection in [Chapter 3](03-platform-hardening-configuration-and-endpoint-defense.md).
 - **Common failure: normalization schema drift.** A vendor log format
   change (a field renamed or restructured in a product update) silently
   breaks every detection rule depending on that field, without any error
@@ -305,11 +305,11 @@ mapped_detections:
   mapping alongside the detection rules that depend on it, and validate
   mappings after any source-product upgrade.
 - **Common failure: rule review debt.** Detection rules accumulate the
-  same way policy exceptions do (Chapter 2); a rule set that has only
+  same way policy exceptions do ([Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md)); a rule set that has only
   grown for years without retiring stale rules degrades both performance
   and analyst trust. Require a review date on every deployed rule,
   mirroring the review-cadence pattern used for the control crosswalk in
-  Chapter 1.
+  [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md).
 - **Diagnosing high false-positive rates**: pull the specific alert
   population the rule generated over a representative period and
   characterize the false positives by common attribute (a specific
@@ -325,7 +325,7 @@ mapped_detections:
 ## Security and Best Practices
 
 - Treat the SIEM and detection-engineering repository as Tier 0
-  infrastructure (Chapter 2) — an attacker who can suppress or delete
+  infrastructure ([Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md)) — an attacker who can suppress or delete
   detection content operates with reduced risk of discovery for the
   remainder of an intrusion.
 - Version-control detection rules and SOAR playbooks with the same
@@ -344,10 +344,10 @@ mapped_detections:
   a silent log source is a blind spot indistinguishable from "no
   activity" until it is monitored explicitly.
 - Calibrate hot- and cold-tier retention to actual investigative and
-  regulatory need (Chapter 1, Chapter 8) rather than either
+  regulatory need ([Chapter 1](01-cybersecurity-governance-risk-and-architecture.md), [Chapter 8](08-data-security-cryptography-privacy-and-ransomware-resilience.md)) rather than either
   over-retaining at high cost or under-retaining and losing
   investigative value.
-- Feed confirmed incident findings from Chapter 7 back into detection
+- Feed confirmed incident findings from [Chapter 7](07-cybersecurity-incident-response-and-digital-evidence.md) back into detection
   engineering as new hypotheses and rules — the detection lifecycle
   should close the loop with the incident response process, not operate
   as a one-way pipeline.

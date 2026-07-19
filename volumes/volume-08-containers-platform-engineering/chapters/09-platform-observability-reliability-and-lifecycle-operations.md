@@ -9,7 +9,7 @@
   OpenTelemetry, and explain the collector's role as a vendor-neutral
   pipeline.
 - Define platform-level SLOs and error budgets, and connect them to the
-  progressive-delivery gates from Chapter 07.
+  progressive-delivery gates from [Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md).
 - Run a controlled chaos experiment to validate a resilience assumption,
   and plan a fleet-wide cluster upgrade using Cluster API.
 - Attribute Kubernetes cost to workloads and teams, and apply the
@@ -32,7 +32,7 @@ components, each answering a different question:
 
 | Component | Answers | Consumed by |
 | --- | --- | --- |
-| **metrics-server** | Current CPU/memory usage per pod/node, no history | `kubectl top`, the HorizontalPodAutoscaler (Chapter 03) |
+| **metrics-server** | Current CPU/memory usage per pod/node, no history | `kubectl top`, the HorizontalPodAutoscaler ([Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md)) |
 | **kube-state-metrics** | The *state* of Kubernetes objects as metrics — deployment replica counts, pod phase, PVC status, node conditions — not resource usage | Prometheus scraping, dashboards, alerting on object-level conditions |
 | **node-exporter** | Host-level OS metrics — disk I/O, filesystem usage, network interface counters, kernel-level statistics | Prometheus scraping, node-health alerting and capacity planning |
 
@@ -40,7 +40,7 @@ metrics-server deliberately holds no history and exists only to serve the
 narrow, latency-sensitive `metrics.k8s.io` API the autoscaler needs;
 Prometheus, scraping `kube-state-metrics` and `node-exporter` on a
 schedule, is the durable, queryable time-series store everything else —
-dashboards, alerting, the canary Analysis step from Chapter 07 — is built
+dashboards, alerting, the canary Analysis step from [Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md) — is built
 on. Conflating the two is a common design mistake: pointing an HPA at
 Prometheus data (via the Prometheus Adapter) is reasonable for custom
 metrics, but expecting metrics-server to answer a historical or
@@ -52,7 +52,7 @@ object-state question it was never built to hold is not.
 each container's stdout/stderr locally and rotates it, full stop. A
 production logging pipeline needs a node-level collector (Fluent Bit or
 the Fluentd/Fluent Bit successor ecosystem, or an OpenTelemetry Collector
-running in agent mode) running as a DaemonSet (Chapter 03) that tails
+running in agent mode) running as a DaemonSet ([Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md)) that tails
 each node's container log files, enriches each line with Kubernetes
 metadata (pod, namespace, labels — read from the API server or the
 kubelet), and ships to a backend such as **Loki** (label-indexed,
@@ -75,15 +75,15 @@ OpenTelemetry API survives a backend migration untouched.
 
 ### SLOs, error budgets, and the platform's reliability contract
 
-Volume I introduced Service Level Objectives and error budgets as a
+[Volume I](../../volume-01-enterprise-engineering-foundations/README.md) introduced Service Level Objectives and error budgets as a
 general reliability vocabulary; a platform team applies that vocabulary
 to the platform itself, not just to individual applications. A platform
 SLO answers "how reliable is the *platform surface* a tenant depends on"
 — API server availability and latency, scheduling latency for a new pod,
-ingress/gateway data-plane availability (Chapter 04), CSI provisioning
-latency (Chapter 05) — distinct from, and additive to, whatever SLOs an
+ingress/gateway data-plane availability ([Chapter 04](04-kubernetes-networking-service-delivery-and-traffic-policy.md)), CSI provisioning
+latency ([Chapter 05](05-kubernetes-storage-and-stateful-platforms.md)) — distinct from, and additive to, whatever SLOs an
 individual application team defines for its own service on top of that
-platform. The **error budget** this produces is what makes Chapter 07's
+platform. The **error budget** this produces is what makes [Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md)'s
 canary Analysis gates a genuinely risk-calibrated control rather than an
 arbitrary threshold: a canary's failure condition should be defined in
 terms of the same SLO the on-call team is paged against, so a rollout
@@ -104,14 +104,14 @@ version-controlled, and audited the same way any other platform resource
 in this volume is. The output of a chaos experiment is not "did it
 break" — it is "did our monitoring detect it, did our alerting page the
 right team, and did our automated remediation (a PodDisruptionBudget from
-Chapter 03, a health-checked LoadBalancer from Chapter 04) behave as
+[Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md), a health-checked LoadBalancer from [Chapter 04](04-kubernetes-networking-service-delivery-and-traffic-policy.md)) behave as
 designed" — validating the *system*, not just the *component*.
 
 ### Fleet-scale cluster lifecycle operations
 
-Chapter 02 covered upgrading a single cluster. A platform team operating
+[Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md) covered upgrading a single cluster. A platform team operating
 many clusters — per-environment, per-region, or per-tenant in a
-hard-multi-tenancy model (Chapter 08) — needs that same version-skew-
+hard-multi-tenancy model ([Chapter 08](08-internal-developer-platforms-and-platform-products.md)) — needs that same version-skew-
 respecting upgrade discipline applied consistently at fleet scale.
 **Cluster API (CAPI)** manages Kubernetes clusters themselves as
 Kubernetes objects (`Cluster`, `MachineDeployment`, `MachineSet`) on a
@@ -132,7 +132,7 @@ payments spent $4,200 last month." **Kubecost** and the CNCF's
 **OpenCost** specification address this by combining actual cloud pricing
 data with each workload's requested (and, optionally, actually consumed)
 resources to allocate a defensible cost figure per namespace, label, or
-team — turning the requests set back in Chapter 03 into a financial input
+team — turning the requests set back in [Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md) into a financial input
 as well as a scheduling one, and giving a platform team the data to have
 a substantive capacity conversation instead of an anecdotal one.
 
@@ -186,16 +186,16 @@ per-cluster upgrade tracking becomes the actual bottleneck — but it adds
 a management cluster as new infrastructure to operate and secure in its
 own right. A platform running two or three clusters may reasonably defer
 CAPI adoption until fleet size actually justifies it, using the
-Chapter 02 single-cluster upgrade discipline repeated manually in the
+[Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md) single-cluster upgrade discipline repeated manually in the
 interim.
 
 **Cost data changes behavior only when it reaches the team that can act
 on it.** A cost dashboard visible only to the platform team documents
 spend without influencing it; routing per-team cost allocation back to
 the owning team — ideally alongside the same Backstage catalog entry
-from Chapter 08 a team already checks — is what turns cost attribution
+from [Chapter 08](08-internal-developer-platforms-and-platform-products.md) a team already checks — is what turns cost attribution
 into an input the requesting team actually weighs against the resource
-requests it sets in Chapter 03, rather than a report nobody with the
+requests it sets in [Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md), rather than a report nobody with the
 power to change anything reads.
 
 ## Implementation and Automation
@@ -361,17 +361,17 @@ curl -s 'http://localhost:9090/api/v1/query?query=ALERTS{alertname="CheckoutAPIE
 | Traces exist in the collector's logs but never reach the backend | Exporter endpoint misconfigured, or the backend's ingestion is rejecting due to a schema/version mismatch | Collector logs at debug level; backend ingestion logs |
 | An SLO alert never fires despite a known outage | Burn-rate window too long for the outage's duration, or the underlying query's label selector no longer matches after a workload rename | Manually run the alert's PromQL expression against the outage window |
 | Chaos experiment causes a wider outage than intended | `mode`/`selector` scoped too broadly, or no `duration`/`scheduler` bound limiting blast radius | `kubectl describe podchaos`; tighten `selector` and always set an explicit `duration` |
-| A `MachineDeployment` fleet upgrade stalls partway | A member cluster's PodDisruptionBudgets (Chapter 03) block node replacement, mirroring the single-cluster drain behavior from Chapter 02 | `kubectl get machines`; `kubectl get pdb -A` on the affected member cluster |
+| A `MachineDeployment` fleet upgrade stalls partway | A member cluster's PodDisruptionBudgets ([Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md)) block node replacement, mirroring the single-cluster drain behavior from [Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md) | `kubectl get machines`; `kubectl get pdb -A` on the affected member cluster |
 
 ## Security and Best Practices
 
 - Scrape and store metrics, logs, and traces with the same RBAC and
-  NetworkPolicy discipline (Chapter 06/04) as any other platform data —
+  NetworkPolicy discipline ([Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md)/04) as any other platform data —
   observability backends routinely aggregate sensitive request metadata
   and deserve access controls commensurate with that.
 - Redact or avoid emitting sensitive fields (tokens, PII) into trace
   attributes and log lines at the instrumentation layer; a tracing
-  backend is not an approved data store for the material Chapter 06
+  backend is not an approved data store for the material [Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md)
   restricts through Secrets and RBAC.
 - Define platform SLOs and alert on error-budget burn rate rather than
   raw thresholds, and route paging alerts only for symptoms with a
@@ -386,7 +386,7 @@ curl -s 'http://localhost:9090/api/v1/query?query=ALERTS{alertname="CheckoutAPIE
 - Publish cost attribution data to the owning team, not only to the
   platform team, so it becomes an input to that team's own resource
   request decisions rather than a report nobody acts on.
-- Rehearse fleet-wide upgrade rollback the same way Chapter 02 rehearses
+- Rehearse fleet-wide upgrade rollback the same way [Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md) rehearses
   etcd restore — a Cluster API `MachineDeployment` rollout that goes
   wrong at fleet scale is a materially larger incident than a single
   cluster's stalled `kubeadm upgrade`.
@@ -447,7 +447,7 @@ an over-broad chaos selector is correctly blocked as a negative test.
      --wait --timeout 5m
    ```
 
-2. Deploy a workload with a PodDisruptionBudget, matching Chapter 03's
+2. Deploy a workload with a PodDisruptionBudget, matching [Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md)'s
    pattern, that Prometheus can observe.
 
    ```bash
@@ -565,7 +565,7 @@ an over-broad chaos selector is correctly blocked as a negative test.
    `minAvailable: 2` PDB — because `PodChaos` kills pods directly rather
    than going through the API server's eviction subresource that PDBs
    govern, PDBs protect against *voluntary, eviction-based* disruption
-   (Chapter 03) and do not protect against this kind of direct chaos
+   ([Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md)) and do not protect against this kind of direct chaos
    action. This is the intended lesson: confirm it by deleting the
    overly broad experiment immediately and comparing recovery time to
    step 4's scoped version.
@@ -598,8 +598,8 @@ this chapter's lab demonstrates concretely that a PodDisruptionBudget
 protects against voluntary eviction, not against every failure mode a
 chaos experiment can inject — a distinction worth carrying back through
 every prior chapter's availability guarantees. Cluster API extends
-Chapter 02's single-cluster upgrade discipline to fleet scale, and cost
-attribution turns the resource requests set back in Chapter 03 into data
+[Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md)'s single-cluster upgrade discipline to fleet scale, and cost
+attribution turns the resource requests set back in [Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md) into data
 a team can act on.
 
 - [ ] Can explain the distinct role of metrics-server, kube-state-metrics,

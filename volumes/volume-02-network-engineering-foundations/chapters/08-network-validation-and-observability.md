@@ -7,7 +7,7 @@
 - Explain SNMP polling architecture, including MIBs, OIDs, and the
   security difference between SNMPv2c and SNMPv3.
 - Explain centralized syslog architecture, including severity levels and
-  the role of accurate time synchronization from Chapter 5.
+  the role of accurate time synchronization from [Chapter 5](05-core-network-services.md).
 - Compare flow-based telemetry (NetFlow, IPFIX, sFlow) and model-driven
   streaming telemetry as complementary data sources.
 - Explain the purpose of a network baseline and how it changes what counts
@@ -23,7 +23,7 @@ core services, wireless, and resilient design — eventually needs a way to
 answer three operational questions: is it working right now, has it always
 worked this way, and did a specific change make it better or worse. This
 chapter is about the instrumentation that answers those questions, which
-becomes the direct input to Chapter 9's troubleshooting methodology.
+becomes the direct input to [Chapter 9](09-network-troubleshooting-and-operations.md)'s troubleshooting methodology.
 
 ### Monitoring, Observability, and Validation
 
@@ -41,7 +41,7 @@ that already exists); observability is what lets an engineer answer a
 question they did not anticipate needing to ask, using data that was
 already being collected for other purposes. Validation is narrower than
 both: it is a pass/fail comparison against a defined intent, most often run
-immediately before and after a change (developed further in Chapter 9's
+immediately before and after a change (developed further in [Chapter 9](09-network-troubleshooting-and-operations.md)'s
 change-lifecycle discussion).
 
 ### SNMP: Polling Architecture
@@ -116,7 +116,7 @@ to continuous, always-on collection.
 
 Flow data answers "who talked to whom, how much, and when" — invaluable
 for capacity planning, unexpected-traffic investigation, and confirming
-that traffic actually follows the path a design (Chapter 7) intended,
+that traffic actually follows the path a design ([Chapter 7](07-enterprise-network-design-and-resilience.md)) intended,
 without the storage and processing cost of full packet capture.
 
 ### Model-Driven Streaming Telemetry
@@ -175,7 +175,7 @@ change, since the previous "normal" is no longer a valid comparison point.
   change is operationally significant.
 - **Re-baseline after every significant change**, and record the baseline
   itself as a version-controlled artifact (consistent with the docs-as-code
-  approach established in Volume I) rather than tribal knowledge held by
+  approach established in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)) rather than tribal knowledge held by
   one engineer.
 
 ## Implementation and Automation
@@ -270,13 +270,13 @@ sudo tcpdump -i eth0 -nn 'udp port 4739'
 | --- | --- | --- |
 | Monitoring platform shows a device as down, but it responds to `ping` | SNMP community string/user mismatch, ACL blocking SNMP, or trap destination misconfigured | `snmpget` directly from the poller; check device SNMP ACL |
 | Logs from a device stop appearing with no error | Collector reachability lost (often over UDP, silently) or device logging configuration removed by an untracked change | Confirm reachability with a packet capture at the collector; diff current config against the intended baseline |
-| Two devices' logs appear out of order for the same event | Clock skew between devices | Cross-reference against Chapter 5's `chronyc tracking` on both devices |
+| Two devices' logs appear out of order for the same event | Clock skew between devices | Cross-reference against [Chapter 5](05-core-network-services.md)'s `chronyc tracking` on both devices |
 | Flow collector shows a large, unexplained traffic spike | Could be a genuine incident, a legitimate but unannounced bulk transfer, or a monitoring artifact (e.g., a sampling/export misconfiguration) | Compare against the established baseline before treating as an incident |
 | Alert volume is high enough that real incidents get missed | Thresholds set without a baseline, or alerts not correlated before paging | Re-baseline the metric; implement correlation/deduplication logic |
 | Streaming telemetry subscription silently stops updating | gNMI session dropped without automatic resubscription, or device resource limit hit | Check collector logs for subscription state; confirm device telemetry process health |
 
 The clock-skew symptom above is a direct, practical consequence of
-Chapter 5's point that accurate time is a prerequisite for troubleshooting:
+[Chapter 5](05-core-network-services.md)'s point that accurate time is a prerequisite for troubleshooting:
 without synchronized clocks, "what happened first" during a multi-device
 incident cannot be reliably determined from logs alone.
 
@@ -295,7 +295,7 @@ incident cannot be reliably determined from logs alone.
   sometimes write access, via SNMP `authPriv` or an automation credential)
   across the entire managed fleet.
 - **Treat flow and packet-capture data as potentially sensitive**,
-  consistent with Chapter 1's guidance — flow records reveal traffic
+  consistent with [Chapter 1](01-network-models-and-protocol-architecture.md)'s guidance — flow records reveal traffic
   patterns and communicating parties even without payload, which is itself
   sensitive operational and sometimes regulated information.
 - **Alert on monitoring infrastructure health itself**, not only on the

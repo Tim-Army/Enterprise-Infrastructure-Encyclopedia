@@ -20,14 +20,14 @@
 
 ### What an appliance backup protects
 
-Chapter 1 established that OME's entire management plane — device
+[Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md) established that OME's entire management plane — device
 inventory, job history, alert policies, templates, discovery credential
 profiles, user accounts, and configuration — lives inside one appliance's
 embedded database. An **appliance backup** captures this application
 state so it can be restored onto a newly deployed appliance instance,
 distinct in every respect from backing up the *managed devices'* own
 data, which is entirely out of scope for OME and is covered by each
-platform's own backup tooling (Volume VI for storage and data
+platform's own backup tooling ([Volume VI](../../volume-06-enterprise-storage-data-protection/README.md) for storage and data
 protection patterns generally). Losing the OME appliance without a
 current backup does not lose any data on the managed fleet itself — it
 loses the fleet-management configuration and history that took time to
@@ -51,7 +51,7 @@ when assisting with a restore.
 
 Restoring an appliance backup is performed during the deployment of a
 **new** appliance instance: rather than the first-run setup wizard from
-Chapter 1, a freshly deployed appliance offers a restore path that
+[Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md), a freshly deployed appliance offers a restore path that
 consumes a prior backup file from the same network location, bringing the
 new instance up with the prior appliance's application state rather than
 an empty one. This is why appliance backup and restore are covered
@@ -64,9 +64,9 @@ appliance migration).
 
 OME appliance upgrades are applied as a version-to-version update package,
 either retrieved automatically (if the appliance has connectivity to
-Dell's update-check endpoint, conceptually parallel to Chapter 6's
+Dell's update-check endpoint, conceptually parallel to [Chapter 6](06-connected-online-repositories-and-update-workflows.md)'s
 connected catalog dependency) or uploaded manually to the appliance
-(conceptually parallel to Chapter 7's offline model, for disconnected
+(conceptually parallel to [Chapter 7](07-isolated-offline-repositories-and-air-gapped-updates.md)'s offline model, for disconnected
 environments). Upgrades are applied in place to the running appliance
 instance rather than requiring a fresh deployment, but carry the same
 general precautions as any infrastructure management-plane upgrade:
@@ -80,7 +80,7 @@ for the duration of the upgrade itself.
 
 The appliance's application settings include a diagnostics/log export
 function producing a bundle suitable for Dell support escalation,
-referenced already in Chapter 1's troubleshooting guidance. This bundle
+referenced already in [Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)'s troubleshooting guidance. This bundle
 aggregates appliance logs, configuration state, and recent job/error
 history into a single artifact, and is the standard first request from
 Dell support when engaging on an appliance-level issue — collecting it
@@ -113,7 +113,7 @@ already changed appliance state.
   running an older version for an extended period.
 - **Plugin and integration compatibility.** Before upgrading, confirm
   every installed plugin (Power Manager, SupportAssist integration) and
-  every external integration (Chapter 4's SIEM/SMTP forwarding, Chapter
+  every external integration ([Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)'s SIEM/SMTP forwarding, Chapter
   8's IaC-adjacent automation) is validated against the target version,
   not only the base console functionality.
 - **Recovery time objective.** Decide, as an explicit organizational
@@ -273,10 +273,10 @@ window timing immediately before initiating it.
   upgrading the plugin itself to a compatible version.
 - **A problem spans multiple subsystems and it's unclear where to start.**
   Use this volume's chapter structure as a triage map: authentication or
-  permission symptoms point to Chapter 2; a device missing or showing
-  stale data points to Chapter 3; an alert not arriving points to Chapter
+  permission symptoms point to [Chapter 2](02-identity-licensing-security-and-administrative-control.md); a device missing or showing
+  stale data points to [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md); an alert not arriving points to Chapter
   4; firmware compliance or update issues point to Chapters 5–7; a
-  configuration drift or deployment issue points to Chapter 8; and an
+  configuration drift or deployment issue points to [Chapter 8](08-templates-configuration-compliance-automation-and-apis.md); and an
   appliance-wide symptom affecting every function simultaneously points
   back to this chapter's backup/restore/upgrade and diagnostics guidance.
 
@@ -287,14 +287,14 @@ window timing immediately before initiating it.
   metadata, and configuration templates, making it as sensitive as the
   appliance itself and a high-value target if exposed.
 - Restrict who can trigger a restore or initiate an appliance upgrade
-  through role and scope (Chapter 2); both are high-impact, disruptive
+  through role and scope ([Chapter 2](02-identity-licensing-security-and-administrative-control.md)); both are high-impact, disruptive
   operations that warrant tight access control distinct from routine
   device-management rights.
 - Test the restore path periodically, not only the backup path — a backup
   process that has never been proven to actually restore successfully is
   an unverified assumption, not a working disaster recovery capability.
 - Apply appliance upgrades on a defined cadence aligned with your
-  organization's patch management program (Volume I, Chapter 8), rather
+  organization's patch management program ([Volume I, Chapter 8](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md)), rather
   than deferring indefinitely; OME itself is internet-adjacent
   infrastructure software with an ongoing need for security patching.
 - Retain diagnostic bundles only as long as needed for the active support
@@ -345,7 +345,7 @@ for a full restore test) a validated backup destination.
 **Prerequisites**
 
 - The OME appliance and lab devices established across this volume's
-  earlier chapters (the SNMP-discovered Linux lab host from Chapter 3 at
+  earlier chapters (the SNMP-discovered Linux lab host from [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) at
   minimum; a real or virtual iDRAC-managed device if you completed the
   optional hardware-dependent portions of Chapters 5 and 8).
 - A network share (a lab NFS or CIFS export is sufficient — a single
@@ -389,9 +389,9 @@ for a full restore test) a validated backup destination.
    ```
 
 6. Exercise a representative cross-chapter operational sequence: force an
-   inventory refresh on your lab device(s) (Chapter 3), confirm no new
-   unexpected alerts appear in the alert log (Chapter 4), and if you
-   completed Chapter 5's optional hardware-dependent steps, re-run
+   inventory refresh on your lab device(s) ([Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md)), confirm no new
+   unexpected alerts appear in the alert log ([Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)), and if you
+   completed [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s optional hardware-dependent steps, re-run
    compliance evaluation on `lab-firmware-baseline`.
 7. Run the snapshot script again and compare:
 
@@ -413,7 +413,7 @@ for a full restore test) a validated backup destination.
    ```
 
    **Expected result:** the script fails with an HTTP error from the
-   session endpoint, consistent with Chapter 1's original bootstrap
+   session endpoint, consistent with [Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)'s original bootstrap
    validation lab, confirming this final capstone script correctly
    depends on the same authentication discipline established at the very
    start of the volume.
@@ -452,7 +452,7 @@ lab tied the volume together operationally — configuring a real backup
 destination, exercising a representative cross-chapter workflow, and
 validating it with a scripted before/after snapshot, closing with the
 same authentication negative-test discipline the volume opened with in
-Chapter 1. Across all nine chapters, this volume established Dell
+[Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md). Across all nine chapters, this volume established Dell
 OpenManage Enterprise's architecture, identity and access model, device
 lifecycle from discovery through decommission-adjacent operations,
 monitoring and alerting, firmware and configuration lifecycle management

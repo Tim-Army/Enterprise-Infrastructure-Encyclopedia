@@ -49,7 +49,7 @@ This indirection is why LVM can grow a filesystem online by adding a
 new PV to the VG and extending the LV into the new space, and why LVM
 snapshots (a copy-on-write LV tracking changes since creation) exist —
 neither is possible with a filesystem sitting directly on a raw
-partition. Subiquity's default "LVM" storage layout in Chapter 01 uses
+partition. Subiquity's default "LVM" storage layout in [Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md) uses
 exactly this structure for the root filesystem, which is why an LVM
 root can be grown non-disruptively when a cloud disk is resized.
 
@@ -315,7 +315,7 @@ sudo iscsiadm -m node -T iqn.2026-01.com.example:target0 -p 10.20.40.10 --op upd
   than a single trusted, controlled subnet — it grants any root user on
   a client host root-equivalent access to the export.
 - Scope NFS exports and Samba shares to specific client subnets, not
-  `*`/`0.0.0.0/0`, and pair them with host firewall rules (Chapter 04)
+  `*`/`0.0.0.0/0`, and pair them with host firewall rules ([Chapter 04](04-identity-privilege-ssh-netplan-and-firewalling.md))
   restricting NFS (2049/tcp) and Samba (139, 445/tcp) to those same
   subnets.
 - Enable ZFS compression (`lz4`, effectively free CPU-wise) by default
@@ -325,7 +325,7 @@ sudo iscsiadm -m node -T iqn.2026-01.com.example:target0 -p 10.20.40.10 --op upd
 - Encrypt swap when the host may hold sensitive data in memory that
   could be paged out: zram is RAM-only and disappears on power-loss,
   which is itself a security property; disk-backed swap should use
-  `cryptsetup`-backed encrypted swap (Chapter 06) if enabled at all on
+  `cryptsetup`-backed encrypted swap ([Chapter 06](06-apparmor-permissions-cryptography-and-system-hardening.md)) if enabled at all on
   a host handling sensitive data.
 - Require CHAP authentication on iSCSI targets exposed on any network
   segment shared with untrusted hosts; an unauthenticated iSCSI target

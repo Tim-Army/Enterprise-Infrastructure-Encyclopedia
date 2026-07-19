@@ -20,7 +20,7 @@
 
 ### Infrastructure-as-code pipeline architecture
 
-Building on the IaC-first operating model established in Chapter 01, a
+Building on the IaC-first operating model established in [Chapter 01](01-cloud-operating-models-and-architecture-foundations.md), a
 production-grade infrastructure pipeline separates two distinct
 operations with different risk profiles:
 
@@ -34,7 +34,7 @@ operations with different risk profiles:
   environment and should run only after the corresponding plan has been
   reviewed and explicitly approved, ideally using a more privileged
   identity than the one used for plan, obtained through the workload
-  identity federation pattern from Chapter 03 rather than a standing
+  identity federation pattern from [Chapter 03](03-cloud-identity-access-and-cryptographic-services.md) rather than a standing
   credential.
 
 This separation is what makes infrastructure changes reviewable the same
@@ -113,11 +113,11 @@ correlation step during an incident.
 Chaos engineering is the deliberate, controlled practice of injecting
 failure into a system to validate that its resilience design (multi-zone
 distribution, autoscaling, failover, the composite-availability
-assumptions from Chapter 01) actually behaves as designed, rather than
+assumptions from [Chapter 01](01-cloud-operating-models-and-architecture-foundations.md)) actually behaves as designed, rather than
 assuming it does based on the architecture diagram. This is the same
-principle applied throughout this volume to backups (Chapter 06,
+principle applied throughout this volume to backups ([Chapter 06](06-cloud-storage-databases-and-data-services.md),
 "validate a restore by testing it") and hybrid/multicloud failover
-(Chapter 07, "test failover on a schedule"), generalized into a standing
+([Chapter 07](07-hybrid-and-multicloud-architecture.md), "test failover on a schedule"), generalized into a standing
 practice: terminate an instance and confirm autoscaling replaces it
 within the expected time; simulate a zone failure and confirm traffic
 shifts to healthy zones without manual intervention; inject latency into
@@ -150,7 +150,7 @@ inventory against what code and tagging metadata claim should exist),
 combined with an ownership and expiration convention (every resource
 tagged with an owner and, for genuinely temporary resources, an
 expiration date) enforced through the same policy-as-code guardrails from
-Chapter 02.
+[Chapter 02](02-landing-zones-resource-organization-and-guardrails.md).
 
 ## Design Considerations
 
@@ -184,7 +184,7 @@ Design retention tiers deliberately: full-fidelity, high-cost retention
 for a shorter recent window (adequate for active incident investigation),
 with progressively down-sampled or summarized retention for
 longer-term trend analysis — applying the same storage-tiering
-cost-versus-access-latency trade-off from Chapter 06 to observability
+cost-versus-access-latency trade-off from [Chapter 06](06-cloud-storage-databases-and-data-services.md) to observability
 data specifically.
 
 ### Scoping chaos experiments safely
@@ -204,7 +204,7 @@ of the practice.
 
 As the resource count grows, manual ownership tracking degrades quickly.
 Prefer deriving ownership and lifecycle state from enforced tags and
-account/subscription structure (Chapter 08) queried programmatically over
+account/subscription structure ([Chapter 08](08-cloud-governance-security-and-finops.md)) queried programmatically over
 maintaining a separate, manually updated spreadsheet or wiki page of
 resource ownership, which reliably goes stale. Automate the notification
 and eventual decommissioning of resources whose expiration tag has
@@ -369,7 +369,7 @@ resource "cloud_policy" "enforce_expiration_tag" {
 
 - Enforce plan/apply identity separation and require human approval on
   apply for any environment above sandbox, consistent with the
-  just-in-time elevation guidance from Chapter 03.
+  just-in-time elevation guidance from [Chapter 03](03-cloud-identity-access-and-cryptographic-services.md).
 - Run policy-as-code guardrail evaluation (Chapters 02 and 08) as a
   required, blocking step in the plan stage — a plan that violates a
   guardrail should never reach the apply stage for approval in the first
@@ -557,7 +557,7 @@ prevents orphaned and unmanaged resources from accumulating silently.
 Together with Chapters 01 through 08, this completes Volume VII's
 provider-neutral treatment of cloud infrastructure architecture, identity,
 networking, compute, data, hybrid/multicloud design, and governance —
-Volume XVII applies these concepts to AWS's specific console, CLI, and
+[Volume XVII](../../volume-17-aws-architecture-security/README.md) applies these concepts to AWS's specific console, CLI, and
 service implementation in depth.
 
 - [ ] Can explain why plan and apply should use distinct identities, not

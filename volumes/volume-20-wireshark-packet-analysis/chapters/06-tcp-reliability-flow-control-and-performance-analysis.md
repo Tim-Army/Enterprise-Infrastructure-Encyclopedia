@@ -127,7 +127,7 @@ long-distance or satellite links.
 - **Single-ended vs. dual-ended capture changes what can be distinguished.**
   A capture taken only at the client cannot by itself distinguish "the
   network dropped this segment" from "the capture point itself dropped it"
-  (Chapter 02); a simultaneous capture at both ends, correlated by
+  ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md)); a simultaneous capture at both ends, correlated by
   timestamp, is the only way to conclusively localize loss to a specific
   segment of the path.
 - **Retransmission rate is a relative, not absolute, metric.** Baseline a
@@ -259,7 +259,7 @@ tshark -r capture.pcapng -Y "tcp.analysis.retransmission" -T fields -e tcp.strea
   stream state before assuming it originated from the real endpoint.
 - **A high rate of half-open connections (SYN with no completing ACK)
   from many sources is a SYN flood signature**, covered further with
-  `tshark`-based detection in Chapter 08; distinguish this from a simple
+  `tshark`-based detection in [Chapter 08](08-security-investigation-command-line-analysis-and-automation.md); distinguish this from a simple
   client-side misconfiguration by checking source diversity.
 - **Do not tune window scaling or buffer sizes based on a single
   capture.** Confirm a window-limited finding across multiple samples and,
@@ -268,12 +268,12 @@ tshark -r capture.pcapng -Y "tcp.analysis.retransmission" -T fields -e tcp.strea
   memory-pressure trade-offs.
 - **Redact application data before sharing a capture showing
   retransmitted or reassembled payloads.** Retransmission investigations
-  frequently require Follow Stream (Chapter 03) on the affected
+  frequently require Follow Stream ([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md)) on the affected
   conversation, which reassembles application data that may contain
   sensitive content.
 - **Treat consistent packet loss concentrated at a specific capture point
   as an infrastructure finding, not just a performance one.** A TAP or
-  SPAN oversubscription (Chapter 02) can masquerade as network-induced
+  SPAN oversubscription ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md)) can masquerade as network-induced
   retransmission; rule out the capture point itself before reporting a
   path-loss conclusion.
 
@@ -310,7 +310,7 @@ observe Wireshark's retransmission analysis.
 
 **Prerequisites**
 
-- Wireshark and `tshark` installed with capture rights (Chapter 01).
+- Wireshark and `tshark` installed with capture rights ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
 - Ability to transfer a moderately sized file (10+ MB) over TCP to a
   reachable host (an internal file server or any HTTPS download works).
 - Optional: administrative ability to introduce artificial packet loss
@@ -401,7 +401,7 @@ Wireshark's expert-analysis layer translates that mechanism directly into
 actionable flags — retransmission, duplicate ACK, zero window — that
 localize a performance problem to a specific segment, endpoint, or path
 characteristic rather than leaving "the network is slow" as the final
-answer. Chapter 07 moves one layer higher, applying the same investigative
+answer. [Chapter 07](07-application-protocol-tls-and-service-response-analysis.md) moves one layer higher, applying the same investigative
 discipline to application protocols, TLS, and service response time.
 
 - [ ] Can decode TCP header fields and read a three-way handshake and

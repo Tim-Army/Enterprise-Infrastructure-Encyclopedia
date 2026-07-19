@@ -26,7 +26,7 @@ networking, connected to other AZs in the same Region by low-latency, high-
 throughput private fiber. Designing across at least two AZs is the baseline
 unit of high availability on AWS; designing across Regions is the baseline
 unit of disaster recovery and data-residency control, covered in depth in
-Chapter 06.
+[Chapter 06](06-reliability-migration-multi-region-and-disaster-recovery.md).
 
 Beyond the standard Region/AZ model, AWS offers infrastructure that trades
 some independence for proximity to users or specific regulatory boundaries:
@@ -103,7 +103,7 @@ isolation boundary. Resources in one account cannot see or affect resources
 in another account unless a trust relationship (a role, resource policy, or
 Resource Access Manager share) explicitly grants it. Every account has
 exactly one **root user**, created with the account and possessing
-unrestricted access that cannot be limited by any policy. Chapter 02
+unrestricted access that cannot be limited by any policy. [Chapter 02](02-multi-account-identity-governance-and-landing-zones.md)
 extends this single-account model into multi-account governance with AWS
 Organizations, but every account — including a future member account in an
 Organization — still starts from the same root-user and billing foundation
@@ -127,7 +127,7 @@ covered here.
   appropriate only for a proof of concept or a very small, low-blast-radius
   workload. Any account expected to run production workloads, host multiple
   teams, or eventually require compliance segregation should be planned
-  against the multi-account model in Chapter 02 before the first workload
+  against the multi-account model in [Chapter 02](02-multi-account-identity-governance-and-landing-zones.md) before the first workload
   is deployed — retrofitting account boundaries under an existing workload
   is materially more disruptive than starting with them.
 - **Free Tier boundaries are workload-shaping, not just cost-shaping.**
@@ -282,10 +282,10 @@ resource "aws_wellarchitected_workload" "payments_api" {
 - Use the root user only for the small set of tasks that require it (for
   example, closing an account or certain Organizations management-account
   actions); perform all daily operations through IAM Identity Center
-  federated identities or IAM roles, detailed in Chapter 02.
+  federated identities or IAM roles, detailed in [Chapter 02](02-multi-account-identity-governance-and-landing-zones.md).
 - Enable AWS CloudTrail in every account from the first hour of its
   existence — a trail created after an incident cannot retroactively
-  produce the missing history. Chapter 08 covers CloudTrail Lake and
+  produce the missing history. [Chapter 08](08-security-architecture-detection-and-incident-response.md) covers CloudTrail Lake and
   organization-wide trails in depth.
 - Set a billing alert at a low, easily exceeded threshold in every new
   account (as shown above) to catch runaway resource creation, whether

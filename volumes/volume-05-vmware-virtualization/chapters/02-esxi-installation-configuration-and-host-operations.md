@@ -23,7 +23,7 @@
 
 ## Theory and Architecture
 
-Chapter 1 introduced ESXi's internal architecture — the VMkernel, the
+[Chapter 1](01-vmware-virtualization-architecture-and-design.md) introduced ESXi's internal architecture — the VMkernel, the
 VMM/VMX process model, and the CIM/hostd/vpxa management stack. This
 chapter starts one layer below that: how an ESXi host comes into existence
 on physical (or nested) hardware, how its on-disk state is organized, and
@@ -37,7 +37,7 @@ the same `esxcli`/PowerCLI tooling used throughout this volume.
 | Interactive | Boot the ESXi installer ISO, answer prompts | Single host, lab, initial bring-up | Manual, not repeatable without a script |
 | Scripted (kickstart) | Installer ISO/USB with a `ks.cfg` install script | Small-to-medium fleets, standardized builds | Fully unattended given a valid script; same script can drive PXE installs |
 | PXE / UEFI HTTP boot | Network boot the installer (or a stateless image) using DHCP options, TFTP/HTTP, and a kickstart script | Data-center-scale fleets, no local install media required | Requires DHCP option configuration and a boot infrastructure (TFTP or HTTP server) |
-| vSphere Auto Deploy | Hosts PXE-boot directly into a vLCM-managed desired-state image supplied by vCenter Server, with no local ESXi install at all in the stateless case | Large, homogeneous, frequently-rebuilt fleets | Image and host assignment are centrally managed; covered further with vLCM in Chapter 9 |
+| vSphere Auto Deploy | Hosts PXE-boot directly into a vLCM-managed desired-state image supplied by vCenter Server, with no local ESXi install at all in the stateless case | Large, homogeneous, frequently-rebuilt fleets | Image and host assignment are centrally managed; covered further with vLCM in [Chapter 9](09-vsphere-lifecycle-automation-observability-and-troubleshooting.md) |
 
 **Interactive installation** boots the standard ESXi ISO, walks through
 disk selection, keyboard layout, and root password prompts, and installs to
@@ -72,7 +72,7 @@ subsequent boots, and **stateful install** mode uses Auto Deploy purely as
 the initial provisioning mechanism, writing a normal persistent
 installation to local disk after which the host boots from disk like any
 other host). Auto Deploy's day-2 image lifecycle mechanics are covered in
-depth in Chapter 9; this chapter treats it only as one more way an ESXi
+depth in [Chapter 9](09-vsphere-lifecycle-automation-observability-and-troubleshooting.md); this chapter treats it only as one more way an ESXi
 host's initial software gets onto (or into the memory of) the host.
 
 ### Boot device architecture: boot banks and ESX-OSData

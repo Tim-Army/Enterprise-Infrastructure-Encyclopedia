@@ -4,7 +4,7 @@
 
 - Implement microsegmentation between the HQ user and core-services VLANs
   using an explicit allow-list, replacing the implicit trust the network
-  has carried since Chapter 03.
+  has carried since [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md).
 - Deploy 802.1X port authentication backed by the directory from Chapter
   02, and a SIEM that ingests telemetry from every system built so far.
 - Write and tune a detection rule for a specific attack pattern rather
@@ -18,27 +18,27 @@
 ## Theory and Architecture
 
 Every chapter so far has trusted the network to carry traffic wherever it
-was addressed. This chapter removes that assumption, following Volume X
-(Enterprise Cybersecurity): Chapter 02 (Enterprise Identity, Zero Trust,
+was addressed. This chapter removes that assumption, following [Volume X](../../volume-10-enterprise-cybersecurity/README.md)
+(Enterprise Cybersecurity): [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) (Enterprise Identity, Zero Trust,
 and Privileged Access) for the segmentation and authentication model,
-Chapter 04 (Network Security Architecture and Infrastructure Defense) for
-enforcing it on the Cisco infrastructure Chapter 03 built, Chapter 06
+[Chapter 04](04-virtualization-storage-and-data-protection-lab.md) (Network Security Architecture and Infrastructure Defense) for
+enforcing it on the Cisco infrastructure [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) built, [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md)
 (Security Telemetry, Detection Engineering, and SOC Operations) for the
 SIEM and detection rule this chapter deploys as `siem01`, and Chapter 07
 (Cybersecurity Incident Response and Digital Evidence) for the response
 process this chapter's negative test exercises directly.
 
-The access-control piece draws specifically on Volume III, Chapter 07
+The access-control piece draws specifically on [Volume III, Chapter 07](../../volume-03-cisco-enterprise-networking/chapters/07-cisco-identity-access-control-and-segmentation.md)
 (Cisco Identity, Access Control, and Segmentation): 802.1X port
-authentication against the directory Chapter 02 built, combined with VLAN
-access control lists on the core switches from Chapter 03, so that a host
+authentication against the directory [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) built, combined with VLAN
+access control lists on the core switches from [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md), so that a host
 must both authenticate to join a VLAN and stay within that VLAN's explicit
 allow-list once connected. Neither control alone is zero trust; together
 they mean a device cannot reach `corp.meridian.example`'s core services
 merely by being physically plugged into a switch port on the right VLAN.
 
 This chapter's evidence discipline is not new — it reuses `evidence.sh`
-from Chapter 01 — but the stakes are different. An incident timeline
+from [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) — but the stakes are different. An incident timeline
 assembled after the fact from memory is not defensible; one assembled from
 timestamped, checksummed command output during the response is.
 
@@ -57,7 +57,7 @@ host is required for it.
 
 - **Deny-by-default between VLANs, not a blocklist.** The VLAN ACL between
   110 (core services) and 120 (user/endpoint) permits only the specific
-  ports Chapter 02's services require (DNS 53, Kerberos 88, LDAP 389/636)
+  ports [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md)'s services require (DNS 53, Kerberos 88, LDAP 389/636)
   and denies everything else, rather than blocking a list of known-bad
   ports. A blocklist only stops attacks someone already anticipated; a
   default-deny allow-list stops everything not explicitly justified.
@@ -176,7 +176,7 @@ action: alert
 - Treat the VLAN ACL deny-log line as a detection source in its own right;
   feed it into `siem01` alongside the Kerberos rule so blocked lateral
   movement attempts are visible, not just successful ones.
-- Store the RADIUS shared secret in `vault01` (Chapter 06), referenced by
+- Store the RADIUS shared secret in `vault01` ([Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md)), referenced by
   the switch configuration management job rather than typed once and
   forgotten in a running configuration.
 - Require multi-person authorization before disabling the VLAN ACL or the
@@ -184,7 +184,7 @@ action: alert
   expiration on any temporary exception — a "temporary" segmentation
   bypass left in place is a permanent one.
 - Apply the same chain-of-custody discipline to every artifact captured
-  during the incident-response exercise in this chapter's lab as Volume X,
+  during the incident-response exercise in this chapter's lab as [Volume X](../../volume-10-enterprise-cybersecurity/README.md),
   Chapter 07 requires for a real incident: who captured it, when, and its
   checksum, all of which `evidence.sh` already provides.
 - Review and update the detection rule's threshold on a defined interval,
@@ -198,9 +198,9 @@ action: alert
 - RFC 3579 — *RADIUS Support for Extensible Authentication Protocol
   (EAP)*.
 - IEEE 802.1X — Port-Based Network Access Control.
-- Volume III, Chapter 07 — Cisco Identity, Access Control, and
+- [Volume III, Chapter 07](../../volume-03-cisco-enterprise-networking/chapters/07-cisco-identity-access-control-and-segmentation.md) — Cisco Identity, Access Control, and
   Segmentation.
-- Volume X, Chapters 02, 04, 06–07 — zero trust/privileged access, network
+- [Volume X](../../volume-10-enterprise-cybersecurity/README.md), Chapters 02, 04, 06–07 — zero trust/privileged access, network
   security architecture, security telemetry/detection engineering, and
   incident response/digital evidence.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Cisco IOS XE
@@ -226,10 +226,10 @@ against a simulated intrusion.
 
 **Prerequisites**
 
-- Chapter 06 complete, with the automation pipeline and `vault01`
+- [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md) complete, with the automation pipeline and `vault01`
   available for secret storage.
 - A RADIUS-capable directory role (Windows NPS on `dc01`) and 802.1X
-  support on the access switch from Chapter 03.
+  support on the access switch from [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md).
 - Familiarity with basic offensive tooling for controlled lab use only
   (this chapter simulates an attack against infrastructure you own; never
   point these techniques at anything outside this lab).
@@ -316,7 +316,7 @@ against a simulated intrusion.
 14. **Cleanup:** Decommission `atk01` (delete the VM; it has no ongoing
     purpose in this volume). Re-enable the switch port for future use.
     Retain `siem01`, the 802.1X configuration, and the VLAN ACL for
-    Chapter 08. Commit the updated topology and detection rule:
+    [Chapter 08](08-observability-operations-and-major-incident-lab.md). Commit the updated topology and detection rule:
 
     ```bash
     cd ~/vol13-lab
@@ -331,10 +331,10 @@ default-deny allow-list, then proved the design with a real detection and
 containment cycle rather than a tabletop description of one. The
 detection rule fired on baseline-derived thresholds, containment worked
 without depending on the compromised host's cooperation, and the resulting
-evidence timeline is the kind of artifact Volume X, Chapter 07 expects
+evidence timeline is the kind of artifact [Volume X, Chapter 07](../../volume-10-enterprise-cybersecurity/chapters/07-cybersecurity-incident-response-and-digital-evidence.md) expects
 from a defensible incident response.
 
-- [ ] Deployed 802.1X port authentication backed by the Chapter 02
+- [ ] Deployed 802.1X port authentication backed by the [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md)
       directory.
 - [ ] Applied and validated a default-deny VLAN ACL between core services
       and user VLANs.

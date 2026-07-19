@@ -11,7 +11,7 @@
 - Design an internet edge with dual-ISP redundancy and appropriate NAT and
   routing policy.
 - Explain application-aware routing and its relationship to traditional
-  path-control mechanisms from Chapter 3.
+  path-control mechanisms from [Chapter 3](03-cisco-enterprise-routing-and-path-control.md).
 
 ## Theory and Architecture
 
@@ -44,7 +44,7 @@ These models are not mutually exclusive: a common migration pattern keeps
 MPLS as one transport member while adding internet-based DMVPN or Catalyst
 SD-WAN transport as a second, cost-effective path, then uses
 application-aware routing (Catalyst SD-WAN) or PBR/IP SLA tracking
-(Chapter 3) to prefer the right transport per application.
+([Chapter 3](03-cisco-enterprise-routing-and-path-control.md)) to prefer the right transport per application.
 
 ### DMVPN architecture
 
@@ -59,7 +59,7 @@ DMVPN Phase 3 (the current standard design) uses:
   the hub.
 - **IPsec** (typically via a GRE-over-IPsec profile) to encrypt the overlay
   across untrusted internet transport.
-- A **routing protocol** (commonly EIGRP or OSPF, per Chapter 3) running
+- A **routing protocol** (commonly EIGRP or OSPF, per [Chapter 3](03-cisco-enterprise-routing-and-path-control.md)) running
   over the mGRE tunnel interface to distribute reachability between hub and
   spokes.
 
@@ -69,13 +69,13 @@ The internet edge is the enterprise's boundary with the public internet and
 typically combines:
 
 - **Dual-ISP peering** for transport redundancy, using either BGP
-  (Chapter 3) for granular multihoming or a simpler floating-static/IP
+  ([Chapter 3](03-cisco-enterprise-routing-and-path-control.md)) for granular multihoming or a simpler floating-static/IP
   SLA–tracked design for smaller sites that don't need full-table policy.
 - **NAT/PAT** to translate internal RFC 1918 addressing to public address
   space for outbound sessions, and static/destination NAT for any
   internet-facing services.
 - **Perimeter security** (firewalling, intrusion prevention) — covered in
-  architectural depth in Volume X and Volume XVI; this volume treats the
+  architectural depth in [Volume X](../../volume-10-enterprise-cybersecurity/README.md) and [Volume XVI](../../volume-16-palo-alto-networks-security/README.md); this volume treats the
   Cisco IOS XE router/switch configuration of routing, NAT, and interface
   policy at the edge, not the firewall policy itself.
 
@@ -107,7 +107,7 @@ and jitter on each IPsec tunnel between sites (via periodic BFD probes) and
 steers traffic per application (identified via NBAR2-based deep packet
 inspection or explicit ACL match) onto the tunnel that currently meets a
 defined SLA class — a controller-driven, continuously adaptive analog to
-the static IP SLA–tracked PBR built in Chapter 3.
+the static IP SLA–tracked PBR built in [Chapter 3](03-cisco-enterprise-routing-and-path-control.md).
 
 ## Design Considerations
 
@@ -303,7 +303,7 @@ cEdge-01# show sdwan omp routes
   ACLs on internet-facing interfaces; never expose a router's management
   plane (SSH, HTTP(S), SNMP) directly on an internet-facing interface —
   restrict management access to the out-of-band or VPN-reachable path
-  established in Chapter 1.
+  established in [Chapter 1](01-cisco-enterprise-architecture-and-ios-xe-foundations.md).
 - Rotate DMVPN pre-shared keys on a defined schedule, and prefer
   certificate-based IKEv2 authentication over PSK for larger deployments
   where key rotation at scale is operationally difficult.
@@ -326,7 +326,7 @@ cEdge-01# show sdwan omp routes
 - Cisco, *Catalyst SD-WAN Design Guide* and *Catalyst SD-WAN Configuration
   Guide*, current release.
 - RFC 4271 (BGP-4), used at MPLS L3VPN and internet-edge boundaries
-  (Chapter 3).
+  ([Chapter 3](03-cisco-enterprise-routing-and-path-control.md)).
 - Cisco, *Catalyst 8000V Edge Software* and Catalyst 8200/8300 Series data
   sheets.
 
@@ -367,7 +367,7 @@ dual-path failover on the hub's internet edge.
    apply the IPsec profile; configure each spoke's `Tunnel0` pointing at
    the hub as NHS, with `ip nhrp shortcut` enabled.
 
-3. Bring up EIGRP (or OSPF, per Chapter 3) over the tunnel interface on
+3. Bring up EIGRP (or OSPF, per [Chapter 3](03-cisco-enterprise-routing-and-path-control.md)) over the tunnel interface on
    hub and both spokes, advertising each spoke's loopback LAN subnet.
 
 4. Verify NHRP registration and routing convergence:
@@ -441,7 +441,7 @@ SD-WAN, often within the same organization during a multi-year migration.
 Regardless of which transport model a given site uses, the underlying
 building blocks — encrypted tunnels, redundant paths with health-tracked
 failover, and policy that steers traffic to the right path — are the same
-concepts introduced in Chapter 3 and extended here to multi-site and
+concepts introduced in [Chapter 3](03-cisco-enterprise-routing-and-path-control.md) and extended here to multi-site and
 multi-transport scale.
 
 - [ ] Can compare MPLS L3VPN, DMVPN, and Catalyst SD-WAN and justify a

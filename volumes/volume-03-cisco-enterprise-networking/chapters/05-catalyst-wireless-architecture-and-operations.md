@@ -45,7 +45,7 @@ across hundreds of APs without each AP needing local policy configuration.
 Cisco's current-generation WLC, the **Catalyst 9800**, runs IOS XE rather
 than the legacy AireOS used on older controllers — which means it shares
 the same install-mode packaging, Smart Licensing Using Policy, NETCONF/
-RESTCONF programmability (Chapter 8), and high-availability constructs as
+RESTCONF programmability ([Chapter 8](08-ios-xe-programmability-and-network-automation.md)), and high-availability constructs as
 the rest of the Catalyst 9000 family covered in this volume. Three
 deployment models cover most enterprise designs:
 
@@ -67,13 +67,13 @@ An AP's mode determines what role it plays once joined:
 | Local | Default mode; serves WLANs and forwards client data normally |
 | FlexConnect | Switches client traffic locally at the branch instead of tunneling it back to the WLC over the WAN; can still tunnel select WLANs centrally |
 | Monitor | Radios dedicated to RF scanning — rogue detection, location, and spectrum data — with no client service |
-| Sniffer | Captures 802.11 frames on a channel and forwards them to a packet analyzer (Volume XX) |
+| Sniffer | Captures 802.11 frames on a channel and forwards them to a packet analyzer ([Volume XX](../../volume-20-wireshark-packet-analysis/README.md)) |
 | Rogue Detector | Wired-side only; correlates rogue AP MAC addresses seen over the air with MAC addresses learned on the wired network |
 | Bridge / Flex+Bridge | Forms a wireless mesh backhaul (Cisco Adaptive Wireless Path Protocol) between APs where a wired uplink to every AP is impractical |
 | SE-Connect | Dedicates the AP as a spectrum analyzer client for Cisco Spectrum Expert |
 
 FlexConnect is the standard choice for branch sites reachable only over a
-WAN link (Chapter 4): APs continue to serve clients locally even if
+WAN link ([Chapter 4](04-enterprise-wan-internet-edge-and-catalyst-sd-wan.md)): APs continue to serve clients locally even if
 connectivity to the central WLC is lost, and only rejoin/reconfiguration
 traffic depends on the WAN path being up.
 
@@ -107,7 +107,7 @@ need static, per-AP channel/power planning:
 
 **CleanAir**-capable APs additionally classify non-Wi-Fi RF interference
 sources (microwave ovens, Bluetooth, DECT phones, video bridges) and feed
-that data into RRM and Assurance (Chapter 9) so that interference is
+that data into RRM and Assurance ([Chapter 9](09-catalyst-center-sd-access-assurance-and-operations.md)) so that interference is
 visible and, where possible, automatically avoided.
 
 ### Fast roaming: 802.11r, 802.11k, and 802.11v
@@ -140,7 +140,7 @@ where client support allows.
 - **Local vs. FlexConnect** — use local mode where the WLC is reachable
   over low-latency, high-bandwidth campus links; use FlexConnect for any
   site whose WLC reachability depends on a WAN path that can legitimately
-  fail or degrade (Chapter 4), so clients keep working during a WAN
+  fail or degrade ([Chapter 4](04-enterprise-wan-internet-edge-and-catalyst-sd-wan.md)), so clients keep working during a WAN
   outage.
 - **Band and SSID strategy** — prefer a small number of SSIDs (typically
   one per major traffic class: corporate/802.1X, guest, IoT) rather than
@@ -175,7 +175,7 @@ WLC-01(config)# ap dot1x-user-name lab-ap-user password 0 <STRONG_AP_PASSWORD>
 
 The AP dot1x credentials above are only required if 802.1X port
 authentication is enforced on the switchport an AP connects to
-(Chapter 7); most designs instead rely on the AP's certificate-based
+([Chapter 7](07-cisco-identity-access-control-and-segmentation.md)); most designs instead rely on the AP's certificate-based
 CAPWAP join process without per-port 802.1X.
 
 ### AP join profile, RF profile, and tags
@@ -220,7 +220,7 @@ WLC-01(config-policy-tag)# exit
 ```
 
 `vlan 20` in the policy profile is the client VLAN — the same VLAN 20
-(`VOICE`/user VLAN family) introduced in Chapter 2; the WLC bridges
+(`VOICE`/user VLAN family) introduced in [Chapter 2](02-catalyst-campus-switching-and-resiliency.md); the WLC bridges
 wireless clients into the existing VLAN structure rather than requiring a
 separate wireless-only VLAN plan.
 
@@ -262,7 +262,7 @@ WLC-01(config-ap-tag)# exit
 Tags can also be pre-staged before an AP ever joins (by MAC address) so
 that a newly cabled AP receives its full configuration automatically on
 first join — the wireless equivalent of the day-0 provisioning pattern
-introduced in Chapter 1.
+introduced in [Chapter 1](01-cisco-enterprise-architecture-and-ios-xe-foundations.md).
 
 ### FlexConnect for a branch site
 
@@ -302,7 +302,7 @@ WLC-01# show ap rf-profile summary
 | AP never appears in `show ap summary` | CAPWAP discovery failure (DHCP option 43/DNS `CISCO-CAPWAP-CONTROLLER` not resolving, or an ACL blocking UDP 5246/5247) | Confirm AP obtained an IP and can resolve/reach the WLC; check DHCP option 43 or the discovery DNS record |
 | AP joins then immediately reboots/rejoins in a loop | Certificate validation failure or a software image mismatch between AP and controller | `show ap join-stats summary`, check for a Predownload mismatch requiring an AP image update |
 | Client associates but never gets an IP address | Client VLAN in the policy profile not trunked to the AP's switchport, or DHCP relay/scope missing for that VLAN | `show wireless client mac-address <MAC> detail`, verify VLAN and confirm DHCP relay/scope on that VLAN |
-| Client authentication fails immediately on an 802.1X WLAN | RADIUS server unreachable, shared secret mismatch, or `authentication-list` pointing at the wrong AAA method list | `show wireless client mac-address <MAC> detail`, `test aaa group <group> <user> <pass> legacy` (Chapter 7) |
+| Client authentication fails immediately on an 802.1X WLAN | RADIUS server unreachable, shared secret mismatch, or `authentication-list` pointing at the wrong AAA method list | `show wireless client mac-address <MAC> detail`, `test aaa group <group> <user> <pass> legacy` ([Chapter 7](07-cisco-identity-access-control-and-segmentation.md)) |
 | Clients roam but experience a voice/video glitch on every roam | 802.11r/k/v not enabled, or client driver doesn't support fast transition | `show wlan id <id>` to confirm `11r`/`neighbor-list` status; confirm client capability |
 | Coverage hole reported repeatedly in the same area | Genuine RF coverage gap, or an AP administratively down/offline | `show ap summary` for AP state, review CleanAir/interference data before assuming it's a coverage design issue |
 
@@ -321,12 +321,12 @@ WLC-01# show ap rf-profile summary
   it) a dedicated DMZ/anchor path, never bridged onto the same VLAN as
   corporate wired or wireless traffic.
 - Run Rogue Detector-mode APs (or rely on Monitor-mode/CleanAir scanning
-  from local-mode APs) and review rogue reports in Assurance (Chapter 9)
+  from local-mode APs) and review rogue reports in Assurance ([Chapter 9](09-catalyst-center-sd-access-assurance-and-operations.md))
   rather than treating rogue detection as a set-and-forget feature.
 - Terminate CAPWAP control traffic with DTLS (the default) and do not
   disable it; disabling DTLS exposes AP-to-WLC control traffic, including
   configuration pushes, in cleartext.
-- Apply the same AAA hardening from Chapter 1 (dedicated management
+- Apply the same AAA hardening from [Chapter 1](01-cisco-enterprise-architecture-and-ios-xe-foundations.md) (dedicated management
   credentials, no shared accounts) to the WLC itself, since a compromised
   WLC compromises every WLAN it serves.
 
@@ -366,7 +366,7 @@ enabled, and validate client association.
   topology with a 9800-CL controller node.
 - Reachable DHCP scope for the AP's subnet with option 43 (or a DNS
   `CISCO-CAPWAP-CONTROLLER` record) pointing APs at the WLC.
-- A RADIUS server (or the local AAA fallback introduced in Chapter 7) for
+- A RADIUS server (or the local AAA fallback introduced in [Chapter 7](07-cisco-identity-access-control-and-segmentation.md)) for
   802.1X authentication, plus a test client capable of WPA2/WPA3-Enterprise.
 
 **Procedure**

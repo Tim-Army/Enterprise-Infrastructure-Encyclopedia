@@ -33,8 +33,8 @@ Identity and the policy attached to it become the primary control: the
 question is no longer only "can this packet reach the resource" but "does
 the caller presenting this credential have permission to take this specific
 action on this specific resource." Every chapter in this volume assumes
-this identity-first posture; landing zone guardrails (Chapter 02) and
-network segmentation (Chapter 04) are complementary, not substitutes.
+this identity-first posture; landing zone guardrails ([Chapter 02](02-landing-zones-resource-organization-and-guardrails.md)) and
+network segmentation ([Chapter 04](04-cloud-networking-and-hybrid-connectivity.md)) are complementary, not substitutes.
 
 ### Three categories of identity
 
@@ -286,7 +286,7 @@ resource "cloud_iam_federation_trust" "ci_deploy" {
 
 Native validation and narrow subject conditions like these are the policy
 layer's first defense; combine them with the organization-wide
-policy-as-code guardrails from Chapter 02 for a defense-in-depth posture
+policy-as-code guardrails from [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md) for a defense-in-depth posture
 rather than relying on any single layer.
 
 ### Requesting a federated credential (illustrative flow)
@@ -561,9 +561,9 @@ RBAC and ABAC as complementary access control models, how SAML 2.0 and
 OIDC federation eliminate long-lived static credentials for both human
 sign-in and CI/CD workload access, the spectrum of key management
 responsibility from provider-managed to hold-your-own-key, and secrets
-management as a distinct discipline from key management. Chapter 04 builds
+management as a distinct discipline from key management. [Chapter 04](04-cloud-networking-and-hybrid-connectivity.md) builds
 the network foundation that sits alongside this identity foundation, and
-Chapter 08 returns to access governance at the organizational policy
+[Chapter 08](08-cloud-governance-security-and-finops.md) returns to access governance at the organizational policy
 level.
 
 - [ ] Can explain why federation eliminates the need for long-lived static

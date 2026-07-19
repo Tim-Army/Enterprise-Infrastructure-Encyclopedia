@@ -27,7 +27,7 @@ time and memory those processes consume, how administrators bound that
 consumption so one workload cannot starve another, and how dependency and
 scheduling logic keeps a fleet of services and jobs starting, stopping,
 and running in the right order. Container-level compute abstraction
-(namespaces, container runtimes) is covered in Volume VIII; this chapter
+(namespaces, container runtimes) is covered in [Volume VIII](../../volume-08-containers-platform-engineering/README.md); this chapter
 stays at the host operating system layer.
 
 ### The process as the unit of compute
@@ -121,7 +121,7 @@ dependents first.
   `/etc/cron.d/*`) on a five-field schedule (`minute hour day month
   weekday`). `anacron` supplements `cron` on hosts that are not always
   powered on, running missed jobs once the system is back up.
-  **`systemd` timers** (introduced in Chapter 02) are the modern
+  **`systemd` timers** (introduced in [Chapter 02](02-enterprise-linux-administration.md)) are the modern
   replacement: `OnCalendar=` expressions, `Persistent=true` to catch up a
   missed run, and — critically — activation of a `.service` unit rather
   than a raw command line, which brings the full `systemd` sandboxing and
@@ -157,10 +157,10 @@ dependents first.
   where the workload is sensitive to memory latency; `numactl` (Linux) and
   `Set-VMProcessor`/NUMA topology settings (Windows/Hyper-V hosts) are the
   relevant controls — deep coverage of virtualization-layer NUMA sizing is
-  in Volume V.
+  in [Volume V](../../volume-05-vmware-virtualization/README.md).
 - **Idempotent job design.** A scheduled job that partially applies its
   work and is interrupted should be safe to re-run without duplicating
-  effect (recall Volume I's idempotency principle) — this matters more for
+  effect (recall [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)'s idempotency principle) — this matters more for
   scheduled jobs than for one-shot administrative commands, since jobs
   run unattended and failures are not immediately reviewed by a human.
 

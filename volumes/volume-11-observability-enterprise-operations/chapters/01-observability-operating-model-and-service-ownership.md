@@ -48,8 +48,8 @@ dimension ad hoc — is what makes novel failure modes tractable.
 Observability does not replace monitoring; monitoring (threshold-based
 alerting on known signals) remains the fastest way to detect that something
 is wrong. Observability is how the organization determines *why* once
-monitoring has raised the alarm. Chapter 02 covers the telemetry pipeline
-that produces this data; Chapter 03 covers metrics and SLOs; Chapter 05
+monitoring has raised the alarm. [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md) covers the telemetry pipeline
+that produces this data; [Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md) covers metrics and SLOs; [Chapter 05](05-distributed-tracing-profiling-and-dependency-analysis.md)
 covers tracing. This chapter covers the organizational model that decides
 who owns the result.
 
@@ -117,7 +117,7 @@ scale:
   owns which service, its tier, its dependencies, and its escalation path.
 - A **paved road** so that owning a service does not require every team to
   independently solve instrumentation, dashboards, and alert routing.
-- An **error budget and SLO framework** (Chapter 03) so "run it" has an
+- An **error budget and SLO framework** ([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)) so "run it" has an
   objective definition of "healthy" rather than being whatever the loudest
   stakeholder currently wants.
 
@@ -134,7 +134,7 @@ tiering scheme:
 | Tier 3 | Best-effort, no paging | Batch analytics job | Ticket-based, next business day |
 
 Tier assignment drives SLO strictness, alert routing, change-freeze policy,
-and which incidents trigger a formal major-incident process (Chapter 07).
+and which incidents trigger a formal major-incident process ([Chapter 07](07-service-management-incident-problem-and-change-operations.md)).
 
 ## Design Considerations
 
@@ -147,7 +147,7 @@ and which incidents trigger a formal major-incident process (Chapter 07).
   team will fund on its own.
 - **Buy versus build for the platform layer.** Enterprises rarely build a
   metrics or tracing backend from scratch today; the build decision is
-  usually about the collection and pipeline layer (Chapter 02) versus
+  usually about the collection and pipeline layer ([Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)) versus
   buying a SaaS backend, or self-hosting an open-source backend such as
   Prometheus/Thanos/Mimir, Grafana Loki, and Grafana Tempo. Data
   residency, egress cost at telemetry volume, and existing vendor
@@ -259,7 +259,7 @@ rather than chasing every new tool:
 | --- | --- | --- |
 | 0 — Reactive | Alerts only from infrastructure defaults; no service catalog | Stand up a service catalog and tiering |
 | 1 — Instrumented | Services emit metrics/logs; no correlation | Adopt OpenTelemetry, shared trace context |
-| 2 — Correlated | Metrics, logs, traces share identifiers | Define SLOs and error budgets (Chapter 03) |
+| 2 — Correlated | Metrics, logs, traces share identifiers | Define SLOs and error budgets ([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)) |
 | 3 — Proactive | SLO-driven alerting, blameless postmortems | Capacity forecasting, automated remediation |
 | 4 — Predictive | Anomaly detection, automated runbooks, continual improvement loop closes findings back into design | Sustain and tune; avoid tool sprawl |
 
@@ -270,7 +270,7 @@ rather than chasing every new tool:
   a CMDB). Any deployed workload absent from the catalog is a coverage gap
   and, by definition, has no confirmed on-call owner.
 - **Escalation path testing.** Periodically fire a synthetic test alert
-  through each service's configured escalation policy (see Chapter 06) and
+  through each service's configured escalation policy (see [Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md)) and
   confirm it reaches a human within the tier's target acknowledgment time.
   A catalog entry with a correct-looking PagerDuty service ID but a stale
   or empty on-call schedule behind it is a common silent failure.
@@ -455,10 +455,10 @@ existing telemetry, and it depends on an organizational model — not just
 tooling — to succeed at enterprise scale. The hybrid platform-team-plus-
 paved-road model, service ownership backed by a machine-readable catalog,
 and tiering that drives operational rigor are the foundation the rest of
-this volume builds on: telemetry pipelines (Chapter 02), SLOs (Chapter 03),
-logging (Chapter 04), tracing (Chapter 05), alerting (Chapter 06), incident
-process (Chapter 07), capacity and cost (Chapter 08), and automation
-(Chapter 09) all assume a catalog exists and answers "who owns this."
+this volume builds on: telemetry pipelines ([Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)), SLOs ([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)),
+logging ([Chapter 04](04-enterprise-logging-event-management-and-retention.md)), tracing ([Chapter 05](05-distributed-tracing-profiling-and-dependency-analysis.md)), alerting ([Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md)), incident
+process ([Chapter 07](07-service-management-incident-problem-and-change-operations.md)), capacity and cost ([Chapter 08](08-capacity-performance-and-cost-aware-operations.md)), and automation
+([Chapter 09](09-operational-automation-analytics-and-continual-improvement.md)) all assume a catalog exists and answers "who owns this."
 
 **Completion checklist**
 

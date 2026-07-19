@@ -94,7 +94,7 @@ interface utilization).
 
 ### On-box automation: Guest Shell and EEM
 
-IOS XE runs on Linux (Chapter 1), and two features expose that underlying
+IOS XE runs on Linux ([Chapter 1](01-cisco-enterprise-architecture-and-ios-xe-foundations.md)), and two features expose that underlying
 platform for local automation:
 
 - **Guest Shell** — a Linux container (CentOS/IOx-based application
@@ -115,27 +115,27 @@ platform for local automation:
 
 Most enterprise-scale configuration management still originates off-box,
 where changes are authored, reviewed, and version-controlled before being
-pushed to devices (Volume IX covers the general automation architecture
+pushed to devices ([Volume IX](../../volume-09-infrastructure-automation/README.md) covers the general automation architecture
 this pattern belongs to). The **Cisco `ios` Ansible collection**
 (`cisco.ios`) is the most common off-box tool for IOS XE specifically,
 offering resource modules (`ios_vlans`, `ios_l3_interfaces`,
 `ios_bgp_global`, and others) that manage configuration idempotently —
 each module compares desired state to current state and only issues the
 commands needed to close the gap, the same idempotency principle
-introduced in Volume I. **pyATS/Genie**, Cisco's Python test and
+introduced in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md). **pyATS/Genie**, Cisco's Python test and
 automation framework, complements this for validation-focused automation
 — parsing `show` command output into structured data for automated
 post-change verification.
 
 ### Plug and Play (PnP) day-0 provisioning
 
-Chapter 1 introduced day-0 bring-up conceptually; **Cisco Network Plug
+[Chapter 1](01-cisco-enterprise-architecture-and-ios-xe-foundations.md) introduced day-0 bring-up conceptually; **Cisco Network Plug
 and Play (PnP)** is the mechanism that removes even the initial
 touch-per-device step. An unconfigured switch, on first boot, discovers a
 PnP server (via DHCP option 43, DNS, or Cisco's cloud redirection
 service) and downloads its initial configuration and software image
 automatically — the foundation Catalyst Center's onboarding workflow
-(Chapter 9) builds on for zero-touch fleet provisioning.
+([Chapter 9](09-catalyst-center-sd-access-assurance-and-operations.md)) builds on for zero-touch fleet provisioning.
 
 ## Design Considerations
 
@@ -147,7 +147,7 @@ automatically — the foundation Catalyst Center's onboarding workflow
 - **Native vs. OpenConfig model choice** — default to OpenConfig/IETF
   models for anything that must remain portable to non-Cisco platforms in
   a multi-vendor estate; accept the Cisco-specific native models where a
-  feature (StackWise Virtual, TrustSec, wireless tags from Chapter 5) has
+  feature (StackWise Virtual, TrustSec, wireless tags from [Chapter 5](05-catalyst-wireless-architecture-and-operations.md)) has
   no OpenConfig equivalent.
 - **Telemetry delivery model** — prefer dial-out telemetry for
   predictable, centrally located collectors; reserve dial-in for
@@ -164,7 +164,7 @@ automatically — the foundation Catalyst Center's onboarding workflow
   anything resource-intensive or long-running.
 - **RBAC for programmability interfaces** — NETCONF/RESTCONF/gNMI
   sessions authenticate through the same AAA framework as CLI access
-  (Chapter 7); scope automation service accounts to the minimum privilege
+  ([Chapter 7](07-cisco-identity-access-control-and-segmentation.md)); scope automation service accounts to the minimum privilege
   and command/model access actually required, the same least-privilege
   principle applied to human administrator accounts.
 
@@ -304,7 +304,7 @@ DIST-01(config-applet)# action 3.0 cli command "show etherchannel summary"
 Running this playbook against the same inventory repeatedly changes
 nothing after the first successful run — the resource module compares
 desired to actual state before issuing any command, the idempotency
-guarantee introduced in Volume I and required of any production
+guarantee introduced in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md) and required of any production
 automation workflow.
 
 ## Validation and Troubleshooting
@@ -322,7 +322,7 @@ DIST-01# guestshell status
 | --- | --- | --- |
 | NETCONF session refused | `netconf-yang` not enabled, or SSH/AAA authentication failing for the automation account | `show netconf-yang sessions`, confirm the account authenticates via normal SSH first |
 | RESTCONF request returns 404 for a valid path | URL path doesn't match the YANG model's actual container/list hierarchy, or wrong model family (native vs. IETF) used in the path | Confirm the exact YANG path with `show platform software yang-management process state` or the model's `.yang` file |
-| RESTCONF request returns 401/403 | Local or AAA credentials invalid, or the account lacks sufficient privilege/authorization for the requested path | Confirm the account authenticates via TACACS+/local per Chapter 7 and holds adequate privilege |
+| RESTCONF request returns 401/403 | Local or AAA credentials invalid, or the account lacks sufficient privilege/authorization for the requested path | Confirm the account authenticates via TACACS+/local per [Chapter 7](07-cisco-identity-access-control-and-segmentation.md) and holds adequate privilege |
 | Telemetry subscription shows `0` records sent | `source-address` unreachable from the collector, receiver port/protocol mismatch, or the filtered Xpath never changes (on-change policy with static data) | `show telemetry ietf subscription 101 detail`, confirm receiver reachability and the update-policy type |
 | Guest Shell won't enable | Insufficient flash/bootflash space for the IOx container image | `show guestshell`, `dir bootflash:`, free space before retrying |
 | Ansible playbook reports a task changed on every run (never converges) | A resource module receiving values it cannot fully represent (for example, a manually configured setting outside the module's managed attributes) causing a false diff each run | Run in `--check --diff` mode, compare against `running-config`, narrow the module's `config` scope to match what is actually managed |
@@ -332,10 +332,10 @@ DIST-01# guestshell status
 - Never enable `ip http server` (plaintext); RESTCONF and any web-based
   management must run over `ip http secure-server` (TLS) only.
 - Scope a dedicated automation service account per platform/protocol
-  through the same TACACS+/RADIUS AAA framework from Chapter 7, rather
+  through the same TACACS+/RADIUS AAA framework from [Chapter 7](07-cisco-identity-access-control-and-segmentation.md), rather
   than reusing a human administrator's credentials for scripted access.
 - Store NETCONF/RESTCONF/Ansible credentials and API tokens in a managed
-  secrets store (Volume IX), never in plaintext playbooks or scripts
+  secrets store ([Volume IX](../../volume-09-infrastructure-automation/README.md)), never in plaintext playbooks or scripts
   committed to a repository.
 - Restrict which hosts can reach NETCONF (port 830), RESTCONF (443), and
   gNMI (default 50051 or as configured) using management-plane ACLs
@@ -351,7 +351,7 @@ DIST-01# guestshell status
   counters, routing state, authentication session data) gains
   significant reconnaissance value against the network.
 - Pin Ansible collection and pyATS/Genie versions in a lockfile-equivalent
-  manner (Volume IX's automation architecture) so a collection upgrade
+  manner ([Volume IX](../../volume-09-infrastructure-automation/README.md)'s automation architecture) so a collection upgrade
   cannot silently change module behavior in a production pipeline.
 
 ## References and Knowledge Checks
@@ -487,7 +487,7 @@ to CLI screen-scraping for both configuration and telemetry. Off-box
 tools like the `cisco.ios` Ansible collection build on that same
 model-driven foundation to deliver the idempotent, version-controlled
 configuration management pattern established across this encyclopedia in
-Volume I and Volume IX.
+[Volume I](../../volume-01-enterprise-engineering-foundations/README.md) and [Volume IX](../../volume-09-infrastructure-automation/README.md).
 
 - [ ] Can explain the YANG/NETCONF/RESTCONF/gNMI stack and when to choose
       each transport.

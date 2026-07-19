@@ -18,7 +18,7 @@ Ubuntu Server's shell environment is the same GNU coreutils, Bash 5.x,
 and text-processing toolkit used across the Linux ecosystem, but two
 package management systems sit side by side: **APT/dpkg**, the classic
 Debian-family package manager operating against the repositories
-described in Chapter 01, and **Snap**, Canonical's containerized,
+described in [Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md), and **Snap**, Canonical's containerized,
 transactional package format. A competent Ubuntu administrator needs
 both, plus the scripting discipline to automate around them safely.
 
@@ -61,7 +61,7 @@ one-liner:
    `"$var"`.
 3. **Idempotency.** A script safe to run once should be safe to run
    five times, producing the same end state — the same expectation this
-   volume places on cloud-init (Chapter 09) and Ansible (Chapter 09).
+   volume places on cloud-init ([Chapter 09](09-cloud-init-maas-juju-ansible-landscape-operations-and-capstone.md)) and Ansible ([Chapter 09](09-cloud-init-maas-juju-ansible-landscape-operations-and-capstone.md)).
 
 ### APT and dpkg architecture
 
@@ -69,7 +69,7 @@ one-liner:
 individual `.deb` files against the package database at
 `/var/lib/dpkg`, with no concept of remote repositories or dependency
 resolution beyond what is already on disk. **APT** (Advanced Package
-Tool) is the layer above it: it reads repository metadata (Chapter 01),
+Tool) is the layer above it: it reads repository metadata ([Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md)),
 resolves dependencies, downloads `.deb` files, and hands them to
 `dpkg` to actually install. In practice:
 
@@ -88,7 +88,7 @@ resolves dependencies, downloads `.deb` files, and hands them to
 
 Snap packages bundle an application with its runtime dependencies into
 a single compressed, read-only, squashfs-backed image, mounted at
-`/snap/<name>/<revision>` and confined by AppArmor (Chapter 06) and
+`/snap/<name>/<revision>` and confined by AppArmor ([Chapter 06](06-apparmor-permissions-cryptography-and-system-hardening.md)) and
 seccomp. This trades some disk space and a slightly different
 filesystem layout for two properties APT-based packages generally
 lack: **automatic background updates** on a defined schedule, and
@@ -347,7 +347,7 @@ sudo snap remove lxd
   operations; `snap change <id>` shows detail on a failed one, and
   `journalctl -u snapd` surfaces daemon-level errors (commonly a
   confinement/interface denial, visible as an AppArmor `DENIED` entry —
-  see Chapter 06).
+  see [Chapter 06](06-apparmor-permissions-cryptography-and-system-hardening.md)).
 - **Common failure: `sed` in-place edits without a backup.** `sed -i`
   without a suffix overwrites the file with no recovery path if the
   expression was wrong. Always use `sed -i.bak` (or test with `sed`
@@ -411,7 +411,7 @@ recovery and Snap rollback.
 **Prerequisites**
 
 - An Ubuntu Server 26.04 LTS host or VM with `sudo` access and
-  configured repositories (see Chapter 01).
+  configured repositories (see [Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md)).
 - A non-production system, since this lab installs and removes test
   packages and a test snap.
 

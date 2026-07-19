@@ -17,7 +17,7 @@
 
 ### From individual products to a fabric
 
-Chapter 02 mapped individual technology categories to individual Fortinet
+[Chapter 02](02-nse-2-threat-landscape-security-technologies-and-fortinet-portfolio.md) mapped individual technology categories to individual Fortinet
 product families. The Security Fabric is the architectural layer that
 connects those products so they function as a coordinated system rather
 than a collection of independently managed appliances. Fabric components
@@ -33,14 +33,14 @@ Fortinet organizes the Security Fabric around five architectural pillars:
 | Pillar | What it addresses |
 | --- | --- |
 | Security-Driven Networking | Converges networking and security functions (routing, SD-WAN, and inspection) into the same enforcement points instead of bolting security onto a separately designed network |
-| Zero Trust Access | Verifies user and device identity and posture continuously, rather than granting broad trust once a connection is established (Chapter 06) |
+| Zero Trust Access | Verifies user and device identity and posture continuously, rather than granting broad trust once a connection is established ([Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)) |
 | AI-driven Security Operations | Uses machine learning and automation (FortiGuard AI-based detection, FortiAnalyzer/FortiSIEM analytics, FortiSOAR playbooks) to reduce manual triage load |
 | Adaptive Cloud Security | Extends consistent policy and visibility into public and private cloud workloads, not only on-premises appliances |
 | Open Ecosystem | Fabric Connectors and published APIs allow third-party products to participate in fabric telemetry sharing and automated response |
 
 These pillars are a planning taxonomy, not a checklist an organization
 completes once. Chapters 04 through 09 build Security-Driven Networking and
-Zero Trust Access capability directly on a FortiGate; Volume XI and Volume
+Zero Trust Access capability directly on a FortiGate; [Volume XI](../../volume-11-observability-enterprise-operations/README.md) and Volume
 X address AI-driven operations and broader security architecture across
 the encyclopedia's vendor-neutral volumes.
 
@@ -53,7 +53,7 @@ a **Physical Topology** and **Logical Topology** view. This discovery and
 status exchange runs over FortiTelemetry, a lightweight protocol fabric
 components use to report identity, health, and configuration status to the
 root device. A single-FortiGate lab environment (as used starting in
-Chapter 04) will show a minimal topology consisting of just that device
+[Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)) will show a minimal topology consisting of just that device
 until additional fabric components are added in later volumes or advanced
 labs; the topology view's value scales with the number of participating
 components.
@@ -68,7 +68,7 @@ It groups findings by severity and links each finding to the specific
 configuration change that resolves it, making it a practical, prioritized
 starting point for a new operator auditing an existing device, and a
 recurring health check for a device already in production. This chapter's
-lab uses Security Rating in read-only observation mode; Chapter 04 begins
+lab uses Security Rating in read-only observation mode; [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md) begins
 acting on its findings as the device is formally licensed and hardened.
 
 ### Operator access vs. administrator access
@@ -82,7 +82,7 @@ new-hire shadowing an experienced administrator. This is distinct from the
 `super_admin` profile, which has unrestricted read/write access to every
 configuration area including administrator account management itself.
 Least-privilege operator access is a foundational control this chapter
-introduces and Chapter 04 formalizes as part of initial hardening.
+introduces and [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md) formalizes as part of initial hardening.
 
 ### GUI and CLI as parallel interfaces
 
@@ -123,13 +123,13 @@ not.
   plan administrative access (GUI and SSH) to route through a jump host or
   bastion on a restricted management network rather than being reachable
   directly from a general user VLAN — this is formalized as a hardening
-  control in Chapter 04.
+  control in [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md).
 
 ## Implementation and Automation
 
 This chapter's hands-on activity uses a FortiGate in its **factory default
 state** — before formal licensing, hostname configuration, or hardening,
-which is Chapter 04's subject. The commands below are read-only or
+which is [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)'s subject. The commands below are read-only or
 limited to a scoped, reversible operator-account exercise; no network,
 policy, or licensing configuration is performed here.
 
@@ -166,7 +166,7 @@ FGT-LAB-01 # diagnose sys top
 current operation mode. `get system performance status` reports current
 CPU, memory, and session count — useful both as a first-look health check
 and as a baseline to compare against later once real traffic and
-inspection profiles are applied (Chapter 07). `diagnose sys top` is an
+inspection profiles are applied ([Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md)). `diagnose sys top` is an
 interactive, `top`-style process view; press `q` to exit without making
 any change.
 
@@ -184,7 +184,7 @@ run against any destination without affecting device configuration.
 
 This is the one configuration change this chapter makes, deliberately
 scoped and reversed at the end of the lab to leave the device in its
-original state for Chapter 04.
+original state for [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md).
 
 ```text
 FGT-LAB-01 # config system accprofile
@@ -251,7 +251,7 @@ the purpose of this exercise, so each relevant group is set explicitly.
   access path is treated — restrict physical access to console ports and
   console servers to authorized personnel.
 - Review Security Rating findings on a recurring basis even after initial
-  hardening (Chapter 04); best-practice checks evolve with FortiOS releases
+  hardening ([Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)); best-practice checks evolve with FortiOS releases
   and FortiGuard-delivered rule updates, so a device hardened correctly at
   deployment can still drift out of alignment with current guidance over
   time.
@@ -289,7 +289,7 @@ the purpose of this exercise, so each relevant group is set explicitly.
 **Objective:** Log into a factory-default FortiGate as an operator,
 explore the GUI and CLI in read-only fashion, review the Security Fabric
 topology and Security Rating, and create and validate a least-privilege
-operator account — leaving the device in a clean state for Chapter 04's
+operator account — leaving the device in a clean state for [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)'s
 formal deployment.
 
 **Prerequisites**
@@ -334,7 +334,7 @@ formal deployment.
 
 4. Record at least three Security Rating findings and the specific
    configuration change each one recommends, for comparison against
-   Chapter 04's hardening steps.
+   [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)'s hardening steps.
 
 5. In the CLI, create the least-privilege operator profile and account
    exactly as shown in Implementation and Automation.
@@ -356,7 +356,7 @@ formal deployment.
 
 8. **Cleanup:** Log back in as the original `admin` account and remove the
    lab-created operator account and profile so the device returns to a
-   clean baseline for Chapter 04:
+   clean baseline for [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md):
 
    ```text
    FGT-LAB-01 # config system admin
@@ -370,11 +370,11 @@ formal deployment.
 **Expected result:** `show system admin` (or the GUI's administrator list)
 no longer shows `operator1`, and `show system accprofile` no longer shows
 `operator-readonly`. The device retains only its new `admin` password from
-step 1, ready for Chapter 04's licensing and hardening.
+step 1, ready for [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)'s licensing and hardening.
 
 ## Summary and Completion Checklist
 
-This chapter connected the individual products from Chapter 02 into the
+This chapter connected the individual products from [Chapter 02](02-nse-2-threat-landscape-security-technologies-and-fortinet-portfolio.md) into the
 Security Fabric's five architectural pillars, explained how fabric
 components share telemetry and how Security Rating turns best-practice
 guidance into an actionable, prioritized checklist, and drew the
@@ -382,7 +382,7 @@ operator/administrator access boundary that governs least-privilege
 account design. The hands-on lab exercised first login, read-only status
 and connectivity commands, GUI topology and rating review, and creation
 and validation of a scoped operator account — the last piece of
-foundational knowledge before Chapter 04 begins formal FortiGate
+foundational knowledge before [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md) begins formal FortiGate
 deployment, licensing, and hardening.
 
 - [ ] Can name the five Security Fabric pillars and one capability under
@@ -395,4 +395,4 @@ deployment, licensing, and hardening.
 - [ ] Can run safe, read-only CLI diagnostic commands without risk of
       configuration impact.
 - [ ] Completed the hands-on lab, including the negative test and
-      cleanup, leaving the device ready for Chapter 04.
+      cleanup, leaving the device ready for [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md).

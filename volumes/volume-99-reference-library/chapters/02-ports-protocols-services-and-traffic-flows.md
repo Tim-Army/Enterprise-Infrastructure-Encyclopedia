@@ -56,7 +56,7 @@ source, destination, port/protocol, direction of session initiation, and
 the security zone boundary crossed. Omitting the direction of initiation is
 the single most common cause of an unnecessarily broad firewall rule —
 "allow TCP/443 between A and B" is not the same statement as "A initiates
-TCP/443 to B," and stateful firewalls (Chapter 07) only need the latter.
+TCP/443 to B," and stateful firewalls ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)) only need the latter.
 
 ## Design Considerations
 
@@ -70,7 +70,7 @@ TCP/443 to B," and stateful firewalls (Chapter 07) only need the latter.
   (client-to-server, typically crossing a perimeter or DMZ boundary) and
   east-west traffic (server-to-server, typically inside a data center or
   VPC) warrant different default postures — east-west traffic benefits far
-  more from micro-segmentation (Volume V NSX, Volume X) because a single
+  more from micro-segmentation ([Volume V](../../volume-05-vmware-virtualization/README.md) NSX, [Volume X](../../volume-10-enterprise-cybersecurity/README.md)) because a single
   compromised host has lateral options only east-west rules can constrain.
 - **Prefer the encrypted variant of a legacy protocol whenever one
   exists**, and budget the migration explicitly: Telnet (23) to SSH (22),
@@ -107,8 +107,8 @@ normal operation); state-changing/administrative ports are marked
 | DHCP | 67 (server), 68 (client) | UDP | Broadcast (client → server initially) | Admin (leases). DHCPv6 uses UDP 546/547. |
 | TFTP | 69 | UDP | Client → server | Admin, cleartext, no authentication. Common for network-device firmware/config transfer on isolated management VLANs only. |
 | HTTP | 80 | TCP | Client → server | Cleartext; redirect to HTTPS in production. |
-| Kerberos | 88 | TCP/UDP | Client → KDC | Admin/authentication. Core to Active Directory (Volume IV) authentication. |
-| NTP | 123 | UDP | Client → server (peer associations are bidirectional) | RO-adjacent. See Chapter 03 for stratum design. |
+| Kerberos | 88 | TCP/UDP | Client → KDC | Admin/authentication. Core to Active Directory ([Volume IV](../../volume-04-enterprise-systems-administration/README.md)) authentication. |
+| NTP | 123 | UDP | Client → server (peer associations are bidirectional) | RO-adjacent. See [Chapter 03](03-addressing-subnetting-naming-time-and-identity-reference.md) for stratum design. |
 | NetBIOS/SMB (legacy) | 137–139 | TCP/UDP | Client → server | Deprecated in favor of direct SMB over 445 where possible. |
 | SNMP | 161 (query), 162 (trap) | UDP | Manager → agent (161); agent → manager (162) | RO-adjacent for polling; use SNMPv3 for authentication/encryption. |
 | LDAP | 389 | TCP | Client → directory server | Cleartext unless using StartTLS; prefer 636. |
@@ -118,20 +118,20 @@ normal operation); state-changing/administrative ports are marked
 | Syslog | 514 | UDP (traditional), TCP (reliable delivery, RFC 6587) | Sender → collector | RO-adjacent (log shipping). Prefer 6514 (TLS) where the collector supports it. |
 | LDAP GC (Global Catalog) | 3268 / 3269 (SSL) | TCP | Client → domain controller | Forest-wide directory queries. |
 | RADIUS | 1812 (auth), 1813 (accounting); legacy 1645/1646 | UDP | NAS/device → RADIUS server | Admin/authentication. AAA for network device and VPN logins. |
-| TACACS+ | 49 | TCP | Device → TACACS+ server | Admin/authentication, encrypted payload. Preferred over RADIUS for command-level device authorization/accounting (Chapter 01, Chapter 07). |
+| TACACS+ | 49 | TCP | Device → TACACS+ server | Admin/authentication, encrypted payload. Preferred over RADIUS for command-level device authorization/accounting ([Chapter 01](01-command-quick-reference-and-safe-administration.md), [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)). |
 | SMTP | 25 (relay), 587 (submission), 465 (implicit TLS) | TCP | Client/relay → server | Use 587 with STARTTLS for authenticated submission; 25 for server-to-server relay only. |
 | IMAP / IMAPS | 143 / 993 | TCP | Client → server | Mail retrieval; prefer 993. |
 | POP3 / POP3S | 110 / 995 | TCP | Client → server | Mail retrieval; prefer 995. |
 | RDP | 3389 | TCP | Client → server | Admin. Windows remote desktop; restrict to jump hosts/bastion, never expose directly to the internet. |
 | WinRM | 5985 (HTTP), 5986 (HTTPS) | TCP | Client → server | Admin. PowerShell remoting; prefer 5986. |
 | NFS | 2049 (NFSv4, single port); NFSv3 uses portmapper 111 + dynamic ports | TCP/UDP | Client → server | File sharing; NFSv4 consolidated the multi-port NFSv3/portmapper model. |
-| iSCSI | 3260 | TCP | Initiator → target | Storage. Isolate on a dedicated storage VLAN/subnet (Volume VI). |
-| Fibre Channel over Ethernet | N/A (Ethertype 0x8906, not IP) | FCoE | N/A | Storage; not IP-routable, relevant to Volume VI data-center fabric design. |
-| vCenter Server / ESXi management | 443 (HTTPS UI/API), 902 (legacy host management/vMotion heartbeat) | TCP | Client/host → vCenter | Admin. See Volume V for the full vSphere port matrix. |
+| iSCSI | 3260 | TCP | Initiator → target | Storage. Isolate on a dedicated storage VLAN/subnet ([Volume VI](../../volume-06-enterprise-storage-data-protection/README.md)). |
+| Fibre Channel over Ethernet | N/A (Ethertype 0x8906, not IP) | FCoE | N/A | Storage; not IP-routable, relevant to [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md) data-center fabric design. |
+| vCenter Server / ESXi management | 443 (HTTPS UI/API), 902 (legacy host management/vMotion heartbeat) | TCP | Client/host → vCenter | Admin. See [Volume V](../../volume-05-vmware-virtualization/README.md) for the full vSphere port matrix. |
 | vMotion | 8000 (control), plus a dedicated migration network | TCP | Host → host | Should always ride an isolated, non-routed vMotion VLAN. |
 | Kubernetes API server | 6443 | TCP | kubectl/controller → API server | Admin. |
 | etcd | 2379 (client), 2380 (peer) | TCP | Kubernetes control plane ↔ etcd | Admin, cluster-critical; never expose beyond the control plane network. |
-| kubelet API | 10250 | TCP | API server → node | Admin; anonymous access must be disabled (Volume VIII, Volume X). |
+| kubelet API | 10250 | TCP | API server → node | Admin; anonymous access must be disabled ([Volume VIII](../../volume-08-containers-platform-engineering/README.md), [Volume X](../../volume-10-enterprise-cybersecurity/README.md)). |
 | Container registry (generic) | 5000 (plain), 443 (typical TLS front end) | TCP | Client/CI runner → registry | Prefer TLS-fronted registries in production. |
 | Prometheus | 9090 (server UI/API), 9100 (node_exporter) | TCP | Prometheus → exporter (scrape, pull model) | RO-adjacent; Prometheus initiates scrapes, which is the opposite direction from most monitoring agents. |
 | Grafana | 3000 | TCP | Client → server | Dashboard UI. |
@@ -141,12 +141,12 @@ normal operation); state-changing/administrative ports are marked
 | MySQL/MariaDB | 3306 | TCP | Client → server | |
 | Microsoft SQL Server | 1433 (default instance), 1434/UDP (SQL Browser) | TCP/UDP | Client → server | |
 | IPsec IKE | 500 (IKE), 4500 (NAT-T) | UDP | Peer ↔ peer | VPN control plane; ESP (protocol 50) carries the encrypted payload with no port. |
-| BGP | 179 | TCP | Peer ↔ peer (either side may initiate) | Routing protocol; see Volume II/III for adjacency design. |
+| BGP | 179 | TCP | Peer ↔ peer (either side may initiate) | Routing protocol; see [Volume II](../../volume-02-network-engineering-foundations/README.md)/III for adjacency design. |
 | OSPF | N/A (IP protocol 89) | IP | Multicast (224.0.0.5/6) between neighbors | No TCP/UDP port; filtered by protocol number, not port. |
 | VRRP | N/A (IP protocol 112) | IP | Multicast (224.0.0.18) | First-hop redundancy; no port. |
 | HSRP | 1985 | UDP (multicast 224.0.0.2 or 102, version-dependent) | Router ↔ router | Cisco first-hop redundancy equivalent to VRRP. |
 | GRE | N/A (IP protocol 47) | IP | Tunnel endpoint ↔ tunnel endpoint | Common cause of "the tunnel won't come up" when only TCP/UDP ports were opened. |
-| Redfish / IPMI | 443 (Redfish, HTTPS REST), 623 (IPMI, UDP) | TCP/UDP | Client → BMC | Admin. Out-of-band server management (Volume XXII/XXIII); IPMI is legacy and less secure than Redfish. |
+| Redfish / IPMI | 443 (Redfish, HTTPS REST), 623 (IPMI, UDP) | TCP/UDP | Client → BMC | Admin. Out-of-band server management ([Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md)/XXIII); IPMI is legacy and less secure than Redfish. |
 | PAN-OS management | 443 (Web UI/API), 3978 (HA), 28260/28769 (log collection, version-dependent) | TCP | Admin → firewall; peer ↔ peer (HA) | Confirm HA and log-collection ports against the current PAN-OS release. |
 | FortiOS management | 443 (Web UI), 541 (FortiGate-FortiManager, FGFM protocol) | TCP | Admin → device; device ↔ FortiManager | |
 | DNS over TLS (DoT) | 853 | TCP | Client → resolver | Encrypted DNS. |
@@ -198,7 +198,7 @@ need — only the syntax differs, not the five facts.
   application not responding," which point to entirely different fix
   paths (firewall/routing vs. application/service state).
 - **Capture and read the handshake, not just the result.** `tcpdump -ni
-  <iface> tcp port <port>` (see Volume XX for full packet-analysis
+  <iface> tcp port <port>` (see [Volume XX](../../volume-20-wireshark-packet-analysis/README.md) for full packet-analysis
   methodology) shows whether a SYN is answered with SYN-ACK (application
   reachable), RST (port closed/rejected), or nothing (silently dropped by
   a firewall — the most common false "the network is slow" symptom).
@@ -224,10 +224,10 @@ need — only the syntax differs, not the five facts.
 - Retire cleartext protocols (Telnet, FTP, HTTP, SNMPv1/v2c, unencrypted
   syslog and LDAP) on any network segment that is not both physically
   isolated and explicitly scoped for legacy equipment; track remaining
-  exceptions as a risk-register entry (Chapter 07).
+  exceptions as a risk-register entry ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)).
 - Never expose RDP, WinRM, SSH, database ports, or Kubernetes/etcd
   control-plane ports directly to the internet; require a bastion host,
-  VPN, or Zero Trust broker (Volume X, Volume XVI) for administrative
+  VPN, or Zero Trust broker ([Volume X](../../volume-10-enterprise-cybersecurity/README.md), [Volume XVI](../../volume-16-palo-alto-networks-security/README.md)) for administrative
   access.
 - Bind development-convenience services (Redis, Elasticsearch, unsecured
   container registries) to private networks by default; these services
@@ -250,11 +250,11 @@ need — only the syntax differs, not the five facts.
   (`iana.org/assignments/service-names-port-numbers`).
 - RFC 793 (TCP), RFC 768 (UDP), RFC 792 (ICMP), RFC 4443 (ICMPv6).
 - RFC 5425 (syslog over TLS), RFC 6587 (syslog over TCP framing).
-- Volume II — Network Engineering Foundations (transport-layer theory).
-- Volume V — VMware Virtualization (full vSphere/ESXi port matrix).
-- Volume X — Enterprise Cybersecurity (segmentation and Zero Trust
+- [Volume II](../../volume-02-network-engineering-foundations/README.md) — Network Engineering Foundations (transport-layer theory).
+- [Volume V](../../volume-05-vmware-virtualization/README.md) — VMware Virtualization (full vSphere/ESXi port matrix).
+- [Volume X](../../volume-10-enterprise-cybersecurity/README.md) — Enterprise Cybersecurity (segmentation and Zero Trust
   architecture).
-- Volume XX — Wireshark and Packet Analysis (packet-level validation of
+- [Volume XX](../../volume-20-wireshark-packet-analysis/README.md) — Wireshark and Packet Analysis (packet-level validation of
   every flow in this chapter).
 - `SOFTWARE_VERSIONS.md` (repository root) — dated baseline for
   vendor-specific port references.
@@ -312,7 +312,7 @@ available; a Markdown editor.
    TCP RST, an ICMP unreachable, or silence (timeout). **Expected
    result:** the card documents the observable difference between a
    closed port and a firewalled port, which is a recurring troubleshooting
-   distinction (Chapter 06).
+   distinction ([Chapter 06](06-troubleshooting-decision-aids-and-escalation.md)).
 7. Write one five-field flow statement (using the template in this
    chapter) for each service tested and save it alongside the table.
    **Expected result:** the file contains both a scan table and formal

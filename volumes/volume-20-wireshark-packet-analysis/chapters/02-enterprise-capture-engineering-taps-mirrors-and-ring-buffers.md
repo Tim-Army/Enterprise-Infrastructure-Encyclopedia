@@ -8,7 +8,7 @@
   packets under load, and design a capture point that avoids that failure
   mode.
 - Distinguish capture filters (BPF, applied by `dumpcap` before packets are
-  written) from display filters (Chapter 03, applied after capture) and
+  written) from display filters ([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md), applied after capture) and
   choose correctly between them.
 - Configure `dumpcap` ring-buffer rotation for unattended, storage-bounded,
   continuous capture.
@@ -19,7 +19,7 @@
 
 Enterprise capture engineering is the discipline of getting the right
 traffic to the right capture point without perturbing the network being
-observed or dropping the packets that matter. Chapter 01 covered installing
+observed or dropping the packets that matter. [Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md) covered installing
 and permissioning Wireshark and `tshark`; this chapter covers where those
 tools should point and how they should be run when a human is not sitting
 in front of the GUI watching packets arrive live.
@@ -37,7 +37,7 @@ oversubscribed aggregating TAP drop packets without any protocol-level
 signal that they did so.** No retransmission is triggered on the monitor
 path because the production link is not affected — the drop is invisible
 except as a gap when the analyst later notices sequence numbers or frame
-counts that do not add up. Chapter 06 explains how to distinguish a
+counts that do not add up. [Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md) explains how to distinguish a
 capture-point drop from a real network-induced retransmission using TCP
 sequence analysis; the design decision that prevents the ambiguity is made
 here, before capture starts.
@@ -45,7 +45,7 @@ here, before capture starts.
 ### Network packet brokers
 
 At scale, taps and SPAN ports feed a network packet broker (NPB) — for
-example, a Gigamon GigaVUE fabric (Volume XVIII, Gigamon Network
+example, a Gigamon GigaVUE fabric ([Volume XVIII](../../volume-18-gigamon-network-visibility/README.md), Gigamon Network
 Visibility) — rather than feeding an analysis tool directly. An NPB
 aggregates multiple capture points, deduplicates copies of the same packet
 arriving from redundant paths, filters and load-balances traffic across
@@ -62,7 +62,7 @@ confused:
 
 | | Capture filter | Display filter |
 | --- | --- | --- |
-| Engine | Berkeley Packet Filter (BPF), the same syntax `tcpdump` uses | Wireshark's own dissector-aware expression language (Chapter 03) |
+| Engine | Berkeley Packet Filter (BPF), the same syntax `tcpdump` uses | Wireshark's own dissector-aware expression language ([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md)) |
 | Applied by | `dumpcap`, before a packet is written to disk or memory | `wireshark`/`tshark`, after the packet is dissected |
 | Effect | Packets that do not match are **never captured** — they cannot be recovered later | Packets that do not match are hidden from view but remain in the file |
 | Syntax example | `host 10.0.20.15 and tcp port 443` | `ip.addr==10.0.20.15 && tcp.port==443` |
@@ -95,8 +95,8 @@ re-analysis; a capture filter mistake costs the capture itself.
   (VXLAN, GRE, MPLS) the analysis will depend on; some switch platforms
   strip the tag that identifies which VLAN a mirrored frame came from.
 - **Placement changes the timestamp reference.** Every capture point applies
-  its own arrival timestamp; comparing captures from two points (Chapter 06,
-  Chapter 07) requires either synchronized clocks (NTP/PTP) on both capture
+  its own arrival timestamp; comparing captures from two points ([Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md),
+  [Chapter 07](07-application-protocol-tls-and-service-response-analysis.md)) requires either synchronized clocks (NTP/PTP) on both capture
   hosts or an explicit acknowledgment that cross-capture timing deltas
   include clock skew.
 - **Unattended capture needs a supervision plan.** A `dumpcap` process left
@@ -109,7 +109,7 @@ re-analysis; a capture filter mistake costs the capture itself.
 
 This chapter's examples target Wireshark/`dumpcap` 4.4.x, per
 [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md), run from the
-non-administrative capture configuration established in Chapter 01.
+non-administrative capture configuration established in [Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md).
 
 ### Writing a capture filter
 
@@ -188,7 +188,7 @@ sudo systemctl status dumpcap-segment-a.service
 ```
 
 Running the service as a dedicated `capture-svc` account in the `wireshark`
-capability group (Chapter 01) keeps the continuous capture process off both
+capability group ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)) keeps the continuous capture process off both
 `root` and any interactive analyst account.
 
 ### Capturing from a remote or headless host
@@ -251,7 +251,7 @@ daemon (`rpcapd`) on the target host.
 - **Scope capture filters and NPB rules to the minimum needed for the
   investigation**, both to reduce exposure of unrelated users' traffic and
   to reduce the volume of sensitive data that must later be retained,
-  hashed, and eventually destroyed (Chapter 01).
+  hashed, and eventually destroyed ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
 - **Disable or physically secure unused SPAN sessions and TAP monitor
   ports.** An idle mirror session pointed at a forgotten port is an
   unmonitored eavesdropping path if an unauthorized device is connected to
@@ -259,11 +259,11 @@ daemon (`rpcapd`) on the target host.
 - **Encrypt ring-buffer storage at rest** on capture hosts that are not
   inside a physically controlled evidence room, and apply the same
   retention-and-destruction schedule to rotated-out files as to any other
-  capture (Chapter 01).
+  capture ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
 - **Log every remote-capture session.** SSH-piped and `rpcapd` capture
   sessions should be attributable to a named analyst and a stated
   investigation, consistent with the chain-of-custody practice established
-  in Chapter 01.
+  in [Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md).
 
 ## References and Knowledge Checks
 
@@ -274,7 +274,7 @@ daemon (`rpcapd`) on the target host.
 - `man dumpcap`, `man pcap-filter` (BPF syntax reference).
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   encyclopedia's dated baseline for Wireshark 4.4.x.
-- Volume XVIII (Gigamon Network Visibility) — network packet broker
+- [Volume XVIII](../../volume-18-gigamon-network-visibility/README.md) (Gigamon Network Visibility) — network packet broker
   architecture and deployment.
 
 **Knowledge checks**
@@ -297,7 +297,7 @@ traffic is excluded at capture time.
 
 **Prerequisites**
 
-- Completion of Chapter 01's installation and non-administrative capture
+- Completion of [Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)'s installation and non-administrative capture
   configuration.
 - At least 200 MB of free disk space in a working directory.
 

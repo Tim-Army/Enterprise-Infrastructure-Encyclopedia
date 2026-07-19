@@ -74,7 +74,7 @@ than discovering them mid-remediation.
 
 ### Auto Deploy and vLCM image integration
 
-Chapter 2 introduced **Auto Deploy** as a network-boot mechanism. At the
+[Chapter 2](02-esxi-installation-configuration-and-host-operations.md) introduced **Auto Deploy** as a network-boot mechanism. At the
 vSphere 9.x baseline, Auto Deploy's boot images are sourced directly from
 vLCM cluster images rather than a separately managed Image Builder
 profile — a host's Auto Deploy rule assigns it to a cluster, and that
@@ -153,7 +153,7 @@ managed objects rather than a separate telemetry pipeline.
 
 ### Skyline Health Diagnostics and Skyline Advisor
 
-Beyond vSAN's cluster-scoped Skyline Health (Chapter 6), the broader
+Beyond vSAN's cluster-scoped Skyline Health ([Chapter 6](06-vsphere-storage-and-vsan.md)), the broader
 **Skyline** capability (delivered as **Skyline Health Diagnostics**,
 runnable connected or in a disconnected/air-gapped mode, and the
 cloud-connected **Skyline Advisor** service for environments permitted to
@@ -228,7 +228,7 @@ generate-support-bundle.sh
   better-tuned ones.
 - **Log retention and centralization design.** Local ESXi/vCenter log
   retention is bounded by local storage and rotation policy; design
-  centralized log forwarding (syslog from ESXi, as covered in Chapter 2,
+  centralized log forwarding (syslog from ESXi, as covered in [Chapter 2](02-esxi-installation-configuration-and-host-operations.md),
   plus vCenter Server's own log forwarding/integration options) as a
   day-one requirement for any environment with a real incident-response or
   compliance retention need.
@@ -338,7 +338,7 @@ esxtop -b -d 5 -n 12 > /tmp/esxtop-capture.csv
   bundle generated after the fact is missing the relevant window, check
   local log rotation settings (`esxcli system syslog config get` reports
   local rotation size/count) against how long ago the incident occurred
-  — this is precisely the gap centralized syslog forwarding (Chapter 2)
+  — this is precisely the gap centralized syslog forwarding ([Chapter 2](02-esxi-installation-configuration-and-host-operations.md))
   is designed to close, and its absence should be treated as a finding
   during incident retrospectives.
 - **esxtop/resxtop interpretation basics.** Sustained `%RDY` (CPU ready
@@ -361,7 +361,7 @@ esxtop -b -d 5 -n 12 > /tmp/esxtop-capture.csv
   defined change-control process — an unreviewed image change is
   effectively an unreviewed fleet-wide software change with the same
   blast radius as any other unmanaged production change.
-- Verify VIB and image component acceptance levels (Chapter 2) as part of
+- Verify VIB and image component acceptance levels ([Chapter 2](02-esxi-installation-configuration-and-host-operations.md)) as part of
   any custom image or component addition to a vLCM desired-state image,
   not only at individual host install time.
 - Encrypt and access-control support bundles and log exports before
@@ -392,9 +392,9 @@ esxtop -b -d 5 -n 12 > /tmp/esxtop-capture.csv
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline, plus Terraform and Ansible tooling baselines,
   referenced throughout this volume.
-- See Chapter 2 for ESXi installation methods and Host Profiles, which
+- See [Chapter 2](02-esxi-installation-configuration-and-host-operations.md) for ESXi installation methods and Host Profiles, which
   vLCM images complement at the fleet level.
-- See Chapter 7 for DRS/HA behavior that governs remediation-time host
+- See [Chapter 7](07-vsphere-availability-mobility-and-cluster-services.md) for DRS/HA behavior that governs remediation-time host
   evacuation.
 
 **Knowledge checks**

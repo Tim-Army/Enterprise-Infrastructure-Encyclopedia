@@ -90,7 +90,7 @@ shape. The CNCF **CloudEvents** specification standardizes the envelope
 (`id`, `source`, `type`, `time`, `data`) while leaving the payload
 provider-specific, which is why it shows up as the event format underneath
 tools such as Knative, several service meshes, and Event-Driven Ansible's
-webhook source plugin (Chapter 07):
+webhook source plugin ([Chapter 07](07-workflow-orchestration-and-event-driven-operations.md)):
 
 ```json
 {
@@ -109,7 +109,7 @@ webhook source plugin (Chapter 07):
 
 ### ITSM integration as a governance checkpoint
 
-Enterprises with a formal change-management process (Volume I, Chapter 08)
+Enterprises with a formal change-management process ([Volume I, Chapter 08](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md))
 frequently require an automated change to reference an approved change
 record before it is allowed to run against production, or to close that
 record automatically once the pipeline completes. This is a concrete,
@@ -263,7 +263,7 @@ data source cannot fill.
 
 ### Terraform output into Ansible inventory
 
-Chapter 03 flagged this integration point: Terraform provisions
+[Chapter 03](03-configuration-management-and-desired-state-convergence.md) flagged this integration point: Terraform provisions
 infrastructure, and Ansible needs to know what Terraform just created
 without re-typing hostnames by hand. Expose the values Ansible needs as
 Terraform outputs:
@@ -428,7 +428,7 @@ change record and an automated apply.
 ## Security and Best Practices
 
 - Store API tokens and webhook shared secrets in a secrets manager
-  (Chapter 06), never in playbook variables, Terraform `.tfvars`, or
+  ([Chapter 06](06-automation-identity-secrets-and-privileged-execution.md)), never in playbook variables, Terraform `.tfvars`, or
   pipeline YAML committed to version control.
 - Scope API tokens to the minimum set of endpoints and operations the
   integration actually uses; a token with full ITSM admin rights used only
@@ -579,7 +579,7 @@ that make that integration layer reliable under real-world network and
 provider behavior rather than only under a happy-path demo. The
 Terraform-output-to-Ansible-inventory handoff closes the loop between
 Chapters 02 and 03, and the change-record pattern here is the concrete
-mechanism behind the policy and pipeline gates covered next in Chapter 05.
+mechanism behind the policy and pipeline gates covered next in [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md).
 
 - [ ] Can explain when to use polling, a webhook, or an event stream for a
       given integration.

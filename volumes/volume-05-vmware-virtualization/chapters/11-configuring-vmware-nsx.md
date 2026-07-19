@@ -9,7 +9,7 @@
 - Explain Tier-0/Tier-1 gateway high-availability modes (active/active
   versus active/standby) and select correctly between them.
 - Configure NAT and DHCP services on NSX gateways and segments.
-- Extend Distributed Firewall (DFW) policy design from Chapter 8 into full
+- Extend Distributed Firewall (DFW) policy design from [Chapter 8](08-vsphere-and-nsx-security-architecture.md) into full
   rule construction, including applied-to scoping.
 - Use Traceflow and the Port Connection tool to diagnose logical
   connectivity failures.
@@ -17,12 +17,12 @@
 
 ## Theory and Architecture
 
-Chapter 10 established the NSX transport fabric — a manager cluster,
+[Chapter 10](10-installing-vmware-nsx.md) established the NSX transport fabric — a manager cluster,
 prepared transport nodes, and Edge nodes with validated TEP connectivity.
 This chapter configures the logical networking and security objects that
 actually carry workload traffic on top of that fabric: segments, Tier-0
 and Tier-1 gateways, routing, NAT, DHCP, and the full Distributed Firewall
-rule model Chapter 8 introduced from a security-architecture angle.
+rule model [Chapter 8](08-vsphere-and-nsx-security-architecture.md) introduced from a security-architecture angle.
 
 ### Segments
 
@@ -30,7 +30,7 @@ A **segment** is NSX's logical switch — the object a VM's vNIC actually
 connects to, equivalent in role to a vSphere port group but implemented as
 a distributed logical entity across every transport node in scope rather
 than a per-host construct. Two segment types exist, corresponding to the
-transport zone types from Chapter 10:
+transport zone types from [Chapter 10](10-installing-vmware-nsx.md):
 
 - **Overlay segment** — backed by an overlay transport zone, using Geneve
   encapsulation between TEPs so that a segment's Layer 2 domain exists
@@ -140,7 +140,7 @@ the value NSX-based automation is providing.
 
 ### Distributed Firewall: full rule construction
 
-Chapter 8 introduced the DFW's dynamic security groups and basic rule
+[Chapter 8](08-vsphere-and-nsx-security-architecture.md) introduced the DFW's dynamic security groups and basic rule
 concept from a security-architecture standpoint. Operationally, a DFW rule
 is defined by:
 
@@ -151,7 +151,7 @@ is defined by:
   effective scope updates automatically as tagged VMs are added or
   removed rather than requiring manual rule maintenance.
 - **Services** — the Layer 4 (or Layer 7, with the Distributed IDS/IPS
-  and application-identification capability referenced in Chapter 8)
+  and application-identification capability referenced in [Chapter 8](08-vsphere-and-nsx-security-architecture.md))
   definition of what traffic the rule matches.
 - **Applied To** — critically, DFW rules can be scoped to apply only to
   specific groups rather than every workload in the environment, which
@@ -167,7 +167,7 @@ is defined by:
 DFW policies are organized into ordered **sections**, evaluated top to
 bottom with first-match semantics, ending in a default rule (commonly set
 to Drop in a zero-trust micro-segmentation design, consistent with the
-default-deny posture recommended in Chapter 8).
+default-deny posture recommended in [Chapter 8](08-vsphere-and-nsx-security-architecture.md)).
 
 ### NSX Federation (conceptual overview)
 
@@ -380,7 +380,7 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PUT \
 
 - Default DFW policy to Drop (or Reject, chosen deliberately per use
   case) at the end of every section, consistent with the zero-trust,
-  default-deny posture established in Chapter 8, and scope every rule's
+  default-deny posture established in [Chapter 8](08-vsphere-and-nsx-security-architecture.md), and scope every rule's
   Applied To field deliberately rather than leaving it environment-wide
   by default.
 - Scope BGP route redistribution deliberately — do not redistribute every
@@ -419,9 +419,9 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PUT \
 - VMware NSX 4.x Documentation — *NSX Federation*.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 8 for the DFW/Gateway Firewall security-architecture
+- See [Chapter 8](08-vsphere-and-nsx-security-architecture.md) for the DFW/Gateway Firewall security-architecture
   foundation this chapter builds full rule construction on.
-- See Chapter 10 for the transport fabric (transport zones, transport
+- See [Chapter 10](10-installing-vmware-nsx.md) for the transport fabric (transport zones, transport
   nodes, Edge nodes) this chapter's logical objects run on top of.
 
 **Knowledge checks**
@@ -448,7 +448,7 @@ validate a negative test (blocked traffic) before allowing it.
 
 **Prerequisites**
 
-- The transport fabric from the Chapter 10 lab (prepared host, Edge node,
+- The transport fabric from the [Chapter 10](10-installing-vmware-nsx.md) lab (prepared host, Edge node,
   overlay transport zone) already in place, or an equivalent lab NSX
   environment.
 - A simulated upstream BGP router reachable from the Edge node's uplink
@@ -519,7 +519,7 @@ validate a negative test (blocked traffic) before allowing it.
 ## Summary and Completion Checklist
 
 NSX's logical networking layer builds directly on the transport fabric
-from Chapter 10: segments (overlay or VLAN-backed) attach to Tier-1
+from [Chapter 10](10-installing-vmware-nsx.md): segments (overlay or VLAN-backed) attach to Tier-1
 gateways, which in turn attach to a Tier-0 gateway that owns north-south
 routing (via BGP or static routes) to the physical network — a deliberate
 two-tier split separating provider-level and tenant-level concerns. NAT
@@ -527,7 +527,7 @@ and DHCP (server or relay) round out per-segment/per-gateway services, and
 the Distributed Firewall's full rule model — source/destination groups,
 services, deliberate Applied To scoping, and first-match ordered
 evaluation ending in default-deny — extends the security-architecture
-foundation from Chapter 8 into concrete, operational policy. Traceflow and
+foundation from [Chapter 8](08-vsphere-and-nsx-security-architecture.md) into concrete, operational policy. Traceflow and
 the Port Connection tool are the primary diagnostic instruments for
 tracing exactly where in this logical topology a connectivity problem
 actually originates, and NSX Federation extends the same concepts across

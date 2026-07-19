@@ -28,11 +28,11 @@ recur across this encyclopedia:
 
 - **Open standards bodies** publish specifications that are freely
   available and not owned by a single vendor: the IETF (RFCs — TCP/IP,
-  DNS, TLS, and most protocols in Chapter 02 and Chapter 03), IEEE
+  DNS, TLS, and most protocols in [Chapter 02](02-ports-protocols-services-and-traffic-flows.md) and [Chapter 03](03-addressing-subnetting-naming-time-and-identity-reference.md)), IEEE
   (802-series — Ethernet, Wi-Fi, VLAN tagging), ISO/IEC (27001 for
   information security management, 20000 for IT service management),
   and NIST (SP 800-series — the security and risk framework underlying
-  Chapter 07). These are the most durable references in the encyclopedia
+  [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)). These are the most durable references in the encyclopedia
   because they are versioned deliberately and change slowly, by design.
 - **Vendor documentation** describes a specific product's implementation
   and is authoritative only for that product and only for the version it
@@ -55,7 +55,7 @@ cadence, an explicit version/baseline pin for every fact that can change,
 and a change-tracking mechanism so a reader can tell whether a given table
 row reflects the current state of the world or an outdated one. Without
 reference governance, a reference volume decays into exactly the kind of
-"wiki page that drifts from the actual fleet" Chapter 01 warned against —
+"wiki page that drifts from the actual fleet" [Chapter 01](01-command-quick-reference-and-safe-administration.md) warned against —
 except at series scale, across 23 other volumes' worth of material.
 
 ## Design Considerations
@@ -75,7 +75,7 @@ except at series scale, across 23 other volumes' worth of material.
   same pattern to standards and vendor documentation references in this
   chapter.
 - **Assign explicit ownership for keeping each reference table current**,
-  consistent with the CODEOWNERS pattern from Volume I; a reference table
+  consistent with the CODEOWNERS pattern from [Volume I](../../volume-01-enterprise-engineering-foundations/README.md); a reference table
   with no owner has, in practice, no maintenance process.
 - **Schedule reference review against two independent triggers**: a
   calendar cadence (for example, aligned with each `SOFTWARE_VERSIONS.md`
@@ -97,12 +97,12 @@ except at series scale, across 23 other volumes' worth of material.
 | --- | --- | --- | --- |
 | IETF (Internet Engineering Task Force) | Internet protocols | RFC 793/768/792 (TCP/UDP/ICMP), RFC 1918 (private addressing), RFC 4291 (IPv6), RFC 5905 (NTP), RFC 6749 (OAuth 2.0), RFC 4120 (Kerberos) | `rfc-editor.org`, `ietf.org` |
 | IEEE (Institute of Electrical and Electronics Engineers) | Networking hardware/link-layer standards | 802.1Q (VLAN tagging), 802.1AB (LLDP), 802.3 (Ethernet), 802.11 (Wi-Fi) | `standards.ieee.org` |
-| ISO/IEC | Management systems and information security | ISO/IEC 27001 (information security management), ISO/IEC 20000 (IT service management), ISO/IEC 19011 (audit guidelines, Chapter 05) | `iso.org` |
-| NIST (National Institute of Standards and Technology) | US federal security and risk standards, widely adopted beyond federal use | SP 800-53 (controls), SP 800-61 (incident response, Chapter 07), SP 800-88 (media sanitization, Volume I), CSF (Cybersecurity Framework) | `csrc.nist.gov` |
-| CIS (Center for Internet Security) | Configuration hardening benchmarks | CIS Benchmarks and CIS Controls (Chapter 04, Chapter 07) | `cisecurity.org` |
+| ISO/IEC | Management systems and information security | ISO/IEC 27001 (information security management), ISO/IEC 20000 (IT service management), ISO/IEC 19011 (audit guidelines, [Chapter 05](05-validation-evidence-checklists-and-acceptance.md)) | `iso.org` |
+| NIST (National Institute of Standards and Technology) | US federal security and risk standards, widely adopted beyond federal use | SP 800-53 (controls), SP 800-61 (incident response, [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)), SP 800-88 (media sanitization, [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)), CSF (Cybersecurity Framework) | `csrc.nist.gov` |
+| CIS (Center for Internet Security) | Configuration hardening benchmarks | CIS Benchmarks and CIS Controls ([Chapter 04](04-configuration-templates-baselines-and-change-records.md), [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)) | `cisecurity.org` |
 | PCI SSC (Payment Card Industry Security Standards Council) | Payment card data security | PCI DSS | `pcisecuritystandards.org` |
 | ITU-T | Telecommunications standards | Referenced indirectly through vendor WAN/telecom features | `itu.int` |
-| FIRST (Forum of Incident Response and Security Teams) | Vulnerability scoring | CVSS specification (Chapter 07) | `first.org` |
+| FIRST (Forum of Incident Response and Security Teams) | Vulnerability scoring | CVSS specification ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)) | `first.org` |
 
 ### Certification blueprint cross-reference
 
@@ -220,7 +220,7 @@ shape so provenance and currency are both explicit:
   malicious copies of authoritative material.
 - Keep this chapter's tables free of any credential, license key, or
   customer-specific detail; reference governance content is inherently
-  Public-tier under the data classification model in Chapter 07 and
+  Public-tier under the data classification model in [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md) and
   should stay that way.
 - Apply the same pull-request review discipline to changes in this
   chapter as to any other technical claim in the encyclopedia; a

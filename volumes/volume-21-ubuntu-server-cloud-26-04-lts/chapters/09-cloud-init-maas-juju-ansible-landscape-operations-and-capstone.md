@@ -15,7 +15,7 @@
 
 ## Theory and Architecture
 
-This closing chapter ties the volume together: Chapter 01 introduced
+This closing chapter ties the volume together: [Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md) introduced
 autoinstall as a cloud-init subset and Landscape as a registration
 target; this chapter returns to both in operational depth and adds the
 remaining Canonical automation stack — MAAS for bare metal and Juju for
@@ -33,7 +33,7 @@ configuration apply" failures administrators hit:
 
 - **Datasources** — where cloud-init gets its configuration:
   `NoCloud` (a locally attached ISO or HTTP source, used by the
-  autoinstall lab in Chapter 01), `Ec2`/`Azure`/`GCE`/`OpenStack`
+  autoinstall lab in [Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md)), `Ec2`/`Azure`/`GCE`/`OpenStack`
   (cloud-provider metadata services), and others. cloud-init probes a
   prioritized list of datasources at boot and uses the first one that
   responds.
@@ -54,7 +54,7 @@ Each `user-data` module (users, packages, write_files, runcmd, and
 dozens more) is independently idempotent by design, and cloud-init
 records what it has already done so a re-run (`cloud-init clean` +
 reboot) reproduces the same end state — the same idempotency principle
-Chapter 02's scripting guidance emphasizes, here enforced by the tool
+[Chapter 02](02-essential-tools-shell-scripting-apt-and-snap-management.md)'s scripting guidance emphasizes, here enforced by the tool
 itself.
 
 ### MAAS: Metal as a Service
@@ -74,7 +74,7 @@ A machine's MAAS lifecycle moves through defined states:
 hardware — CPU, RAM, disks, NICs), **Allocation** (a user or automation
 claims the machine for a purpose), and **Deployment** (MAAS installs
 the target OS — typically driving the exact autoinstall/cloud-init flow
-from Chapter 01 — and hands the running machine to its owner). MAAS is
+from [Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md) — and hands the running machine to its owner). MAAS is
 what makes autoinstall practical at fleet scale: instead of hand-
 building a seed ISO per host, MAAS serves the right `user-data` to the
 right machine automatically as part of its normal PXE-boot-and-deploy
@@ -107,7 +107,7 @@ steps. Its core concepts:
 **Ansible** is not Ubuntu-specific, but its Ubuntu-facing module
 surface deserves explicit treatment: the `ansible.builtin.apt` module
 (not `yum`/`dnf`) is the package-management primitive, `ansible.
-builtin.systemd_service` manages units the same way Chapter 03 does
+builtin.systemd_service` manages units the same way [Chapter 03](03-boot-systemd-processes-logging-and-scheduled-work.md) does
 manually, and Ansible's own `gather_facts`/`ansible_facts.
 os_family == "Debian"` conditionals let a mixed-OS playbook branch
 correctly when it must also support non-Ubuntu hosts. For an
@@ -117,7 +117,7 @@ playbook needs.
 
 ### Landscape operations
 
-Chapter 01 covered Landscape registration; in ongoing operations,
+[Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md) covered Landscape registration; in ongoing operations,
 Landscape's real value is **fleet-scale patch management and
 compliance reporting**: administrators define patch policies (which
 package origins auto-update, on what schedule, with what maintenance
@@ -150,7 +150,7 @@ individually.
 - **Landscape SaaS vs. self-hosted, revisited.** With Juju now in
   scope, self-hosting Landscape Server via a Juju charm becomes a
   realistic option for regulated or air-gapped fleets that couldn't
-  use Landscape SaaS at all — factor that into the Chapter 01 decision
+  use Landscape SaaS at all — factor that into the [Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md) decision
   once Juju is available as a deployment mechanism.
 - **Automation layering discipline.** A fleet running autoinstall +
   cloud-init + Ansible + Landscape should have a clear, documented
@@ -356,7 +356,7 @@ landscape-api get-computers --with-annotations --query "hostname:app01*"
   handling instead of a plaintext password or API key in cloud-init
   YAML.
 - Scope MAAS API keys and Juju controller credentials narrowly per
-  automation identity, the same least-privilege principle Chapter 04
+  automation identity, the same least-privilege principle [Chapter 04](04-identity-privilege-ssh-netplan-and-firewalling.md)
   applies to `sudo`; a MAAS API key with full admin rights embedded in
   a CI pipeline is a significant blast-radius risk if that pipeline is
   compromised.
@@ -415,7 +415,7 @@ unintended change before it applies.
 **Prerequisites**
 
 - A hypervisor able to launch a cloud image with a NoCloud cloud-init
-  seed (this lab reuses the `cloud-localds` approach from Chapter 01).
+  seed (this lab reuses the `cloud-localds` approach from [Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md)).
 - An Ubuntu Server 26.04 LTS cloud image (`.img`) rather than the
   installer ISO.
 - A control host (can be the same VM host) with `ansible` installed.
@@ -551,8 +551,8 @@ unintended change before it applies.
 
    **Expected result:** the play recap shows `changed=0` for every
    task (aside from any facts-gathering), confirming the playbook is
-   safe to re-run — the same idempotency principle Chapter 02
-   established for shell scripts and Chapter 01 established for
+   safe to re-run — the same idempotency principle [Chapter 02](02-essential-tools-shell-scripting-apt-and-snap-management.md)
+   established for shell scripts and [Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md) established for
    cloud-init modules now demonstrated end to end across the whole
    provisioning chain.
 

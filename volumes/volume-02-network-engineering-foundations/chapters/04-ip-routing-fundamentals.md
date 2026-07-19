@@ -12,7 +12,7 @@
   chooses among multiple sources offering a route to the same destination.
 - Describe the fundamentals of OSPF area design and BGP's role at
   enterprise-to-provider boundaries, sufficient to reason about routing
-  behavior even before vendor-specific configuration (Volume III).
+  behavior even before vendor-specific configuration ([Volume III](../../volume-03-cisco-enterprise-networking/README.md)).
 - Validate routing behavior and diagnose common routing failures using
   standard show/diagnostic commands.
 
@@ -131,7 +131,7 @@ distributed through the backbone.
 Routers connecting two areas are **Area Border Routers (ABRs)**; routers
 connecting OSPF to another routing domain are **Autonomous System Boundary
 Routers (ASBRs)**. Area design is a direct extension of the addressing
-hierarchy from Chapter 2: an area boundary should align with a
+hierarchy from [Chapter 2](02-ip-addressing-and-subnetting.md): an area boundary should align with a
 summarizable address block so the ABR can advertise one aggregate route
 instead of every internal prefix.
 
@@ -172,7 +172,7 @@ enterprise networks.
   device failures within seconds rather than requiring manual
   intervention.
 - **Align OSPF area (or equivalent hierarchical) boundaries with the
-  addressing plan** established in Chapter 2, so that ABRs can summarize;
+  addressing plan** established in [Chapter 2](02-ip-addressing-and-subnetting.md), so that ABRs can summarize;
   retrofitting summarization onto a flat, single-area design later requires
   a coordinated readdressing effort.
 - **Plan redistribution boundaries deliberately and filter both

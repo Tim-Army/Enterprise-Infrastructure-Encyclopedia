@@ -23,7 +23,7 @@ an artifact with a declared, versioned configuration, the same way you would
 treat a server. The practice of describing a machine's desired state in
 source-controlled files — sometimes called "dotfiles as code" — is the
 workstation-scale application of infrastructure as code (IaC), a concept
-this volume returns to in Chapter 03 and formalizes in Volume IX.
+this volume returns to in [Chapter 03](03-automation-architecture.md) and formalizes in [Volume IX](../../volume-09-infrastructure-automation/README.md).
 
 Three architectural layers make up a modern engineering workstation:
 

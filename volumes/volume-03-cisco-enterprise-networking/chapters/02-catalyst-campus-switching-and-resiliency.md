@@ -30,7 +30,7 @@ domain in versions 1–3. Because a misconfigured VTP client/server
 relationship can wipe a switch's VLAN database, most current campus designs
 run VTP in **transparent mode** (VLANs configured locally, VTP messages
 only relayed) or disable VTP domain synchronization entirely in favor of
-automation-managed, per-switch VLAN configuration (Chapter 8).
+automation-managed, per-switch VLAN configuration ([Chapter 8](08-ios-xe-programmability-and-network-automation.md)).
 
 ### Spanning Tree Protocol
 
@@ -129,7 +129,7 @@ once DAD confirms dual-active state.
   monitoring.
 - **Native VLAN and VLAN 1 hygiene** — never use VLAN 1 as a trunk's native
   VLAN or as the management VLAN in a production design; reserve it as an
-  unused, shut-down placeholder consistent with Chapter 1's hardening
+  unused, shut-down placeholder consistent with [Chapter 1](01-cisco-enterprise-architecture-and-ios-xe-foundations.md)'s hardening
   baseline.
 - **Storm-control thresholds** — size broadcast/multicast/unknown-unicast
   thresholds against measured baseline traffic, not a copy-pasted default,
@@ -340,7 +340,7 @@ protection.
 - Two Catalyst 9000-series distribution switches (or CML nodes) with at
   least two interconnecting links each, plus one access switch, or an
   equivalent three-node CML topology.
-- Console or SSH access to all three devices per Chapter 1's bring-up
+- Console or SSH access to all three devices per [Chapter 1](01-cisco-enterprise-architecture-and-ios-xe-foundations.md)'s bring-up
   procedure.
 
 **Procedure**

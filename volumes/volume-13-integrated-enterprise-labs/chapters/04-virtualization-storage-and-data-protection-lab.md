@@ -10,9 +10,9 @@
 - Stand up a scripted, VADP-aligned backup workflow to an independent
   repository host, and prove a restore works before trusting it.
 - Configure vSphere Replication from HQ to a BR1 DR target host as a
-  foundation for the resilience testing in Chapter 09.
+  foundation for the resilience testing in [Chapter 09](09-enterprise-resilience-and-lifecycle-capstone.md).
 - Diagnose the most common nested-ESXi networking defect (promiscuous
-  mode/forged transmits) flagged as a recurring risk in Chapter 01.
+  mode/forged transmits) flagged as a recurring risk in [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md).
 
 ## Theory and Architecture
 
@@ -20,23 +20,23 @@ Every VM built so far — `ctrl01`, `dc01`, `dc02`, `linux01` — has been
 running on whatever standalone hypervisor the reader provisioned in
 Chapters 01 and 02, with no shared storage, no HA, and no formal lifecycle
 management. This chapter consolidates them into a real vSphere cluster,
-following Volume V (VMware Virtualization): Chapter 02 (ESXi Installation,
-Configuration, and Host Operations) and Chapter 03 (vCenter Server
+following [Volume V](../../volume-05-vmware-virtualization/README.md) (VMware Virtualization): [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) (ESXi Installation,
+Configuration, and Host Operations) and [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) (vCenter Server
 Deployment, Identity, and Recovery) for the cluster foundation, Chapter 04
 (vSphere Virtual Networking) for attaching the cluster to the VLANs
-Chapter 03 built, Chapter 06 (vSphere Storage and vSAN) for the shared
-datastore, and Chapter 07 (vSphere Availability, Mobility, and Cluster
+[Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) built, [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md) (vSphere Storage and vSAN) for the shared
+datastore, and [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md) (vSphere Availability, Mobility, and Cluster
 Services) for HA and DRS.
 
-Data protection follows Volume VI (Enterprise Storage and Data Protection):
-Chapter 05 (Backup Architecture and Data Protection Policy) for the backup
-design, Chapter 06 (Snapshots, Replication, and Continuous Data Protection)
-for the vSphere Replication target at `BR1`, and Chapter 07 (Recovery
+Data protection follows [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md) (Enterprise Storage and Data Protection):
+[Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md) (Backup Architecture and Data Protection Policy) for the backup
+design, [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md) (Snapshots, Replication, and Continuous Data Protection)
+for the vSphere Replication target at `BR1`, and [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md) (Recovery
 Engineering and Disaster Recovery Validation) for the principle this
 chapter enforces in its negative test: an untested restore is not a
 backup, only a hope.
 
-This chapter is also where Chapter 01's warning about nested hypervisors
+This chapter is also where [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s warning about nested hypervisors
 becomes concrete. If `esxi-a01` and `esxi-a02` are themselves VMs on a
 parent hypervisor (the expected case for most readers), every VM they host
 depends on the parent virtual switch passing traffic those VMs originate —
@@ -61,25 +61,25 @@ inside it cannot reach the network.
 - **Two-node vSAN with a witness, not a three-node cluster.** A two-node
   vSAN cluster plus a lightweight witness appliance delivers the same
   resilience lesson as a three-node cluster with a smaller resource
-  footprint — an explicit trade-off for a lab that Volume V, Chapter 06
+  footprint — an explicit trade-off for a lab that [Volume V, Chapter 06](../../volume-05-vmware-virtualization/chapters/06-vsphere-storage-and-vsan.md)
   covers as a legitimate ROBO (remote office/branch office) pattern, not
   just a shortcut.
 - **Migrate existing VMs rather than rebuild them.** `dc01`, `dc02`,
   `ctrl01`, and `linux01` are imported into the cluster rather than
-  recreated, because a real migration project (Volume I, Chapter 08,
+  recreated, because a real migration project ([Volume I, Chapter 08](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md),
   Infrastructure Lifecycle Management) almost never gets to start from
   nothing — this mirrors that constraint honestly instead of skipping it.
 - **Scripted backup workflow instead of a specific commercial product.**
   This chapter uses PowerCLI-driven quiesced snapshots exported to `bkp01`
   rather than installing a specific vendor backup platform, so the
   mechanics (snapshot, export, verify, retire the snapshot) stay visible.
-  Volume VI, Chapter 05 covers evaluating a commercial VADP-integrated
+  [Volume VI, Chapter 05](../../volume-06-enterprise-storage-data-protection/chapters/05-backup-architecture-and-data-protection-policy.md) covers evaluating a commercial VADP-integrated
   product for a production environment; the lab technique here is
   intentionally transparent rather than a product endorsement.
 - **vSphere Replication, not storage-array replication.** With no
   enterprise array in this lab, hypervisor-level replication is the only
   practical way to get a DR-ready copy of a VM at `BR1`; production
-  environments with array-based replication would use Volume VI, Chapter
+  environments with array-based replication would use [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md), Chapter
   06's array-replication patterns instead.
 - **Admission control is mandatory, not optional.** HA admission control
   is configured to reserve enough capacity on `esxi-a02` alone to run every

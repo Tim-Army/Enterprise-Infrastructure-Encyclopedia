@@ -34,7 +34,7 @@ This single requirement changes the risk model completely. An
 out-of-band tool failing affects only that tool's visibility. An inline
 tool failing can affect the production traffic flowing through it —
 which is why inline deployment is a deliberate, narrowly scoped design
-decision (as stated in Chapter 01's design considerations) and why
+decision (as stated in [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md)'s design considerations) and why
 Gigamon builds specific resiliency mechanisms — inline bypass — around
 every inline deployment.
 
@@ -42,7 +42,7 @@ every inline deployment.
 
 An **inline network group** represents a production link the fabric has
 been inserted into — conceptually similar to the TAP insertion pattern
-from Chapter 01, except that instead of splitting off a passive copy, the
+from [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md), except that instead of splitting off a passive copy, the
 fabric now sits directly in the traffic's path, bridging the two sides of
 the link through its own inline network ports.
 
@@ -55,12 +55,12 @@ dedicated inline tool ports. Two arrangements are common:
   each tool seeing the previous tool's output.
 - **Parallel.** Traffic is load-balanced across multiple instances of the
   same tool type for capacity scaling, similar in spirit to GigaStream
-  load balancing (Chapter 05) but applied to inline, bidirectional
+  load balancing ([Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md)) but applied to inline, bidirectional
   traffic rather than one-way tool delivery.
 
 An **inline map** governs which traffic from an inline network group is
 sent to which inline tool group — the same Flow Mapping concepts from
-Chapter 05 apply, but the destination is a bidirectional inline tool group
+[Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md) apply, but the destination is a bidirectional inline tool group
 rather than a one-way tool port, and packets returned from the inline
 tool (after inspection, and potentially after modification or blocking)
 are forwarded back onto the production link rather than simply
@@ -103,7 +103,7 @@ a controlled, intentional bypass rather than a reactive one.
 
 | Model | Where decryption happens | Key handling | Typical use |
 | --- | --- | --- | --- |
-| Centralized GigaSMART decryption (Chapter 06) | On the GigaSMART engine, out-of-band, before delivery to OOB tools | Requires configuring server certificates/keys (or session-key forwarding) on the fabric | Feeding plaintext to out-of-band tools that cannot decrypt independently |
+| Centralized GigaSMART decryption ([Chapter 06](06-gigasmart-traffic-intelligence-and-packet-transformation.md)) | On the GigaSMART engine, out-of-band, before delivery to OOB tools | Requires configuring server certificates/keys (or session-key forwarding) on the fabric | Feeding plaintext to out-of-band tools that cannot decrypt independently |
 | Inline decryption | On the GigaSMART engine, inline, ahead of an in-path tool such as an IPS | Same key-handling requirement as centralized decryption, but on the inline path, with the associated availability considerations of any inline stage | Allowing an inline security tool to inspect (and potentially block) plaintext content in real time |
 | Precryption | On the monitored host itself, using eBPF to capture plaintext before encryption or after decryption inside the application/OS stack | No keys are intercepted, sniffed, or centrally managed at all — nothing is actually decrypted by the fabric | Modern hosts (particularly cloud-native and containerized workloads) where centralized key management is undesirable or infeasible, and where TLS 1.3 / perfect-forward-secrecy traffic would otherwise defeat traditional key-based decryption |
 
@@ -124,7 +124,7 @@ SPAN can passively observe.
 
 ## Design Considerations
 
-- **Justify every inline placement individually.** Chapter 01 established
+- **Justify every inline placement individually.** [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md) established
   this principle; it is worth restating here because inline design is
   where the consequence of skipping it is most severe. A tool placed
   inline "for convenience" (to simplify some other part of the topology)
@@ -379,7 +379,7 @@ segment.
    bypass path works independently of heartbeat detection.
 10. **Cleanup:** disable maintenance mode, restore the inline tool group
     and inline map to a known-good baseline configuration (or remove them
-    entirely if the lab topology will be reused for Chapter 08 or 09),
+    entirely if the lab topology will be reused for [Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md) or 09),
     and stop the continuous traffic test.
 
 ## Summary and Completion Checklist

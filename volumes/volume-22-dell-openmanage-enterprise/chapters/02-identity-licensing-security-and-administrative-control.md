@@ -25,7 +25,7 @@ OME authenticates users from three categories of identity source, all of
 which can coexist on the same appliance:
 
 - **Local accounts** — stored in the appliance's embedded database. The
-  `admin` superuser account created during first-run setup (Chapter 1) is
+  `admin` superuser account created during first-run setup ([Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)) is
   the only account guaranteed to exist on a fresh appliance; every other
   local account is created deliberately by an administrator.
 - **Directory service accounts** — OME can bind to Microsoft Active
@@ -59,7 +59,7 @@ set in your build's user-management screen rather than assuming the exact
 labels above.
 
 Roles combine with **scope** — an assignment restricting a role to one or
-more device groups (Chapter 3) — to support delegated administration. A
+more device groups ([Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md)) — to support delegated administration. A
 regional operations team can hold a Device Manager role scoped only to
 that region's device group, so their account can power-cycle, update
 firmware on, and view alerts for devices in their region while remaining
@@ -77,7 +77,7 @@ appliance itself:
 | Tier | Representative capabilities |
 | --- | --- |
 | Base (included) | Discovery, inventory, monitoring, alerting, reporting, and manual/scheduled firmware and driver updates. |
-| OpenManage Enterprise Advanced | Adds deployment and configuration templates, configuration compliance baselines, and related automation surfaces (Chapter 8). |
+| OpenManage Enterprise Advanced | Adds deployment and configuration templates, configuration compliance baselines, and related automation surfaces ([Chapter 8](08-templates-configuration-compliance-automation-and-apis.md)). |
 | OpenManage Enterprise Advanced Plus | Adds further orchestration and automation capabilities layered on top of Advanced. |
 
 Treat this table as directional rather than a literal, version-locked
@@ -91,7 +91,7 @@ of the console tier described above.
 ### Certificate architecture
 
 The appliance presents a self-signed HTTPS certificate immediately after
-deployment (Chapter 1). OME's certificate handling has two independent
+deployment ([Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)). OME's certificate handling has two independent
 surfaces: the appliance's own **server certificate**, presented to
 browsers and API clients connecting to the console, and a **trusted
 certificate store**, used when OME needs to validate certificates
@@ -104,7 +104,7 @@ separately.
 ### Audit and login security
 
 The appliance maintains a login/audit history distinct from the alert and
-job history covered in Chapter 4, recording console and API
+job history covered in [Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md), recording console and API
 authentication events and administrative actions. Login-security policy —
 account lockout threshold, password complexity, and session idle
 timeout — is configured centrally in application settings and applies to
@@ -123,7 +123,7 @@ role/scope authorization.
   it in OME.
 - **Scope design before scale.** Decide the shape of delegated
   administration — by region, business unit, or environment tier — before
-  onboarding a large device fleet in Chapter 3. Retrofitting scope
+  onboarding a large device fleet in [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md). Retrofitting scope
   boundaries after devices are already grouped and roles are already
   assigned is a larger, more error-prone change than designing the group
   hierarchy to match your intended scope model from the start.
@@ -144,7 +144,7 @@ role/scope authorization.
   validation for every automation client that verifies the chain, and
   unlike a self-signed certificate warning, this is not something a user
   can click through.
-- **License procurement timing.** If Chapter 8's configuration templates
+- **License procurement timing.** If [Chapter 8](08-templates-configuration-compliance-automation-and-apis.md)'s configuration templates
   and compliance features are part of your operational plan, confirm and
   import the required Advanced or Advanced Plus entitlement now. Features
   gated behind an unimported license appear visible-but-disabled in the
@@ -377,7 +377,7 @@ that its restricted role correctly denies an administrative action.
 
 **Prerequisites**
 
-- The OME appliance deployed and configured in Chapter 1's lab, reachable
+- The OME appliance deployed and configured in [Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)'s lab, reachable
   from your workstation, with the `admin` account and its password.
 - Python 3.11+ with `requests` installed on your workstation.
 - No production directory service or CA is required; this lab uses local

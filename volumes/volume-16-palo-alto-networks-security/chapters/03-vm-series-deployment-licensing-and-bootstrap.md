@@ -19,7 +19,7 @@
 
 ## Theory and Architecture
 
-Chapter 01 established that PAN-OS separates the management plane from the
+[Chapter 01](01-cybersecurity-apprentice-foundations.md) established that PAN-OS separates the management plane from the
 dataplane on every platform. VM-Series is the software form factor of that
 same PAN-OS image, running as a virtual machine instead of on dedicated
 appliance hardware. The single-pass parallel processing engine, App-ID,
@@ -34,7 +34,7 @@ the same PAN-OS source:
 
 | Target | Image format | Typical use case |
 | --- | --- | --- |
-| VMware ESXi / vCenter | OVF/OVA | Private cloud, data center virtualization (Volume V) |
+| VMware ESXi / vCenter | OVF/OVA | Private cloud, data center virtualization ([Volume V](../../volume-05-vmware-virtualization/README.md)) |
 | KVM (including OpenStack) | QCOW2 | Open-source hypervisor environments |
 | Microsoft Hyper-V | VHD | Windows Server virtualization |
 | AWS | AMI (Marketplace or BYOL) | Public cloud perimeter and VPC segmentation |
@@ -44,10 +44,10 @@ the same PAN-OS source:
 
 Regardless of target, every VM-Series instance still exposes one management
 interface (`MGT`) and a set of dataplane interfaces, and the same
-`set`/`show`/`commit` CLI model from Chapter 01 applies once the instance is
+`set`/`show`/`commit` CLI model from [Chapter 01](01-cybersecurity-apprentice-foundations.md) applies once the instance is
 reachable. What differs by target is how those virtual network interface
 cards (vNICs) are provisioned and mapped — a hypervisor administrator (or
-Terraform/CloudFormation template, Volume IX) attaches vNICs to port
+Terraform/CloudFormation template, [Volume IX](../../volume-09-infrastructure-automation/README.md)) attaches vNICs to port
 groups, subnets, or VPC ENIs *before* the firewall ever boots, and PAN-OS
 enumerates them in the order presented by the hypervisor as `ethernet1/1`,
 `ethernet1/2`, and so on.
@@ -75,7 +75,7 @@ raw hardware — caps what the dataplane will use.
 
 - **BYOL (bring-your-own-license).** A traditional term or perpetual
   license tied to a specific VM-Series serial number, activated with an
-  auth code exactly as in Chapter 02. The customer manages capacity
+  auth code exactly as in [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md). The customer manages capacity
   planning explicitly by choosing a model size (VM-300, VM-500, and so on)
   up front.
 - **PAYG (pay-as-you-go / usage-based).** Consumed directly from a cloud
@@ -99,7 +99,7 @@ vCPU credits precisely because instance count is not fixed at design time.
 ### The bootstrap package
 
 A factory-default VM-Series instance requires the same first-boot
-configuration as any PAN-OS firewall (Chapter 01) — hostname, management
+configuration as any PAN-OS firewall ([Chapter 01](01-cybersecurity-apprentice-foundations.md)) — hostname, management
 IP, license, content, and initial policy. Doing this by hand does not scale
 to dozens or hundreds of cloud instances. The **bootstrap package** solves
 this by presenting a structured set of files to the instance at first boot,
@@ -136,7 +136,7 @@ unconfigured window.
   application tiers, ephemeral CI/CD-triggered environments — where
   instance count is not known at procurement time.
 - **Bootstrap vs. manual first-boot for cloud instances.** Manual
-  console-based first-boot configuration (Chapter 01's lab) does not scale
+  console-based first-boot configuration ([Chapter 01](01-cybersecurity-apprentice-foundations.md)'s lab) does not scale
   past a handful of instances and is operationally incompatible with
   autoscaling groups, where instances are created and destroyed by
   automation with no human present at boot. Any VM-Series instance deployed
@@ -193,7 +193,7 @@ dhcp-accept-server-domain=yes
 Set `type=static` and populate `ip-address`, `default-gateway`, and
 `netmask` explicitly for environments without a management-network DHCP
 service. `panorama-server`, `tplname`, and `dgname` bind the instance to a
-specific Panorama template and device group (Chapter 06) at first boot, and
+specific Panorama template and device group ([Chapter 06](06-panorama-installation-central-management-and-logging.md)) at first boot, and
 `vm-auth-key` is the one-time VM auth key generated on Panorama
 (`request bootstrap vm-auth-key generate lifetime <minutes>`) that
 authorizes this instance to register.
@@ -220,7 +220,7 @@ aws s3 cp bootstrap.xml s3://acme-vmseries-bootstrap-branch01/config/
 
 The EC2 instance's IAM role (not embedded static credentials) grants the
 VM-Series instance read access to the bucket at boot — a pattern consistent
-with Volume VII's cloud identity guidance and preferable to any
+with [Volume VII](../../volume-07-cloud-infrastructure/README.md)'s cloud identity guidance and preferable to any
 credential embedded in the bootstrap files themselves.
 
 ### Deploying the OVF template (VMware ESXi/vCenter)
@@ -276,7 +276,7 @@ Bootstrap: SUCCESS
   explicit error in some releases.
 - **License activation fails after bootstrap.** If `auth-key` was supplied
   in `init-cfg.txt` for BYOL activation, confirm outbound HTTPS reachability
-  to the Palo Alto Networks licensing service, exactly as in Chapter 02's
+  to the Palo Alto Networks licensing service, exactly as in [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)'s
   license troubleshooting. PAYG instances do not use `auth-key` and license
   automatically against the marketplace subscription; supplying one
   unnecessarily on a PAYG image has no effect but indicates a template
@@ -292,7 +292,7 @@ Bootstrap: SUCCESS
 - Never commit a populated `init-cfg.txt` or `bootstrap.xml` containing a
   live `vm-auth-key`, `auth-key`, or embedded administrator credential to a
   version control repository; template the file and inject secrets at
-  build time from a secrets manager (Volume IX).
+  build time from a secrets manager ([Volume IX](../../volume-09-infrastructure-automation/README.md)).
 - Generate `vm-auth-key` values with the shortest practical `lifetime` for
   the deployment window, not an indefinite key reused across every future
   instance — a leaked long-lived key allows an attacker to bootstrap a
@@ -302,7 +302,7 @@ Bootstrap: SUCCESS
   enable access logging on cloud storage bootstrap locations so
   unauthorized reads are detectable.
 - Preload `bootstrap.xml` with a default-deny baseline security policy
-  (Chapter 05) rather than leaving the instance to rely on any factory
+  ([Chapter 05](05-application-identity-threat-and-data-security-policy.md)) rather than leaving the instance to rely on any factory
   default allow-all behavior during the window between boot and the first
   administrator-applied policy.
 - Right-size the VM-Series model to the workload; over-provisioning is a
@@ -320,9 +320,9 @@ Bootstrap: SUCCESS
   flexible vCPU credits).
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — PAN-OS 11.x
   baseline used throughout this volume.
-- Volume V — VMware Virtualization, for ESXi/vCenter deployment
+- [Volume V](../../volume-05-vmware-virtualization/README.md) — VMware Virtualization, for ESXi/vCenter deployment
   prerequisites shared with any OVF-based appliance.
-- Volume VII — Cloud Infrastructure, for cloud identity and secrets
+- [Volume VII](../../volume-07-cloud-infrastructure/README.md) — Cloud Infrastructure, for cloud identity and secrets
   patterns referenced above.
 
 **Knowledge checks**
@@ -353,7 +353,7 @@ malformed bootstrap file.
 - `ovftool` (VMware) or the equivalent hypervisor import tooling, and
   `genisoimage`/`mkisofs` (or platform equivalent) to build an ISO.
 - A lab or evaluation auth code, or a PAYG image, for licensing.
-- Completion of Chapter 01 (basic PAN-OS CLI familiarity) and Chapter 02
+- Completion of [Chapter 01](01-cybersecurity-apprentice-foundations.md) (basic PAN-OS CLI familiarity) and [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)
   (license/content mechanics).
 
 **Steps**
@@ -378,7 +378,7 @@ malformed bootstrap file.
    ```
 
    Omit `panorama-server`, `tplname`, `dgname`, and `vm-auth-key` for this
-   standalone lab (Panorama-managed bootstrap is exercised in Chapter 06).
+   standalone lab (Panorama-managed bootstrap is exercised in [Chapter 06](06-panorama-installation-central-management-and-logging.md)).
 
 3. Build the bootstrap ISO:
 
@@ -440,7 +440,7 @@ and — critically for any deployment beyond a handful of instances — a
 bootstrap package that eliminates manual first-boot configuration. The
 bootstrap mechanism is the foundation that later chapters build on: Chapter
 06 extends `init-cfg.txt` to bind instances directly into Panorama device
-groups and templates, and Chapter 07 revisits fleet-scale automation for
+groups and templates, and [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md) revisits fleet-scale automation for
 software and content lifecycle across bootstrapped instances.
 
 - [ ] Can compare BYOL, PAYG, and flexible vCPU licensing and select an

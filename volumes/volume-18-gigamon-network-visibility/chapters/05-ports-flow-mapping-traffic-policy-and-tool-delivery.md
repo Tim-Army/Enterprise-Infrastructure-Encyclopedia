@@ -8,7 +8,7 @@
   traffic to a given tool, rather than an unfiltered all-pass copy.
 - Configure GigaStream to load-balance traffic across a tool group and
   explain why it solves the tool-port oversubscription problem introduced
-  in Chapter 01.
+  in [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md).
 - Apply source-identifying tagging so a tool receiving aggregated traffic
   from many acquisition points can still distinguish where each packet
   originated.
@@ -20,7 +20,7 @@
 ### The Flow Mapping rule model
 
 Flow Mapping is the packet-forwarding policy engine introduced
-conceptually in Chapter 01 and used in minimal form in Chapters 02–04. A
+conceptually in [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md) and used in minimal form in Chapters 02–04. A
 **map** binds one or more source ports (network ports, tunnel endpoints,
 or, on a cluster, ports on other member nodes) to one or more destination
 ports (tool ports, or another map for chained processing), governed by an
@@ -32,7 +32,7 @@ Three map types recur throughout GigaVUE-OS and GigaVUE-FM configuration:
 | Map type | Behavior |
 | --- | --- |
 | `map` (regular) | Forwards packets matching the map's rule set; the most common map type for filtered delivery |
-| `map-passall` | Forwards all traffic from the source unconditionally, bypassing rule evaluation — used for a first-touch validation (Chapter 02) or where a tool genuinely needs an unfiltered copy |
+| `map-passall` | Forwards all traffic from the source unconditionally, bypassing rule evaluation — used for a first-touch validation ([Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md)) or where a tool genuinely needs an unfiltered copy |
 | `map-scollector` (shared collector) | A map whose destination is shared across multiple source maps, commonly used to funnel several filtered sources into one common GigaSMART processing stage or tool group without duplicating destination configuration for every source |
 
 ### Rule matching and priority
@@ -40,7 +40,7 @@ Three map types recur throughout GigaVUE-OS and GigaVUE-FM configuration:
 A rule matches on packet header fields available at the point Flow
 Mapping evaluates the packet: source/destination MAC or IP address,
 VLAN ID, IP protocol, TCP/UDP port, and, on platforms/releases supporting
-it, deeper criteria exposed through GigaSMART pre-processing (Chapter 06)
+it, deeper criteria exposed through GigaSMART pre-processing ([Chapter 06](06-gigasmart-traffic-intelligence-and-packet-transformation.md))
 such as application identification. Rules within a map are evaluated in
 priority order, and — critically — GigaVUE-OS supports both **pass** and
 **drop** rule actions within the same map, allowing an operator to express
@@ -54,8 +54,8 @@ rule 20  drop   ipv4 destination-port 53          (exclude routine DNS)
 rule 30  pass   any                               (forward everything else)
 ```
 
-Rule order matters the same way it does in a firewall policy (Volume X,
-Volume XVI) or an access control list (Volume II, Volume III): the first
+Rule order matters the same way it does in a firewall policy ([Volume X](../../volume-10-enterprise-cybersecurity/README.md),
+[Volume XVI](../../volume-16-palo-alto-networks-security/README.md)) or an access control list ([Volume II](../../volume-02-network-engineering-foundations/README.md), [Volume III](../../volume-03-cisco-enterprise-networking/README.md)): the first
 matching rule wins, and a broad pass rule placed before a narrower drop
 rule silently defeats the drop rule's intent. This is the single most
 common Flow Mapping authoring mistake and is covered further in
@@ -70,7 +70,7 @@ non-trivial fabrics commonly chain maps in two levels:
    acquisition point — narrowing a high-volume source down to the subset
    of traffic that might need further processing.
 2. **Second-level maps** take the first-level map's output as their
-   source and apply GigaSMART processing (Chapter 06) — slicing, masking,
+   source and apply GigaSMART processing ([Chapter 06](06-gigasmart-traffic-intelligence-and-packet-transformation.md)) — slicing, masking,
    deduplication, decryption — before final delivery to tool ports.
 
 This two-level pattern keeps GigaSMART processing capacity (a finite,
@@ -90,7 +90,7 @@ Network port 1/1/x1 ──▶ [first-level map: filter to internal-subnet HTTPS]
 
 ### GigaStream: solving tool-port oversubscription
 
-Chapter 01 introduced the oversubscription problem: several high-speed
+[Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md) introduced the oversubscription problem: several high-speed
 network links aggregated toward a smaller number of tool ports can exceed
 any single tool port's capacity. **GigaStream** solves this by grouping
 multiple physical tool ports into one logical load-balanced bundle — a
@@ -143,7 +143,7 @@ acquisition point.
   points.** Retrofitting source tagging onto an already-large set of maps
   feeding a shared tool destination is disruptive; agree on a VLAN-tagging
   convention (which tag range identifies which site or segment) as part
-  of the same design pass as the tap inventory in Chapter 01.
+  of the same design pass as the tap inventory in [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md).
 - **Reserve first-level/second-level map chaining for cases that actually
   need GigaSMART processing.** Not every map needs a two-level chain —
   adding an unnecessary hop increases configuration complexity and
@@ -310,7 +310,7 @@ other acquisition points sharing the same GigaStream group.
 
 **Objective:** Build a two-level filtered Flow Map feeding a GigaStream
 tool group with source tagging applied, on a lab GigaVUE node from
-Chapter 02 or 03, and validate both correct filtering behavior and a
+[Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md) or 03, and validate both correct filtering behavior and a
 deliberate rule-order defect.
 
 **Prerequisites**
@@ -365,7 +365,7 @@ deliberate rule-order defect.
 
 9. **Cleanup:** remove the lab maps and GigaStream group if the node will
    be reused for later chapters' exercises, or leave them in place with
-   clear naming if they will serve as a foundation for Chapter 06's
+   clear naming if they will serve as a foundation for [Chapter 06](06-gigasmart-traffic-intelligence-and-packet-transformation.md)'s
    GigaSMART exercises.
 
 ## Summary and Completion Checklist
@@ -376,7 +376,7 @@ filtering close to the acquisition point, and — once traffic from
 multiple sources shares tool-port capacity — GigaStream load balancing
 and source tagging to preserve both throughput and context. These
 mechanics are the operational core of a Gigamon fabric and the foundation
-Chapter 06's GigaSMART processing builds directly on top of.
+[Chapter 06](06-gigasmart-traffic-intelligence-and-packet-transformation.md)'s GigaSMART processing builds directly on top of.
 
 - [ ] Can explain the three common map types and when each is
       appropriate.

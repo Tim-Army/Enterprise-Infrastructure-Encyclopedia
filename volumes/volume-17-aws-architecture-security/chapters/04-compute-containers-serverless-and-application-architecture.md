@@ -21,7 +21,7 @@
 AWS compute options sit on a spectrum from full operating-system control to
 fully abstracted execution, and each step along that spectrum trades
 customer-managed flexibility for AWS-managed operational burden — directly
-extending the shared responsibility model introduced in Chapter 01.
+extending the shared responsibility model introduced in [Chapter 01](01-cloud-foundations-accounts-and-well-architected-design.md).
 
 | Compute option | Customer manages | AWS manages | Scaling unit |
 | --- | --- | --- | --- |
@@ -70,7 +70,7 @@ of greater operational surface area. Both support two launch types:
 
 Container images are stored in **Amazon Elastic Container Registry (ECR)**,
 a private, IAM-authenticated registry with support for image scanning
-(integrating with Amazon Inspector, covered in Chapter 08) and lifecycle
+(integrating with Amazon Inspector, covered in [Chapter 08](08-security-architecture-detection-and-incident-response.md)) and lifecycle
 policies that expire untagged or old images automatically.
 
 ### Serverless: AWS Lambda and event-driven architecture
@@ -123,7 +123,7 @@ mandatory front end for exposing a service through AWS PrivateLink. A GWLB
 sits transparently in the traffic path to insert inspection appliances
 (a third-party firewall, an IDS) without the traffic's source/destination
 appearing to change, commonly paired with the centralized egress VPC
-pattern described in Chapter 03.
+pattern described in [Chapter 03](03-secure-networking-hybrid-connectivity-and-edge.md).
 
 ## Design Considerations
 
@@ -369,7 +369,7 @@ aws lambda update-function-code \
   common causes are the task execution role lacking `ecr:GetAuthorizationToken`
   or `logs:CreateLogStream` permission, or the task's `awsvpc` network
   configuration referencing a subnet with no route to ECR/CloudWatch Logs
-  (missing NAT gateway or VPC endpoints, tying back to Chapter 03).
+  (missing NAT gateway or VPC endpoints, tying back to [Chapter 03](03-secure-networking-hybrid-connectivity-and-edge.md)).
 - **Lambda `AccessDeniedException` at runtime, not at invocation.** This
   indicates the execution role is missing a permission the code path
   actually exercises; use `aws iam simulate-principal-policy` against the
@@ -401,7 +401,7 @@ aws lambda update-function-code \
   to pull the image and write logs) — do not grant application-level
   permissions on the execution role.
 - Scan container images in ECR before deployment (Amazon Inspector
-  integration, covered further in Chapter 08) and block deployment of
+  integration, covered further in [Chapter 08](08-security-architecture-detection-and-incident-response.md)) and block deployment of
   images with critical unpatched CVEs through a CI/CD gate.
 - Store application secrets (database credentials, API keys) in AWS
   Secrets Manager or Systems Manager Parameter Store, referenced by ARN

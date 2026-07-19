@@ -38,7 +38,7 @@ stop, and what happens when one dies.
   that survives pod rescheduling. Pods are created, updated, and deleted
   in ordinal order by default (`OrderedReady`), which is what makes
   StatefulSet the correct controller for anything with per-instance state
-  or peer-aware clustering (Chapter 05 covers the storage half of this
+  or peer-aware clustering ([Chapter 05](05-kubernetes-storage-and-stateful-platforms.md) covers the storage half of this
   contract in depth).
 - **DaemonSet** guarantees exactly one pod copy per node (or per node
   matching a selector), growing and shrinking automatically as nodes join
@@ -61,7 +61,7 @@ stop, and what happens when one dies.
 
 ### The scheduler's two-phase decision
 
-The kube-scheduler (introduced architecturally in Chapter 02) makes a
+The kube-scheduler (introduced architecturally in [Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md)) makes a
 binding decision for every unscheduled pod in two phases:
 
 ```text
@@ -88,7 +88,7 @@ start.
 
 Every container can declare `resources.requests` (what the scheduler
 reserves and guarantees) and `resources.limits` (the ceiling the kubelet
-and container runtime enforce via cgroups, described in Chapter 01). The
+and container runtime enforce via cgroups, described in [Chapter 01](01-container-architecture-images-runtimes-and-registries.md)). The
 combination across every container in a pod determines its **QoS class**,
 which the kubelet uses to decide eviction order under node memory
 pressure:
@@ -121,7 +121,7 @@ no effect on involuntary disruption such as a node crashing.
 ## Design Considerations
 
 **Deployment vs. StatefulSet is an identity question, not a durability
-question.** Both can use persistent storage (Chapter 05). The decision
+question.** Both can use persistent storage ([Chapter 05](05-kubernetes-storage-and-stateful-platforms.md)). The decision
 turns on whether pod replacement needs to preserve *identity* — a stable
 name, stable network address, and the same volume reattached to the same
 ordinal — or whether any healthy replica is interchangeable. Running a
@@ -368,7 +368,7 @@ kubectl logs -n kube-system deployment/cluster-autoscaler --tail=100
   workloads; over-assigning high priority defeats preemption's purpose and
   can starve legitimate lower-priority work.
 - Avoid shipping debugging tools (shells, package managers) inside
-  production images (Chapter 01); use `kubectl debug` ephemeral containers
+  production images ([Chapter 01](01-container-architecture-images-runtimes-and-registries.md)); use `kubectl debug` ephemeral containers
   for interactive troubleshooting instead.
 - Bound every Job and CronJob with `activeDeadlineSeconds` and a sane
   `backoffLimit` so a broken workload fails fast and visibly rather than

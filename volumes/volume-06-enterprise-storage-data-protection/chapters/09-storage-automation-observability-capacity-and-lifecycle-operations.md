@@ -20,11 +20,11 @@
 ## Theory and Architecture
 
 This closing chapter ties together every operational thread left open
-across the volume: Chapter 1's warning that thin-provisioning capacity
+across the volume: [Chapter 1](01-enterprise-storage-architecture-and-service-design.md)'s warning that thin-provisioning capacity
 exhaustion is "one of the most common causes of an emergency, unplanned
-outage," Chapter 2's note that "zone-set automation removes the
-operational burden" of 1:1 zoning at scale, Chapter 4's host-side queue
-depth and path monitoring, and Chapter 5 through 8's dependence on
+outage," [Chapter 2](02-block-storage-and-storage-area-networks.md)'s note that "zone-set automation removes the
+operational burden" of 1:1 zoning at scale, [Chapter 4](04-host-storage-integration-and-multipathing.md)'s host-side queue
+depth and path monitoring, and [Chapter 5](05-backup-architecture-and-data-protection-policy.md) through 8's dependence on
 monitoring, alerting, and disciplined change management actually working.
 None of the resilience this volume has built survives contact with
 production if it is operated manually, inconsistently, and without
@@ -40,9 +40,9 @@ code (IaC)** applied to storage means the desired state (which volumes
 exist, their size, RAID/erasure-coding scheme, and masking) is defined in
 version-controlled configuration, and an automation tool reconciles the
 platform to match that definition via the platform's API — the same
-declarative, plan-then-apply discipline Volume I establishes for
+declarative, plan-then-apply discipline [Volume I](../../volume-01-enterprise-engineering-foundations/README.md) establishes for
 infrastructure automation generally, applied here to the storage service
-catalog first introduced in Chapter 1.
+catalog first introduced in [Chapter 1](01-enterprise-storage-architecture-and-service-design.md).
 
 This delivers three concrete benefits over manual provisioning:
 
@@ -74,15 +74,15 @@ ongoing monitoring practice rather than a reactive diagnostic step:
 
 | Signal category | What it covers | Examples from earlier chapters |
 | --- | --- | --- |
-| Capacity | Provisioned vs. physical consumption, snapshot reserve, thin-pool headroom | Chapter 1's provisioned-vs-physical gap; Chapter 6's snapshot reserve |
-| Performance | IOPS, throughput, latency, queue depth at every layer | Chapter 1's `fio`/`iostat` baseline; Chapter 4's host queue depth chain |
-| Availability | Path state, replication relationship health, fabric link state | Chapter 2's fabric troubleshooting; Chapter 4's `multipath -ll`; Chapter 6's replication lag |
-| Errors/integrity | Fabric CRC/link errors, checksum/scrub failures, backup verification failures | Chapter 2's switch port error counters; Chapter 5's "0 errors" restore-testing principle |
+| Capacity | Provisioned vs. physical consumption, snapshot reserve, thin-pool headroom | [Chapter 1](01-enterprise-storage-architecture-and-service-design.md)'s provisioned-vs-physical gap; [Chapter 6](06-snapshots-replication-and-continuous-data-protection.md)'s snapshot reserve |
+| Performance | IOPS, throughput, latency, queue depth at every layer | [Chapter 1](01-enterprise-storage-architecture-and-service-design.md)'s `fio`/`iostat` baseline; [Chapter 4](04-host-storage-integration-and-multipathing.md)'s host queue depth chain |
+| Availability | Path state, replication relationship health, fabric link state | [Chapter 2](02-block-storage-and-storage-area-networks.md)'s fabric troubleshooting; [Chapter 4](04-host-storage-integration-and-multipathing.md)'s `multipath -ll`; [Chapter 6](06-snapshots-replication-and-continuous-data-protection.md)'s replication lag |
+| Errors/integrity | Fabric CRC/link errors, checksum/scrub failures, backup verification failures | [Chapter 2](02-block-storage-and-storage-area-networks.md)'s switch port error counters; [Chapter 5](05-backup-architecture-and-data-protection-policy.md)'s "0 errors" restore-testing principle |
 
 Collection typically combines **SNMP** (still common for switch and legacy
 array telemetry), **vendor REST-based telemetry APIs**, and **exporter**
 agents that translate platform-specific metrics into a standard time-series
-format for a central monitoring stack, developed in full in Volume XI
+format for a central monitoring stack, developed in full in [Volume XI](../../volume-11-observability-enterprise-operations/README.md)
 (Observability and Enterprise Operations). This volume's concern is what
 storage-specific signals must be collected and what they mean — not the
 general monitoring platform architecture.
@@ -108,9 +108,9 @@ state question ("is this a problem right now").
 
 ### Closing the zoning and multipath automation gap
 
-Chapter 2 established 1:1 zoning as standard practice specifically because
+[Chapter 2](02-block-storage-and-storage-area-networks.md) established 1:1 zoning as standard practice specifically because
 "zone-set automation removes the operational burden" it otherwise creates
-at scale; Chapter 4 established WWID-based multipath aliasing as the
+at scale; [Chapter 4](04-host-storage-integration-and-multipathing.md) established WWID-based multipath aliasing as the
 standard for stable device naming. Both are naturally expressed as
 version-controlled data and applied through automation rather than
 repeated manual CLI sessions per host — the same IaC discipline described
@@ -122,7 +122,7 @@ multipath commands.
 ### Lifecycle operations
 
 Storage infrastructure has a lifecycle, mirroring the general infrastructure
-lifecycle model from Volume I:
+lifecycle model from [Volume I](../../volume-01-enterprise-engineering-foundations/README.md):
 
 - **Firmware and patch management.** Array controller firmware, HBA/CNA
   firmware and drivers, and switch firmware all require a tested, staged
@@ -131,7 +131,7 @@ lifecycle model from Volume I:
   simultaneous update, because a firmware defect applied everywhere at
   once converts a contained problem into a platform-wide outage.
 - **Technology refresh.** Driven by End-of-Life/End-of-Support (EOL/EOS)
-  dates (tracked per Volume I's lifecycle management practice) with
+  dates (tracked per [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)'s lifecycle management practice) with
   sufficient lead time to plan a migration, not discovered when a support
   contract lapses. Data migration during a refresh follows one of two
   broad approaches: **array-based migration** (replication or a vendor
@@ -142,25 +142,25 @@ lifecycle model from Volume I:
   source and target platforms support a common array-to-array migration
   path.
 - **Decommissioning.** The full checklist spans this entire volume: remove
-  zoning and masking (Chapter 2), remove multipath aliases and WWID
-  references (Chapter 4), confirm no active backup or replication job
+  zoning and masking ([Chapter 2](02-block-storage-and-storage-area-networks.md)), remove multipath aliases and WWID
+  references ([Chapter 4](04-host-storage-integration-and-multipathing.md)), confirm no active backup or replication job
   still targets the decommissioned volume (Chapters 5 and 6), and sanitize
-  or destroy the underlying media per NIST SP 800-88 (Chapter 8), with the
+  or destroy the underlying media per NIST SP 800-88 ([Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)), with the
   sanitization event recorded in the asset's lifecycle record. A
   decommissioning process that skips any one of these steps leaves either
   an orphaned, auditable security finding (stale zoning/ACL entries, as
-  Chapter 2 warned) or, in the worst case, unsanitized media leaving the
+  [Chapter 2](02-block-storage-and-storage-area-networks.md) warned) or, in the worst case, unsanitized media leaving the
   organization's custody.
 
 ## Design Considerations
 
 - **Automate provisioning and configuration first; keep deletion and
-  retention changes human-gated.** This mirrors Chapter 8's RBAC
+  retention changes human-gated.** This mirrors [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)'s RBAC
   separation principle: automation should make the low-risk, high-volume
   operations (provisioning, zoning, masking) fast and consistent, while
   the highest-consequence operations (deleting a volume, backup, or
   snapshot; shortening a retention policy) retain deliberate human
-  approval, ideally the same multi-person approval pattern from Chapter 8.
+  approval, ideally the same multi-person approval pattern from [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md).
 - **Set both a static ceiling alert and a trend-based forecast alert for
   every capacity-bound resource** (volume, pool, snapshot reserve, backup
   target); use the forecast to drive proactive procurement and the ceiling
@@ -207,7 +207,7 @@ resource "storage_snapshot_schedule" "db01_hourly" {
 }
 ```
 
-Running this through a plan/apply pipeline (Volume I, Chapter 3) means a
+Running this through a plan/apply pipeline ([Volume I, Chapter 3](../../volume-01-enterprise-engineering-foundations/chapters/03-automation-architecture.md)) means a
 proposed volume change is visible as a reviewable diff before it touches
 production, and the pipeline's own audit log becomes the record of who
 provisioned what and when.
@@ -232,7 +232,7 @@ zones:
 ```
 
 An automation pipeline reads this file and issues the equivalent of
-Chapter 2's `alias create`/`zone create`/`zoneset activate` commands
+[Chapter 2](02-block-storage-and-storage-area-networks.md)'s `alias create`/`zone create`/`zoneset activate` commands
 against each fabric's API, guaranteeing the 1:1 zoning pattern is applied
 identically every time a host is onboarded, with the file itself serving
 as the audit record of intended fabric state.
@@ -288,7 +288,7 @@ if __name__ == "__main__":
 | Zoning inconsistent between two fabrics for the same host | Manual zoning applied to only one fabric, or automation run against one fabric's API failed silently | Compare zone-set automation run logs against both fabrics' actual active zonesets |
 | Firmware upgrade caused unexpected path flapping fleet-wide | Simultaneous fleet-wide rollout without a canary/staged validation gate | Roll back per the staged rollout plan; re-run the upgrade through a canary population first |
 | Decommissioned volume's zoning/ACL entries still present | Decommissioning checklist executed by a team unaware of the zoning/masking step | Reconcile active zone/ACL entries against the current active-asset inventory on a recurring audit cadence |
-| Automation pipeline able to delete production backups | Automation service account granted deletion authority outside the human-gated approval workflow (Chapter 8) | Audit automation service account permissions; remove deletion authority from unattended pipeline identities |
+| Automation pipeline able to delete production backups | Automation service account granted deletion authority outside the human-gated approval workflow ([Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)) | Audit automation service account permissions; remove deletion authority from unattended pipeline identities |
 
 ## Security and Best Practices
 
@@ -300,7 +300,7 @@ if __name__ == "__main__":
   consistent with the repository workflow discipline established for this
   entire encyclopedia.
 - Keep deletion and retention-shortening authority outside of unattended
-  automation, per Chapter 8's separation-of-duties model; automation
+  automation, per [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)'s separation-of-duties model; automation
   should provision and configure, not autonomously destroy.
 - Disable legacy, unencrypted management protocols (SNMPv1/v2c community
   strings, unencrypted Telnet management sessions) in favor of SNMPv3 and
@@ -319,7 +319,7 @@ if __name__ == "__main__":
 
 **References**
 
-- Volume I, Chapter 3 (Automation Architecture) and Chapter 8
+- [Volume I, Chapter 3](../../volume-01-enterprise-engineering-foundations/chapters/03-automation-architecture.md) (Automation Architecture) and [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)
   (Infrastructure Lifecycle Management), for the automation and lifecycle
   disciplines this chapter applies specifically to storage.
 - SNIA Storage Management Initiative Specification (SMI-S) and current
@@ -453,7 +453,7 @@ why trend-based forecasting catches risk a static threshold misses.
    projected the exhaustion risk. This is the concrete, measured evidence
    for this chapter's central capacity-monitoring principle: a
    static-threshold-only design consistently detects capacity risk later
-   than a trend-based forecast, precisely the gap Chapter 1 warned could
+   than a trend-based forecast, precisely the gap [Chapter 1](01-enterprise-storage-architecture-and-service-design.md) warned could
    turn thin-provisioning exhaustion into an unplanned outage.
 
 **Cleanup**

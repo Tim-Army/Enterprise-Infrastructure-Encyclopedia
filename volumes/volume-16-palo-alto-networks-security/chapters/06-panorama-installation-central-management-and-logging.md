@@ -29,7 +29,7 @@ deployment, and log aggregation across the entire fleet.
 
 Panorama runs as a dedicated M-Series hardware appliance or as a virtual
 appliance (VM-Series-adjacent, but a distinct Panorama image) on the same
-hypervisor/cloud targets covered in Chapter 03. Independent of hardware vs.
+hypervisor/cloud targets covered in [Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md). Independent of hardware vs.
 virtual, Panorama operates in one of three modes:
 
 | Mode | Function |
@@ -73,7 +73,7 @@ in a single predictable evaluation order.
 While device groups manage security, NAT, and decryption *policy*,
 **templates** manage *network and device configuration* — interfaces,
 zones, virtual routers, HA settings, and device-level settings like NTP and
-DNS (the constructs from Chapter 04, plus system settings from Chapter 01).
+DNS (the constructs from [Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md), plus system settings from [Chapter 01](01-cybersecurity-apprentice-foundations.md)).
 A **template stack** combines multiple templates in a defined priority
 order (higher-priority templates override lower-priority ones for any
 overlapping setting), which is how Panorama expresses "every firewall gets
@@ -89,18 +89,18 @@ firewall.
 ### Managed device onboarding
 
 A firewall becomes Panorama-managed either through the bootstrap
-mechanism from Chapter 03 (`panorama-server`, `tplname`, `dgname` in
+mechanism from [Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md) (`panorama-server`, `tplname`, `dgname` in
 `init-cfg.txt`) or by manually pointing an already-configured firewall at
 Panorama and approving it from the Panorama console. Once managed,
 Panorama tracks each device's connection status, software/content
 versions, and HA state (if applicable) from a single inventory view,
 which is also the foundation for the fleet-wide operational tasks covered
-in Chapter 07.
+in [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md).
 
 ### Panorama high availability
 
 Panorama itself supports an active/passive HA pair, conceptually similar
-to firewall HA (Chapter 04) but without a data-plane session-synchronization
+to firewall HA ([Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md)) but without a data-plane session-synchronization
 requirement — Panorama HA synchronizes the management database (device
 group, template, and object configuration) between peers rather than live
 traffic sessions. A Panorama HA pair eliminates the management plane as a
@@ -287,7 +287,7 @@ admin@panorama01# commit
 - Encrypt and restrict access to Panorama-to-managed-device communication
   paths; place Panorama itself on a protected management segment, not a
   general-purpose data VLAN, consistent with the management-plane
-  hardening guidance from Chapter 01.
+  hardening guidance from [Chapter 01](01-cybersecurity-apprentice-foundations.md).
 - Size and redundantly configure Collector Groups to meet the
   organization's actual log-retention compliance requirement, and test
   Panorama HA failover (and Collector Group member failure) in a
@@ -334,7 +334,7 @@ demonstrates local device drift overriding expected behavior.
 - A lab Panorama instance (virtual appliance is sufficient) reachable from
   the lab firewall(s) built in Chapters 03–05.
 - At least one managed firewall available for onboarding, either freshly
-  bootstrapped (Chapter 03) or manually pointed at Panorama.
+  bootstrapped ([Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md)) or manually pointed at Panorama.
 - Administrative access to both Panorama and the managed firewall for the
   duration of the lab.
 
@@ -425,7 +425,7 @@ demonstrates local device drift overriding expected behavior.
    admin@pa-branch-01# commit
    ```
 
-10. **Cleanup:** If this lab environment will be reused in Chapter 07,
+10. **Cleanup:** If this lab environment will be reused in [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md),
     leave the device group, template stack, and log forwarding
     configuration in place; otherwise remove the lab-only device group
     assignment and pushed rules from Panorama:
@@ -444,7 +444,7 @@ device groups centralize security, NAT, and decryption policy with a
 predictable pre-rule/local/post-rule evaluation order; template stacks
 centralize network and device configuration with layered priority; and
 Collector Groups centralize log retention independent of the management
-plane's own sizing. Chapter 07 builds on this foundation for fleet-wide
+plane's own sizing. [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md) builds on this foundation for fleet-wide
 operational tasks — coordinated software and content upgrades, scheduled
 maintenance, and automation via the PAN-OS and Panorama XML/REST APIs.
 

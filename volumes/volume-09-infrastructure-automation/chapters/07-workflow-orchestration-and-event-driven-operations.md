@@ -16,10 +16,10 @@
 
 ## Theory and Architecture
 
-Chapter 01's automation maturity curve named event-driven, self-service
+[Chapter 01](01-automation-operating-models-and-engineering-foundations.md)'s automation maturity curve named event-driven, self-service
 platform engineering as advanced stages built on everything before them.
-Chapter 04 covered the mechanics of consuming and producing events and
-webhooks; Chapter 05 covered pipelines as the mechanism for staged,
+[Chapter 04](04-api-event-and-integration-automation.md) covered the mechanics of consuming and producing events and
+webhooks; [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md) covered pipelines as the mechanism for staged,
 reviewed change delivery. This chapter covers what sits above both: an
 orchestration layer that sequences multi-step, often multi-system work,
 and reacts to events in real time rather than only on a schedule or a
@@ -27,9 +27,9 @@ pull request.
 
 ### Configuration management, pipelines, and orchestration are not the same layer
 
-- **Configuration management** (Chapter 03) converges one host or a
+- **Configuration management** ([Chapter 03](03-configuration-management-and-desired-state-convergence.md)) converges one host or a
   bounded group of hosts to a desired state, invoked directly.
-- **Pipeline automation** (Chapter 05) sequences plan/test/policy/approve/
+- **Pipeline automation** ([Chapter 05](05-automation-pipelines-testing-and-policy-gates.md)) sequences plan/test/policy/approve/
   apply stages for a single change, triggered by a commit or a schedule.
 - **Workflow orchestration** sequences multiple, often heterogeneous steps
   — some of them playbooks, some API calls, some pipeline triggers, some
@@ -74,7 +74,7 @@ Automation Platform ecosystem) implements this loop with **rulebooks**: a
 declarative YAML file naming an event source plugin, one or more
 condition/action rules, and the playbook or module to run on a match.
 It reuses the same execution model as ordinary Ansible content — the same
-modules, the same idempotency expectations from Chapter 03 — but is
+modules, the same idempotency expectations from [Chapter 03](03-configuration-management-and-desired-state-convergence.md) — but is
 triggered by an event instead of a human or a cron schedule.
 
 ### Orchestration engines beyond Ansible
@@ -105,10 +105,10 @@ tool.
 
 ### Idempotency and retries at the workflow level
 
-Idempotency (Chapter 03) applies at the workflow level too, and is harder
+Idempotency ([Chapter 03](03-configuration-management-and-desired-state-convergence.md)) applies at the workflow level too, and is harder
 to get right there: a workflow step that calls an external API to create a
 ticket is not automatically safe to retry unless that API call itself uses
-an idempotency key (Chapter 04). Design every workflow step assuming the
+an idempotency key ([Chapter 04](04-api-event-and-integration-automation.md)). Design every workflow step assuming the
 orchestration engine may retry it after a partial failure — a crashed
 worker, a timed-out step — and make each step either naturally idempotent
 or explicitly guarded, exactly as with a playbook task.
@@ -129,7 +129,7 @@ it exists.
 
 Not every workflow should run to completion unattended. Model an explicit
 approval node for any step whose blast radius or reversibility does not
-meet the bar for full automation — the same principle behind Chapter 05's
+meet the bar for full automation — the same principle behind [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md)'s
 required-reviewer environment, generalized to a workflow that may span
 multiple systems rather than a single Terraform apply. Ansible Automation
 Platform's workflow templates support this natively as an approval node
@@ -249,7 +249,7 @@ curl -X POST https://aap.acme.internal/api/v2/workflow_job_templates/42/launch/ 
 
 The `approve` node pauses the workflow and waits for a named approver to
 act through the controller UI or API before `remediate` runs — the
-workflow-level equivalent of Chapter 05's required-reviewer environment,
+workflow-level equivalent of [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md)'s required-reviewer environment,
 but spanning a multi-step operation instead of a single apply.
 
 ### ChatOps as a trigger and approval surface
@@ -273,7 +273,7 @@ jobs:
 
 A Slack slash command (`/remediate INC0045678`) posted to a small internal
 service that validates the requester's group membership and then calls
-GitHub's `repository_dispatch` endpoint (Chapter 04) is a common,
+GitHub's `repository_dispatch` endpoint ([Chapter 04](04-api-event-and-integration-automation.md)) is a common,
 low-effort ChatOps pattern: it puts a human-triggered action behind the
 same environment-scoped credential and approval controls as any other
 pipeline stage, rather than granting chat-platform users direct pipeline
@@ -292,7 +292,7 @@ access.
   multiple event source instances subscribed to the same feed (a common
   result of running more than one `ansible-rulebook` process against the
   same webhook or queue), and confirm the idempotency-key pattern from
-  Chapter 04 is applied at the action layer, not assumed at the event
+  [Chapter 04](04-api-event-and-integration-automation.md) is applied at the action layer, not assumed at the event
   layer.
 - **A workflow stalls indefinitely at an approval node.** Confirm the
   configured approver group actually has members with notification
@@ -318,17 +318,17 @@ access.
   workflow launch.
 - Treat every event source as untrusted input until authenticated — apply
   the same webhook signature verification and replay protection from
-  Chapter 04 to any event source feeding a rule engine, since a forged
+  [Chapter 04](04-api-event-and-integration-automation.md) to any event source feeding a rule engine, since a forged
   event is a forged trigger for a privileged action.
 - Log every rule match and every action it triggered, including the
   matched event's ID, for the same audit reasons pipeline runs are logged
-  in Chapter 05.
+  in [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md).
 - Rate-limit and circuit-break automated responses to repeated triggers;
   an automated remediation that fires without limit during a real incident
   can amplify the incident rather than resolve it.
 - Scope the credentials an orchestration engine or rulebook action uses
   with the same least-privilege discipline as a pipeline's apply stage
-  (Chapter 06) — an orchestration engine with standing broad credentials
+  ([Chapter 06](06-automation-identity-secrets-and-privileged-execution.md)) — an orchestration engine with standing broad credentials
   is a single point of privileged compromise across every workflow it
   runs.
 - Require human approval for any workflow node whose action is not fully

@@ -81,7 +81,7 @@ on `libdnf5` and ultimately manipulating the RPM database
   atomically and records the transaction in `dnf history`.
 - **Group/module** (`dnf group`, `dnf module`) — operates on curated
   sets of packages (environment groups) or versioned application
-  stacks (modules), described in Chapter 01.
+  stacks (modules), described in [Chapter 01](01-installation-subscriptions-repositories-and-cockpit.md).
 
 `rpm` itself remains available for lower-level queries and for
 inspecting packages outside of a repository context (a downloaded
@@ -337,7 +337,7 @@ practice safe rollback.
 **Prerequisites**
 
 - A RHEL 10 host or VM with sudo access and configured repositories
-  (see Chapter 01).
+  (see [Chapter 01](01-installation-subscriptions-repositories-and-cockpit.md)).
 - A non-production system, since this lab installs and removes a test
   package.
 

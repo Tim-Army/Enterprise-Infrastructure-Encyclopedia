@@ -59,7 +59,7 @@ from a small number of recurring primitives, restated per vendor:
   operations, and declarative automation for anything that must remain
   in a known state over time.** A one-time data migration script is
   naturally imperative; ongoing infrastructure provisioning is better
-  served declaratively so that drift (Chapter 04) is detectable and
+  served declaratively so that drift ([Chapter 04](04-configuration-templates-baselines-and-change-records.md)) is detectable and
   correctable by the same tool that created the resource.
 - **Prefer agentless automation for heterogeneous fleets where installing
   and maintaining an agent on every managed node is itself an operational
@@ -115,7 +115,7 @@ The 401-vs-403 distinction is a frequent troubleshooting point: 401 means
 the request presented no valid identity at all (fix authentication); 403
 means the identity was valid but lacks permission for the requested
 action (fix authorization/scope), which is a different remediation path
-entirely (Chapter 06 decision-tree logic applies equally to API
+entirely ([Chapter 06](06-troubleshooting-decision-aids-and-escalation.md) decision-tree logic applies equally to API
 troubleshooting).
 
 ### Data format comparison
@@ -131,9 +131,9 @@ troubleshooting).
 
 | Tool | Model | Agent Requirement | Primary Domain in This Encyclopedia |
 | --- | --- | --- | --- |
-| Ansible | Declarative-leaning imperative (ordered tasks, idempotent modules) | Agentless (SSH/WinRM) | Configuration management, network device automation, ad hoc operational tasks (Volume IX) |
-| Terraform | Declarative | Agentless (API-driven providers) | Cloud and platform infrastructure provisioning (Volume VII, Volume IX, Volume XVII) |
-| Kubernetes manifests / Helm | Declarative | Agent-based (kubelet, controllers) | Container workload orchestration (Volume VIII) |
+| Ansible | Declarative-leaning imperative (ordered tasks, idempotent modules) | Agentless (SSH/WinRM) | Configuration management, network device automation, ad hoc operational tasks ([Volume IX](../../volume-09-infrastructure-automation/README.md)) |
+| Terraform | Declarative | Agentless (API-driven providers) | Cloud and platform infrastructure provisioning ([Volume VII](../../volume-07-cloud-infrastructure/README.md), [Volume IX](../../volume-09-infrastructure-automation/README.md), [Volume XVII](../../volume-17-aws-architecture-security/README.md)) |
+| Kubernetes manifests / Helm | Declarative | Agent-based (kubelet, controllers) | Container workload orchestration ([Volume VIII](../../volume-08-containers-platform-engineering/README.md)) |
 | Vendor Python/Go SDKs (boto3, pyVmomi, `requests`-based REST clients) | Imperative | Agentless | Custom scripting against a specific platform's native API |
 | PowerShell (PowerCLI, AWS Tools for PowerShell) | Imperative | Agentless | Windows-centric and VMware/AWS administrative automation |
 | Shell/Bash scripting | Imperative | Agentless / local | Linux host-local automation, glue logic between other tools |
@@ -142,8 +142,8 @@ troubleshooting).
 
 | Platform Family | Common Authentication Pattern | Notes |
 | --- | --- | --- |
-| AWS APIs | IAM: access key/secret (static, discouraged for long-lived use) or STS temporary credentials via IAM roles/OIDC federation | Prefer role assumption and federation over static keys (Volume XVII) |
-| Kubernetes API server | Client certificates, bearer tokens (ServiceAccount), OIDC | Scope ServiceAccount tokens narrowly with RBAC (Volume VIII) |
+| AWS APIs | IAM: access key/secret (static, discouraged for long-lived use) or STS temporary credentials via IAM roles/OIDC federation | Prefer role assumption and federation over static keys ([Volume XVII](../../volume-17-aws-architecture-security/README.md)) |
+| Kubernetes API server | Client certificates, bearer tokens (ServiceAccount), OIDC | Scope ServiceAccount tokens narrowly with RBAC ([Volume VIII](../../volume-08-containers-platform-engineering/README.md)) |
 | PAN-OS API | API key derived from a one-time username/password exchange, then reused | Rotate the derived API key; do not embed the originating password in automation |
 | FortiOS REST API | API token (administrator-scoped, created per integration) | Scope tokens to the minimum required administrator profile |
 | vCenter REST/SOAP API | Session token obtained via username/password or SSO, then reused for the session | Prefer a dedicated service account with minimum required roles, not a personal administrator account |
@@ -199,7 +199,7 @@ curl -s -X GET https://api.example.com/v2/resources \
   does not read and respect it will continue to be throttled.
 - **For declarative tools, read the plan/diff output before the apply
   output.** A Terraform apply failure is often predictable from the plan
-  (Chapter 04) and re-reading the plan after a failure narrows the cause
+  ([Chapter 04](04-configuration-templates-baselines-and-change-records.md)) and re-reading the plan after a failure narrows the cause
   faster than reading the apply error alone.
 - **For webhook integrations, confirm delivery at the producer before
   debugging the consumer.** Most webhook-capable platforms provide a
@@ -213,14 +213,14 @@ curl -s -X GET https://api.example.com/v2/resources \
   balancers, and browser history.
 - Scope every API credential to the minimum required permissions and
   resources, and rotate credentials on a defined schedule, consistent
-  with least-privilege principles in Chapter 07.
+  with least-privilege principles in [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md).
 - Verify webhook payload authenticity using the producer's signing
   mechanism (commonly HMAC-SHA256 over the raw payload with a shared
   secret) before trusting or acting on webhook content; an unauthenticated
   webhook endpoint is directly exploitable by anyone who discovers the URL.
 - Use TLS for every API and webhook endpoint without exception; plaintext
   HTTP for any authenticated API call exposes credentials and data in
-  transit (Chapter 02).
+  transit ([Chapter 02](02-ports-protocols-services-and-traffic-flows.md)).
 - Log API and automation access with enough detail (identity, action,
   timestamp, source) to support incident investigation, but avoid logging
   full request/response bodies that may contain secrets or sensitive data
@@ -239,12 +239,12 @@ curl -s -X GET https://api.example.com/v2/resources \
 - RFC 6749 (OAuth 2.0 Authorization Framework).
 - JSON Schema specification (`json-schema.org`).
 - YAML specification (`yaml.org/spec`).
-- Volume VIII — Containers and Platform Engineering (Kubernetes API and
+- [Volume VIII](../../volume-08-containers-platform-engineering/README.md) — Containers and Platform Engineering (Kubernetes API and
   manifest model in depth).
-- Volume IX — Infrastructure Automation (Ansible/Terraform in depth).
-- Volume XVII — AWS Architecture and Security (IAM authentication
+- [Volume IX](../../volume-09-infrastructure-automation/README.md) — Infrastructure Automation (Ansible/Terraform in depth).
+- [Volume XVII](../../volume-17-aws-architecture-security/README.md) — AWS Architecture and Security (IAM authentication
   patterns).
-- Chapter 04 of this volume — declarative baselines and drift detection
+- [Chapter 04](04-configuration-templates-baselines-and-change-records.md) of this volume — declarative baselines and drift detection
   referenced by the automation-model comparison.
 
 **Knowledge checks**

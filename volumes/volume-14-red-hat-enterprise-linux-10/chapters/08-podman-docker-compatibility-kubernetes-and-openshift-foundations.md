@@ -96,7 +96,7 @@ logging correctly), Quadlet reads a declarative `.container`,
 `/etc/containers/systemd/` and generates the corresponding systemd
 unit automatically, giving containers the same dependency ordering,
 restart policy, resource control, and journal-integrated logging as
-any other systemd-managed service described in Chapter 03. Quadlet is
+any other systemd-managed service described in [Chapter 03](03-boot-systemd-processes-logging-and-scheduled-work.md). Quadlet is
 the recommended replacement for the older `podman generate systemd`
 workflow, which required manually regenerating unit files whenever a
 container's configuration changed.
@@ -161,7 +161,7 @@ multi-node production cluster.
   intended to persist across reboots or be observable/restartable like
   a normal service belongs in a Quadlet unit, not a `podman run`
   invoked from `rc.local` or a login profile — this mirrors the
-  systemd unit-vs-cron-script design point from Chapter 03.
+  systemd unit-vs-cron-script design point from [Chapter 03](03-boot-systemd-processes-logging-and-scheduled-work.md).
   Interactive, disposable containers (`podman run --rm` for local
   testing) are the appropriate place for ad hoc invocation.
 - **Image provenance and registry trust.** Decide which registries are
@@ -302,7 +302,7 @@ oc get routes
   <name>` shows the container's own output; `podman inspect <name>
   --format '{{.State.ExitCode}}'` confirms the exit code — this is the
   container-runtime equivalent of the systemd `ExecStart` diagnosis
-  pattern from Chapter 03, and the two should be checked with the same
+  pattern from [Chapter 03](03-boot-systemd-processes-logging-and-scheduled-work.md), and the two should be checked with the same
   discipline.
 - **Diagnose a Quadlet unit that never appears.** Quadlet files must be
   syntactically correct and in the expected directory

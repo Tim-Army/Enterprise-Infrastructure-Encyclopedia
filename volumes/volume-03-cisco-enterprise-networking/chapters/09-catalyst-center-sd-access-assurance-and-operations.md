@@ -35,9 +35,9 @@ routine changes.
 
 Catalyst Center is delivered as a physical or virtual appliance and
 requires the **Network Advantage** or higher licensing tier introduced in
-Chapter 1 on every device it fully manages for SD-Access and Assurance
+[Chapter 1](01-cisco-enterprise-architecture-and-ios-xe-foundations.md) on every device it fully manages for SD-Access and Assurance
 features. It communicates with managed devices using the same
-programmability surfaces covered in Chapter 8 (NETCONF, RESTCONF, SNMP,
+programmability surfaces covered in [Chapter 8](08-ios-xe-programmability-and-network-automation.md) (NETCONF, RESTCONF, SNMP,
 and CLI via SSH) rather than a proprietary agent, which is why every
 device configured through this volume's earlier chapters is
 Catalyst-Center-manageable without a forklift change.
@@ -45,7 +45,7 @@ Catalyst-Center-manageable without a forklift change.
 ### SD-Access fabric architecture
 
 **Software-Defined Access (SD-Access)** is Cisco's fabric-based evolution
-of the traditional campus described in Chapter 1. Instead of VLANs and a
+of the traditional campus described in [Chapter 1](01-cisco-enterprise-architecture-and-ios-xe-foundations.md). Instead of VLANs and a
 routed/switched hierarchy carrying both topology and policy together
 (the traditional model used in Chapters 2–3), SD-Access separates the
 physical **underlay** (plain Layer 3 routed connectivity between fabric
@@ -61,7 +61,7 @@ already covered in this volume, cooperate to build a fabric site:
 | Control Plane Node | Runs LISP to maintain a host-tracking database mapping every endpoint (by IP/MAC) to the fabric edge node it is currently attached to |
 | Border Node | The fabric's exit point to networks outside the fabric (traditional campus, WAN, data center, internet); translates between fabric VXLAN/SGT and the outside world's normal routing and VLANs |
 | Edge Node | Where endpoints physically connect; performs VXLAN encapsulation/decapsulation and applies SGT-based policy at the point closest to the endpoint |
-| Fabric WLC | A Catalyst 9800 controller (Chapter 5) integrated into the fabric; APs become fabric edge nodes for wireless clients, carrying wireless traffic in the same VXLAN overlay as wired traffic |
+| Fabric WLC | A Catalyst 9800 controller ([Chapter 5](05-catalyst-wireless-architecture-and-operations.md)) integrated into the fabric; APs become fabric edge nodes for wireless clients, carrying wireless traffic in the same VXLAN overlay as wired traffic |
 
 A **fabric site** is one instance of these roles operating together
 (commonly one campus or one large branch); a **fabric domain** groups
@@ -88,16 +88,16 @@ at different layers:
   protocol reconvergence event.
 - **VXLAN** is the fabric's data plane encapsulation. Edge and border
   nodes wrap the endpoint's original frame in a VXLAN header carrying a
-  VNI (mapping to the endpoint's Virtual Network) and an SGT (Chapter 7),
+  VNI (mapping to the endpoint's Virtual Network) and an SGT ([Chapter 7](07-cisco-identity-access-control-and-segmentation.md)),
   then route that VXLAN packet across the plain-routed underlay to the
   destination edge/border node, which decapsulates it and delivers the
   original frame with its Virtual Network and SGT context intact.
 
 This is the fabric-managed evolution of two concepts already introduced
 in this volume: a **Virtual Network (VN)** is functionally the fabric's
-managed equivalent of the VRF-lite macro-segmentation from Chapter 3
+managed equivalent of the VRF-lite macro-segmentation from [Chapter 3](03-cisco-enterprise-routing-and-path-control.md)
 (each VN maps to its own VRF in the underlay/border), and the SGT carried
-in the VXLAN header is the same TrustSec SGT from Chapter 7 — SD-Access
+in the VXLAN header is the same TrustSec SGT from [Chapter 7](07-cisco-identity-access-control-and-segmentation.md) — SD-Access
 does not replace those concepts, it automates and carries them
 consistently across an entire fabric site instead of requiring
 per-device manual configuration.
@@ -125,7 +125,7 @@ non-fabric managed estate) through a sequential workflow:
    role (control plane, border, edge) and Virtual Network/SGT policy
    membership.
 
-Wireless is provisioned the same way: a Catalyst 9800 (Chapter 5) is
+Wireless is provisioned the same way: a Catalyst 9800 ([Chapter 5](05-catalyst-wireless-architecture-and-operations.md)) is
 added to inventory, assigned to a site, and — for a fabric-integrated
 design — enabled as the site's fabric WLC, at which point its APs become
 fabric edge nodes automatically.
@@ -133,7 +133,7 @@ fabric edge nodes automatically.
 ### Assurance
 
 **Catalyst Center Assurance** continuously ingests telemetry (streaming
-where supported, per Chapter 8's model-driven telemetry, and polled
+where supported, per [Chapter 8](08-ios-xe-programmability-and-network-automation.md)'s model-driven telemetry, and polled
 where not) from every managed device and client, then correlates it into
 per-device, per-client, and per-site health scores rather than requiring
 an operator to interpret raw counters. Key Assurance capabilities:
@@ -145,8 +145,8 @@ an operator to interpret raw counters. Key Assurance capabilities:
   raw metrics.
 - **Path Trace** — simulates or observes the actual forwarding path
   between two endpoints (or an endpoint and a destination), reporting
-  each hop's forwarding decision, QoS treatment (Chapter 6), and any ACL
-  or SGACL (Chapter 7) enforcement encountered along the way — a
+  each hop's forwarding decision, QoS treatment ([Chapter 6](06-cisco-network-services-qos-and-application-delivery.md)), and any ACL
+  or SGACL ([Chapter 7](07-cisco-identity-access-control-and-segmentation.md)) enforcement encountered along the way — a
   significant improvement over manually correlating `traceroute` output
   with per-hop configuration.
 - **AI Network Analytics** — baselines normal behavior per site over time
@@ -279,7 +279,7 @@ EDGE-01# show fabric edge sso summary
 Virtual Networks and their SGT-based access-control policy are authored
 in Catalyst Center's Policy application (mapping endpoints/groups to
 VNs and SGTs, and defining SGT-to-SGT access contracts — the fabric's
-managed equivalent of the SGACL matrix from Chapter 7). The resulting
+managed equivalent of the SGACL matrix from [Chapter 7](07-cisco-identity-access-control-and-segmentation.md)). The resulting
 per-device configuration is visible the same way:
 
 ```text
@@ -302,9 +302,9 @@ DIST-01# show wireless fabric summary
 | --- | --- | --- |
 | Discovery job completes with zero devices found | Seed IP unreachable, or SNMP/SSH credentials in the discovery job don't match the device's actual configured credentials | Confirm reachability and credential set independently via a manual SSH test before re-running discovery |
 | LAN Automation never completes for a candidate device | Candidate device not directly connected (via a supported discovery protocol) to an already-provisioned seed device, or an IP pool exhausted | Confirm CDP/LLDP adjacency to the seed device, check IP pool utilization in Catalyst Center |
-| Endpoint in the fabric can't reach a host outside the fabric | Border node's `show lisp session` shows no session to the Control Plane Node, or the VN's VRF isn't correctly leaked/exported at the border | `show lisp session`, `show vrf`, confirm the border's external routing (Chapter 3 concepts) is correctly redistributing fabric VN routes |
+| Endpoint in the fabric can't reach a host outside the fabric | Border node's `show lisp session` shows no session to the Control Plane Node, or the VN's VRF isn't correctly leaked/exported at the border | `show lisp session`, `show vrf`, confirm the border's external routing ([Chapter 3](03-cisco-enterprise-routing-and-path-control.md) concepts) is correctly redistributing fabric VN routes |
 | Endpoint loses connectivity briefly on a wired move between edge nodes | Expected during LISP map-cache reconvergence; investigate only if the outage duration exceeds the design's tolerance | `show lisp instance-id <id> ipv4 server summary` on the Control Plane Node, confirm registration updates promptly from the new edge |
-| Fabric WLC's APs not appearing as fabric edge nodes | Catalyst 9800 not yet provisioned as the site's fabric WLC in Catalyst Center, or AP still on a non-fabric-enabled site tag (Chapter 5) | `show wireless fabric summary` on the WLC, confirm the AP's site tag maps to the fabric-enabled site |
+| Fabric WLC's APs not appearing as fabric edge nodes | Catalyst 9800 not yet provisioned as the site's fabric WLC in Catalyst Center, or AP still on a non-fabric-enabled site tag ([Chapter 5](05-catalyst-wireless-architecture-and-operations.md)) | `show wireless fabric summary` on the WLC, confirm the AP's site tag maps to the fabric-enabled site |
 | Assurance health score for a device is poor but the device CLI shows no obvious fault | A KPI outside the CLI's normal `show` output (interface error trend, historical baseline deviation from AI Network Analytics) is driving the score | Drill into the specific KPI contributing to the health score in Assurance rather than relying on CLI alone |
 
 ## Security and Best Practices
@@ -312,11 +312,11 @@ DIST-01# show wireless fabric summary
 - Restrict Catalyst Center GUI and API access with role-based access
   control scoped to job function (read-only monitoring vs. full
   provisioning), the same least-privilege principle applied to device CLI
-  access in Chapter 7; a Catalyst Center administrator account
+  access in [Chapter 7](07-cisco-identity-access-control-and-segmentation.md); a Catalyst Center administrator account
   effectively has provisioning authority over the entire managed estate.
 - Store discovery and device credentials in Catalyst Center's credential
   store, never as ad hoc entries duplicated outside it, and rotate them
-  on the same schedule as the TACACS+/RADIUS credentials from Chapter 7.
+  on the same schedule as the TACACS+/RADIUS credentials from [Chapter 7](07-cisco-identity-access-control-and-segmentation.md).
 - Back up the Catalyst Center appliance/cluster on a defined schedule and
   test restoration; because Catalyst Center becomes the automation and
   policy source of truth for the estate, losing it without a tested
@@ -333,7 +333,7 @@ DIST-01# show wireless fabric summary
   be deployed redundantly per the design guide's HA guidance.
 - Audit VN and SGACL policy changes made through Catalyst Center with
   the same change-control rigor applied to manually authored TrustSec
-  policy in Chapter 7, since a policy change here applies fabric-wide
+  policy in [Chapter 7](07-cisco-identity-access-control-and-segmentation.md), since a policy change here applies fabric-wide
   the moment it is deployed.
 - Use Assurance proactively (reviewing health-score trends and AI Network
   Analytics deviations on a defined cadence) rather than only after a
@@ -353,7 +353,7 @@ DIST-01# show wireless fabric summary
 **Knowledge checks**
 
 1. What is the functional relationship between an SD-Access Virtual
-   Network and the VRF-lite macro-segmentation introduced in Chapter 3?
+   Network and the VRF-lite macro-segmentation introduced in [Chapter 3](03-cisco-enterprise-routing-and-path-control.md)?
 2. Describe the roles of LISP and VXLAN in the SD-Access fabric and which
    plane (control vs. data) each implements.
 3. What does the LAN Automation step of the Catalyst Center workflow
@@ -475,7 +475,7 @@ underlay, overlay, and policy that Chapters 1 through 8 built one device
 and one protocol at a time, using LISP for fabric control-plane host
 tracking and VXLAN to carry the same VRF/VN and SGT concepts from
 Chapters 3 and 7 consistently across an entire fabric site. Assurance
-then turns the telemetry surfaces from Chapter 8 into continuously
+then turns the telemetry surfaces from [Chapter 8](08-ios-xe-programmability-and-network-automation.md) into continuously
 correlated health scores and path-level policy visibility, moving
 day-2 operations from reactive CLI troubleshooting toward proactive,
 estate-wide observability.

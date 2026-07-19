@@ -51,7 +51,7 @@ because each section type calls for a different kind of preparation:
 - **Product fundamentals section** — NSX's own architecture: the
   management/control/data plane model, NSX Manager clustering, transport
   zones, Geneve overlay encapsulation, Edge node roles. This maps
-  directly to Chapter 10's Theory and Architecture.
+  directly to [Chapter 10](10-installing-vmware-nsx.md)'s Theory and Architecture.
 - **Plan and design section** — architectural judgment questions: given a
   set of requirements or constraints, what design decision is correct
   (transport zone scope, Edge sizing and placement, HA mode selection,
@@ -208,7 +208,7 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' \
   design disruptive and must never be rehearsed against systems carrying
   real workloads.
 - Protect lab credentials used during exam preparation the same way
-  production credentials are protected (Chapter 8's RBAC and credential
+  production credentials are protected ([Chapter 8](08-vsphere-and-nsx-security-architecture.md)'s RBAC and credential
   hygiene guidance applies equally to a lab environment, and building
   that habit during preparation reinforces it for real deployments
   afterward).
@@ -226,17 +226,17 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' \
   this repository's certification-to-volume mapping.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 8 for DFW/Gateway Firewall security architecture.
-- See Chapter 10 for NSX installation and transport fabric.
-- See Chapter 11 for NSX logical networking configuration.
+- See [Chapter 8](08-vsphere-and-nsx-security-architecture.md) for DFW/Gateway Firewall security architecture.
+- See [Chapter 10](10-installing-vmware-nsx.md) for NSX installation and transport fabric.
+- See [Chapter 11](11-configuring-vmware-nsx.md) for NSX logical networking configuration.
 
 **Knowledge checks** *(original conceptual review questions — not
 reproductions of any Broadcom exam item)*
 
-1. Explain, without referring back to Chapter 10, the difference between
+1. Explain, without referring back to [Chapter 10](10-installing-vmware-nsx.md), the difference between
    an overlay transport zone and a VLAN transport zone, and give a
    scenario requiring each.
-2. Explain, without referring back to Chapter 11, why a Tier-0 gateway
+2. Explain, without referring back to [Chapter 11](11-configuring-vmware-nsx.md), why a Tier-0 gateway
    requires Edge capacity while Tier-1 East-West routing does not
    necessarily.
 3. Walk through, from memory, the steps Traceflow output would show for
@@ -260,8 +260,8 @@ as a realistic self-assessment for exam readiness.
 **Prerequisites**
 
 - A nested or physical lab environment with vCenter Server, at least two
-  ESXi hosts prepared with a VDS (Chapter 4), and NSX Manager deployed
-  (Chapter 10), reset to a clean/unconfigured NSX state (no existing
+  ESXi hosts prepared with a VDS ([Chapter 4](04-vsphere-virtual-networking.md)), and NSX Manager deployed
+  ([Chapter 10](10-installing-vmware-nsx.md)), reset to a clean/unconfigured NSX state (no existing
   transport zones, gateways, or DFW policy beyond defaults).
 - A timer or stopwatch.
 - No reference material open at the start of the timed portion (steps
@@ -275,7 +275,7 @@ as a realistic self-assessment for exam readiness.
    lab hosts as transport nodes.
 
    **Expected result:** both hosts report a healthy transport node
-   status without needing to reopen Chapter 10.
+   status without needing to reopen [Chapter 10](10-installing-vmware-nsx.md).
 
 2. **(Timed, target 15 minutes)** Deploy an Edge node and form an Edge
    cluster.
@@ -317,7 +317,7 @@ as a realistic self-assessment for exam readiness.
    additional practice.
 
 7. **Review (untimed):** for any step that required reference material or
-   ran over its time box, revisit the corresponding section of Chapter 10
+   ran over its time box, revisit the corresponding section of [Chapter 10](10-installing-vmware-nsx.md)
    or 11 and repeat that specific step in isolation until it can be
    completed unaided within its target time.
 

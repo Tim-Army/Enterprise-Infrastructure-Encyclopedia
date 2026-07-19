@@ -34,7 +34,7 @@ from smaller-scale IT:
    applications and business units at once. A single misconfigured shared
    component — a core switch, an identity provider, a storage array — can
    fail many unrelated services simultaneously, which is why change control
-   (Chapter 08) and defense-in-depth (Volume X) exist as disciplines rather
+   ([Chapter 08](08-infrastructure-lifecycle-management.md)) and defense-in-depth ([Volume X](../../volume-10-enterprise-cybersecurity/README.md)) exist as disciplines rather
    than as optional hygiene.
 3. **Regulatory and contractual obligation.** Enterprises operate under
    external constraints — data residency law, industry compliance
@@ -44,7 +44,7 @@ from smaller-scale IT:
 4. **Long asset lifespans and formal accountability.** Enterprise hardware
    and platform commitments are measured in years, not days, and every
    asset has a named owner, a documented lifecycle stage, and an audit
-   trail. Chapter 08 formalizes this as infrastructure lifecycle
+   trail. [Chapter 08](08-infrastructure-lifecycle-management.md) formalizes this as infrastructure lifecycle
    management.
 
 None of this implies enterprise infrastructure is defined by size alone. A
@@ -63,16 +63,16 @@ reference.
 | Domain | What it covers | Where this encyclopedia goes deep |
 | --- | --- | --- |
 | Engineering foundations | Workstation, repository, automation, and documentation practices that every other domain depends on | Volume I (this volume) |
-| Networking | Protocol architecture, addressing, switching, routing | Volume II, with vendor depth in Volume III |
-| Systems administration | Operating system management across the estate | Volume IV, with distribution depth in Volumes XIV and XXI |
-| Virtualization | Hypervisors, compute abstraction, virtual networking and storage | Volume V |
-| Storage and data protection | Block/file/object storage, backup, replication, recovery | Volume VI |
-| Cloud infrastructure | Public cloud architecture patterns and shared responsibility | Volume VII, with AWS depth in Volume XVII |
-| Containers and platform engineering | Container runtimes, orchestration, internal developer platforms | Volume VIII |
-| Automation at infrastructure scale | Infrastructure as code, configuration management, orchestration | Volume IX |
-| Cybersecurity | Identity, network security, endpoint security, vendor security platforms | Volume X, with vendor depth in Volumes XV, XVI, XVIII, XIX, XX |
-| Observability and operations | Monitoring, logging, tracing, operational practice | Volume XI |
-| Resilience and lifecycle | Availability engineering, disaster recovery, lifecycle discipline at scale | Volume XII |
+| Networking | Protocol architecture, addressing, switching, routing | [Volume II](../../volume-02-network-engineering-foundations/README.md), with vendor depth in [Volume III](../../volume-03-cisco-enterprise-networking/README.md) |
+| Systems administration | Operating system management across the estate | [Volume IV](../../volume-04-enterprise-systems-administration/README.md), with distribution depth in Volumes XIV and XXI |
+| Virtualization | Hypervisors, compute abstraction, virtual networking and storage | [Volume V](../../volume-05-vmware-virtualization/README.md) |
+| Storage and data protection | Block/file/object storage, backup, replication, recovery | [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md) |
+| Cloud infrastructure | Public cloud architecture patterns and shared responsibility | [Volume VII](../../volume-07-cloud-infrastructure/README.md), with AWS depth in [Volume XVII](../../volume-17-aws-architecture-security/README.md) |
+| Containers and platform engineering | Container runtimes, orchestration, internal developer platforms | [Volume VIII](../../volume-08-containers-platform-engineering/README.md) |
+| Automation at infrastructure scale | Infrastructure as code, configuration management, orchestration | [Volume IX](../../volume-09-infrastructure-automation/README.md) |
+| Cybersecurity | Identity, network security, endpoint security, vendor security platforms | [Volume X](../../volume-10-enterprise-cybersecurity/README.md), with vendor depth in Volumes XV, XVI, XVIII, XIX, XX |
+| Observability and operations | Monitoring, logging, tracing, operational practice | [Volume XI](../../volume-11-observability-enterprise-operations/README.md) |
+| Resilience and lifecycle | Availability engineering, disaster recovery, lifecycle discipline at scale | [Volume XII](../../volume-12-resilience-lifecycle-management/README.md) |
 | Integrated labs and hardware platforms | Cross-domain scenarios and vendor hardware management | Volumes XIII, XXII, XXIII |
 
 A useful mental model is that this volume answers "how do the people and
@@ -92,7 +92,7 @@ by who owns and operates the underlying hardware and software stack:
 | On-premises | The organization | The organization's own staff | Latency-sensitive, data-sovereignty-constrained, or fully depreciated legacy workloads |
 | Colocation | A third-party data center operator | The organization's own staff, using the operator's power/cooling/physical security | Organizations that want to own hardware but not build data centers |
 | Private cloud | The organization or a dedicated managed-service provider | A cloud-operating-model team, often the organization's own platform engineering group | Regulated workloads needing cloud agility without shared public infrastructure |
-| Public cloud (IaaS/PaaS/SaaS) | The cloud provider | Split under a shared responsibility model (Volume VII, Volume XVII) | Elastic, API-driven workloads; fastest time to provision |
+| Public cloud (IaaS/PaaS/SaaS) | The cloud provider | Split under a shared responsibility model ([Volume VII](../../volume-07-cloud-infrastructure/README.md), [Volume XVII](../../volume-17-aws-architecture-security/README.md)) | Elastic, API-driven workloads; fastest time to provision |
 | Hybrid | A mix of the above, deliberately integrated | Coordinated across teams and providers | Organizations migrating incrementally, or with workloads that must stay on different models permanently |
 | Edge | The organization or a partner, at a location close to data generation | Often minimal local staff, managed remotely | Low-latency or bandwidth-constrained processing close to where data originates |
 
@@ -100,7 +100,7 @@ The consumption-model decision is rarely made once for an entire
 organization. Mature enterprises make it per workload class, weighing
 latency, data residency, elasticity of demand, and existing capital
 investment — a theme this chapter returns to under Design Considerations
-and that Volume VII treats in full architectural depth.
+and that [Volume VII](../../volume-07-cloud-infrastructure/README.md) treats in full architectural depth.
 
 ### Availability vocabulary
 
@@ -127,7 +127,7 @@ roughly 52 minutes. Each additional nine reduces permitted downtime by
 roughly an order of magnitude and typically increases infrastructure cost
 and architectural complexity by a comparable order of magnitude — which is
 why availability targets belong in Design Considerations, not as an
-assumed default. Volume XII treats availability engineering and disaster
+assumed default. [Volume XII](../../volume-12-resilience-lifecycle-management/README.md) treats availability engineering and disaster
 recovery in full depth; this chapter only establishes the vocabulary.
 
 ### Organizational structures
@@ -146,7 +146,7 @@ readers will interact with regardless of their own team:
   health and security events respectively (Volumes X and XI).
 - **Enterprise architecture** governs how infrastructure and application
   decisions align with business strategy across all of the above — the
-  subject of Chapter 07.
+  subject of [Chapter 07](07-enterprise-architecture-fundamentals.md).
 
 ## Design Considerations
 
@@ -165,7 +165,7 @@ readers will interact with regardless of their own team:
   trade-off recurs in nearly every volume that follows.
 - **Standardization vs. best-of-breed.** Standardizing on fewer vendors and
   platforms per domain reduces the operational surface area a team must
-  master and simplifies automation (Chapter 03); best-of-breed selection
+  master and simplifies automation ([Chapter 03](03-automation-architecture.md)); best-of-breed selection
   per use case can outperform a standardized stack on any single dimension
   but multiplies the integration and skills burden. Enterprises generally
   standardize the foundational domains (network, identity, systems
@@ -176,7 +176,7 @@ readers will interact with regardless of their own team:
   migration cost, and the cost of the flexibility (or inflexibility) a
   model locks in. A private data center with fully depreciated hardware
   can look artificially cheap next to public cloud until the refresh cycle
-  in Chapter 08 arrives.
+  in [Chapter 08](08-infrastructure-lifecycle-management.md) arrives.
 - **Availability targets must be chosen deliberately, not inherited.**
   Applying a blanket 99.99% target to every workload is both wasteful
   (over-engineering low-stakes systems) and dangerous (under-communicating
@@ -213,7 +213,7 @@ a wiki page that quietly drifts out of date.
 
 Each record captures the minimum fields needed to answer "what do we run,
 who is accountable for it, and how critical is it" without requiring a
-full configuration management database (Chapter 08 introduces the CMDB
+full configuration management database ([Chapter 08](08-infrastructure-lifecycle-management.md) introduces the CMDB
 model for individual assets; this inventory operates one level up, at the
 domain level).
 
@@ -314,8 +314,8 @@ jobs:
       - run: ./scripts/validate-domain-inventory.sh infrastructure/domain-inventory.json
 ```
 
-This is the same pattern established in Chapter 02's structural validator
-and Chapter 03's layered CI model: a cheap, source-tree-only check runs
+This is the same pattern established in [Chapter 02](02-repository-architecture.md)'s structural validator
+and [Chapter 03](03-automation-architecture.md)'s layered CI model: a cheap, source-tree-only check runs
 before anything more expensive, and it runs identically whether invoked
 locally or in CI.
 
@@ -343,7 +343,7 @@ locally or in CI.
 - **Criticality tier disagreement between teams.** It is common for the
   team operating a domain to rate its own criticality lower than the
   business units depending on it would. Resolve this through the
-  architecture governance process in Chapter 07, not by letting the
+  architecture governance process in [Chapter 07](07-enterprise-architecture-fundamentals.md), not by letting the
   operating team's self-assessment stand unchallenged.
 - **Validator passes but the schema itself is wrong.** A validator only
   catches violations of the rules it encodes; if `criticality_tier` gains
@@ -359,9 +359,9 @@ locally or in CI.
   Control 1 (Inventory and Control of Enterprise Assets): an organization
   cannot secure, patch, or recover infrastructure it has not inventoried,
   and this holds at the domain level exactly as it holds at the individual
-  asset level in Chapter 08.
+  asset level in [Chapter 08](08-infrastructure-lifecycle-management.md).
 - Restrict write access to the inventory file to the same review controls
-  established in Chapter 02 (CODEOWNERS, required review) — an inventory
+  established in [Chapter 02](02-repository-architecture.md) (CODEOWNERS, required review) — an inventory
   anyone can silently edit is not a trustworthy source of truth for
   incident response or audit.
 - Do not record credentials, internal IP ranges, or other sensitive
@@ -376,7 +376,7 @@ locally or in CI.
 - Review the inventory's consumption-model distribution periodically as a
   concentration-risk exercise: if every tier-1 domain depends on the same
   single provider or the same single physical location, that is a
-  resilience finding for Volume XII, not a detail to note and move past.
+  resilience finding for [Volume XII](../../volume-12-resilience-lifecycle-management/README.md), not a detail to note and move past.
 
 ## References and Knowledge Checks
 

@@ -4,10 +4,10 @@
 
 - Navigate Wireshark's packet list, packet detail, and packet bytes panes,
   and explain what each represents in the dissection pipeline introduced in
-  Chapter 01.
+  [Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md).
 - Build and apply display filter expressions using field names, comparison
   operators, and logical combinators, and distinguish a display filter from
-  the capture filters covered in Chapter 02.
+  the capture filters covered in [Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md).
 - Create and switch between configuration profiles so that analysis
   settings for different roles or investigations do not interfere with each
   other.
@@ -19,7 +19,7 @@
 
 ## Theory and Architecture
 
-Chapter 01 described Wireshark's dissection pipeline: `dumpcap` writes raw
+[Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md) described Wireshark's dissection pipeline: `dumpcap` writes raw
 frames, and the `epan` dissector engine parses them into a protocol tree.
 The Wireshark GUI is the primary interactive consumer of that tree, and its
 interface is organized around three synchronized panes:
@@ -27,7 +27,7 @@ interface is organized around three synchronized panes:
 | Pane | Shows | Selecting a row/field does |
 | --- | --- | --- |
 | Packet List | One line per packet: number, timestamp, source, destination, protocol, length, and a summary column (`Info`). | Loads that packet's full dissection into the Packet Detail pane. |
-| Packet Detail | The dissected protocol tree for the selected packet, one expandable node per protocol layer, matching the encapsulation chain from Chapter 01. | Highlights the corresponding bytes in the Packet Bytes pane and offers "Apply as Filter" / "Copy" context actions keyed to that specific field. |
+| Packet Detail | The dissected protocol tree for the selected packet, one expandable node per protocol layer, matching the encapsulation chain from [Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md). | Highlights the corresponding bytes in the Packet Bytes pane and offers "Apply as Filter" / "Copy" context actions keyed to that specific field. |
 | Packet Bytes | The raw hex and ASCII representation of the selected packet. | Highlights the corresponding field in the Packet Detail pane (the relationship is bidirectional). |
 
 This three-pane synchronization is what makes Wireshark's GUI more than a
@@ -39,7 +39,7 @@ the list that carries the same value, once a filter is built from it.
 
 A display filter is a boolean expression evaluated against the dissected
 field tree of every packet already in memory. Unlike the capture filters
-covered in Chapter 02, a display filter never discards data from the
+covered in [Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md), a display filter never discards data from the
 file — it only controls what is currently shown, and can be changed,
 cleared, or narrowed indefinitely without recapturing.
 
@@ -73,7 +73,7 @@ but likely not what was intended (for example, a field that does not exist
 in any loaded packet). `tshark -Y "<filter>"` applies the identical
 expression language from the command line, which is why filters developed
 interactively in the GUI transfer directly into the scripted workflows
-covered in Chapter 08.
+covered in [Chapter 08](08-security-investigation-command-line-analysis-and-automation.md).
 
 ### Configuration profiles
 
@@ -109,7 +109,7 @@ sequence gaps; neither configuration is useful for the other's task.
 - **Profiles are portable but not automatically sanitized.** A profile
   exported to share with another analyst carries any saved filters, which
   may reference internal hostnames or IP ranges; review before sharing
-  outside the immediate investigating team (Chapter 01's evidence-handling
+  outside the immediate investigating team ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)'s evidence-handling
   guidance applies to profile content, not just capture content).
 - **Statistics workflows scale down attention, not data.** Protocol
   Hierarchy and Conversations summarize an entire capture in seconds and
@@ -180,7 +180,7 @@ Statistics > IO Graph             — traffic volume over time, filterable per l
 ```
 
 `tshark` exposes the same summaries non-interactively, which is the bridge
-to Chapter 08's automation workflows:
+to [Chapter 08](08-security-investigation-command-line-analysis-and-automation.md)'s automation workflows:
 
 ```bash
 tshark -r capture.pcapng -q -z io,phs        # protocol hierarchy
@@ -277,10 +277,10 @@ Stream to read a reassembled conversation.
 
 **Prerequisites**
 
-- Wireshark installed with capture rights configured (Chapter 01).
+- Wireshark installed with capture rights configured ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
 - A capture containing at least one TCP conversation with visible
   application data (an HTTP request is sufficient); the `lab01-baseline`
-  capture from Chapter 01 or a fresh short capture both work.
+  capture from [Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md) or a fresh short capture both work.
 
 **Steps**
 
@@ -344,7 +344,7 @@ analysis configurations separated by role, display filters that narrow an
 already-captured file without discarding data, coloring rules and custom
 columns that surface conditions passively while scanning, and statistics
 views that summarize an entire capture before a single filter is typed.
-Chapter 04 begins applying these workflows to specific protocol layers,
+[Chapter 04](04-ethernet-arp-ipv4-and-icmpv4-analysis.md) begins applying these workflows to specific protocol layers,
 starting with Ethernet, ARP, IPv4, and ICMPv4.
 
 - [ ] Can identify what each of the three main panes represents and how

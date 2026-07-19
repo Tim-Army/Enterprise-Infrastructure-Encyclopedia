@@ -22,7 +22,7 @@
 
 ### Three related, distinct practices
 
-ITIL 4 (introduced at the framework level in Volume I, Chapter 08) treats
+ITIL 4 (introduced at the framework level in [Volume I, Chapter 08](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md)) treats
 incident, problem, and change as separate practices because they answer
 different questions and operate on different timescales, and collapsing
 them into one undifferentiated "ops process" is a common source of
@@ -55,7 +55,7 @@ three unrelated tickets in three different systems.
 ### Incident management and the major incident process
 
 Most incidents are handled by the on-call responder alone, following the
-runbook pattern from Chapter 06, and close without escalation. A
+runbook pattern from [Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md), and close without escalation. A
 **major incident** process activates when impact or ambiguity exceeds
 what a single on-call responder should be expected to resolve alone —
 typically triggered by Tier 0 service impact, multi-service
@@ -115,7 +115,7 @@ for longer than necessary while someone hesitates to escalate.
 ### Incident severity classification
 
 A consistent severity scale, distinct from the service tiering in
-Chapter 01 (tiering describes the service; severity describes the
+[Chapter 01](01-observability-operating-model-and-service-ownership.md) (tiering describes the service; severity describes the
 current incident), drives response urgency and communication cadence:
 
 | Severity | Definition | Major incident process | Communication cadence |
@@ -182,7 +182,7 @@ document includes:
   alert-fire timestamps, deploy timestamps, trace and log evidence —
   rather than from memory alone, which is unreliable under stress).
 - Impact, quantified (duration, affected users or requests, error-budget
-  consumed per Chapter 03).
+  consumed per [Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)).
 - Contributing factors, not a single "root cause" line.
 - Action items, each with a named owner and a tracked ticket, distinct
   from general narrative — an action item that is not tracked to
@@ -203,7 +203,7 @@ document includes:
   produces excellent postmortems but never completes the resulting
   action items has a governance gap, not a documentation gap. Track
   postmortem action item completion rate as its own metric, reviewed at
-  the same cadence as error budgets (Chapter 03), and treat a
+  the same cadence as error budgets ([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)), and treat a
   chronically incomplete action item backlog as its own signal for
   problem management to escalate.
 - **Change risk classification granularity.** Too few risk categories
@@ -212,7 +212,7 @@ document includes:
   changes and, paradoxically, encourages teams to route around the
   process entirely for routine work. Too many categories creates
   classification overhead that slows the change record itself. Three
-  categories (standard, normal, emergency, per Volume I Chapter 08) is
+  categories (standard, normal, emergency, per [Volume I Chapter 08](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md)) is
   the common, workable default; refine sub-categories only where a
   specific class of change genuinely needs different handling (a
   database schema change versus a configuration flag flip).
@@ -241,7 +241,7 @@ document includes:
 ## Implementation and Automation
 
 Encode change risk classification as a structured record, integrated with
-the same service catalog metadata from Chapter 01 so risk category can be
+the same service catalog metadata from [Chapter 01](01-observability-operating-model-and-service-ownership.md) so risk category can be
 partly auto-suggested from the target service's tier:
 
 ```yaml
@@ -382,7 +382,7 @@ Elevated 5xx error rate on /checkout, peaking at 8% of requests, for
 ## Security and Best Practices
 
 - Treat the change record as an auditable control, not paperwork:
-  regulatory frameworks referenced in Volume X (PCI DSS, SOX,
+  regulatory frameworks referenced in [Volume X](../../volume-10-enterprise-cybersecurity/README.md) (PCI DSS, SOX,
   ISO 27001) commonly require demonstrable evidence that production
   changes were reviewed and approved before deployment, and a change
   management process that exists in documentation but is not actually
@@ -592,7 +592,7 @@ practice that reduces how often a deliberate modification becomes the
 next incident. The major incident command structure — separate
 incident commander, operations lead, and communications lead roles —
 scales response to genuinely large or ambiguous incidents without
-overloading any single responder. Chapter 08 turns from incident
+overloading any single responder. [Chapter 08](08-capacity-performance-and-cost-aware-operations.md) turns from incident
 response to the proactive side of operations: capacity, performance, and
 cost-aware planning that reduces how often these processes are needed at
 all.

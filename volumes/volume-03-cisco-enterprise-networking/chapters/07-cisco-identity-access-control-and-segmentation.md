@@ -9,7 +9,7 @@
 - Explain Cisco Identity Services Engine (ISE)'s role as policy decision
   point and describe closed, open, and monitor 802.1X deployment modes.
 - Describe Cisco TrustSec Security Group Tag (SGT) micro-segmentation and
-  how it complements VRF-lite macro-segmentation from Chapter 3.
+  how it complements VRF-lite macro-segmentation from [Chapter 3](03-cisco-enterprise-routing-and-path-control.md).
 - Configure downloadable ACLs (dACLs) and static SGT-to-VLAN mappings, and
   validate an authentication session end to end.
 - Apply device-administration and network-access hardening consistent
@@ -96,7 +96,7 @@ without waiting for the endpoint to re-authenticate on its own).
 
 ### Cisco TrustSec and Security Group Tags
 
-Chapter 3 covered **VRF-lite** as a macro-segmentation tool — separate
+[Chapter 3](03-cisco-enterprise-routing-and-path-control.md) covered **VRF-lite** as a macro-segmentation tool — separate
 routing tables for coarse-grained isolation (for example, a guest VRF
 fully separated from the corporate VRF). **Cisco TrustSec** adds
 **micro-segmentation** on top of that: instead of writing and maintaining
@@ -288,14 +288,14 @@ DIST-01# show cts role-based permissions
   undocumented full-access fallback.
 - Rotate TACACS+/RADIUS shared secrets on a defined schedule and store
   them in a managed secrets store rather than plaintext configuration
-  backups (Volume IX).
+  backups ([Volume IX](../../volume-09-infrastructure-automation/README.md)).
 - Use per-command TACACS+ authorization for privilege-15 administrators
   where regulatory or change-control requirements justify the additional
   policy maintenance; at minimum, separate read-only (privilege 1–14) from
   full-admin (privilege 15) roles.
 - Prefer EAP-TLS (certificate-based) 802.1X over PEAP/MSCHAPv2 for
   managed corporate endpoints wherever a certificate deployment pipeline
-  (Volume IV, Volume IX) exists; certificate-based authentication removes
+  ([Volume IV](../../volume-04-enterprise-systems-administration/README.md), [Volume IX](../../volume-09-infrastructure-automation/README.md)) exists; certificate-based authentication removes
   password-based credential theft as a network-access attack vector.
 - Treat the SGACL matrix as a change-controlled artifact, not an
   ad hoc set of rules; because SGACL policy applies wherever an SGT
@@ -335,7 +335,7 @@ server, and validate CLI administrator access uses TACACS+.
 
 **Prerequisites**
 
-- The access/distribution topology from Chapter 2's lab (or equivalent
+- The access/distribution topology from [Chapter 2](02-catalyst-campus-switching-and-resiliency.md)'s lab (or equivalent
   CML topology).
 - A RADIUS/TACACS+-capable AAA server or ISE instance (physical, virtual,
   or the ISE Personal Developer VM) reachable from the lab switches, with
@@ -426,7 +426,7 @@ the device itself, while 802.1X and MAB (backed by RADIUS/ISE) govern
 what an endpoint can do once connected — down to a dynamic VLAN, dACL, or
 Security Group Tag. TrustSec's SGT/SGACL model then lets that identity
 follow the endpoint for micro-segmentation, complementing the VRF-lite
-macro-segmentation introduced in Chapter 3 without requiring an
+macro-segmentation introduced in [Chapter 3](03-cisco-enterprise-routing-and-path-control.md) without requiring an
 IP-address-based ACL at every enforcement point.
 
 - [ ] Can configure TACACS+ device administration with a local fallback.

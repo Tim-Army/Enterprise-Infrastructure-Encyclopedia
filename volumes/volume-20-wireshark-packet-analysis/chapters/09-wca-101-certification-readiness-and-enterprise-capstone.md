@@ -45,14 +45,14 @@ encyclopedia's release cycle.
 
 | Domain | What it evaluates | Primary chapters |
 | --- | --- | --- |
-| Capture fundamentals and tooling | Installing and permissioning Wireshark/`tshark`, capture file formats, evidentiary handling | Chapter 01 |
-| Capture engineering | TAPs, SPAN/mirror ports, capture filters, ring buffers, remote capture | Chapter 02 |
-| Analyst workflow and interface proficiency | Panes, profiles, display filters, coloring rules, statistics views | Chapter 03 |
-| Core protocol analysis (IPv4 family) | Ethernet, ARP, IPv4, ICMPv4 | Chapter 04 |
-| Core protocol analysis (IPv6 family and name/address services) | IPv6, ICMPv6/NDP, UDP, DHCP, DNS | Chapter 05 |
-| Transport-layer reliability and performance | TCP handshake, retransmission/duplicate-ACK/zero-window analysis, window scaling, throughput | Chapter 06 |
-| Application-layer and encrypted-traffic analysis | HTTP/HTTP2, TLS handshake analysis, TLS decryption, service response time | Chapter 07 |
-| Security investigation and automation | Attack-pattern recognition, `tshark` scripting, file utilities, sanitization | Chapter 08 |
+| Capture fundamentals and tooling | Installing and permissioning Wireshark/`tshark`, capture file formats, evidentiary handling | [Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md) |
+| Capture engineering | TAPs, SPAN/mirror ports, capture filters, ring buffers, remote capture | [Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md) |
+| Analyst workflow and interface proficiency | Panes, profiles, display filters, coloring rules, statistics views | [Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md) |
+| Core protocol analysis (IPv4 family) | Ethernet, ARP, IPv4, ICMPv4 | [Chapter 04](04-ethernet-arp-ipv4-and-icmpv4-analysis.md) |
+| Core protocol analysis (IPv6 family and name/address services) | IPv6, ICMPv6/NDP, UDP, DHCP, DNS | [Chapter 05](05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md) |
+| Transport-layer reliability and performance | TCP handshake, retransmission/duplicate-ACK/zero-window analysis, window scaling, throughput | [Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md) |
+| Application-layer and encrypted-traffic analysis | HTTP/HTTP2, TLS handshake analysis, TLS decryption, service response time | [Chapter 07](07-application-protocol-tls-and-service-response-analysis.md) |
+| Security investigation and automation | Attack-pattern recognition, `tshark` scripting, file utilities, sanitization | [Chapter 08](08-security-investigation-command-line-analysis-and-automation.md) |
 
 ### Preparation priorities by domain
 
@@ -62,7 +62,7 @@ encyclopedia's release cycle.
   aggregating TAP drops packets silently. These are conceptual questions
   more than syntax questions, and are frequently under-reviewed by
   candidates who focus only on filter syntax.
-- **Filter syntax fluency (Chapter 03 onward).** Practice writing display
+- **Filter syntax fluency ([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md) onward).** Practice writing display
   filters from a plain-language description without autocomplete — the
   ability to construct `tcp.flags.syn==1 && tcp.flags.ack==0` from memory,
   not just recognize it, is the single most transferable exam-readiness
@@ -72,11 +72,11 @@ encyclopedia's release cycle.
   volume's labs (`ip.ttl`, `icmp.type`, `dns.flags.rcode`,
   `tcp.analysis.retransmission`, `tls.handshake.type`) and drill until
   recall is immediate.
-- **Expert-flag interpretation (Chapter 06).** Be able to distinguish a
+- **Expert-flag interpretation ([Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md)).** Be able to distinguish a
   retransmission from a duplicate ACK from a zero-window condition purely
   from a description of the symptom, and state which side of the
   connection each points an investigation toward.
-- **Command-line equivalence (Chapter 08).** For every GUI workflow
+- **Command-line equivalence ([Chapter 08](08-security-investigation-command-line-analysis-and-automation.md)).** For every GUI workflow
   practiced in this volume, be able to state the `tshark` equivalent — many
   foundational packet-analysis assessments test whether a candidate
   understands that the GUI and CLI share the same dissection engine, not
@@ -86,9 +86,9 @@ encyclopedia's release cycle.
 
 - **Study plan sequencing should mirror investigative order, not chapter
   order, in review.** In practice, an analyst starts with capture
-  placement and scope (Chapter 02), moves to interface/workflow setup
-  (Chapter 03), then protocol analysis (Chapters 04–07), then
-  security/automation (Chapter 08) — reviewing in this investigative
+  placement and scope ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md)), moves to interface/workflow setup
+  ([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md)), then protocol analysis (Chapters 04–07), then
+  security/automation ([Chapter 08](08-security-investigation-command-line-analysis-and-automation.md)) — reviewing in this investigative
   sequence during final preparation reinforces how the domains connect
   rather than treating them as isolated topics.
 - **Practice against real captures, not just field-name flashcards.**
@@ -98,7 +98,7 @@ encyclopedia's release cycle.
   exercise the latter.
 - **Time management during hands-on assessment mirrors time management
   during a real investigation.** Triage with Protocol Hierarchy and
-  Conversations (Chapter 03) before drilling into individual packets,
+  Conversations ([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md)) before drilling into individual packets,
   exactly as recommended for a first pass on any unfamiliar capture.
 - **Certification currency has a shelf life independent of this
   volume.** Because [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md)
@@ -148,7 +148,7 @@ echo "${fields[$RANDOM % ${#fields[@]}]}"
 
 - **Confident on filter syntax but slow identifying which filter to
   write.** This is a triage-skill gap, not a syntax gap — practice starting
-  from Statistics views (Chapter 03) before writing any filter, so filter
+  from Statistics views ([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md)) before writing any filter, so filter
   construction follows a hypothesis rather than searching blindly.
 - **Strong on individual protocol chapters but weak on cross-layer
   scenarios.** Revisit the capstone lab below and any multi-chapter labs;
@@ -210,13 +210,13 @@ echo "${fields[$RANDOM % ${#fields[@]}]}"
    an exam attempt rather than relying solely on this chapter's domain
    table?
 4. Name one command-line equivalence a candidate should be able to state
-   for a GUI workflow practiced in Chapter 07.
+   for a GUI workflow practiced in [Chapter 07](07-application-protocol-tls-and-service-response-analysis.md).
 
 ## Hands-On Lab
 
 **Objective:** Execute an integrated capstone investigation combining
 capture engineering, GUI/CLI workflow, protocol analysis across Chapters
-04–07, and Chapter 08's security/automation techniques against one
+04–07, and [Chapter 08](08-security-investigation-command-line-analysis-and-automation.md)'s security/automation techniques against one
 realistic capture scenario, then produce a short professional analysis
 report.
 
@@ -234,7 +234,7 @@ reveals, following the domain sequence from Design Considerations.
 
 **Steps**
 
-1. Start a bounded ring-buffer capture on the lab segment (Chapter 02),
+1. Start a bounded ring-buffer capture on the lab segment ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md)),
    scoped to the lab host:
 
    ```bash
@@ -264,15 +264,15 @@ reveals, following the domain sequence from Design Considerations.
    ```
 
 4. Open the resulting file(s) in Wireshark, start with Statistics >
-   Protocol Hierarchy and Statistics > Conversations (Chapter 03) to form
+   Protocol Hierarchy and Statistics > Conversations ([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md)) to form
    an initial picture before writing any filter.
-5. Confirm the DHCP DORA exchange completed successfully (Chapter 05):
+5. Confirm the DHCP DORA exchange completed successfully ([Chapter 05](05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md)):
 
    ```text
    dhcp
    ```
 
-6. Confirm DNS resolution succeeded with `rcode==0` (Chapter 05):
+6. Confirm DNS resolution succeeded with `rcode==0` ([Chapter 05](05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md)):
 
    ```text
    dns.qry.name=="example.com"
@@ -286,7 +286,7 @@ reveals, following the domain sequence from Design Considerations.
    tcp.analysis.retransmission
    ```
 
-8. Identify the scan using the Chapter 08 detection one-liner:
+8. Identify the scan using the [Chapter 08](08-security-investigation-command-line-analysis-and-automation.md) detection one-liner:
 
    ```bash
    tshark -r capstone_00001_*.pcapng \
@@ -327,12 +327,12 @@ reveals, following the domain sequence from Design Considerations.
 
 ## Summary and Completion Checklist
 
-This volume built from installation and evidentiary handling (Chapter 01)
-through capture engineering (Chapter 02), interface and filter fluency
-(Chapter 03), core protocol analysis across the IPv4 and IPv6 families
+This volume built from installation and evidentiary handling ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md))
+through capture engineering ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md)), interface and filter fluency
+([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md)), core protocol analysis across the IPv4 and IPv6 families
 (Chapters 04–05), transport-layer reliability and performance (Chapter
-06), application and encrypted-traffic analysis (Chapter 07), and
-security investigation and automation (Chapter 08). Certification
+06), application and encrypted-traffic analysis ([Chapter 07](07-application-protocol-tls-and-service-response-analysis.md)), and
+security investigation and automation ([Chapter 08](08-security-investigation-command-line-analysis-and-automation.md)). Certification
 readiness for a foundational credential such as WCA-101 is a matter of
 targeted review against the domain table above and repeated practice
 against real captures — this chapter's capstone is deliberately built to

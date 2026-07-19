@@ -55,7 +55,7 @@ map** and per-request **trace** showing latency contribution at each hop.
 This is the tool that answers "which specific downstream call made this
 request slow," a question aggregate metrics alone cannot answer once an
 architecture spans more than a couple of services, which is the norm for
-the compute patterns in Chapter 04.
+the compute patterns in [Chapter 04](04-compute-containers-serverless-and-application-architecture.md).
 
 ### AWS Config and conformance packs
 
@@ -66,7 +66,7 @@ backed by a Lambda function. A **conformance pack** bundles a set of Config
 rules and remediation actions as a single deployable, version-controlled
 unit, commonly deployed organization-wide via Config's multi-account,
 multi-Region aggregation and Organizations integration — the detective
-counterpart to the preventive SCP guardrails from Chapter 02. Where a Config
+counterpart to the preventive SCP guardrails from [Chapter 02](02-multi-account-identity-governance-and-landing-zones.md). Where a Config
 rule identifies a `NON_COMPLIANT` resource, an associated **remediation
 action** (a Systems Manager Automation document) can correct it
 automatically or require manual approval, depending on the guardrail's
@@ -81,7 +81,7 @@ instances (EC2 and, via the hybrid activation model, on-premises servers):
   without an open inbound SSH/RDP port, a bastion host, or a stored SSH
   key — access is instead governed entirely by IAM policy and logged to
   CloudWatch Logs/S3, directly reducing the network attack surface
-  established in Chapter 03.
+  established in [Chapter 03](03-secure-networking-hybrid-connectivity-and-edge.md).
 - **Patch Manager** automates OS and application patch compliance
   against a defined **patch baseline** (approved patch classifications and
   an auto-approval delay), scanning and installing patches during defined
@@ -110,7 +110,7 @@ concern that CloudFormation does not require.
 - **AWS Cost Explorer** visualizes historical and forecasted spend,
   filterable and groupable by service, linked account, and cost
   allocation tag.
-- **AWS Budgets** (introduced in Chapter 01 for account-level guardrails)
+- **AWS Budgets** (introduced in [Chapter 01](01-cloud-foundations-accounts-and-well-architected-design.md) for account-level guardrails)
   scales to org-wide budgets with configurable alert thresholds and,
   through **budget actions**, can automatically apply a restrictive IAM
   policy or stop specific resources when a threshold is breached.
@@ -140,7 +140,7 @@ concern that CloudFormation does not require.
   per log group.** Indefinite retention on high-volume log groups
   (VPC Flow Logs, ALB access logs) accumulates significant CloudWatch
   Logs storage cost; export older logs to S3 (with lifecycle transitions
-  from Chapter 05) for cheaper long-term retention where compliance
+  from [Chapter 05](05-storage-databases-analytics-and-data-protection.md)) for cheaper long-term retention where compliance
   requires it, rather than leaving every log group at the default
   "never expire" setting.
 - **Config rules should map to actual guardrails, not just available
@@ -349,7 +349,7 @@ aws budgets create-budget --account-id 111122223333 --budget '{
   centralized, access-restricted CloudWatch Logs group or S3 bucket for
   audit purposes.
 - Treat AWS Config's recorder and rules the same as CloudTrail from
-  Chapter 02 — deploy organization-wide via Config's Organizations
+  [Chapter 02](02-multi-account-identity-governance-and-landing-zones.md) — deploy organization-wide via Config's Organizations
   aggregator, and protect the delivery channel/S3 bucket from
   workload-account tampering.
 - Apply patch baselines with security classification auto-approval on a
@@ -359,7 +359,7 @@ aws budgets create-budget --account-id 111122223333 --budget '{
 - Store Terraform state in an encrypted S3 backend with DynamoDB state
   locking and versioning enabled, and restrict write access to the CI/CD
   pipeline's federated role rather than individual engineer credentials —
-  consistent with the plan/apply separation principle from Volume I.
+  consistent with the plan/apply separation principle from [Volume I](../../volume-01-enterprise-engineering-foundations/README.md).
 - Alert on budget thresholds using forecasted, not only actual, spend so
   a runaway cost trend triggers investigation before the money is
   actually spent, not after.
@@ -503,7 +503,7 @@ CloudWatch metrics, logs, alarms, and dashboards form the core
 observability layer, with X-Ray extending visibility across service
 boundaries for distributed architectures. AWS Config and conformance
 packs provide the detective counterpart to the preventive SCP guardrails
-from Chapter 02, and Systems Manager standardizes patching and access
+from [Chapter 02](02-multi-account-identity-governance-and-landing-zones.md), and Systems Manager standardizes patching and access
 without exposing inbound management ports. CloudFormation and Terraform
 both express infrastructure declaratively, and the choice between them is
 an organizational standardization decision rather than a technical

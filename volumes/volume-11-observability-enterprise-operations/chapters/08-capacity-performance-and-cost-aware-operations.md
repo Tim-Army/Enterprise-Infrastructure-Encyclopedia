@@ -24,7 +24,7 @@
 
 Capacity planning answers "will we have enough" before the answer
 becomes "we did not," using historical utilization data (the same
-metrics pipeline from Chapter 02, now queried for trend rather than
+metrics pipeline from [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md), now queried for trend rather than
 alerting) projected forward against expected demand. Three demand
 patterns require different forecasting approaches:
 
@@ -47,7 +47,7 @@ A capacity forecast is only useful if it is compared against actual
 provisioned headroom and reviewed on a fixed cadence; a forecast
 produced once and never revisited ages into irrelevance within one
 growth cycle, and a review cadence tied to the same cadence as SLO and
-error-budget review (Chapter 03) keeps reliability and capacity planning
+error-budget review ([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)) keeps reliability and capacity planning
 from drifting apart despite being causally connected — capacity
 exhaustion is a common and entirely preventable root cause of an SLO
 burn event.
@@ -140,7 +140,7 @@ spec:
 ```
 
 Scaling on request-in-flight or queue-depth signals, sourced directly
-from the same OTel-instrumented metrics pipeline built in Chapter 02,
+from the same OTel-instrumented metrics pipeline built in [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md),
 typically produces more accurate scaling decisions than CPU utilization
 alone, because CPU utilization can lag or diverge from actual request
 saturation for I/O-bound services. **KEDA** (Kubernetes Event-driven
@@ -195,7 +195,7 @@ mechanisms make cost visible and actionable at the team level:
   actionable signal, not total spend trending upward.
 
 Cost attribution depends on the same resource-tagging and service-
-ownership discipline established for the catalog in Chapter 01 — a cloud
+ownership discipline established for the catalog in [Chapter 01](01-observability-operating-model-and-service-ownership.md) — a cloud
 resource or Kubernetes namespace without an owner tag is invisible to
 showback the same way an unowned service is invisible to on-call, and
 both gaps share the same root cause: metadata discipline not enforced at
@@ -231,7 +231,7 @@ the team that caused it.
   CPU-heavy but low-traffic background work.
 - **Scale-to-zero trade-off.** KEDA's scale-to-zero eliminates idle cost
   but reintroduces cold-start latency on the next request, which may
-  violate a latency SLO (Chapter 03) for a user-facing service even if
+  violate a latency SLO ([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)) for a user-facing service even if
   it is entirely appropriate for an internal batch or async workload.
   Reserve scale-to-zero for workloads whose SLO, if any, tolerates
   cold-start latency.
@@ -308,7 +308,7 @@ if __name__ == "__main__":
 
 A cost-attribution query against Kubernetes resource-usage metrics,
 labeled by the same ownership metadata used in the service catalog
-(Chapter 01), producing a showback figure without requiring a dedicated
+([Chapter 01](01-observability-operating-model-and-service-ownership.md)), producing a showback figure without requiring a dedicated
 FinOps platform for a first iteration:
 
 ```promql
@@ -409,7 +409,7 @@ print('Right-sizing check passed.')
   disproportionate shared-cluster capacity, protecting other tenants'
   availability from one team's capacity or cost incident.
 - Treat cost and capacity data with the same ownership-boundary access
-  control as the service catalog (Chapter 01) — cost attribution data
+  control as the service catalog ([Chapter 01](01-observability-operating-model-and-service-ownership.md)) — cost attribution data
   reveals which services and teams are growing or shrinking, which is
   organizationally sensitive information in some contexts, and access
   should be scoped accordingly rather than broadly open by default.
@@ -614,7 +614,7 @@ capacity matched to demand without manual intervention on every cycle.
 FinOps practices — showback, chargeback, and unit economics — make cost
 a visible, owned engineering signal rather than a monthly finance
 surprise, and the observability pipeline's own telemetry volume is
-itself part of that cost surface. Chapter 09 closes the volume by
+itself part of that cost surface. [Chapter 09](09-operational-automation-analytics-and-continual-improvement.md) closes the volume by
 turning all of this operational data — incidents, alerts, capacity
 trends, cost — into a continual improvement loop through automation and
 analytics.

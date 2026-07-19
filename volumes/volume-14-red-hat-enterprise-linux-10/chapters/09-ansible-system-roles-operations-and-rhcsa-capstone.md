@@ -51,10 +51,10 @@ Every Ansible **module** is designed to be idempotent: running a task
 against a host already in the desired state reports `ok` (no change),
 while running it against a host not yet in that state reports
 `changed` and performs the necessary action — the same principle
-Chapter 02 introduced for shell scripts, now enforced structurally by
+[Chapter 02](02-essential-tools-shell-scripting-and-software-management.md) introduced for shell scripts, now enforced structurally by
 the module system rather than left to script discipline. This is why
 Ansible playbooks are safe to re-run repeatedly (including on a
-schedule, via `cron` or a systemd timer from Chapter 03) without
+schedule, via `cron` or a systemd timer from [Chapter 03](03-boot-systemd-processes-logging-and-scheduled-work.md)) without
 manually tracking which hosts already received a given change.
 
 ### Playbooks, roles, and templates
@@ -78,10 +78,10 @@ restart this service if its configuration actually changed."
 
 **RHEL System Roles** (the `rhel-system-roles` package) are a
 collection of pre-built, Red Hat–supported Ansible roles covering
-common RHEL administrative domains: `timesync` (chrony, Chapter 07),
-`network` (NetworkManager profiles, Chapter 04), `storage` (partitions,
-LVM, and filesystems, Chapter 05), `selinux` (booleans and file
-contexts, Chapter 06), `firewall` (zones and rules, Chapter 04), and
+common RHEL administrative domains: `timesync` (chrony, [Chapter 07](07-dns-ntp-web-database-and-common-server-services.md)),
+`network` (NetworkManager profiles, [Chapter 04](04-users-privilege-ssh-networking-and-firewalld.md)), `storage` (partitions,
+LVM, and filesystems, [Chapter 05](05-storage-lvm-filesystems-swap-and-shared-storage-services.md)), `selinux` (booleans and file
+contexts, [Chapter 06](06-selinux-permissions-cryptography-and-system-hardening.md)), `firewall` (zones and rules, [Chapter 04](04-users-privilege-ssh-networking-and-firewalld.md)), and
 many others. Using a System Role instead of hand-writing equivalent
 tasks gets an administrator a tested, Red Hat–maintained
 implementation of the exact configuration patterns this volume covers
@@ -103,7 +103,7 @@ which inventory, a scheduling and job-history audit trail, and
 execution environments (containerized, version-pinned Ansible
 runtimes) that make "the playbook worked on my machine" failures far
 less common. The relationship mirrors this encyclopedia's broader
-automation architecture theme from Volume I: local execution proves a
+automation architecture theme from [Volume I](../../volume-01-enterprise-engineering-foundations/README.md): local execution proves a
 playbook works, and a governed platform is what makes that same
 playbook a safe, auditable, repeatable operational practice at fleet
 scale.
@@ -318,7 +318,7 @@ ansible-playbook -i inventory.ini site.yml --ask-vault-pass
   for reviewing a playbook against production before running it live.
 - **Diagnose connectivity/authentication failures before blaming the
   playbook.** `ansible -m ping <host>` isolates whether the problem is
-  SSH/authentication (Chapter 04) versus something in the playbook
+  SSH/authentication ([Chapter 04](04-users-privilege-ssh-networking-and-firewalld.md)) versus something in the playbook
   itself; a playbook failing on its very first task against a specific
   host is very often an inventory or credential problem, not a task
   logic problem.
@@ -349,7 +349,7 @@ ansible-playbook -i inventory.ini site.yml --ask-vault-pass
   control.
 - Use `become: true` with a scoped, audited privilege-escalation
   account rather than direct root SSH, consistent with the `sudo`
-  guidance in Chapter 04.
+  guidance in [Chapter 04](04-users-privilege-ssh-networking-and-firewalld.md).
 - Pin `rhel-system-roles` and `ansible-core` versions deliberately
   against [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) rather
   than floating on "whatever is currently in the repository," so a

@@ -24,7 +24,7 @@ A **trace** represents the end-to-end journey of one request through a
 distributed system. It is composed of **spans**, where each span
 represents a single unit of work — an inbound HTTP request, an outbound
 database query, a function call explicitly instrumented as
-business-meaningful (Chapter 02). Every span carries:
+business-meaningful ([Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)). Every span carries:
 
 - A `trace_id`, shared by every span in the same trace.
 - A `span_id`, unique to that span.
@@ -35,7 +35,7 @@ business-meaningful (Chapter 02). Every span carries:
   `INTERNAL` — describing the span's role in the call, which downstream
   tooling uses to correctly render request/response pairs instead of
   duplicate-counting the same logical hop.
-- Attributes (following semantic conventions, Chapter 02), events (
+- Attributes (following semantic conventions, [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)), events (
   timestamped annotations within the span, such as a retry), and a
   status (`OK`, `ERROR`, with an optional description).
 
@@ -43,7 +43,7 @@ Because spans are emitted independently by each service — a client span
 from the calling service, a server span from the called service — a
 trace backend reconstructs the tree by joining spans on `trace_id` and
 `parent_span_id` after ingestion, not at emission time. This is why
-context propagation (Chapter 02's W3C Trace Context) is structurally
+context propagation ([Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)'s W3C Trace Context) is structurally
 necessary rather than a nice-to-have: any hop that fails to propagate
 `traceparent` produces spans that share no `trace_id` with what came
 before, and the backend cannot join them into one tree no matter how
@@ -74,7 +74,7 @@ optimize spans that do not actually matter.
 
 ### Sampling strategy in depth
 
-Chapter 02 introduced head-based and tail-based sampling at a pipeline
+[Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md) introduced head-based and tail-based sampling at a pipeline
 level; this section covers the decision logic in depth, since tracing is
 where sampling strategy has the largest effect on both diagnostic value
 and cost.
@@ -124,7 +124,7 @@ regardless of overall sampling rate, keeps 100% of any trace touching a
 Tier 0 service, and applies only a 5% baseline sample to routine,
 fast, non-Tier-0 traffic — concentrating storage spend on the traces
 most likely to matter for an investigation. The trade-off, noted in
-Chapter 02, is that tail sampling requires every span belonging to a
+[Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md), is that tail sampling requires every span belonging to a
 given trace to reach the same Collector instance for the decision to see
 the complete picture; this is typically achieved by consistently
 routing on `trace_id` (a load balancer configured for trace-ID-aware
@@ -149,7 +149,7 @@ http_server_request_duration_seconds_bucket{le="0.5"} 12450 # {trace_id="5b8aa5a
 
 Exemplars require the metrics SDK to have access to the active trace
 context at the moment a measurement is recorded (the same underlying
-mechanism that enables log-trace correlation, Chapter 04) and require
+mechanism that enables log-trace correlation, [Chapter 04](04-enterprise-logging-event-management-and-retention.md)) and require
 the metrics backend and visualization layer to support exemplar storage
 and rendering (Prometheus 3.x and Grafana both do, natively).
 
@@ -175,7 +175,7 @@ tracing does not reach, since a single "INTERNAL" span around a slow
 function tells you *that* it was slow but not *which line or allocation*
 inside it was responsible.
 
-The combination is deliberately layered: a burn-rate alert (Chapter 03)
+The combination is deliberately layered: a burn-rate alert ([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md))
 identifies *that* a service is degraded; a trace identifies *which*
 downstream call or code path is slow; a profile identifies *where in the
 code*, down to the function, that time is being spent. Correlating all
@@ -204,7 +204,7 @@ that are simultaneously showing symptoms.
 - **Sampling policy ownership and review cadence.** Tail-sampling policy
   is a platform-level control with fleet-wide cost and diagnostic-
   coverage impact; changes should go through the same change review as
-  other shared pipeline configuration (Chapter 02), and the policy
+  other shared pipeline configuration ([Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)), and the policy
   should be reviewed periodically against actual incident-investigation
   outcomes — a policy that misses the traces investigators actually
   needed during a recent incident is a signal to adjust it, not just a
@@ -215,7 +215,7 @@ that are simultaneously showing symptoms.
   that window, not just steady-state throughput. Size the gateway tier
   for peak concurrent trace volume, and monitor the tail-sampling
   processor's own internal queue and dropped-trace metrics the same way
-  Chapter 02 monitors Collector self-telemetry generally.
+  [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md) monitors Collector self-telemetry generally.
 - **Consistent trace-ID routing overhead.** Ensuring every span of a
   trace reaches the same gateway instance requires an additional routing
   layer (consistent hashing on `trace_id`) ahead of the tail-sampling
@@ -251,7 +251,7 @@ that are simultaneously showing symptoms.
 
 Manual span creation around a critical, non-framework-covered code path,
 with events marking retries and an explicit error status — extending
-the auto-instrumentation baseline from Chapter 02:
+the auto-instrumentation baseline from [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md):
 
 ```python
 from opentelemetry import trace
@@ -341,12 +341,12 @@ spec:
 - **Confirm trace-metric-log correlation end to end.** Take one recent
   trace ID from the tracing backend, confirm the exemplar linking works
   from a corresponding metrics dashboard panel, and confirm the same
-  `trace_id` returns matching log lines from the log store (Chapter 04's
+  `trace_id` returns matching log lines from the log store ([Chapter 04](04-enterprise-logging-event-management-and-retention.md)'s
   lab pattern). A gap in any leg of this triangle indicates a
   context-propagation or SDK-configuration defect that will surface
   again, worse, during a real incident.
 - **Symptom: trace tree is fragmented into disconnected sub-trees.**
-  Confirm `traceparent` propagation at every hop (Chapter 02's
+  Confirm `traceparent` propagation at every hop ([Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)'s
   diagnostic approach) and additionally check for clock skew between
   hosts — a trace backend that renders spans out of causal order or
   drops apparently-orphaned spans due to a parent span with a later
@@ -398,12 +398,12 @@ spec:
   separately from general workload service accounts.
 - Apply retention limits to trace and profile storage consistent with
   the same regulatory and data-minimization considerations covered for
-  logs in Chapter 04 — a full-fidelity trace can incidentally carry as
+  logs in [Chapter 04](04-enterprise-logging-event-management-and-retention.md) — a full-fidelity trace can incidentally carry as
   much sensitive operational detail as a log line, and profiling data
   can reveal proprietary algorithm characteristics that warrant its own
   access scoping.
 - Rate-limit and authenticate the OTLP ingestion endpoint for traces and
-  profiles the same as for metrics and logs (Chapter 02); an
+  profiles the same as for metrics and logs ([Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)); an
   unauthenticated ingestion endpoint is a viable injection point for
   fabricated telemetry intended to mislead an investigation or exhaust
   storage capacity.
@@ -633,8 +633,8 @@ Exemplars connect metrics to representative traces, and continuous
 profiling adds a code-level resolution neither tracing nor metrics
 reach. Together with the automatically derived service dependency map,
 these signals let an investigation move from "the SLO is burning"
-(Chapter 03) to the specific function responsible without guesswork.
-Chapter 06 builds actionable alerting and on-call process on top of all
+([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)) to the specific function responsible without guesswork.
+[Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md) builds actionable alerting and on-call process on top of all
 the signals introduced so far.
 
 **Completion checklist**

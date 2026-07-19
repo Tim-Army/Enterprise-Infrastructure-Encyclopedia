@@ -15,7 +15,7 @@
 
 A business impact analysis is the structured process of identifying business processes, determining the impact of their disruption over time, and deriving recovery requirements from that impact. It answers "if this process stops, what happens, and how quickly does it get worse?" A BIA is frequently confused with a risk assessment, but the two ask different questions: a risk assessment asks "what could go wrong and how likely is it?"; a BIA asks "regardless of cause, what is the consequence of this process being unavailable, and for how long can we tolerate it?" The BIA is cause-agnostic by design — a payment processing outage has the same business consequence whether it was caused by a failed disk, a ransomware event, a regional power outage, or human error. This is why the BIA, not the risk register, is the correct starting point for setting RTO and RPO: recovery targets should reflect what the business can survive, not what a particular failure scenario happens to allow.
 
-The BIA sits upstream of the criticality register introduced in Chapter 1. Where Chapter 1 treated tiering as a given input to architecture, this chapter defines the methodology that produces defensible tier and RTO/RPO values in the first place.
+The BIA sits upstream of the criticality register introduced in [Chapter 1](01-resilience-engineering-and-critical-service-design.md). Where [Chapter 1](01-resilience-engineering-and-critical-service-design.md) treated tiering as a given input to architecture, this chapter defines the methodology that produces defensible tier and RTO/RPO values in the first place.
 
 ### Recovery Time Objective, Recovery Point Objective, and Maximum Tolerable Downtime
 
@@ -56,19 +56,19 @@ Once RTO, RPO, and MTD are established per process, they map to a recovery strat
 
 | RTO Range | Typical Strategy | Infrastructure Pattern |
 | --- | --- | --- |
-| Seconds–minutes | Hot site / active-active | Real-time replication, automated failover (Chapter 3) |
+| Seconds–minutes | Hot site / active-active | Real-time replication, automated failover ([Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md)) |
 | Under 4 hours | Warm site / pilot light | Standing infrastructure, data replicated, manual or semi-automated activation |
-| 4–24 hours | Cold site / backup-and-restore | Infrastructure provisioned on demand, restore from backup (Chapter 4) |
+| 4–24 hours | Cold site / backup-and-restore | Infrastructure provisioned on demand, restore from backup ([Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md)) |
 | Days | Reciprocal or contracted recovery | Third-party or alternate-facility arrangement |
 | Not required | Accept the risk | Documented and formally accepted by process owner |
 
-This mapping is the bridge between Chapter 2's business analysis and Chapter 4's DR engineering: the BIA determines which strategy row applies; Chapter 4 details how to build and test the corresponding infrastructure pattern.
+This mapping is the bridge between Chapter 2's business analysis and [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md)'s DR engineering: the BIA determines which strategy row applies; [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md) details how to build and test the corresponding infrastructure pattern.
 
 ## Design Considerations
 
 ### Process-Centric, Not System-Centric, Analysis
 
-A BIA is conducted at the business-process level (for example, "process customer refunds," "run payroll," "clear trades") and only then mapped down to the supporting applications and infrastructure. Starting from the system inventory instead of the process inventory produces two failure modes: infrastructure gets protected that no active business process actually depends on, and a business-critical process turns out to depend on a system nobody flagged as important because its name did not sound critical. The dependency-mapping technique from Chapter 1 is the tool that performs this process-to-system translation; the BIA questionnaire feeds the process side, and the dependency graph feeds the system side.
+A BIA is conducted at the business-process level (for example, "process customer refunds," "run payroll," "clear trades") and only then mapped down to the supporting applications and infrastructure. Starting from the system inventory instead of the process inventory produces two failure modes: infrastructure gets protected that no active business process actually depends on, and a business-critical process turns out to depend on a system nobody flagged as important because its name did not sound critical. The dependency-mapping technique from [Chapter 1](01-resilience-engineering-and-critical-service-design.md) is the tool that performs this process-to-system translation; the BIA questionnaire feeds the process side, and the dependency graph feeds the system side.
 
 ### Interviewing Process Owners Effectively
 
@@ -88,7 +88,7 @@ Three related but distinct plan types are frequently conflated:
 
 - **BCP (Business Continuity Plan)** — organization-wide, covers people, facilities, suppliers, and processes, not just IT. Addresses "how does the business keep operating," including manual workarounds that do not involve technology at all.
 - **COOP (Continuity of Operations Plan)** — a term most common in government and public-sector contexts, focused on maintaining essential functions and lines of succession during and after a significant disruption, often facilities- and personnel-centric.
-- **DRP (Disaster Recovery Plan)** — the IT-specific subset that restores technology infrastructure and data. DRP is the plan most directly implemented by the patterns in Chapter 4.
+- **DRP (Disaster Recovery Plan)** — the IT-specific subset that restores technology infrastructure and data. DRP is the plan most directly implemented by the patterns in [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md).
 
 A BIA informs all three; the recovery strategy table above is primarily a DRP input, but the underlying impact analysis (loss of a facility, loss of key staff, loss of a supplier) belongs to BCP/COOP and should not be discarded just because this volume's later chapters focus on infrastructure.
 
@@ -120,7 +120,7 @@ last_reviewed: "2026-05-20"
 reviewed_by: "finance-ops-director"
 ```
 
-Storing responses in structured form (rather than a shared document) allows the same tooling built in Chapter 1 to validate that every Tier 0/1 service in the criticality register has a corresponding, current BIA record, and to flag processes whose derived RTO does not match their assigned tier's target.
+Storing responses in structured form (rather than a shared document) allows the same tooling built in [Chapter 1](01-resilience-engineering-and-critical-service-design.md) to validate that every Tier 0/1 service in the criticality register has a corresponding, current BIA record, and to flag processes whose derived RTO does not match their assigned tier's target.
 
 ### Deriving MTD From the Impact Escalation Curve
 
@@ -174,7 +174,7 @@ Keep continuity plans in the same version-controlled repository as the criticali
 ### Validating BIA Quality
 
 - Check for **checkpoint monotonicity**: impact scores should not decrease at a later checkpoint (a process rarely gets less painful to have down the longer it stays down). A decrease is a data-entry or methodology error, not a real finding, in the large majority of cases.
-- Check for **RTO/tier consistency**: cross-reference every BIA record's derived RTO against the criticality tier assigned in the Chapter 1 register; a Tier 0 service with a BIA-derived RTO of 12 hours indicates either the tier or the BIA is wrong.
+- Check for **RTO/tier consistency**: cross-reference every BIA record's derived RTO against the criticality tier assigned in the [Chapter 1](01-resilience-engineering-and-critical-service-design.md) register; a Tier 0 service with a BIA-derived RTO of 12 hours indicates either the tier or the BIA is wrong.
 - Check for **stale reviews**: flag any BIA record with `last_reviewed` older than the organization's review cadence (annually at minimum; more frequently for Tier 0/1).
 
 ### Common Troubleshooting Scenarios
@@ -183,15 +183,15 @@ Keep continuity plans in the same version-controlled repository as the criticali
 | --- | --- | --- |
 | Every process claims Tier 0 | No calibration exercise across process owners; self-preservation bias | Run a relative-ranking calibration session across all owners together |
 | Derived RTO shorter than any feasible recovery strategy can deliver | Business need genuinely exceeds current infrastructure investment | Escalate as a funding/risk-acceptance decision, not an engineering problem to silently absorb |
-| Continuity plan untested for multiple years | No test cadence enforced | Establish mandatory test cadence tied to tier (see Chapter 5) |
+| Continuity plan untested for multiple years | No test cadence enforced | Establish mandatory test cadence tied to tier (see [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md)) |
 | BIA and dependency map disagree on supporting systems | BIA questionnaire completed without dependency-graph cross-check | Require dependency-graph reconciliation as a mandatory BIA completion step |
 
 ## Security and Best Practices
 
 - Treat completed BIA documents and continuity plans as sensitive: they describe exactly which processes, if disrupted, cause maximum harm, and are a target list for an adversary conducting reconnaissance for an extortion or sabotage scenario. Apply access controls consistent with the sensitivity of the underlying business data.
-- Do not let continuity plans reference credentials, break-glass account details, or specific access procedures in plaintext; reference a secrets-management system instead (see Volume X for enterprise secrets and identity practices).
+- Do not let continuity plans reference credentials, break-glass account details, or specific access procedures in plaintext; reference a secrets-management system instead (see [Volume X](../../volume-10-enterprise-cybersecurity/README.md) for enterprise secrets and identity practices).
 - Require dual authorization for continuity-plan activation criteria on Tier 0 processes, mirroring change-management controls, so activation cannot be triggered unilaterally.
-- Ensure recovery team contact information includes verified backups for every role; a continuity plan whose only escalation path is a single named individual has recreated the organizational SPOF discussed in Chapter 1.
+- Ensure recovery team contact information includes verified backups for every role; a continuity plan whose only escalation path is a single named individual has recreated the organizational SPOF discussed in [Chapter 1](01-resilience-engineering-and-critical-service-design.md).
 - Align regulatory-impact scoring with actual current legal/compliance obligations, not assumptions; obligations change and a stale BIA can understate regulatory risk materially.
 
 ## References and Knowledge Checks
@@ -220,7 +220,7 @@ Keep continuity plans in the same version-controlled repository as the criticali
 **Prerequisites:**
 
 - `python3` (3.11+) and `pyyaml` (`pip install pyyaml`).
-- The `criticality-register.yaml` and `dependencies.yaml` artifacts from the Chapter 1 lab (or freshly recreated equivalents).
+- The `criticality-register.yaml` and `dependencies.yaml` artifacts from the [Chapter 1](01-resilience-engineering-and-critical-service-design.md) lab (or freshly recreated equivalents).
 
 **Procedure:**
 
@@ -271,7 +271,7 @@ cd ~ && rm -rf ~/labs/resilience-ch2
 
 ## Summary and Completion Checklist
 
-The business impact analysis converts business consequence into the technical vocabulary — RTO, RPO, MTD — that drives every recovery investment decision in this volume. It is process-centric, cause-agnostic, and multi-dimensional, and its output must be traceable and defensible, not asserted. BCP, COOP, and DRP are related but distinct plan types drawing on the same BIA data at different scopes. The next chapter (Chapter 3) picks up where the BIA's fast-RTO strategies leave off, detailing the HA and fault-tolerance architecture needed to actually hit sub-minute and sub-hour recovery targets.
+The business impact analysis converts business consequence into the technical vocabulary — RTO, RPO, MTD — that drives every recovery investment decision in this volume. It is process-centric, cause-agnostic, and multi-dimensional, and its output must be traceable and defensible, not asserted. BCP, COOP, and DRP are related but distinct plan types drawing on the same BIA data at different scopes. The next chapter ([Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md)) picks up where the BIA's fast-RTO strategies leave off, detailing the HA and fault-tolerance architecture needed to actually hit sub-minute and sub-hour recovery targets.
 
 **Completion checklist:**
 

@@ -29,16 +29,16 @@ or into a recurring detection pipeline.
 | Tool | Role |
 | --- | --- |
 | `tshark` | Full dissection engine at the command line; applies capture filters (`-f`), display filters (`-Y`), and field extraction (`-T fields -e <field>`) without a GUI. |
-| `dumpcap` | Capture-only, covered in Chapter 02; no dissection. |
-| `capinfos` | Reports file-level metadata: packet count, duration, file hashes (Chapter 01), encapsulation type. |
+| `dumpcap` | Capture-only, covered in [Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md); no dissection. |
+| `capinfos` | Reports file-level metadata: packet count, duration, file hashes ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)), encapsulation type. |
 | `editcap` | Splits, filters, deduplicates, time-shifts, and sanitizes capture files without a live capture. |
-| `mergecap` | Combines multiple capture files into one, chronologically interleaved by timestamp — the tool that makes correlating a dual-ended capture (Chapter 06) practical. |
+| `mergecap` | Combines multiple capture files into one, chronologically interleaved by timestamp — the tool that makes correlating a dual-ended capture ([Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md)) practical. |
 | `text2pcap` / `pcapng` builders | Converts hex dumps or other text representations into a valid capture file, occasionally useful for reconstructing packets described in a log or report. |
 
 All of these tools share `epan`, the same dissection engine the GUI uses
-(Chapter 01), so a `tshark` filter expression behaves identically to the
+([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)), so a `tshark` filter expression behaves identically to the
 same expression typed into the Wireshark GUI's filter bar — a workflow can
-be prototyped interactively (Chapter 03) and then transcribed directly into
+be prototyped interactively ([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md)) and then transcribed directly into
 a script.
 
 ### Security investigation signatures
@@ -48,17 +48,17 @@ conceptually in earlier chapters:
 
 | Pattern | Earlier reference | Detection approach |
 | --- | --- | --- |
-| Port scan (many ports, one source) | Chapter 06 (SYN/RST behavior) | High count of distinct destination ports from one source in a short window, each receiving SYN with no completing handshake. |
-| SYN flood (many sources, one destination) | Chapter 06 | High count of half-open connections to one destination from many distinct, often spoofed-looking source addresses. |
-| ARP spoofing | Chapter 04 | One IP address associated with more than one MAC address outside a known failover pattern. |
-| NDP spoofing | Chapter 05 | Same pattern as ARP spoofing, applied to Neighbor Advertisements. |
-| Rogue DHCP server | Chapter 05 | More than one distinct source address issuing DHCP Offers on the same segment. |
-| DNS tunneling | Chapter 05 | High-entropy, unusually long subdomain labels queried at high frequency against a small set of domains. |
-| ICMP tunneling/exfiltration | Chapter 04 | Unusually large or consistently-sized ICMP Echo payloads inconsistent with normal diagnostic use. |
+| Port scan (many ports, one source) | [Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md) (SYN/RST behavior) | High count of distinct destination ports from one source in a short window, each receiving SYN with no completing handshake. |
+| SYN flood (many sources, one destination) | [Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md) | High count of half-open connections to one destination from many distinct, often spoofed-looking source addresses. |
+| ARP spoofing | [Chapter 04](04-ethernet-arp-ipv4-and-icmpv4-analysis.md) | One IP address associated with more than one MAC address outside a known failover pattern. |
+| NDP spoofing | [Chapter 05](05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md) | Same pattern as ARP spoofing, applied to Neighbor Advertisements. |
+| Rogue DHCP server | [Chapter 05](05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md) | More than one distinct source address issuing DHCP Offers on the same segment. |
+| DNS tunneling | [Chapter 05](05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md) | High-entropy, unusually long subdomain labels queried at high frequency against a small set of domains. |
+| ICMP tunneling/exfiltration | [Chapter 04](04-ethernet-arp-ipv4-and-icmpv4-analysis.md) | Unusually large or consistently-sized ICMP Echo payloads inconsistent with normal diagnostic use. |
 
 Each of these is a hypothesis to confirm with evidence, not an automatic
 verdict — a scripted match should feed a documented investigation
-(Chapter 01) rather than an automatic conclusion.
+([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)) rather than an automatic conclusion.
 
 ## Design Considerations
 
@@ -68,7 +68,7 @@ verdict — a scripted match should feed a documented investigation
   default format is stable for reading, not for parsing, and can change
   wording between minor releases.
 - **Large captures need staged filtering, not one giant expression.**
-  Apply a capture filter at collection time (Chapter 02) where possible,
+  Apply a capture filter at collection time ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md)) where possible,
   then a coarse display filter, then a narrower one — running one complex
   expression against a multi-gigabyte file is slower and harder to debug
   than a staged pipeline of `editcap`/`tshark` steps.
@@ -82,7 +82,7 @@ verdict — a scripted match should feed a documented investigation
   (IP/MAC addresses rewritten, payloads stripped) is appropriate for
   sharing with a vendor or in training material, but is no longer the
   original evidence — always sanitize a copy and retain the original,
-  hashed and access-controlled per Chapter 01.
+  hashed and access-controlled per [Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md).
 - **Output format should match the consumer.** CSV suits spreadsheet
   review and simple scripting; JSON/PDML suits ingestion by another
   program (a SIEM, a custom parser) that expects structured, nested data.
@@ -116,7 +116,7 @@ tshark -r capture.pcapng -Y "tcp.flags.syn==1 && tcp.flags.ack==0" \
   -T fields -e ip.dst | sort | uniq -c | sort -rn | head -10
 ```
 
-### ARP/NDP spoofing detection (extending Chapter 04/05)
+### ARP/NDP spoofing detection (extending [Chapter 04](04-ethernet-arp-ipv4-and-icmpv4-analysis.md)/05)
 
 ```bash
 tshark -r capture.pcapng -Y "arp.opcode==2" -T fields \
@@ -175,7 +175,7 @@ For address anonymization (rewriting real IP/MAC addresses to consistent
 but non-identifying values) beyond simple truncation or exclusion, use a
 dedicated sanitization tool designed for that purpose rather than manual
 field editing, and always sanitize a working copy — never the original
-evidence file (Chapter 01).
+evidence file ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
 
 ### Scheduling recurring detection
 
@@ -215,7 +215,7 @@ segments rather than requiring a manual review pass.
   sharing it.
 - **Scheduled detection job silently stops running.** Confirm the cron/
   systemd timer's log output separately from the ring-buffer capture
-  service's own logs (Chapter 02) — a missing or rotated-away capture file
+  service's own logs ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md)) — a missing or rotated-away capture file
   the job expected to read is a common silent-failure cause.
 
 ## Security and Best Practices
@@ -228,9 +228,9 @@ segments rather than requiring a manual review pass.
 - **Store and version-control detection scripts, not just their
   output.** A script's logic is part of the evidentiary record when its
   output drives an investigative conclusion; keep it alongside the
-  capture and its hash (Chapter 01).
+  capture and its hash ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
 - **Apply least privilege to scheduled/automated capture-analysis
-  jobs.** The `capture-svc` account introduced in Chapter 02 should also
+  jobs.** The `capture-svc` account introduced in [Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md) should also
   run scripted detection — it needs read access to capture files, not
   broader system privileges.
 - **Sanitize before sharing, every time, with no exceptions for "trusted"
@@ -271,7 +271,7 @@ before a simulated hand-off.
 
 **Prerequisites**
 
-- Wireshark and `tshark` installed with capture rights (Chapter 01).
+- Wireshark and `tshark` installed with capture rights ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
 - `nmap` or an equivalent scanning tool, run only against a host the
   analyst owns or is explicitly authorized to scan (for example, a lab VM
   on an isolated segment).
@@ -363,7 +363,7 @@ schedulable form — the difference between analyzing one capture by hand
 and running a detection pipeline continuously against rotating capture
 segments. Security investigation signatures (port scans, floods, spoofing,
 tunneling) are hypotheses a script can flag efficiently, but confirming and
-acting on them remains a human, documented investigative step. Chapter 09
+acting on them remains a human, documented investigative step. [Chapter 09](09-wca-101-certification-readiness-and-enterprise-capstone.md)
 closes the volume by mapping this chapter's skills, and every prior
 chapter's, to the WCA-101 certification blueprint and an integrated
 enterprise capstone.

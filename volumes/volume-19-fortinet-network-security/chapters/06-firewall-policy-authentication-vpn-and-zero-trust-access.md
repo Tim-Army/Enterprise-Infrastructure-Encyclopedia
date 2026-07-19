@@ -54,7 +54,7 @@ single user group:
   authentication.
 - **SAML** enables federated single sign-on against a modern identity
   provider for SSL VPN and administrative GUI login, aligning with the
-  broader SSO patterns covered in Volume X.
+  broader SSO patterns covered in [Volume X](../../volume-10-enterprise-cybersecurity/README.md).
 
 ### VPN architectures
 
@@ -68,7 +68,7 @@ alongside site-to-site connectivity:
   physical interface. This is the modern, preferred model over legacy
   **policy-based IPsec** (which binds encryption directly to a firewall
   policy rather than creating a routable interface) because it composes
-  cleanly with dynamic routing, SD-WAN (Chapter 08), and multiple
+  cleanly with dynamic routing, SD-WAN ([Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md)), and multiple
   concurrent tunnels.
 - **SSL VPN** provides remote-access connectivity in **tunnel mode**
   (a full network-layer VPN client, comparable in function to IPsec
@@ -178,10 +178,10 @@ FGT-LAB-01 (2) # next
 FGT-LAB-01 (policy) # end
 ```
 
-Policy 1 completes the source NAT design from Chapter 05 by attaching
+Policy 1 completes the source NAT design from [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md) by attaching
 `WAN1-POOL` to actual outbound traffic; policy 2 completes the destination
 NAT design by permitting inbound traffic to the `DMZ-WEB-VIP` object
-created in Chapter 05 — a VIP with no permitting policy is unreachable
+created in [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md) — a VIP with no permitting policy is unreachable
 regardless of its own configuration.
 
 ### Local user, remote LDAP server, and user group
@@ -359,7 +359,7 @@ this lab's scope and is addressed at a design level only in this chapter.
   enable logging on the deny policy itself (or a final explicit deny
   policy with logging) so blocked traffic is visible for investigation.
 - Require MFA on VPN authentication (SSL VPN and dial-up IPsec) for the
-  same reasons established in Chapter 01 — a leaked password alone should
+  same reasons established in [Chapter 01](01-nse-1-cybersecurity-awareness-and-digital-safety.md) — a leaked password alone should
   not be sufficient to establish a tunnel into the internal network.
 - Avoid weak or deprecated IKE/IPsec proposals — do not configure DES,
   3DES, or MD5-based proposals on new tunnels; use AES-256 with SHA-256 or
@@ -403,7 +403,7 @@ this lab's scope and is addressed at a design level only in this chapter.
 ## Hands-On Lab
 
 **Objective:** Build outbound and inbound firewall policies completing
-Chapter 05's NAT design, configure LDAP and local authentication with a
+[Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)'s NAT design, configure LDAP and local authentication with a
 user group, establish a site-to-site IPsec VPN to a second FortiGate peer,
 and configure SSL VPN remote access — including a deliberate pre-shared
 key mismatch as a negative test.
@@ -411,9 +411,9 @@ key mismatch as a negative test.
 **Prerequisites**
 
 - FGT-LAB-01 with the interfaces, routing, VDOMs, and address/pool objects
-  from Chapter 05.
+  from [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md).
 - A second FortiGate (physical, VM, or FGT-LAB-02 repurposed from
-  Chapter 05's HA exercise if HA has been disabled) reachable at
+  [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)'s HA exercise if HA has been disabled) reachable at
   `198.51.100.50`, representing "Branch02," configured with a mirrored
   phase1/phase2 IPsec configuration pointing back to FGT-LAB-01.
 - An LDAP-compatible directory service reachable at `10.10.10.20` for the
@@ -491,20 +491,20 @@ key mismatch as a negative test.
 **Cleanup**
 
 - Leave firewall policies, authentication objects, and the SSL VPN
-  configuration in place for Chapter 07's security profile attachment. If
+  configuration in place for [Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md)'s security profile attachment. If
   the site-to-site VPN peer was a temporary lab device not needed going
   forward, disable (rather than delete) the `to-Branch02` phase1-interface
   to preserve the configuration as a reference.
 
 ## Summary and Completion Checklist
 
-This chapter completed the NAT design from Chapter 05 with permitting
+This chapter completed the NAT design from [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md) with permitting
 firewall policies, added local and remote authentication with a user
 group, and built both a route-based site-to-site IPsec VPN and a
 remote-access SSL VPN, validated with a deliberate pre-shared key mismatch
 negative test. It also introduced ZTNA architecture as the modern
 alternative to broad-access VPN for application-specific remote access.
-Chapter 07 attaches FortiGuard security profiles and SSL inspection to the
+[Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md) attaches FortiGuard security profiles and SSL inspection to the
 policies built here, turning permit/deny decisions into fully inspected,
 threat-aware traffic handling.
 

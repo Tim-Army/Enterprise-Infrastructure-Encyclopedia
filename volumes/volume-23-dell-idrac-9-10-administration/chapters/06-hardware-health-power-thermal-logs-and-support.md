@@ -138,7 +138,7 @@ version of the report.
   every event regardless of severity trains recipients to ignore
   notifications; scope Critical hardware alerts to an urgent channel and
   route everything else to a lower-urgency aggregation point, mirroring
-  the alert-fatigue guidance covered more generally in Volume XI.
+  the alert-fatigue guidance covered more generally in [Volume XI](../../volume-11-observability-enterprise-operations/README.md).
 - **Decide your Lifecycle Log retention and export strategy before you
   need historical data past the log's rolling capacity.** Both SEL and
   the Lifecycle Log have finite capacity and roll over; if
@@ -307,7 +307,7 @@ racadm techsupreport collect -t idrac,raidcontroller,systeminfo \
   can become a bottleneck after a workload change on the same hardware.
 - **Expected alerts never arrive at the SIEM/SNMP destination.** Confirm
   network reachability from iDRAC's management interface to the
-  destination specifically (Chapter 3) — a destination on a different
+  destination specifically ([Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)) — a destination on a different
   VLAN/subnet than what the management network firewall permits is a
   common, silent alerting gap. Also confirm alert category/severity
   filtering is not inadvertently excluding the event type you expected.

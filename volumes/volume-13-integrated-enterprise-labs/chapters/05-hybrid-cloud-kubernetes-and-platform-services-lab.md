@@ -2,7 +2,7 @@
 
 ## Learning Objectives
 
-- Stand up the `CLOUD1` landing zone from Chapter 01's topology as a real
+- Stand up the `CLOUD1` landing zone from [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s topology as a real
   cloud VPC/VNet with guardrails, connected to `HQ` over a site-to-site VPN.
 - Build a single Kubernetes cluster that spans an on-premises control
   plane and workers in both `HQ` and `CLOUD1`, demonstrating a genuinely
@@ -16,25 +16,25 @@
 
 ## Theory and Architecture
 
-`CLOUD1` has existed only as a name in Chapter 01's topology manifest until
-now. This chapter builds it: a landing zone following Volume VII (Cloud
-Infrastructure), Chapter 02 (Landing Zones, Resource Organization, and
-Guardrails) for account/project structure and baseline controls, Chapter 03
+`CLOUD1` has existed only as a name in [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s topology manifest until
+now. This chapter builds it: a landing zone following [Volume VII](../../volume-07-cloud-infrastructure/README.md) (Cloud
+Infrastructure), [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) (Landing Zones, Resource Organization, and
+Guardrails) for account/project structure and baseline controls, [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md)
 (Cloud Identity, Access, and Cryptographic Services) for the identity
 boundary between the cloud account and `corp.meridian.example`, and Chapter
 04 (Cloud Networking and Hybrid Connectivity) for the VPN attachment back
-to `rtr-hq01`, the WAN edge router Chapter 03 built.
+to `rtr-hq01`, the WAN edge router [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) built.
 
-The Kubernetes design follows Volume VIII (Containers and Platform
-Engineering): Chapter 02 (Kubernetes Architecture and Cluster Lifecycle)
-for the control-plane/worker topology, Chapter 04 (Kubernetes Networking,
+The Kubernetes design follows [Volume VIII](../../volume-08-containers-platform-engineering/README.md) (Containers and Platform
+Engineering): [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) (Kubernetes Architecture and Cluster Lifecycle)
+for the control-plane/worker topology, [Chapter 04](04-virtualization-storage-and-data-protection-lab.md) (Kubernetes Networking,
 Service Delivery, and Traffic Policy) for the CNI and ingress design, and
-Chapter 08 (Internal Developer Platforms and Platform Products) for framing
+[Chapter 08](08-observability-operations-and-major-incident-lab.md) (Internal Developer Platforms and Platform Products) for framing
 the registry and ingress as the beginning of a platform surface rather than
 one-off deployments. Placing a worker node in `CLOUD1` and workers in `HQ`
-under one control plane is the concrete expression of Volume VII, Chapter
+under one control plane is the concrete expression of [Volume VII](../../volume-07-cloud-infrastructure/README.md), Chapter
 07 (Hybrid and Multicloud Architecture): one workload-scheduling domain
-spanning two infrastructure locations, connected by the link Chapter 03
+spanning two infrastructure locations, connected by the link [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md)
 already proved can fail without warning.
 
 Deliberately, the Kubernetes control plane stays entirely on-premises. A
@@ -45,7 +45,7 @@ chapter's negative test is built to demonstrate.
 
 ### Systems and addressing introduced in this chapter
 
-This chapter adds one subnet to Chapter 01's topology manifest: the
+This chapter adds one subnet to [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s topology manifest: the
 `CLOUD1` VPC private subnet, `10.13.90.0/24`, carved from the same lab
 supernet so traffic between HQ and the cloud stays RFC 1918-to-RFC 1918
 across the VPN without NAT.
@@ -65,8 +65,8 @@ across the VPN without NAT.
 - **One cluster, not two clusters joined by a service mesh.** A single
   control plane with geographically split workers is simpler to operate
   for this lab's purposes and directly demonstrates hybrid scheduling; a
-  multi-cluster federation pattern is a legitimate alternative Volume VII,
-  Chapter 07 discusses, but it solves a different problem (workload
+  multi-cluster federation pattern is a legitimate alternative [Volume VII](../../volume-07-cloud-infrastructure/README.md),
+  [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md) discusses, but it solves a different problem (workload
   portability across truly independent clusters) than this chapter targets
   (extending one scheduling domain across a hybrid link).
 - **Control plane placement is the single most consequential decision in
@@ -77,7 +77,7 @@ across the VPN without NAT.
   (a restricted default network ACL, mandatory resource tagging, and a
   dedicated IAM role for cluster nodes rather than long-lived static
   credentials) are configured before the first Kubernetes node is created,
-  matching the sequencing Volume VII, Chapter 02 recommends — retrofitting
+  matching the sequencing [Volume VII, Chapter 02](../../volume-07-cloud-infrastructure/chapters/02-landing-zones-resource-organization-and-guardrails.md) recommends — retrofitting
   guardrails onto an already-running environment is materially harder.
 - **Topology-aware scheduling, not accidental placement.** Nodes are
   labeled by location (`topology.kubernetes.io/zone=hq` or `=cloud1`) and
@@ -89,11 +89,11 @@ across the VPN without NAT.
   and ingress controller run as workloads inside the cluster rather than
   as managed cloud services, keeping the platform surface portable and
   keeping this chapter's lesson focused on Kubernetes-native patterns
-  Volume VIII, Chapter 08 builds on.
+  [Volume VIII, Chapter 08](../../volume-08-containers-platform-engineering/chapters/08-internal-developer-platforms-and-platform-products.md) builds on.
 
 ## Implementation and Automation
 
-Establish the VPN tunnel from `rtr-hq01` (built in Chapter 03) to
+Establish the VPN tunnel from `rtr-hq01` (built in [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md)) to
 `cloud-vpgw01`, extending the crypto map already configured for the HQ–BR1
 tunnel with a second peer:
 
@@ -172,10 +172,10 @@ spec:
   concentrated on one.
 - **Common failure: pod network CIDR overlapping lab addressing.** The
   `192.168.0.0/16` pod CIDR used above must not collide with any VLAN or
-  VPC subnet in Chapter 01's topology manifest; if it does, choose a CNI
+  VPC subnet in [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s topology manifest; if it does, choose a CNI
   pod CIDR outside `10.13.0.0/16` entirely, as done here.
 - **Common failure: MTU mismatch across the VPN-plus-overlay path.** As
-  flagged generically in Chapter 01, a CNI overlay (VXLAN or similar)
+  flagged generically in [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md), a CNI overlay (VXLAN or similar)
   running on top of an already-encapsulated IPsec tunnel to `CLOUD1` can
   silently drop larger packets. Verify with `ping -M do -s 1400
   <cloud-node-pod-ip>` from an on-premises pod before assuming an
@@ -189,31 +189,31 @@ spec:
 
 - Scope the cloud IAM role attached to `k8s-wk02`'s compute instance to
   only what the node needs (image pull, logging, metrics) — not a broad
-  administrative role, consistent with Volume VII, Chapter 03.
+  administrative role, consistent with [Volume VII, Chapter 03](../../volume-07-cloud-infrastructure/chapters/03-cloud-identity-access-and-cryptographic-services.md).
 - Enforce Kubernetes RBAC and a restrictive default `NetworkPolicy` before
   deploying any workload; an open-by-default cluster network defeats the
-  segmentation work planned for Chapter 07.
+  segmentation work planned for [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md).
 - Require signed, scanned images from the in-cluster registry before they
-  can run — Chapter 06 formalizes this as a pipeline policy gate, but the
+  can run — [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md) formalizes this as a pipeline policy gate, but the
   registry's access controls should already be correctly scoped by the
   time that gate exists.
 - Encrypt the VPN tunnel to `CLOUD1` with the strongest transform set the
   cloud provider's VPN gateway supports, and store the pre-shared key the
-  same way Chapter 03's WAN key is stored — never in a manifest committed
+  same way [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md)'s WAN key is stored — never in a manifest committed
   to the lab's Git history.
 - Tag every cloud resource with owner and expiration metadata per Chapter
   01's tagging requirement; an untagged cloud resource is the easiest kind
-  of resource to forget during Chapter 09's decommissioning exercise.
+  of resource to forget during [Chapter 09](09-enterprise-resilience-and-lifecycle-capstone.md)'s decommissioning exercise.
 
 ## References and Knowledge Checks
 
 **References**
 
-- Volume VII, Chapters 02–04 and 07 — landing zones, cloud identity, cloud
+- [Volume VII](../../volume-07-cloud-infrastructure/README.md), Chapters 02–04 and 07 — landing zones, cloud identity, cloud
   networking/hybrid connectivity, and hybrid/multicloud architecture.
-- Volume VIII, Chapters 02, 04, and 08 — Kubernetes architecture,
+- [Volume VIII](../../volume-08-containers-platform-engineering/README.md), Chapters 02, 04, and 08 — Kubernetes architecture,
   networking/traffic policy, and internal developer platforms.
-- Volume III, Chapter 04 — Enterprise WAN, Internet Edge, and Catalyst
+- [Volume III, Chapter 04](../../volume-03-cisco-enterprise-networking/chapters/04-enterprise-wan-internet-edge-and-catalyst-sd-wan.md) — Enterprise WAN, Internet Edge, and Catalyst
   SD-WAN (the `rtr-hq01` side of this chapter's VPN).
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Kubernetes
   1.31.x and current-GA AWS service-surface baseline used in this chapter.
@@ -239,11 +239,11 @@ when the hybrid link fails.
 
 **Prerequisites**
 
-- Chapter 04 complete, with `rtr-hq01` and the `HQ-Cluster` healthy.
+- [Chapter 04](04-virtualization-storage-and-data-protection-lab.md) complete, with `rtr-hq01` and the `HQ-Cluster` healthy.
 - A cloud account/subscription scoped for lab use only, with the
-  landing-zone guardrails from Volume VII, Chapter 02 understood.
+  landing-zone guardrails from [Volume VII, Chapter 02](../../volume-07-cloud-infrastructure/chapters/02-landing-zones-resource-organization-and-guardrails.md) understood.
 - Comfort with `kubectl` and basic Kubernetes manifests at the level of
-  Volume VIII, Chapter 02.
+  [Volume VIII, Chapter 02](../../volume-08-containers-platform-engineering/chapters/02-kubernetes-architecture-and-cluster-lifecycle.md).
 
 **Steps**
 

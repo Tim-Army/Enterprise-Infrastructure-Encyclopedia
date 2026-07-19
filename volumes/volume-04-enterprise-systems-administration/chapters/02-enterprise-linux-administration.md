@@ -12,7 +12,7 @@
 - Apply kernel run-time tuning with `sysctl` and understand where those
   settings persist.
 - Explain how this chapter's distribution-neutral coverage relates to the
-  distribution-specific depth in Volume XIV (RHEL 10) and Volume XXI
+  distribution-specific depth in [Volume XIV](../../volume-14-red-hat-enterprise-linux-10/README.md) (RHEL 10) and [Volume XXI](../../volume-21-ubuntu-server-cloud-26-04-lts/README.md)
   (Ubuntu Server 26.04 LTS).
 
 ## Theory and Architecture
@@ -26,8 +26,8 @@ distribution-neutral level. Package-manager syntax (`dnf` vs. `apt`),
 default security modules (SELinux vs. AppArmor), and release-specific
 tooling are noted where they diverge, but deep distribution-specific
 administration — RHEL subscription management, `firewalld` policy
-authoring, Ubuntu's Snap/Netplan stack — is covered in Volume XIV and
-Volume XXI.
+authoring, Ubuntu's Snap/Netplan stack — is covered in [Volume XIV](../../volume-14-red-hat-enterprise-linux-10/README.md) and
+[Volume XXI](../../volume-21-ubuntu-server-cloud-26-04-lts/README.md).
 
 ### Filesystem Hierarchy Standard
 
@@ -47,7 +47,7 @@ Standard (FHS), which defines the purpose of top-level directories:
 Understanding the FHS matters operationally: `/var` growth (logs, package
 caches) is the most common cause of enterprise Linux hosts running out of
 disk space, which is why `/var` is frequently placed on its own logical
-volume or partition (Chapter 07).
+volume or partition ([Chapter 07](07-storage-filesystems-and-data-services.md)).
 
 ### The init system: systemd
 
@@ -59,7 +59,7 @@ Every enterprise Linux distribution in this encyclopedia's baseline
 - **Target units** (`.target`) — grouping points analogous to legacy
   runlevels (`multi-user.target`, `graphical.target`).
 - **Timer units** (`.timer`) — `systemd`'s native replacement for `cron`,
-  covered later in this chapter and again in Chapter 05.
+  covered later in this chapter and again in [Chapter 05](05-compute-process-and-service-management.md).
 - **Mount and automount units** — filesystem mounts expressed as units so
   they participate in dependency ordering.
 - **Socket units** — enable socket-activated service startup.
@@ -91,7 +91,7 @@ of two package manager families:
 Both resolve dependencies, verify package signatures against imported GPG
 keys, and support staged/offline repositories for air-gapped enterprise
 environments. Patch and update strategy (WSUS-equivalent tooling,
-maintenance windows, staged rollout) is covered in Chapter 06.
+maintenance windows, staged rollout) is covered in [Chapter 06](06-configuration-software-and-patch-management.md).
 
 ## Design Considerations
 
@@ -107,7 +107,7 @@ maintenance windows, staged rollout) is covered in Chapter 06.
 - **Partitioning strategy.** Decide up front which paths get dedicated
   logical volumes (`/var`, `/var/log`, `/home`, `/tmp`) so that log growth
   or a runaway user process cannot fill the root filesystem and crash the
-  host. Chapter 07 covers LVM and filesystem design in depth.
+  host. [Chapter 07](07-storage-filesystems-and-data-services.md) covers LVM and filesystem design in depth.
 - **sudo policy granularity.** A single `%wheel ALL=(ALL) ALL` entry is
   simple but grants blanket root. Enterprise environments should scope
   `sudo` rules to the specific commands a role needs, and log every
@@ -229,7 +229,7 @@ sudo systemctl restart systemd-journald
   `enforce` mode, not `complain`.
 - Confirm disk pressure before it becomes an outage:
   `df -hT` for filesystem usage, `lvs` and `vgs` for volume group free
-  space, and set monitoring thresholds (Chapter 09) well before 100%.
+  space, and set monitoring thresholds ([Chapter 09](09-monitoring-troubleshooting-and-lifecycle-operations.md)) well before 100%.
 - Confirm a `sysctl` change actually took effect and persisted:
   `sysctl net.core.somaxconn` should match the drop-in file, and the
   setting should survive a reboot.
@@ -260,7 +260,7 @@ sudo systemctl restart systemd-journald
   `nosuid,nodev` (and `noexec` where the application allows it).
 - Apply CIS Benchmark or DISA STIG hardening baselines consistently
   through configuration management, not manual one-off hardening
-  (Chapter 08).
+  ([Chapter 08](08-systems-security-automation-and-compliance.md)).
 
 ## References and Knowledge Checks
 
@@ -268,8 +268,8 @@ sudo systemctl restart systemd-journald
 
 - `systemd.unit(5)`, `systemd.timer(5)`, and `journalctl(1)` man pages.
 - Red Hat Enterprise Linux 10 documentation — System Administrator's Guide
-  (see Volume XIV for the distribution-specific deep dive).
-- Ubuntu Server 26.04 LTS documentation (see Volume XXI for the
+  (see [Volume XIV](../../volume-14-red-hat-enterprise-linux-10/README.md) for the distribution-specific deep dive).
+- Ubuntu Server 26.04 LTS documentation (see [Volume XXI](../../volume-21-ubuntu-server-cloud-26-04-lts/README.md) for the
   distribution-specific deep dive).
 - SELinux User's and Administrator's Guide (Red Hat); AppArmor
   documentation (Canonical/SUSE).

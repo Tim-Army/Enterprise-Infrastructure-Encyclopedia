@@ -167,7 +167,7 @@ built with `ansible-builder`. This solves the classic "collection X needs a
 newer `ansible-core` than collection Y" dependency conflict by isolating
 each pipeline or team's execution environment, and it makes the exact
 runtime reproducible in CI, matching the version-pinning principle from
-Chapter 01.
+[Chapter 01](01-automation-operating-models-and-engineering-foundations.md).
 
 ### Choosing when Ansible is (and is not) the right tool
 
@@ -179,7 +179,7 @@ to loop-and-poll-create cloud resources reimplements, without state
 tracking, what Terraform already does correctly. A common, effective
 pattern is Terraform for provisioning and Ansible for configuring what
 Terraform provisioned, handed off through a Terraform output consumed as
-Ansible inventory (see Chapter 04 for the integration mechanics).
+Ansible inventory (see [Chapter 04](04-api-event-and-integration-automation.md) for the integration mechanics).
 
 ## Implementation and Automation
 
@@ -388,11 +388,11 @@ jobs:
   an entire play, and prefer a dedicated `svc_ansible` service account
   with sudo rules limited to the commands automation actually needs.
 - Never hardcode secrets in playbooks, templates, or inventory; use
-  `ansible-vault` or an external secrets lookup plugin (Chapter 06).
+  `ansible-vault` or an external secrets lookup plugin ([Chapter 06](06-automation-identity-secrets-and-privileged-execution.md)).
 - Pin collection versions in `requirements.yml` and commit
   `ansible-galaxy`-generated lockfile-equivalents; treat unpinned
   collections as a supply-chain risk exactly like unpinned Terraform
-  providers (Chapter 08).
+  providers ([Chapter 08](08-automation-security-governance-and-supply-chains.md)).
 - Use `--check --diff` (dry-run mode) in a pre-production pipeline stage
   before every apply against a production inventory, and treat a
   `--check` run that fails with module-support warnings as a signal that
@@ -403,7 +403,7 @@ jobs:
   service.
 - Log and archive playbook run output (job IDs, changed/failed task
   counts, `--diff` output) for audit purposes; Ansible Automation
-  Platform's job history and centralized logging (Chapter 09) are the
+  Platform's job history and centralized logging ([Chapter 09](09-automation-observability-reliability-and-lifecycle-operations.md)) are the
   enterprise-scale mechanism for this.
 
 ## References and Knowledge Checks
@@ -545,8 +545,8 @@ convergence rather than one-shot scripting: modules check before they act,
 roles package reusable configuration with a clear variable contract, and
 Molecule's idempotence stage turns "runs cleanly twice" from a hope into an
 automated gate. Ansible core 2.17 pairs naturally with Terraform from
-Chapter 02 — Terraform provisions, Ansible configures — and both feed the
-pipeline and policy patterns covered in Chapter 05.
+[Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md) — Terraform provisions, Ansible configures — and both feed the
+pipeline and policy patterns covered in [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md).
 
 - [ ] Can explain idempotency and identify a non-idempotent task on sight.
 - [ ] Can build and layer a static or dynamic inventory with group and

@@ -151,7 +151,7 @@ address-conflict planning. Address translation (NAT/PAT, covered in Chapter
   Allocating a `/23` instead of a `/24` for a user VLAN expected to double in
   three years avoids a disruptive future re-IP; over-allocating everything
   to `/16` wastes address space and enlarges broadcast domains unnecessarily
-  (see Chapter 3).
+  (see [Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md)).
 - **Reserve address ranges by function within each subnet** (for example,
   `.1–.9` for gateways/HSRP/VRRP virtual IPs, `.10–.19` for infrastructure,
   `.20–.199` for DHCP scope, `.200–.254` for static assignments) so that
@@ -272,11 +272,11 @@ cabling or switchport investigation.
   addressing plan prevents costly renumbering later.
 - Filter or rate-limit unnecessary broadcast/multicast traffic at Layer 3
   boundaries; oversized subnets amplify the blast radius of broadcast-based
-  issues and attacks (see Chapter 3 for Layer 2 containment).
+  issues and attacks (see [Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md) for Layer 2 containment).
 - For IPv6, explicitly evaluate SLAAC vs. DHCPv6 vs. DHCPv6 with
   Prefix Delegation for address assignment; unmanaged SLAAC can allow
   unexpected host addressing if Router Advertisement Guard and DHCPv6 Guard
-  are not enabled on access switches (covered further in Chapter 3).
+  are not enabled on access switches (covered further in [Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md)).
 - Document and enforce address reservation conventions (gateway addresses,
   infrastructure ranges, DHCP scopes) in the IPAM system of record so
   automation and humans do not collide on the same address.

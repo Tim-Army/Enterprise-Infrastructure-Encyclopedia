@@ -13,7 +13,7 @@
 
 ### Untested Resilience Is a Hypothesis
 
-Every prior chapter in this volume has said some version of the same thing: redundancy is a hypothesis until tested (Chapter 1), a continuity plan untested for years is a common finding (Chapter 2), untested failover is the most common cause of an HA design underperforming during a real incident (Chapter 3), and a backup that has not been restore-tested is not a verified control (Chapter 4). This chapter formalizes the practice that turns "should work" into "verified to work": resilience testing, exercises, and chaos engineering. These are complementary, not interchangeable — exercises validate human procedure and coordination; chaos engineering validates system behavior under injected failure; both are necessary, and an organization that only does one has a real, uncharacterized gap in the other.
+Every prior chapter in this volume has said some version of the same thing: redundancy is a hypothesis until tested ([Chapter 1](01-resilience-engineering-and-critical-service-design.md)), a continuity plan untested for years is a common finding ([Chapter 2](02-business-impact-analysis-and-continuity-planning.md)), untested failover is the most common cause of an HA design underperforming during a real incident ([Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md)), and a backup that has not been restore-tested is not a verified control ([Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md)). This chapter formalizes the practice that turns "should work" into "verified to work": resilience testing, exercises, and chaos engineering. These are complementary, not interchangeable — exercises validate human procedure and coordination; chaos engineering validates system behavior under injected failure; both are necessary, and an organization that only does one has a real, uncharacterized gap in the other.
 
 ### The Exercise Maturity Ladder
 
@@ -43,8 +43,8 @@ Chaos engineering is the discipline of running controlled experiments against a 
 Chaos experiments typically inject one of several failure categories, each exercising a different resilience mechanism from earlier chapters:
 
 - **Resource-level faults** — terminating an instance or container, exhausting CPU/memory/disk, killing a process — exercises the redundancy and self-healing mechanisms from Chapters 1 and 3.
-- **Network faults** — added latency, packet loss, full partition between components — exercises timeouts, retries, circuit breakers, and quorum/split-brain handling from Chapter 3.
-- **Dependency faults** — a downstream service returns errors, times out, or degrades — exercises circuit breakers, bulkheads, and graceful degradation from Chapter 3.
+- **Network faults** — added latency, packet loss, full partition between components — exercises timeouts, retries, circuit breakers, and quorum/split-brain handling from [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md).
+- **Dependency faults** — a downstream service returns errors, times out, or degrades — exercises circuit breakers, bulkheads, and graceful degradation from [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md).
 - **Zonal or regional faults** — simulated loss of an entire availability zone or region — exercises the multi-AZ/multi-region HA and DR patterns from Chapters 3 and 4.
 - **State and data faults** — clock skew, corrupted or delayed replication, a stale cache — exercises data-consistency assumptions that are otherwise rarely tested outside of chaos experiments.
 
@@ -74,7 +74,7 @@ A game day is a scheduled, facilitated exercise combining a chaos experiment (or
 
 ### Cadence Tied to Criticality Tier
 
-Exercise and chaos-experiment cadence should scale with the criticality tiers established in Chapter 1, mirroring the same logic already applied to backup verification cadence in Chapter 4:
+Exercise and chaos-experiment cadence should scale with the criticality tiers established in [Chapter 1](01-resilience-engineering-and-critical-service-design.md), mirroring the same logic already applied to backup verification cadence in [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md):
 
 | Tier | Tabletop/Walkthrough | Simulation/Parallel Test | Chaos Experiments |
 | --- | --- | --- | --- |
@@ -83,7 +83,7 @@ Exercise and chaos-experiment cadence should scale with the criticality tiers es
 | Tier 2 | Annually | As feasible | Opportunistic |
 | Tier 3/4 | As feasible | Rarely required | Not typically required |
 
-A Tier 0 service with no chaos-experiment history and a Tier 3 batch job exercised quarterly represents the same category of mismatch flagged in Chapter 1's discussion of aligning architecture to business criticality — testing investment, like redundancy investment, should trace back to the criticality register.
+A Tier 0 service with no chaos-experiment history and a Tier 3 batch job exercised quarterly represents the same category of mismatch flagged in [Chapter 1](01-resilience-engineering-and-critical-service-design.md)'s discussion of aligning architecture to business criticality — testing investment, like redundancy investment, should trace back to the criticality register.
 
 ## Implementation and Automation
 
@@ -208,7 +208,7 @@ Wrapping `rollback_fn()` in a `finally` block mirrors the `trap cleanup EXIT` pa
 
 - Confirm every Tier 0/1 service has exercise and chaos-experiment history matching the cadence table above, not just a plan stating that it should.
 - Confirm abort criteria have actually been exercised at least once — an abort path that has never been triggered in practice is itself an untested control, subject to the same "declared but unverified" risk as everything else in this volume.
-- Confirm retrospective follow-up actions are tracked to closure; a resilience-testing program that surfaces findings but never resolves them accumulates the same kind of technical debt covered in Chapter 7.
+- Confirm retrospective follow-up actions are tracked to closure; a resilience-testing program that surfaces findings but never resolves them accumulates the same kind of technical debt covered in [Chapter 7](07-technical-debt-modernization-and-platform-renewal.md).
 
 ### Common Failure Modes
 
@@ -227,10 +227,10 @@ If an experiment's abort criteria trigger, or if steady state does not recover p
 ## Security and Best Practices
 
 - Restrict access to fault-injection tooling as tightly as access to production infrastructure itself; the same capability that lets an authorized engineer inject a controlled failure could let an attacker cause an unauthorized denial of service, and this tooling should never share credentials with lower-privilege systems.
-- Chaos engineering is not a substitute for adversarial security testing (red-teaming, penetration testing); it validates resilience to accidental and infrastructure-level failure, not to a deliberate, intelligent adversary adapting to defenses in real time. Coordinate with Volume X's cybersecurity practices for that distinct discipline, and do not conflate the two in program reporting.
-- Require documented, revocable authorization for every production chaos experiment and every full interruption DR test, mirroring the dual-authorization practice for Tier 0 continuity-plan activation established in Chapter 2.
+- Chaos engineering is not a substitute for adversarial security testing (red-teaming, penetration testing); it validates resilience to accidental and infrastructure-level failure, not to a deliberate, intelligent adversary adapting to defenses in real time. Coordinate with [Volume X](../../volume-10-enterprise-cybersecurity/README.md)'s cybersecurity practices for that distinct discipline, and do not conflate the two in program reporting.
+- Require documented, revocable authorization for every production chaos experiment and every full interruption DR test, mirroring the dual-authorization practice for Tier 0 continuity-plan activation established in [Chapter 2](02-business-impact-analysis-and-continuity-planning.md).
 - Log all fault-injection activity to the same audit trail as production changes; an unexplained latency spike or dependency failure that turns out to be an untracked chaos experiment wastes significant incident-response effort and erodes trust in monitoring data.
-- Ensure experiment tooling itself has no standing write access beyond what the specific fault requires, following the bulkhead/least-privilege principle from Chapter 3 applied to the testing tooling rather than only to production services.
+- Ensure experiment tooling itself has no standing write access beyond what the specific fault requires, following the bulkhead/least-privilege principle from [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md) applied to the testing tooling rather than only to production services.
 
 ## References and Knowledge Checks
 
@@ -335,7 +335,7 @@ No shared or production systems were modified; the experiment was entirely simul
 
 ## Summary and Completion Checklist
 
-Resilience testing closes the loop this volume has been building since Chapter 1: every architectural and procedural control — redundancy, HA failover, backup, DR — is a hypothesis until it is exercised under conditions that resemble reality. Exercises (tabletop through full interruption) validate human procedure and coordination at increasing realism and cost; chaos engineering validates system behavior against a defined steady-state hypothesis with a controlled, reversible blast radius. Neither substitutes for the other, and both require a cadence tied to the criticality tiers established in Chapter 1. Chapter 6 shifts from testing resilience under injected failure to maintaining it under routine, planned change — patching and upgrades — where many of the same safety disciplines (staged rollout, abort criteria, rollback) reappear in a different context.
+Resilience testing closes the loop this volume has been building since [Chapter 1](01-resilience-engineering-and-critical-service-design.md): every architectural and procedural control — redundancy, HA failover, backup, DR — is a hypothesis until it is exercised under conditions that resemble reality. Exercises (tabletop through full interruption) validate human procedure and coordination at increasing realism and cost; chaos engineering validates system behavior against a defined steady-state hypothesis with a controlled, reversible blast radius. Neither substitutes for the other, and both require a cadence tied to the criticality tiers established in [Chapter 1](01-resilience-engineering-and-critical-service-design.md). [Chapter 6](06-maintenance-patching-and-upgrade-engineering.md) shifts from testing resilience under injected failure to maintaining it under routine, planned change — patching and upgrades — where many of the same safety disciplines (staged rollout, abort criteria, rollback) reappear in a different context.
 
 **Completion checklist:**
 

@@ -242,7 +242,7 @@ exit "$fail"
   repos/<org>/<repo>/branches/main/protection | jq .enforce_admins`.
 - **Pre-commit hook not running.** `pre-commit install` only wires hooks
   into the current clone's `.git/hooks`; a fresh clone must run it again.
-  Add a bootstrap step (see Chapter 01) that runs `pre-commit install`
+  Add a bootstrap step (see [Chapter 01](01-building-the-enterprise-developer-workstation.md)) that runs `pre-commit install`
   automatically after clone.
 - **Structural validator false negatives.** A validator that only checks
   file *existence* will not catch an empty or stub file; extend checks to a
@@ -257,7 +257,7 @@ exit "$fail"
 
 - Require signed commits on protected branches (`required_signatures` in
   branch protection) so history integrity does not depend solely on process
-  discipline — see Chapter 01 for signing setup.
+  discipline — see [Chapter 01](01-building-the-enterprise-developer-workstation.md) for signing setup.
 - Enable secret scanning and push protection at the repository or
   organization level; treat a blocked push due to a detected secret as a
   correct outcome to investigate, not a false positive to bypass.
@@ -274,7 +274,7 @@ exit "$fail"
   commit SHA, not a mutable tag, to prevent a compromised upstream tag from
   silently changing hook or workflow behavior.
 - Document repository-architecture decisions as Architecture Decision
-  Records (see Chapter 07) so a future reorganization has to justify itself
+  Records (see [Chapter 07](07-enterprise-architecture-fundamentals.md)) so a future reorganization has to justify itself
   against the recorded original reasoning, not against nothing.
 
 ## References and Knowledge Checks

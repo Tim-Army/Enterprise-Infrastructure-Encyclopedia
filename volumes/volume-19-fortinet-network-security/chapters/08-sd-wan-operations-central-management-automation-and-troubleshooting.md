@@ -38,7 +38,7 @@ separate overlay appliance in front of a firewall. Its building blocks:
   balancing.
 
 This architecture directly extends the policy-routing concept from
-Chapter 05: an SD-WAN rule is, structurally, an application- and
+[Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md): an SD-WAN rule is, structurally, an application- and
 performance-aware policy route, continuously re-evaluated against live
 health-check telemetry rather than a static, always-on preference.
 
@@ -67,7 +67,7 @@ firmware management across a fleet of FortiGates. Key concepts:
 analytics plane — FortiGates forward logs to FortiAnalyzer for long-term
 retention, correlation, and reporting beyond what local FortiGate log
 storage supports, and its output feeds SIEM/SOC workflows covered
-vendor-neutrally in Volume XI.
+vendor-neutrally in [Volume XI](../../volume-11-observability-enterprise-operations/README.md).
 
 ### Automation surfaces
 
@@ -104,7 +104,7 @@ notification, run a local CLI script) directly on the FortiGate.
   overwrite or conflict with on the next centrally managed install.
 - **Log retention sizing on FortiAnalyzer.** Size FortiAnalyzer storage
   and retention against actual log volume from every security profile
-  enabled in Chapter 07 (deep inspection and IPS in particular generate
+  enabled in [Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md) (deep inspection and IPS in particular generate
   substantially more log volume than a bare permit/deny policy) and
   against the organization's compliance-driven retention requirement, not
   just device count.
@@ -273,7 +273,7 @@ events before enabling the `ban-ip` action against production traffic.
   indicates an invalid or expired API token, an API administrator account
   missing sufficient accprofile permissions, or the calling host not
   included in that API administrator's `trusthost` restriction
-  (Chapter 04); a CSRF-token-related failure on session-cookie-based (as
+  ([Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)); a CSRF-token-related failure on session-cookie-based (as
   opposed to bearer-token) API calls indicates the client is not handling
   the `X-CSRFTOKEN` header FortiOS expects for that authentication mode.
 - **Automation stitch not firing.** Confirm the trigger's `event-type` and
@@ -328,7 +328,7 @@ events before enabling the `ban-ip` action against production traffic.
    selection?
 2. What problem does FortiManager's install preview solve for a
    multi-device fleet, and how does it relate to the plan/apply
-   separation pattern introduced in Volume I?
+   separation pattern introduced in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)?
 3. Name two things to check when a REST API call returns a `401`/`403`
    response.
 4. Why should a new automation stitch capable of a `ban-ip` action be
@@ -428,7 +428,7 @@ REST API to retrieve system status.
 
 **Cleanup**
 
-- Leave the SD-WAN zone, health-check, and rule in place for Chapter 09's
+- Leave the SD-WAN zone, health-check, and rule in place for [Chapter 09](09-nse-4-fortios-administrator-training-and-enterprise-capstone.md)'s
   capstone. If the lab FortiManager instance is shared and temporary,
   deregister the device (`config system central-management` `set type
   none` `end`) after validation. Revoke or delete the lab API token if it
@@ -437,11 +437,11 @@ REST API to retrieve system status.
 ## Summary and Completion Checklist
 
 This chapter added SD-WAN path selection on top of the routing foundation
-from Chapter 05, validated automatic failover with a deliberate WAN1
+from [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md), validated automatic failover with a deliberate WAN1
 outage, connected FGT-LAB-01 to centralized FortiManager management, and
 exercised both REST API and Ansible-style automation, including an
 event-driven automation stitch with an explicit guardrail discussion.
-Chapter 09 draws every subsystem from Chapters 04 through 08 together into
+[Chapter 09](09-nse-4-fortios-administrator-training-and-enterprise-capstone.md) draws every subsystem from Chapters 04 through 08 together into
 an end-to-end capstone build and validation exercise aligned to the NSE 4
 blueprint.
 

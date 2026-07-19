@@ -42,7 +42,7 @@ covers in depth; dynamic routing protocol configuration follows the same
 - **Policy routes** (`config router policy`) match on richer
   criteria — source address, incoming interface, protocol, and port — and
   override the destination-based routing table lookup for matching
-  traffic, which is the mechanism SD-WAN (Chapter 08) builds on for
+  traffic, which is the mechanism SD-WAN ([Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md)) builds on for
   application-aware path selection.
 - **Equal-cost multi-path (ECMP)** allows multiple static routes of equal
   distance and priority to the same destination to load-share, a
@@ -221,7 +221,7 @@ FGT-LAB-01 (ippool) # end
 ```
 
 The firewall policy referencing `set nat enable`, `set ippool enable`, and
-`set poolname "WAN1-POOL"` is created in Chapter 06 once firewall policy
+`set poolname "WAN1-POOL"` is created in [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md) once firewall policy
 concepts are covered in full; this chapter establishes the routing, address,
 and pool objects that policy will consume.
 
@@ -320,7 +320,7 @@ most common reason two devices fail to form a cluster.
   `diagnose firewall ippool` commands on some releases) confirms IP pool
   allocation state; a VIP that appears configured but does not respond
   externally is very often a missing or misordered firewall policy
-  referencing it (covered in Chapter 06) rather than a VIP definition
+  referencing it (covered in [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)) rather than a VIP definition
   fault.
 - **VDOM connectivity issues.** Confirm both ends of an inter-VDOM link
   interface are `up` (`get system interface physical`) and that each VDOM
@@ -358,7 +358,7 @@ most common reason two devices fail to form a cluster.
   encryption/authentication on a production cluster.
 - Log NAT and VIP-related sessions where compliance or forensic
   requirements demand identifiable source/destination mapping after
-  translation — Chapter 07 covers logging configuration within security
+  translation — [Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md) covers logging configuration within security
   profiles and policy in depth.
 
 ## References and Knowledge Checks
@@ -397,7 +397,7 @@ FGCP HA cluster, including a forced-failover negative test.
 
 **Prerequisites**
 
-- FGT-LAB-01 from Chapter 04, licensed and hardened.
+- FGT-LAB-01 from [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md), licensed and hardened.
 - A second FortiGate-VM64 instance, `FGT-LAB-02`, deployed identically to
   FGT-LAB-01 (same FortiOS build) but not yet configured, for the HA
   portion of this lab.
@@ -433,7 +433,7 @@ FGCP HA cluster, including a forced-failover negative test.
 
    **Expected result:** The VIP appears with the correct external and
    mapped addresses; note that external reachability additionally requires
-   a firewall policy, completed in Chapter 06.
+   a firewall policy, completed in [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md).
 
 5. Enable multi-VDOM mode, create `VDOM-CORP` and `VDOM-DMZ`, create the
    `vlink-corp-dmz` inter-VDOM link, and reassign `port3` into
@@ -481,7 +481,7 @@ FGCP HA cluster, including a forced-failover negative test.
 
 **Cleanup**
 
-- Leave interfaces, routing, VDOMs, and the HA cluster in place; Chapter 06
+- Leave interfaces, routing, VDOMs, and the HA cluster in place; [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)
   builds firewall policy and VPN configuration on top of this topology. If
   a shared lab environment requires resetting to single-device state,
   disable HA (`config system ha` `set mode standalone` `end`) on both
@@ -493,7 +493,7 @@ This chapter built FGT-LAB-01's data-plane foundation: physical and VLAN
 interfaces, static and policy routing, NAT via an IP pool and a
 destination-NAT VIP, VDOM segmentation connected through an inter-VDOM
 link, and a two-member FGCP high-availability cluster validated through a
-forced heartbeat-loss negative test. Chapter 06 builds firewall policy,
+forced heartbeat-loss negative test. [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md) builds firewall policy,
 authentication, and VPN configuration directly on top of this network and
 HA foundation.
 

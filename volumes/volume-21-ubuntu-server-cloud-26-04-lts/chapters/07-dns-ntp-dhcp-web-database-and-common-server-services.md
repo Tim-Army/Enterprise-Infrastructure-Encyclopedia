@@ -30,7 +30,7 @@ conflate:
   every Ubuntu host by default, managing `/etc/resolv.conf` (typically
   a symlink to `/run/systemd/resolve/stub-resolv.conf`, pointing at
   `127.0.0.53`), handling DNS caching, and integrating per-interface
-  DNS servers assigned via Netplan (Chapter 04).
+  DNS servers assigned via Netplan ([Chapter 04](04-identity-privilege-ssh-netplan-and-firewalling.md)).
 
 A host can run both: `systemd-resolved` resolves the *host's own*
 lookups, while BIND9, if installed, answers queries *from other hosts*
@@ -258,7 +258,7 @@ sudo grep -v '^#' /etc/postgresql/*/main/pg_hba.conf | grep -v '^$'
 - **A BIND9 zone loads but queries fail.** `named-checkzone` catches
   syntax errors before reload; `dig @localhost app01.lab.example.com`
   from the server itself isolates whether the problem is the zone data
-  or client-side reachability/firewalling (Chapter 04).
+  or client-side reachability/firewalling ([Chapter 04](04-identity-privilege-ssh-netplan-and-firewalling.md)).
 - **`systemd-resolved` and BIND9 seem to conflict on port 53.**
   `systemd-resolved`'s actual listener is `127.0.0.53:53`
   (the stub), not the host's real addresses, so BIND9 binding to the
@@ -267,7 +267,7 @@ sudo grep -v '^#' /etc/postgresql/*/main/pg_hba.conf | grep -v '^$'
 - **`chronyc tracking` shows a large offset that never converges.**
   Check `chronyc sources -v` for a source flagged as unreachable or
   falseticker; a firewall blocking UDP/123 outbound to the configured
-  NTP source is a common cause (Chapter 04).
+  NTP source is a common cause ([Chapter 04](04-identity-privilege-ssh-netplan-and-firewalling.md)).
 - **Kea fails to start.** `kea-dhcp4 -t <config>` validates JSON syntax
   and semantics before ever touching `systemctl`; `journalctl -u
   kea-dhcp4-server` surfaces interface-binding failures, commonly an
@@ -275,7 +275,7 @@ sudo grep -v '^#' /etc/postgresql/*/main/pg_hba.conf | grep -v '^$'
 - **Certbot issuance fails.** The HTTP-01 challenge requires port 80
   reachable from the internet to the exact `server_name`; confirm DNS
   resolves correctly first (`dig app01.lab.example.com`) and that
-  `ufw`/upstream firewalls (Chapter 04) allow inbound 80/tcp during
+  `ufw`/upstream firewalls ([Chapter 04](04-identity-privilege-ssh-netplan-and-firewalling.md)) allow inbound 80/tcp during
   issuance.
 - **A database won't accept a new application's connection.** For
   MariaDB, confirm the grant matches the connecting host exactly
@@ -309,7 +309,7 @@ sudo grep -v '^#' /etc/postgresql/*/main/pg_hba.conf | grep -v '^$'
   authentication (no password required) should never appear on a line
   matching anything but `127.0.0.1`/`::1` from a fully trusted local
   process.
-- Scope database network exposure with `ufw` (Chapter 04) to only the
+- Scope database network exposure with `ufw` ([Chapter 04](04-identity-privilege-ssh-netplan-and-firewalling.md)) to only the
   application hosts that need it — neither MariaDB's 3306/tcp nor
   PostgreSQL's 5432/tcp should be reachable from a general network
   segment by default.

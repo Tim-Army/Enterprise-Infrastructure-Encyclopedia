@@ -31,20 +31,20 @@ different:
   automatically a good trade.
 - **Defense in depth** layers independent controls so that a single
   control's failure does not equal a breach: network segmentation
-  (Chapter 02), host hardening (this chapter), identity and access
-  management (Chapter 03, Volume X), logging and detection (Volume XI),
+  ([Chapter 02](02-ports-protocols-services-and-traffic-flows.md)), host hardening (this chapter), identity and access
+  management ([Chapter 03](03-addressing-subnetting-naming-time-and-identity-reference.md), [Volume X](../../volume-10-enterprise-cybersecurity/README.md)), logging and detection ([Volume XI](../../volume-11-observability-enterprise-operations/README.md)),
   and incident response (this chapter) are deliberately redundant rather
   than each covering a unique, non-overlapping slice of risk.
 - **Hardening baselines** (CIS Benchmarks, DISA STIGs, vendor security
   guides) translate defense-in-depth principles into specific,
   checkable settings per platform — the same baseline concept introduced
-  generically in Chapter 04, applied specifically to security posture
+  generically in [Chapter 04](04-configuration-templates-baselines-and-change-records.md), applied specifically to security posture
   here.
 - **Incident response** is a lifecycle, not a single action: NIST SP
   800-61 defines Preparation, Detection and Analysis, Containment,
   Eradication and Recovery, and Post-Incident Activity as sequential
   phases, each with distinct objectives and each dependent on the
-  troubleshooting groundwork from Chapter 06 but requiring additional
+  troubleshooting groundwork from [Chapter 06](06-troubleshooting-decision-aids-and-escalation.md) but requiring additional
   evidence-preservation discipline that routine troubleshooting does not.
 - **Risk** is formally the product of likelihood and impact, not either
   alone; a high-impact, near-zero-likelihood event and a low-impact,
@@ -68,7 +68,7 @@ different:
 - **Design incident response roles before an incident, not during one.**
   Incident Commander, Communications Lead, and technical responders are
   roles, not necessarily fixed individuals, and should be assignable from
-  an on-call rotation consistent with the escalation matrix in Chapter 06.
+  an on-call rotation consistent with the escalation matrix in [Chapter 06](06-troubleshooting-decision-aids-and-escalation.md).
 - **Decide data classification tiers before they are needed for a
   disclosure or retention decision.** A simple three- or four-tier model
   (Public, Internal, Confidential, Restricted) applied consistently is
@@ -81,7 +81,7 @@ different:
 - **Budget for the eradication and recovery phases explicitly**, not just
   detection and containment; an incident response plan that stops at
   "contained" leaves the actual return to a known-good, hardened state
-  (Chapter 04's baseline) undone.
+  ([Chapter 04](04-configuration-templates-baselines-and-change-records.md)'s baseline) undone.
 
 ## Implementation and Automation
 
@@ -98,9 +98,9 @@ different:
 | Phase | Objective | Key Evidence/Output |
 | --- | --- | --- |
 | Preparation | Establish tools, access, playbooks, and communication paths before an incident occurs | IR plan, contact list, pre-provisioned forensic/response tooling |
-| Detection and Analysis | Identify a candidate incident, confirm scope and severity, distinguish false positives | Alert source, initial timeline (Chapter 06 format), affected-system list, severity classification |
+| Detection and Analysis | Identify a candidate incident, confirm scope and severity, distinguish false positives | Alert source, initial timeline ([Chapter 06](06-troubleshooting-decision-aids-and-escalation.md) format), affected-system list, severity classification |
 | Containment | Limit further damage/spread while preserving evidence — short-term (isolate) and long-term (patch/segment) containment are distinct steps | Network isolation records, credential revocation log, forensic images/snapshots taken before remediation |
-| Eradication and Recovery | Remove the root cause (malware, unauthorized access, vulnerability) and restore systems to a validated, hardened baseline (Chapter 04) | Baseline validation evidence (Chapter 05), patch/rebuild records |
+| Eradication and Recovery | Remove the root cause (malware, unauthorized access, vulnerability) and restore systems to a validated, hardened baseline ([Chapter 04](04-configuration-templates-baselines-and-change-records.md)) | Baseline validation evidence ([Chapter 05](05-validation-evidence-checklists-and-acceptance.md)), patch/rebuild records |
 | Post-Incident Activity | Blameless review, root-cause documentation, corrective action tracking | Post-incident report, updated decision tree/baseline/runbook, corrective action tickets |
 
 ### CVSS v3.1/v4.0 severity bands
@@ -140,7 +140,7 @@ most organizations, executive/board-level visibility.
 | Public | Approved for unrestricted release | Marketing material, published documentation (like this encyclopedia) | No special handling |
 | Internal | Not for external release, low individual sensitivity | Internal wiki content, non-sensitive configuration | Access limited to employees/contractors |
 | Confidential | Sensitive business or personal data | Customer PII, financial reports, source code | Access limited to a defined need-to-know group; encryption at rest and in transit |
-| Restricted | Highest sensitivity; regulatory, legal, or severe business impact if disclosed | Authentication secrets, cardholder data, protected health information | Strict access control, mandatory encryption, enhanced logging and retention per Chapter 09's governing standards |
+| Restricted | Highest sensitivity; regulatory, legal, or severe business impact if disclosed | Authentication secrets, cardholder data, protected health information | Strict access control, mandatory encryption, enhanced logging and retention per [Chapter 09](09-standards-certifications-vendor-documentation-and-reference-governance.md)'s governing standards |
 
 ### Common enterprise hardening actions by platform (cross-reference)
 
@@ -148,10 +148,10 @@ most organizations, executive/board-level visibility.
 | --- | --- | --- |
 | RHEL 10 / Ubuntu 26.04 | SELinux/AppArmor enforcing mode, disable unused services, `auditd` enabled, SSH key-only auth | CIS Benchmark for the respective distribution |
 | Windows Server | LAPS or equivalent for local admin credentials, disable legacy SMBv1, enforce Credential Guard where supported | CIS Benchmark for Windows Server; Microsoft Security Baselines |
-| Cisco IOS XE | `service password-encryption`, disable unused management protocols, AAA via TACACS+ (Chapter 01) | Cisco hardening guide; CIS Benchmark for Cisco IOS |
+| Cisco IOS XE | `service password-encryption`, disable unused management protocols, AAA via TACACS+ ([Chapter 01](01-command-quick-reference-and-safe-administration.md)) | Cisco hardening guide; CIS Benchmark for Cisco IOS |
 | PAN-OS / FortiOS | Disable default admin account, enforce MFA for administrative access, minimize management-plane exposure | Vendor hardening guide; CIS Benchmark where published |
 | VMware vSphere | Enable lockdown mode, disable SSH/ESXi Shell by default, enforce certificate-based host management | VMware vSphere Security Configuration Guide |
-| Kubernetes | Disable anonymous kubelet access (Chapter 02), Pod Security Standards enforcement, network policies default-deny | CIS Kubernetes Benchmark |
+| Kubernetes | Disable anonymous kubelet access ([Chapter 02](02-ports-protocols-services-and-traffic-flows.md)), Pod Security Standards enforcement, network policies default-deny | CIS Kubernetes Benchmark |
 | AWS | Root account MFA and disuse for daily operations, IAM least privilege, GuardDuty/Security Hub enabled | CIS AWS Foundations Benchmark |
 
 ## Validation and Troubleshooting
@@ -167,14 +167,14 @@ most organizations, executive/board-level visibility.
   practical priority than a Medium score on an internet-facing,
   actively-exploited component; document the reasoning either way.
 - **During containment, confirm isolation actually holds** (re-test the
-  five-field flow statement from Chapter 02 for the isolated system)
+  five-field flow statement from [Chapter 02](02-ports-protocols-services-and-traffic-flows.md) for the isolated system)
   rather than assuming a firewall rule or network access control change
   took effect as intended.
 - **Distinguish a detection false positive from a true negative during
   the Detection and Analysis phase**, and document which was concluded
   and why; an unexplained "false positive" dismissal without evidence is
   a common way real incidents get missed.
-- **Re-run the acceptance checklist (Chapter 05) against the recovery
+- **Re-run the acceptance checklist ([Chapter 05](05-validation-evidence-checklists-and-acceptance.md)) against the recovery
   baseline before declaring Eradication and Recovery complete**; a system
   restored from backup or rebuilt must be validated against the current
   hardened baseline, not simply returned to its pre-incident state, which
@@ -188,7 +188,7 @@ most organizations, executive/board-level visibility.
   this one principle.
 - Treat logging and alerting as a control in its own right, not an
   afterthought — an incident that cannot be detected cannot be responded
-  to, regardless of how strong preventive controls are (Volume XI).
+  to, regardless of how strong preventive controls are ([Volume XI](../../volume-11-observability-enterprise-operations/README.md)).
 - Test incident response plans with tabletop exercises on a recurring
   cadence, not only when a real incident forces the first execution;
   an untested plan reliably surfaces gaps at the worst possible time.
@@ -201,7 +201,7 @@ most organizations, executive/board-level visibility.
   guides are versioned to specific platform releases and drift from the
   running baseline over time.
 - Report suspected security incidents through the defined escalation path
-  (Chapter 06) immediately, even with incomplete information; delay while
+  ([Chapter 06](06-troubleshooting-decision-aids-and-escalation.md)) immediately, even with incomplete information; delay while
   gathering more certainty before reporting is a common and costly
   anti-pattern.
 
@@ -216,11 +216,11 @@ most organizations, executive/board-level visibility.
   hardening guides referenced throughout this table.
 - FIRST CVSS v3.1/v4.0 specification (`first.org/cvss`).
 - DISA STIGs (`public.cyber.mil/stigs`).
-- Chapter 04 of this volume — baselines that incident recovery restores
+- [Chapter 04](04-configuration-templates-baselines-and-change-records.md) of this volume — baselines that incident recovery restores
   systems to.
-- Chapter 05 of this volume — evidence and acceptance discipline applied
+- [Chapter 05](05-validation-evidence-checklists-and-acceptance.md) of this volume — evidence and acceptance discipline applied
   to hardening and recovery validation.
-- Volume X — Enterprise Cybersecurity (full architectural and control
+- [Volume X](../../volume-10-enterprise-cybersecurity/README.md) — Enterprise Cybersecurity (full architectural and control
   treatment).
 
 **Knowledge checks**
@@ -252,7 +252,7 @@ Benchmark or vendor guide (or a locally cached copy); a Markdown editor.
    version-dated baseline reference.
 2. Select five hardening controls from that benchmark and check each
    against your lab system, recording Pass/Fail evidence in the format
-   from Chapter 05. **Expected result:** five controls checked with
+   from [Chapter 05](05-validation-evidence-checklists-and-acceptance.md). **Expected result:** five controls checked with
    linked evidence.
 3. For any Fail, assign a CVSS-style severity band (Low/Medium/High/
    Critical) using your best-effort assessment of impact and
@@ -277,7 +277,7 @@ Benchmark or vendor guide (or a locally cached copy); a Markdown editor.
 **Cleanup:** Remove the unauthorized account created for the simulated
 incident, revert any hardening control changed only for lab purposes if
 it is not intended to persist, and confirm the lab system returns to its
-baseline state from Chapter 04.
+baseline state from [Chapter 04](04-configuration-templates-baselines-and-change-records.md).
 
 ## Summary and Completion Checklist
 

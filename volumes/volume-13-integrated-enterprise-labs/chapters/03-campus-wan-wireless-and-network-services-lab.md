@@ -2,9 +2,9 @@
 
 ## Learning Objectives
 
-- Replace the ad hoc lab gateway from Chapter 01 with a resilient Cisco
+- Replace the ad hoc lab gateway from [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) with a resilient Cisco
   Catalyst core/distribution pair running HSRP, without breaking the
-  identity and DHCP services Chapter 02 already depends on.
+  identity and DHCP services [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) already depends on.
 - Build a site-to-site WAN link between `HQ` and `BR1` and route between
   sites with OSPF.
 - Extend the `corp.meridian.example` directory to `BR1` with a read-only
@@ -16,27 +16,27 @@
 
 ## Theory and Architecture
 
-Chapter 02 built identity, DNS, DHCP, and time on top of routing that was
+[Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) built identity, DNS, DHCP, and time on top of routing that was
 never meant to last — a single ad hoc lab gateway handling every VLAN.
 This chapter replaces that gateway with the real thing: a Cisco Catalyst
 campus core, a WAN link to `BR1`, and wireless — the architecture Volume
 III (Cisco Enterprise Networking) treats in depth, applied here on the
-`corp.meridian.example` topology Chapter 01 defined and Chapter 02 already
+`corp.meridian.example` topology [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) defined and [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) already
 put load-bearing services on.
 
-The design follows Volume II, Chapter 03 (Ethernet Switching, VLANs, and
-Layer 2 Resilience) and Chapter 07 (Enterprise Network Design and
-Resilience) for the campus topology, Volume III, Chapter 02 (Catalyst
+The design follows [Volume II, Chapter 03](../../volume-02-network-engineering-foundations/chapters/03-ethernet-switching-vlans-and-layer-2-resilience.md) (Ethernet Switching, VLANs, and
+Layer 2 Resilience) and [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md) (Enterprise Network Design and
+Resilience) for the campus topology, [Volume III, Chapter 02](../../volume-03-cisco-enterprise-networking/chapters/02-catalyst-campus-switching-and-resiliency.md) (Catalyst
 Campus Switching and Resiliency) for the HSRP implementation specifics,
-Volume III, Chapter 04 (Enterprise WAN, Internet Edge, and Catalyst SD-WAN)
-for the HQ–BR1 link, and Volume III, Chapter 05 (Catalyst Wireless
-Architecture and Operations) together with Volume II, Chapter 06 (Wireless
+[Volume III, Chapter 04](../../volume-03-cisco-enterprise-networking/chapters/04-enterprise-wan-internet-edge-and-catalyst-sd-wan.md) (Enterprise WAN, Internet Edge, and Catalyst SD-WAN)
+for the HQ–BR1 link, and [Volume III, Chapter 05](../../volume-03-cisco-enterprise-networking/chapters/05-catalyst-wireless-architecture-and-operations.md) (Catalyst Wireless
+Architecture and Operations) together with [Volume II, Chapter 06](../../volume-02-network-engineering-foundations/chapters/06-wireless-network-foundations.md) (Wireless
 Network Foundations) for the WLAN. Routing between the core, the WAN edge,
-and `BR1` uses OSPF, consistent with Volume II, Chapter 04 (IP Routing
-Fundamentals) and Volume III, Chapter 03 (Cisco Enterprise Routing and
+and `BR1` uses OSPF, consistent with [Volume II, Chapter 04](../../volume-02-network-engineering-foundations/chapters/04-ip-routing-fundamentals.md) (IP Routing
+Fundamentals) and [Volume III, Chapter 03](../../volume-03-cisco-enterprise-networking/chapters/03-cisco-enterprise-routing-and-path-control.md) (Cisco Enterprise Routing and
 Path Control).
 
-A deliberate design goal is that this cutover is invisible to Chapter 02's
+A deliberate design goal is that this cutover is invisible to [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md)'s
 services: `sw-core01`/`sw-core02` take over the exact gateway addresses
 (`10.13.10.1`, `10.13.20.1`, and so on) the ad hoc router used, as HSRP
 virtual IPs. `dc01` and `dc02` do not need their default gateway
@@ -73,7 +73,7 @@ HSRP virtual IPs reuse the `.1` address already in use on each HQ VLAN:
 - **Single WAN path, deliberately.** `rtr-hq01` and `rtr-br101` connect
   over one IPsec-protected link across the `10.13.70.0/24` WAN transit.
   A production design would add a second path (a backup internet-VPN leg,
-  or genuine SD-WAN dual-transport per Volume III, Chapter 04); this lab
+  or genuine SD-WAN dual-transport per [Volume III, Chapter 04](../../volume-03-cisco-enterprise-networking/chapters/04-enterprise-wan-internet-edge-and-catalyst-sd-wan.md)); this lab
   intentionally leaves that gap so the resilience exercises in Chapters 05
   and 09 have a real deficiency to test against rather than an already
   redundant link.
@@ -81,7 +81,7 @@ HSRP virtual IPs reuse the `.1` address already in use on each HQ VLAN:
   configured as an RODC: it can authenticate local users and serve DNS
   without a live WAN path, but it cannot originate directory changes,
   limiting the blast radius of a compromised or physically less-secure
-  branch site — the same reasoning Volume IV, Chapter 04 gives for RODC
+  branch site — the same reasoning [Volume IV, Chapter 04](../../volume-04-enterprise-systems-administration/chapters/04-enterprise-identity-and-directory-services.md) gives for RODC
   placement generally.
 - **DHCP relay instead of a third DHCP server.** `BR1`'s VLANs relay DHCP
   broadcasts to `dc01`/`dc02` at HQ rather than running a local DHCP
@@ -90,7 +90,7 @@ HSRP virtual IPs reuse the `.1` address already in use on each HQ VLAN:
   intentionally exposed as a known limitation.
 - **Wireless as a controller-based, not autonomous, design.** `wlc01`
   centralizes RF and policy configuration for every access point in the
-  lab, consistent with Volume III, Chapter 05; a single AP is sufficient
+  lab, consistent with [Volume III, Chapter 05](../../volume-03-cisco-enterprise-networking/chapters/05-catalyst-wireless-architecture-and-operations.md); a single AP is sufficient
   to exercise CAPWAP tunneling and SSID-to-VLAN mapping without requiring
   full RF planning for a lab.
 
@@ -208,19 +208,19 @@ Install-ADDSDomainController -DomainName "corp.meridian.example" `
 ## Security and Best Practices
 
 - Restrict Telnet on every Cisco device introduced in this chapter; use
-  SSH with local AAA or, once Chapter 07 exists, centralized
+  SSH with local AAA or, once [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md) exists, centralized
   authentication.
 - Apply Control Plane Policing (CoPP) on `rtr-hq01` and `rtr-br101` to
   protect the route processor from a flooded or misconfigured link,
-  consistent with the infrastructure defense practices in Volume X,
-  Chapter 04 (Network Security Architecture and Infrastructure Defense).
+  consistent with the infrastructure defense practices in [Volume X](../../volume-10-enterprise-cybersecurity/README.md),
+  [Chapter 04](04-virtualization-storage-and-data-protection-lab.md) (Network Security Architecture and Infrastructure Defense).
 - Keep the wireless guest SSID on VLAN 140 fully isolated from every
   internal VLAN at the firewall/ACL layer — a guest network that can reach
   `10.13.10.0/24` defeats the purpose of segmenting it in the first place.
 - Use a unique, sufficiently long IPsec pre-shared key for the WAN tunnel
   and record it in a lab-scoped secrets location, not in the running
   configuration comments or this chapter's command history.
-- Log HSRP state transitions and OSPF adjacency changes; Chapter 08 wires
+- Log HSRP state transitions and OSPF adjacency changes; [Chapter 08](08-observability-operations-and-major-incident-lab.md) wires
   this telemetry into the volume's observability stack, but the logging
   needs to exist first.
 
@@ -231,11 +231,11 @@ Install-ADDSDomainController -DomainName "corp.meridian.example" `
 - RFC 2338 — *Virtual Router Redundancy Protocol* (HSRP is Cisco's
   proprietary predecessor; VRRP concepts apply directly).
 - RFC 2328 — *OSPF Version 2*.
-- Volume II, Chapters 03–04, 06–07 — Layer 2 resilience, IP routing,
+- [Volume II](../../volume-02-network-engineering-foundations/README.md), Chapters 03–04, 06–07 — Layer 2 resilience, IP routing,
   wireless foundations, and enterprise network design and resilience.
-- Volume III, Chapters 02–05 — Catalyst campus switching, enterprise
+- [Volume III](../../volume-03-cisco-enterprise-networking/README.md), Chapters 02–05 — Catalyst campus switching, enterprise
   routing, WAN/internet edge, and Catalyst wireless architecture.
-- Volume IV, Chapter 04 — Enterprise Identity and Directory Services (RODC
+- [Volume IV, Chapter 04](../../volume-04-enterprise-systems-administration/chapters/04-enterprise-identity-and-directory-services.md) — Enterprise Identity and Directory Services (RODC
   placement).
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Cisco IOS XE
   17.x baseline used throughout this chapter.
@@ -243,7 +243,7 @@ Install-ADDSDomainController -DomainName "corp.meridian.example" `
 **Knowledge checks**
 
 1. Why does reusing the existing `.1` gateway addresses as HSRP virtual
-   IPs matter for the systems Chapter 02 already deployed?
+   IPs matter for the systems [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) already deployed?
 2. What does an RODC at `BR1` protect against that a full read-write
    domain controller would not?
 3. Why is a single WAN path treated as an intentional gap in this
@@ -253,19 +253,19 @@ Install-ADDSDomainController -DomainName "corp.meridian.example" `
 
 ## Hands-On Lab
 
-**Objective:** Cut over from the Chapter 01 ad hoc gateway to a resilient
+**Objective:** Cut over from the [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) ad hoc gateway to a resilient
 Catalyst core/WAN/wireless build, extend the directory to `BR1`, and prove
 HSRP failover and OSPF adjacency both behave as designed.
 
 **Prerequisites**
 
-- Chapter 02 complete, with `dc01`/`dc02`/`linux01` healthy and the
+- [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) complete, with `dc01`/`dc02`/`linux01` healthy and the
   `ch02-baseline` snapshot available.
 - Two Catalyst 9000-series (or equivalent virtual/CML) switches for the
   core pair, one access switch, two WAN-capable routers, and a Catalyst
-  9800 WLC or equivalent — physical, nested, or modeled per Chapter 01's
+  9800 WLC or equivalent — physical, nested, or modeled per [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s
   Design Considerations.
-- Comfort with Cisco IOS XE CLI at the level of Volume III, Chapters
+- Comfort with Cisco IOS XE CLI at the level of [Volume III](../../volume-03-cisco-enterprise-networking/README.md), Chapters
   01–02.
 
 **Steps**
@@ -354,7 +354,7 @@ HSRP failover and OSPF adjacency both behave as designed.
     switches.
 
 15. **Cleanup:** No teardown — this chapter's build is retained for
-    Chapter 04 onward. Back up every device configuration into
+    [Chapter 04](04-virtualization-storage-and-data-protection-lab.md) onward. Back up every device configuration into
     `~/vol13-lab/configs/`, commit, and retake the `ch03-baseline`
     snapshot/backup if state changed during the negative test:
 
@@ -366,10 +366,10 @@ HSRP failover and OSPF adjacency both behave as designed.
 
 ## Summary and Completion Checklist
 
-This chapter replaced Chapter 01's placeholder gateway with a resilient
+This chapter replaced [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s placeholder gateway with a resilient
 Catalyst core, a real HQ–BR1 WAN link, extended directory services to
 `BR1` via an RODC, and controller-based wireless — while proving the
-cutover was invisible to the identity services Chapter 02 built. The
+cutover was invisible to the identity services [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) built. The
 negative test confirmed HSRP failover is transparent to endpoints, and the
 single-WAN-path design gap is now a documented, intentional target for
 later resilience work.

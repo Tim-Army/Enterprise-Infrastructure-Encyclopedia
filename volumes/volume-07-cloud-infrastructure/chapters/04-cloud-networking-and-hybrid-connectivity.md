@@ -373,7 +373,7 @@ resource "cloud_vpn_connection" "failover" {
   rigor as an identity policy change.
 - Avoid encoding trust in network location alone ("it's inside the VPC, so
   it's trusted"); pair network segmentation with the identity-based
-  controls from Chapter 03 rather than treating either as sufficient
+  controls from [Chapter 03](03-cloud-identity-access-and-cryptographic-services.md) rather than treating either as sufficient
   alone.
 
 ## References and Knowledge Checks
@@ -511,8 +511,8 @@ address plan and builds up through routing constructs, topology choice
 (peering-based hub-and-spoke versus transit gateway), hybrid connectivity
 (VPN versus dedicated connection, ideally combined for resilience), hybrid
 DNS resolution, and layered segmentation with security groups and network
-ACLs. Chapter 05 places compute workloads onto the networks designed here,
-and Chapter 07 extends these hybrid connectivity patterns to full
+ACLs. [Chapter 05](05-cloud-compute-and-workload-placement.md) places compute workloads onto the networks designed here,
+and [Chapter 07](07-hybrid-and-multicloud-architecture.md) extends these hybrid connectivity patterns to full
 multicloud architecture.
 
 - [ ] Can design a CIDR allocation plan with headroom for growth and

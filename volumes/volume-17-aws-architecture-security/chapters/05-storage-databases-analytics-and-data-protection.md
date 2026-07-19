@@ -105,7 +105,7 @@ unlike a relational database — access patterns must be designed into the
 table's key structure up front; DynamoDB does not support ad hoc joins or
 arbitrary `WHERE` clauses at scale. **DynamoDB Global Tables** replicate a
 table across Regions with multi-Region active-active writes, covered
-further as a DR mechanism in Chapter 06.
+further as a DR mechanism in [Chapter 06](06-reliability-migration-multi-region-and-disaster-recovery.md).
 
 ### Analytics: Redshift, Glue, Athena, and Lake Formation
 

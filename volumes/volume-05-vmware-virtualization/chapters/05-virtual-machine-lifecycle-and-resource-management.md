@@ -29,7 +29,7 @@ created, how it is personalized, how ESXi and DRS decide where its CPU and
 memory demands are satisfied, and how point-in-time state (snapshots) is
 managed without becoming a liability. Storage placement is introduced only
 at the concept level here; the full mechanics of Storage Policy-Based
-Management (SPBM) and vSAN are covered in Chapter 6.
+Management (SPBM) and vSAN are covered in [Chapter 6](06-vsphere-storage-and-vsan.md).
 
 ### VM hardware versions
 

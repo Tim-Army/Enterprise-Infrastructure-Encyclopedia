@@ -50,7 +50,7 @@ permission instead (see Implementation and Automation, below).
 ### OSI and TCP/IP mapping
 
 Wireshark's packet detail pane is organized as a stack of dissectors that
-mirrors the layered reference models covered in Volume II. A typical HTTPS
+mirrors the layered reference models covered in [Volume II](../../volume-02-network-engineering-foundations/README.md). A typical HTTPS
 frame captured on an Ethernet segment decodes as:
 
 ```text
@@ -76,8 +76,8 @@ layers inward.
 | pcap (legacy) | `.pcap` | Single link-layer type per file, microsecond or nanosecond timestamp resolution fixed at capture start, no comments or metadata blocks. Still the lowest common denominator for older tooling. |
 | pcapng | `.pcapng` | Wireshark's default since Wireshark 2.x. Block-structured: supports multiple interfaces per file, per-packet interface description blocks, name resolution blocks, decryption secrets blocks (for example, stored TLS key logs), and free-text comments attached to individual packets. |
 
-Enterprise capture engineering (Chapter 02) and TLS decryption workflows
-(Chapter 07) both depend on pcapng-specific features — multi-interface
+Enterprise capture engineering ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md)) and TLS decryption workflows
+([Chapter 07](07-application-protocol-tls-and-service-response-analysis.md)) both depend on pcapng-specific features — multi-interface
 capture and embedded decryption secrets — so pcapng should be the default
 target format unless a downstream tool specifically requires legacy pcap.
 
@@ -86,7 +86,7 @@ target format unless a downstream tool specifically requires legacy pcap.
 - **GUI vs. `tshark` vs. `dumpcap` for the task at hand.** Use `dumpcap` for
   unattended, long-running, or remote capture because it has the smallest
   attack surface and lowest resource footprint. Use `tshark` for scripted
-  extraction, filtering, and statistics (Chapter 08). Reserve the full GUI
+  extraction, filtering, and statistics ([Chapter 08](08-security-investigation-command-line-analysis-and-automation.md)). Reserve the full GUI
   for interactive human analysis — it is the heaviest of the three and is
   rarely appropriate to run on a production server.
 - **Least-privilege capture access.** Every platform in this chapter is
@@ -97,11 +97,11 @@ target format unless a downstream tool specifically requires legacy pcap.
 - **Where analysis happens vs. where capture happens.** Capturing directly
   on a production system consumes CPU, memory, and disk I/O that can perturb
   the very performance issue being investigated. Prefer capturing on a
-  dedicated collection point (Chapter 02: taps, mirrors) and analyzing on a
+  dedicated collection point ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md): taps, mirrors) and analyzing on a
   separate workstation whenever the topology allows it.
 - **Storage and retention.** A saturated 1 Gbps link can produce well over
   400 GB per hour of capture data. Decide retention windows and rotation
-  policy (Chapter 02) before a capture starts, not after a disk fills.
+  policy ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md)) before a capture starts, not after a disk fills.
 - **Licensing and redistribution.** Wireshark is GPLv2-licensed and free to
   install and redistribute inside an enterprise; no licensing gate exists
   for the tool itself, though captured traffic may still be subject to the
@@ -234,7 +234,7 @@ evidentiary use — file hashes, covered next.
   sockets directly — instead confirm the interface is up with `ip link show`.
 - **GUI runs but freezes on a large file.** This is a resource, not a
   permissions, problem. Apply a display filter before loading fully, or
-  split the file first with `editcap` (Chapter 08) rather than loading an
+  split the file first with `editcap` ([Chapter 08](08-security-investigation-command-line-analysis-and-automation.md)) rather than loading an
   oversized capture into the GUI unfiltered.
 
 ## Security and Best Practices
@@ -255,7 +255,7 @@ evidentiary use — file hashes, covered next.
 - **Preserve chain of custody.** Store the original capture read-only, work
   from a copy, and log every copy operation (who, when, where) if the
   capture may support a personnel action, legal hold, or law-enforcement
-  referral. Volume X (Enterprise Cybersecurity) covers formal evidence
+  referral. [Volume X](../../volume-10-enterprise-cybersecurity/README.md) (Enterprise Cybersecurity) covers formal evidence
   handling in depth; this volume assumes those practices apply to packet
   evidence specifically.
 - **Scope captures to the minimum necessary.** Use a capture filter (Chapter
@@ -269,7 +269,7 @@ evidentiary use — file hashes, covered next.
   configuration instead.
 - **Encrypt captures at rest** when stored outside a controlled evidence
   system, and strip or redact captures before sharing with vendors or
-  external parties (Chapter 08 covers `tshark`-based sanitization).
+  external parties ([Chapter 08](08-security-investigation-command-line-analysis-and-automation.md) covers `tshark`-based sanitization).
 
 ## References and Knowledge Checks
 

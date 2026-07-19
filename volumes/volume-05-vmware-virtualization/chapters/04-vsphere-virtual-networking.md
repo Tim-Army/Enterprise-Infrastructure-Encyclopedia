@@ -221,7 +221,7 @@ control rather than only a VLAN-level separation.
   separately); use them where a genuine Layer 3 isolation requirement
   exists, not reflexively for every traffic type.
 - **Jumbo frame consistency across the entire path.** As with vSAN
-  (Chapter 6), any traffic type relying on jumbo frames (vMotion, storage,
+  ([Chapter 6](06-vsphere-storage-and-vsan.md)), any traffic type relying on jumbo frames (vMotion, storage,
   vSAN) requires MTU 9000 configured consistently on the VMkernel adapter,
   the port group/VDS, and every physical switch port in the path — this is
   a virtual-networking design decision with a hard physical-network
@@ -392,7 +392,7 @@ Get-VDPortgroup -Name "pg-vm-app-tier" | Get-VDSecurityPolicy |
   Stacks*.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 6 for the vSAN-specific VMkernel networking requirements
+- See [Chapter 6](06-vsphere-storage-and-vsan.md) for the vSAN-specific VMkernel networking requirements
   that build on the concepts in this chapter.
 - See Chapters 10 and 11 for how NSX host preparation extends this same
   VDS infrastructure for overlay networking.

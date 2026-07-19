@@ -117,7 +117,7 @@ plane.
   fleets) or Image Builder blueprints (for virtualization and cloud),
   and treat the Kickstart file or blueprint as version-controlled
   source, consistent with this encyclopedia's infrastructure-as-code
-  principles from Volume IX.
+  principles from [Volume IX](../../volume-09-infrastructure-automation/README.md).
 - **Minimal install vs. Server with GUI.** Production servers should
   default to a minimal package set (`@core` group) and add packages
   deliberately; every additional package is additional patch surface

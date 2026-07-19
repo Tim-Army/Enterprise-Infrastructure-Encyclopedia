@@ -22,7 +22,7 @@
 Snapshots and replication are the two mechanisms that turn a single copy of
 data into a set of point-in-time or geographically separated copies without
 requiring a full, from-scratch backup for every restore point. They are
-closely related to backup (Chapter 5) but architecturally distinct: backup
+closely related to backup ([Chapter 5](05-backup-architecture-and-data-protection-policy.md)) but architecturally distinct: backup
 is fundamentally about creating an independent copy on separate media for
 long-term retention, while snapshots and replication are primarily about
 low-overhead, frequent, storage-native point-in-time and site-to-site data
@@ -49,8 +49,8 @@ A **snapshot** is a read-only, point-in-time view. A **clone** is a
 writable volume derived from a snapshot (or directly from the source), used
 when a full read-write copy is needed — test/dev refresh, forensic
 investigation of a point in time without touching production, or as a
-target for validating a restore (previewed in Chapter 5, formalized in
-Chapter 7).
+target for validating a restore (previewed in [Chapter 5](05-backup-architecture-and-data-protection-policy.md), formalized in
+[Chapter 7](07-recovery-engineering-and-disaster-recovery-validation.md)).
 
 ### Consistency: crash-consistent vs. application-consistent
 
@@ -68,7 +68,7 @@ quiescing writes, and (on Windows) invoking the Volume Shadow Copy Service
 (VSS) writer for the specific application, or (on Linux) using a
 filesystem freeze (`fsfreeze`) or a database's native hot-backup/quiesce
 mode. The snapshot is taken at a moment the application itself considers
-safe to resume from, which is what Chapter 5's application-consistent
+safe to resume from, which is what [Chapter 5](05-backup-architecture-and-data-protection-policy.md)'s application-consistent
 backup method actually depends on.
 
 **Consistency groups** extend this guarantee across multiple volumes that
@@ -127,7 +127,7 @@ journal of every write (or a near-continuous stream at very fine
 granularity), allowing recovery to *any* point in time within the journal's
 retention window, not just the moments a snapshot happened to be taken.
 This is particularly valuable against logical corruption and ransomware
-(developed fully in Chapter 8): a discrete snapshot schedule might only
+(developed fully in [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)): a discrete snapshot schedule might only
 offer restore points hours apart, each of which could already contain
 corrupted or encrypted data, while a CDP journal can roll back to seconds
 before the corrupting event began. The cost is journal storage overhead and
@@ -148,7 +148,7 @@ Snapshot space required ≈ 50 GB x 7 x 1.3 ≈ 455 GB
 ```
 
 A snapshot reserve sized without a safety margin, or without ongoing
-monitoring as change rate grows (Chapter 9), is one of the most common
+monitoring as change rate grows ([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md)), is one of the most common
 causes of an unplanned snapshot-related outage: when reserved snapshot
 space is exhausted, the platform's fallback behavior is either to
 automatically delete the oldest snapshot (silently reducing the actual
@@ -187,7 +187,7 @@ that failure mode as a negative test.
   on the same physical platform (or a directly attached replica) as the
   source data; they satisfy the "point-in-time recovery" need but do not,
   by themselves, satisfy the "2 different media, 1 offsite, 1 immutable"
-  requirements from Chapter 5's 3-2-1-1-0 model.
+  requirements from [Chapter 5](05-backup-architecture-and-data-protection-policy.md)'s 3-2-1-1-0 model.
 
 ## Implementation and Automation
 
@@ -209,7 +209,7 @@ sudo mount /dev/vg_data/lv_data /data
 ```
 
 `data_percent` in the `lvs` output is the field to monitor continuously
-(Chapter 9): once it approaches 100%, the reserved snapshot space is
+([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md)): once it approaches 100%, the reserved snapshot space is
 exhausted.
 
 ### Illustrative array-based asynchronous replication (generic pattern)
@@ -255,7 +255,7 @@ policies:
 
 A 72-hour journal retention window means any point within the last 72
 hours can be recovered to; beyond that window, recovery falls back to the
-discrete snapshot or backup restore points from Chapter 5.
+discrete snapshot or backup restore points from [Chapter 5](05-backup-architecture-and-data-protection-policy.md).
 
 ## Validation and Troubleshooting
 
@@ -263,7 +263,7 @@ discrete snapshot or backup restore points from Chapter 5.
 | --- | --- | --- |
 | Snapshot creation fails or an existing snapshot is silently dropped | Snapshot reserve/pool exhausted | Check `lvs data_percent` (or the array's snapshot pool utilization); increase reserve or reduce retention |
 | Application will not start cleanly from a restored snapshot | Crash-consistent snapshot used where application-consistent capture was required | Reconfigure the snapshot job to invoke VSS/`fsfreeze`/database quiesce before capture |
-| Replication relationship shows growing lag | Insufficient replication link bandwidth for current change rate, or a network path issue | Compare current change rate against link bandwidth math (Chapter 5); check for packet loss/latency spikes on the replication path |
+| Replication relationship shows growing lag | Insufficient replication link bandwidth for current change rate, or a network path issue | Compare current change rate against link bandwidth math ([Chapter 5](05-backup-architecture-and-data-protection-policy.md)); check for packet loss/latency spikes on the replication path |
 | Two volumes in an application restore to mutually inconsistent states | Volumes were snapshotted independently rather than as a consistency group | Rebuild the snapshot/replication job to bind all dependent volumes into one consistency group |
 | Active-active replication reports conflicting writes after a network partition | Split-brain: both sites accepted writes during the partition | Apply the predefined conflict-resolution policy; if none exists, this is a design gap to close before the next partition, not just an incident to resolve |
 | CDP journal capacity alert firing repeatedly | Change rate exceeds journal retention sizing, or a stalled journal consumer | Check journal consumer/replication target health; re-size journal retention against current change rate |
@@ -273,7 +273,7 @@ discrete snapshot or backup restore points from Chapter 5.
 - Treat snapshots as part of the ransomware attack surface, not purely a
   recovery tool: an attacker with sufficient privilege can delete
   snapshots along with production data unless snapshot deletion is
-  separately protected (Chapter 8 develops immutable/locked snapshots in
+  separately protected ([Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md) develops immutable/locked snapshots in
   depth).
 - Restrict who can delete a replication relationship or shorten a CDP
   journal retention window to a narrowly scoped administrative role,
@@ -282,7 +282,7 @@ discrete snapshot or backup restore points from Chapter 5.
   paths, especially inter-site links that may traverse third-party
   circuits.
 - Monitor and alert on snapshot reserve and journal capacity proactively
-  (Chapter 9) rather than discovering exhaustion when a snapshot operation
+  ([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md)) rather than discovering exhaustion when a snapshot operation
   fails.
 - Document and periodically test the actual conflict-resolution behavior
   of any bidirectional replication relationship — do not assume the
@@ -415,7 +415,7 @@ reserved space to observe the resulting failure mode.
    with a capital `I`/`d` attribute flag). Attempting to mount the
    snapshot at this point fails or exposes an unusable, partial image —
    demonstrating exactly why proactive snapshot-reserve monitoring
-   (Chapter 9) is required rather than optional.
+   ([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md)) is required rather than optional.
 
 **Cleanup**
 

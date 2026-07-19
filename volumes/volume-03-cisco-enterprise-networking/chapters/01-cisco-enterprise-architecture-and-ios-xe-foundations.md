@@ -27,17 +27,17 @@ canonical blocks are:
 | Block | Function | Primary volume coverage |
 | --- | --- | --- |
 | Enterprise Campus | Wired/wireless access for users and endpoints, campus core | Volume III (this volume) |
-| Enterprise Branch | Remote-site LAN plus WAN attachment | Volume III, Chapter 4 |
-| WAN / Internet Edge | Site-to-site transport, internet peering, perimeter | Volume III, Chapter 4 |
-| Data Center | Server and application connectivity | Volume VI, Volume VIII |
-| Enterprise Cloud | Public/hybrid cloud connectivity | Volume VII |
+| Enterprise Branch | Remote-site LAN plus WAN attachment | [Volume III, Chapter 4](04-enterprise-wan-internet-edge-and-catalyst-sd-wan.md) |
+| WAN / Internet Edge | Site-to-site transport, internet peering, perimeter | [Volume III, Chapter 4](04-enterprise-wan-internet-edge-and-catalyst-sd-wan.md) |
+| Data Center | Server and application connectivity | [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md), [Volume VIII](../../volume-08-containers-platform-engineering/README.md) |
+| Enterprise Cloud | Public/hybrid cloud connectivity | [Volume VII](../../volume-07-cloud-infrastructure/README.md) |
 
 This volume focuses on the Enterprise Campus, Branch, and WAN blocks as
 implemented on Cisco Catalyst switching and routing running IOS XE. Cisco
 Validated Designs (CVDs) and the SAFE security reference architecture
 overlay this same model with security control placement guidance; this
 volume references SAFE concepts where they affect switch and router
-configuration, and defers deep security architecture to Volume X.
+configuration, and defers deep security architecture to [Volume X](../../volume-10-enterprise-cybersecurity/README.md).
 
 ### Hierarchical campus design
 
@@ -65,8 +65,8 @@ access-to-distribution uplink runs a routing protocol instead of a trunk).
 Routed access removes Spanning Tree Protocol (STP) convergence time from the
 access-to-distribution boundary, at the cost of requiring a routed uplink
 and per-VLAN SVIs (or /30 or /31 point-to-point links) on every access
-switch. Chapter 2 covers the traditional Layer-2 access alternative and the
-STP toolkit that secures it; Chapter 9 covers the SD-Access fabric overlay,
+switch. [Chapter 2](02-catalyst-campus-switching-and-resiliency.md) covers the traditional Layer-2 access alternative and the
+STP toolkit that secures it; [Chapter 9](09-catalyst-center-sd-access-assurance-and-operations.md) covers the SD-Access fabric overlay,
 which is a distinct, policy-driven evolution of the same physical topology.
 
 ### IOS XE platform architecture
@@ -83,10 +83,10 @@ under a Linux kernel. This separation is what enables:
   Virtual, reducing planned-maintenance downtime.
 - **Native containers and guest shell** — a Linux application space that
   hosts Python scripting, third-party container workloads, and on-box
-  automation tooling (Chapter 8).
+  automation tooling ([Chapter 8](08-ios-xe-programmability-and-network-automation.md)).
 - **Streaming telemetry and model-driven programmability** — YANG-modeled
   configuration and operational state exposed over NETCONF, RESTCONF, and
-  gNMI (Chapter 8), alongside the traditional CLI.
+  gNMI ([Chapter 8](08-ios-xe-programmability-and-network-automation.md)), alongside the traditional CLI.
 
 Catalyst 9000 switches forward traffic using Cisco's custom silicon: the
 Unified Access Data Plane (UADP) ASIC family on the Catalyst 9200, 9300,
@@ -149,7 +149,7 @@ packaging modes exist:
   aggregate throughput, buffer depth, and the number of routed uplinks/ECMP
   paths required.
 - **Redundancy model** — a single StackWise-480 stack removes the need for
-  First Hop Redundancy Protocol (FHRP) at the access layer (Chapter 2) but
+  First Hop Redundancy Protocol (FHRP) at the access layer ([Chapter 2](02-catalyst-campus-switching-and-resiliency.md)) but
   creates a shared fate for the whole stack during a software upgrade
   unless ISSU is used; StackWise Virtual and dual supervisors extend this
   same trade-off to the distribution/core tier.
@@ -157,7 +157,7 @@ packaging modes exist:
   Network Advantage is required for advanced features such as StackWise
   Virtual on certain platforms, full BGP scale, and is a prerequisite for
   the DNA/Catalyst Center subscription tiers that unlock SD-Access,
-  Assurance, and advanced automation (Chapter 9). Confirm the required tier
+  Assurance, and advanced automation ([Chapter 9](09-catalyst-center-sd-access-assurance-and-operations.md)). Confirm the required tier
   against the current Cisco ordering guide before design sign-off, since
   feature-to-tier mapping changes between releases.
 - **Licensing model** — Smart Licensing Using Policy is the current default
@@ -226,7 +226,7 @@ CAMPUS-ACCESS-01(config)# ip default-gateway 10.10.99.1
 Note that `ip default-gateway` only applies when the switch has no IP
 routing enabled (`no ip routing`, the Layer 2 default). On a Layer 3 switch
 running `ip routing`, use a static or dynamic default route instead
-(Chapter 3).
+([Chapter 3](03-cisco-enterprise-routing-and-path-control.md)).
 
 ### Smart Licensing Using Policy
 
@@ -252,7 +252,7 @@ Software Manager On-Prem instance, per the current Cisco licensing guide.
 ### Day-0 configuration at scale
 
 For fleet bring-up, pair a day-0 template with a Python/Ansible workflow
-(introduced fully in Chapter 8) rather than typing each switch by hand.
+(introduced fully in [Chapter 8](08-ios-xe-programmability-and-network-automation.md)) rather than typing each switch by hand.
 A minimal day-0 template file suitable for PnP or a bootstrap TFTP/USB
 provisioning workflow should set hostname, management IP, local admin
 credentials, SSH, and NTP as an absolute minimum before the device is
@@ -288,7 +288,7 @@ Common issues and diagnostics:
   unless RESTCONF/webUI is explicitly required (prefer `ip http secure-server`
   when a management UI is needed).
 - Enforce local or AAA-backed authentication with `login local` or
-  TACACS+/RADIUS (Chapter 7) — never leave default or blank credentials on
+  TACACS+/RADIUS ([Chapter 7](07-cisco-identity-access-control-and-segmentation.md)) — never leave default or blank credentials on
   a device that will be racked in production.
 - Set `service password-encryption` as a minimum baseline, but prefer
   `algorithm-type scrypt secret` for all local passwords, since weak
@@ -305,7 +305,7 @@ Common issues and diagnostics:
 - Maintain configuration backups (`copy running-config` to a controlled
   repository) before and after every change window; treat the
   running-configuration as the source of truth only until it is captured
-  under version control (Volume IX).
+  under version control ([Volume IX](../../volume-09-infrastructure-automation/README.md)).
 
 ## References and Knowledge Checks
 

@@ -46,11 +46,11 @@ Most organizations progress through recognizable stages:
    stored in version control alongside application code.
 4. **Pipeline-driven delivery.** Plan, test, and apply stages run inside CI/
    CD pipelines with mandatory review, policy gates, and audit trails
-   instead of engineer workstations. This is the subject of Chapter 05.
+   instead of engineer workstations. This is the subject of [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md).
 5. **Self-service platform engineering.** Automation is packaged as a
    product: golden-path modules, service catalogs, and internal developer
    platforms that let application teams provision compliant infrastructure
-   without direct access to the underlying APIs. Chapter 09 of Volume VIII
+   without direct access to the underlying APIs. [Chapter 09 of Volume VIII](../../volume-08-containers-platform-engineering/chapters/09-platform-observability-reliability-and-lifecycle-operations.md)
    (Containers and Platform Engineering) covers the platform-product layer
    in depth; this volume covers the automation engine underneath it.
 
@@ -67,12 +67,12 @@ this volume:
 - **Terraform** is declarative and stateful. You describe the desired end
   state of infrastructure resources in HCL, and Terraform's provider plugins
   compute a diff against a persisted state file to determine the minimal set
-  of create, update, or destroy operations required (Chapter 02).
+  of create, update, or destroy operations required ([Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md)).
 - **Ansible** is procedural in its task list but idempotent by convention at
   the module level. Each module (`ansible.builtin.file`,
   `ansible.builtin.package`, `community.general.*`) checks current state
   before acting, so a well-written playbook converges a host to the desired
-  state regardless of its starting point (Chapter 03).
+  state regardless of its starting point ([Chapter 03](03-configuration-management-and-desired-state-convergence.md)).
 
 Neither model is strictly superior. Terraform's state model is well suited
 to resources with a clear provider-managed lifecycle (cloud infrastructure,
@@ -88,7 +88,7 @@ Automation tooling also differs in how work is delivered to a target:
 | --- | --- | --- |
 | Push | A controller connects outward (SSH, WinRM, API) and executes work on demand. | Ansible, Terraform, Fabric |
 | Pull | An agent on the target polls a server or repository and applies configuration locally. | Puppet agent, Chef Client, `rpm-ostree`/image-based pull models |
-| Event-driven | Work is triggered by an external event (webhook, queue message, state-change notification) rather than a schedule. | Event-Driven Ansible, AWS EventBridge + Lambda, StackStorm (Chapter 07) |
+| Event-driven | Work is triggered by an external event (webhook, queue message, state-change notification) rather than a schedule. | Event-Driven Ansible, AWS EventBridge + Lambda, StackStorm ([Chapter 07](07-workflow-orchestration-and-event-driven-operations.md)) |
 
 Push models are easier to reason about and audit (the controller log is
 authoritative) but require network reachability and credentials to every
@@ -112,7 +112,7 @@ which tools implement them:
   inventory sources, and configuration management databases (CMDBs) that
   describe what exists.
 - **Identity and secrets** — the credentials the execution plane uses to
-  authenticate to target platforms, covered in depth in Chapter 06.
+  authenticate to target platforms, covered in depth in [Chapter 06](06-automation-identity-secrets-and-privileged-execution.md).
 
 Keeping these four concerns architecturally distinct — rather than
 collapsing them onto a single engineer's laptop — is what allows automation
@@ -172,7 +172,7 @@ harmful change. Risk-tier automation explicitly:
   Ansible run) can auto-apply on merge.
 - **High blast radius** (production networking, IAM, account-level
   Terraform) requires plan review, a policy gate, and a human approval step
-  before apply, as detailed in Chapter 05.
+  before apply, as detailed in [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md).
 
 ### Toil and the case for automation
 
@@ -336,7 +336,7 @@ differences.
   require all applies to run through CI, never from a workstation, once a
   repository leaves the bootstrap phase.
 - **Symptom: two engineers' changes silently overwrite each other.** This
-  indicates missing state locking (Chapter 02) or missing branch
+  indicates missing state locking ([Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md)) or missing branch
   protection. Enable required reviews and required status checks on `main`.
 - **Symptom: automation debt accumulates invisibly.** Track a toil ledger:
   every manual runbook step or one-off script gets a ticket tagged
@@ -358,7 +358,7 @@ differences.
 - Never grant automation service accounts standing production credentials
   on a developer workstation; scope workstation credentials to read-only or
   non-production access and drive production applies exclusively through
-  CI (expanded in Chapter 06).
+  CI (expanded in [Chapter 06](06-automation-identity-secrets-and-privileged-execution.md)).
 - Treat the automation repository itself as a production system: enable
   branch protection, signed commits where feasible, and audit logging on
   the git hosting platform.

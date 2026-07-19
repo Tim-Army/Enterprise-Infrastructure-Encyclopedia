@@ -9,7 +9,7 @@
 - Explain transport zones, uplink profiles, and TEP IP pools, and their
   role in preparing hosts for overlay networking.
 - Prepare ESXi hosts as transport nodes, including host-level prerequisites
-  tied to the distributed switch covered in Chapter 4.
+  tied to the distributed switch covered in [Chapter 4](04-vsphere-virtual-networking.md).
 - Deploy NSX Edge nodes and form an Edge cluster.
 - Validate transport node and TEP connectivity after host preparation.
 - Apply baseline security and access-control practices to a newly deployed
@@ -20,12 +20,12 @@
 NSX is VMware's network virtualization and security platform, providing
 overlay-based logical networking, distributed firewalling, and
 gateway/edge services independent of the underlying physical network
-topology. Chapter 8 introduced the NSX Distributed Firewall and Gateway
+topology. [Chapter 8](08-vsphere-and-nsx-security-architecture.md) introduced the NSX Distributed Firewall and Gateway
 Firewall from a security-architecture perspective; this chapter and
-Chapter 11 cover the platform itself — how it is installed and then
+[Chapter 11](11-configuring-vmware-nsx.md) cover the platform itself — how it is installed and then
 configured for logical networking. This chapter addresses installation:
 getting NSX Manager running, hosts and Edges prepared, and the overlay
-transport fabric established. Chapter 11 covers configuring segments,
+transport fabric established. [Chapter 11](11-configuring-vmware-nsx.md) covers configuring segments,
 gateways, routing, and services on top of that foundation.
 
 ### Management, control, and data plane
@@ -69,7 +69,7 @@ treated as a production pattern.
 
 A **transport zone** defines the scope of a logical network — which hosts
 and Edge nodes can participate in the same set of logical switches
-(**segments**, covered fully in Chapter 11). Two transport zone types
+(**segments**, covered fully in [Chapter 11](11-configuring-vmware-nsx.md)). Two transport zone types
 exist:
 
 - **Overlay transport zone** — governs which transport nodes can
@@ -94,7 +94,7 @@ zones as needed for its uplink connectivity requirements.
 converts them into transport nodes — data-plane participants in the NSX
 overlay fabric. At the vSphere 8.x/9.x and NSX 4.x baseline, NSX host
 preparation integrates directly with the same **distributed switch (VDS)**
-covered in Chapter 4, rather than deploying the older, separately managed
+covered in [Chapter 4](04-vsphere-virtual-networking.md), rather than deploying the older, separately managed
 **N-VDS (NSX virtual distributed switch)** that earlier NSX releases
 required — a converged model where a single VDS carries both ordinary
 vSphere port groups and NSX-managed overlay segments. This convergence
@@ -110,7 +110,7 @@ exist:
 
 - An **uplink profile** — defines teaming policy for the host's NSX-used
   uplinks (active/standby uplink assignment, matching or complementing the
-  VDS-level teaming design from Chapter 4), the transport VLAN used for
+  VDS-level teaming design from [Chapter 4](04-vsphere-virtual-networking.md)), the transport VLAN used for
   Geneve-encapsulated traffic between TEPs, and the MTU to use for overlay
   traffic (Geneve encapsulation adds overhead, so the physical/VDS MTU
   must accommodate the overlay MTU plus that overhead — commonly driving
@@ -147,7 +147,7 @@ DHCP server function). Edge nodes come in two form factors:
 
 Edge nodes are grouped into an **Edge cluster**, which — analogous to an
 ESXi host cluster — provides a pool of Edge capacity that Tier-0 and
-Tier-1 gateways (Chapter 11) are deployed onto, with the Edge cluster
+Tier-1 gateways ([Chapter 11](11-configuring-vmware-nsx.md)) are deployed onto, with the Edge cluster
 governing placement and failover of the gateway's active/standby (or
 active/active) instances across member Edge nodes.
 
@@ -173,7 +173,7 @@ active/active) instances across member Edge nodes.
   permanent, parallel-forever architecture.
 - **Uplink profile and MTU consistency with the base VDS design.** The
   uplink profile's teaming policy and transport VLAN MTU requirement must
-  be reconciled with the VDS teaming and MTU design from Chapter 4, not
+  be reconciled with the VDS teaming and MTU design from [Chapter 4](04-vsphere-virtual-networking.md), not
   designed in isolation — a mismatch here is a common source of host
   preparation succeeding at the configuration level while TEP
   connectivity silently fails.
@@ -187,7 +187,7 @@ active/active) instances across member Edge nodes.
   default choice; bare metal is a deliberate, throughput-driven exception,
   not a default. Size Edge VM compute resources (and Edge cluster member
   count) against actual expected north-south throughput and the specific
-  gateway services (NAT, load balancing) planned for Chapter 11's
+  gateway services (NAT, load balancing) planned for [Chapter 11](11-configuring-vmware-nsx.md)'s
   configuration — undersized Edges are a common, hard-to-diagnose source
   of throughput ceilings that appear unrelated to Edge sizing at first
   glance.
@@ -403,11 +403,11 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PUT \
 - Restrict NSX Manager API/UI access to a defined management network
   reachable only by authorized administrators and automation service
   accounts, consistent with the broader management-plane hardening
-  approach in Chapter 8.
+  approach in [Chapter 8](08-vsphere-and-nsx-security-architecture.md).
 - Change default administrative credentials immediately after deployment,
   and integrate NSX Manager with the same centralized identity approach
   (Active Directory, or VMware Identity/OIDC federation where supported)
-  used for vCenter Server in Chapter 3, rather than maintaining a separate
+  used for vCenter Server in [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md), rather than maintaining a separate
   local-only credential set indefinitely.
 - Deploy the three-node NSX Manager cluster with anti-affinity across
   hosts and failure domains; treat a single-node deployment as
@@ -418,7 +418,7 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PUT \
   be reachable from general workload segments.
 - Validate NTP synchronization across all NSX Manager nodes, transport
   nodes, and Edge nodes before and after cluster formation; NSX Manager
-  clustering, like vCenter Server (Chapter 3) and vSAN (Chapter 6), fails
+  clustering, like vCenter Server ([Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md)) and vSAN ([Chapter 6](06-vsphere-storage-and-vsan.md)), fails
   in confusing ways under sufficient clock drift.
 - Confirm host preparation and Edge deployment used images/OVAs retrieved
   from an authenticated, verified Broadcom source with checksum
@@ -437,10 +437,10 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PUT \
   Clusters*.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 4 for the VDS foundation NSX host preparation builds on.
-- See Chapter 8 for NSX Distributed Firewall and Gateway Firewall
+- See [Chapter 4](04-vsphere-virtual-networking.md) for the VDS foundation NSX host preparation builds on.
+- See [Chapter 8](08-vsphere-and-nsx-security-architecture.md) for NSX Distributed Firewall and Gateway Firewall
   security architecture.
-- See Chapter 11 for segment, gateway, and routing configuration built on
+- See [Chapter 11](11-configuring-vmware-nsx.md) for segment, gateway, and routing configuration built on
   top of the transport fabric installed in this chapter.
 
 **Knowledge checks**
@@ -469,7 +469,7 @@ negative test.
 **Prerequisites**
 
 - A vSphere 9.x lab with at least one ESXi host (nested is acceptable)
-  already prepared with a VDS (from the Chapter 4 lab or equivalent),
+  already prepared with a VDS (from the [Chapter 4](04-vsphere-virtual-networking.md) lab or equivalent),
   reachable NTP and DNS, and sufficient free capacity for an NSX Manager
   appliance and an Edge VM.
 - The NSX Manager and NSX Edge OVA files staged locally, and `ovftool`
@@ -554,7 +554,7 @@ existing VDS rather than a separate N-VDS, and depends on a correctly
 matched transport zone, uplink profile, and TEP IP pool before any overlay
 traffic can forward — TEP-to-TEP reachability across the transport VLAN,
 including correct MTU accommodation for Geneve encapsulation overhead, is
-the foundational connectivity requirement everything else in Chapter 11
+the foundational connectivity requirement everything else in [Chapter 11](11-configuring-vmware-nsx.md)
 builds on. Edge nodes, deployed as VM or bare metal form factor and
 grouped into Edge clusters, provide the north-south and centralized
 services layer. Getting this installation foundation right — manager

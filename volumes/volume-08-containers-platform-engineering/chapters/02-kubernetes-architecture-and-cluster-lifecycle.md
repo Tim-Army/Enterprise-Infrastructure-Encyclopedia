@@ -53,8 +53,8 @@ very different control-plane operations underneath.
 
 - **kubelet** — the primary node agent. It registers the node with the API
   server, watches for pods assigned to that node, and drives the CRI
-  runtime (Chapter 01) to start containers, mounts volumes through CSI
-  (Chapter 05), and reports pod and node status back to the API server.
+  runtime ([Chapter 01](01-container-architecture-images-runtimes-and-registries.md)) to start containers, mounts volumes through CSI
+  ([Chapter 05](05-kubernetes-storage-and-stateful-platforms.md)), and reports pod and node status back to the API server.
   kubelet does not read the API server's object store directly for every
   decision — it maintains a local cache via watch and reconciles the
   container runtime state against it.
@@ -64,9 +64,9 @@ very different control-plane operations underneath.
   recent releases — so traffic to a Service's ClusterIP reaches a backing
   pod. Many CNI implementations, notably Cilium, can replace kube-proxy
   entirely with eBPF-based dataplane programming; this is covered in
-  Chapter 04.
+  [Chapter 04](04-kubernetes-networking-service-delivery-and-traffic-policy.md).
 - **Container runtime** — containerd or CRI-O, speaking CRI to kubelet, as
-  detailed in Chapter 01.
+  detailed in [Chapter 01](01-container-architecture-images-runtimes-and-registries.md).
 
 ### The request pipeline and API machinery
 
@@ -105,8 +105,8 @@ non-built-in types. A CRD registers a new API group/version/kind; the API
 server then serves full CRUD, watch, validation (via an embedded OpenAPI
 schema), and — if a controller is running that watches the CRD — full
 reconciliation, identically to a built-in object like Deployment. This is
-the mechanism every operator, GitOps controller (Chapter 07), and
-platform abstraction (Chapter 08) in this volume is built on.
+the mechanism every operator, GitOps controller ([Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md)), and
+platform abstraction ([Chapter 08](08-internal-developer-platforms-and-platform-products.md)) in this volume is built on.
 **API aggregation** is the related mechanism that lets an entirely separate
 API server (such as the metrics API server backing `kubectl top`) appear
 under the same `kubectl`/API surface without being compiled into
@@ -151,7 +151,7 @@ control-plane-first, one minor version at a time, never skipping a minor
 version.
 
 **Node pools and lifecycle.** Grouping nodes into pools by instance
-type, taint, or workload class (Chapter 03 covers taints/tolerations)
+type, taint, or workload class ([Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md) covers taints/tolerations)
 lets you upgrade or replace one pool without touching another, and is the
 basis for surge-upgrade strategies where new nodes on the new version join
 before old nodes are drained and removed.
@@ -275,7 +275,7 @@ sudo journalctl -u kubelet -f --no-pager
   resource) via an `EncryptionConfiguration` on kube-apiserver so etcd's
   on-disk data is not plaintext even if the storage volume is exfiltrated.
 - Disable anonymous authentication and legacy ABAC on the API server;
-  RBAC should be the sole authorization mode (Chapter 06).
+  RBAC should be the sole authorization mode ([Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md)).
 - Enable and ship **audit logs** from kube-apiserver to a system outside
   the cluster's own control plane, so an attacker who compromises the
   control plane cannot also erase the record of how.

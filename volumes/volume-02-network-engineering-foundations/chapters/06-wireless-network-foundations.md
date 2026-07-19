@@ -21,10 +21,10 @@
 
 ## Theory and Architecture
 
-Wireless LANs extend the Layer 2 domain introduced in Chapter 3 onto a
+Wireless LANs extend the Layer 2 domain introduced in [Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md) onto a
 shared, unbounded medium — every other concept in this chapter exists
 because radio frequency (RF) does not behave like a switched cable. This
-chapter is deliberately vendor-neutral; Volume III's "Catalyst Wireless
+chapter is deliberately vendor-neutral; [Volume III](../../volume-03-cisco-enterprise-networking/README.md)'s "Catalyst Wireless
 Architecture and Operations" chapter covers Cisco-specific controller and
 access-point configuration in depth.
 
@@ -103,7 +103,7 @@ deployments, client data traffic back to the controller. Controller-based
 architecture is the dominant enterprise pattern because it centralizes RF
 optimization and security policy across potentially hundreds of APs from a
 single management point — the specific vendor implementation (Cisco
-Catalyst wireless architecture) is covered in Volume III.
+Catalyst wireless architecture) is covered in [Volume III](../../volume-03-cisco-enterprise-networking/README.md).
 
 ### BSS, ESS, and the Client Association Process
 
@@ -175,7 +175,7 @@ EAP methods:
 | EAP-TTLS | Username/password or other inner method inside a TLS tunnel | Similar to PEAP, broader inner-method support |
 
 This is the same 802.1X framework used for wired port authentication,
-which is why enterprise identity architecture (Volume X) treats wired and
+which is why enterprise identity architecture ([Volume X](../../volume-10-enterprise-cybersecurity/README.md)) treats wired and
 wireless access control as a single policy domain rather than two separate
 systems.
 
@@ -269,7 +269,7 @@ Configuration drift audits like this matter operationally: a controller's
 automatic RF management can and does change a live AP's channel in response
 to detected radar on a DFS channel, which is correct behavior but produces
 a brief, real client disruption that should be visible in monitoring
-(Chapter 8) rather than discovered only through a user complaint.
+([Chapter 8](08-network-validation-and-observability.md)) rather than discovered only through a user complaint.
 
 ## Validation and Troubleshooting
 
@@ -287,7 +287,7 @@ wlc# show wireless client mac aabb.ccdd.eeff detail
 | Symptom | Likely Cause | Diagnostic |
 | --- | --- | --- |
 | Client sees the SSID but never associates | Authentication failure (wrong PSK, EAP/certificate issue) | Check RADIUS/controller authentication logs |
-| Client associates but never gets an IP address | DHCP failure on the wireless VLAN (see Chapter 5), not a wireless fault | Confirm DHCP scope/relay on the client VLAN |
+| Client associates but never gets an IP address | DHCP failure on the wireless VLAN (see [Chapter 5](05-core-network-services.md)), not a wireless fault | Confirm DHCP scope/relay on the client VLAN |
 | Client connects near the AP but disconnects farther away | RSSI dropped below the client's roaming or the AP's minimum-RSSI threshold | Check RSSI/SNR at the point of disconnection with a site survey tool |
 | Voice/video quality degrades despite strong signal | High channel utilization or co-channel interference, not weak signal | Check channel utilization and neighboring AP channel overlap |
 | Client "sticks" to a distant AP instead of roaming to a closer one | Client-driven roaming decision with no 802.11k/v assistance, or minimum-RSSI/band-steering not enforced | Verify 802.11k/v/r are enabled and supported by the client |
@@ -296,7 +296,7 @@ wlc# show wireless client mac aabb.ccdd.eeff detail
 
 Wireless troubleshooting benefits from the same layered discipline used
 throughout this volume: confirm RF association first (Layer 1/2), then
-DHCP/IP addressing (Layer 3, Chapter 5), before assuming an application
+DHCP/IP addressing (Layer 3, [Chapter 5](05-core-network-services.md)), before assuming an application
 issue — a very common false diagnosis is treating a DHCP failure on the
 wireless VLAN as a "Wi-Fi problem" when the RF association itself is
 healthy.

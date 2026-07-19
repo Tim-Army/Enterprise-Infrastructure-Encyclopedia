@@ -19,7 +19,7 @@ Enterprise architecture (EA) is the discipline of deliberately aligning an
 organization's business strategy, information, applications, and
 technology so that infrastructure investment serves business outcomes
 rather than accumulating as an unplanned byproduct of individual project
-decisions. Chapter 06 established what enterprise infrastructure is; this
+decisions. [Chapter 06](06-understanding-enterprise-infrastructure.md) established what enterprise infrastructure is; this
 chapter establishes the discipline that decides which infrastructure gets
 built, in what order, and why — the layer above individual technology
 choices where those choices are supposed to add up to something coherent.
@@ -62,7 +62,7 @@ perspective," while TOGAF asks "what is the repeatable process by which we
 produce and evolve architecture." COBIT overlays governance and control
 concerns — who is accountable, what must be audited — on top of either.
 Security architecture has its own dedicated framework lineage (SABSA is
-the most cited), which Volume X treats in the context of security
+the most cited), which [Volume X](../../volume-10-enterprise-cybersecurity/README.md) treats in the context of security
 architecture specifically; this chapter treats security as one of several
 concerns that must be integrated into every architecture domain below, not
 as a separate framework to adopt in parallel.
@@ -199,7 +199,7 @@ engineering teams actually use, and the one this chapter's lab builds.
   implementation time forces expensive rework. Require a stated trust
   boundary and data-classification consideration in every ADR and
   reference architecture from Phase D onward, foreshadowing the
-  security-architecture depth in Volume X.
+  security-architecture depth in [Volume X](../../volume-10-enterprise-cybersecurity/README.md).
 
 ## Implementation and Automation
 
@@ -309,7 +309,7 @@ jq -r '.entries[] | select(.ring == "hold") | .name' technology-radar.json
 
 ### 5. Requiring an ADR reference in the pull request template
 
-Extending Chapter 04's pull request template with an architecture-linkage
+Extending [Chapter 04](04-github-project-and-workflow-management.md)'s pull request template with an architecture-linkage
 field keeps significant technical decisions traceable from the change that
 implements them back to the record of why:
 
@@ -357,7 +357,7 @@ implements them back to the record of why:
 - Require every ADR and reference architecture to state its trust
   boundaries and data classification explicitly, even briefly — this is
   the cheapest point in the lifecycle to catch a design that would
-  otherwise require expensive rework once Volume X's security review
+  otherwise require expensive rework once [Volume X](../../volume-10-enterprise-cybersecurity/README.md)'s security review
   processes are applied downstream.
 - Treat the technology radar's Hold ring as an enforceable control, not a
   suggestion: pair it with the same CI-based checks this volume has used
@@ -369,7 +369,7 @@ implements them back to the record of why:
   propose an ADR, but acceptance is a governance action and belongs behind
   the same review rigor as a production infrastructure change.
 - Keep the ADR log itself under the same version control, review, and
-  branch protection controls established in Chapter 02 — the integrity of
+  branch protection controls established in [Chapter 02](02-repository-architecture.md) — the integrity of
   the decision record matters as much as the integrity of the
   infrastructure it describes.
 - Do not let architecture documentation become the only place a decision

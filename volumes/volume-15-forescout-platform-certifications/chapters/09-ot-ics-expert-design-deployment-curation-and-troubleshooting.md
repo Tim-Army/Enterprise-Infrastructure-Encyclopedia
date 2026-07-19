@@ -7,19 +7,19 @@
 - Apply asset curation practices that maintain OT inventory accuracy and
   trustworthiness over the life of a deployment.
 - Design OT-appropriate threat detection logic that respects the
-  authorization-context limitation established in Chapter 8.
+  authorization-context limitation established in [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md).
 - Plan a security-cleared, staged approach to any OT control capability,
   distinct from and more conservative than the enterprise eyeControl
-  staging pattern in Chapter 3.
+  staging pattern in [Chapter 3](03-clarification-compliance-and-control-policies.md).
 - Troubleshoot OT sensor and dissection issues using an OT-adapted version
-  of the layered diagnostic model from Chapter 6.
+  of the layered diagnostic model from [Chapter 6](06-advanced-troubleshooting-performance-and-resilience.md).
 - Synthesize Chapters 8–9 into a complete OT/ICS visibility and
   governance design, mapped to the FSCA: OT/ICS and FSCE: OT/ICS
   certification blueprint domains.
 
 ## Theory and Architecture
 
-Chapter 8 established the OT/ICS visibility foundation: the Purdue model,
+[Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md) established the OT/ICS visibility foundation: the Purdue model,
 passive-only eyeInspect sensor architecture, and what industrial protocol
 dissection reveals. This chapter moves from associate-level visibility to
 expert-level deployment design, ongoing asset curation, threat detection,
@@ -31,16 +31,16 @@ material aligned to the FSCE: OT/ICS blueprint domain referenced in
 
 A mature OT/ICS deployment spans multiple sites (plants, substations,
 facilities), each with its own zone structure. Expert-level design
-extends Chapter 8's single-zone placement principles into a topology
+extends [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md)'s single-zone placement principles into a topology
 decision:
 
 - **Zone-scoped sensors, site-scoped aggregation.** Each cell/area zone
-  or Industrial DMZ segment identified in the Chapter 8 coverage map gets
+  or Industrial DMZ segment identified in the [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md) coverage map gets
   its own sensor (or shared sensor scoped to that zone's traffic only),
   with site-level aggregation consolidating multiple zone sensors' data
   for local site visibility before it is forwarded further.
 - **Sizing by zone asset density and protocol complexity, not raw
-  bandwidth.** As with enterprise appliance sizing in Chapter 1, OT
+  bandwidth.** As with enterprise appliance sizing in [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md), OT
   sensor capacity planning is driven by the number of distinct devices
   and control-relationship pairs a zone's protocol traffic represents,
   and by how protocol-complex that traffic is to dissect (a zone rich in
@@ -62,7 +62,7 @@ decision:
 
 **Asset curation** is the ongoing discipline of keeping OT asset
 inventory accurate, deduplicated, and trustworthy — distinct from the
-one-time baseline validation covered in Chapter 8. Curation matters more
+one-time baseline validation covered in [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md). Curation matters more
 in OT than in enterprise IT because OT assets are long-lived, rarely
 replaced wholesale, and often only partially identifiable from network
 traffic alone (a passively observed PLC may reveal its protocol role
@@ -92,14 +92,14 @@ activities:
 
 ### Threat detection in OT/ICS
 
-Building on Chapter 8's authorization-context limitation, expert-level OT
+Building on [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md)'s authorization-context limitation, expert-level OT
 threat detection combines passive protocol observation with additional
 context to distinguish legitimate operations from anomalous ones:
 
 - **Behavioral baselining.** Establishing what "normal" looks like per
   zone — which endpoints communicate, using which function codes, at
   what frequency and during what shift/maintenance windows — over the
-  extended observation period recommended in Chapter 8, then alerting on
+  extended observation period recommended in [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md), then alerting on
   material deviation.
 - **Known-bad protocol behavior detection.** Independent of baselining,
   detecting protocol operations understood to be inherently high-risk
@@ -108,7 +108,7 @@ context to distinguish legitimate operations from anomalous ones:
 - **Cross-referencing change-management data.** Where an integration to
   the plant's change-management or maintenance-scheduling system exists
   (conceptually similar to the eyeExtend ITSM integration pattern in
-  Chapter 5), correlating an observed sensitive operation against a
+  [Chapter 5](05-advanced-policy-integrations-and-business-outcomes.md)), correlating an observed sensitive operation against a
   corresponding approved change record before escalating it as anomalous.
 - **IT/OT boundary-crossing detection.** Applying particular scrutiny to
   any traffic crossing the Industrial DMZ in either direction, since the
@@ -118,7 +118,7 @@ context to distinguish legitimate operations from anomalous ones:
 
 ### The conservative path to OT control capability
 
-Enterprise eyeControl (Chapter 3) stages control actions from monitor
+Enterprise eyeControl ([Chapter 3](03-clarification-compliance-and-control-policies.md)) stages control actions from monitor
 mode to live enforcement over a period of weeks. OT/ICS control
 capability — where it is used at all — requires a materially more
 conservative approach, because an incorrect control action in OT can have
@@ -182,9 +182,9 @@ physical safety consequences, not only an access-disruption consequence:
 ## Implementation and Automation
 
 1. **Build the multi-site zone/sensor topology map**, extending the
-   single-zone Chapter 8 coverage map to every site and zone in
+   single-zone [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md) coverage map to every site and zone in
    scope, with standardized naming applied from the start.
-2. **Deploy and validate sensors zone by zone**, following Chapter 8's
+2. **Deploy and validate sensors zone by zone**, following [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md)'s
    passive-deployment and protocol-dissection validation steps at each
    new zone before expanding further.
 3. **Establish site-level aggregation and resilient forwarding**,
@@ -226,7 +226,7 @@ physical safety consequences, not only an access-disruption consequence:
 
 - **Sensor topology has a coverage gap discovered after deployment.**
   Cross-check the actual deployed sensor map against the documented
-  zone/topology plan from Chapter 8 and this chapter; coverage gaps
+  zone/topology plan from [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md) and this chapter; coverage gaps
   most often trace back to a zone that was deprioritized in an earlier
   phase and never revisited, not to a technical sensor failure.
 - **Asset curation review surfaces many stale or duplicate records.**
@@ -268,7 +268,7 @@ physical safety consequences, not only an access-disruption consequence:
   cover OT/ICS scenarios, with plant engineering and safety stakeholders
   as required participants, not observers.
 - Treat any narrow OT enforcement action, once approved, with the same
-  rollback-readiness discipline as Chapter 3's enterprise control
+  rollback-readiness discipline as [Chapter 3](03-clarification-compliance-and-control-policies.md)'s enterprise control
   policies, but scaled to OT's higher consequence tolerance — the
   rollback procedure itself should be reviewed and approved by plant
   engineering before the enforcement action is enabled.
@@ -288,7 +288,7 @@ physical safety consequences, not only an access-disruption consequence:
   with this volume's 8.5.x platform baseline.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this volume.
-- Chapter 8 of this volume for the Purdue model, sensor architecture, and
+- [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md) of this volume for the Purdue model, sensor architecture, and
   protocol dissection foundation this chapter builds on.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   FSCA: OT/ICS and FSCE: OT/ICS blueprint domain mapping for this volume.
@@ -300,7 +300,7 @@ physical safety consequences, not only an access-disruption consequence:
 
 1. Why does multi-site OT sensor sizing depend on zone asset density and
    protocol complexity rather than raw bandwidth, echoing but adapting
-   the enterprise sizing principle from Chapter 1?
+   the enterprise sizing principle from [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)?
 2. What is asset curation, and why does OT inventory need an ongoing
    curation discipline that mature enterprise IT inventory largely does
    not?
@@ -314,14 +314,14 @@ physical safety consequences, not only an access-disruption consequence:
 
 ## Hands-On Lab
 
-**Objective.** Extend Chapter 8's single-zone lab into a two-zone
+**Objective.** Extend [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md)'s single-zone lab into a two-zone
 topology with a curation pass and a behavioral-baseline alerting rule,
 without enabling any control action.
 
 **Prerequisites**
 
 - The lab sensor/capture setup, PLC simulator, and Purdue-model diagram
-  from Chapter 8's lab.
+  from [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md)'s lab.
 - A second simulated zone (a second PLC simulator instance, or a second
   VLAN/segment on the lab switch representing a distinct cell/area zone)
   with its own SPAN session to a second sensor or capture point.
@@ -330,12 +330,12 @@ without enabling any control action.
 
 **Procedure**
 
-1. Extend the Chapter 8 Purdue-model diagram to include the second
+1. Extend the [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md) Purdue-model diagram to include the second
    simulated zone, labeled distinctly (for example, "Line 2 Cell
    Controllers" alongside the original "Line 1 Cell Controllers").
 2. Configure the second zone's SPAN session and confirm passive
    visibility of its simulated PLC traffic, following the same procedure
-   validated in Chapter 8.
+   validated in [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md).
 3. Create a simple asset register entry (make, approximate model,
    installation date) for each simulated PLC in your text file/
    spreadsheet, representing the engineering-source enrichment data
@@ -384,7 +384,7 @@ without enabling any control action.
 
 ## Summary and Completion Checklist
 
-This chapter completed the volume's OT/ICS track by extending Chapter 8's
+This chapter completed the volume's OT/ICS track by extending [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md)'s
 visibility foundation into expert-level multi-site sensor topology
 design, ongoing asset curation as a distinct operational discipline from
 one-time baselining, threat-detection logic that closes the
@@ -392,7 +392,7 @@ authorization-context gap through behavioral baselining and
 change-management correlation, and a deliberately conservative,
 engineering-supervised path to any OT control capability — treating
 visibility-only as a legitimate, durable program outcome rather than an
-incomplete stage. Together with Chapter 7's enterprise capstone, this
+incomplete stage. Together with [Chapter 7](07-expert-automation-api-governance-and-capstone.md)'s enterprise capstone, this
 chapter closes the volume's coverage of the FSCA, FSCP, FSCE, FSCA:
 OT/ICS, and FSCE: OT/ICS certification blueprint domains.
 
@@ -407,5 +407,5 @@ OT/ICS, and FSCE: OT/ICS certification blueprint domains.
 - [ ] Completed the hands-on lab, including the two-zone extension, the
       curation pass, and the change-correlation negative test.
 - [ ] Understands why OT control-capability staging is deliberately more
-      conservative than the enterprise eyeControl pattern in Chapter 3,
+      conservative than the enterprise eyeControl pattern in [Chapter 3](03-clarification-compliance-and-control-policies.md),
       and can articulate the joint sign-off gate this chapter requires.

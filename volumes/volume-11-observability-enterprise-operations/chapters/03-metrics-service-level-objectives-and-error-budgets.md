@@ -23,7 +23,7 @@
 A metric is a numeric measurement recorded with a name, a timestamp, and a
 set of key-value labels that identify its source and dimensions
 (`service.name`, `http.route`, `deployment.environment.name`, per the
-semantic conventions established in Chapter 02). Prometheus, the de facto
+semantic conventions established in [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)). Prometheus, the de facto
 enterprise standard for metrics storage and query, defines four metric
 types, and choosing the wrong one is the most common mistake made by teams
 new to metrics instrumentation:
@@ -55,7 +55,7 @@ new to metrics instrumentation:
 The OpenTelemetry Metrics SDK maps onto this model with Counter,
 UpDownCounter (gauge-equivalent), and Histogram instruments, exported over
 OTLP and typically converted to Prometheus's exposition format at the
-Collector's `prometheus` exporter (Chapter 02) or scraped natively by
+Collector's `prometheus` exporter ([Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)) or scraped natively by
 Prometheus 3.x's OTLP receiver.
 
 ### PromQL fundamentals
@@ -203,7 +203,7 @@ suppresses page-worthy noise from a 90-second network hiccup while still
 catching a genuine fast-burning outage within minutes rather than waiting
 for the full long window to elapse — the short window pages immediately
 once both conditions are true, since both are evaluated continuously in
-parallel. Chapter 06 builds the alerting rule and routing on top of this
+parallel. [Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md) builds the alerting rule and routing on top of this
 math.
 
 ## Design Considerations
@@ -423,7 +423,7 @@ with a single PromQL expression:
   silently on the next regeneration, which itself is a change-control
   risk if regeneration is not gated.
 - Do not include personally identifiable information in SLI label
-  values; label cardinality control (Chapter 02) applies with particular
+  values; label cardinality control ([Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)) applies with particular
   force to SLO recording rules, which are commonly among the
   highest-query-volume rules in the entire metrics backend.
 - Version and diff error-budget policy changes visibly (who can declare a
@@ -654,8 +654,8 @@ the velocity-versus-reliability tension without relying on ad hoc
 negotiation. Multi-window, multi-burn-rate alerting pages on the
 trajectory toward budget exhaustion, catching both fast severe outages
 and slow sustained degradation while suppressing single-scrape noise.
-Chapter 04 turns to logs as the complementary signal that explains why an
-SLI moved; Chapter 06 builds the paging and on-call layer on top of the
+[Chapter 04](04-enterprise-logging-event-management-and-retention.md) turns to logs as the complementary signal that explains why an
+SLI moved; [Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md) builds the paging and on-call layer on top of the
 burn-rate alerts introduced here.
 
 **Completion checklist**

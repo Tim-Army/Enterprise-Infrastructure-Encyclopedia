@@ -76,7 +76,7 @@ cannot override.
   `CAP_SYS_ADMIN`, and similar). A process that needs only to bind to a
   privileged port should be granted `CAP_NET_BIND_SERVICE` rather than run
   as root outright — this is the same least-privilege principle from
-  Chapter 2 applied at the process level instead of the identity level.
+  [Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md) applied at the process level instead of the identity level.
 
 Disabling SELinux or AppArmor because an application "doesn't work with it
 enabled" is one of the most common hardening regressions in production
@@ -92,7 +92,7 @@ Response (EDR)** platforms instead instrument the operating system kernel
 and monitor behavioral telemetry — process creation trees, command-line
 arguments, network connections, registry/file-system modification
 patterns — and correlate that telemetry against behavioral detection
-logic, often mapped to MITRE ATT&CK techniques (see Chapter 6). EDR
+logic, often mapped to MITRE ATT&CK techniques (see [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)). EDR
 platforms typically provide:
 
 - Continuous telemetry collection, forwarded to a cloud or on-premises
@@ -110,7 +110,7 @@ platforms typically provide:
 **Extended Detection and Response (XDR)** extends the same behavioral
 correlation model beyond the endpoint to network, identity, and cloud
 telemetry, feeding into or overlapping with the SIEM described in
-Chapter 6.
+[Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md).
 
 ### Application allow-listing and LOLBin abuse
 
@@ -139,7 +139,7 @@ running system against a machine-readable SCAP content stream (frequently
 distributed as the same content DISA and CIS publish) and produce a
 pass/fail report per rule, which can be scheduled to run continuously and
 feed drift back into a remediation pipeline, closing the loop between the
-baseline defined in Chapter 1's control crosswalk and the runtime state of
+baseline defined in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md)'s control crosswalk and the runtime state of
 the fleet.
 
 ## Design Considerations
@@ -150,7 +150,7 @@ the fleet.
   workflows or removable-media-dependent business processes. Pilot Level 2
   changes against a representative workload before fleet-wide rollout, and
   document any Level 2 control that is deliberately not applied, with
-  compensating controls, in the risk register from Chapter 1.
+  compensating controls, in the risk register from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md).
 - **SELinux/AppArmor policy authoring effort** scales with application
   complexity. Off-the-shelf, widely used services (web servers, database
   engines) usually ship well-maintained policy modules; custom in-house
@@ -172,9 +172,9 @@ the fleet.
 - **Baseline reconciliation across regulatory obligations.** When both CIS
   and STIG apply, build one internal baseline that is a documented superset
   or reconciled subset of both, referencing the control crosswalk pattern
-  from Chapter 1, so evidence collection satisfies every applicable
+  from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md), so evidence collection satisfies every applicable
   framework from a single scan.
-- **Immutable and golden-image patterns** (covered further in Chapter 9)
+- **Immutable and golden-image patterns** (covered further in [Chapter 9](09-security-automation-assurance-threat-hunting-and-lifecycle-operations.md))
   reduce configuration drift risk structurally, by replacing
   configuration-in-place with redeployment from a hardened, version-
   controlled image — a design choice that changes how hardening validation
@@ -250,7 +250,7 @@ sudo oscap xccdf generate fix \
 Treat the generated remediation playbook as a pull request, not an
 auto-applied script: review every task for operational impact before
 running it against production, consistent with the compliance-as-code
-practice introduced in Chapter 1.
+practice introduced in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md).
 
 ### fapolicyd allow-listing (RHEL)
 
@@ -296,7 +296,7 @@ sudo ausearch -m execve -ts today | tail -20
   emergency change.** Maintain a documented, audited break-glass process
   for temporarily permitting an unlisted binary during an incident, with
   mandatory retrospective review — mirroring the break-glass pattern from
-  Chapter 2.
+  [Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md).
 - **Diagnosing SELinux denials**: always start with `ausearch -m avc` and
   `sealert`, not a broad `setenforce 0`; the denial log identifies exactly
   which type enforcement rule blocked the action, usually resolvable with a
@@ -309,7 +309,7 @@ sudo ausearch -m execve -ts today | tail -20
   evading detection.
 - **Reconciling OpenSCAP findings against risk acceptance**: not every
   failed rule warrants immediate remediation — some will have documented,
-  approved exceptions in the risk register from Chapter 1. Filter scan
+  approved exceptions in the risk register from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md). Filter scan
   results against the exception list before treating a report as an
   action queue, so the operations team is not repeatedly asked to
   "re-fix" an accepted risk.
@@ -329,7 +329,7 @@ sudo ausearch -m execve -ts today | tail -20
   workload tier, prioritizing internet-facing and high-value systems.
 - Automate baseline scanning (OpenSCAP or equivalent) on a recurring
   schedule and treat scan results as input to the same risk register and
-  patch-priority workflow covered in Chapter 5, not a standalone report
+  patch-priority workflow covered in [Chapter 5](05-vulnerability-exposure-and-patch-risk-management.md), not a standalone report
   that nobody actions.
 - Harden the golden image or build pipeline, not just running instances,
   so new deployments inherit the current baseline automatically rather

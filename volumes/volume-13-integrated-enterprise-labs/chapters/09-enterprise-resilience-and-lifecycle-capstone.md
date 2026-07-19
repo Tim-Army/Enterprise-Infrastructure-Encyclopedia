@@ -9,10 +9,10 @@
   disaster-recovery failover through to a functioning `BR1`-based
   identity plane.
 - Diagnose two genuine architectural limitations this volume deliberately
-  left in place — the `BR1` RODC's write dependency from Chapter 03 and
-  the on-premises-only Kubernetes control plane from Chapter 05 — and
+  left in place — the `BR1` RODC's write dependency from [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) and
+  the on-premises-only Kubernetes control plane from [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md) — and
   resolve the identity limitation using the vSphere-replicated domain
-  controller from Chapter 04.
+  controller from [Chapter 04](04-virtualization-storage-and-data-protection-lab.md).
 - Fail back to HQ cleanly, including Active Directory metadata cleanup,
   without introducing directory inconsistency.
 - Execute a complete, evidence-backed decommissioning of every system this
@@ -21,34 +21,34 @@
 ## Theory and Architecture
 
 This chapter is the integration point for the entire volume and draws
-directly on Volume XII (Resilience and Lifecycle Management): Chapter 02
+directly on [Volume XII](../../volume-12-resilience-lifecycle-management/README.md) (Resilience and Lifecycle Management): [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md)
 (Business Impact Analysis and Continuity Planning) for the RTO/RPO
-exercise this chapter opens with, Chapter 03 (High Availability, Fault
-Tolerance, and Graceful Degradation) and Chapter 04 (Backup, Recovery, and
-Disaster-Recovery Engineering) for the failover mechanics, Chapter 05
+exercise this chapter opens with, [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) (High Availability, Fault
+Tolerance, and Graceful Degradation) and [Chapter 04](04-virtualization-storage-and-data-protection-lab.md) (Backup, Recovery, and
+Disaster-Recovery Engineering) for the failover mechanics, [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md)
 (Resilience Testing, Exercises, and Chaos Engineering) for how the outage
 is safely simulated and bounded, and Chapter 09 (Retirement,
 Decommissioning, and Lifecycle Governance) for the teardown that closes
-the volume. Volume I, Chapter 08 (Infrastructure Lifecycle Management)
+the volume. [Volume I, Chapter 08](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md) (Infrastructure Lifecycle Management)
 supplies the broader lifecycle frame this chapter's decommissioning phase
 follows.
 
 Every earlier chapter in this volume left at least one deliberate scope
 boundary rather than building a fully redundant system from the start:
-Chapter 03 placed a read-only, not writable, domain controller at `BR1`;
-Chapter 05 kept the Kubernetes control plane entirely on-premises so a
+[Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) placed a read-only, not writable, domain controller at `BR1`;
+[Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md) kept the Kubernetes control plane entirely on-premises so a
 hybrid link failure would degrade scheduling rather than take down the
 cluster, at the cost of the whole platform depending on HQ's survival.
-Chapter 05's negative test exercised a VPN failure, not a full HQ outage —
+[Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md)'s negative test exercised a VPN failure, not a full HQ outage —
 this chapter is where that untested boundary finally gets exercised. A
 resilience program that only ever tests the failures it already knows how
-to survive is not testing anything; Volume XII, Chapter 05 calls this out
+to survive is not testing anything; [Volume XII, Chapter 05](../../volume-12-resilience-lifecycle-management/chapters/05-resilience-testing-exercises-and-chaos-engineering.md) calls this out
 directly, and this capstone is built to surface exactly that kind of gap
 rather than avoid it.
 
 The chapter has three phases: a bounded chaos exercise simulating total
 loss of the `HQ` site, a disaster-recovery failover and later failback
-using the assets Chapter 04 specifically built for this moment, and a
+using the assets [Chapter 04](04-virtualization-storage-and-data-protection-lab.md) specifically built for this moment, and a
 full, ordered decommissioning of every system in the reference lab.
 
 ### Service tiers and recovery targets
@@ -58,13 +58,13 @@ built, before the chaos exercise runs:
 
 | Tier | Services | RTO target | RPO target |
 | --- | --- | --- | --- |
-| 0 | Identity, DNS, time (`dc01`/`dc02`, Chapter 02) | 15 min | 0 (synchronous AD replication) |
-| 0 | Core network, WAN (Chapter 03) | 15 min | N/A (stateless) |
-| 1 | Virtualization/storage/backup (Chapter 04) | 1 hr | 4 hr (replication RPO set in Ch. 04) |
-| 1 | Hybrid platform (`meridian-web`, Kubernetes, Chapter 05) | 4 hr | 1 hr |
-| 1 | Security telemetry (`siem01`, Chapter 07) | 4 hr | 15 min |
-| 2 | Automation/CI (`git01`, `vault01`, Chapter 06) | 8 hr | 24 hr |
-| 2 | Observability (`obs01`, Chapter 08) | 8 hr | 24 hr |
+| 0 | Identity, DNS, time (`dc01`/`dc02`, [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md)) | 15 min | 0 (synchronous AD replication) |
+| 0 | Core network, WAN ([Chapter 03](03-campus-wan-wireless-and-network-services-lab.md)) | 15 min | N/A (stateless) |
+| 1 | Virtualization/storage/backup ([Chapter 04](04-virtualization-storage-and-data-protection-lab.md)) | 1 hr | 4 hr (replication RPO set in Ch. 04) |
+| 1 | Hybrid platform (`meridian-web`, Kubernetes, [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md)) | 4 hr | 1 hr |
+| 1 | Security telemetry (`siem01`, [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md)) | 4 hr | 15 min |
+| 2 | Automation/CI (`git01`, `vault01`, [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md)) | 8 hr | 24 hr |
+| 2 | Observability (`obs01`, [Chapter 08](08-observability-operations-and-major-incident-lab.md)) | 8 hr | 24 hr |
 
 ## Design Considerations
 
@@ -75,23 +75,23 @@ built, before the chaos exercise runs:
   find an assumption that held only because two things never failed
   together.
 - **The blast radius is bounded and reversible before it starts.** Per
-  Volume XII, Chapter 05's chaos engineering discipline, this exercise
+  [Volume XII, Chapter 05](../../volume-12-resilience-lifecycle-management/chapters/05-resilience-testing-exercises-and-chaos-engineering.md)'s chaos engineering discipline, this exercise
   runs against systems already known to be disposable lab infrastructure,
   every affected system has a snapshot taken immediately beforehand, and
   the exercise has a defined stop condition (an unrecoverable state) that
   triggers an immediate abort to restore from snapshot rather than
   pressing forward.
 - **Recover through the asset built for this, not through improvisation.**
-  Chapter 04's decision to replicate `dc02` — not `dc01` — to `esxi-br101`
+  [Chapter 04](04-virtualization-storage-and-data-protection-lab.md)'s decision to replicate `dc02` — not `dc01` — to `esxi-br101`
   was made specifically so this chapter would have a writable domain
   controller image available at `BR1` without depending on the RODC
-  Chapter 03 placed there. This chapter is the payoff for that earlier
+  [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) placed there. This chapter is the payoff for that earlier
   design decision, not a new one.
 - **Failback happens after HQ is verified stable, never concurrently with
   the emergency response.** Running the failback procedure while HQ
   systems are still being brought back online risks a second simultaneous
   change during an already elevated-risk period — a classic change
-  management anti-pattern Volume XI, Chapter 07 and Volume XII, Chapter 06
+  management anti-pattern [Volume XI, Chapter 07](../../volume-11-observability-enterprise-operations/chapters/07-service-management-incident-problem-and-change-operations.md) and [Volume XII, Chapter 06](../../volume-12-resilience-lifecycle-management/chapters/06-maintenance-patching-and-upgrade-engineering.md)
   both warn against.
 - **Decommission in reverse-dependency order.** Workloads come down
   before the platform hosting them; the platform comes down before the
@@ -100,7 +100,7 @@ built, before the chaos exercise runs:
 - **Sanitize, don't just delete.** Every disk that held `corp.meridian.example`
   data — even lab data — is sanitized per NIST SP 800-88 categories
   (Clear, Purge, or Destroy) rather than simply released back to the
-  hypervisor's free pool, per the security note established in Chapter 01.
+  hypervisor's free pool, per the security note established in [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md).
 
 ## Implementation and Automation
 
@@ -142,7 +142,7 @@ fsmo maintenance: quit
 
 Repoint `BR1`'s DHCP relay and `dc-br101`'s replication partner to the
 recovered writable DC, then rebuild a minimal control plane at `BR1` using
-Chapter 06's automation rather than manual steps:
+[Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md)'s automation rather than manual steps:
 
 ```bash
 cd ~/vol13-lab
@@ -173,7 +173,7 @@ metadata cleanup: quit
 ```
 
 Tear the environment down in reverse-dependency order using the same
-pipeline Chapter 06 built for creation:
+pipeline [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md) built for creation:
 
 ```bash
 terraform destroy -target=module.k8s_workloads
@@ -227,7 +227,7 @@ ansible-playbook decommission.yml --tags network,security,observability,identity
 - Apply NIST SP 800-88 Clear, Purge, or Destroy sanitization to every disk
   that held domain, security, or configuration data, matching the
   category to the storage medium and the sensitivity of what it held, per
-  the standard Chapter 01 committed this volume to.
+  the standard [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) committed this volume to.
 - Confirm no stale DNS records, computer objects, or certificate issuances
   remain in `corp.meridian.example` after every domain controller is
   decommissioned — an orphaned DNS record pointing at a deleted host is a
@@ -238,7 +238,7 @@ ansible-playbook decommission.yml --tags network,security,observability,identity
 - Document both architectural limitations this chapter surfaced — the
   RODC write dependency and the on-premises-only Kubernetes control plane
   — as findings with a recommended remediation, even though remediating
-  them is out of this volume's scope; Volume XII, Chapter 07 (Technical
+  them is out of this volume's scope; [Volume XII, Chapter 07](../../volume-12-resilience-lifecycle-management/chapters/07-technical-debt-modernization-and-platform-renewal.md) (Technical
   Debt, Modernization, and Platform Renewal) is where that kind of finding
   is meant to go next.
 
@@ -246,8 +246,8 @@ ansible-playbook decommission.yml --tags network,security,observability,identity
 
 **References**
 
-- Volume I, Chapter 08 — Infrastructure Lifecycle Management.
-- Volume XII, Chapters 02–07 and 09 — business impact analysis, high
+- [Volume I, Chapter 08](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md) — Infrastructure Lifecycle Management.
+- [Volume XII](../../volume-12-resilience-lifecycle-management/README.md), Chapters 02–07 and 09 — business impact analysis, high
   availability, backup/DR engineering, resilience testing/chaos
   engineering, maintenance/patching, technical debt/modernization, and
   retirement/decommissioning.
@@ -262,7 +262,7 @@ ansible-playbook decommission.yml --tags network,security,observability,identity
 1. Why does this chapter simulate a full site failure instead of another
    single-component failure, given how many single-component failures
    this volume already tested?
-2. Why was `dc02`, specifically, the domain controller Chapter 04
+2. Why was `dc02`, specifically, the domain controller [Chapter 04](04-virtualization-storage-and-data-protection-lab.md)
    replicated to `BR1`, and how does that decision pay off in this
    chapter?
 3. What could go wrong if `dc01` were powered back on and allowed to
@@ -355,7 +355,7 @@ verified data sanitization.
      'Set-ADAccountPassword -Identity testuser -Reset'"
    ```
 
-10. Rebuild a minimal Kubernetes control plane at `BR1` using Chapter 06's
+10. Rebuild a minimal Kubernetes control plane at `BR1` using [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md)'s
     automation, and record the elapsed time from step 4 to a working
     control plane as this exercise's measured RTO:
 
@@ -446,18 +446,18 @@ verified data sanitization.
 
     **Expected result:** Every checksum in the manifest verifies, giving
     a complete, tamper-evident record of every chapter's evidence from
-    Chapter 01 through this capstone.
+    [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) through this capstone.
 
 ## Summary and Completion Checklist
 
 This capstone tested the whole reference lab against a failure no earlier
 chapter attempted — total loss of the `HQ` site — and followed the
 recovery through to a working `BR1`-based identity plane using the
-vSphere-replicated domain controller Chapter 04 built specifically for
+vSphere-replicated domain controller [Chapter 04](04-virtualization-storage-and-data-protection-lab.md) built specifically for
 this moment. It surfaced two real architectural limitations rather than
 concealing them, executed a clean failback with proper Active Directory
 metadata hygiene, and closed the volume with a complete, sanitized,
-evidence-backed decommissioning of everything built since Chapter 01.
+evidence-backed decommissioning of everything built since [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md).
 
 - [ ] Completed the business impact analysis and recorded RTO/RPO
       targets for every tier.
@@ -469,5 +469,5 @@ evidence-backed decommissioning of everything built since Chapter 01.
       rollback check.
 - [ ] Decommissioned every system in the volume in reverse-dependency
       order, with sanitization verified and every credential revoked.
-- [ ] Verified the complete evidence manifest from Chapter 01 through
+- [ ] Verified the complete evidence manifest from [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) through
       this capstone.

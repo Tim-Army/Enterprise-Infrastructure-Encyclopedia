@@ -24,7 +24,7 @@
 
 Backup architecture is the discipline of guaranteeing that a defined amount
 of data loss and a defined amount of downtime are the *worst* outcomes of a
-failure, not an open-ended unknown. Chapter 1 introduced RPO and RTO by
+failure, not an open-ended unknown. [Chapter 1](01-enterprise-storage-architecture-and-service-design.md) introduced RPO and RTO by
 name in the service catalog; this chapter defines them formally and builds
 the architecture that delivers them.
 
@@ -40,15 +40,15 @@ the architecture that delivers them.
   the start of an outage to the restoration of a working service. An RTO of
   2 hours means the business accepts up to 2 hours of downtime, but no
   more. RTO is a statement about **restore speed and process** — it is
-  satisfied by how quickly a backup (or a replica, covered in Chapter 6)
+  satisfied by how quickly a backup (or a replica, covered in [Chapter 6](06-snapshots-replication-and-continuous-data-protection.md))
   can be brought back into production use.
 
 These are independent numbers. A nightly full backup to tape can deliver an
 RPO of 24 hours but an RTO measured in many hours once a large restore and
-tape retrieval are counted. A synchronous storage-array replica (Chapter 6)
+tape retrieval are counted. A synchronous storage-array replica ([Chapter 6](06-snapshots-replication-and-continuous-data-protection.md))
 can deliver a near-zero RPO but still require a lengthy RTO if the failover
 process itself is manual and undocumented. Backup architecture and disaster
-recovery engineering (Chapter 7) are two different disciplines that both
+recovery engineering ([Chapter 7](07-recovery-engineering-and-disaster-recovery-validation.md)) are two different disciplines that both
 answer to the same RPO/RTO targets from opposite ends: backup design
 minimizes data loss, recovery engineering minimizes downtime.
 
@@ -72,7 +72,7 @@ Current practice extends this to **3-2-1-1-0**:
 - **1 copy immutable or air-gapped** — a copy that cannot be altered or
   deleted within its retention window, even by a compromised backup
   administrator account, directly addressing ransomware and insider-threat
-  scenarios covered in depth in Chapter 8.
+  scenarios covered in depth in [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md).
 - **0 errors** — every backup is verified restorable, not merely verified
   as "the job completed." A backup that has never been test-restored is an
   unverified assumption, not a data protection control.
@@ -108,7 +108,7 @@ components:
   database-consistent capture). **Agentless** backup typically integrates
   at the hypervisor or storage-array layer (for example, reading a
   hypervisor snapshot or an array-side snapshot directly, covered in
-  Chapter 6) without installing software inside the guest. **Application-
+  [Chapter 6](06-snapshots-replication-and-continuous-data-protection.md)) without installing software inside the guest. **Application-
   consistent** capture (coordinating with the application or OS quiescing
   mechanism, such as Windows VSS or a database's own hot-backup mode)
   produces a restore point the application can start cleanly from;
@@ -129,7 +129,7 @@ components:
   plan, not an implicit assumption that it is always available.
 - **Backup target** — disk (often a deduplication-capable backup
   repository), tape (still the standard for very long-term, air-gapped
-  retention — see Chapter 8), and object/cloud storage (Chapter 3),
+  retention — see [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)), and object/cloud storage ([Chapter 3](03-enterprise-file-and-object-storage.md)),
   increasingly the default target for both on-premises and cloud-native
   workloads due to its built-in durability, lifecycle tiering, and
   immutability features.
@@ -151,7 +151,7 @@ planning input.
 ### Backup window and change-rate math
 
 Backup window planning is a direct extension of the throughput vocabulary
-from Chapter 1:
+from [Chapter 1](01-enterprise-storage-architecture-and-service-design.md):
 
 ```text
 Required throughput = Data to transfer within the window / Window duration
@@ -166,11 +166,11 @@ of them, not just the fastest link — will overrun its window regardless of
 how the job is scheduled. Change-rate growth over time is the single most
 common cause of a backup architecture that "used to fit" no longer fitting;
 re-baseline change rate against window capacity on the same cadence used
-for the capacity-monitoring practices in Chapter 9.
+for the capacity-monitoring practices in [Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md).
 
 ## Design Considerations
 
-- **Tier RPO/RTO to the service catalog from Chapter 1.** Not every
+- **Tier RPO/RTO to the service catalog from [Chapter 1](01-enterprise-storage-architecture-and-service-design.md).** Not every
   workload needs the same backup frequency; align backup job frequency and
   retention to the tier (Platinum/Gold/Bronze) a workload was provisioned
   against, and treat a request for a tighter RPO than the workload's tier
@@ -181,20 +181,20 @@ for the capacity-monitoring practices in Chapter 9.
   a small number of restore points that still cover a long retention
   period without retaining every daily backup indefinitely. Retention
   design must also account for legal hold and regulatory retention minimums
-  (Chapter 8) that can override the operational GFS schedule for specific
+  ([Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)) that can override the operational GFS schedule for specific
   data.
 - **Agent vs. agentless trade-offs.** Agent-based backup gives the finest
   application awareness (transaction log truncation, item-level restore)
   at the cost of software to deploy, patch, and license per host.
   Agentless/snapshot-integrated backup scales more easily across large
   virtualized estates but depends on the underlying snapshot mechanism
-  (Chapter 6) and its own consistency guarantees.
+  ([Chapter 6](06-snapshots-replication-and-continuous-data-protection.md)) and its own consistency guarantees.
 - **Bandwidth and window sizing must use worst-case change rate**, not
   average change rate — a backup design sized to the average day fails on
   the day it is needed most (post-patch-cycle, post-batch-job, or during a
   legitimate but unusually large data load).
 - **Immutability and air-gapping are architectural decisions made at
-  design time**, not features bolted on after an incident; Chapter 8
+  design time**, not features bolted on after an incident; [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)
   develops this fully, but the target platform and retention-lock model
   should be chosen during initial backup architecture design, since
   changing target platforms later is disruptive.
@@ -207,7 +207,7 @@ for the capacity-monitoring practices in Chapter 9.
 
 ### Expressing backup policy as data
 
-Following the same pattern as the service catalog in Chapter 1, express
+Following the same pattern as the service catalog in [Chapter 1](01-enterprise-storage-architecture-and-service-design.md), express
 backup policy as a version-controlled artifact so intent and actual job
 configuration cannot silently drift apart:
 
@@ -255,7 +255,7 @@ policies:
 ```
 
 This file is the reference a technical-review or audit checks actual job
-configuration against, and the input an automation pipeline (Chapter 9)
+configuration against, and the input an automation pipeline ([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md))
 uses to provision new backup jobs consistently as new workloads are
 onboarded.
 
@@ -317,14 +317,14 @@ restic check
 Never treat "job status: success" as proof of a usable backup by itself.
 The only real evidence a backup is usable is a completed restore test
 against that specific restore point — this is the "0 errors" component of
-3-2-1-1-0, and Chapter 7 builds the formal recovery-validation practice
+3-2-1-1-0, and [Chapter 7](07-recovery-engineering-and-disaster-recovery-validation.md) builds the formal recovery-validation practice
 this chapter's restore test previews.
 
 ## Security and Best Practices
 
 - Encrypt backup data both in transit and at rest; treat the backup
   repository password/key with the same custody discipline as any other
-  cryptographic key material (Chapter 8 develops key management fully).
+  cryptographic key material ([Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md) develops key management fully).
 - Use backup service accounts with the minimum privilege required to read
   source data and write to the target — never reuse a general
   administrative or domain account for backup agent authentication, since
@@ -334,7 +334,7 @@ this chapter's restore test previews.
   provider where practical, and require separate, auditable authentication
   for any action that can delete a backup or shorten a retention policy —
   this is the human-process half of ransomware resilience developed fully
-  in Chapter 8.
+  in [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md).
 - Maintain at least one immutable or air-gapped copy per the 3-2-1-1-0
   model; a fully online, fully mutable set of backup copies is vulnerable
   to the same compromise that took down production.

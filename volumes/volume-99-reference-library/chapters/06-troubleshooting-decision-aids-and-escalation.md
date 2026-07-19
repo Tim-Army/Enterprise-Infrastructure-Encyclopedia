@@ -10,12 +10,12 @@
   authentication failure, and service unavailable.
 - Distinguish a closed port, a filtered/dropped port, and an
   application-layer failure using observable evidence, building on
-  Chapter 02.
+  [Chapter 02](02-ports-protocols-services-and-traffic-flows.md).
 - Apply a severity classification and escalation matrix consistently
   across platforms, and know when to escalate rather than continue
   independent diagnosis.
 - Produce an incident timeline sufficient to support both a fix and a
-  later root-cause/post-incident review (Chapter 07).
+  later root-cause/post-incident review ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)).
 
 ## Theory and Architecture
 
@@ -25,7 +25,7 @@ hypothesis that can be tested. Three complementary methodologies cover
 nearly every situation in this encyclopedia:
 
 - **Bottom-up (layered) troubleshooting** starts at the physical/link
-  layer and works up the OSI stack (Volume II): cable/link state, then
+  layer and works up the OSI stack ([Volume II](../../volume-02-network-engineering-foundations/README.md)): cable/link state, then
   IP reachability, then transport (port open?), then application. This is
   the right default for "no connectivity" symptoms because each layer's
   failure has a distinct, checkable signature and lower layers are
@@ -69,7 +69,7 @@ target.
   node; "Does `ping <default gateway>` succeed?" is.
 - **Define severity independent of root cause**, since root cause is
   often unknown when severity must first be assigned; base severity on
-  observed business/user impact and scope (Chapter 07 formalizes this for
+  observed business/user impact and scope ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md) formalizes this for
   security incidents specifically).
 - **Set an explicit time-box for independent diagnosis before
   escalation**, calibrated to severity — a Sev 1 with unknown cause after
@@ -80,7 +80,7 @@ target.
   escalation does not stall when a specific individual is unavailable.
 - **Capture the incident timeline as you go, not retroactively.** A
   timeline reconstructed after resolution loses the sequence and timing
-  precision that root-cause analysis (Chapter 07) depends on.
+  precision that root-cause analysis ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)) depends on.
 
 ## Implementation and Automation
 
@@ -210,7 +210,7 @@ health check failing).
 | --- | --- | --- |
 | Sev 1/2 unresolved after time-box (organization-defined, commonly 15–30 minutes) | Secondary on-call / incident commander | Immediately at time-box expiry, not "just a bit longer" |
 | Diagnosis requires access/privilege the responder does not hold | Platform/system owner with required access | As soon as the access gap is identified |
-| Suspected security incident at any point in the tree above | Security/incident response team (Chapter 07) | Immediately; do not continue routine troubleshooting on a system suspected to be compromised without IR involvement |
+| Suspected security incident at any point in the tree above | Security/incident response team ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)) | Immediately; do not continue routine troubleshooting on a system suspected to be compromised without IR involvement |
 | Root cause points to a vendor-controlled component (hardware, SaaS, cloud provider) | Vendor TAC / cloud provider support, with case number logged | Once internal diagnosis rules out the customer-controlled path |
 | Multiple systems/teams affected simultaneously | Incident commander coordinating a bridge/war room | As soon as cross-team scope is recognized |
 
@@ -253,17 +253,17 @@ health check failing).
 
 - Treat any troubleshooting path that surfaces evidence of unauthorized
   access, unexpected privilege use, or unexplained configuration change as
-  a potential security incident and route to Chapter 07's process rather
+  a potential security incident and route to [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)'s process rather
   than continuing routine troubleshooting alone.
 - Avoid running state-changing commands (restarts, configuration
   rollbacks) on a system that may be compromised before incident response
-  has had the opportunity to preserve forensic evidence (Chapter 07);
+  has had the opportunity to preserve forensic evidence ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md));
   a routine "fix it and move on" reflex can destroy the evidence needed
   to determine scope.
 - Record who accessed what during an incident, not only what was
   changed; incident timelines are themselves security-relevant records
   and should be retained per the same policy as change and acceptance
-  evidence (Chapter 05).
+  evidence ([Chapter 05](05-validation-evidence-checklists-and-acceptance.md)).
 - Do not bypass authentication, disable logging, or use shared/emergency
   credentials to speed up diagnosis without following the organization's
   break-glass procedure and its required post-use review.
@@ -276,16 +276,16 @@ health check failing).
 
 **References**
 
-- Chapter 02 of this volume — five-field flow statements referenced in
+- [Chapter 02](02-ports-protocols-services-and-traffic-flows.md) of this volume — five-field flow statements referenced in
   Decision tree 1.
-- Chapter 04 of this volume — change records referenced in Decision trees
+- [Chapter 04](04-configuration-templates-baselines-and-change-records.md) of this volume — change records referenced in Decision trees
   2 and 3.
-- Chapter 05 of this volume — evidence capture for incident timelines.
-- Chapter 07 of this volume — incident response process for
+- [Chapter 05](05-validation-evidence-checklists-and-acceptance.md) of this volume — evidence capture for incident timelines.
+- [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md) of this volume — incident response process for
   security-relevant findings surfaced during troubleshooting.
-- Volume XI — Observability and Enterprise Operations (metrics, tracing,
+- [Volume XI](../../volume-11-observability-enterprise-operations/README.md) — Observability and Enterprise Operations (metrics, tracing,
   and alerting that supply Decision tree 2's inputs).
-- Volume XX — Wireshark and Packet Analysis (packet-level evidence for
+- [Volume XX](../../volume-20-wireshark-packet-analysis/README.md) — Wireshark and Packet Analysis (packet-level evidence for
   Decision tree 1).
 
 **Knowledge checks**
@@ -354,7 +354,7 @@ degraded performance, and service unavailable — built on the bottom-up,
 top-down, and divide-and-conquer methodologies, along with a severity
 classification matrix, an escalation matrix, and an incident timeline
 format that feeds directly into the post-incident review process in
-Chapter 07.
+[Chapter 07](07-security-hardening-incident-response-and-risk-reference.md).
 
 - [ ] I can select the appropriate troubleshooting methodology
       (bottom-up, top-down, divide-and-conquer) for a given symptom.

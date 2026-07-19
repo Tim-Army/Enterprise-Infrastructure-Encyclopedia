@@ -24,8 +24,8 @@ certificate is issued to a name, validated against a time window, and
 often binds to an identity that resolves through directory services running
 on a specific address. Treating them as one reference chapter reflects how
 they are actually consumed during real work, even though each has its own
-theoretical foundation covered in depth elsewhere (Volume II for addressing,
-Volume IV for identity and naming infrastructure).
+theoretical foundation covered in depth elsewhere ([Volume II](../../volume-02-network-engineering-foundations/README.md) for addressing,
+[Volume IV](../../volume-04-enterprise-systems-administration/README.md) for identity and naming infrastructure).
 
 - **IPv4 addressing** is a 32-bit space divided by a prefix length (CIDR)
   into a network portion and a host portion. Classless Inter-Domain
@@ -44,7 +44,7 @@ Volume IV for identity and naming infrastructure).
 - **Time synchronization** underpins nearly every other system in this
   chapter: Kerberos tickets fail outside a default five-minute clock skew,
   TLS certificate validation depends on accurate wall-clock time, and log
-  correlation across systems (Chapter 06) is only possible if every source
+  correlation across systems ([Chapter 06](06-troubleshooting-decision-aids-and-escalation.md)) is only possible if every source
   shares a time reference.
 - **Identity** systems (LDAP/Active Directory, Kerberos, cloud IAM)
   layer a namespace of their own — a distinguished name, a principal, or
@@ -56,7 +56,7 @@ Volume IV for identity and naming infrastructure).
 
 - **Size subnets for the actual host count plus planned growth, not for
   round numbers.** A /24 (254 usable hosts) is a habit, not a requirement;
-  right-sizing VLANs and subnets (Volume II) reduces broadcast domain size
+  right-sizing VLANs and subnets ([Volume II](../../volume-02-network-engineering-foundations/README.md)) reduces broadcast domain size
   and conserves address space in environments running out of RFC 1918
   space across many sites or environments (dev/stage/prod × multiple
   regions).
@@ -171,13 +171,13 @@ ntp server 10.10.1.11
 
 | System | Format | Example | Primary Reference Volume |
 | --- | --- | --- | --- |
-| LDAP/AD Distinguished Name (DN) | `CN=<name>,OU=<org unit>,DC=<domain>,DC=<tld>` | `CN=Jane Doe,OU=Engineering,DC=corp,DC=example,DC=com` | Volume IV |
-| User Principal Name (UPN) | `<user>@<UPN suffix>` | `jane.doe@corp.example.com` | Volume IV |
-| Kerberos principal | `<primary>/<instance>@<REALM>` | `host/web-use1-prod-01.example.com@CORP.EXAMPLE.COM` | Volume IV |
-| Service Principal Name (SPN) | `<service class>/<host>:<port>` | `HTTP/web-use1-prod-01.example.com` | Volume IV |
-| AWS Amazon Resource Name (ARN) | `arn:<partition>:<service>:<region>:<account-id>:<resource>` | `arn:aws:iam::123456789012:role/DeployRole` | Volume XVII |
-| X.509 certificate Subject | `CN=<name>, O=<org>, C=<country>` plus SAN extension for actual validated names | `CN=web-use1-prod-01.example.com, O=Example Corp, C=US` | Volume X |
-| Kubernetes RBAC subject | `ServiceAccount:<namespace>:<name>` or a federated identity (OIDC subject) | `system:serviceaccount:payments:api-deployer` | Volume VIII |
+| LDAP/AD Distinguished Name (DN) | `CN=<name>,OU=<org unit>,DC=<domain>,DC=<tld>` | `CN=Jane Doe,OU=Engineering,DC=corp,DC=example,DC=com` | [Volume IV](../../volume-04-enterprise-systems-administration/README.md) |
+| User Principal Name (UPN) | `<user>@<UPN suffix>` | `jane.doe@corp.example.com` | [Volume IV](../../volume-04-enterprise-systems-administration/README.md) |
+| Kerberos principal | `<primary>/<instance>@<REALM>` | `host/web-use1-prod-01.example.com@CORP.EXAMPLE.COM` | [Volume IV](../../volume-04-enterprise-systems-administration/README.md) |
+| Service Principal Name (SPN) | `<service class>/<host>:<port>` | `HTTP/web-use1-prod-01.example.com` | [Volume IV](../../volume-04-enterprise-systems-administration/README.md) |
+| AWS Amazon Resource Name (ARN) | `arn:<partition>:<service>:<region>:<account-id>:<resource>` | `arn:aws:iam::123456789012:role/DeployRole` | [Volume XVII](../../volume-17-aws-architecture-security/README.md) |
+| X.509 certificate Subject | `CN=<name>, O=<org>, C=<country>` plus SAN extension for actual validated names | `CN=web-use1-prod-01.example.com, O=Example Corp, C=US` | [Volume X](../../volume-10-enterprise-cybersecurity/README.md) |
+| Kubernetes RBAC subject | `ServiceAccount:<namespace>:<name>` or a federated identity (OIDC subject) | `system:serviceaccount:payments:api-deployer` | [Volume VIII](../../volume-08-containers-platform-engineering/README.md) |
 
 ## Validation and Troubleshooting
 
@@ -228,7 +228,7 @@ ntp server 10.10.1.11
 - Scope Kerberos SPNs and AD delegation narrowly; an SPN registered
   against the wrong account or an over-broad constrained-delegation
   configuration is a well-documented Active Directory privilege-escalation
-  path (Volume IV, Volume X).
+  path ([Volume IV](../../volume-04-enterprise-systems-administration/README.md), [Volume X](../../volume-10-enterprise-cybersecurity/README.md)).
 - Rotate and scope cloud IAM identities referenced by ARNs to the minimum
   required resource and action; treat an ARN in a policy document as
   sensitive-adjacent, since it discloses account IDs and resource
@@ -247,10 +247,10 @@ ntp server 10.10.1.11
   documentation (`learn.microsoft.com/windows-server/identity`).
 - AWS ARN format reference (`docs.aws.amazon.com/IAM` — ARN general
   syntax).
-- Volume II — Network Engineering Foundations.
-- Volume IV — Enterprise Systems Administration (identity and directory
+- [Volume II](../../volume-02-network-engineering-foundations/README.md) — Network Engineering Foundations.
+- [Volume IV](../../volume-04-enterprise-systems-administration/README.md) — Enterprise Systems Administration (identity and directory
   services).
-- Volume XVII — AWS Architecture and Security (IAM and ARN scoping).
+- [Volume XVII](../../volume-17-aws-architecture-security/README.md) — AWS Architecture and Security (IAM and ARN scoping).
 
 **Knowledge checks**
 

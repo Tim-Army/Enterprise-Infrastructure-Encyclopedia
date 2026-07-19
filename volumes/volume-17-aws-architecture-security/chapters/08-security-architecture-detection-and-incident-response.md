@@ -16,8 +16,8 @@
 
 ## Theory and Architecture
 
-Chapter 02 established preventive controls (SCPs, IAM boundaries) and
-Chapter 03 established network-layer controls (security groups, WAF,
+[Chapter 02](02-multi-account-identity-governance-and-landing-zones.md) established preventive controls (SCPs, IAM boundaries) and
+[Chapter 03](03-secure-networking-hybrid-connectivity-and-edge.md) established network-layer controls (security groups, WAF,
 Shield). This chapter completes the security architecture with
 **detective controls** — services that identify when a preventive control
 was bypassed or did not exist — and the **incident response** processes
@@ -43,7 +43,7 @@ carrying a severity score:
 
 GuardDuty is enabled per Region and centrally administered across an
 Organization through a **delegated administrator** account (typically the
-security-tooling account from Chapter 02's Security OU), which
+security-tooling account from [Chapter 02](02-multi-account-identity-governance-and-landing-zones.md)'s Security OU), which
 automatically enrolls new member accounts and provides a single
 organization-wide findings view.
 
@@ -79,7 +79,7 @@ standard AWS pattern chains three services:
 
 1. **Amazon EventBridge** rule matches a GuardDuty finding (or a Security
    Hub finding, Config rule change, or CloudTrail event) by pattern.
-2. The rule triggers an **AWS Step Functions** state machine (Chapter 04)
+2. The rule triggers an **AWS Step Functions** state machine ([Chapter 04](04-compute-containers-serverless-and-application-architecture.md))
    or directly a **Lambda function** that performs the response — for
    example, isolating a compromised EC2 instance by replacing its
    security group with a "quarantine" group that permits no traffic, or
@@ -99,7 +99,7 @@ custom rotation Lambda for any other credential type) and fine-grained
 resource policies. During an incident, the ability to force-rotate a
 credential immediately — rather than manually resetting it through a
 third-party console — is often the fastest containment action available.
-**AWS KMS** (Chapter 05) provides a second containment lever: disabling a
+**AWS KMS** ([Chapter 05](05-storage-databases-analytics-and-data-protection.md)) provides a second containment lever: disabling a
 KMS key immediately blocks all decryption/encryption operations depending
 on it, which can contain an in-progress data exfiltration attempt faster
 than revoking individual IAM permissions across multiple principals.
@@ -117,7 +117,7 @@ detail at each phase:
    and documented runbooks stored where they remain accessible if the
    primary account is compromised.
 2. **Detection and analysis** — GuardDuty/Security Hub findings, CloudTrail
-   Lake queries, and VPC Flow Log analysis (Chapter 03) establish scope:
+   Lake queries, and VPC Flow Log analysis ([Chapter 03](03-secure-networking-hybrid-connectivity-and-edge.md)) establish scope:
    which principal, which resources, and what time window.
 3. **Containment** — network isolation (security group replacement, NACL
    deny), IAM credential revocation/rotation, and KMS key disabling,
@@ -363,8 +363,8 @@ aws cloudtrail get-query-results --query-id "$QUERY_ID"
   before detection is a reasonable default assumption during
   eradication.
 - Run a blameless post-incident review after every significant finding
-  response, and feed identified gaps back into SCPs (Chapter 02), Config
-  rules (Chapter 07), and detection rule tuning — an incident that does
+  response, and feed identified gaps back into SCPs ([Chapter 02](02-multi-account-identity-governance-and-landing-zones.md)), Config
+  rules ([Chapter 07](07-observability-automation-performance-and-cost-governance.md)), and detection rule tuning — an incident that does
   not produce a control improvement is a missed opportunity, not a
   closed ticket.
 

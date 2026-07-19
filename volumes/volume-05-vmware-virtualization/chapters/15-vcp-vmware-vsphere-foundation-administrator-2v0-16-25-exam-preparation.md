@@ -30,7 +30,7 @@ blueprint or any exam content.
 
 ### VVF scope versus VCF scope
 
-Chapter 1 defined **VMware vSphere Foundation (VVF)** as the lighter SDDC
+[Chapter 1](01-vmware-virtualization-architecture-and-design.md) defined **VMware vSphere Foundation (VVF)** as the lighter SDDC
 bundle: vSphere and vSAN for compute and storage, positioned for
 organizations wanting an HCI-based private cloud without the full
 NSX-based network virtualization and SDDC Manager-driven multi-domain
@@ -38,7 +38,7 @@ lifecycle automation VCF provides. This scope difference is the single
 most important fact shaping how to prepare for this exam relative to
 Chapters 13 and 14: **the VVF Administrator exam is, in substance, a
 standalone vSphere and vSAN administration exam.** Its blueprint does not
-carry the NSX-heavy content of Chapter 12, nor the SDDC
+carry the NSX-heavy content of [Chapter 12](12-vcp-network-virtualization-2v0-41-24-exam-preparation.md), nor the SDDC
 Manager/fleet-orchestration content of Chapters 13–14 — it draws almost
 entirely on the same competencies this volume's Chapters 1 through 9
 already build for standalone vSphere deployments.
@@ -46,11 +46,11 @@ already build for standalone vSphere deployments.
 ### Blueprint domain structure and its direct chapter mapping
 
 - **Foundational/standards section** — general infrastructure and
-  industry-standard concepts, maps to Chapter 1's virtualization
-  fundamentals and Chapter 4's general networking concepts.
+  industry-standard concepts, maps to [Chapter 1](01-vmware-virtualization-architecture-and-design.md)'s virtualization
+  fundamentals and [Chapter 4](04-vsphere-virtual-networking.md)'s general networking concepts.
 - **VVF fundamentals section** — vSphere Foundation platform
   architecture: the roles of ESXi hosts, the vCenter Server Appliance,
-  and how they interact. Maps directly to Chapter 1 (architecture) and
+  and how they interact. Maps directly to [Chapter 1](01-vmware-virtualization-architecture-and-design.md) (architecture) and
   the relationship between Chapters 2 (ESXi) and 3 (vCenter Server).
 - **Plan and design section** — sizing ESXi hosts, designing vSAN
   clusters (minimum host counts, disk group configuration under OSA, or
@@ -60,9 +60,9 @@ already build for standalone vSphere deployments.
   7.
 - **Deploy, configure, and operate section** — the hands-on
   administration workload: host installation and configuration
-  (Chapter 2), vCenter Server deployment (Chapter 3), virtual networking
-  (Chapter 4), VM lifecycle and resource management (Chapter 5), storage
-  and vSAN (Chapter 6), and availability/mobility services (Chapter 7).
+  ([Chapter 2](02-esxi-installation-configuration-and-host-operations.md)), vCenter Server deployment ([Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md)), virtual networking
+  ([Chapter 4](04-vsphere-virtual-networking.md)), VM lifecycle and resource management ([Chapter 5](05-virtual-machine-lifecycle-and-resource-management.md)), storage
+  and vSAN ([Chapter 6](06-vsphere-storage-and-vsan.md)), and availability/mobility services ([Chapter 7](07-vsphere-availability-mobility-and-cluster-services.md)).
   This is typically the largest-weighted section on administrator-focused
   VMware exams and rewards actual lab repetition across all of these
   chapters, not any single one in isolation.
@@ -79,7 +79,7 @@ Among the domains above, esxtop interpretation and DRS/HA tuning are the
 most distinctive to the troubleshoot/optimize section and the most likely
 to be under-practiced by a reader who has only read this volume's
 chapters rather than actually driven contention scenarios in a lab.
-Chapter 9's esxtop coverage and Chapter 5/7's DRS/HA design and
+[Chapter 9](09-vsphere-lifecycle-automation-observability-and-troubleshooting.md)'s esxtop coverage and [Chapter 5](05-virtual-machine-lifecycle-and-resource-management.md)/7's DRS/HA design and
 troubleshooting sections are the specific grounding for this domain;
 treat the timed lab drills in this chapter's Hands-On Lab (which reuse
 those chapters' scenarios) as the highest-leverage preparation activity
@@ -112,9 +112,9 @@ for this specific section.
   guest-reported CPU problem, distinguishing storage-path latency from
   array-side latency using `DAVG`/`KAVG`) is a skill that requires actual
   screen-time with the tool under real or synthetic contention, not just
-  reading Chapter 9's description of it.
+  reading [Chapter 9](09-vsphere-lifecycle-automation-observability-and-troubleshooting.md)'s description of it.
 - **vSAN health warning literacy.** Practice recognizing common Skyline
-  Health findings (Chapter 6) and mapping each to its likely root cause
+  Health findings ([Chapter 6](06-vsphere-storage-and-vsan.md)) and mapping each to its likely root cause
   category (network, disk, cluster, data) as a fast-recognition skill,
   since the troubleshoot/optimize section rewards quick, correct
   categorization over exhaustive diagnostic depth on any single finding.
@@ -188,7 +188,7 @@ esxtop
   analysis.
 - **HA/DRS troubleshooting rehearsal.** Deliberately misconfigure an HA
   isolation address or a DRS affinity rule with no valid host remaining
-  (Chapter 7) and practice diagnosing the resulting symptom without
+  ([Chapter 7](07-vsphere-availability-mobility-and-cluster-services.md)) and practice diagnosing the resulting symptom without
   reference material.
 - **vMotion failure triage rehearsal.** Deliberately break a vMotion
   compatibility prerequisite (mismatched EVC mode, or a VM configured
@@ -226,7 +226,7 @@ esxtop
   this repository's certification-to-volume mapping.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 1 for the VVF-versus-VCF scope distinction underpinning
+- See [Chapter 1](01-vmware-virtualization-architecture-and-design.md) for the VVF-versus-VCF scope distinction underpinning
   this chapter's preparation strategy.
 - See Chapters 2 through 9 for the direct technical grounding of every
   blueprint domain discussed above.
@@ -261,9 +261,9 @@ self-assessment.
 
 - A nested or physical lab environment capable of hosting at least 3
   ESXi hosts and one vCenter Server, with capacity for a small vSAN
-  cluster (following the Chapter 6 lab's disk requirements) and at least
+  cluster (following the [Chapter 6](06-vsphere-storage-and-vsan.md) lab's disk requirements) and at least
   one CPU-contention-capable test workload.
-- Completion of (or comfort with) the individual Chapter 2, 3, 4, 6, 7,
+- Completion of (or comfort with) the individual [Chapter 2](02-esxi-installation-configuration-and-host-operations.md), 3, 4, 6, 7,
   and 9 labs, since this lab reuses their procedures as a single
   continuous exercise.
 
@@ -277,27 +277,27 @@ self-assessment.
    vCenter Server.
 
 2. **(Timed, target 20 minutes)** Build a VDS, add all 3 hosts, and
-   create at least one tagged port group (Chapter 4).
+   create at least one tagged port group ([Chapter 4](04-vsphere-virtual-networking.md)).
 
    **Expected result:** all hosts show as VDS members with consistent
    port group configuration.
 
 3. **(Timed, target 25 minutes)** Enable vSAN, create a RAID-1 FTT=1
-   storage policy, and deploy a test VM using it (Chapter 6).
+   storage policy, and deploy a test VM using it ([Chapter 6](06-vsphere-storage-and-vsan.md)).
 
    **Expected result:** the vSAN datastore is healthy and the test VM
    reports compliant against its storage policy.
 
 4. **(Timed, target 20 minutes)** Configure HA admission control and
    confirm DRS is set to Fully Automated with an appropriate migration
-   threshold (Chapter 7).
+   threshold ([Chapter 7](07-vsphere-availability-mobility-and-cluster-services.md)).
 
    **Expected result:** the cluster shows HA and DRS both enabled and
    healthy.
 
 5. **Negative test 1 (timed, target 15 minutes):** place one host into
    maintenance mode with no data migration while the test VM's storage
-   object has replica components on that host (as in the Chapter 6 lab),
+   object has replica components on that host (as in the [Chapter 6](06-vsphere-storage-and-vsan.md) lab),
    and diagnose the resulting compliance/redundancy state without
    reference material.
 

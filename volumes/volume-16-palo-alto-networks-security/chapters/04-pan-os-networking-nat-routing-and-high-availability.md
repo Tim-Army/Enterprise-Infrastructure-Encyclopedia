@@ -16,7 +16,7 @@
 
 ## Theory and Architecture
 
-Chapter 03 got a VM-Series instance reachable and licensed. This chapter
+[Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md) got a VM-Series instance reachable and licensed. This chapter
 covers the networking constructs that turn a licensed firewall into an
 enforcement point sitting between real network segments: interfaces, zones,
 routing, NAT, and — because a single firewall is a single point of failure
@@ -49,7 +49,7 @@ mode required for NAT, dynamic routing, and most VPN termination.
 
 A PAN-OS security zone is a logical grouping of one or more interfaces
 (regardless of mode) that shares a trust level. Security policy rules
-(Chapter 05) are written source-zone-to-destination-zone, not
+([Chapter 05](05-application-identity-threat-and-data-security-policy.md)) are written source-zone-to-destination-zone, not
 source-interface-to-destination-interface — this is a deliberate design
 choice that lets an administrator add a second interface to an existing
 zone without rewriting every policy rule that references that zone.
@@ -282,7 +282,7 @@ admin@pa-fw01# commit
   specific reason for a non-functional state (for example, mismatched
   PAN-OS versions, mismatched HA group ID, or an HA1 link that cannot reach
   the peer). Version and content mismatches between HA peers are a common
-  cause — Chapter 07 covers coordinated upgrade procedures that avoid this.
+  cause — [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md) covers coordinated upgrade procedures that avoid this.
 - **Failover did not occur as expected.** `show high-availability
   link-monitoring` and `show high-availability path-monitoring` confirm
   whether the configured monitored interfaces/paths are actually being
@@ -313,7 +313,7 @@ admin@pa-fw01# commit
 - Log and periodically review destination NAT rules specifically — every
   destination NAT rule represents an inbound exposure decision and should
   have a documented business justification, reviewed on the same cadence
-  as firewall rule recertification (Volume X).
+  as firewall rule recertification ([Volume X](../../volume-10-enterprise-cybersecurity/README.md)).
 
 ## References and Knowledge Checks
 
@@ -388,7 +388,7 @@ pair with a deliberate failover test.
    ```
 
 4. Add a minimal security policy rule permitting trust-to-untrust web
-   traffic (full policy syntax is covered in Chapter 05):
+   traffic (full policy syntax is covered in [Chapter 05](05-application-identity-threat-and-data-security-policy.md)):
 
    ```text
    admin@pa-fw01# set rulebase security rules Allow-Outbound-Web from trust to untrust source any destination any application [ web-browsing ssl ] action allow
@@ -472,8 +472,8 @@ availability is what keeps that placement from being a single point of
 failure. Zone-based policy evaluation, the separation of NAT policy from
 security policy, and the HA1/HA2 (and HA3, for active/active) link model
 are foundational patterns that recur throughout the rest of this volume —
-Chapter 05 builds security policy on top of the zones configured here, and
-Chapter 07 revisits HA-aware upgrade procedures.
+[Chapter 05](05-application-identity-threat-and-data-security-policy.md) builds security policy on top of the zones configured here, and
+[Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md) revisits HA-aware upgrade procedures.
 
 - [ ] Can configure Layer 3 interfaces and zones and explain zone-based
       policy evaluation.

@@ -18,9 +18,9 @@
 Automation architecture is the design of how change moves from an
 engineer's keystroke to a running system, and which automated gates a
 change must pass through along the way. Every layer discussed elsewhere in
-this volume — the workstation (Chapter 01), the repository (Chapter 02),
-GitHub project workflow (Chapter 04), and documentation publishing
-(Chapter 05) — is bound together by automation. This chapter treats
+this volume — the workstation ([Chapter 01](01-building-the-enterprise-developer-workstation.md)), the repository ([Chapter 02](02-repository-architecture.md)),
+GitHub project workflow ([Chapter 04](04-github-project-and-workflow-management.md)), and documentation publishing
+([Chapter 05](05-documentation-pipelines-and-publishing.md)) — is bound together by automation. This chapter treats
 automation itself as an architectural subject with its own design patterns,
 failure modes, and security boundary.
 
@@ -398,7 +398,7 @@ actually blocks unapproved execution.
 **Prerequisites**
 
 - A GitHub repository you can configure (the scratch repository from
-  Chapter 02's lab works, or a new one).
+  [Chapter 02](02-repository-architecture.md)'s lab works, or a new one).
 - `gh` CLI authenticated with permission to manage repository environments.
 
 **Steps**

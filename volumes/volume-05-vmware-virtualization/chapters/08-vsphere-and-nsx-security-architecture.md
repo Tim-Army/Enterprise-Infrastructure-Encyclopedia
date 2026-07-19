@@ -240,7 +240,7 @@ New-VIPermission -Entity (Get-Folder -Name "folder-app-tier-vms") `
 ### Key management: Native Key Provider versus external KMS
 
 Both VM encryption and vSAN data-at-rest encryption (introduced
-conceptually in Chapter 6) require a source of encryption keys, configured
+conceptually in [Chapter 6](06-vsphere-storage-and-vsan.md)) require a source of encryption keys, configured
 at the vCenter Server level as a **KMS cluster**:
 
 - **vSphere Native Key Provider (NKP)** — a key-management capability

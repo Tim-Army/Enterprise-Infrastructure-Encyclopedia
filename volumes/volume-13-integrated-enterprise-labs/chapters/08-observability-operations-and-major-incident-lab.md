@@ -17,28 +17,28 @@
 ## Theory and Architecture
 
 This chapter instruments what Chapters 02 through 07 built, following
-Volume XI (Observability and Enterprise Operations): Chapter 02 (Telemetry
+[Volume XI](../../volume-11-observability-enterprise-operations/README.md) (Observability and Enterprise Operations): [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) (Telemetry
 Architecture, Instrumentation, and Pipelines) for how metrics, logs, and
-traces reach a central store, Chapter 03 (Metrics, Service-Level
+traces reach a central store, [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) (Metrics, Service-Level
 Objectives, and Error Budgets) for defining and measuring the SLO this
-chapter sets for `meridian-web`, Chapter 05 (Distributed Tracing,
+chapter sets for `meridian-web`, [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md) (Distributed Tracing,
 Profiling, and Dependency Analysis) for tracing the hybrid-scheduled
-workload from Chapter 05, Chapter 06 (Actionable Alerting, On-Call, and
+workload from [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md), [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md) (Actionable Alerting, On-Call, and
 Operations Centers) for the burn-rate alert and paging simulation, and
-Chapter 07 (Service Management, Incident, Problem, and Change Operations)
+[Chapter 07](07-zero-trust-detection-and-incident-response-lab.md) (Service Management, Incident, Problem, and Change Operations)
 for the major-incident process this chapter's lab runs end to end.
 
-The relationship between this chapter and Chapter 07 is deliberate:
-Chapter 07 built detection for security events; this chapter builds
+The relationship between this chapter and [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md) is deliberate:
+[Chapter 07](07-zero-trust-detection-and-incident-response-lab.md) built detection for security events; this chapter builds
 detection for reliability events. Both feed the same underlying
 discipline — a system that fails silently is worse than one that fails
 loudly, whether the failure is an intrusion or a resource exhaustion
-event. `siem01` from Chapter 07 continues to receive security-relevant
+event. `siem01` from [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md) continues to receive security-relevant
 logs; `obs01`, introduced here, owns metrics, dashboards, tracing, and
 alerting.
 
 An SLO without an error budget is just a target nobody is accountable to;
-Volume XI, Chapter 03 treats the error budget as the resource this
+[Volume XI, Chapter 03](../../volume-11-observability-enterprise-operations/chapters/03-metrics-service-level-objectives-and-error-budgets.md) treats the error budget as the resource this
 chapter's major-incident exercise deliberately spends down, so the reader
 experiences what a burn-rate alert firing under real pressure actually
 feels like, not just how to configure one.
@@ -58,8 +58,8 @@ required.
 - **Pull-based metrics for infrastructure, push-based for short-lived
   work.** Hosts, network devices, and long-running services are scraped
   on an interval (the Prometheus model); anything with a shorter lifetime
-  than the scrape interval pushes instead — a distinction Volume XI,
-  Chapter 02 treats as a first design decision, not an implementation
+  than the scrape interval pushes instead — a distinction [Volume XI](../../volume-11-observability-enterprise-operations/README.md),
+  [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) treats as a first design decision, not an implementation
   detail.
 - **The SLO is defined before the alert, and the alert is defined before
   the incident.** Sequencing matters: an alert with no SLO behind it
@@ -68,8 +68,8 @@ required.
 - **Multi-window, multi-burn-rate alerting, not a static threshold.** A
   single "error rate > 5%" alert either fires too late for a fast, severe
   burn or too often for normal noise. This chapter configures a fast
-  (1-hour) and slow (6-hour) burn-rate window, the pattern Volume XI,
-  Chapter 03 recommends, so the alert is sensitive to both a sudden severe
+  (1-hour) and slow (6-hour) burn-rate window, the pattern [Volume XI](../../volume-11-observability-enterprise-operations/README.md),
+  [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) recommends, so the alert is sensitive to both a sudden severe
   outage and a slow, sustained degradation.
 - **Paging is simulated, not connected to a real phone.** The lab's
   on-call simulation posts to a local webhook that logs a page with a
@@ -81,7 +81,7 @@ required.
   this chapter's postmortem is reconstructed entirely from `obs01`
   dashboards, `siem01` logs, and `evidence.sh` captures — not from
   participants' recollection — which is both a better record and the
-  standard Volume XI, Chapter 07 expects of a real postmortem.
+  standard [Volume XI, Chapter 07](../../volume-11-observability-enterprise-operations/chapters/07-service-management-incident-problem-and-change-operations.md) expects of a real postmortem.
 
 ## Implementation and Automation
 
@@ -179,7 +179,7 @@ echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) PAGE severity=$1 alert=$2" \
 - **Common failure: burn-rate windows too close together.** If both the
   fast- and slow-burn alerts fire simultaneously for every incident, the
   windows are not actually differentiating severity — revisit the
-  multiplier constants against Volume XI, Chapter 03's guidance before
+  multiplier constants against [Volume XI, Chapter 03](../../volume-11-observability-enterprise-operations/chapters/03-metrics-service-level-objectives-and-error-budgets.md)'s guidance before
   the on-call rotation starts treating every page as equally urgent.
 - **Postmortem timeline gaps.** If the reconstructed timeline in this
   chapter's lab has a gap longer than the scrape/log interval, check
@@ -200,18 +200,18 @@ echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) PAGE severity=$1 alert=$2" \
 - Treat the on-call escalation path itself as a tested control: the
   paging simulation in this chapter's lab should be validated with a
   known-good alert before it is trusted during the negative test, the
-  same "test the safety net before you need it" principle Chapter 01
+  same "test the safety net before you need it" principle [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)
   applied to snapshot/rollback.
 - Feed alerting and major-incident metadata (declared, resolved,
   postmortem completed) into the same evidence trail used elsewhere in
-  this volume, so Chapter 09's capstone can reference operational history
+  this volume, so [Chapter 09](09-enterprise-resilience-and-lifecycle-capstone.md)'s capstone can reference operational history
   alongside infrastructure state.
 
 ## References and Knowledge Checks
 
 **References**
 
-- Volume XI, Chapters 02–03, 05–07 — telemetry architecture, metrics/SLOs,
+- [Volume XI](../../volume-11-observability-enterprise-operations/README.md), Chapters 02–03, 05–07 — telemetry architecture, metrics/SLOs,
   distributed tracing, alerting/on-call, and incident/problem/change
   operations.
 - Google SRE Workbook — *Alerting on SLOs* (multi-window, multi-burn-rate
@@ -240,9 +240,9 @@ major-incident cycle against an injected resource-exhaustion failure.
 
 **Prerequisites**
 
-- Chapter 07 complete, with `siem01` and the zero-trust segmentation
+- [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md) complete, with `siem01` and the zero-trust segmentation
   model in place.
-- The Kubernetes cluster and `meridian-web` deployment from Chapter 05
+- The Kubernetes cluster and `meridian-web` deployment from [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md)
   healthy and reachable.
 - Familiarity with PromQL-style query syntax is helpful but not required;
   the queries in this chapter are provided in full.
@@ -301,7 +301,7 @@ major-incident cycle against an injected resource-exhaustion failure.
    ./evidence.sh "tail -n 5 /var/log/oncall-pages.log"
    ```
 
-10. **Declare and run the major incident.** Following Volume XI, Chapter
+10. **Declare and run the major incident.** Following [Volume XI](../../volume-11-observability-enterprise-operations/README.md), Chapter
     07's process, declare a major incident, open a bridge (a shared
     document or channel is sufficient for the lab), and assign an
     incident commander. Record the declaration timestamp with
@@ -335,7 +335,7 @@ major-incident cycle against an injected resource-exhaustion failure.
     exercise.
 
 15. **Cleanup:** Confirm no residual stress workload remains on any node,
-    and retain `obs01` and the SLO/alert configuration for Chapter 09.
+    and retain `obs01` and the SLO/alert configuration for [Chapter 09](09-enterprise-resilience-and-lifecycle-capstone.md).
     Commit the final state:
 
     ```bash

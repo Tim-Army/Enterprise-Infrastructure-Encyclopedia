@@ -46,7 +46,7 @@ every downstream device based on a marking carried in the packet itself,
 rather than requiring every hop to re-classify traffic from scratch:
 
 - **Layer 2 marking** — the 3-bit **Class of Service (CoS)** field in the
-  802.1Q tag (Chapter 2), significant only within a Layer 2 domain.
+  802.1Q tag ([Chapter 2](02-catalyst-campus-switching-and-resiliency.md)), significant only within a Layer 2 domain.
 - **Layer 3 marking** — the 6-bit **Differentiated Services Code Point
   (DSCP)** field in the IP header, which survives Layer 3 hops end to end
   and is the primary marking used for policy decisions in current designs.
@@ -301,7 +301,7 @@ ACCESS-01# show ip igmp snooping groups
 | Symptom | Likely cause | Check |
 | --- | --- | --- |
 | Voice quality degrades under load despite an LLQ policy | LLQ class undersized against actual voice bandwidth, or policy not applied on the correct (egress WAN) interface | `show policy-map interface`, confirm drops/matches on the `VOICE` class and correct interface/direction |
-| DSCP markings reset to 0 somewhere in the path | An intermediate device re-marking/clearing DSCP, or a trust boundary misconfigured to distrust an already-trusted source | `show mls qos interface`, trace marking hop by hop with packet captures (Volume XX) |
+| DSCP markings reset to 0 somewhere in the path | An intermediate device re-marking/clearing DSCP, or a trust boundary misconfigured to distrust an already-trusted source | `show mls qos interface`, trace marking hop by hop with packet captures ([Volume XX](../../volume-20-wireshark-packet-analysis/README.md)) |
 | Client PC's traffic unexpectedly prioritized as voice | Access port trusting CoS/DSCP from an untrusted host instead of only the verified phone | `show mls qos interface`, confirm `trust device cisco-phone` (not blanket `mls qos trust cos`) on phone-attached ports |
 | Rogue DHCP server hands out incorrect leases | DHCP snooping not enabled, or the rogue server's port marked trusted | `show ip dhcp snooping binding`, `show ip dhcp snooping`, confirm the offending port is untrusted |
 | Multicast receiver never gets traffic | No PIM neighbor relationship, RP unreachable, or IGMP snooping suppressing the join upstream | `show ip pim neighbor`, `show ip mroute`, `show ip igmp snooping groups` |
@@ -312,7 +312,7 @@ ACCESS-01# show ip igmp snooping groups
 - Enable DHCP snooping on every VLAN that serves untrusted endpoints and
   mark only server-facing/uplink ports as trusted; DHCP snooping is also a
   prerequisite for **Dynamic ARP Inspection (DAI)** and **IP Source
-  Guard**, both covered in Chapter 7 as segmentation/identity controls.
+  Guard**, both covered in [Chapter 7](07-cisco-identity-access-control-and-segmentation.md) as segmentation/identity controls.
 - Never leave an access port's QoS trust set to blanket `mls qos trust
   cos` or `trust dscp`; use `trust device cisco-phone` (or leave the port
   untrusted and re-mark) so an end user cannot self-mark traffic as
@@ -324,7 +324,7 @@ ACCESS-01# show ip igmp snooping groups
   authenticate` with keys) at the WAN/internet edge, since an unauthenticated
   time source can be used to disrupt certificate validation and log
   correlation across the estate.
-- Apply Control Plane Policing (CoPP, Chapter 1) alongside data-plane QoS;
+- Apply Control Plane Policing (CoPP, [Chapter 1](01-cisco-enterprise-architecture-and-ios-xe-foundations.md)) alongside data-plane QoS;
   QoS protects application traffic from other application traffic, while
   CoPP protects the device's own control plane (including PIM, IGMP, and
   NTP protocol traffic) from being starved or attacked.
@@ -362,7 +362,7 @@ class is throttled under congestion while the priority class is protected.
 
 **Prerequisites**
 
-- The distribution/access topology from Chapter 2's lab (or an equivalent
+- The distribution/access topology from [Chapter 2](02-catalyst-campus-switching-and-resiliency.md)'s lab (or an equivalent
   CML topology), plus one router or Layer 3 switch acting as a WAN edge
   with a rate-limited or shaped outbound interface.
 - A traffic generator (a second host, `iperf3`, or equivalent) capable of

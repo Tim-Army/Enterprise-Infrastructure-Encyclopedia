@@ -17,7 +17,7 @@
 
 ## Theory and Architecture
 
-Chapter 01 established the AWS account as the atomic unit of isolation.
+[Chapter 01](01-cloud-foundations-accounts-and-well-architected-design.md) established the AWS account as the atomic unit of isolation.
 **AWS Organizations** groups multiple accounts under a single management
 account, enabling consolidated billing, centralized policy enforcement, and
 programmatic account creation. Accounts are arranged into **organizational

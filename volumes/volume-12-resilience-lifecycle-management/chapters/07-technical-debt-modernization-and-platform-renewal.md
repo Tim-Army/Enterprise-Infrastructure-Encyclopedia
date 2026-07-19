@@ -13,7 +13,7 @@
 
 ### Technical Debt as a Deliberate Metaphor
 
-Technical debt, a term coined by Ward Cunningham, describes the implied future cost of choosing an expedient solution now over a more thorough one — like financial debt, it can be taken on deliberately to move faster, and it accrues "interest" in the form of increased future maintenance cost, until it is "paid down" through refactoring or replacement. The metaphor is useful specifically because it treats debt as sometimes rational, not inherently bad: shipping a simpler implementation to meet a real deadline, with a documented plan to revisit it, is a legitimate engineering trade-off. What makes technical debt a resilience concern rather than purely a code-quality concern is that unmanaged debt directly erodes several properties from Chapter 1 — a poorly isolated legacy component enlarges blast radius, an undocumented system becomes an organizational SPOF, and a system running unsupported software cannot receive the patches described in Chapter 6 at all.
+Technical debt, a term coined by Ward Cunningham, describes the implied future cost of choosing an expedient solution now over a more thorough one — like financial debt, it can be taken on deliberately to move faster, and it accrues "interest" in the form of increased future maintenance cost, until it is "paid down" through refactoring or replacement. The metaphor is useful specifically because it treats debt as sometimes rational, not inherently bad: shipping a simpler implementation to meet a real deadline, with a documented plan to revisit it, is a legitimate engineering trade-off. What makes technical debt a resilience concern rather than purely a code-quality concern is that unmanaged debt directly erodes several properties from [Chapter 1](01-resilience-engineering-and-critical-service-design.md) — a poorly isolated legacy component enlarges blast radius, an undocumented system becomes an organizational SPOF, and a system running unsupported software cannot receive the patches described in [Chapter 6](06-maintenance-patching-and-upgrade-engineering.md) at all.
 
 ### The Technical Debt Quadrant
 
@@ -30,10 +30,10 @@ Prudent debt (deliberate or inadvertent) is a normal and often unavoidable part 
 
 Beyond application code quality, infrastructure-specific technical debt takes several recurring forms:
 
-- **Version debt** — software running on an unsupported or soon-to-be-unsupported version, connecting directly to Chapter 6's N-1/N-2 support policy discussion; a system that has fallen outside vendor support cannot receive security patches at all, converting version debt into unmanaged security risk on a fixed timeline.
+- **Version debt** — software running on an unsupported or soon-to-be-unsupported version, connecting directly to [Chapter 6](06-maintenance-patching-and-upgrade-engineering.md)'s N-1/N-2 support policy discussion; a system that has fallen outside vendor support cannot receive security patches at all, converting version debt into unmanaged security risk on a fixed timeline.
 - **Architectural debt** — a design that made sense at a prior scale or requirement set but now actively works against current needs (a monolith that should be decomposed, a synchronous call chain that should be asynchronous, a single-region deployment for a service that has since become globally critical).
 - **Configuration and infrastructure drift debt** — manually applied changes that were never captured in infrastructure-as-code, making the running state unreproducible and undocumented.
-- **Knowledge debt** — a system that only one person understands, effectively the organizational SPOF pattern from Chapter 1 expressed as accumulated debt rather than a point-in-time gap.
+- **Knowledge debt** — a system that only one person understands, effectively the organizational SPOF pattern from [Chapter 1](01-resilience-engineering-and-critical-service-design.md) expressed as accumulated debt rather than a point-in-time gap.
 - **Test and observability debt** — a system with insufficient test coverage or instrumentation to safely change, which compounds every other category above by making the cost of addressing them higher than it should be.
 
 ### The 6 Rs of Modernization
@@ -43,7 +43,7 @@ When a system's debt (or its EOL/EOS status) crosses the threshold that justifie
 | Strategy | Description | Typical Use Case |
 | --- | --- | --- |
 | Retain | Deliberately leave the system as-is for now | Debt is prudent and low-impact; higher-priority items exist |
-| Retire | Decommission the system entirely | Functionality is no longer needed (feeds Chapter 9) |
+| Retire | Decommission the system entirely | Functionality is no longer needed (feeds [Chapter 9](09-retirement-decommissioning-and-lifecycle-governance.md)) |
 | Rehost | Move the system to new infrastructure with minimal change ("lift and shift") | Fast EOL/EOS relief with limited engineering capacity; defers deeper modernization |
 | Replatform | Move to new infrastructure with targeted improvements (for example, containerizing without a full rewrite) | Moderate modernization gain for moderate effort |
 | Refactor / Rearchitect | Restructure the system's internals or architecture significantly, often while preserving external behavior | Architectural debt is the dominant driver, and the business logic itself remains sound |
@@ -53,13 +53,13 @@ Selecting among these is a cost/benefit/risk decision, not a default preference 
 
 ### The Strangler Fig Pattern
 
-Named for a vine that grows around a host tree and eventually replaces it entirely, the strangler fig pattern decomposes or replaces a legacy system incrementally rather than through a single, high-risk cutover. A routing layer (a proxy, an API gateway, or feature-flag-driven logic) sits in front of the legacy system and progressively redirects specific functionality to new implementations, while everything not yet migrated continues to flow to the legacy system unchanged. Over time, the legacy system's remaining surface area shrinks until it can be retired. This pattern is the modernization-chapter counterpart to Chapter 3's graceful degradation and Chapter 5's staged-rollout discipline: it deliberately limits blast radius by moving a small, verifiable slice at a time rather than betting an entire migration on one cutover event.
+Named for a vine that grows around a host tree and eventually replaces it entirely, the strangler fig pattern decomposes or replaces a legacy system incrementally rather than through a single, high-risk cutover. A routing layer (a proxy, an API gateway, or feature-flag-driven logic) sits in front of the legacy system and progressively redirects specific functionality to new implementations, while everything not yet migrated continues to flow to the legacy system unchanged. Over time, the legacy system's remaining surface area shrinks until it can be retired. This pattern is the modernization-chapter counterpart to [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md)'s graceful degradation and [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md)'s staged-rollout discipline: it deliberately limits blast radius by moving a small, verifiable slice at a time rather than betting an entire migration on one cutover event.
 
 ## Design Considerations
 
 ### Prioritizing the Debt Backlog
 
-A debt register with fifty entries and no prioritization is not actionable. Prioritization should combine two independent inputs, mirroring the BIA methodology from Chapter 2: the cost of the debt if left unaddressed (increasing maintenance burden, blocked feature velocity, security exposure from unpatchable systems) and the urgency imposed by external forcing functions, principally vendor EOL/EOS dates. A moderate-impact item with an EOL date six months out should frequently outrank a higher-impact item with no external deadline, because the EOL item's cost of delay is not linear — it becomes unpatchable (Chapter 6) and eventually unsupportable entirely at a fixed point in time, while the other item's cost grows more gradually and can be scheduled with more flexibility.
+A debt register with fifty entries and no prioritization is not actionable. Prioritization should combine two independent inputs, mirroring the BIA methodology from [Chapter 2](02-business-impact-analysis-and-continuity-planning.md): the cost of the debt if left unaddressed (increasing maintenance burden, blocked feature velocity, security exposure from unpatchable systems) and the urgency imposed by external forcing functions, principally vendor EOL/EOS dates. A moderate-impact item with an EOL date six months out should frequently outrank a higher-impact item with no external deadline, because the EOL item's cost of delay is not linear — it becomes unpatchable ([Chapter 6](06-maintenance-patching-and-upgrade-engineering.md)) and eventually unsupportable entirely at a fixed point in time, while the other item's cost grows more gradually and can be scheduled with more flexibility.
 
 ### Build vs. Buy, and the Risk of the Rewrite
 
@@ -67,11 +67,11 @@ A full rearchitect or rebuild is the highest-risk modernization strategy, prone 
 
 ### Phased Migration vs. Big Bang
 
-Big-bang cutovers concentrate risk into a single event and are difficult to roll back once substantial data has been created or modified in the new system. A phased, strangler-fig-style migration trades a longer overall timeline and the operational cost of running two systems in parallel for materially lower per-step risk and continuous validation. The right choice depends on the system's criticality tier from Chapter 1: a Tier 0 system justifies the added cost of a phased migration; a Tier 3 internal tool with a generous maintenance window may reasonably accept a big-bang cutover's simplicity.
+Big-bang cutovers concentrate risk into a single event and are difficult to roll back once substantial data has been created or modified in the new system. A phased, strangler-fig-style migration trades a longer overall timeline and the operational cost of running two systems in parallel for materially lower per-step risk and continuous validation. The right choice depends on the system's criticality tier from [Chapter 1](01-resilience-engineering-and-critical-service-design.md): a Tier 0 system justifies the added cost of a phased migration; a Tier 3 internal tool with a generous maintenance window may reasonably accept a big-bang cutover's simplicity.
 
 ### Data Migration and Dual-Write Consistency
 
-Systems migrated incrementally frequently require a period where both the legacy and new systems must reflect consistent data — either through dual writes (the application writes to both systems), change-data-capture-based synchronization (reusing the CDC mechanism from Chapter 4), or a one-time cutover of data ownership timed to a low-traffic window. Dual-write approaches introduce a distributed-consistency problem structurally similar to the split-brain risk in Chapter 3: if either write can fail independently, the two systems can silently diverge, and this risk must be explicitly designed for (idempotent writes, reconciliation jobs, or a single source of truth with the other side treated as a read replica) rather than assumed away.
+Systems migrated incrementally frequently require a period where both the legacy and new systems must reflect consistent data — either through dual writes (the application writes to both systems), change-data-capture-based synchronization (reusing the CDC mechanism from [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md)), or a one-time cutover of data ownership timed to a low-traffic window. Dual-write approaches introduce a distributed-consistency problem structurally similar to the split-brain risk in [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md): if either write can fail independently, the two systems can silently diverge, and this risk must be explicitly designed for (idempotent writes, reconciliation jobs, or a single source of truth with the other side treated as a read replica) rather than assumed away.
 
 ## Implementation and Automation
 
@@ -105,7 +105,7 @@ Systems migrated incrementally frequently require a period where both the legacy
   last_reviewed: "2026-06-15"
 ```
 
-As with every other structured register in this volume, storing debt data this way — rather than in a slide deck reviewed once a year — enables automated prioritization and lets the same tooling that checks BIA/tier consistency in Chapter 2 also check for Tier 0/1 systems carrying unaddressed version debt with an approaching EOL date.
+As with every other structured register in this volume, storing debt data this way — rather than in a slide deck reviewed once a year — enables automated prioritization and lets the same tooling that checks BIA/tier consistency in [Chapter 2](02-business-impact-analysis-and-continuity-planning.md) also check for Tier 0/1 systems carrying unaddressed version debt with an approaching EOL date.
 
 ### Example: Debt Prioritization Scoring
 
@@ -213,9 +213,9 @@ A stalled strangler migration is rarely a technology problem — it is usually a
 
 ## Security and Best Practices
 
-- Treat version debt as a security control gap, not merely an operational inconvenience — an unsupported platform version cannot receive the security patches described in Chapter 6, and this should be scored and prioritized using the same severity language as a known vulnerability, because functionally it is one on a delay.
+- Treat version debt as a security control gap, not merely an operational inconvenience — an unsupported platform version cannot receive the security patches described in [Chapter 6](06-maintenance-patching-and-upgrade-engineering.md), and this should be scored and prioritized using the same severity language as a known vulnerability, because functionally it is one on a delay.
 - During a strangler migration, ensure the routing layer itself does not become a new, under-secured single point of failure or an unauthenticated bypass around checks the legacy system enforced — audit that both the legacy and new backends enforce equivalent authorization for the duration of the coexistence period.
-- Decommission legacy components securely once fully strangled, following the media sanitization and access-revocation practices detailed in Chapter 9, rather than leaving a "just in case" legacy system running indefinitely with production data and stale credentials still active.
+- Decommission legacy components securely once fully strangled, following the media sanitization and access-revocation practices detailed in [Chapter 9](09-retirement-decommissioning-and-lifecycle-governance.md), rather than leaving a "just in case" legacy system running indefinitely with production data and stale credentials still active.
 - Do not let modernization projects silently drop security controls present in the legacy system (a specific input validation rule, a compliance-driven audit log) for the sake of a cleaner rewrite; carry forward a control-parity checklist as an explicit deliverable of any rearchitect or repurchase effort.
 - Review knowledge debt (systems understood by only one person) as a security risk as well as an operational one — a system nobody but one departed employee understood is a system nobody can safely evaluate for compromise, either.
 
@@ -227,7 +227,7 @@ A stalled strangler migration is rarely a technology problem — it is usually a
 - [Chapter 6](06-maintenance-patching-and-upgrade-engineering.md) for the N-1/N-2 support policy discussion that frequently triggers version-debt remediation.
 - Martin Fowler, "TechnicalDebtQuadrant" (martinfowler.com) for the deliberate/inadvertent, reckless/prudent classification used in this chapter.
 - Martin Fowler, "StranglerFigApplication" (martinfowler.com) for the incremental-migration pattern detailed in this chapter.
-- Volume I, Chapter 8, *Infrastructure Lifecycle Management*, for EOL/EOS tracking practices this chapter builds on.
+- [Volume I, Chapter 8](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md), *Infrastructure Lifecycle Management*, for EOL/EOS tracking practices this chapter builds on.
 
 ### Knowledge Checks
 
@@ -322,7 +322,7 @@ No shared or production systems were modified; the register was a local YAML fil
 
 ## Summary and Completion Checklist
 
-Technical debt is a normal, sometimes deliberate and prudent, engineering reality — the failure mode is leaving it untracked and unprioritized rather than the debt's mere existence. A structured debt register, scored with both impact and EOL urgency, turns modernization into a resourced, prioritized program rather than a series of ad hoc rewrites. The 6 Rs give a deliberate vocabulary for matching remediation effort to the actual problem, and the strangler fig pattern provides the low-blast-radius migration mechanism preferred throughout this volume over high-risk, single-event cutovers. Modernization intersects directly with sustainability (Chapter 8, where hardware refresh and decommissioning decisions carry their own resource-lifecycle considerations) and with retirement (Chapter 9, where a fully strangled legacy system's remaining lifecycle stage is formal decommissioning).
+Technical debt is a normal, sometimes deliberate and prudent, engineering reality — the failure mode is leaving it untracked and unprioritized rather than the debt's mere existence. A structured debt register, scored with both impact and EOL urgency, turns modernization into a resourced, prioritized program rather than a series of ad hoc rewrites. The 6 Rs give a deliberate vocabulary for matching remediation effort to the actual problem, and the strangler fig pattern provides the low-blast-radius migration mechanism preferred throughout this volume over high-risk, single-event cutovers. Modernization intersects directly with sustainability ([Chapter 8](08-sustainable-infrastructure-and-resource-lifecycle.md), where hardware refresh and decommissioning decisions carry their own resource-lifecycle considerations) and with retirement ([Chapter 9](09-retirement-decommissioning-and-lifecycle-governance.md), where a fully strangled legacy system's remaining lifecycle stage is formal decommissioning).
 
 **Completion checklist:**
 

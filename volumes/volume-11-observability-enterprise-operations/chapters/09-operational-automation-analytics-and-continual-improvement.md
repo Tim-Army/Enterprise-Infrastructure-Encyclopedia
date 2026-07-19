@@ -17,7 +17,7 @@
   practice) that turns postmortem action items, capacity forecasts, and
   operational analytics into prioritized, tracked platform investment.
 - Evaluate an organization's observability and operations maturity
-  against the five-level model from Chapter 01 and identify the specific
+  against the five-level model from [Chapter 01](01-observability-operating-model-and-service-ownership.md) and identify the specific
   next investment.
 
 ## Theory and Architecture
@@ -44,7 +44,7 @@ and choosing among them should be driven by the action's risk and
 reversibility, not simply by what is technically feasible:
 
 - **Runbook automation** — the diagnostic and remediation steps a human
-  would otherwise perform manually (Chapter 06's runbook) are codified
+  would otherwise perform manually ([Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md)'s runbook) are codified
   as an executable script or workflow, but a human still triggers it and
   reviews the outcome. This is the appropriate starting point for any
   action with a non-trivial blast radius or an incompletely understood
@@ -54,13 +54,13 @@ reversibility, not simply by what is technically feasible:
   which keeps the human trigger-and-review step from runbook automation
   while adding visibility: the whole on-call channel sees the action
   taken and its result in real time, which is valuable during a major
-  incident (Chapter 07) where shared situational awareness matters as
+  incident ([Chapter 07](07-service-management-incident-problem-and-change-operations.md)) where shared situational awareness matters as
   much as the action itself.
 - **Closed-loop auto-remediation** — the system detects a condition and
   remediates it without human intervention, appropriate only for
   actions that are low-risk, fully reversible, well-understood, and have
   a tight, provable blast radius (restarting a single unhealthy pod that
-  failed a liveness probe, scaling out under load per Chapter 08). Any
+  failed a liveness probe, scaling out under load per [Chapter 08](08-capacity-performance-and-cost-aware-operations.md)). Any
   action with meaningful blast radius, ambiguity in root cause, or
   potential for a runaway feedback loop should remain at the runbook-
   automation or ChatOps level, with a human in the loop, until enough
@@ -106,10 +106,10 @@ guardrails below exist specifically for that moment:
   against real production conditions without doing it), then to a
   low-tier or non-production environment, before enabling it for a
   Tier 0/1 service, mirroring the staged-rollout discipline applied to
-  any other production change (Chapter 07).
+  any other production change ([Chapter 07](07-service-management-incident-problem-and-change-operations.md)).
 - **Full audit trail.** Every automated action taken, its trigger
   condition, and its outcome should be logged with the same rigor as a
-  human-initiated change (Chapter 07's change record) — an
+  human-initiated change ([Chapter 07](07-service-management-incident-problem-and-change-operations.md)'s change record) — an
   auto-remediation system that acts on production without leaving an
   equivalent audit trail to a human-initiated change is a governance gap
   that becomes acutely visible during the first incident it did not
@@ -123,9 +123,9 @@ guardrails below exist specifically for that moment:
 ### Operational analytics: trending health over time
 
 The signals introduced throughout this volume — error-budget burn
-(Chapter 03), alert volume and false-positive rate (Chapter 06),
-incident severity and count (Chapter 07), capacity headroom
-(Chapter 08) — become substantially more valuable trended over time than
+([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)), alert volume and false-positive rate ([Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md)),
+incident severity and count ([Chapter 07](07-service-management-incident-problem-and-change-operations.md)), capacity headroom
+([Chapter 08](08-capacity-performance-and-cost-aware-operations.md)) — become substantially more valuable trended over time than
 viewed as point-in-time snapshots, because a trend reveals direction
 before a threshold breach forces reactive attention. Two metrics anchor
 most operational analytics programs:
@@ -133,7 +133,7 @@ most operational analytics programs:
 - **MTTA (Mean Time To Acknowledge)** — the average time between an
   alert firing and a human acknowledging it, trended per team and per
   service tier. A rising MTTA trend, even while still within the
-  tier's target (Chapter 06), is an early indicator of alert fatigue or
+  tier's target ([Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md)), is an early indicator of alert fatigue or
   under-staffed on-call coverage worth investigating before it crosses
   the target and becomes a compliance problem.
 - **MTTR (Mean Time To Resolve/Restore)** — the average time from
@@ -142,14 +142,14 @@ most operational analytics programs:
   detect, time to engage, time to diagnose, time to mitigate) because a
   rising overall MTTR with a flat detection time and a rising diagnosis
   time points at a different intervention (better runbooks, better
-  tracing/profiling per Chapter 05) than a rising engagement time
+  tracing/profiling per [Chapter 05](05-distributed-tracing-profiling-and-dependency-analysis.md)) than a rising engagement time
   (escalation policy or staffing) would.
 
 Operational analytics reporting should roll up to the same audience and
 cadence as error-budget review: a quarterly (or more frequent, for
 active problem areas) operational review that looks at these trends
-alongside postmortem action item completion rate (Chapter 07) and
-capacity forecast accuracy (Chapter 08), because these signals are
+alongside postmortem action item completion rate ([Chapter 07](07-service-management-incident-problem-and-change-operations.md)) and
+capacity forecast accuracy ([Chapter 08](08-capacity-performance-and-cost-aware-operations.md)), because these signals are
 causally connected and reviewing them separately, in separate meetings
 owned by separate teams, obscures exactly the connections that make the
 review valuable — a rising MTTR might be explained by a stalled
@@ -158,7 +158,7 @@ both are on the same dashboard.
 
 ### Anomaly detection as a complement, not a replacement
 
-Threshold-based and SLO-burn-rate alerting (Chapter 03) require a
+Threshold-based and SLO-burn-rate alerting ([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)) require a
 human to define, in advance, what "bad" looks like. **Anomaly
 detection** — statistical or machine-learning models that learn a
 signal's normal range and flag deviations — catches conditions no one
@@ -176,7 +176,7 @@ deployment:
   cyclical patterns (daily, weekly, or seasonal traffic shape) will flag
   entirely normal cyclical troughs and peaks as anomalies, producing
   noise that erodes trust the same way a poorly tuned threshold alert
-  does (Chapter 06).
+  does ([Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md)).
 - **Alert explainability.** A threshold-based alert's cause is
   self-evident from its definition ("error rate exceeded 5%"); an
   anomaly-detection alert's cause is not — "this metric deviated from
@@ -231,7 +231,7 @@ already showing it needs.
   anything touching a payment or compliance-sensitive path) regardless
   of how well-understood the specific instance seems, and document this
   boundary the same way change-risk categories are documented
-  (Chapter 07).
+  ([Chapter 07](07-service-management-incident-problem-and-change-operations.md)).
 - **ChatOps audit versus convenience trade-off.** A chat-triggered
   runbook action is convenient and visible, but chat platforms are not
   always designed as durable systems of record; ensure the ChatOps layer
@@ -257,7 +257,7 @@ already showing it needs.
 - **Continual improvement backlog ownership and cadence.** A continual
   improvement backlog that is reviewed only reactively (after a bad
   quarter) loses most of its value; review it on the same fixed cadence
-  as error-budget and capacity review (Chapter 03, Chapter 08) so
+  as error-budget and capacity review ([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md), [Chapter 08](08-capacity-performance-and-cost-aware-operations.md)) so
   platform investment decisions are made from trend, not crisis.
 - **Buy versus build for AIOps/anomaly-detection tooling.** Commercial
   observability platforms increasingly bundle anomaly detection
@@ -392,12 +392,12 @@ if __name__ == "__main__":
   condition, not a bug; if it is firing at the rate limit regularly,
   investigate why the automated action is not addressing root cause —
   the remediation is very likely treating a symptom of a problem that
-  belongs in problem management (Chapter 07), not a genuine transient
+  belongs in problem management ([Chapter 07](07-service-management-incident-problem-and-change-operations.md)), not a genuine transient
   condition the automation was designed for.
 - **Symptom: MTTR trend rising but MTTA trend flat.** This isolates the
   regression to the diagnosis or mitigation phase rather than the
   engagement phase; cross-reference with recent runbook completeness
-  (Chapter 06) and tracing/profiling coverage (Chapter 05) for the
+  ([Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md)) and tracing/profiling coverage ([Chapter 05](05-distributed-tracing-profiling-and-dependency-analysis.md)) for the
   services driving the trend before assuming an on-call staffing
   problem, since staffing changes would more likely show up as a rising
   MTTA instead.
@@ -425,7 +425,7 @@ if __name__ == "__main__":
   itself has a bounded blast radius consistent with the scope-limiting
   guardrail described in Theory.
 - Require the same change-review rigor for a new closed-loop
-  remediation action as for any other production change (Chapter 07),
+  remediation action as for any other production change ([Chapter 07](07-service-management-incident-problem-and-change-operations.md)),
   including its dry-run validation period, before it is enabled to act
   without human confirmation — an automated action is a standing,
   always-on change to production behavior and warrants at least the
@@ -437,7 +437,7 @@ if __name__ == "__main__":
   movement target if a chat account is compromised.
 - Store operational analytics and automation audit logs with integrity
   protection and retention consistent with the change-record retention
-  established in Chapter 07, since these logs are frequently the primary
+  established in [Chapter 07](07-service-management-incident-problem-and-change-operations.md), since these logs are frequently the primary
   evidence during a post-incident review of what automation did and
   when, particularly for an incident the automation may have
   contributed to rather than resolved.
@@ -461,7 +461,7 @@ if __name__ == "__main__":
   detection discussion referenced in this chapter.
 - FinOps Foundation and SRE community sources on operational analytics
   dashboards, for MTTA/MTTR trend reporting patterns referenced in this
-  chapter (see also Chapter 08 for the related capacity/cost trending
+  chapter (see also [Chapter 08](08-capacity-performance-and-cost-aware-operations.md) for the related capacity/cost trending
   discipline).
 
 **Knowledge Checks**
@@ -478,8 +478,8 @@ if __name__ == "__main__":
    why they argue for using it as a secondary signal rather than a
    primary paging mechanism for a Tier 0 service.
 5. Explain how the continual improvement loop connects postmortem action
-   items (Chapter 07), capacity forecasts (Chapter 08), and alert
-   fatigue trends (Chapter 06) into a single prioritization input, and
+   items ([Chapter 07](07-service-management-incident-problem-and-change-operations.md)), capacity forecasts ([Chapter 08](08-capacity-performance-and-cost-aware-operations.md)), and alert
+   fatigue trends ([Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md)) into a single prioritization input, and
    why reviewing them separately weakens that connection.
 
 ## Hands-On Lab
@@ -697,11 +697,11 @@ loop that turns postmortem action items, capacity forecasts, alert
 fatigue, and cost trends into deliberate, prioritized platform
 investment rather than reactive firefighting. Anomaly detection
 complements, but does not replace, the threshold- and SLO-burn-based
-alerting built in Chapter 03 and Chapter 06. This closes Volume XI:
-Chapter 01's service ownership and maturity model, instrumented by
-Chapter 02's telemetry pipeline, measured by Chapter 03's SLOs, informed
-by Chapters 04 and 05's logs and traces, acted on by Chapter 06's
-alerting and Chapter 07's incident process, sized by Chapter 08's
+alerting built in [Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md) and [Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md). This closes Volume XI:
+[Chapter 01](01-observability-operating-model-and-service-ownership.md)'s service ownership and maturity model, instrumented by
+[Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)'s telemetry pipeline, measured by [Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)'s SLOs, informed
+by Chapters 04 and 05's logs and traces, acted on by [Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md)'s
+alerting and [Chapter 07](07-service-management-incident-problem-and-change-operations.md)'s incident process, sized by [Chapter 08](08-capacity-performance-and-cost-aware-operations.md)'s
 capacity and cost discipline, and now closed into a self-improving loop
 by this chapter's automation and analytics.
 

@@ -11,7 +11,7 @@
   transforming traffic before delivery, rather than relying on every tool
   to perform its own reduction.
 - Configure a representative set of GigaSMART applications and chain them
-  into a second-level map, building on Chapter 05's mapping model.
+  into a second-level map, building on [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md)'s mapping model.
 - Diagnose common GigaSMART faults: engine oversubscription, licensing
   gaps, and unexpected data loss from misapplied slicing or masking.
 
@@ -19,22 +19,22 @@
 
 ### GigaSMART as a processing layer, not a forwarding layer
 
-Chapter 05 established that Flow Mapping decides **which** traffic reaches
+[Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md) established that Flow Mapping decides **which** traffic reaches
 **which** destination. **GigaSMART** answers a different question: what
 should happen to the traffic's content along the way? GigaSMART is a
 traffic-intelligence processing engine that runs on GigaSMART-capable
-node platforms (the HC Series introduced in Chapter 02, and the
+node platforms (the HC Series introduced in [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md), and the
 equivalent processing capability built into V Series virtual nodes,
-Chapter 03) and operates on traffic that a first-level map has already
+[Chapter 03](03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md)) and operates on traffic that a first-level map has already
 selected, transforming or enriching it before a second-level map delivers
 it to its final tool destination — the two-level chaining pattern
-introduced in Chapter 05.
+introduced in [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md).
 
 GigaSMART capacity is a finite, licensed resource distinct from raw port
 bandwidth: a node can have ample network and tool port capacity while
 still being GigaSMART-constrained if too much traffic is routed through
 its processing engine relative to its licensed and physical processing
-capacity. This is why Chapter 05's filter-before-you-aggregate design
+capacity. This is why [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md)'s filter-before-you-aggregate design
 principle matters especially for any traffic destined for GigaSMART
 processing — every byte filtered out at the first level is a byte GigaSMART
 never has to touch.
@@ -49,8 +49,8 @@ never has to touch.
 | Header stripping / tunnel termination | Removes encapsulation headers (VLAN tags, MPLS labels, VXLAN/GRE tunnel headers, mobile GTP headers) so a tool sees the traffic it understands rather than an encapsulated wrapper | Lets tools that cannot natively parse a given encapsulation still analyze the traffic inside it |
 | Application Metadata Intelligence | Inspects traffic to identify the application in use and generates IPFIX-based metadata records describing session attributes, without requiring the full payload to be delivered | Feeds NDR and SIEM platforms with rich session context at a fraction of the bandwidth and storage cost of full packet capture |
 | Adaptive/Application Session Filtering | Filters traffic based on identified application or session characteristics rather than static header fields alone | Allows a first-level map to select traffic by application (for example, a specific SaaS application) even when that traffic cannot be distinguished by IP/port alone |
-| SSL/TLS decryption | Decrypts TLS-protected traffic centrally, using configured server certificates and keys, so downstream out-of-band tools that cannot decrypt on their own can inspect plaintext content | Removes the need for every individual out-of-band tool to independently manage decryption keys; covered further in Chapter 07 alongside inline decryption |
-| Tunneling (L2GRE/VXLAN) | Re-encapsulates selected traffic for delivery across a routed network to a distant tool farm | Extends visibility delivery beyond directly cabled tool ports, complementing the virtual/cloud tunneling model from Chapter 03 |
+| SSL/TLS decryption | Decrypts TLS-protected traffic centrally, using configured server certificates and keys, so downstream out-of-band tools that cannot decrypt on their own can inspect plaintext content | Removes the need for every individual out-of-band tool to independently manage decryption keys; covered further in [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md) alongside inline decryption |
+| Tunneling (L2GRE/VXLAN) | Re-encapsulates selected traffic for delivery across a routed network to a distant tool farm | Extends visibility delivery beyond directly cabled tool ports, complementing the virtual/cloud tunneling model from [Chapter 03](03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md) |
 
 ### Why transform traffic in the fabric instead of at the tool
 
@@ -90,7 +90,7 @@ the subset of traffic that does warrant deep forensic retention.
 ## Design Considerations
 
 - **Budget GigaSMART processing capacity as a first-class sizing input,
-  not an afterthought.** Node and license selection (Chapter 02) should
+  not an afterthought.** Node and license selection ([Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md)) should
   account for how much traffic will actually traverse GigaSMART
   processing, not just raw port throughput — a node with abundant port
   capacity but insufficient GigaSMART engine capacity for the traffic
@@ -110,13 +110,13 @@ the subset of traffic that does warrant deep forensic retention.
   GigaSMART decryption for out-of-band tools (this chapter) is a
   different design decision, with different key-management and risk
   implications, than inline decryption ahead of an in-path security tool
-  (Chapter 07) or the newer Precryption model that avoids centralized key
+  ([Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md)) or the newer Precryption model that avoids centralized key
   handling entirely — do not conflate the two without considering which
   is appropriate for a given tool's deployment mode.
 - **Plan for application identification's inherent uncertainty.**
   Application-aware filtering and metadata generation rely on signatures
   and heuristics that are updated over time (similar in spirit to App-ID
-  content updates on a Palo Alto Networks firewall, Volume XVI) and are
+  content updates on a Palo Alto Networks firewall, [Volume XVI](../../volume-16-palo-alto-networks-security/README.md)) and are
   not infallible; do not build a security control's sole detection logic
   on GigaSMART application identification without a compensating control.
 
@@ -167,7 +167,7 @@ the subset of traffic that does warrant deep forensic retention.
 
 Once GigaSMART operations (`gsop`) are defined within a `gsgroup`, they
 are referenced as the destination of a first-level map — exactly the
-pattern introduced in Chapter 05 — and the GigaSMART group's output
+pattern introduced in [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md) — and the GigaSMART group's output
 becomes the source of the second-level map that delivers processed
 traffic to its final tool destination:
 
@@ -235,7 +235,7 @@ traffic to its final tool destination:
   format changes or a new regulatory requirement is introduced.
 - Restrict who can modify GigaSMART operations feeding masking or
   decryption to the same administrative rigor as Flow Mapping changes
-  (Chapter 04's RBAC model) — a change to a masking offset is
+  ([Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md)'s RBAC model) — a change to a masking offset is
   functionally a change to what sensitive data a tool receives.
 - Log and periodically audit which tools receive decrypted (plaintext)
   traffic via GigaSMART SSL/TLS decryption, and confirm that list still
@@ -247,7 +247,7 @@ traffic to its final tool destination:
 - Validate Application Metadata Intelligence and application-aware
   filtering signature/content updates on the same cadence as other
   security-relevant content updates in this encyclopedia (compare
-  App-ID content updates in Volume XVI), since stale application
+  App-ID content updates in [Volume XVI](../../volume-16-palo-alto-networks-security/README.md)), since stale application
   identification content degrades both filtering accuracy and metadata
   quality over time.
 
@@ -268,7 +268,7 @@ traffic to its final tool destination:
 
 1. What is the functional difference between what Flow Mapping decides
    and what GigaSMART does, and why does the two-level map pattern from
-   Chapter 05 exist specifically to connect them?
+   [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md) exist specifically to connect them?
 2. Name three GigaSMART applications and, for each, state one concrete
    benefit to a downstream tool or to overall fabric cost.
 3. Why is GigaSMART engine capacity a separate sizing concern from
@@ -280,13 +280,13 @@ traffic to its final tool destination:
 
 **Objective:** Configure a GigaSMART processing chain — packet slicing
 and masking — on a lab node, feed it from the two-level map pattern built
-in Chapter 05, and validate both correct transformation and a deliberate
+in [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md), and validate both correct transformation and a deliberate
 misconfiguration that exposes unmasked data.
 
 **Prerequisites**
 
 - A lab GigaVUE HC Series node (or lab-equivalent) with GigaSMART
-  licensed and available, continuing from the Chapter 02 and Chapter 05
+  licensed and available, continuing from the [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md) and [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md)
   labs.
 - A packet capture tool at the final tool-port destination.
 - A lab traffic generator capable of sending a payload containing a
@@ -330,7 +330,7 @@ misconfiguration that exposes unmasked data.
    confirm masked output resumes.
 8. **Cleanup:** remove or retain the lab `gsgroup`, first-level map, and
    second-level map depending on whether the lab node will be reused for
-   Chapter 07's inline and decryption exercises; if disposing of the
+   [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md)'s inline and decryption exercises; if disposing of the
    configuration, remove the `gsgroup` reference from both maps before
    deleting the `gsgroup` itself.
 
@@ -344,7 +344,7 @@ inconsistently, inside every consuming tool. GigaSMART capacity is a
 distinct, licensed sizing dimension from port bandwidth, and its
 configuration — especially masking and decryption — carries data-protection
 and compliance weight that warrants the same review discipline as Flow
-Mapping itself. Chapter 07 extends this traffic-intelligence layer into
+Mapping itself. [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md) extends this traffic-intelligence layer into
 the inline path, where GigaSMART decryption and bypass resiliency work
 together to protect production traffic.
 

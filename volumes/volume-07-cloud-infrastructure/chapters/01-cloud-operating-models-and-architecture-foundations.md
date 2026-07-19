@@ -52,7 +52,7 @@ databases, and SaaS identity providers side by side.
   public regions cannot satisfy.
 - **Hybrid cloud** — a single workload or application spans private and
   public infrastructure with defined integration points (identity,
-  networking, data replication). Covered in depth in Chapter 07.
+  networking, data replication). Covered in depth in [Chapter 07](07-hybrid-and-multicloud-architecture.md).
 - **Multicloud** — an organization deliberately or incidentally operates
   workloads across more than one public provider, either for best-of-breed
   services, regulatory diversification, or negotiating leverage.
@@ -125,7 +125,7 @@ enough to treat as provider-neutral evaluation criteria:
    requirements and maintaining that efficiency as demand and technology
    evolve.
 5. **Cost optimization** — avoiding unnecessary costs and understanding
-   spend drivers (expanded in Chapter 08 as FinOps).
+   spend drivers (expanded in [Chapter 08](08-cloud-governance-security-and-finops.md) as FinOps).
 6. **Sustainability** — minimizing the environmental impact of running cloud
    workloads, including region and instance-family selection.
 
@@ -147,7 +147,7 @@ scaling up and down with demand. This shift has architectural consequences:
 - **Idle capacity is a direct, continuous cost**, unlike depreciating
   owned hardware, which motivates aggressive automation of start/stop and
   scale-to-zero patterns.
-- **Committed-use and reservation instruments** (covered in Chapter 08) let
+- **Committed-use and reservation instruments** (covered in [Chapter 08](08-cloud-governance-security-and-finops.md)) let
   an organization trade flexibility for discount once a workload's baseline
   demand is well understood.
 
@@ -192,7 +192,7 @@ portability for reduced operational burden. Make the trade consciously:
   re-litigated from scratch during an outage or contract renegotiation.
 - Do not conflate "multicloud" with "portable" — running on two providers
   without an abstraction layer usually means maintaining two full
-  implementations, not one portable one. See Chapter 07 for the trade-offs
+  implementations, not one portable one. See [Chapter 07](07-hybrid-and-multicloud-architecture.md) for the trade-offs
   in more detail.
 
 ### SLA interpretation and composite availability
@@ -291,8 +291,8 @@ variable "owner_tag" {
 ```
 
 Native `validation` blocks like the one above are the first line of policy
-enforcement — cheap, fast, and run before any API call is made. Chapter 02
-and Chapter 08 build on this with organization-wide policy-as-code guardrails
+enforcement — cheap, fast, and run before any API call is made. [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md)
+and [Chapter 08](08-cloud-governance-security-and-finops.md) build on this with organization-wide policy-as-code guardrails
 that catch what per-module validation cannot.
 
 ### CLI, console, and API — automation-first principle

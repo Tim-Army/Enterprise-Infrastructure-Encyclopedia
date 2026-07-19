@@ -59,7 +59,7 @@ also widely used cross-platform via Samba on Linux.
   permission to see, rather than showing them as access-denied — a usability
   and information-disclosure control.
 - Windows **Previous Versions**/shadow-copy integration exposes
-  filesystem-level snapshots (Chapter 6) directly to end users for
+  filesystem-level snapshots ([Chapter 6](06-snapshots-replication-and-continuous-data-protection.md)) directly to end users for
   self-service file recovery.
 
 ### Scale-out and distributed file systems
@@ -88,7 +88,7 @@ as the de facto industry API standard. Key architectural properties:
   this immutability-by-default model is foundational to object storage's use
   as a backup and archive target and to features like object lock (Chapter
   8).
-- **Erasure coding across nodes** (introduced in Chapter 1) is the default
+- **Erasure coding across nodes** (introduced in [Chapter 1](01-enterprise-storage-architecture-and-service-design.md)) is the default
   durability mechanism at scale, commonly delivering configurable "nines" of
   durability by spreading data and parity fragments across independent
   failure domains.
@@ -100,11 +100,11 @@ as the de facto industry API standard. Key architectural properties:
 - **Storage classes and lifecycle policies** let a bucket automatically
   transition objects from a hot/standard tier to progressively colder
   (and cheaper) tiers, and eventually expire them, based on object age —
-  directly implementing the tiering concept from Chapter 1 at the object
+  directly implementing the tiering concept from [Chapter 1](01-enterprise-storage-architecture-and-service-design.md) at the object
   layer.
 - **Versioning** retains prior versions of an object on overwrite or delete,
   providing protection against accidental deletion and a building block for
-  ransomware resilience (Chapter 8).
+  ransomware resilience ([Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)).
 
 ### Choosing between file and object
 
@@ -126,7 +126,7 @@ as the de facto industry API standard. Key architectural properties:
 - **Quota strategy.** Set both user/group and directory/project quotas where
   the platform supports it, and alert well before hard limits are reached —
   file-serving outages caused by quota exhaustion are common and entirely
-  preventable with proactive monitoring (Chapter 9).
+  preventable with proactive monitoring ([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md)).
 - **Protocol selection and multiprotocol shares.** Where the same dataset
   must be served over both NFS and SMB, plan the permission-mapping strategy
   (POSIX-to-Windows ACL translation, user identity mapping) explicitly;
@@ -146,7 +146,7 @@ as the de facto industry API standard. Key architectural properties:
   accidental overwrite/delete, but without a lifecycle policy to expire old
   versions it silently grows storage consumption; always pair versioning
   with a noncurrent-version expiration rule.
-- **WORM and object lock** (introduced here, developed fully in Chapter 8)
+- **WORM and object lock** (introduced here, developed fully in [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md))
   should be a deliberate decision made at bucket-creation time on platforms
   where retention mode cannot be loosened after the fact — retrofitting
   compliance-mode object lock onto an existing bucket is often not possible.
@@ -194,7 +194,7 @@ sudo systemctl reload smb
 
 `smb encrypt = required` enforces SMB 3.x encryption on the wire for this
 share; `full_audit` provides an auditable trail of destructive operations,
-directly supporting the governance requirements covered in Chapter 8.
+directly supporting the governance requirements covered in [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md).
 
 ### S3-compatible bucket policy and lifecycle rule
 
@@ -245,7 +245,7 @@ Rules:
 This pair of policies denies any unencrypted-transport access to the bucket,
 grants a backup service a narrowly scoped principal write/read access, and
 automatically tiers and eventually expires daily backup objects — enforcing
-the retention design from Chapter 5 directly in the object platform rather
+the retention design from [Chapter 5](05-backup-architecture-and-data-protection-policy.md) directly in the object platform rather
 than relying on operator discipline.
 
 ## Validation and Troubleshooting

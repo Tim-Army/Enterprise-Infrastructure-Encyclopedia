@@ -77,7 +77,7 @@ action), and does not clear RAID/virtual disk configuration. For the more
 aggressive case where you do need to sanitize BIOS, Lifecycle Controller
 data, diagnostics, and other platform-level state — for example, before
 decommissioning or redeploying hardware across a security boundary — LC's
-**System Erase** capability (Chapter 4 covers its security rationale in
+**System Erase** capability ([Chapter 4](04-identity-certificates-security-and-compliance.md) covers its security rationale in
 depth) is the correct, purpose-built tool, not a factory reset used as a
 substitute.
 
@@ -86,7 +86,7 @@ substitute.
 iDRAC's independence from the host is also what makes it recoverable even
 when badly misconfigured, with several fallback layers:
 
-- **iDRAC Direct** (Chapter 5) provides a local, network-independent path
+- **iDRAC Direct** ([Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md)) provides a local, network-independent path
   to iDRAC over USB, useful when the network-facing configuration itself
   is the problem.
 - **The front LCD panel**, on platforms that include one, can reset
@@ -118,7 +118,7 @@ when badly misconfigured, with several fallback layers:
   control (resale, return, redeployment across a security boundary),
   factory reset alone is insufficient — it does not clear BIOS passwords,
   Lifecycle Controller data, or storage configuration. Plan for System
-  Erase (Chapter 4) explicitly in any decommissioning runbook.
+  Erase ([Chapter 4](04-identity-certificates-security-and-compliance.md)) explicitly in any decommissioning runbook.
 - **Schedule full AC power cycles like the disruptive event they are.**
   Unlike an iDRAC restart, a full power cycle takes the host down. Treat
   it with the same change-management rigor as any other planned outage,
@@ -128,8 +128,8 @@ when badly misconfigured, with several fallback layers:
 - **Decide your SCP storage strategy before you need it in an emergency.**
   A local export saved to a technician's laptop is fine for a one-off
   change; a fleet of servers needs SCPs retained centrally (a Git
-  repository, an artifact store, or OME's template library, Volume XXII
-  Chapter 8) with a clear naming and retention convention, so recovery
+  repository, an artifact store, or OME's template library, [Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md)
+  [Chapter 8](08-firmware-idrac-bios-lifecycle-controller-and-platform-updates.md)) with a clear naming and retention convention, so recovery
   during an incident isn't also a search for where the last known-good
   export lives.
 - **Plan for the "no network path to iDRAC" case explicitly.** Identify,
@@ -228,7 +228,7 @@ curl -s -k -u root:'<password>' -X POST \
 
 After a factory reset, iDRAC reboots and returns to a default networking
 state (commonly DHCP-enabled) with local user credentials reset — treat
-the post-reset unit exactly like a freshly racked server from Chapter 1
+the post-reset unit exactly like a freshly racked server from [Chapter 1](01-architecture-generations-licensing-and-first-access.md)
 and repeat first-login procedures, including the password rotation step.
 
 ### Performing a full AC power cycle
@@ -259,7 +259,7 @@ some smart PDUs perform, which may not clear the same hardware states.
   described in this chapter's recovery path.
 - **After a factory reset, the expected DHCP address never appears.**
   Confirm the factory-default NIC selection (dedicated vs. shared LOM,
-  Chapter 3) matches your current cabling — a factory reset also resets
+  [Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)) matches your current cabling — a factory reset also resets
   NIC selection to its default, which may not match how the server is
   physically cabled if it was previously reconfigured for shared LOM.
 - **SCP import reports partial failure.** Review the returned job's
@@ -273,11 +273,11 @@ some smart PDUs perform, which may not clear the same hardware states.
   session issue by checking `racadm serveraction powerstatus`; if iDRAC
   itself responds and reports the host as `On` but the OS is unresponsive,
   a forced power-down (`racadm serveraction powerdown -f` where supported,
-  or Virtual Console power-button emulation, Chapter 5) is appropriate
+  or Virtual Console power-button emulation, [Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md)) is appropriate
   before escalating to a full AC power cycle.
 - **iDRAC is completely unreachable over the network after a
-  misconfiguration.** Use iDRAC Direct (Chapter 5) to reach the controller
-  locally and correct the network configuration (Chapter 3) without
+  misconfiguration.** Use iDRAC Direct ([Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md)) to reach the controller
+  locally and correct the network configuration ([Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)) without
   needing a factory reset at all — reserve factory reset for cases where
   the configuration itself, not just current network reachability, is
   unknown or untrusted.
@@ -294,7 +294,7 @@ some smart PDUs perform, which may not clear the same hardware states.
   because the command that triggers the preceding power-down looks
   routine.
 - After any factory reset, immediately re-apply your organization's
-  hardened baseline (Chapter 4: strong local credentials, directory
+  hardened baseline ([Chapter 4](04-identity-certificates-security-and-compliance.md): strong local credentials, directory
   integration, certificate replacement, alerting destinations) before
   leaving the unit in its post-reset default state, even temporarily.
 - Validate SCP baselines periodically against a live server's actual
@@ -344,7 +344,7 @@ you do not control.
 
 **Prerequisites**
 
-- Network access to a lab iDRAC (the unit configured in Chapter 1's lab is
+- Network access to a lab iDRAC (the unit configured in [Chapter 1](01-architecture-generations-licensing-and-first-access.md)'s lab is
   suitable), with credentials from that chapter.
 - A network share (CIFS or NFS) reachable from the iDRAC, or willingness
   to use local-file export/import via the GUI if no share is available.
@@ -428,7 +428,7 @@ This chapter separated four operations that are often conflated —
 configuration export/import, iDRAC restart, iDRAC factory reset, and full
 AC power cycle — into a deliberate escalation path ordered by disruption,
 and was explicit about what a factory reset does and does not clear,
-pointing to System Erase (Chapter 4) as the correct tool for genuine
+pointing to System Erase ([Chapter 4](04-identity-certificates-security-and-compliance.md)) as the correct tool for genuine
 sanitization. It covered the Server Configuration Profile as the
 mechanism underlying backup, templating, and recovery, walked through
 RACADM and Redfish syntax for each operation, and covered the recovery

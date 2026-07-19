@@ -51,7 +51,7 @@ autoinstall document is a cloud-init user-data file containing an
 `autoinstall:` top-level key. This is a significant architectural
 choice — the same YAML dialect an administrator uses to seed a cloud
 instance is (mostly) the same dialect used to unattended-install bare
-metal, which is why Chapter 09 revisits cloud-init in depth rather than
+metal, which is why [Chapter 09](09-cloud-init-maas-juju-ansible-landscape-operations-and-capstone.md) revisits cloud-init in depth rather than
 treating it as a separate topic.
 
 ### Ubuntu Pro and Expanded Security Maintenance
@@ -115,7 +115,7 @@ actions (package installs, script execution, reboots).
   interim release.
 - **Autoinstall vs. golden image.** Autoinstall is well suited to
   environments that provision physical or virtual machines from bare
-  media (PXE, remastered ISO, MAAS — Chapter 09) where install-time
+  media (PXE, remastered ISO, MAAS — [Chapter 09](09-cloud-init-maas-juju-ansible-landscape-operations-and-capstone.md)) where install-time
   customization matters. Environments that provision from a
   pre-built cloud image (most public and private cloud deployments)
   typically skip autoinstall entirely and drive first boot with
@@ -293,7 +293,7 @@ sudo landscape-config --is-registered
 
 - Always disable password SSH authentication (`allow-pw: false` in
   autoinstall, or `PasswordAuthentication no` in `sshd_config` — see
-  Chapter 04) on any host provisioned unattended.
+  [Chapter 04](04-identity-privilege-ssh-netplan-and-firewalling.md)) on any host provisioned unattended.
 - Treat Ubuntu Pro contract tokens as secrets: inject them via a secret
   manager or cloud-init's `write_files`/vendor-data mechanism with
   restrictive permissions, never bake them into a public golden image
@@ -471,7 +471,7 @@ disposable VM so the exercise is safe to repeat.
 Ubuntu Server 26.04 LTS installs either interactively through Subiquity
 or unattended through autoinstall, itself a cloud-init dialect that
 ties directly into the first-boot configuration covered in depth in
-Chapter 09. Ubuntu Pro extends the free five-year LTS support window
+[Chapter 09](09-cloud-init-maas-juju-ansible-landscape-operations-and-capstone.md). Ubuntu Pro extends the free five-year LTS support window
 with ESM coverage for both `main` and `universe`, Livepatch, and
 automated hardening through USG. The APT archive's component/pocket
 model determines which packages are Canonical-supported and on what

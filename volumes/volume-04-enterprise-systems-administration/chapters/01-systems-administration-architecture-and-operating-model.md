@@ -51,7 +51,7 @@ structures:
   while consumers request compute rather than filing tickets against a
   human queue. This model is the end state most enterprises converge toward
   as automation maturity increases, and it is the model assumed by later
-  automation-focused volumes (Volume IX, Infrastructure Automation).
+  automation-focused volumes ([Volume IX](../../volume-09-infrastructure-automation/README.md), Infrastructure Automation).
 
 Most enterprises run a hybrid: a platform team owns the automation and
 image pipeline, a federated model handles application-specific tuning, and
@@ -71,15 +71,15 @@ business applications). A mature management plane includes:
 - **Out-of-band (OOB) management** — iDRAC, iLO, or equivalent baseboard
   management controllers (BMCs) that provide console and power control
   independent of the host operating system. Covered in depth in
-  Volume XXII (Dell OpenManage Enterprise) and Volume XXIII (Dell iDRAC).
+  [Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md) (Dell OpenManage Enterprise) and [Volume XXIII](../../volume-23-dell-idrac-9-10-administration/README.md) (Dell iDRAC).
 - **Configuration management control plane** — the Ansible control node,
   Puppet server, Chef server, or Windows Server DSC pull server that pushes
-  and enforces desired state (Chapter 06).
+  and enforces desired state ([Chapter 06](06-configuration-software-and-patch-management.md)).
 - **Centralized identity** — Active Directory, LDAP, or a federated
-  identity provider that both platforms authenticate against (Chapter 04).
+  identity provider that both platforms authenticate against ([Chapter 04](04-enterprise-identity-and-directory-services.md)).
 - **Monitoring and log aggregation** — the telemetry pipeline that gives the
-  team visibility before a customer notices an outage (Chapter 09; deep
-  dive in Volume XI).
+  team visibility before a customer notices an outage ([Chapter 09](09-monitoring-troubleshooting-and-lifecycle-operations.md); deep
+  dive in [Volume XI](../../volume-11-observability-enterprise-operations/README.md)).
 - **Ticketing and CMDB** — the system of record for requests, incidents,
   and the configuration items (CIs) that make up the fleet.
 
@@ -144,7 +144,7 @@ change-approval tooling that governs the rest of IT.
 - **Change windows and freeze periods.** Cross-platform fleets must
   coordinate Linux and Windows patch cycles against the same business
   calendar (quarter-end freezes, retail peak-season freezes) even though
-  the platforms patch on different cadences (Chapter 06).
+  the platforms patch on different cadences ([Chapter 06](06-configuration-software-and-patch-management.md)).
 - **Segregation of duties.** Administrators who can approve a change should
   generally not be the sole approver of their own change in regulated
   environments (PCI DSS, SOX). Build this into the change-management

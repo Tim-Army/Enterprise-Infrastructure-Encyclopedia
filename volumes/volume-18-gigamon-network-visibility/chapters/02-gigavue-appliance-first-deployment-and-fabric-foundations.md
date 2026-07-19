@@ -12,7 +12,7 @@
   for fabric-wide Flow Mapping.
 - Apply a first, minimal Flow Map to confirm traffic moves from a network
   port to a tool port before handing the node off to GigaVUE-FM management
-  in Chapter 04.
+  in [Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md).
 
 ## Theory and Architecture
 
@@ -31,7 +31,7 @@ design goals:
   for high-density access and aggregation-layer tapping.
 - **GigaVUE HC Series.** The HCT, HC1, HC1-Plus, and HC3 platforms add the
   ability to host one or more **GigaSMART** traffic-intelligence engines
-  (Chapter 06) alongside Flow Mapping. The HC3 is the highest-capacity,
+  ([Chapter 06](06-gigasmart-traffic-intelligence-and-packet-transformation.md)) alongside Flow Mapping. The HC3 is the highest-capacity,
   most port-dense platform in the family and supports multiple GigaSMART
   engines per chassis; the HC1 and HC1-Plus are compact 1RU platforms for
   small-to-mid-sized deployments and distributed sites; the HCT is a
@@ -51,10 +51,10 @@ masking, decryption) are required.
 Every physical (and virtual) GigaVUE node runs **GigaVUE-OS**, which
 exposes a CLI with an operational mode and a configuration mode, similar in
 spirit to other network-operating-system CLIs an infrastructure engineer
-will already be familiar with from Volume III. GigaVUE-OS is the layer
+will already be familiar with from [Volume III](../../volume-03-cisco-enterprise-networking/README.md). GigaVUE-OS is the layer
 responsible for port management, Flow Mapping rule enforcement, GigaSMART
 application configuration on capable platforms, and clustering. GigaVUE-FM
-(Chapter 04) is a management layer on top of GigaVUE-OS — it does not
+([Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md)) is a management layer on top of GigaVUE-OS — it does not
 replace the CLI, and experienced operators frequently use both: GigaVUE-FM
 for fabric-wide visibility and bulk operations, and the CLI for
 node-local troubleshooting and initial bring-up.
@@ -72,7 +72,7 @@ roles:
 | Tool port | Egress toward a connected out-of-band monitoring or security tool |
 | Hybrid port | Configurable as either a network or a tool port, adding deployment flexibility on fixed-port platforms |
 | Stack port | Interconnects two or more GigaVUE nodes so Flow Mapping can span node boundaries as a single logical fabric |
-| Inline network / inline tool port | Used specifically for inline bypass deployments (Chapter 07); carries bidirectional production traffic through an in-path tool |
+| Inline network / inline tool port | Used specifically for inline bypass deployments ([Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md)); carries bidirectional production traffic through an in-path tool |
 
 A port's role and administrative state (enabled/disabled, speed,
 auto-negotiation) are configured before it participates in any Flow
@@ -103,7 +103,7 @@ Clustering requires stack ports to be cabled with sufficient bandwidth to
 carry the aggregate cross-node traffic a map might generate — under-sized
 stack links are a common source of unexpected drops once a fabric grows
 past a single chassis, and stack-link capacity planning belongs in the
-same design pass as tool-port oversubscription planning from Chapter 01.
+same design pass as tool-port oversubscription planning from [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md).
 
 ## Design Considerations
 
@@ -191,7 +191,7 @@ Before handing a node to GigaVUE-FM for centralized management, confirm
 basic connectivity with a minimal all-pass map — one that forwards every
 packet arriving on a network port to a tool port, with no filtering. This
 is the fastest way to prove the physical cabling, port roles, and node
-health are correct before introducing filtering logic in Chapter 05.
+health are correct before introducing filtering logic in [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md).
 
 ```text
 (admin) (config) # map alias first-touch-verify
@@ -265,7 +265,7 @@ Members: 2
 - Change default administrative credentials on first login, and create
   named, role-scoped administrator accounts for each engineer rather than
   sharing a single account — this becomes centrally enforceable once
-  GigaVUE-FM's RBAC and directory integration are configured in Chapter 04,
+  GigaVUE-FM's RBAC and directory integration are configured in [Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md),
   but do not leave a factory-default credential active in the interim.
 - Place GigaVUE-OS management interfaces on a dedicated, access-controlled
   out-of-band management network, and restrict SSH/HTTPS management
@@ -274,7 +274,7 @@ Members: 2
   with no role assigned; an enabled, unassigned port on a visibility node
   is unnecessary exposed surface.
 - Record every port's role, connected device, and cluster membership in
-  the same version-controlled inventory introduced in Chapter 01, so a
+  the same version-controlled inventory introduced in [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md), so a
   node's configuration can be reconstructed or audited without relying on
   tribal knowledge.
 - Apply firmware updates to GigaVUE-OS on a defined maintenance cadence,
@@ -330,7 +330,7 @@ mode.
 - A traffic source cabled or connected to a designated network port (a
   TAP, SPAN destination, or a simple lab packet generator).
 - A packet capture tool (for example, `tcpdump` or Wireshark, covered in
-  depth in Volume XX) connected to the designated tool port to observe
+  depth in [Volume XX](../../volume-20-wireshark-packet-analysis/README.md)) connected to the designated tool port to observe
   forwarded traffic.
 - An isolated lab network segment — do not perform this lab against a
   production visibility fabric.
@@ -390,7 +390,7 @@ mode.
    is the traffic-selection control point, and demonstrating the failure
    mode of an overly narrow map rule.
 9. **Cleanup:** restore the map to `pass any` (or remove it if the node
-   will be reused for Chapter 04's onboarding exercises), and if the node
+   will be reused for [Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md)'s onboarding exercises), and if the node
    is a shared lab resource, remove any lab-only configuration:
 
    ```text
@@ -406,7 +406,7 @@ fixed-configuration aggregation and HC Series for GigaSMART-capable
 processing — sharing a common GigaVUE-OS CLI, port-addressing scheme, and
 clustering model. First-touch deployment establishes management
 addressing, assigns port roles, and validates a minimal Flow Map before a
-node is handed off to centralized GigaVUE-FM management, which Chapter 04
+node is handed off to centralized GigaVUE-FM management, which [Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md)
 covers next. Clustering extends Flow Mapping across node boundaries and is
 the mechanism that lets a fabric scale past a single chassis's port count.
 

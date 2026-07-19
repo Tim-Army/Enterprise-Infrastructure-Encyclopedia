@@ -42,7 +42,7 @@ commonly KMIP-compatible (Key Management Interoperability Protocol) — so
 that key custody, rotation, and revocation are managed and audited
 independently of the storage platform itself. **Encryption in flight**
 (TLS for management APIs and file/object protocols, IPsec or FC-SP for
-block transports, as introduced in Chapter 2) protects data as it crosses
+block transports, as introduced in [Chapter 2](02-block-storage-and-storage-area-networks.md)) protects data as it crosses
 the network, closing off passive interception and on-path tampering.
 
 ### Access control on the storage and backup management plane
@@ -74,7 +74,7 @@ and every copy meant to protect it.
 snapshot undeletable and unmodifiable for a defined retention period,
 enforced by the storage platform itself rather than by an access-control
 policy that a sufficiently privileged account could simply change.
-Object storage (Chapter 3) commonly implements this as **object lock**,
+Object storage ([Chapter 3](03-enterprise-file-and-object-storage.md)) commonly implements this as **object lock**,
 with two distinct modes:
 
 | Mode | Behavior | Who can remove the lock early |
@@ -86,7 +86,7 @@ Compliance-mode object lock is the strongest available guarantee against a
 compromised administrative account deleting backup data, because the
 guarantee is enforced by the platform's own immutability mechanism, not by
 a permission that a sufficiently privileged attacker could revoke. This is
-also why Chapter 3 noted that retention mode is frequently a decision that
+also why [Chapter 3](03-enterprise-file-and-object-storage.md) noted that retention mode is frequently a decision that
 must be made at bucket-creation time — compliance mode specifically cannot
 be loosened once applied, by design, which is the entire point of the
 control.
@@ -104,7 +104,7 @@ recovers:
 
 1. **Prevention** — endpoint and network controls, patching, and access
    management that reduce the likelihood of a successful initial
-   compromise. (Owned primarily by Volume X, Enterprise Cybersecurity;
+   compromise. (Owned primarily by [Volume X](../../volume-10-enterprise-cybersecurity/README.md), Enterprise Cybersecurity;
    referenced here because storage design cannot assume prevention will
    always succeed.)
 2. **Detection** — identifying an active attack in progress, including
@@ -128,7 +128,7 @@ satisfies all of the following simultaneously: it is **immutable** for a
 meaningful retention window, it is **logically or physically isolated**
 from the credentials that manage production (an air gap, a separate
 authentication domain, or a genuinely offline copy such as tape), and it
-has been **verified restorable** (Chapter 5's "0 errors" principle) — an
+has been **verified restorable** ([Chapter 5](05-backup-architecture-and-data-protection-policy.md)'s "0 errors" principle) — an
 immutable copy of already-corrupted or already-encrypted data is not a
 recovery path.
 
@@ -145,11 +145,11 @@ regulatory obligations:
 - **Retention and legal hold** — regulatory or contractual minimum
   retention periods, and **legal hold**, which suspends normal retention
   and deletion schedules for data subject to litigation, investigation, or
-  audit, overriding the operational GFS retention policy from Chapter 5
+  audit, overriding the operational GFS retention policy from [Chapter 5](05-backup-architecture-and-data-protection-policy.md)
   until the hold is released.
 - **Data sovereignty** — obligations that certain data remain within a
   specific jurisdiction's boundaries, which constrains where replication
-  targets (Chapter 6), backup copies (Chapter 5), and DR sites (Chapter 7)
+  targets ([Chapter 6](06-snapshots-replication-and-continuous-data-protection.md)), backup copies ([Chapter 5](05-backup-architecture-and-data-protection-policy.md)), and DR sites ([Chapter 7](07-recovery-engineering-and-disaster-recovery-validation.md))
   may physically or logically reside.
 - **Audit logging** — a complete, tamper-evident record of who accessed,
   modified, or deleted data and configuration, required both for
@@ -180,12 +180,12 @@ regulatory obligations:
   meaningfully separate from production for the purpose of this control,
   regardless of the media it lives on.
 - **Design data sovereignty constraints into replication and DR site
-  selection up front** (Chapter 6, Chapter 7) — retrofitting jurisdictional
+  selection up front** ([Chapter 6](06-snapshots-replication-and-continuous-data-protection.md), [Chapter 7](07-recovery-engineering-and-disaster-recovery-validation.md)) — retrofitting jurisdictional
   boundaries onto an existing replication topology is disruptive and can
   require a full re-architecture of the replication relationship.
 - **Plan for legal hold as an operational workflow**, not a one-time
   policy statement: define how a hold is placed, how it suspends the
-  normal retention/expiration policy from Chapter 5 for the affected data,
+  normal retention/expiration policy from [Chapter 5](05-backup-architecture-and-data-protection-policy.md) for the affected data,
   and how it is released, with an audit trail for each step.
 
 ## Implementation and Automation
@@ -234,7 +234,7 @@ roles:
 ```
 
 This bucket-level default applies a 90-day compliance-mode lock to every
-new object written to the bucket — the mode from Chapter 3's introduction
+new object written to the bucket — the mode from [Chapter 3](03-enterprise-file-and-object-storage.md)'s introduction
 of object lock, now shown as the concrete control that satisfies the
 guaranteed-clean-recovery layer of the ransomware resilience model above.
 
@@ -267,7 +267,7 @@ an active incident can make the situation worse.
 | Encrypted volume readable by an unauthorized process | Drive-level encryption relied on without access-control enforcement above it | Confirm access control (RBAC, share/export permissions) independently of encryption; encryption is not an access-control substitute |
 | Key rotation fails or blocks I/O | Key management service unreachable, or storage platform lost trust relationship with KMIP server | Verify KMIP connectivity and certificate validity; check for a stale or revoked client certificate |
 | Administrator able to delete a supposedly immutable backup | Governance mode used where compliance mode was required, or lock applied after data was already written under a mutable default | Audit the object lock/retention-lock configuration mode; correct bucket/retention defaults for future writes (existing objects may not be retroactively lockable) |
-| Anomaly alert fires with no confirmed incident | Legitimate large batch job or data migration coinciding with the alert threshold | Correlate against the change calendar (Chapter 9) before dismissing; document the false positive and tune the threshold only after confirming it is not masking a real signal |
+| Anomaly alert fires with no confirmed incident | Legitimate large batch job or data migration coinciding with the alert threshold | Correlate against the change calendar ([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md)) before dismissing; document the false positive and tune the threshold only after confirming it is not masking a real signal |
 | Legal hold data unexpectedly expired/deleted | Legal hold not actually applied at the platform level, or hold applied after the retention job already ran | Confirm hold status directly on the platform, not only in a tracking spreadsheet; treat this as a compliance incident requiring legal/records-management notification |
 | Data replicated to a jurisdiction that violates a sovereignty requirement | Replication target added without a data-sovereignty review | Audit all replication and backup target locations against current data classification and sovereignty requirements |
 
@@ -295,7 +295,7 @@ an active incident can make the situation worse.
   spreadsheet-tracked policy, and verify hold status directly on affected
   data before any retention or deletion job runs against it.
 - Sanitize or destroy media at end of life per an established standard
-  (NIST SP 800-88 Clear/Purge/Destroy, introduced in Volume I's lifecycle
+  (NIST SP 800-88 Clear/Purge/Destroy, introduced in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)'s lifecycle
   management chapter) and record the sanitization event as part of the
   asset's decommissioning audit trail.
 
@@ -307,7 +307,7 @@ an active incident can make the situation worse.
   Infrastructure) for storage-specific security control references.
 - OASIS Key Management Interoperability Protocol (KMIP) specification.
 - NIST SP 800-88 (Guidelines for Media Sanitization), referenced from
-  Volume I's infrastructure lifecycle management chapter.
+  [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)'s infrastructure lifecycle management chapter.
 - SOFTWARE_VERSIONS.md — dated baseline referenced for platform examples
   in this chapter.
 
@@ -325,7 +325,7 @@ an active incident can make the situation worse.
    credentials as production not meaningfully isolated, even if it lives
    on physically separate hardware?
 5. A legal hold is placed on a dataset, but the organization's normal GFS
-   retention policy from Chapter 5 deletes part of that dataset a week
+   retention policy from [Chapter 5](05-backup-architecture-and-data-protection-policy.md) deletes part of that dataset a week
    later. What does this indicate about how the legal hold was
    implemented?
 

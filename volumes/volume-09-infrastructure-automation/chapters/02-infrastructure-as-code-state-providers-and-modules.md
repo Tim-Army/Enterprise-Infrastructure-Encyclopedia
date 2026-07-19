@@ -79,7 +79,7 @@ A provider is a plugin, versioned independently of Terraform core, that
 translates HCL resource blocks into API calls. Providers are declared and
 pinned in a `required_providers` block and locked to exact resolved
 versions in the `.terraform.lock.hcl` file, which should always be
-committed to version control (Chapter 08 covers the supply-chain
+committed to version control ([Chapter 08](08-automation-security-governance-and-supply-chains.md) covers the supply-chain
 implications in depth):
 
 ```hcl
@@ -374,7 +374,7 @@ for CI smoke tests that must not depend on live cloud credentials.
   arguments require replacement) or whether a resource address changed
   without a `moved` block. Run `terraform plan -out=plan.tfout` and inspect
   with `terraform show -json plan.tfout` in CI to catch destructive plans
-  programmatically before apply (Chapter 05).
+  programmatically before apply ([Chapter 05](05-automation-pipelines-testing-and-policy-gates.md)).
 - **`Error: Error acquiring the state lock`.** Another run holds the lock.
   Confirm no other apply is genuinely in progress (check the CI run queue)
   before ever running `terraform force-unlock <LOCK_ID>` — force-unlocking
@@ -401,17 +401,17 @@ for CI smoke tests that must not depend on live cloud credentials.
 - Store state exclusively in an encrypted, access-controlled remote
   backend; never commit `terraform.tfstate` to version control.
 - Always commit `.terraform.lock.hcl`; treat unpinned provider versions as
-  a supply-chain risk (Chapter 08).
+  a supply-chain risk ([Chapter 08](08-automation-security-governance-and-supply-chains.md)).
 - Scope the credentials used by `terraform apply` to the minimum
   permissions the configuration actually needs, and prefer short-lived,
-  federated credentials over static access keys (Chapter 06).
+  federated credentials over static access keys ([Chapter 06](06-automation-identity-secrets-and-privileged-execution.md)).
 - Enable state backend versioning (for example, S3 bucket versioning) so a
   corrupted or bad state write can be rolled back.
 - Use `sensitive = true` on variables and outputs that carry secrets or
   PII, and avoid ever interpolating secrets directly into resource tags or
   names, which frequently end up in logs.
 - Require `terraform plan` output to be reviewed by a human (or a policy
-  engine, Chapter 05) before every production `apply`; never run
+  engine, [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md)) before every production `apply`; never run
   unreviewed applies against production from a workstation.
 
 ## References and Knowledge Checks

@@ -25,10 +25,10 @@ or test report that lets someone other than the executor confirm the
 validation actually happened and what it showed. **Acceptance** is the
 governance act of a responsible party (often distinct from the executor)
 reviewing the evidence and formally agreeing the change met its stated
-objective, closing the change record opened under Chapter 04.
+objective, closing the change record opened under [Chapter 04](04-configuration-templates-baselines-and-change-records.md).
 
 These three steps map directly onto the dry-run and validation gates
-introduced in Chapter 01 and formalized in Chapter 04's change record, but
+introduced in [Chapter 01](01-command-quick-reference-and-safe-administration.md) and formalized in [Chapter 04](04-configuration-templates-baselines-and-change-records.md)'s change record, but
 they deserve their own treatment because each has failure modes distinct
 from "did the change work":
 
@@ -41,32 +41,32 @@ from "did the change work":
 - Acceptance without a named, accountable approver is not really
   acceptance — it is merely the absence of an objection, which does not
   satisfy most compliance frameworks' requirement for demonstrable review
-  (Chapter 07, Chapter 09).
+  ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md), [Chapter 09](09-standards-certifications-vendor-documentation-and-reference-governance.md)).
 
 A validated, well-evidenced change with no formal acceptance step is
 common in smaller teams and is an acceptable risk trade-off for Tier 0/1
 changes; it is not acceptable for Tier 2/3 changes under the tiering model
-established in Chapter 01.
+established in [Chapter 01](01-command-quick-reference-and-safe-administration.md).
 
 ## Design Considerations
 
 - **Right-size evidence collection to change tier**, exactly as change
-  record formality scales in Chapter 04: a Tier 0 read-only check may need
+  record formality scales in [Chapter 04](04-configuration-templates-baselines-and-change-records.md): a Tier 0 read-only check may need
   no retained evidence at all; a Tier 3 change should retain command
   output, before/after diffs, and — where a UI-driven step has no CLI
   equivalent — a screenshot.
 - **Prefer machine-readable evidence over prose descriptions wherever the
   platform supports it.** A captured `terraform plan` JSON output or a
   test framework's JUnit XML result is both human-reviewable and later
-  machine-parseable for trend analysis (Chapter 08); a paragraph
+  machine-parseable for trend analysis ([Chapter 08](08-automation-apis-data-formats-and-integration-reference.md)); a paragraph
   describing "everything looked good" is neither.
 - **Decide evidence retention duration before generating evidence, driven
   by the strictest applicable requirement** — internal audit policy,
-  regulatory retention schedules (Chapter 07/09), or, absent an external
+  regulatory retention schedules ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)/09), or, absent an external
   requirement, a default of at least one full change/audit cycle (commonly
   12 months for enterprise environments).
 - **Separate the checklist template from a specific change's completed
-  checklist.** As with configuration templates (Chapter 04), keep the
+  checklist.** As with configuration templates ([Chapter 04](04-configuration-templates-baselines-and-change-records.md)), keep the
   reusable checklist shape in version control distinct from each
   change's populated instance, so the template can be improved over time
   without altering historical records.
@@ -103,9 +103,9 @@ established in Chapter 01.
 | Kubernetes deployment | Rollout status and object state | `kubectl rollout status deployment/<name>`; `kubectl get pods -o wide` |
 | Web/UI-only administrative step | Screenshot with visible timestamp/hostname | Screenshot tool; annotate with date and system identity |
 | Automated test suite | Structured test report | JUnit XML / TAP output archived by the CI pipeline |
-| Security scan | Scan report with scan date and tool version | Exported vendor report (Chapter 07) |
+| Security scan | Scan report with scan date and tool version | Exported vendor report ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)) |
 | Log-based confirmation | Log excerpt with surrounding context | `journalctl` / centralized log query output, timestamp-bounded |
-| Performance/capacity check | Metric snapshot or dashboard export | Monitoring platform export (Volume XI) |
+| Performance/capacity check | Metric snapshot or dashboard export | Monitoring platform export ([Volume XI](../../volume-11-observability-enterprise-operations/README.md)) |
 
 ### Acceptance checklist template
 
@@ -146,7 +146,7 @@ partial acceptance.
 | # | Item | Expected Result | Evidence Link | Disposition | Reviewer |
 | - | ---- | ---------------- | -------------- | ------------ | -------- |
 | 1 | NTP service reachable post-change | `chronyc tracking` shows stratum ≤ 3, offset < 1s | `evidence/ntp-tracking-20260718.txt` | Pass | J. Rivera |
-| 2 | Firewall rule matches five-field flow statement | `nft list ruleset` matches documented flow (Chapter 02) | `evidence/nft-ruleset-20260718.txt` | Pass | J. Rivera |
+| 2 | Firewall rule matches five-field flow statement | `nft list ruleset` matches documented flow ([Chapter 02](02-ports-protocols-services-and-traffic-flows.md)) | `evidence/nft-ruleset-20260718.txt` | Pass | J. Rivera |
 | 3 | Legacy SNMPv2c community disabled | `snmpwalk` with v2c community fails; SNMPv3 succeeds | `evidence/snmp-test-20260718.txt` | Waived | M. Chen (compensating control: SNMPv2c restricted to management VLAN pending v3 migration ticket INF-4471) |
 
 ## Validation and Troubleshooting
@@ -185,13 +185,13 @@ partial acceptance.
 - Require a named, individually attributable reviewer for every
   acceptance disposition; shared or role-based approval accounts defeat
   the accountability purpose of the acceptance step (consistent with the
-  attributable-command principle in Chapter 01).
+  attributable-command principle in [Chapter 01](01-command-quick-reference-and-safe-administration.md)).
 - Protect evidence and checklist records from post-hoc modification after
   acceptance; store them in an append-only or version-controlled location
   so a later edit is visible as a new revision rather than a silent
   change to history.
 - Align evidence retention duration with the strictest applicable
-  compliance requirement (Chapter 07/09) rather than an arbitrary internal
+  compliance requirement ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)/09) rather than an arbitrary internal
   default, and document the chosen retention period in the checklist
   template itself so it is not left to individual judgment per change.
 
@@ -199,15 +199,15 @@ partial acceptance.
 
 **References**
 
-- Chapter 01 of this volume — the four safe-administration gates
+- [Chapter 01](01-command-quick-reference-and-safe-administration.md) of this volume — the four safe-administration gates
   (dry run and validation origin).
-- Chapter 04 of this volume — change records that acceptance checklists
+- [Chapter 04](04-configuration-templates-baselines-and-change-records.md) of this volume — change records that acceptance checklists
   close out.
-- Chapter 07 of this volume — compliance and retention drivers for
+- [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md) of this volume — compliance and retention drivers for
   evidence handling.
 - ISO/IEC 19011 — Guidelines for auditing management systems (general
   audit-evidence principles referenced across frameworks).
-- Volume XI — Observability and Enterprise Operations (metric and log
+- [Volume XI](../../volume-11-observability-enterprise-operations/README.md) — Observability and Enterprise Operations (metric and log
   evidence sources).
 
 **Knowledge checks**
@@ -257,7 +257,7 @@ a Markdown editor; a location to store evidence files.
 6. Negative test: intentionally record one checklist item as Fail (using
    a real observed failure, or by checking a condition you know is not
    yet met) and document what the resulting action would be (rollback,
-   follow-up change, or escalation per Chapter 06). **Expected result:**
+   follow-up change, or escalation per [Chapter 06](06-troubleshooting-decision-aids-and-escalation.md)). **Expected result:**
    the checklist demonstrates a documented Fail path, not only the happy
    path.
 7. Record an overall disposition and accepting reviewer at the bottom of

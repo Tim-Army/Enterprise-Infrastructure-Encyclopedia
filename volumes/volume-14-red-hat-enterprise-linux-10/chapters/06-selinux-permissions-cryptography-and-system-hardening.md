@@ -354,7 +354,7 @@ oscap xccdf generate fix \
   actual client/server requirements, and re-evaluate it whenever a
   compliance mandate (FIPS 140-3, for example) changes.
 - Run OpenSCAP scans on a recurring schedule (a systemd timer, per
-  Chapter 03) rather than only at initial build time, and track
+  [Chapter 03](03-boot-systemd-processes-logging-and-scheduled-work.md)) rather than only at initial build time, and track
   remediation as a normal change-managed activity.
 - Minimize SUID/SGID binaries to the set actually required, and audit
   for unexpected new ones as part of routine hardening review — a new

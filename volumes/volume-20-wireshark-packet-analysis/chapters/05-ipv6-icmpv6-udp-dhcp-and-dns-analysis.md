@@ -3,7 +3,7 @@
 ## Learning Objectives
 
 - Decode an IPv6 header and its extension header chain, and explain how it
-  differs structurally from the IPv4 header covered in Chapter 04.
+  differs structurally from the IPv4 header covered in [Chapter 04](04-ethernet-arp-ipv4-and-icmpv4-analysis.md).
 - Read ICMPv6 Neighbor Discovery Protocol (NDP) exchanges and map them to
   the ARP functionality they replace.
 - Decode UDP's minimal header and explain why UDP-based protocol analysis
@@ -15,7 +15,7 @@
 
 ## Theory and Architecture
 
-Chapter 04 covered the IPv4 protocol family; this chapter covers its IPv6
+[Chapter 04](04-ethernet-arp-ipv4-and-icmpv4-analysis.md) covered the IPv4 protocol family; this chapter covers its IPv6
 counterpart and the two UDP-based protocols — DHCP and DNS — every IP host
 depends on before it can do useful work on the network. All four topics
 share a theme: each simplifies or restructures something IPv4-era protocols
@@ -133,7 +133,7 @@ type, and the full answer section, plus the response code:
 - **UDP protocol identification depends on port convention, not the
   transport header.** Because UDP carries no protocol-identifying field of
   its own, a UDP-based service on a non-standard port requires **Decode
-  As** (Chapter 03) to dissect correctly; do not assume Wireshark's default
+  As** ([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md)) to dissect correctly; do not assume Wireshark's default
   protocol column reflects the true application if the port is unusual.
 - **DHCP relay changes what a single-segment capture can show.** If DHCP
   traffic is relayed (`giaddr` populated, UDP port 67 unicast from a relay
@@ -252,7 +252,7 @@ tshark -r capture.pcapng -Y "dns.flags.response==1" -T fields -e dns.flags.rcode
 ## Security and Best Practices
 
 - **Watch for NDP spoofing analogous to ARP spoofing.** The same
-  investigative approach from Chapter 04 — baselining IP-to-MAC mappings
+  investigative approach from [Chapter 04](04-ethernet-arp-ipv4-and-icmpv4-analysis.md) — baselining IP-to-MAC mappings
   and flagging conflicting Neighbor Advertisements for the same address —
   applies to IPv6 segments; NDP has no built-in authentication any more
   than ARP does, absent RA Guard/SEND deployment.
@@ -265,7 +265,7 @@ tshark -r capture.pcapng -Y "dns.flags.response==1" -T fields -e dns.flags.rcode
   A high volume of long, high-entropy subdomain labels queried against a
   single domain, or an unusually high TXT/NULL record query rate, is the
   classic DNS-tunneling signature; `dns.qry.name` length and query-rate
-  statistics (Chapter 08) are the starting filters for that investigation.
+  statistics ([Chapter 08](08-security-investigation-command-line-analysis-and-automation.md)) are the starting filters for that investigation.
 - **Confirm DNSSEC validation behavior deliberately rather than
   assuming it.** A capture showing `dns.flags.authenticated==1` (the AD
   bit) reflects the resolver's own validation, not the capturing analyst's
@@ -308,7 +308,7 @@ segment is available.
 
 **Prerequisites**
 
-- Wireshark and `tshark` installed with capture rights (Chapter 01).
+- Wireshark and `tshark` installed with capture rights ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
 - A network segment providing DHCP; administrative ability to release/renew
   the local DHCP lease.
 
@@ -396,7 +396,7 @@ duplicate address detection, and both DHCP and DNS remain the two UDP-based
 protocols every host depends on before any application traffic can flow.
 Because UDP itself carries almost no diagnostic information, effective
 analysis of DHCP and DNS traffic is really analysis of their
-application-layer dissectors from the first captured packet. Chapter 06
+application-layer dissectors from the first captured packet. [Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md)
 turns to TCP, where the transport header itself — not just the protocol
 riding on it — is the primary object of analysis.
 

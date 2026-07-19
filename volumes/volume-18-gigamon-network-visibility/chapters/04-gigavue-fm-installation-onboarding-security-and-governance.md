@@ -26,12 +26,12 @@ Manager) is Gigamon's centralized, web-based management application:
 every physical and virtual node registers with GigaVUE-FM, which then
 becomes the single place an operator authors Flow Mapping, configures
 GigaSMART applications, monitors fabric health, manages licensing, and
-exposes the REST API that automation (Chapter 08) depends on.
+exposes the REST API that automation ([Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md)) depends on.
 
 This mirrors a pattern already familiar from other volumes in this
 encyclopedia — a per-device CLI/data-plane layer paired with a
 centralized management plane (compare, for example, Panorama's
-relationship to individual PAN-OS firewalls in Volume XVI, or a wireless
+relationship to individual PAN-OS firewalls in [Volume XVI](../../volume-16-palo-alto-networks-security/README.md), or a wireless
 LAN controller's relationship to individual access points). The same
 operational lesson applies here: GigaVUE-FM does not replace node-local
 administration, but production changes should flow through it so that
@@ -56,10 +56,10 @@ respond to a fabric-wide incident until it is restored.
 
 ### Node onboarding and inventory organization
 
-Once GigaVUE-FM is reachable, physical nodes (Chapter 02) and virtual
-nodes (Chapter 03) are onboarded by registering each node's management
+Once GigaVUE-FM is reachable, physical nodes ([Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md)) and virtual
+nodes ([Chapter 03](03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md)) are onboarded by registering each node's management
 address and credentials (or, for cloud-deployed virtual nodes, through
-automated self-registration at first boot, per Chapter 03). GigaVUE-FM
+automated self-registration at first boot, per [Chapter 03](03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md)). GigaVUE-FM
 then presents a unified inventory of every node — physical and virtual —
 as members of one or more logical fabrics, typically organized to reflect
 the organization's own structure: by data center, by region, by business
@@ -92,12 +92,12 @@ firewall manager. GigaVUE-FM supports:
   administrative visibility and Flow Mapping authority to defined tenant
   boundaries, so that one business unit's administrators cannot see or
   modify another's traffic policy — directly relevant to the
-  multi-tenant cloud considerations raised in Chapter 03.
+  multi-tenant cloud considerations raised in [Chapter 03](03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md).
 
 ### Licensing model
 
 GigaVUE-FM itself, individual node platforms, and specific GigaSMART
-applications (Chapter 06) are licensed both for base functionality and for
+applications ([Chapter 06](06-gigasmart-traffic-intelligence-and-packet-transformation.md)) are licensed both for base functionality and for
 advanced feature tiers (extended map-rule capacity, specific GigaSMART
 applications, cloud node counts). GigaVUE-FM centralizes license
 visibility and, in most deployments, license application — an operator
@@ -110,7 +110,7 @@ CLIs.
 - **Treat GigaVUE-FM's own availability as a production management-plane
   requirement, not an afterthought.** Size and deploy it with the same HA
   rigor applied to any other centralized control plane in this
-  encyclopedia (compare vCenter in Volume V or Panorama in Volume XVI);
+  encyclopedia (compare vCenter in [Volume V](../../volume-05-vmware-virtualization/README.md) or Panorama in [Volume XVI](../../volume-16-palo-alto-networks-security/README.md));
   a fabric that cannot be reconfigured during an incident because its
   manager is a single point of failure is a design gap, not an acceptable
   trade-off.
@@ -118,7 +118,7 @@ CLIs.
   a logical grouping structure (by data center, region, or business unit)
   after dozens of nodes are already onboarded flat is disruptive; agree on
   the grouping model in the same design pass as the tap inventory from
-  Chapter 01.
+  [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md).
 - **Scope RBAC to the principle of least privilege from day one.**
   Granting every administrator full fabric-wide access because the fabric
   is small today creates governance debt that is painful to unwind once
@@ -163,7 +163,7 @@ Physical > Nodes > Add Node
 ```
 
 For nodes deployed with self-registration configured at first boot
-(common for cloud-hosted V Series nodes, per Chapter 03), onboarding is
+(common for cloud-hosted V Series nodes, per [Chapter 03](03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md)), onboarding is
 largely automatic: the node contacts GigaVUE-FM's registration endpoint
 and appears in the pending-approval queue, where an administrator confirms
 it belongs to the expected fabric before it is fully trusted.
@@ -214,7 +214,7 @@ release notes and compatibility matrix for the target GigaVUE-FM version
 against currently deployed node firmware, back up GigaVUE-FM
 configuration, upgrade GigaVUE-FM itself, then stage and apply node
 firmware upgrades in a controlled sequence (non-disruptively where
-clustering and redundant paths allow, per Chapter 07's inline resiliency
+clustering and redundant paths allow, per [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md)'s inline resiliency
 model for nodes carrying inline traffic).
 
 > Exact menu paths, backup destinations supported, and upgrade sequencing
@@ -266,7 +266,7 @@ model for nodes carrying inline traffic).
   access-controlled administrative network segment, never expose it
   directly to the general corporate network or the internet.
 - Enable and regularly review audit logging; export audit events to a
-  centralized SIEM (Chapter 08 covers integration patterns) rather than
+  centralized SIEM ([Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md) covers integration patterns) rather than
   relying solely on GigaVUE-FM's local log retention.
 - Rotate the initial and any locally defined administrative credentials on
   a defined cadence, and remove local accounts once directory integration
@@ -302,7 +302,7 @@ model for nodes carrying inline traffic).
 ## Hands-On Lab
 
 **Objective:** Deploy a lab GigaVUE-FM instance, onboard a lab GigaVUE
-node (physical or virtual, from Chapter 02 or 03), configure a scoped
+node (physical or virtual, from [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md) or 03), configure a scoped
 administrative role, and validate both successful and denied access
 paths.
 
@@ -311,7 +311,7 @@ paths.
 - A lab GigaVUE-FM virtual appliance deployable to an available
   hypervisor or cloud environment.
 - At least one lab GigaVUE node (physical or virtual) with known
-  management credentials, from the Chapter 02 or Chapter 03 labs.
+  management credentials, from the [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md) or [Chapter 03](03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md) labs.
 - Two lab user identities (or the ability to create two local GigaVUE-FM
   accounts) to demonstrate scoped access.
 - Isolated lab network segment — do not perform this lab against

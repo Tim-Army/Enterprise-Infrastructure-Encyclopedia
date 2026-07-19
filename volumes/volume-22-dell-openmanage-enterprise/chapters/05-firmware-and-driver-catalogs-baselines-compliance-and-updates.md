@@ -27,8 +27,8 @@ chapter and the two that follow it:
 1. **Catalog** — a versioned metadata index describing which firmware and
    driver packages exist, which PowerEdge models and components they
    apply to, their severity/urgency classification, and where to retrieve
-   the actual update package. Chapter 6 covers Dell's connected online
-   catalog in depth; Chapter 7 covers building and consuming offline,
+   the actual update package. [Chapter 6](06-connected-online-repositories-and-update-workflows.md) covers Dell's connected online
+   catalog in depth; [Chapter 7](07-isolated-offline-repositories-and-air-gapped-updates.md) covers building and consuming offline,
    air-gapped catalogs with the same structure.
 2. **Baseline** — a named association between a catalog (or a specific
    catalog version) and a target scope of devices or a device group. A
@@ -54,7 +54,7 @@ supply firmware, and relevant OS drivers where in-band driver management
 is in scope. Because DUPs are component- and model-specific, the same
 catalog can correctly target a mixed fleet of PowerEdge generations
 without an administrator having to hand-map packages to hardware — the
-catalog metadata and each device's inventory (Chapter 3) do that matching
+catalog metadata and each device's inventory ([Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md)) do that matching
 automatically when a baseline is evaluated.
 
 ### How compliance evaluation works
@@ -87,7 +87,7 @@ rather than forcing it at job-submission time.
 ## Design Considerations
 
 - **Baseline scope granularity.** Decide whether baselines are built
-  around device groups that mirror your Chapter 3 group taxonomy (by
+  around device groups that mirror your [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) group taxonomy (by
   site, by role, by hardware generation) or around narrower, purpose-built
   groups specific to firmware governance. A baseline scoped too broadly
   across a heterogeneous fleet makes a single compliance report harder to
@@ -262,12 +262,12 @@ with different `device_ids` lists and a validation gate between them.
 ## Validation and Troubleshooting
 
 - **Compliance report shows a device as non-compliant immediately after a
-  successful update.** Force an inventory refresh (Chapter 3) before
+  successful update.** Force an inventory refresh ([Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md)) before
   re-checking compliance — the compliance report reflects the device's
   *last inventoried* state, and an update job completing does not by
   itself refresh inventory in every build.
 - **Update job fails on a subset of devices in a batch.** Check the
-  per-device job execution history (Chapter 4) rather than the job's
+  per-device job execution history ([Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)) rather than the job's
   overall status; a common cause of a partial failure is a device that
   lost iDRAC network reachability mid-job or one running a Lifecycle
   Controller version too old to accept the update format — both surface
@@ -284,8 +284,8 @@ with different `device_ids` lists and a validation gate between them.
   waits for its scheduled activation and is not evidence of a hung job by
   itself.
 - **Update job fails appliance-wide with a catalog error.** Verify catalog
-  reachability and freshness first (Chapter 6 for connected catalogs,
-  Chapter 7 for offline catalogs) — a stale or unreachable catalog
+  reachability and freshness first ([Chapter 6](06-connected-online-repositories-and-update-workflows.md) for connected catalogs,
+  [Chapter 7](07-isolated-offline-repositories-and-air-gapped-updates.md) for offline catalogs) — a stale or unreachable catalog
   reference is a more common root cause than a defect in the update job
   logic itself.
 
@@ -295,7 +295,7 @@ with different `device_ids` lists and a validation gate between them.
   the job payload pattern above) so OME rejects tampered or corrupted
   update packages rather than applying them.
 - Restrict who can create baselines and submit update jobs through role
-  and scope (Chapter 2) — firmware update is a high-impact, fleet-wide
+  and scope ([Chapter 2](02-identity-licensing-security-and-administrative-control.md)) — firmware update is a high-impact, fleet-wide
   capability that warrants tighter access than read-only inventory
   viewing.
 - Treat Critical-severity compliance findings as a security-relevant
@@ -352,11 +352,11 @@ firmware change.
 - The OME appliance with at least one onboarded, iDRAC-managed device
   (this lab requires a real or virtual PowerEdge/iDRAC target, since
   firmware compliance evaluation depends on iDRAC-sourced component
-  inventory that the SNMP-based lab target from Chapter 3 cannot supply;
+  inventory that the SNMP-based lab target from [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) cannot supply;
   if no PowerEdge hardware is available, read through the steps and
   substitute the sample JSON response shown in step 4 to complete the
   exercise conceptually).
-- A reachable Dell online catalog (Chapter 6) or a previously imported
+- A reachable Dell online catalog ([Chapter 6](06-connected-online-repositories-and-update-workflows.md)) or a previously imported
   catalog reference.
 - Python 3.11+ with `requests` installed.
 
@@ -367,7 +367,7 @@ firmware change.
    6's connected-catalog setup first.
 2. Create a baseline using the `ome_create_baseline.py` script from
    Implementation and Automation, targeting your device group from
-   Chapter 3 and the catalog identified in step 1:
+   [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) and the catalog identified in step 1:
 
    ```bash
    python3 ome_create_baseline.py <appliance-ip> admin '<password>' \
@@ -377,7 +377,7 @@ firmware change.
    **Expected result:** the script reports a created baseline.
 3. Trigger compliance evaluation using the `CheckBaselineCompliance`
    action shown in Implementation and Automation, then poll the
-   associated job (Chapter 4's job-query pattern) until it completes.
+   associated job ([Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)'s job-query pattern) until it completes.
 4. Retrieve and review the per-device compliance report:
 
    ```bash
@@ -433,7 +433,7 @@ through baseline creation and compliance evaluation end to end, including
 a negative test against an invalid baseline reference. Chapters 6 and 7
 now go deeper on the two catalog sourcing models this chapter treated
 generically — Dell's connected online catalog and fully offline,
-air-gapped catalogs — before Chapter 8 extends the same baseline-and-
+air-gapped catalogs — before [Chapter 8](08-templates-configuration-compliance-automation-and-apis.md) extends the same baseline-and-
 compliance pattern to configuration, not just firmware.
 
 - [ ] I can explain the relationship between catalogs, baselines,

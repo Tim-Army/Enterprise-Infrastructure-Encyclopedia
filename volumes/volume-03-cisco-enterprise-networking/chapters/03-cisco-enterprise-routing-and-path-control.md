@@ -19,7 +19,7 @@
 Enterprise campus and branch routing is built almost entirely on two
 interior gateway protocols (IGPs): OSPFv2 and EIGRP, plus BGP at
 inter-domain boundaries (WAN edge, internet edge, and increasingly as an
-underlay/overlay control plane, covered further in Chapter 4 and Chapter
+underlay/overlay control plane, covered further in [Chapter 4](04-enterprise-wan-internet-edge-and-catalyst-sd-wan.md) and Chapter
 9).
 
 **OSPFv2** is a link-state protocol that floods link-state advertisements
@@ -70,10 +70,10 @@ appears at three boundaries:
   when multihoming requires more granular path selection) and advertising
   the enterprise's own public prefixes.
 - **MPLS L3VPN WAN edge** — eBGP peering with a provider PE router per site,
-  common in traditional MPLS WAN designs (Chapter 4).
+  common in traditional MPLS WAN designs ([Chapter 4](04-enterprise-wan-internet-edge-and-catalyst-sd-wan.md)).
 - **Data center / multi-site fabric underlay-overlay** — iBGP or eBGP
   used as a scalable control plane between sites or between fabric border
-  nodes (Chapter 9, Volume VI, Volume VIII).
+  nodes ([Chapter 9](09-catalyst-center-sd-access-assurance-and-operations.md), [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md), [Volume VIII](../../volume-08-containers-platform-engineering/README.md)).
 
 BGP path selection uses a well-defined, ordered attribute comparison
 (weight, local preference, AS-path length, origin, MED, and so on); campus
@@ -103,7 +103,7 @@ primary WAN uplink over a dedicated internet-only path instead. Policy-Based
 Routing (PBR) overrides the default forwarding decision using a route map
 matched against source/destination address, protocol, or interface. IP SLA
 combined with **object tracking** allows PBR (or a static route, or an
-HSRP priority as seen in Chapter 2) to react automatically to a monitored
+HSRP priority as seen in [Chapter 2](02-catalyst-campus-switching-and-resiliency.md)) to react automatically to a monitored
 path's reachability or latency rather than only reacting to hard link-down
 events.
 
@@ -114,8 +114,8 @@ routing tables on one physical router or switch, each with its own
 interfaces, routing protocol instances (or instances-within-instances via
 address-family configuration), and forwarding table. It is the
 single-device building block for network segmentation used throughout this
-volume — Chapter 7 layers TrustSec/SGT policy on top of VRF-lite
-segmentation, and Chapter 9 uses the same VRF concept as the SD-Access
+volume — [Chapter 7](07-cisco-identity-access-control-and-segmentation.md) layers TrustSec/SGT policy on top of VRF-lite
+segmentation, and [Chapter 9](09-catalyst-center-sd-access-assurance-and-operations.md) uses the same VRF concept as the SD-Access
 overlay's virtual network (VN) construct.
 
 ## Design Considerations
@@ -127,7 +127,7 @@ overlay's virtual network (VN) construct.
   valuable and vendor lock-in is an accepted trade-off.
 - **Area/AS boundary placement** — align OSPF area boundaries (or EIGRP
   summarization boundaries) with the physical distribution-block topology
-  from Chapter 2, not with organizational boundaries that don't correspond
+  from [Chapter 2](02-catalyst-campus-switching-and-resiliency.md), not with organizational boundaries that don't correspond
   to a physical aggregation point.
 - **Redistribution governance** — redistribute at as few points as
   possible, always with route tagging and filtering, and document every
@@ -146,7 +146,7 @@ overlay's virtual network (VN) construct.
 - **VRF-lite scaling** — VRF-lite scales to a modest number of VRFs per
   device before configuration and troubleshooting overhead becomes
   significant; at true fabric scale, prefer the automated overlay model in
-  Chapter 9 rather than hand-building large numbers of VRF-lite instances.
+  [Chapter 9](09-catalyst-center-sd-access-assurance-and-operations.md) rather than hand-building large numbers of VRF-lite instances.
 
 ## Implementation and Automation
 

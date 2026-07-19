@@ -17,21 +17,21 @@
 ## Theory and Architecture
 
 Every chapter in this volume performs a real, multi-system change against a
-shared lab environment: identity and DNS in Chapter 02, campus and WAN
-networking in Chapter 03, virtualization and storage in Chapter 04, hybrid
-cloud and Kubernetes in Chapter 05, infrastructure as code in Chapter 06,
-zero trust and incident response in Chapter 07, observability in Chapter 08,
-and a full resilience and decommissioning exercise in Chapter 09. That only
+shared lab environment: identity and DNS in [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md), campus and WAN
+networking in [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md), virtualization and storage in [Chapter 04](04-virtualization-storage-and-data-protection-lab.md), hybrid
+cloud and Kubernetes in [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md), infrastructure as code in [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md),
+zero trust and incident response in [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md), observability in [Chapter 08](08-observability-operations-and-major-incident-lab.md),
+and a full resilience and decommissioning exercise in [Chapter 09](09-enterprise-resilience-and-lifecycle-capstone.md). That only
 works if every chapter agrees on the same hostnames, addressing, and domain
 before any of them touch a keyboard. This chapter is that agreement — the
 reference lab this entire volume builds against — plus the safety and
 evidence discipline needed to run it responsibly.
 
-This is lab engineering in the same sense Volume I, Chapter 02 (Repository
-Architecture) and Chapter 03 (Automation Architecture) treat a production
+This is lab engineering in the same sense [Volume I, Chapter 02](../../volume-01-enterprise-engineering-foundations/chapters/02-repository-architecture.md) (Repository
+Architecture) and [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) (Automation Architecture) treat a production
 repository: a lab is an artifact with a declared desired state, not a
-collection of ad hoc changes an engineer remembers making. Volume I,
-Chapter 08 (Infrastructure Lifecycle Management) and Volume XII, Chapter 01
+collection of ad hoc changes an engineer remembers making. [Volume I](../../volume-01-enterprise-engineering-foundations/README.md),
+[Chapter 08](08-observability-operations-and-major-incident-lab.md) (Infrastructure Lifecycle Management) and [Volume XII, Chapter 01](../../volume-12-resilience-lifecycle-management/chapters/01-resilience-engineering-and-critical-service-design.md)
 (Resilience Engineering and Critical-Service Design) both assume the reader
 can stand up a disposable, representative environment to validate a design
 before it reaches production; this chapter is the mechanics of doing that
@@ -55,7 +55,7 @@ requiring an implausibly large lab budget.
 | Cloud landing zone | `CLOUD1` | Hybrid connectivity target for Chapters 05 and 09 |
 | Illustrative internet/public ranges | `192.0.2.0/24`, `198.51.100.0/24`, `203.0.113.0/24` | RFC 5737 documentation ranges for HQ, BR1, and cloud internet edges |
 
-VLAN and subnet assignments used from Chapter 02 onward:
+VLAN and subnet assignments used from [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) onward:
 
 | VLAN | Subnet | Purpose |
 | --- | --- | --- |
@@ -89,11 +89,11 @@ equivalent of a production IP address management (IPAM) record.
   it behind NAT on a dedicated lab router/firewall interface, and use the
   RFC 5737 ranges from the table above for anything meant to represent "the
   internet" so no lab traffic can be mistaken for a real destination.
-- **Reproducibility model.** Following the pattern established in Volume I,
+- **Reproducibility model.** Following the pattern established in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md),
   Chapter 01, this volume combines a declarative topology manifest (below)
-  with idempotent automation, built out fully in Chapter 06. Earlier
+  with idempotent automation, built out fully in [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md). Earlier
   chapters use manual steps deliberately, so the reader understands what the
-  automation in Chapter 06 is replacing.
+  automation in [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md) is replacing.
 - **Change control in a lab.** A lab without change control teaches bad
   habits. Every configuration change in this volume is expected to be
   preceded by a hypervisor snapshot or a Git commit, and every destructive
@@ -172,7 +172,7 @@ sha256sum "${out}" >> "${EVID_DIR}/manifest.sha256"
 echo "Evidence written: ${out}"
 ```
 
-Every Hands-On Lab from Chapter 02 onward assumes `evidence.sh "<command>"`
+Every Hands-On Lab from [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) onward assumes `evidence.sh "<command>"`
 is available on the automation controller (`ctrl01`) and, where practical,
 wraps expected-result checks in it so the checkpoint has a saved artifact.
 
@@ -198,7 +198,7 @@ wraps expected-result checks in it so the checkpoint has a saved artifact.
 - **Verify the evidence pipeline itself.** Run `evidence.sh "echo test"` and
   confirm both the log file and a corresponding line in `manifest.sha256`
   exist; a broken evidence pipeline should be caught here, not discovered
-  missing during Chapter 09's capstone report.
+  missing during [Chapter 09](09-enterprise-resilience-and-lifecycle-capstone.md)'s capstone report.
 - **Verify snapshot/rollback works before relying on it.** Take a snapshot,
   make a trivial change, revert, and confirm the change is gone. An
   environment where rollback has never been tested is not a safety net.
@@ -213,10 +213,10 @@ wraps expected-result checks in it so the checkpoint has a saved artifact.
   default gateway is a lab that can also be reached from production.
 - Store lab secrets (service account passwords, API tokens generated in
   later chapters) in a lab-scoped secrets store or, at minimum, a file
-  excluded from version control — the automation work in Chapter 06 depends
+  excluded from version control — the automation work in [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md) depends
   on this being right from the start.
 - Tag every lab VM, cloud resource, and Git branch with an owner and an
-  expiration/teardown date. Chapter 09's decommissioning exercise depends on
+  expiration/teardown date. [Chapter 09](09-enterprise-resilience-and-lifecycle-capstone.md)'s decommissioning exercise depends on
   being able to enumerate "everything this volume created" without guessing.
 - Snapshot before any destructive step, and confirm the snapshot restores
   cleanly before proceeding — do not discover a broken snapshot during an
@@ -233,9 +233,9 @@ wraps expected-result checks in it so the checkpoint has a saved artifact.
 - RFC 1918 — *Address Allocation for Private Internets*.
 - RFC 5737 — *IPv4 Address Blocks Reserved for Documentation*.
 - RFC 2606 — *Reserved Top Level DNS Names*.
-- Volume I, Chapters 02–03 and 08 — repository architecture, automation
+- [Volume I](../../volume-01-enterprise-engineering-foundations/README.md), Chapters 02–03 and 08 — repository architecture, automation
   architecture, and infrastructure lifecycle management.
-- Volume XII, Chapter 01 — resilience engineering and critical-service
+- [Volume XII, Chapter 01](../../volume-12-resilience-lifecycle-management/chapters/01-resilience-engineering-and-critical-service-design.md) — resilience engineering and critical-service
   design.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated baseline for
   every platform used across this volume's labs.
@@ -261,8 +261,8 @@ volume builds on.
 
 - A hypervisor or nested-virtualization host capable of running at least one
   Linux VM (used here as `ctrl01`), consistent with the workstation
-  practices in Volume I, Chapter 01.
-- Familiarity with basic Git operations (Volume I, Chapter 02) and shell
+  practices in [Volume I, Chapter 01](../../volume-01-enterprise-engineering-foundations/chapters/01-building-the-enterprise-developer-workstation.md).
+- Familiarity with basic Git operations ([Volume I, Chapter 02](../../volume-01-enterprise-engineering-foundations/chapters/02-repository-architecture.md)) and shell
   scripting.
 - Administrative access to whatever router/firewall sits at the edge of the
   lab network segment, sufficient to confirm routing/NAT behavior.
@@ -333,7 +333,7 @@ volume builds on.
    The first command's captured hops must never show a `10.13.x.x` address
    after leaving `ctrl01`; the second must fail to route anywhere outside
    the lab (no reply expected yet — nothing is listening there until
-   Chapter 05), confirming the address is not accidentally reachable on the
+   [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md)), confirming the address is not accidentally reachable on the
    real internet.
 
 7. Take a hypervisor-level snapshot of `ctrl01` named `ch01-baseline`.
@@ -353,7 +353,7 @@ volume builds on.
 
    **Expected result:** `ABSENT`. If the file is still present, the
    snapshot did not actually revert `ctrl01` — stop and fix snapshot/rollback
-   before proceeding to Chapter 02, since every later chapter's negative
+   before proceeding to [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md), since every later chapter's negative
    test depends on this mechanism working.
 
 9. **Negative test:** Intentionally attempt to route lab traffic where it
@@ -377,7 +377,7 @@ volume builds on.
 
 10. **Cleanup:** This chapter's scaffold is retained for the rest of the
     volume, so there is no teardown here — instead, confirm the artifacts
-    that must survive into Chapter 02:
+    that must survive into [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md):
 
     ```bash
     ls ~/vol13-lab/topology.yml ~/vol13-lab/evidence.sh
@@ -385,7 +385,7 @@ volume builds on.
     ```
 
     Retake the `ch01-baseline` snapshot if any state changed since step 7,
-    so Chapter 02 starts from a known-clean point.
+    so [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) starts from a known-clean point.
 
 ## Summary and Completion Checklist
 
@@ -395,7 +395,7 @@ reusable artifacts: a topology manifest and an evidence-capture wrapper.
 Isolation from production and from the real internet was verified before any
 service was deployed, and snapshot/rollback was tested rather than assumed.
 Treat this chapter's scaffold as load-bearing: later negative tests and
-Chapter 09's capstone report both depend on it existing and working.
+[Chapter 09](09-enterprise-resilience-and-lifecycle-capstone.md)'s capstone report both depend on it existing and working.
 
 - [ ] Can explain why this volume shares one lab topology across all nine
       chapters instead of building isolated environments per chapter.

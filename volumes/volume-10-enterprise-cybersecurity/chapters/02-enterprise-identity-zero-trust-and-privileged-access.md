@@ -41,7 +41,7 @@ This PDP/PEP separation is the pattern behind every modern access-control
 technology covered in this chapter: an identity provider's conditional
 access engine is a Policy Engine; a reverse proxy enforcing that decision
 at the application edge is a Policy Enforcement Point. Zero Trust does not
-eliminate network segmentation (Chapter 4 covers that layer) — it adds an
+eliminate network segmentation ([Chapter 4](04-network-security-architecture-and-infrastructure-defense.md) covers that layer) — it adds an
 identity- and context-aware decision layer on top of network controls, so
 that network location alone is never sufficient for access.
 
@@ -158,7 +158,7 @@ months after exposure.
   investigative value against storage cost and privacy law — retain
   recordings long enough to support incident investigation timelines
   (commonly 90–365 days) and align retention with the data handling
-  policy in Chapter 8.
+  policy in [Chapter 8](08-data-security-cryptography-privacy-and-ransomware-resilience.md).
 
 ## Implementation and Automation
 
@@ -302,7 +302,7 @@ leaked, would remain valid indefinitely.
   reserve standing access only for accounts that must respond to identity
   system outages.
 - Record and retain privileged sessions, and route session recordings to
-  the SIEM/detection pipeline described in Chapter 6 so anomalous
+  the SIEM/detection pipeline described in [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md) so anomalous
   privileged behavior is monitored, not just archived.
 - Rotate machine and API credentials automatically, and prefer workload
   identity federation (short-lived, audience-scoped tokens) over static
@@ -315,7 +315,7 @@ leaked, would remain valid indefinitely.
   not IT — attesting that access remains necessary.
 - Treat the identity provider and PAM platform as Tier 0 infrastructure:
   apply the same change control, monitoring, and architecture review
-  rigor from Chapter 1 that production business systems receive.
+  rigor from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md) that production business systems receive.
 
 ## References and Knowledge Checks
 

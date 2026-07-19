@@ -18,7 +18,7 @@
 Infrastructure lifecycle management is the discipline of treating every
 asset — physical or virtual, on-premises or cloud — as having a defined,
 tracked path from initial planning through eventual retirement, rather
-than as something that simply exists once deployed. Chapter 06 introduced
+than as something that simply exists once deployed. [Chapter 06](06-understanding-enterprise-infrastructure.md) introduced
 the domain taxonomy this encyclopedia organizes itself around, and Chapter
 07 introduced the governance mechanisms that decide what gets built.
 Lifecycle management is what happens after that decision: the ongoing
@@ -36,15 +36,15 @@ a software license — moves through a common sequence of stages:
    provisioning begins.
 2. **Procure or provision.** Physical assets are purchased, received, and
    racked; cloud or virtual assets are provisioned through infrastructure
-   as code (Chapter 03, formalized further in Volume IX).
+   as code ([Chapter 03](03-automation-architecture.md), formalized further in [Volume IX](../../volume-09-infrastructure-automation/README.md)).
 3. **Deploy.** The asset is configured to its intended running state and
    brought into service.
 4. **Operate and maintain.** The asset runs in production, subject to
-   monitoring (Volume XI), patching, and change management (this
+   monitoring ([Volume XI](../../volume-11-observability-enterprise-operations/README.md)), patching, and change management (this
    chapter).
 5. **Optimize.** Capacity and cost are reviewed against actual utilization,
    often triggering resizing, consolidation, or migration between
-   consumption models discussed in Chapter 06.
+   consumption models discussed in [Chapter 06](06-understanding-enterprise-infrastructure.md).
 6. **Decommission and retire.** The asset is removed from service, its
    data sanitized or destroyed, and its records closed out — the stage
    organizations most consistently under-invest in, and the source of
@@ -89,7 +89,7 @@ Two related but distinct practices are frequently conflated:
 An enterprise needs both because they answer different questions to
 different audiences: finance and procurement consume ITAM data; change
 management, incident response, and dependency analysis consume CMDB data.
-Chapter 06's domain inventory operates one level above both — it tracks
+[Chapter 06](06-understanding-enterprise-infrastructure.md)'s domain inventory operates one level above both — it tracks
 domains, not individual assets — and a mature organization's CMDB is the
 domain inventory's natural drill-down target.
 
@@ -108,7 +108,7 @@ classify changes into three risk-based categories:
 A **Request for Change (RFC)** is the record that carries a proposed
 change through this process: what will change, why, the rollback plan, and
 the change window. The RFC pattern parallels the pull request pattern from
-Chapter 04 closely enough that many organizations implement RFCs as
+[Chapter 04](04-github-project-and-workflow-management.md) closely enough that many organizations implement RFCs as
 structured issues in the same system used for code review — the review
 and approval mechanics differ in formality, but the underlying principle
 (propose, assess, approve, execute, record) is identical.
@@ -194,7 +194,7 @@ than an implicit "we deleted the VM" assumption.
   asset, security revokes access, finance closes the ITAM record — and
   without a single accountable owner for the full checklist, individual
   steps get silently skipped. Assign end-to-end decommission ownership
-  explicitly, the same way Chapter 06 required explicit domain ownership.
+  explicitly, the same way [Chapter 06](06-understanding-enterprise-infrastructure.md) required explicit domain ownership.
 - **Data sanitization method selection has cost and time trade-offs.**
   Destroy is the most certain method but forecloses any asset resale or
   reuse value; Purge preserves reuse value at greater verification cost;
@@ -339,7 +339,7 @@ jq -r --arg cutoff "$(date -u -v+180d +%Y-%m-%d 2>/dev/null || date -u -d '+180 
   direct edit to the JSON file that skips `apply-transition.sh` bypasses
   the state machine entirely. Enforce transitions in CI (reject a pull
   request that changes `lifecycle_state` without a passing validator run)
-  the same way Chapter 02 enforced structural validation.
+  the same way [Chapter 02](02-repository-architecture.md) enforced structural validation.
 - **Change category misclassification discovered only after an incident.**
   If a change classified as "Standard" causes an outage, that is a signal
   the pre-approval criteria for that runbook were too broad, not simply a
@@ -375,7 +375,7 @@ jq -r --arg cutoff "$(date -u -v+180d +%Y-%m-%d 2>/dev/null || date -u -d '+180 
   own.
 - Restrict who can apply a lifecycle-state transition in the CMDB to a
   narrowly scoped automation identity or role, mirroring the least-
-  privilege principle Chapter 03 applied to CI-to-cloud credentials — CMDB
+  privilege principle [Chapter 03](03-automation-architecture.md) applied to CI-to-cloud credentials — CMDB
   write access is effectively write access to the organization's
   understanding of its own infrastructure.
 - Treat an emergency change's mandatory retrospective review as
@@ -401,7 +401,7 @@ jq -r --arg cutoff "$(date -u -v+180d +%Y-%m-%d 2>/dev/null || date -u -d '+180 
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — this
   encyclopedia's dated baseline, the direct analog of the EOL/EOS tracking
   this chapter recommends for every managed asset.
-- Chapter 06 (Understanding Enterprise Infrastructure) — the domain
+- [Chapter 06](06-understanding-enterprise-infrastructure.md) (Understanding Enterprise Infrastructure) — the domain
   inventory that this chapter's CMDB records drill down from.
 
 **Knowledge checks**

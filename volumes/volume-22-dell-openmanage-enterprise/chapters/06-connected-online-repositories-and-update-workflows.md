@@ -22,14 +22,14 @@ Dell publishes a continuously maintained firmware and driver catalog for
 supported PowerEdge platforms, hosted at `downloads.dell.com`. OME's
 **connected (online) repository** workflow points a catalog definition at
 this hosted source rather than at a locally imported file, so the catalog
-metadata described in Chapter 5 — which components, which versions, which
+metadata described in [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md) — which components, which versions, which
 severity — updates automatically whenever Dell publishes new content and
 the appliance refreshes.
 
 This is the default and, for any OME appliance with outbound internet
 access, the lowest-maintenance catalog sourcing model: an administrator
 does not need to manually download, transfer, or import anything for the
-catalog itself to stay current. Chapter 7 covers the alternative —
+catalog itself to stay current. [Chapter 7](07-isolated-offline-repositories-and-air-gapped-updates.md) covers the alternative —
 offline, air-gapped repositories — for environments where the appliance
 cannot reach `downloads.dell.com` at all.
 
@@ -40,7 +40,7 @@ catalog configuration typically lets you select a scope such as the full
 PowerEdge component catalog or a narrower subset, and separately lets you
 choose whether a given baseline tracks the latest published catalog
 automatically or is pinned to a specific catalog version captured at
-baseline-creation time (Chapter 5's currency-vs-stability design point).
+baseline-creation time ([Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s currency-vs-stability design point).
 The distinction matters operationally: "the online catalog" is really a
 *source* that produces a new catalog version each time Dell publishes
 updates, and OME's refresh operation is what pulls a new version of that
@@ -48,7 +48,7 @@ source into the appliance for baselines to evaluate against.
 
 ### Refresh mechanics
 
-A connected catalog refresh is itself a **job** (Chapter 4) with its own
+A connected catalog refresh is itself a **job** ([Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)) with its own
 execution history: the appliance reaches out to `downloads.dell.com` over
 HTTPS, retrieves updated catalog metadata (and, later, the actual DUP
 payloads referenced by that metadata when an update job needs them — the
@@ -65,7 +65,7 @@ Because the connected catalog workflow depends entirely on the appliance
 reaching an external Dell-operated endpoint, its correct operation is
 gated by whatever egress path the appliance has — direct internet access,
 or a configured explicit web proxy (established during first-run setup in
-Chapter 1, and adjustable afterward in application settings). Unlike most
+[Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md), and adjustable afterward in application settings). Unlike most
 of OME's other operations, which are entirely internal to the managed
 network, this is the one workflow in the volume with a hard external
 network dependency, which makes it worth validating independently of any
@@ -101,7 +101,7 @@ specific baseline or update job.
   utilization where the appliance shares egress capacity with other
   production traffic, particularly for sites with constrained internet
   circuits.
-- **Multi-appliance consistency.** In a multi-appliance estate (Chapter 1's
+- **Multi-appliance consistency.** In a multi-appliance estate ([Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)'s
   single-vs-multiple-appliance design point), decide whether each
   appliance refreshes independently against Dell's hosted source
   (simpler, no cross-appliance dependency) or whether one appliance's
@@ -281,19 +281,19 @@ def reevaluate_dependent_baselines(session, host, catalog_id):
 
 - Restrict outbound access from the appliance to the specific endpoints
   required for the connected catalog (and, if used, SupportAssist)
-  rather than granting broad internet egress, consistent with Chapter 1's
+  rather than granting broad internet egress, consistent with [Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)'s
   hardening guidance.
 - Route catalog refresh traffic through a logged, policy-enforced proxy
   where your organization's egress policy requires it, and treat proxy
   credential rotation for this path with the same discipline as any other
   service account credential.
-- Avoid disabling package signature verification (Chapter 5) as a
+- Avoid disabling package signature verification ([Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)) as a
   workaround for catalog or proxy connectivity issues; fix the
   connectivity problem rather than weakening package integrity checking.
 - Log and periodically review catalog refresh job history as part of
   routine operations, since a silently failing scheduled refresh
   degrades compliance reporting accuracy without an obvious alert unless
-  you are specifically watching for it (Chapter 4's alert policies can be
+  you are specifically watching for it ([Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)'s alert policies can be
   scoped to job-failure events for this purpose).
 - If pinning baselines to specific catalog versions for change control,
   document and enforce the approval process for moving that pin forward,
@@ -342,7 +342,7 @@ evaluation.
   is the one lab in the volume that requires real internet egress from
   the appliance, since it exercises the connected catalog path by
   definition.
-- The `lab-firmware-baseline` baseline from Chapter 5's lab, or a newly
+- The `lab-firmware-baseline` baseline from [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s lab, or a newly
   created one following the same pattern.
 - Python 3.11+ with `requests` installed.
 
@@ -366,11 +366,11 @@ evaluation.
    proceeding.
 4. Trigger a manual refresh using the `RefreshCatalog` action shown in
    Implementation and Automation, and poll its job to completion using
-   Chapter 4's job-query pattern.
+   [Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)'s job-query pattern.
 5. **Expected result:** the job completes successfully, and the catalog's
    "last refreshed" timestamp advances past the value recorded in step 3.
 6. Re-run compliance evaluation on the `lab-firmware-baseline` baseline
-   (Chapter 5's `CheckBaselineCompliance` action) and confirm it completes
+   ([Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s `CheckBaselineCompliance` action) and confirm it completes
    without error, referencing the newly refreshed catalog content.
 7. **Negative test:** using the `ome_set_proxy.py` script from
    Implementation and Automation, deliberately set the proxy configuration
@@ -392,20 +392,20 @@ evaluation.
   unreachable proxy address in place will silently break every later
   chapter's catalog-dependent exercises.
 - No other cleanup is required; the connected catalog itself is expected
-  to remain configured for use in Chapter 5's baseline exercises and
+  to remain configured for use in [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s baseline exercises and
   later chapters.
 
 ## Summary and Completion Checklist
 
 This chapter went deep on the connected, online catalog sourcing model
-introduced generically in Chapter 5: how Dell's hosted repository at
+introduced generically in [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md): how Dell's hosted repository at
 `downloads.dell.com` feeds catalog metadata into OME, how refresh
 operations and job scheduling keep that metadata current, and how the
 appliance's outbound network path — direct or proxied — is a hard
 dependency worth validating independently of any specific baseline or
 update job failure. The lab validated connectivity, exercised a real
 catalog refresh, and included a deliberate negative test breaking egress
-to confirm the dependency is real rather than assumed. Chapter 7 now
+to confirm the dependency is real rather than assumed. [Chapter 7](07-isolated-offline-repositories-and-air-gapped-updates.md) now
 covers the alternative model for environments where this chapter's
 internet dependency is not acceptable at all: fully offline, air-gapped
 repositories.

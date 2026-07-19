@@ -54,14 +54,14 @@ platform generation. Two catalog sourcing models exist:
 - **Offline (local/repository-hosted) catalog** — a catalog and its
   associated firmware payloads are mirrored to internal infrastructure
   (a local HTTP(S)/CIFS/NFS repository, or delivered via OpenManage
-  Enterprise's repository management, Volume XXII Chapter 6/7) for
+  Enterprise's repository management, [Volume XXII Chapter 6](../../volume-22-dell-openmanage-enterprise/chapters/06-connected-online-repositories-and-update-workflows.md)/7) for
   air-gapped or egress-restricted environments, or simply to control
   exactly which firmware versions are approved for deployment rather than
   always pulling the latest available.
 
 At fleet scale, catalog-driven updates and compliance reporting (comparing
 current versions against a defined baseline) are OpenManage Enterprise's
-job (Volume XXII, Chapters 5 through 7); this chapter covers the
+job ([Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md), Chapters 5 through 7); this chapter covers the
 single-server mechanics that OME orchestrates underneath at scale, and
 which remain essential to understand for a server managed outside OME or
 for debugging an OME-driven update that failed on one specific unit.
@@ -122,7 +122,7 @@ proper pre-update validation and staged rollout.
   your monitoring would surface an update-induced regression) and
   document that decision, since rollback availability itself is
   time/version-limited as described above.
-- **Treat iDRAC10's faster early-life update cadence (Chapter 1) as a
+- **Treat iDRAC10's faster early-life update cadence ([Chapter 1](01-architecture-generations-licensing-and-first-access.md)) as a
   planning input here specifically.** A newer platform generation
   reasonably needs more frequent firmware attention in its first
   operational year than a mature, stable iDRAC9 fleet; build your update
@@ -269,10 +269,10 @@ intentionally block downgrade.
   platform and installed component (Design Considerations) — this is the
   most common cause of an update rejected before it even begins applying.
 - **Online catalog retrieval fails.** Confirm outbound HTTPS reachability
-  from iDRAC's management network to `downloads.dell.com` (Chapter 3's
+  from iDRAC's management network to `downloads.dell.com` ([Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)'s
   network and firewall guidance applies directly here) — this failure
   mode is identical in shape to the OME appliance's catalog-reachability
-  issue described in Volume XXII, Chapter 1, since both depend on the
+  issue described in [Volume XXII, Chapter 1](../../volume-22-dell-openmanage-enterprise/chapters/01-architecture-requirements-deployment-and-first-configuration.md), since both depend on the
   same underlying connectivity.
 - **BIOS update applies but expected new settings/options don't appear.**
   Confirm the update actually completed and the subsequent reboot ran to
@@ -310,7 +310,7 @@ intentionally block downgrade.
   configuration baseline (SCP export captures some but not all firmware
   version detail; `racadm swinventory` output is the authoritative
   source) so firmware state is auditable independent of Lifecycle Log
-  retention limits (Chapter 6).
+  retention limits ([Chapter 6](06-hardware-health-power-thermal-logs-and-support.md)).
 
 ## References and Knowledge Checks
 
@@ -322,7 +322,7 @@ intentionally block downgrade.
   `swinventory` command reference
 - Dell Technologies, *iDRAC Redfish API Guide* — `UpdateService` and
   `SimpleUpdate` action
-- Dell Technologies, *OpenManage Enterprise* Chapters 5–7 (Volume XXII)
+- Dell Technologies, *OpenManage Enterprise* Chapters 5–7 ([Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md))
   for fleet-scale catalog and compliance management
 - `SOFTWARE_VERSIONS.md` in this repository for the dated iDRAC9/iDRAC10
   baseline
@@ -385,7 +385,7 @@ reasonable choice, since updating it does not require a host OS reboot).
    showing `TaskState` progressing toward `Completed`. Because this is
    iDRAC firmware, expect the controller to restart automatically as part
    of applying the update — brief unreachability of the GUI/API is
-   expected, matching the behavior described in Chapter 2 for a
+   expected, matching the behavior described in [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md) for a
    controller restart.
 3. Once the controller returns, confirm the new firmware version:
 
@@ -403,7 +403,7 @@ reasonable choice, since updating it does not require a host OS reboot).
 
    **Expected result:** an entry documenting the firmware update appears
    with a timestamp matching step 2, reinforcing this chapter's
-   connection to Chapter 6's log guidance.
+   connection to [Chapter 6](06-hardware-health-power-thermal-logs-and-support.md)'s log guidance.
 5. **Negative test:** attempt to stage an update referencing a
    non-existent image URI:
 
@@ -446,8 +446,8 @@ versus offline catalog sourcing, update sequencing across multiple
 components, and rollback's specific availability limits. The lab exercised
 a full staged-update cycle including monitoring and a negative test, and
 connected firmware update events back to the Lifecycle Log covered in
-Chapter 6. Fleet-scale catalog compliance and orchestration across many
-servers at once is OpenManage Enterprise's domain, covered in Volume XXII
+[Chapter 6](06-hardware-health-power-thermal-logs-and-support.md). Fleet-scale catalog compliance and orchestration across many
+servers at once is OpenManage Enterprise's domain, covered in [Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md)
 Chapters 5 through 7, which this single-server mechanical understanding
 directly supports when troubleshooting an OME-driven update that fails on
 one unit.

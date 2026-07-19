@@ -147,7 +147,7 @@ gap between the current architecture and the stated target.
   resolvers ignore or extend TTLs, so DNS-based failover should be
   treated as "usually fast" rather than "guaranteed within N seconds" for
   the most time-critical failover requirements, where Global Accelerator
-  (Chapter 03) or a load-balancer-level mechanism may be more
+  ([Chapter 03](03-secure-networking-hybrid-connectivity-and-edge.md)) or a load-balancer-level mechanism may be more
   appropriate.
 - **Active/active introduces data-conflict design obligations.**
   DynamoDB Global Tables' last-writer-wins conflict resolution is
@@ -390,7 +390,7 @@ aws resiliencehub start-app-assessment \
   using Region-appropriate KMS keys (KMS keys are Regional; a
   multi-Region key or an equivalent key per Region must be provisioned
   deliberately).
-- Apply the same guardrail SCPs and security baseline from Chapter 02 to
+- Apply the same guardrail SCPs and security baseline from [Chapter 02](02-multi-account-identity-governance-and-landing-zones.md) to
   the DR Region's accounts/OUs — DR infrastructure is not exempt from
   the organization's security posture.
 - Run DR failover exercises ("game days") on a recurring cadence and

@@ -195,7 +195,7 @@ tighter RPO than the default mechanism happens to provide.
 
 ### Encryption and key management alignment
 
-Apply the key management model decision from Chapter 03 consistently
+Apply the key management model decision from [Chapter 03](03-cloud-identity-access-and-cryptographic-services.md) consistently
 across storage and database services: a data classification requiring
 customer-managed keys for compliance should use them uniformly across
 every storage and database service holding that data, including backups
@@ -348,18 +348,18 @@ cloud-cli database delete --instance-id "$TARGET_INSTANCE" --skip-final-snapshot
   for any public-read object storage use case (static website assets,
   for example), never a default-open bucket.
 - Encrypt data at rest for every storage and database service using the
-  key management model established in Chapter 03, applied consistently
+  key management model established in [Chapter 03](03-cloud-identity-access-and-cryptographic-services.md), applied consistently
   across primary data, replicas, and backups.
 - Enable versioning or point-in-time recovery on data stores holding
   data that cannot be regenerated, as protection against accidental
   overwrite or deletion in addition to infrastructure failure.
 - Restrict database network access to the specific application security
-  groups from Chapter 04 that require it; never expose a database
+  groups from [Chapter 04](04-cloud-networking-and-hybrid-connectivity.md) that require it; never expose a database
   endpoint directly to the public internet.
 - Test restores on a defined schedule and record the result as an
   auditable artifact — an untested backup should be treated as an
   unverified control, not a satisfied one.
-- Apply the same least-privilege identity model from Chapter 03 to data
+- Apply the same least-privilege identity model from [Chapter 03](03-cloud-identity-access-and-cryptographic-services.md) to data
   access: a workload identity should hold read or write access to only
   the specific tables, buckets, or prefixes it requires, not broad
   account-wide storage or database permissions.
@@ -525,9 +525,9 @@ caching databases, each suited to a distinct consistency and scale
 requirement. The CAP theorem frames the practical consistency/availability
 trade-off distributed databases make under partition, and RPO/RTO —
 determined from business impact, not from a default backup habit — should
-drive every backup, replication, and recovery design. Chapter 07 extends
+drive every backup, replication, and recovery design. [Chapter 07](07-hybrid-and-multicloud-architecture.md) extends
 these data services into hybrid and multicloud replication patterns, and
-Chapter 09 covers ongoing observability and resilience operations for the
+[Chapter 09](09-cloud-automation-observability-resilience-and-lifecycle-operations.md) covers ongoing observability and resilience operations for the
 data layer.
 
 - [ ] Can choose correctly among object, block, and file storage for a

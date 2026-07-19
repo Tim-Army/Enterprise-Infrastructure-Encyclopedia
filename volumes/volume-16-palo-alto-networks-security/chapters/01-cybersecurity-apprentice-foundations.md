@@ -130,7 +130,7 @@ output for management CPU versus dataplane utilization.
   roles.
 - **Certification sequencing.** The Cybersecurity Apprentice credential is
   intentionally vendor-adjacent and portfolio-wide; it assumes no prior
-  hands-on PAN-OS experience. Cybersecurity Practitioner (Chapter 02) adds
+  hands-on PAN-OS experience. Cybersecurity Practitioner ([Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)) adds
   platform depth. The role-based portfolio (PCNSA, then PCNSE) requires
   hands-on configuration skill built in Chapters 03–07. Plan a study path
   that does not skip straight to PCNSE without the intermediate hands-on
@@ -138,7 +138,7 @@ output for management CPU versus dataplane utilization.
   Web UI, not just conceptual recall.
 - **Lab platform choice.** Three common ways to get hands-on PAN-OS
   practice exist: a VM-Series evaluation license running under a local
-  hypervisor (Chapter 03), a cloud-hosted VM-Series instance billed
+  hypervisor ([Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md)), a cloud-hosted VM-Series instance billed
   pay-as-you-go, and vendor-hosted training sandboxes (Palo Alto Networks
   Beacon). A local hypervisor lab is the lowest-cost, most repeatable option
   for the exercises in this volume and is assumed for the Hands-On Lab
@@ -147,7 +147,7 @@ output for management CPU versus dataplane utilization.
 - **CLI-first learning.** The Web UI is how most day-to-day administration
   happens in production, but the CLI is faster to script, faster to audit
   in a terminal session recording, and is what every troubleshooting
-  command in Chapter 07 assumes. Building CLI fluency early pays off
+  command in [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md) assumes. Building CLI fluency early pays off
   disproportionately as the volume progresses.
 
 ## Implementation and Automation
@@ -248,7 +248,7 @@ firewall feels slow."
 - **License and content mismatch warnings.** A brand-new firewall without
   an activated support/threat license will still commit basic networking
   configuration, but security profile objects that depend on
-  signature content (Chapter 05) will warn that content is not current
+  signature content ([Chapter 05](05-application-identity-threat-and-data-security-policy.md)) will warn that content is not current
   until a valid license triggers a dynamic update.
 
 ## Security and Best Practices
@@ -258,7 +258,7 @@ firewall feels slow."
   platform that does not enforce it.
 - Create named, role-based administrator accounts for every engineer
   instead of sharing the `admin` account; role-based access control (RBAC)
-  is covered operationally in Chapter 06 alongside Panorama administrator
+  is covered operationally in [Chapter 06](06-panorama-installation-central-management-and-logging.md) alongside Panorama administrator
   roles.
 - Restrict management interface reachability with a permitted-IP list
   (`Device > Setup > Management > Permitted IP Addresses`) and place the
@@ -311,7 +311,7 @@ validation.
 
 **Prerequisites**
 
-- A lab PAN-OS firewall: a VM-Series evaluation instance (see Chapter 03)
+- A lab PAN-OS firewall: a VM-Series evaluation instance (see [Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md))
   or an equivalent lab/sandbox firewall with console or SSH access at its
   factory-default management IP.
 - A terminal client capable of serial console or SSH (for example,
@@ -395,7 +395,7 @@ validation.
    **Expected result:** Hostname reads `pa-lab-fw01`, the management IP
    reads `10.10.10.5`, and `labeng` appears as a configured administrator.
 
-9. **Cleanup:** If this lab firewall will be reused for Chapter 03's
+9. **Cleanup:** If this lab firewall will be reused for [Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md)'s
    bootstrap exercises, remove the lab-only administrator account and
    restore any organization-standard baseline configuration:
 

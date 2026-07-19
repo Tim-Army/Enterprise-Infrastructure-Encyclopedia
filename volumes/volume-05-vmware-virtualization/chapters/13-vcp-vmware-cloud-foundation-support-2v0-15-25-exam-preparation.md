@@ -34,7 +34,7 @@ stated candidate profile is an L2/L3 support engineer or cloud operations
 staff member with hands-on VCF support experience, and its heaviest
 weighting sits in diagnostic, break-fix troubleshooting domains rather
 than initial design or deployment. This distinguishes it from the
-VCP-VCF Administrator exam (Chapter 14), which weights deployment and
+VCP-VCF Administrator exam ([Chapter 14](14-vcp-vmware-cloud-foundation-administrator-2v0-17-25-exam-preparation.md)), which weights deployment and
 day-2 operational configuration more heavily, and from the VCP-VVF exams
 (Chapters 15–16), which are scoped to the lighter vSphere Foundation
 bundle rather than the full VCF stack. Preparation should be weighted
@@ -43,7 +43,7 @@ broad initial-deployment procedural memorization.
 
 ### VCF components a support engineer must reason about
 
-Chapter 1 introduced VMware Cloud Foundation at a conceptual level: the
+[Chapter 1](01-vmware-virtualization-architecture-and-design.md) introduced VMware Cloud Foundation at a conceptual level: the
 full SDDC stack (vSphere, vSAN, NSX) with **SDDC Manager** as the
 lifecycle-management and orchestration layer, organized into a mandatory
 **management domain** and one or more **VI workload domains**. A support
@@ -73,7 +73,7 @@ fleet-management layers:
   surfaced during fleet-wide operations.
 - **Identity Broker** — VCF's centralized identity and federation layer
   for VCF-managed components, extending the identity-federation concepts
-  Chapter 3 covered for vCenter Server specifically to the broader
+  [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md) covered for vCenter Server specifically to the broader
   fleet/multi-component scope. Support-relevant failure modes include
   authentication/authorization failures traced to a broken federation
   trust relationship (an expired certificate, a misconfigured claim
@@ -87,7 +87,7 @@ fleet-management layers:
   unavailable rather than an obvious licensing error message.
 - **VCF Operations** — the observability and operations-management
   capability (building on the same event/task/alarm data model concepts
-  Chapter 9 covered for vSphere specifically, extended across the full
+  [Chapter 9](09-vsphere-lifecycle-automation-observability-and-troubleshooting.md) covered for vSphere specifically, extended across the full
   VCF stack) used for fleet-wide monitoring, capacity, and compliance
   reporting; support scenarios include data collection gaps (a component
   not reporting into VCF Operations due to a connectivity or credential
@@ -238,7 +238,7 @@ Get-VMHost -Name "esxi01.corp.example" | Select-Object Name, ConnectionState
   production VCF infrastructure.
 - Apply the same least-privilege discipline to any lab service accounts
   used for VCF Operations or Identity Broker practice configuration as
-  Chapter 3 and Chapter 8 establish for production identity and RBAC
+  [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md) and [Chapter 8](08-vsphere-and-nsx-security-architecture.md) establish for production identity and RBAC
   design — building the habit during preparation reinforces it for real
   support engagements.
 
@@ -255,7 +255,7 @@ Get-VMHost -Name "esxi01.corp.example" | Select-Object Name, ConnectionState
   this repository's certification-to-volume mapping.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 1 for the conceptual introduction to VCF, SDDC Manager, and
+- See [Chapter 1](01-vmware-virtualization-architecture-and-design.md) for the conceptual introduction to VCF, SDDC Manager, and
   workload domains.
 - See Chapters 2, 3, and 9 for the ESXi, vCenter Server, and lifecycle/
   observability foundations VCF orchestration builds on.
@@ -267,7 +267,7 @@ reproductions of any Broadcom exam item)*
 
 1. Why does this exam's candidate profile and domain weighting call for a
    different preparation emphasis than the VCP-VCF Administrator exam
-   covered in Chapter 14?
+   covered in [Chapter 14](14-vcp-vmware-cloud-foundation-administrator-2v0-17-25-exam-preparation.md)?
 2. Describe the layered diagnostic habit this chapter recommends for any
    VCF orchestration-layer failure, and explain why skipping the
    underlying-component check first is a common, costly mistake.
@@ -291,9 +291,9 @@ introduced faults diagnosed without reference material.
 
 **Prerequisites**
 
-- A lab environment with vCenter Server (Chapter 3), at least two ESXi
-  hosts (Chapter 2), a VDS (Chapter 4), and NSX Manager with a prepared
-  transport fabric (Chapter 10) already in place.
+- A lab environment with vCenter Server ([Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md)), at least two ESXi
+  hosts ([Chapter 2](02-esxi-installation-configuration-and-host-operations.md)), a VDS ([Chapter 4](04-vsphere-virtual-networking.md)), and NSX Manager with a prepared
+  transport fabric ([Chapter 10](10-installing-vmware-nsx.md)) already in place.
 - A lab partner to introduce faults blind, or a personal discipline of
   introducing a fault and waiting at least a day before attempting
   diagnosis, to better simulate genuine unknown-fault conditions.
@@ -314,12 +314,12 @@ introduced faults diagnosed without reference material.
    binding credential.
 
    **Expected result (diagnosis):** using `vecs-cli` and identity source
-   test-connection tooling from Chapter 3, correctly identify whether the
+   test-connection tooling from [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md), correctly identify whether the
    symptom traces to a certificate/trust problem or a credential problem
    — without reference material.
 
 3. **Fault 2 (networking domain):** deliberately misconfigure a DFW rule's
-   Applied To scope (Chapter 11) so that an intended application flow is
+   Applied To scope ([Chapter 11](11-configuring-vmware-nsx.md)) so that an intended application flow is
    unexpectedly blocked.
 
    **Expected result (diagnosis):** using Traceflow and DFW rule hit
@@ -327,11 +327,11 @@ introduced faults diagnosed without reference material.
    without reference material.
 
 4. **Fault 3 (storage domain):** simulate a vSAN network partition (as in
-   the Chapter 6 lab's MTU-mismatch scenario) or a datastore connectivity
+   the [Chapter 6](06-vsphere-storage-and-vsan.md) lab's MTU-mismatch scenario) or a datastore connectivity
    loss.
 
    **Expected result (diagnosis):** using `esxcli vsan cluster get` and
-   Skyline Health (Chapter 6), correctly identify the partition/
+   Skyline Health ([Chapter 6](06-vsphere-storage-and-vsan.md)), correctly identify the partition/
    connectivity root cause without reference material.
 
 5. For each fault, document the diagnostic sequence actually used (which

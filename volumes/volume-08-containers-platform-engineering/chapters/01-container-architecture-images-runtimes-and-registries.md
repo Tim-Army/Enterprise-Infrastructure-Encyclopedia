@@ -129,7 +129,7 @@ user namespaces. Docker Engine historically required a root daemon; recent
 Docker Engine releases support a rootless mode, but it is not the default. In
 Kubernetes, the equivalent decision is enforced per-pod through
 `securityContext.runAsNonRoot` and `runAsUser`, and cluster-wide through
-Pod Security admission (Chapter 06) — but the image itself should not
+Pod Security admission ([Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md)) — but the image itself should not
 require root to begin with. Baking a `USER` directive into the Dockerfile is
 a control that survives even if a cluster's admission policy is
 misconfigured.
@@ -139,7 +139,7 @@ misconfigured.
 content after you have already tested and approved it. Production manifests
 should pin to an immutable digest (`app@sha256:...`) or, at minimum, a fully
 qualified, non-floating tag, with the digest recorded in the deployment
-pipeline's provenance record (Chapter 07). Registries that support tag
+pipeline's provenance record ([Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md)). Registries that support tag
 immutability policies (Harbor project-level immutability rules, ECR tag
 immutability) should have it enabled for any tag pattern used in production.
 
@@ -255,7 +255,7 @@ Common failure modes and their diagnostics:
 For interactive debugging of a running container without a shell baked into
 the image, use an **ephemeral debug container** rather than adding tooling to
 the production image — this is covered in depth for Kubernetes pods in
-Chapter 03, and the same `crictl` / `ctr` node-level tooling above applies
+[Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md), and the same `crictl` / `ctr` node-level tooling above applies
 when the failure is below the pod abstraction, at the runtime or image layer.
 
 ## Security and Best Practices
@@ -274,7 +274,7 @@ when the failure is below the pod abstraction, at the runtime or image layer.
   gate promotion on severity thresholds rather than scanning only in CI as
   an informational step.
 - Sign every image that reaches a production registry and enforce signature
-  verification at cluster admission (Chapter 06 and Chapter 07 cover the
+  verification at cluster admission ([Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md) and [Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md) cover the
   admission-side enforcement with Kyverno/cosign policies).
 - Prefer immutable digests in deployment manifests; if tags must be used,
   enable registry-side tag immutability for production tag patterns.
@@ -283,7 +283,7 @@ when the failure is below the pod abstraction, at the runtime or image layer.
   reaches a node.
 - Enable content trust / provenance attestation (SLSA-style build
   provenance, in-toto attestations) so a consumer can verify not just what
-  is in an image but how and where it was built — expanded in Chapter 07.
+  is in an image but how and where it was built — expanded in [Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md).
 
 ## References and Knowledge Checks
 

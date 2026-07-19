@@ -10,7 +10,7 @@
 - Write LogQL queries against a label-indexed log store and explain why
   its indexing model differs from full-text search.
 - Correlate logs with traces and metrics using shared identifiers
-  (`trace_id`, `service.name`) established in Chapter 02.
+  (`trace_id`, `service.name`) established in [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md).
 - Apply a tiered retention policy that balances investigation needs,
   storage cost, and regulatory retention obligations.
 - Diagnose common logging pipeline failures: agent backpressure, log
@@ -39,7 +39,7 @@ with consistent field names (`level`, `message`, `service.name`,
 Structured logging is the enterprise default for anything beyond a
 single developer's local debugging session: it is machine-parseable
 without a fragile regular expression, it composes with the same
-semantic-convention field names used in metrics and traces (Chapter 02),
+semantic-convention field names used in metrics and traces ([Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)),
 and it lets a query engine filter and aggregate on fields directly rather
 than on substrings.
 
@@ -93,7 +93,7 @@ redeploy) scoped to the investigation at hand.
 ### The log pipeline: collection, processing, storage
 
 Enterprise log pipelines separate three concerns, structurally similar to
-the OTel Collector's agent/gateway split from Chapter 02:
+the OTel Collector's agent/gateway split from [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md):
 
 - **Collection** — an agent (Fluent Bit, Vector, or the OpenTelemetry
   Collector's `filelog` receiver) running on every host or as a
@@ -104,17 +104,17 @@ the OTel Collector's agent/gateway split from Chapter 02:
   drained rather than silently abandoned) and must apply backpressure
   correctly — a collection agent that blocks the application's write
   path when downstream is saturated can turn a logging pipeline outage
-  into an application outage, the same failure mode Chapter 02 covers
+  into an application outage, the same failure mode [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md) covers
   for telemetry export generally.
 - **Processing** — parsing (structured JSON parsed directly; legacy
   unstructured lines parsed with a defined grok-style pattern),
   enrichment (adding `trace_id` correlation where missing, adding
   ownership metadata from the service catalog), redaction (removing PII
-  and secrets before the log leaves the trust boundary, per Chapter 02's
+  and secrets before the log leaves the trust boundary, per [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)'s
   design principle), and routing (splitting streams by destination — a
   hot, queryable store for recent operational logs, a cold archive for
   compliance retention, and potentially a SIEM for security-relevant
-  logs, covered further in Volume X).
+  logs, covered further in [Volume X](../../volume-10-enterprise-cybersecurity/README.md)).
 - **Storage** — a log backend optimized for the query pattern the
   organization actually uses. Two dominant models exist: full-text
   indexed search (Elasticsearch/OpenSearch) indexes every field and
@@ -126,7 +126,7 @@ the OTel Collector's agent/gateway split from Chapter 02:
   at high volume. Enterprises frequently run both: label-indexed storage
   for general operational logging at volume, full-text search for
   security and compliance workloads that require broad ad hoc text
-  search (Volume X covers SIEM sizing in depth).
+  search ([Volume X](../../volume-10-enterprise-cybersecurity/README.md) covers SIEM sizing in depth).
 
 ```text
 [ app container stdout ] --tail--> [ node collection agent ] --process/redact/route--> [ hot store (queryable) ]
@@ -163,7 +163,7 @@ design: too few labels and a query must scan more log volume than
 necessary; too many labels, or a label with unbounded values (a request
 ID, a user ID used as a label instead of a queryable field), and the
 label index itself explodes in cardinality, degrading the store the same
-way unbounded metric labels degrade Prometheus (Chapter 02). The rule of
+way unbounded metric labels degrade Prometheus ([Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)). The rule of
 thumb: labels are for the small set of dimensions you filter *by*
 (service, environment, level, region); fields extracted with `| json`
 are for everything you filter *on the value of* after narrowing the
@@ -172,7 +172,7 @@ stream.
 ### Correlating logs with traces and metrics
 
 A log line's diagnostic value multiplies when it carries the same
-`trace_id` a distributed trace uses (Chapter 05) — an engineer
+`trace_id` a distributed trace uses ([Chapter 05](05-distributed-tracing-profiling-and-dependency-analysis.md)) — an engineer
 investigating a slow trace span can pivot directly to the exact log
 lines emitted during that span, and an engineer starting from an
 alarming log line can pivot directly to the full trace for that request.
@@ -190,7 +190,7 @@ only during an incident, when it is too late to matter.
   Apply head-based log sampling for high-volume, low-value log lines
   (successful health checks, routine `INFO` milestones) while
   guaranteeing 100% capture for `ERROR`/`WARN` and for any log line
-  belonging to a trace that was itself sampled for retention (Chapter 05)
+  belonging to a trace that was itself sampled for retention ([Chapter 05](05-distributed-tracing-profiling-and-dependency-analysis.md))
   — correlating a kept trace with a discarded log defeats the
   correlation benefit above.
 - **Retention tiering.** Not all logs warrant the same retention. A
@@ -198,7 +198,7 @@ only during an incident, when it is too late to matter.
   general operational logs (matched to typical incident investigation
   windows), a compressed cold archive of 1-7 years for logs with a
   regulatory retention obligation (audit logs, authentication events,
-  financial transaction logs — Volume X and applicable regulatory
+  financial transaction logs — [Volume X](../../volume-10-enterprise-cybersecurity/README.md) and applicable regulatory
   frameworks such as PCI DSS or SOX drive the exact figure), and
   immediate, permanent exclusion at the source for anything that should
   never be logged at all (raw payment card numbers, plaintext
@@ -382,14 +382,14 @@ overrides:
   collection agent — logs written to local disk before redaction are
   already at risk if the host is compromised or if local log files are
   collected by an unrelated tool.
-- Apply the same allow-list-over-block-list principle from Chapter 02 to
+- Apply the same allow-list-over-block-list principle from [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md) to
   log field emission: define which fields a structured log event may
   contain by schema, rather than trying to enumerate every field that
   must never appear.
 - Encrypt log data in transit (TLS from collection agent to storage) and
   at rest (both hot store and cold archive), and scope access to the log
   store with the same least-privilege principle as the service catalog
-  in Chapter 01 — read access to another team's operational logs during
+  in [Chapter 01](01-observability-operating-model-and-service-ownership.md) — read access to another team's operational logs during
   cross-service debugging is often appropriate, but bulk export access
   should be restricted and logged.
 - Treat audit-relevant logs (authentication, authorization changes,
@@ -420,7 +420,7 @@ overrides:
   for structured log data model and trace-context correlation.
 - NIST SP 800-92, *Guide to Computer Security Log Management*, for
   general log management and retention guidance referenced further in
-  Volume X.
+  [Volume X](../../volume-10-enterprise-cybersecurity/README.md).
 
 **Knowledge Checks**
 
@@ -592,8 +592,8 @@ Label-indexed storage trades full-text search for cost efficiency at
 volume and requires the same cardinality discipline metrics do.
 `trace_id` correlation is what lets an engineer move fluidly between
 metrics, traces, and logs during an investigation — the connective
-tissue this chapter and Chapter 02 both depend on. Chapter 05 continues
-with distributed tracing itself; Chapter 06 builds alerting on top of
+tissue this chapter and [Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md) both depend on. [Chapter 05](05-distributed-tracing-profiling-and-dependency-analysis.md) continues
+with distributed tracing itself; [Chapter 06](06-actionable-alerting-on-call-and-operations-centers.md) builds alerting on top of
 log- and metric-derived signals together.
 
 **Completion checklist**

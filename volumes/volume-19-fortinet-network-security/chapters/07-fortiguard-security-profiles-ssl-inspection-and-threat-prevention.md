@@ -40,7 +40,7 @@ FortiOS security profiles operate in one of two inspection modes:
   higher throughput at the cost of some detection depth compared to full
   proxy reconstruction. Flow-based is the default and recommended mode for
   most profile types on current FortiOS releases and benefits most
-  directly from NP/CP hardware acceleration (Chapter 04) where available.
+  directly from NP/CP hardware acceleration ([Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)) where available.
 - **Proxy-based inspection** fully reconstructs the session (buffering
   and reassembling content) before applying inspection, enabling deeper
   content analysis for certain profile types at a higher CPU and latency
@@ -103,7 +103,7 @@ server traffic is not a browsing session).
   inspecting everything indiscriminately.
 - **Certificate distribution at scale.** Full inspection requires every
   client to trust the FortiGate's CA certificate; distribute it via Group
-  Policy, MDM, or a configuration management baseline (Volume IX) rather
+  Policy, MDM, or a configuration management baseline ([Volume IX](../../volume-09-infrastructure-automation/README.md)) rather
   than manual per-device installation, and plan for certificate rotation
   before the CA certificate's validity expires.
 - **Performance impact of deep inspection.** Proxy-mode deep inspection is
@@ -231,7 +231,7 @@ FGT-LAB-01 (policy) # end
 ```
 
 This attaches the full security-profile stack to policy 1
-(`LAN-to-WAN-Outbound` from Chapter 06), turning the previously simple
+(`LAN-to-WAN-Outbound` from [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)), turning the previously simple
 permit/NAT decision into a fully inspected outbound path.
 
 ### FortiSandbox integration
@@ -293,21 +293,21 @@ infrastructure.
   policy carrying security profiles; a block that is not logged cannot be
   investigated, tuned, or reported on.
 - Keep FortiGuard content current through scheduled updates
-  (Chapter 08 covers scheduling and centralized update management in
+  ([Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md) covers scheduling and centralized update management in
   depth); an expired or stale FortiGuard subscription silently degrades
   every profile type described in this chapter without an obvious service
   interruption.
 - Do not enable full SSL deep inspection organization-wide without a
   documented privacy/legal review and a category-based exemption list for
   sensitive destinations; document the practice in the acceptable use
-  policy referenced in Chapter 01.
+  policy referenced in [Chapter 01](01-nse-1-cybersecurity-awareness-and-digital-safety.md).
 - Rotate and protect the private key behind any CA certificate used for
   deep inspection with the same rigor as any other PKI root/intermediate
   key material — compromise of that key would allow undetected
   interception of any client that trusts it.
 - Treat FortiSandbox integration as a meaningful gap-closer specifically
   for unknown/zero-day threats that signature-based AV cannot match
-  (consistent with Chapter 02's kill-chain framing), not as a redundant
+  (consistent with [Chapter 02](02-nse-2-threat-landscape-security-technologies-and-fortinet-portfolio.md)'s kill-chain framing), not as a redundant
   feature layered on top of already-adequate AV coverage.
 
 ## References and Knowledge Checks
@@ -348,7 +348,7 @@ requirement — including a negative test exempting one category.
 
 **Prerequisites**
 
-- FGT-LAB-01 with the firewall policies from Chapter 06.
+- FGT-LAB-01 with the firewall policies from [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md).
 - A LAN test client able to browse the internet through FGT-LAB-01 and
   install the FortiGate's deep-inspection CA certificate for this lab.
 - Access to the EICAR standard antivirus test file (a widely published,
@@ -365,7 +365,7 @@ requirement — including a negative test exempting one category.
 
 3. Attach `AV-Standard`, `IPS-Standard`, `WebFilter-Standard`,
    `AppCtrl-Standard`, and `Certificate-Inspection` to the
-   `LAN-to-WAN-Outbound` policy from Chapter 06, with `logtraffic all`
+   `LAN-to-WAN-Outbound` policy from [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md), with `logtraffic all`
    enabled.
 
 4. From the LAN test client, attempt to download the EICAR test file over
@@ -412,7 +412,7 @@ requirement — including a negative test exempting one category.
 
 - Revert the `LAN-to-WAN-Outbound` policy's `ssl-ssh-profile` back to
   `Certificate-Inspection` to avoid breaking other labs (notably
-  Chapter 06's SSL VPN and Chapter 08's SD-WAN and REST API examples,
+  [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)'s SSL VPN and [Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md)'s SD-WAN and REST API examples,
   which do not require deep inspection and should not incur its
   performance cost by default).
 - Remove the temporary web filter override added in step 9 if not already
@@ -422,14 +422,14 @@ requirement — including a negative test exempting one category.
 
 ## Summary and Completion Checklist
 
-This chapter turned Chapter 06's permit/deny/NAT firewall policies into
+This chapter turned [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)'s permit/deny/NAT firewall policies into
 fully threat-inspected traffic paths: antivirus, IPS, web filtering, and
 application control profiles closing the delivery- and
-exploitation-stage kill-chain gaps identified in Chapter 02, SSL
+exploitation-stage kill-chain gaps identified in [Chapter 02](02-nse-2-threat-landscape-security-technologies-and-fortinet-portfolio.md), SSL
 inspection (certificate and full deep-inspection modes) restoring
 visibility into encrypted traffic with an explicit trust and privacy
 trade-off, and FortiSandbox integration closing the unknown-threat gap
-signature-based AV alone cannot close. Chapter 08 shifts focus to SD-WAN,
+signature-based AV alone cannot close. [Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md) shifts focus to SD-WAN,
 day-two operations, central management, and automation across this now
 fully inspected policy set.
 

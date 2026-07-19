@@ -7,7 +7,7 @@
 - Distinguish deployment templates from compliance templates and choose
   the right one for a given operational goal.
 - Design a configuration compliance program that applies the
-  baseline-and-drift pattern from Chapter 5 to configuration rather than
+  baseline-and-drift pattern from [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md) to configuration rather than
   firmware.
 - Automate template creation, deployment, and compliance evaluation
   through the REST API, including pagination and asynchronous job
@@ -27,7 +27,7 @@ mechanism iDRAC itself uses for configuration export/import — the Server
 Configuration Profile (SCP) — which OME wraps with fleet-scale
 capture, storage, comparison, and deployment tooling. This is the same
 architectural pattern the volume has used twice already for firmware: a
-reference object (catalog in Chapter 5, template here) that a device
+reference object (catalog in [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md), template here) that a device
 population is evaluated against or deployed from, producing a
 compliance or deployment result you can audit.
 
@@ -45,7 +45,7 @@ template object supports two distinct operational uses:
   production, or for bulk-remediating a fleet to a corrected setting.
 - **Compliance evaluation** — comparing a device's *current* configuration
   against a template without changing anything, producing a drift report
-  analogous to Chapter 5's firmware compliance report, but for
+  analogous to [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s firmware compliance report, but for
   configuration attributes instead of component versions.
 
 This dual use is why templates are described as first-class objects
@@ -55,7 +55,7 @@ drift on existing ones.
 
 ### License dependency
 
-As established in Chapter 2, configuration templates and configuration
+As established in [Chapter 2](02-identity-licensing-security-and-administrative-control.md), configuration templates and configuration
 compliance are gated behind an OpenManage Enterprise Advanced (or
 Advanced Plus) entitlement — the base license does not include this
 capability. Confirm your appliance's license state before relying on this
@@ -104,7 +104,7 @@ skill this chapter builds toward.
   than relying on manual per-device attribute overrides at deployment
   time — manual overrides do not scale and are a common source of
   deployment-time transcription errors.
-- **Compliance remediation policy.** Decide, analogous to Chapter 5's
+- **Compliance remediation policy.** Decide, analogous to [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s
   firmware severity policy, how quickly configuration drift must be
   remediated once detected, and whether remediation is automatic
   (re-deploying the template to correct drift) or requires a change
@@ -112,7 +112,7 @@ skill this chapter builds toward.
   behaviorally disruptive than a firmware update.
 - **Automation and infrastructure-as-code alignment.** If your
   organization manages server configuration as code elsewhere (Ansible
-  playbooks, Terraform, or similar, covered in Volume IX), decide how
+  playbooks, Terraform, or similar, covered in [Volume IX](../../volume-09-infrastructure-automation/README.md)), decide how
   OME templates fit into that model — as the source of truth, as a
   downstream enforcement mechanism reflecting a source of truth defined
   elsewhere, or as a narrower safety net layered under a primarily
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     main()
 ```
 
-Template capture is asynchronous — it queues a job (Chapter 4's pattern)
+Template capture is asynchronous — it queues a job ([Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)'s pattern)
 that reads the reference device's current SCP-equivalent state; poll the
 returned job before assuming the template is ready to view or deploy.
 
@@ -241,7 +241,7 @@ def get_compliance_detail(session, host, template_id):
     return resp.json().get("value", [])
 ```
 
-As with the firmware update job payload in Chapter 5, confirm exact
+As with the firmware update job payload in [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md), confirm exact
 `TemplateService` action names, `TypeId`/`ViewTypeId` values, and
 target-type identifiers against your build's live API reference — the
 template and configuration compliance surface has been one of the more
@@ -281,7 +281,7 @@ result sets client-side.
   from the reference device) being deployed to a device that needed a
   different value — review the deployed attribute set against the
   Design Considerations guidance above before the next deployment
-  attempt, and use the device's local/out-of-band console (Volume XXIII)
+  attempt, and use the device's local/out-of-band console ([Volume XXIII](../../volume-23-dell-idrac-9-10-administration/README.md))
   to recover network access if needed.
 - **Template capture job never completes.** Confirm the reference
   device's iDRAC is reachable and its Lifecycle Controller is not busy
@@ -307,7 +307,7 @@ result sets client-side.
 ## Security and Best Practices
 
 - Restrict template creation, editing, and deployment rights through role
-  and scope (Chapter 2) — a template deployment is a fleet-wide
+  and scope ([Chapter 2](02-identity-licensing-security-and-administrative-control.md)) — a template deployment is a fleet-wide
   configuration-change capability and warrants the same access discipline
   as firmware update orchestration.
 - Review captured templates for embedded secrets or sensitive
@@ -364,10 +364,10 @@ change to a live device.
 **Prerequisites**
 
 - The OME appliance with an OpenManage Enterprise Advanced (or Advanced
-  Plus) license imported (Chapter 2) — this lab's core functionality is
+  Plus) license imported ([Chapter 2](02-identity-licensing-security-and-administrative-control.md)) — this lab's core functionality is
   unavailable without it.
 - At least one onboarded, iDRAC-managed reference device (a real or
-  virtual PowerEdge/iDRAC target, consistent with Chapter 5's hardware
+  virtual PowerEdge/iDRAC target, consistent with [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s hardware
   requirement).
 - Python 3.11+ with `requests` installed.
 
@@ -386,7 +386,7 @@ change to a live device.
    ```
 
    **Expected result:** the script reports a submitted capture job; poll
-   it (Chapter 4's job-query pattern) until it completes successfully.
+   it ([Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)'s job-query pattern) until it completes successfully.
 3. Retrieve the template's attribute list using the `AttributeDetails`
    endpoint shown in Implementation and Automation, and identify at least
    one device-unique attribute (a static IP-adjacent iDRAC network
@@ -396,7 +396,7 @@ change to a live device.
 5. **Expected result:** re-querying `AttributeDetails` shows the
    attribute's `IsIgnored` flag set to `true`, confirming the prune took
    effect.
-6. Run configuration compliance evaluation against your Chapter 3 device
+6. Run configuration compliance evaluation against your [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) device
    group using the `check_config_compliance` function, and poll its
    associated job to completion.
 7. Retrieve compliance detail using `get_compliance_detail` and confirm
@@ -430,7 +430,7 @@ This chapter extended the catalog/baseline/compliance pattern the volume
 established for firmware in Chapters 5–7 to server configuration:
 templates capture SCP-equivalent configuration state from a reference
 device or manual definition, support both deployment and compliance-only
-use, and depend on the Advanced-tier licensing introduced in Chapter 2.
+use, and depend on the Advanced-tier licensing introduced in [Chapter 2](02-identity-licensing-security-and-administrative-control.md).
 It covered the attribute-pruning discipline required before broad
 deployment, identity pools for per-device-unique attributes, and
 fleet-scale REST API patterns — pagination, OData filtering, and

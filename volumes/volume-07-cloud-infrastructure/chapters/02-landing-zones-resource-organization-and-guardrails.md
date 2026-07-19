@@ -14,7 +14,7 @@
 - Design a multi-account/subscription vending process that is repeatable and
   auditable.
 - Explain how landing zone guardrails interact with the shared
-  responsibility model introduced in Chapter 01.
+  responsibility model introduced in [Chapter 01](01-cloud-operating-models-and-architecture-foundations.md).
 
 ## Theory and Architecture
 
@@ -28,9 +28,9 @@ project:
 - A **resource hierarchy** that maps organizational, billing, and
   environment boundaries to the provider's native grouping constructs.
 - **Identity foundations** (federation, baseline roles) — detailed in
-  Chapter 03.
+  [Chapter 03](03-cloud-identity-access-and-cryptographic-services.md).
 - **Network foundations** (hub connectivity, DNS, shared services) —
-  detailed in Chapter 04.
+  detailed in [Chapter 04](04-cloud-networking-and-hybrid-connectivity.md).
 - **Guardrails** — preventive and detective policy enforced across every
   account/project/subscription in the hierarchy.
 - **Logging and monitoring foundations** that centralize audit and
@@ -432,8 +432,8 @@ how to design a resource hierarchy that maps to real organizational and
 billing boundaries, the difference between preventive, detective, and
 responsive guardrails, how to express guardrails as version-controlled
 policy as code, and how to design a repeatable account-vending process.
-Chapter 03 builds the identity foundation this landing zone assumes, and
-Chapter 08 returns to policy as code at the governance and FinOps level.
+[Chapter 03](03-cloud-identity-access-and-cryptographic-services.md) builds the identity foundation this landing zone assumes, and
+[Chapter 08](08-cloud-governance-security-and-finops.md) returns to policy as code at the governance and FinOps level.
 
 - [ ] Can describe the four-level resource hierarchy pattern and map it to
       at least one real provider's terminology.

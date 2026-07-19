@@ -45,7 +45,7 @@ pass before the next runs:
 
 1. **Editorial/structural validation** — required sections present, file
    naming conventions followed, cross-reference manifest matches the files
-   on disk (Chapter 02's structural validator is the general form of this
+   on disk ([Chapter 02](02-repository-architecture.md)'s structural validator is the general form of this
    gate).
 2. **Style and mechanical validation** — Markdown lint rules
    (heading-level skips, consistent list markers), spell-checking against a
@@ -327,7 +327,7 @@ structurally broken source tree can never reach a published deployment.
   means defects are only caught once they are already live.
 - Treat the publishing deployment credential (GitHub Pages' `id-token:
   write` permission, or any external hosting credential) with the same
-  least-privilege scoping discussed in Chapter 03; the publish job should
+  least-privilege scoping discussed in [Chapter 03](03-automation-architecture.md); the publish job should
   hold no more access than deploying the built artifact requires.
 - Do not reproduce proprietary or licensed third-party content (vendor
   documentation excerpts, certification exam questions) in published

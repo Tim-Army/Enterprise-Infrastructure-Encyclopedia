@@ -35,12 +35,12 @@ independent points, each a potential compromise vector:
 | Source | The repository holding Terraform/Ansible content | An unreviewed, malicious commit merged directly or through a compromised contributor account |
 | Dependency resolution | Terraform providers, Terraform modules, Ansible collections/roles | A typosquatted or compromised package published to a public registry (Terraform Registry, Ansible Galaxy) |
 | Build/execution environment | The CI runner, its container image, its installed toolchain | A compromised runner image or a poisoned base image executing arbitrary code with pipeline credentials |
-| Credential issuance | OIDC federation, Vault, static secrets (Chapter 06) | Overly broad trust policies or leaked static credentials granting more access than the pipeline needs |
+| Credential issuance | OIDC federation, Vault, static secrets ([Chapter 06](06-automation-identity-secrets-and-privileged-execution.md)) | Overly broad trust policies or leaked static credentials granting more access than the pipeline needs |
 | Artifact/output | The applied infrastructure, the module release, the container image | A tampered artifact between build and deploy, with no way to detect the tampering |
 
 A control focused only on one stage — reviewing source code, for
-example — leaves the others open. Chapter 02's `.terraform.lock.hcl` and
-Chapter 03's pinned `requirements.yml` address the dependency-resolution
+example — leaves the others open. [Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md)'s `.terraform.lock.hcl` and
+[Chapter 03](03-configuration-management-and-desired-state-convergence.md)'s pinned `requirements.yml` address the dependency-resolution
 stage specifically; this chapter completes the picture across all five.
 
 ### SLSA as a maturity model
@@ -57,7 +57,7 @@ infrastructure-as-code pipelines:
 | Build L3 | Provenance is non-forgeable and the build is isolated per run | Ephemeral, single-use runners; provenance generated and signed by the CI platform itself |
 
 Most enterprise infrastructure pipelines described in this volume already
-satisfy Build L1 and L2 by construction — Chapter 05's plan/apply pipeline
+satisfy Build L1 and L2 by construction — [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md)'s plan/apply pipeline
 runs on hosted CI, not workstations. Reaching L3 requires signed
 provenance and ephemeral, isolated build environments, which this
 chapter's `cosign` and SBOM sections work toward.
@@ -92,7 +92,7 @@ Define a deliberate trust boundary:
 
 ### Pinning strategy trade-offs, revisited
 
-Chapter 02 introduced pessimistic (`~> 5.60`) versus exact version
+[Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md) introduced pessimistic (`~> 5.60`) versus exact version
 constraints for Terraform providers as a design choice. From a
 supply-chain lens, the trade-off sharpens: an exact pin
 (`version = "5.60.1"`) guarantees the pipeline never resolves a newly
@@ -174,7 +174,7 @@ jobs:
 ```
 
 Both scanners operate on source HCL, before variables resolve — recall
-from Chapter 05 that this makes them the right tool for categorical
+from [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md) that this makes them the right tool for categorical
 findings (a hardcoded credential, a disallowed resource type) and the
 wrong tool for anything that depends on resolved variable values, which
 belongs in the plan-JSON policy check instead.
@@ -248,7 +248,7 @@ jobs:
 ```
 
 This is keyless signing: `cosign` uses the CI job's own OIDC identity
-(Chapter 06) as the signing identity, recorded in the public Rekor
+([Chapter 06](06-automation-identity-secrets-and-privileged-execution.md)) as the signing identity, recorded in the public Rekor
 transparency log, rather than requiring the team to generate, store, and
 protect a long-lived private signing key — the signing-key equivalent of
 preferring federated credentials over static ones.
@@ -278,7 +278,7 @@ Renovate opens a pull request for each eligible version bump instead of
 silently widening a floating constraint, so a version bump — whether a
 patch fixing a CVE or a major version with breaking changes — goes through
 the same review, plan, and policy-check pipeline as any other change
-(Chapter 05), keeping automatic dependency freshness and reviewed change
+([Chapter 05](05-automation-pipelines-testing-and-policy-gates.md)), keeping automatic dependency freshness and reviewed change
 control simultaneously true instead of trading one for the other.
 
 ## Validation and Troubleshooting
@@ -358,7 +358,7 @@ control simultaneously true instead of trading one for the other.
 3. Why is keyless signing with `cosign` and OIDC preferred over a
    long-lived private signing key?
 4. What is the practical difference between a source-level scanner
-   (Checkov/tfsec) finding and a policy-as-code (Chapter 05) finding, in
+   (Checkov/tfsec) finding and a policy-as-code ([Chapter 05](05-automation-pipelines-testing-and-policy-gates.md)) finding, in
    terms of what each can actually evaluate?
 5. Why should an automated dependency-update pull request still require
    human review before merge?
@@ -384,7 +384,7 @@ before and after tampering with the archive.
 
 ### Steps
 
-1. Reuse (or recreate) the demo module from Chapter 02:
+1. Reuse (or recreate) the demo module from [Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md):
 
    ```bash
    mkdir -p supplychain-lab/modules/demo && cd supplychain-lab
@@ -474,10 +474,10 @@ version: it spans source review, dependency resolution, the build
 environment, credential issuance, and artifact integrity, each with its
 own controls. SLSA gives a maturity model for where a pipeline sits today
 and what the next concrete improvement is; Checkov/tfsec and policy-as-code
-(Chapter 05) divide misconfiguration detection between source-level and
+([Chapter 05](05-automation-pipelines-testing-and-policy-gates.md)) divide misconfiguration detection between source-level and
 resolved-plan-level findings; SBOMs make dependency exposure answerable in
 minutes instead of a manual audit; and keyless `cosign` signing extends the
-federated-identity principle from Chapter 06 to artifact provenance itself.
+federated-identity principle from [Chapter 06](06-automation-identity-secrets-and-privileged-execution.md) to artifact provenance itself.
 None of these controls are effective as one-time setup — lockfiles,
 scanners, SBOMs, and signature verification only protect an estate that
 keeps running them on every change.

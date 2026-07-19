@@ -4,7 +4,7 @@
 
 - Distinguish backup types (full, incremental, differential, synthetic full) and select a scheme from a change-rate and recovery-time budget.
 - Apply the 3-2-1-1-0 backup rule and justify each of its five elements against a real ransomware or site-loss scenario.
-- Design a DR site strategy (pilot light, warm standby, hot site) from the RTO/RPO values established in Chapter 2 and the replication trade-offs from Chapter 3.
+- Design a DR site strategy (pilot light, warm standby, hot site) from the RTO/RPO values established in [Chapter 2](02-business-impact-analysis-and-continuity-planning.md) and the replication trade-offs from [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md).
 - Calculate backup window, replication bandwidth, and retention storage requirements from a stated change rate and retention policy.
 - Build an automated, verified backup job and a corresponding restore procedure, not just a backup job alone.
 - Explain why immutable, air-gapped backup copies are a required control against ransomware rather than an optional hardening step.
@@ -13,7 +13,7 @@
 
 ### Backup Is Not Disaster Recovery
 
-Backup and disaster recovery are related but distinct: a backup is a point-in-time copy of data that supports recovery; disaster recovery (DR) is the complete capability — infrastructure, data, network, and procedure — to restore a service after a major disruption. A service can have excellent backups and still fail its DR objective if there is nowhere to restore them to within the RTO, or if nobody has verified the restore procedure actually works. This chapter treats backup engineering (Chapter 2's RPO made concrete) and DR engineering (Chapter 2's RTO made concrete, building on Chapter 3's replication and HA patterns) as two halves of the same recovery capability, connected by the requirement that both be tested, not merely built.
+Backup and disaster recovery are related but distinct: a backup is a point-in-time copy of data that supports recovery; disaster recovery (DR) is the complete capability — infrastructure, data, network, and procedure — to restore a service after a major disruption. A service can have excellent backups and still fail its DR objective if there is nowhere to restore them to within the RTO, or if nobody has verified the restore procedure actually works. This chapter treats backup engineering ([Chapter 2](02-business-impact-analysis-and-continuity-planning.md)'s RPO made concrete) and DR engineering ([Chapter 2](02-business-impact-analysis-and-continuity-planning.md)'s RTO made concrete, building on [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md)'s replication and HA patterns) as two halves of the same recovery capability, connected by the requirement that both be tested, not merely built.
 
 ### Backup Types
 
@@ -34,24 +34,24 @@ The classic 3-2-1 backup rule has been extended in most modern practice to 3-2-1
 - **2** different media or storage types (for example, disk-based backup storage and object storage, not two volumes on the same array).
 - **1** copy off-site, protecting against a site-level event (fire, flood, regional outage) that a same-site backup does not survive.
 - **1** copy offline or immutable, protecting specifically against ransomware and destructive insider or attacker actions that a purely online, mutable backup cannot survive — an attacker with write access to production frequently also has write (and delete) access to a backup target that is merely another mounted volume.
-- **0** errors on backup verification — a backup that has not been verified to restore correctly is a hypothesis, not a control, echoing the same "declared redundancy is a hypothesis until tested" principle from Chapter 1.
+- **0** errors on backup verification — a backup that has not been verified to restore correctly is a hypothesis, not a control, echoing the same "declared redundancy is a hypothesis until tested" principle from [Chapter 1](01-resilience-engineering-and-critical-service-design.md).
 
 The "1 immutable" element is the most commonly missing in practice, and its absence is the single most common reason an organization with "backups" still pays a ransom or loses data permanently: if every backup copy is reachable and writable from the same credential set as production, a sufficiently privileged compromise (or a sufficiently privileged mistake) can destroy backups and production together.
 
 ### DR Site Strategies
 
-Chapter 2 introduced the RTO-to-strategy mapping at a business-planning level; this chapter details the infrastructure architecture behind each row:
+[Chapter 2](02-business-impact-analysis-and-continuity-planning.md) introduced the RTO-to-strategy mapping at a business-planning level; this chapter details the infrastructure architecture behind each row:
 
 - **Cold site** — infrastructure is provisioned only when a disaster is declared, and data is restored from backup. Lowest ongoing cost, longest RTO (hours to days), and the strategy most exposed to "the restore has never actually been tested" risk because nothing runs continuously.
 - **Pilot light** — a minimal core (typically the data tier, kept continuously replicated) runs at the DR location at all times; compute and supporting services are provisioned and scaled up only during a declared disaster. Moderate cost, RTO typically measured in tens of minutes to a few hours — dominated by how long it takes to scale up compute and validate the environment.
 - **Warm standby** — a scaled-down but fully functional copy of the production environment runs continuously at the DR location, ready to be scaled up to full capacity on failover. Higher ongoing cost than pilot light, RTO typically minutes.
-- **Hot site / active-active** — the DR location runs at full production capacity continuously and serves live traffic (or is one keystroke from doing so), identical to the active-active pattern from Chapter 3 applied at the site or region level. Highest cost, RTO approaching zero.
+- **Hot site / active-active** — the DR location runs at full production capacity continuously and serves live traffic (or is one keystroke from doing so), identical to the active-active pattern from [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md) applied at the site or region level. Highest cost, RTO approaching zero.
 
-The DR site tier chosen must match the RTO derived from the BIA in Chapter 2; over-provisioning (a hot site for a Tier 3 process) wastes budget that could harden a genuinely Tier 0 service, and under-provisioning (a cold site for a Tier 0 process) makes the stated RTO structurally impossible to meet regardless of procedural discipline.
+The DR site tier chosen must match the RTO derived from the BIA in [Chapter 2](02-business-impact-analysis-and-continuity-planning.md); over-provisioning (a hot site for a Tier 3 process) wastes budget that could harden a genuinely Tier 0 service, and under-provisioning (a cold site for a Tier 0 process) makes the stated RTO structurally impossible to meet regardless of procedural discipline.
 
 ### Replication Mechanisms for Data Recovery
 
-Beneath any DR strategy above pilot light sits a data replication mechanism, distinct from (but related to) the synchronous/asynchronous HA replication covered in Chapter 3:
+Beneath any DR strategy above pilot light sits a data replication mechanism, distinct from (but related to) the synchronous/asynchronous HA replication covered in [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md):
 
 - **Storage-array or volume snapshots** — point-in-time, space-efficient copies at the block or volume layer; fast to create and restore but typically tied to the source array unless shipped elsewhere, and are not a substitute for an independent backup copy since a snapshot commonly shares the underlying storage fault domain with its source.
 - **Log shipping** — a database's write-ahead or transaction log is continuously shipped to a standby, which replays it to stay current; recovery point is bounded by the shipping and replay lag, typically seconds to low minutes.
@@ -107,11 +107,11 @@ Example:
   Required bandwidth = (45 x 8,000) / 3,600 x 1.5 = 150 Mbps (approx.)
 ```
 
-Undersized replication links do not fail cleanly — they fall progressively further behind under peak load, silently expanding RPO beyond the design target until a failover event exposes the gap. Replication lag must be monitored continuously against the RPO budget, exactly as Chapter 3 specifies for synchronous/asynchronous HA replication.
+Undersized replication links do not fail cleanly — they fall progressively further behind under peak load, silently expanding RPO beyond the design target until a failover event exposes the gap. Replication lag must be monitored continuously against the RPO budget, exactly as [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md) specifies for synchronous/asynchronous HA replication.
 
 ### Data Residency and Cross-Region Replication
 
-Replicating data to a DR site in another jurisdiction can create data residency or export-control obligations independent of the technical design. This is a design input, not an afterthought: the acceptable set of DR site locations must be filtered by legal and compliance constraints before an RTO/RPO-optimal location is selected, and this filtering should happen during the BIA/DR-strategy selection stage in Chapter 2's process, not after a DR site is already built.
+Replicating data to a DR site in another jurisdiction can create data residency or export-control obligations independent of the technical design. This is a design input, not an afterthought: the acceptable set of DR site locations must be filtered by legal and compliance constraints before an RTO/RPO-optimal location is selected, and this filtering should happen during the BIA/DR-strategy selection stage in [Chapter 2](02-business-impact-analysis-and-continuity-planning.md)'s process, not after a DR site is already built.
 
 ## Implementation and Automation
 
@@ -139,7 +139,7 @@ Replicating data to a DR site in another jurisdiction can create data residency 
   rpo_minutes: 5
 ```
 
-Storing backup policy as structured, version-controlled data — following the same pattern as the criticality register in Chapter 1 — allows automated compliance checks: every Tier 0/1 dataset must have an entry, every entry's `rpo_minutes` must be consistent with the value declared in the corresponding BIA record from Chapter 2, and every entry must show a `restore_test_cadence` no less frequent than the tier requires.
+Storing backup policy as structured, version-controlled data — following the same pattern as the criticality register in [Chapter 1](01-resilience-engineering-and-critical-service-design.md) — allows automated compliance checks: every Tier 0/1 dataset must have an entry, every entry's `rpo_minutes` must be consistent with the value declared in the corresponding BIA record from [Chapter 2](02-business-impact-analysis-and-continuity-planning.md), and every entry must show a `restore_test_cadence` no less frequent than the tier requires.
 
 ### Example: Verified Backup Script
 
@@ -224,7 +224,7 @@ Restoring to an isolated scratch location, rather than directly overwriting a li
 | Date | Test Type (tabletop/parallel/full) | RTO Achieved | Follow-up Actions |
 ```
 
-Keep this runbook in the same version-controlled repository as the backup policy, the criticality register, and the BIA records, so an RTO or RPO change in the BIA is reviewed alongside the runbook and infrastructure that must change to keep them consistent — the same traceability principle established in Chapter 2.
+Keep this runbook in the same version-controlled repository as the backup policy, the criticality register, and the BIA records, so an RTO or RPO change in the BIA is reviewed alongside the runbook and infrastructure that must change to keep them consistent — the same traceability principle established in [Chapter 2](02-business-impact-analysis-and-continuity-planning.md).
 
 ## Validation and Troubleshooting
 
@@ -264,7 +264,7 @@ When a restore test fails, resist the instinct to simply re-run it — a failed 
 - [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md) for the synchronous/asynchronous replication trade-offs that underpin DR data replication.
 - NIST SP 800-34 Rev. 1, *Contingency Planning Guide for Federal Information Systems*.
 - NIST SP 800-209, *Security Guidelines for Storage Infrastructure*, for immutable and write-once storage guidance.
-- Volume VI, Enterprise Storage and Data Protection, for storage-layer snapshot and replication mechanics referenced here at a vendor-neutral level.
+- [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md), Enterprise Storage and Data Protection, for storage-layer snapshot and replication mechanics referenced here at a vendor-neutral level.
 
 ### Knowledge Checks
 
@@ -338,7 +338,7 @@ No shared or production systems were modified; all artifacts were local to the w
 
 ## Summary and Completion Checklist
 
-Backup engineering turns Chapter 2's RPO into a concrete schedule, retention policy, and immutability control; DR engineering turns its RTO into a site strategy, replication mechanism, and tested failover runbook. Neither is complete as a design on paper — the 3-2-1-1-0 rule's final "0" (zero verification errors) and this chapter's emphasis on restore testing exist because an unverified backup or an untested DR runbook is a liability disguised as a control. Chapter 5 extends this testing discipline from scheduled restore drills into a broader resilience-testing and chaos-engineering practice that exercises far more than the recovery path alone.
+Backup engineering turns [Chapter 2](02-business-impact-analysis-and-continuity-planning.md)'s RPO into a concrete schedule, retention policy, and immutability control; DR engineering turns its RTO into a site strategy, replication mechanism, and tested failover runbook. Neither is complete as a design on paper — the 3-2-1-1-0 rule's final "0" (zero verification errors) and this chapter's emphasis on restore testing exist because an unverified backup or an untested DR runbook is a liability disguised as a control. [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md) extends this testing discipline from scheduled restore drills into a broader resilience-testing and chaos-engineering practice that exercises far more than the recovery path alone.
 
 **Completion checklist:**
 

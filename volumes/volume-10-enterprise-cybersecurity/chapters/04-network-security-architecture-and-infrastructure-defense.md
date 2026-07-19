@@ -4,7 +4,7 @@
 
 - Explain how network security architecture has shifted from a
   perimeter-centric model to segmentation- and identity-aware defense in
-  depth, and how that shift relates to the Zero Trust model from Chapter 2.
+  depth, and how that shift relates to the Zero Trust model from [Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md).
 - Design network segmentation and microsegmentation strategies that limit
   east-west movement, not just north-south perimeter crossing.
 - Compare next-generation firewall (NGFW), intrusion detection/prevention
@@ -42,7 +42,7 @@ on top of each other:
   boundaries that govern east-west traffic between workloads, independent
   of whether traffic ever crosses the perimeter.
 - **Identity-aware enforcement** — the Policy Enforcement Point (PEP)
-  pattern from Chapter 2's Zero Trust Architecture discussion, applied at
+  pattern from [Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md)'s Zero Trust Architecture discussion, applied at
   the network layer so that access decisions depend on verified identity
   and device posture, not just source IP and port.
 
@@ -51,7 +51,7 @@ architecture assumes the perimeter will eventually be crossed (via
 phishing, a vulnerable internet-facing service, or a compromised
 credential) and relies on segmentation and identity-aware enforcement to
 contain the resulting blast radius — the same defense-in-depth principle
-introduced in Chapter 1, applied specifically to network infrastructure.
+introduced in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md), applied specifically to network infrastructure.
 
 ### Segmentation and microsegmentation
 
@@ -85,7 +85,7 @@ introduced in Chapter 1, applied specifically to network infrastructure.
 with application awareness (identifying the actual application generating
 traffic regardless of port), user awareness (binding policy to identity,
 not just IP address, by integrating with the identity provider from
-Chapter 2), and integrated intrusion prevention. This lets policy be
+[Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md)), and integrated intrusion prevention. This lets policy be
 expressed as "allow the finance application group to reach the payment
 processing API," which is both more precise and more auditable than a
 port/protocol rule.
@@ -116,7 +116,7 @@ Zero Trust Architecture exists to eliminate. **Zero Trust Network Access
 (ZTNA)** replaces network-level trust with per-application, identity- and
 posture-verified access brokered by a proxy: the user authenticates
 through the identity provider (with the conditional access and
-phishing-resistant MFA controls from Chapter 2), and the ZTNA broker
+phishing-resistant MFA controls from [Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md)), and the ZTNA broker
 grants a connection to the *specific application* requested, never placing
 the client device onto the internal network itself. This is the
 Policy Enforcement Point pattern applied to remote access: the ZTNA broker
@@ -137,7 +137,7 @@ carried.
   Protective DNS (filtering resolution against known-malicious domain
   reputation), DNSSEC (cryptographically validating DNS response
   integrity against spoofing), and DNS query logging (feeding the
-  detection pipeline in Chapter 6) are complementary, not redundant,
+  detection pipeline in [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)) are complementary, not redundant,
   controls.
 - **DDoS protection** distinguishes volumetric attacks (overwhelming
   network capacity, mitigated by upstream scrubbing and anycast
@@ -211,7 +211,7 @@ to reach a fixed location.
 
 Represent segmentation policy as structured, version-controlled data so it
 can be peer-reviewed and validated in CI before deployment, following the
-same pattern used for the control crosswalk in Chapter 1:
+same pattern used for the control crosswalk in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md):
 
 ```yaml
 # segmentation/payment-processing-zone.yaml
@@ -328,7 +328,7 @@ if __name__ == "__main__":
   (a rogue LTE/5G gateway, an unauthorized cloud VPC peering connection)
   bypass every perimeter and segmentation control simultaneously.
   Maintain and periodically reconcile an authoritative network topology
-  inventory against discovered egress points (Chapter 5 covers the
+  inventory against discovered egress points ([Chapter 5](05-vulnerability-exposure-and-patch-risk-management.md) covers the
   broader exposure-management discipline this feeds into).
 - **Common failure: asymmetric routing breaking stateful inspection.**
   A stateful firewall or IPS that sees only one direction of a
@@ -360,16 +360,16 @@ if __name__ == "__main__":
   investigative value.
 - Treat firewall and segmentation policy changes as change-managed,
   peer-reviewed configuration, following the same version-control
-  discipline as the control crosswalk in Chapter 1 — never apply an
+  discipline as the control crosswalk in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md) — never apply an
   emergency firewall exception without a tracked expiration and
   retrospective review.
 - Prioritize migrating high-risk remote access (administrative consoles,
   financial and identity systems) from VPN to ZTNA first, applying the
-  phishing-resistant MFA and conditional access controls from Chapter 2 at
+  phishing-resistant MFA and conditional access controls from [Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md) at
   the access-broker layer.
 - Instrument east-west traffic (NetFlow/IPFIX export, microsegmentation
   logs) with the same rigor as perimeter traffic, and forward both into
-  the detection pipeline described in Chapter 6 — a segmentation control
+  the detection pipeline described in [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md) — a segmentation control
   with no visibility behind it can be bypassed silently.
 - Size and test DDoS scrubbing activation before it is needed; an
   untested runbook discovered during a live volumetric attack routinely
@@ -380,7 +380,7 @@ if __name__ == "__main__":
   transparently intercept any inspected session.
 - Review firewall and segmentation rule sets on a fixed cadence (at
   minimum semi-annually) to remove stale, overly broad, or unused rules,
-  cross-referencing the risk register from Chapter 1 for any documented
+  cross-referencing the risk register from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md) for any documented
   compensating-control exceptions.
 
 ## References and Knowledge Checks
@@ -501,7 +501,7 @@ deliberately broken policy file.
 
    The presence of a logged `SEG-DENY` entry for the blocked port
    confirms the segmentation policy is both enforcing and generating the
-   audit trail Chapter 6's detection pipeline depends on.
+   audit trail [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)'s detection pipeline depends on.
 
 6. Save the CI validator script (`validate_segmentation.py` from the
    Implementation and Automation section) and a valid policy file, then
@@ -550,7 +550,7 @@ deliberately broken policy file.
    **Expected result:**
    `POLICY ERROR: payment-processing: no explicit default-deny egress rule`
    prints and `exit=1`, demonstrating the same fail-closed CI gate pattern
-   used for the OSCAP remediation review in Chapter 3.
+   used for the OSCAP remediation review in [Chapter 3](03-platform-hardening-configuration-and-endpoint-defense.md).
 
 **Cleanup**
 
@@ -564,8 +564,8 @@ cd ~ && rm -rf ~/labs/vol10-ch04
 ## Summary and Completion Checklist
 
 This chapter built the network infrastructure defense layer that sits
-between platform hardening (Chapter 3) and the identity-aware access
-model (Chapter 2): perimeter controls, internal segmentation and
+between platform hardening ([Chapter 3](03-platform-hardening-configuration-and-endpoint-defense.md)) and the identity-aware access
+model ([Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md)): perimeter controls, internal segmentation and
 microsegmentation, NGFW and IDS/IPS placement, the shift from VPN to
 ZTNA for remote access, and the complementary roles of DNS security,
 DDoS protection, and SASE/SSE. Segmentation and firewall policy were

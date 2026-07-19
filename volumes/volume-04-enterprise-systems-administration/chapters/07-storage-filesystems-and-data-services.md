@@ -5,14 +5,14 @@
 - Compare enterprise-relevant filesystems — ext4, XFS, and Btrfs on
   Linux; NTFS and ReFS on Windows — and select the appropriate one for a
   given workload.
-- Extend the LVM coverage from Chapter 02 with Windows Storage Spaces as
+- Extend the LVM coverage from [Chapter 02](02-enterprise-linux-administration.md) with Windows Storage Spaces as
   the conceptually parallel Windows volume-management layer.
 - Deploy and consume network file services — NFS and SMB/CIFS — from both
   Linux and Windows hosts.
 - Apply filesystem-level quotas and access controls to enforce fair use
   and delegated administration.
 - Explain where this chapter's host-level storage coverage ends and the
-  block/array-level storage design covered in Volume VI begins.
+  block/array-level storage design covered in [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md) begins.
 - Design a filesystem layout that isolates growth-prone paths from
   critical system partitions.
 
@@ -20,11 +20,11 @@
 
 This chapter covers storage from the perspective of the operating system
 consuming it: which filesystem to format a volume with, how to manage
-volumes above the raw disk (extending Chapter 02's LVM coverage to
+volumes above the raw disk (extending [Chapter 02](02-enterprise-linux-administration.md)'s LVM coverage to
 Windows), how to share and consume filesystems over the network, and how
 to constrain consumption with quotas. Storage array architecture, SAN/NAS
 protocol design (iSCSI, Fibre Channel, NVMe-oF), snapshots at the array
-layer, and backup/replication strategy are covered in Volume VI; this
+layer, and backup/replication strategy are covered in [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md); this
 chapter stops at the host's own filesystem and volume-management layer.
 
 ### Filesystem choice
@@ -38,7 +38,7 @@ chapter stops at the host's own filesystem and volume-management layer.
 | ReFS | Windows (Server, data volumes) | Block checksumming and metadata integrity, integrates with Storage Spaces mirror/parity for automatic repair | Not supported as a boot volume; feature parity with NTFS is intentionally partial |
 
 The practical default in this encyclopedia's baseline: XFS for RHEL 10
-data volumes (Volume XIV covers RHEL-specific tuning), ext4 where
+data volumes ([Volume XIV](../../volume-14-red-hat-enterprise-linux-10/README.md) covers RHEL-specific tuning), ext4 where
 shrink-capable flexibility matters more than large-file throughput, NTFS
 for Windows system and general data volumes, and ReFS for large
 Windows data volumes — especially those backed by Storage Spaces — where
@@ -46,7 +46,7 @@ its self-healing integrates with mirror or parity resiliency.
 
 ### Windows Storage Spaces as the volume-management layer
 
-Chapter 02 covered Linux Logical Volume Manager (LVM): physical volumes
+[Chapter 02](02-enterprise-linux-administration.md) covered Linux Logical Volume Manager (LVM): physical volumes
 (PVs) join a volume group (VG), from which logical volumes (LVs) are
 carved and later grown. Windows Storage Spaces follows the same
 three-layer shape under different names:
@@ -93,7 +93,7 @@ ownership, useful for capping a shared application directory regardless
 of which service account writes to it. Windows offers the equivalent
 through **File Server Resource Manager (FSRM)** quotas, which can be
 **hard** (block writes once the limit is hit) or **soft** (log/alert only).
-Chapter 02 introduced POSIX ACLs for fine-grained Linux permissions; NTFS
+[Chapter 02](02-enterprise-linux-administration.md) introduced POSIX ACLs for fine-grained Linux permissions; NTFS
 ACLs serve the same purpose on Windows and are considerably richer by
 default, since NTFS was designed around ACL-based access control from the
 outset rather than adding it on top of a simpler owner/group/other model.
@@ -104,7 +104,7 @@ outset rather than adding it on top of a simpler owner/group/other model.
   A database workload with heavy random writes has different filesystem
   needs than a large sequential-write log archive; test the actual
   workload rather than defaulting to "whatever the last host used."
-- **Isolate growth-prone paths, extending Chapter 02's FHS guidance.**
+- **Isolate growth-prone paths, extending [Chapter 02](02-enterprise-linux-administration.md)'s FHS guidance.**
   `/var`, `/var/log`, `/home`, and equivalents (`D:\Data`, `D:\Logs` on
   Windows) belong on their own volume so unbounded growth cannot fill the
   volume the operating system itself depends on.
@@ -119,7 +119,7 @@ outset rather than adding it on top of a simpler owner/group/other model.
   read/write ratio and rebuild-time tolerance, not capacity efficiency
   alone.
 - **Know where OS-level storage design hands off to the array.** Multipath
-  I/O, array-level snapshots, replication, and SAN zoning are Volume VI
+  I/O, array-level snapshots, replication, and SAN zoning are [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md)
   topics; this chapter's LVM/Storage Spaces layer sits on top of whatever
   block device the array (or a simple local disk) presents.
 - **Design quota enforcement with a grace period**, not an abrupt hard
@@ -262,19 +262,19 @@ New-FsrmQuota -Path 'D:\AppData' -Size 100GB -SoftLimit `
   given UID with no cryptographic verification.
 - Require SMB signing and, for sensitive shares, SMB encryption
   (`Set-SmbShare -EncryptData $true`); confirm SMBv1 remains disabled
-  fleet-wide, consistent with Chapter 03.
+  fleet-wide, consistent with [Chapter 03](03-windows-server-administration.md).
 - Grant NTFS and share permissions to specific groups scoped to the
   actual need (`app-admins`, `app-writers`), never `Everyone: Full
-  Control`, mirroring the least-privilege ACL guidance in Chapter 02.
+  Control`, mirroring the least-privilege ACL guidance in [Chapter 02](02-enterprise-linux-administration.md).
 - Use quotas as a capacity-exhaustion control, not only a cost-management
   one — an unbounded shared directory is the network-storage equivalent
-  of the unmonitored `/var` growth called out in Chapter 02.
+  of the unmonitored `/var` growth called out in [Chapter 02](02-enterprise-linux-administration.md).
 - Encrypt data at rest where compliance requires it (LUKS on Linux,
   BitLocker on Windows); this chapter covers filesystem/volume mechanics
   only — encryption key management and compliance mapping are covered in
-  Volume VI and Volume X.
+  [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md) and [Volume X](../../volume-10-enterprise-cybersecurity/README.md).
 - Audit share and export permission changes the same way any other
-  security-relevant configuration change is audited (Chapter 08).
+  security-relevant configuration change is audited ([Chapter 08](08-systems-security-automation-and-compliance.md)).
 
 ## References and Knowledge Checks
 
@@ -406,14 +406,14 @@ sudo rm -rf /data/labexport
 
 ## Summary and Completion Checklist
 
-This chapter extended the Chapter 02 LVM foundation to the full host
+This chapter extended the [Chapter 02](02-enterprise-linux-administration.md) LVM foundation to the full host
 storage picture: filesystem selection across ext4, XFS, Btrfs, NTFS, and
 ReFS; Windows Storage Spaces as the direct conceptual counterpart to LVM;
 NFS and SMB as the two enterprise network file service protocols, each
 with its own security model; and quotas and ACLs as the controls that
 keep shared storage fairly allocated and appropriately restricted. Array-
 level storage design picks up where this chapter's host-level coverage
-ends, in Volume VI.
+ends, in [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md).
 
 - [ ] Can select an appropriate filesystem for a given workload and
       justify the choice against the comparison table in this chapter.

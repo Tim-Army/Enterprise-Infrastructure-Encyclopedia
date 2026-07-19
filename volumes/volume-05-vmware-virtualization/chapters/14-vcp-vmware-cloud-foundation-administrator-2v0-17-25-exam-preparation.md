@@ -3,7 +3,7 @@
 ## Learning Objectives
 
 - Map the 2V0-17.25 blueprint's deployment, design, and day-2 operational
-  domains to the VCF architecture concepts introduced in Chapter 1 and
+  domains to the VCF architecture concepts introduced in [Chapter 1](01-vmware-virtualization-architecture-and-design.md) and
   the underlying vSphere/NSX chapters throughout this volume.
 - Explain workload domain deployment models and the operational
   responsibilities an administrator (as distinct from a support engineer
@@ -33,7 +33,7 @@ specifically: the practitioner who deploys, configures, and operates VCF
 day to day — provisioning workload domains, managing fleet-wide identity
 and licensing, handling certificate lifecycle, and importing existing
 infrastructure into VCF management — rather than the support engineer's
-break-fix diagnostic focus (Chapter 13) or a solution architect's
+break-fix diagnostic focus ([Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md)) or a solution architect's
 requirements-to-design translation focus. Its blueprint's later sections
 explicitly cover both **planning/design** skills and **deploy/configure/
 operate** skills, meaning preparation should cover both "what is the
@@ -43,7 +43,7 @@ to do both, not hand a design off to someone else to build.
 
 ### Workload domain deployment models
 
-Building on Chapter 1's introduction of the **management domain** and
+Building on [Chapter 1](01-vmware-virtualization-architecture-and-design.md)'s introduction of the **management domain** and
 **VI workload domains**, an administrator-level understanding requires
 knowing the concrete deployment mechanics:
 
@@ -82,20 +82,20 @@ domain covers ongoing administrator responsibilities:
 - **Fleet management operations** — centralized version/patch tracking
   and, where supported, coordinated lifecycle operations across managed
   VCF instances (introduced from a support-troubleshooting angle in
-  Chapter 13; here, the administrator's responsibility is correctly
+  [Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md); here, the administrator's responsibility is correctly
   initiating and sequencing these operations, not only diagnosing their
   failures).
 - **Identity and role-based access** — SDDC Manager's own RBAC model for
   administrator/operator access, integrated with Identity Broker
-  federation (Chapter 13), extending the vCenter Server RBAC concepts
-  from Chapter 3 to the fleet/orchestration layer.
+  federation ([Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md)), extending the vCenter Server RBAC concepts
+  from [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md) to the fleet/orchestration layer.
 - **Licensing** — applying and managing VCF-level licensing across
   workload domains as they are created and expanded, distinct from (but
   coordinated with) individual component licensing.
 - **Certificate handling** — VCF-wide certificate lifecycle management
   across managed components, extending the certificate management
-  concepts from Chapter 3 (VMCA versus externally issued certificates)
-  and Chapter 8 to a fleet-orchestrated scope, where SDDC Manager
+  concepts from [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md) (VMCA versus externally issued certificates)
+  and [Chapter 8](08-vsphere-and-nsx-security-architecture.md) to a fleet-orchestrated scope, where SDDC Manager
   coordinates certificate requests/renewals/installation across multiple
   managed components rather than an administrator handling each
   component's certificate independently.
@@ -121,7 +121,7 @@ domain covers ongoing administrator responsibilities:
   procedural steps differ meaningfully between the two paths.
 - **Fleet-scope RBAC versus per-component RBAC.** Study SDDC Manager's
   RBAC model as a genuinely separate layer from vCenter Server's own RBAC
-  (Chapter 3) and NSX's RBAC (Chapter 10/11) — an administrator role at
+  ([Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md)) and NSX's RBAC ([Chapter 10](10-installing-vmware-nsx.md)/11) — an administrator role at
   the fleet/SDDC Manager layer does not automatically imply equivalent
   access at every managed component's own layer, and the exam's identity/
   RBAC objectives test this layered understanding specifically.
@@ -129,8 +129,8 @@ domain covers ongoing administrator responsibilities:
   certificate management across multiple components (vCenter Server, NSX
   Manager, SDDC Manager itself) introduces sequencing and trust-
   propagation considerations beyond a single component's certificate
-  replacement (Chapter 3) — study this as its own workflow, not simply as
-  "the same thing as Chapter 3, done several times."
+  replacement ([Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md)) — study this as its own workflow, not simply as
+  "the same thing as [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md), done several times."
 
 ## Implementation and Automation
 
@@ -371,7 +371,7 @@ The VCP-VCF Administrator (2V0-17.25) exam blueprint covers both planning/
 design judgment and hands-on deploy/configure/operate competency across
 workload domain deployment, fleet management, identity/RBAC, licensing,
 and certificate lifecycle — distinguishing it from the support exam's
-troubleshooting focus (Chapter 13) and requiring administrators to both
+troubleshooting focus ([Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md)) and requiring administrators to both
 design and execute rather than hand off one to the other. Cloud Builder's
 scope (management domain bring-up only) versus SDDC Manager's scope
 (everything after, including all workload domain and day-2 lifecycle

@@ -19,12 +19,12 @@
 
 ## Theory and Architecture
 
-Chapter 2 introduced the host record and the property store as the shared
+[Chapter 2](02-console-plugins-properties-and-asset-classification.md) introduced the host record and the property store as the shared
 data model underlying every Forescout capability. This chapter covers the
 three policy types built on top of that data model that move a deployment
 from passive visibility to active governance: **clarification policies**,
 **compliance policies**, and **control policies**. All three — along with
-the classification policies introduced in Chapter 2 — share a single
+the classification policies introduced in [Chapter 2](02-console-plugins-properties-and-asset-classification.md) — share a single
 structural pattern in the policy engine: a policy is an ordered set of
 **rules**, each rule is a set of **conditions** evaluated against host
 properties, and each rule fires one or more **actions** when its
@@ -48,7 +48,7 @@ audit.
 
 ### Clarification policies
 
-Classification (Chapter 2) does not always produce a confident, actionable
+Classification ([Chapter 2](02-console-plugins-properties-and-asset-classification.md)) does not always produce a confident, actionable
 result. A device might present a fingerprint the built-in classification
 engine has never seen, or one where conflicting signals lower confidence
 below a usable threshold. A **clarification policy** — often built from
@@ -107,7 +107,7 @@ restricting or blocking its switch port, applying an isolating ACL,
 disconnecting a wireless session, or triggering a firewall/NAC vendor
 integration to do the equivalent at a different enforcement point. Control
 actions execute against the network infrastructure plugins (Switch,
-Wireless) or eyeExtend integrations described in Chapter 2 — the appliance
+Wireless) or eyeExtend integrations described in [Chapter 2](02-console-plugins-properties-and-asset-classification.md) — the appliance
 does not need to sit inline to enforce, because it drives enforcement
 through the management interface of infrastructure that is inline.
 
@@ -174,7 +174,7 @@ labels vary by release; consult the policy authoring guide for your
 licensed 8.5.x build.
 
 1. **Confirm classification/clarification stability** for the target host
-   population (see Chapter 2) before authoring a compliance policy that
+   population (see [Chapter 2](02-console-plugins-properties-and-asset-classification.md)) before authoring a compliance policy that
    depends on accurate `Function` or `Operating System` values.
 2. **Author the compliance policy.** Define the desired-state condition
    (for example, a required endpoint security property showing
@@ -238,7 +238,7 @@ licensed 8.5.x build.
 - **A control action fires but does not take effect on the network.**
   Verify the underlying infrastructure plugin (Switch/Wireless) has a
   valid, sufficiently privileged write credential — read-only credentials
-  scoped for visibility, as recommended in Chapter 2, will not support
+  scoped for visibility, as recommended in [Chapter 2](02-console-plugins-properties-and-asset-classification.md), will not support
   control actions and must be upgraded deliberately and only for the
   appliances performing enforcement.
 - **A host stays quarantined after remediation.** Check the re-admission
@@ -250,7 +250,7 @@ licensed 8.5.x build.
   policy condition complexity (deeply nested or high-cardinality
   conditions evaluate more slowly) and confirm appliance sizing still
   matches current host count and property update volume, as covered in
-  Chapter 1.
+  [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md).
 
 ## Security and Best Practices
 
@@ -263,7 +263,7 @@ licensed 8.5.x build.
   enforcement coverage.
 - Log every control action with enough detail to support incident
   reconstruction, and forward those logs to the organization's SIEM (see
-  Chapter 5) rather than relying solely on the platform's local retention.
+  [Chapter 5](05-advanced-policy-integrations-and-business-outcomes.md)) rather than relying solely on the platform's local retention.
 - Grant control-policy write credentials to network infrastructure on a
   least-privilege, appliance-scoped basis, separate from the read-only
   visibility credentials used elsewhere in the deployment.
@@ -284,7 +284,7 @@ licensed 8.5.x build.
   policy template documentation for the 8.5.x release.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this volume.
-- Chapter 2 of this volume for the classification and property model that
+- [Chapter 2](02-console-plugins-properties-and-asset-classification.md) of this volume for the classification and property model that
   clarification and compliance policies depend on.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   FSCA/FSCP/FSCE blueprint domain mapping for this volume.
@@ -316,7 +316,7 @@ enforcement and re-admission paths.
 
 - The lab appliance and Console from Chapters 1–2, with at least one
   classified test endpoint.
-- A custom property (reuse `Lab Asset Owner` from Chapter 2, or create a
+- A custom property (reuse `Lab Asset Owner` from [Chapter 2](02-console-plugins-properties-and-asset-classification.md), or create a
   new boolean property named `Lab Agent Running`) that you can toggle
   manually to simulate a compliance state change.
 - Console access with permission to create and enable policies.
@@ -375,7 +375,7 @@ enforcement and re-admission paths.
 
 ## Summary and Completion Checklist
 
-This chapter extended the policy engine model from Chapter 2 into the
+This chapter extended the policy engine model from [Chapter 2](02-console-plugins-properties-and-asset-classification.md) into the
 three policy types that turn visibility into governance: clarification
 policies that resolve classification ambiguity, compliance policies that
 evaluate and report desired-state conformance with grace-period-driven

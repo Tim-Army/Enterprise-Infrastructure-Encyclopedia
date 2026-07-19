@@ -58,7 +58,7 @@ authorized, backed up, tested, and reversible.
 - **Decide where quick-reference material lives.** A wiki page that drifts
   from the actual fleet is worse than no reference at all. Bind quick
   references to the same version-control and review process as
-  infrastructure-as-code (see Chapter 04).
+  infrastructure-as-code (see [Chapter 04](04-configuration-templates-baselines-and-change-records.md)).
 - **Map commands to change risk, not to platform.** A useful internal
   taxonomy is: Tier 0 (read-only, always safe), Tier 1 (state-changing,
   reversible within the session, for example an ACL append), Tier 2
@@ -101,13 +101,13 @@ are marked **RO**; state-changing commands are marked **RW**.
 
 \* Backups are classified RW because they write output but do not change
 production state; treat the destination and retention of the backup as a
-Tier 1 concern (see Chapter 04 for baseline and retention conventions).
+Tier 1 concern (see [Chapter 04](04-configuration-templates-baselines-and-change-records.md) for baseline and retention conventions).
 
 ### The four safe-administration gates
 
 Apply these gates to every Tier 1–3 command, regardless of platform:
 
-1. **Authorization** — a change record exists (Chapter 04) with an approver
+1. **Authorization** — a change record exists ([Chapter 04](04-configuration-templates-baselines-and-change-records.md)) with an approver
    distinct from the executor for Tier 2/3 changes.
 2. **Backup** — the current state (configuration, database, VM snapshot) is
    captured and its location is recorded before the change begins.
@@ -149,13 +149,13 @@ sudo systemctl status nginx --no-pager  # verify
 
 - Every privileged command should be attributable to an individual, not a
   shared account: use `sudo` with per-user logging, TACACS+/RADIUS-backed
-  device logins (Chapter 03), and named IAM principals rather than root/
+  device logins ([Chapter 03](03-addressing-subnetting-naming-time-and-identity-reference.md)), and named IAM principals rather than root/
   shared admin credentials.
 - Enable command accounting (TACACS+ `aaa accounting commands`, Linux
   `auditd`, PowerShell transcription, AWS CloudTrail) so that Tier 1–3
   commands are logged centrally, not only on the local device.
 - Never paste production credentials into command history; use credential
-  vaults and short-lived tokens (see Volume X and Volume XVII) instead of
+  vaults and short-lived tokens (see [Volume X](../../volume-10-enterprise-cybersecurity/README.md) and [Volume XVII](../../volume-17-aws-architecture-security/README.md)) instead of
   inline `-p password` style flags, which persist in shell history and
   process lists.
 - Time-box standing privileged access; prefer just-in-time elevation

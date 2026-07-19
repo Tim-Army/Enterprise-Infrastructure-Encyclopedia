@@ -16,7 +16,7 @@
 ## Theory and Architecture
 
 Kubernetes storage answers a question orthogonal to workload identity
-(Chapter 03): how does a pod get durable, addressable storage that
+([Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md)): how does a pod get durable, addressable storage that
 survives the pod itself being rescheduled? The answer is layered into
 three cooperating objects and a plugin interface that keeps the
 storage-vendor-specific logic out of Kubernetes core entirely.
@@ -24,7 +24,7 @@ storage-vendor-specific logic out of Kubernetes core entirely.
 ### The Container Storage Interface
 
 The **Container Storage Interface (CSI)** is a gRPC API, analogous in
-spirit to the CRI (Chapter 01), that decouples Kubernetes from any
+spirit to the CRI ([Chapter 01](01-container-architecture-images-runtimes-and-registries.md)), that decouples Kubernetes from any
 specific storage backend. A CSI driver implements three gRPC services —
 `Identity`, `Controller` (provisioning, attaching, snapshotting, running
 off-node as a Deployment), and `Node` (mounting, running as a DaemonSet on
@@ -93,7 +93,7 @@ gap by enforcing the single-pod guarantee directly.
 
 ### StatefulSets and per-ordinal storage
 
-Chapter 03 introduced StatefulSet's stable ordinal identity; the storage
+[Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md) introduced StatefulSet's stable ordinal identity; the storage
 half of that contract is `volumeClaimTemplates`: the StatefulSet
 controller creates one PVC per ordinal (`data-web-0`, `data-web-1`, ...)
 the first time each pod is created, and — critically — reattaches the
@@ -164,7 +164,7 @@ for Kafka, the Elastic Cloud on Kubernetes operator) automates failover,
 backup, and version upgrades using the same reconciliation model as
 built-in controllers, and keeps the data service co-located with the
 applications that consume it under the same GitOps and RBAC model
-(Chapter 07). A managed external service (a cloud-managed database)
+([Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md)). A managed external service (a cloud-managed database)
 removes that operational surface entirely at the cost of a
 network hop out of the cluster and a separate control plane to integrate
 with the platform's identity and observability stack. The deciding factor
@@ -344,10 +344,10 @@ kubectl get pv <pv-name> -o jsonpath='{.spec.nodeAffinity}'
   persistent volumes.
 - Encrypt volumes at the storage backend (EBS/PD/Azure Disk encryption,
   or a Ceph/NAS-level encryption feature) in addition to the etcd-level
-  Secrets encryption covered in Chapter 02; volume encryption and
+  Secrets encryption covered in [Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md); volume encryption and
   control-plane data-at-rest encryption protect different assets.
 - Restrict who can create `PersistentVolume` objects and `StorageClass`
-  objects directly (as opposed to PVCs) via RBAC (Chapter 06); a
+  objects directly (as opposed to PVCs) via RBAC ([Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md)); a
   statically provisioned PV can point at storage an administrator did not
   intend a tenant to access.
 - Take application-consistent backups, not just crash-consistent
@@ -356,7 +356,7 @@ kubectl get pv <pv-name> -o jsonpath='{.spec.nodeAffinity}'
   for example) alongside or instead of a raw CSI snapshot when
   transactional consistency matters.
 - Test restore procedures on the same cadence as etcd restore drills
-  (Chapter 02); an unverified snapshot or Velero backup carries the same
+  ([Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md)); an unverified snapshot or Velero backup carries the same
   false confidence as an unverified etcd snapshot.
 - Set `allowVolumeExpansion: true` deliberately, and pair it with
   monitoring on volume utilization so expansion is a planned operation,

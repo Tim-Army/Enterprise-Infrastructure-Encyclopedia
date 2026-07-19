@@ -38,7 +38,7 @@ trains.
 
 ### HA-aware upgrade sequencing
 
-Upgrading an HA pair (Chapter 04) without planned downtime relies on the
+Upgrading an HA pair ([Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md)) without planned downtime relies on the
 pair's redundancy: the **passive** (or, in active/active, one designated)
 member is upgraded first while its peer continues actively forwarding
 traffic, then a controlled failover shifts traffic to the newly upgraded
@@ -47,7 +47,7 @@ existence matters operationally, not just for unplanned-failure
 resilience — it is the mechanism that makes planned software maintenance
 non-disruptive. Content updates (Applications and Threats, Antivirus,
 WildFire) are lower-risk than full software upgrades but still benefit
-from staggered installation across a fleet (introduced in Chapter 02) so a
+from staggered installation across a fleet (introduced in [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)) so a
 problematic content release affects a canary subset before reaching every
 enforcement point.
 
@@ -112,7 +112,7 @@ Ansible-based operational pipelines.
   by every automation script and stored in plaintext in a script or
   repository is a common, avoidable weakness. Prefer a dedicated
   automation service account with role-scoped permissions, API keys
-  retrieved from a secrets manager at runtime (Volume IX), and rotation on
+  retrieved from a secrets manager at runtime ([Volume IX](../../volume-09-infrastructure-automation/README.md)), and rotation on
   a defined schedule.
 - **REST API vs. XML API for a given task.** Prefer the REST API for
   standard object CRUD operations it supports natively — its resource
@@ -123,9 +123,9 @@ Ansible-based operational pipelines.
 - **Terraform vs. Ansible for PAN-OS automation.** Favor the Terraform
   provider where firewall/Panorama configuration is managed as part of a
   broader declarative infrastructure stack alongside cloud resources
-  (Volume VII, Volume IX) and state-tracked drift detection is valuable.
+  ([Volume VII](../../volume-07-cloud-infrastructure/README.md), [Volume IX](../../volume-09-infrastructure-automation/README.md)) and state-tracked drift detection is valuable.
   Favor the Ansible Collection where the organization's existing
-  operational automation is already Ansible-centric (Volume IX) or where a
+  operational automation is already Ansible-centric ([Volume IX](../../volume-09-infrastructure-automation/README.md)) or where a
   more procedural, playbook-driven change (for example, a one-time bulk
   object cleanup) fits the task better than a persistent declarative
   state file.
@@ -266,7 +266,7 @@ resource "panos_address_object" "app_server" {
   RBAC changes can invalidate stored keys), that the automation service
   account still holds the required role-based permissions, and that the
   target Web UI/API service is reachable and not restricted by the
-  permitted-IP list from Chapter 01.
+  permitted-IP list from [Chapter 01](01-cybersecurity-apprentice-foundations.md).
 - **Ansible/Terraform run reports drift immediately after a successful
   apply.** This typically indicates the change was applied to the
   candidate configuration but not committed — both the Ansible collection
@@ -287,7 +287,7 @@ resource "panos_address_object" "app_server" {
   change involving access to them.
 - Restrict which source addresses/networks may reach the management
   interface's API and Web UI endpoints, exactly as with interactive
-  administrative access (Chapter 01) — an API credential is not a lesser
+  administrative access ([Chapter 01](01-cybersecurity-apprentice-foundations.md)) — an API credential is not a lesser
   target than an interactive login.
 - Retain and securely store tech support files only as long as needed for
   the active support case; they contain configuration and log data that
@@ -313,7 +313,7 @@ resource "panos_address_object" "app_server" {
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — PAN-OS 11.x /
   Panorama 11.x baseline; Terraform and Ansible baselines used in the
   automation examples above.
-- Volume IX — Infrastructure Automation, for plan/apply and idempotency
+- [Volume IX](../../volume-09-infrastructure-automation/README.md) — Infrastructure Automation, for plan/apply and idempotency
   principles applied to the Terraform/Ansible examples here.
 
 **Knowledge checks**
@@ -338,7 +338,7 @@ test using an invalid API key.
 
 **Prerequisites**
 
-- The HA pair built in Chapter 04's lab (or a single lab firewall if HA is
+- The HA pair built in [Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md)'s lab (or a single lab firewall if HA is
   unavailable — the upgrade sequencing steps can be read/adapted rather
   than fully executed against a single node).
 - `curl` available on the workstation used for API testing.
@@ -452,7 +452,7 @@ only when needed, and automation surfaces — the XML API, REST API,
 Terraform provider, and Ansible collection — that let fleet-scale
 operational and configuration tasks run as reliable, auditable code rather
 than repetitive manual work. These skills, combined with Panorama's
-centralized management from Chapter 06, are what a Practitioner-level
+centralized management from [Chapter 06](06-panorama-installation-central-management-and-logging.md), are what a Practitioner-level
 engineer is expected to demonstrate operationally in production.
 
 - [ ] Can plan and describe a zero-downtime HA-aware software upgrade

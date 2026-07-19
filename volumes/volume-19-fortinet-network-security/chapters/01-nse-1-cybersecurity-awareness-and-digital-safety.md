@@ -135,8 +135,8 @@ increasingly specialized, role-based tracks:
 | Level | Focus |
 | --- | --- |
 | NSE 1 | Cybersecurity awareness and digital safety for any end user (this chapter) |
-| NSE 2 | Threat landscape evolution and a technology-category overview of the Fortinet Security Fabric portfolio (Chapter 02) |
-| NSE 3 | Security Fabric architecture and introductory product-level knowledge for pre-sales, support, and operator roles (Chapter 03) |
+| NSE 2 | Threat landscape evolution and a technology-category overview of the Fortinet Security Fabric portfolio ([Chapter 02](02-nse-2-threat-landscape-security-technologies-and-fortinet-portfolio.md)) |
+| NSE 3 | Security Fabric architecture and introductory product-level knowledge for pre-sales, support, and operator roles ([Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md)) |
 | NSE 4 | FortiOS administrator: hands-on FortiGate policy, VPN, security profile, routing, and HA configuration (Chapters 04–09) |
 | NSE 5–7 | Role-based tracks covering central management (FortiManager/FortiAnalyzer), advanced security architecture, and specialist product tracks |
 | NSE 8 | Expert-level, lab-based practical exam validating hands-on architecture and troubleshooting mastery |
@@ -238,7 +238,7 @@ training having been delivered.
   requests for a given account, especially outside that user's normal
   working hours, is a strong signal of an in-progress credential-stuffing
   or push-bombing attempt and should route to the security operations
-  workflow described in Volume X, not be dismissed as user error.
+  workflow described in [Volume X](../../volume-10-enterprise-cybersecurity/README.md), not be dismissed as user error.
 - **Recovery-path drift.** Periodically audit recovery email/phone fields
   across critical accounts; a recovery contact that has quietly gone stale
   (old phone number, departed employee's personal email) undermines account
@@ -259,7 +259,7 @@ training having been delivered.
   entering credentials); fast reporting shrinks the response window far
   more than the embarrassment of having clicked costs.
 - Keep awareness content current with the threat landscape described in
-  Chapter 02 — AI-assisted phishing, deepfake voice/video vishing, and
+  [Chapter 02](02-nse-2-threat-landscape-security-technologies-and-fortinet-portfolio.md) — AI-assisted phishing, deepfake voice/video vishing, and
   QR-code quishing are materially changing what "looks suspicious" means
   relative to a decade-old awareness curriculum.
 
@@ -363,7 +363,7 @@ social engineering and phishing, malware categories relevant to an end
 user, identity risk from password reuse, MFA as the primary mitigating
 control (and its own weaknesses, such as fatigue and SIM swapping), and
 where NSE 1 sits in the Fortinet NSE Training Institute's eight-level
-program. Chapter 02 builds on this awareness foundation with a
+program. [Chapter 02](02-nse-2-threat-landscape-security-technologies-and-fortinet-portfolio.md) builds on this awareness foundation with a
 technology-category view of the threat landscape and the Fortinet Security
 Fabric portfolio that responds to it.
 

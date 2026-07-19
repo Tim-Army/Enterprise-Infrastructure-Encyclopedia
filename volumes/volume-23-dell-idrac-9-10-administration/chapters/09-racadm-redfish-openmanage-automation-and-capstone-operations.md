@@ -10,7 +10,7 @@
 - Use the `dellemc.openmanage` Ansible collection to express iDRAC
   configuration as declarative, version-controlled automation.
 - Explain how single-server iDRAC automation composes with fleet-scale
-  OpenManage Enterprise workflows (Volume XXII) rather than duplicating
+  OpenManage Enterprise workflows ([Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md)) rather than duplicating
   them.
 - Execute a capstone runbook that provisions a server end to end —
   network, identity, storage, firmware baseline, and OS deployment —
@@ -46,7 +46,7 @@ automation:
   written before Redfish's adoption. New automation should not target
   WSMAN directly; it is mentioned here only because you may encounter it
   in legacy scripts or in OpenManage Enterprise's own internal
-  communication with older-firmware iDRACs (Volume XXII, Chapter 1).
+  communication with older-firmware iDRACs ([Volume XXII, Chapter 1](../../volume-22-dell-openmanage-enterprise/chapters/01-architecture-requirements-deployment-and-first-configuration.md)).
 
 The practical guidance this chapter draws from that comparison: write new
 automation against Redfish first, reach for RACADM for specific settings
@@ -58,8 +58,8 @@ WSMAN as something to recognize rather than something to author against.
 
 Idempotent automation — running the same operation repeatedly produces
 the same end state rather than compounding changes or erroring on
-re-application — is a general automation principle covered in Volume I,
-Chapter 3, and applies directly to iDRAC scripting. A well-written iDRAC
+re-application — is a general automation principle covered in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md),
+[Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md), and applies directly to iDRAC scripting. A well-written iDRAC
 automation script checks current state before changing it (for example,
 confirming an IPv4 address isn't already set to the target value before
 issuing a `PATCH`), handles the case where a resource already exists
@@ -67,7 +67,7 @@ issuing a `PATCH`), handles the case where a resource already exists
 uses the session-token authentication pattern — establishing a session,
 using its token for subsequent calls, and explicitly deleting the session
 when done — that this encyclopedia has used consistently since Volume
-XXII, Chapter 1's OME bootstrap example, because it avoids either leaving
+XXII, [Chapter 1](01-architecture-generations-licensing-and-first-access.md)'s OME bootstrap example, because it avoids either leaving
 idle sessions to expire uncleanly or repeatedly re-authenticating with
 full credentials on every call.
 
@@ -86,7 +86,7 @@ version-controlled playbooks rather than one-off scripts.
 
 ### Where iDRAC automation ends and OME orchestration begins
 
-Every OME workflow covered in Volume XXII — discovery, inventory,
+Every OME workflow covered in [Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md) — discovery, inventory,
 firmware compliance and update, configuration templates and compliance,
 monitoring and alerting — resolves, underneath, into iDRAC-level Redfish
 and WS-Management calls against individual servers, exactly the calls this
@@ -94,7 +94,7 @@ volume has taught directly. The practical dividing line: reach for direct
 iDRAC automation (this volume) when working with a single server, when
 building bring-up/provisioning tooling that runs before a server is
 onboarded into fleet management, or when debugging why an OME-driven
-operation failed on one specific unit; reach for OME (Volume XXII) when
+operation failed on one specific unit; reach for OME ([Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md)) when
 the unit of work is "the fleet" or "a defined group of servers" rather
 than one server, since OME's discovery, grouping, template, and
 compliance-reporting layers exist specifically to avoid re-implementing
@@ -114,7 +114,7 @@ per-server orchestration logic at scale.
   used across many bring-up events is a strong candidate for an Ansible
   role using `dellemc.openmanage`; a setting that should be enforced
   consistently and reported on across an entire managed fleet belongs in
-  an OME configuration template (Volume XXII, Chapter 8), not
+  an OME configuration template ([Volume XXII, Chapter 8](../../volume-22-dell-openmanage-enterprise/chapters/08-templates-configuration-compliance-automation-and-apis.md)), not
   reimplemented as a script that has to be run against every server
   individually.
 - **Design automation idempotently from the start, not as a later
@@ -124,7 +124,7 @@ per-server orchestration logic at scale.
   you need to re-run a partially failed provisioning job — exactly when
   reliability matters most.
 - **Plan credential handling for automation the same way you planned it
-  for human accounts in Chapter 4.** Automation service accounts should
+  for human accounts in [Chapter 4](04-identity-certificates-security-and-compliance.md).** Automation service accounts should
   be scoped with discrete privileges appropriate to what the automation
   actually does, stored in a secrets manager rather than embedded in
   scripts, and rotated on the same cadence as any other privileged
@@ -133,7 +133,7 @@ per-server orchestration logic at scale.
   running it against anything beyond a lab.** A multi-step provisioning
   runbook that fails partway through should leave the server in a
   known, documented state (or explicitly roll back via a retained SCP
-  baseline, Chapter 2) rather than an ambiguous partial-configuration
+  baseline, [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md)) rather than an ambiguous partial-configuration
   state that the next operator has to reverse-engineer.
 
 ## Implementation and Automation
@@ -143,7 +143,7 @@ per-server orchestration logic at scale.
 Every scripted example across this volume's chapters has used either
 HTTP Basic authentication (`auth=(user, password)`) for simplicity in
 single-call examples, or could equally use iDRAC's session-token pattern
-for a longer-running automation session, exactly as Volume XXII, Chapter
+for a longer-running automation session, exactly as [Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md), Chapter
 1 established for OME:
 
 ```python
@@ -217,7 +217,7 @@ if __name__ == "__main__":
 
 Note this uses the standard Redfish `NetworkProtocol` resource's `NTP`
 object as an alternative to the `iDRAC.NTPConfigGroup` RACADM attributes
-used in Chapter 3 — both configure the same underlying setting; confirm
+used in [Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md) — both configure the same underlying setting; confirm
 which surface your firmware exposes most completely and prefer the
 standard Redfish resource where available, consistent with this
 chapter's Redfish-first guidance.
@@ -287,7 +287,7 @@ collection has added coverage for newer iDRAC features.
   range.
 - **Ansible module task fails with an authentication or connectivity
   error despite correct credentials.** Confirm `validate_certs` is set
-  appropriately for your certificate state (Chapter 4) — a non-CA-signed
+  appropriately for your certificate state ([Chapter 4](04-identity-certificates-security-and-compliance.md)) — a non-CA-signed
   or newly replaced certificate can cause an Ansible task using strict
   certificate validation to fail differently than a `curl -k`/`verify=False`
   script would, since the failure modes for certificate handling differ
@@ -302,8 +302,8 @@ collection has added coverage for newer iDRAC features.
   iDRAC access works fine.** This points to an OME-side discovery or
   credential-profile issue rather than an iDRAC fault — confirm OME's
   configured discovery credentials match the current iDRAC credentials
-  (a password rotated per Chapter 4 without updating OME's credential
-  profile is a common cause) per Volume XXII, Chapter 3.
+  (a password rotated per [Chapter 4](04-identity-certificates-security-and-compliance.md) without updating OME's credential
+  profile is a common cause) per [Volume XXII, Chapter 3](../../volume-22-dell-openmanage-enterprise/chapters/03-discovery-onboarding-inventory-groups-and-device-control.md).
 
 ## Security and Best Practices
 
@@ -312,7 +312,7 @@ collection has added coverage for newer iDRAC features.
   playbooks, scripts, or version-controlled files — this applies to every
   script in this volume, not only the capstone examples in this chapter.
 - Scope automation service accounts to the minimum discrete privileges
-  the automation actually exercises (Chapter 4), and use distinct
+  the automation actually exercises ([Chapter 4](04-identity-certificates-security-and-compliance.md)), and use distinct
   accounts for distinct automation purposes where practical, so a
   compromised credential's blast radius is bounded.
 - Pin your Ansible collection version explicitly in your automation's
@@ -321,7 +321,7 @@ collection has added coverage for newer iDRAC features.
   introduced into production automation runs.
 - Log every automated change with enough context (which script/playbook,
   which run, what changed) to reconstruct history alongside the
-  Lifecycle Log's own record (Chapter 6) — the two should corroborate
+  Lifecycle Log's own record ([Chapter 6](06-hardware-health-power-thermal-logs-and-support.md)) — the two should corroborate
   each other during an incident investigation.
 - Review automation scripts and playbooks for the same security posture
   you'd expect of a human administrator: least privilege, no
@@ -338,7 +338,7 @@ collection has added coverage for newer iDRAC features.
 - Dell Technologies, `dellemc.openmanage` Ansible Collection documentation
   (Ansible Galaxy / Dell GitHub)
 - Dell Technologies, *OpenManage Enterprise RESTful API Guide* (Volume
-  XXII, Chapter 1 reference)
+  XXII, [Chapter 1](01-architecture-generations-licensing-and-first-access.md) reference)
 - DMTF, *Redfish Specification* (DSP0266) and *Redfish Schema Supplement*
 - `SOFTWARE_VERSIONS.md` in this repository for the dated iDRAC9/iDRAC10
   baseline
@@ -370,8 +370,8 @@ sequence, run first manually as a rehearsal, then as a scripted pass.
 **Prerequisites**
 
 - The lab server used throughout this volume's chapters, reset to a known
-  state (either the original Chapter 1 baseline, restored via the SCP
-  export from Chapter 2, or left in its current state if you are
+  state (either the original [Chapter 1](01-architecture-generations-licensing-and-first-access.md) baseline, restored via the SCP
+  export from [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md), or left in its current state if you are
   comfortable applying this capstone on top of it).
 - All prerequisites from Chapters 1 through 8: network reachability, a
   test OS ISO on a reachable share, spare disks for storage
@@ -383,22 +383,22 @@ sequence, run first manually as a rehearsal, then as a scripted pass.
 **Steps**
 
 1. Export a pre-capstone SCP baseline as your rollback point, following
-   Chapter 2's procedure:
+   [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md)'s procedure:
 
    ```bash
    racadm systemconfig export -t xml -f pre-capstone-baseline.xml \
      -l //<share-ip>/scp-share -u <svc-user> -p '<password>'
    ```
 
-2. Confirm and, if needed, reapply network configuration from Chapter 3
+2. Confirm and, if needed, reapply network configuration from [Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)
    (static IPv4, DNS registration, NTP) — this capstone assumes that
    baseline is already correct from earlier labs; re-verify rather than
    re-apply if unchanged.
-3. Confirm identity hardening from Chapter 4 is in place: a non-default
+3. Confirm identity hardening from [Chapter 4](04-identity-certificates-security-and-compliance.md) is in place: a non-default
    local password, a CA-signed (or lab-CA-signed) certificate installed.
    **Expected result:** browsing to the iDRAC no longer shows the
    original factory self-signed certificate warning.
-4. Confirm storage baseline from Chapter 7: at minimum, run
+4. Confirm storage baseline from [Chapter 7](07-storage-arrays-boss-raid-configuration-and-maintenance.md): at minimum, run
    `idrac_storage_health_check.py` and confirm a clean result before
    proceeding.
 
@@ -406,14 +406,14 @@ sequence, run first manually as a rehearsal, then as a scripted pass.
    python3 idrac_storage_health_check.py <idrac-ip> root '<password>'
    ```
 
-5. Confirm firmware inventory from Chapter 8 and record current versions
+5. Confirm firmware inventory from [Chapter 8](08-firmware-idrac-bios-lifecycle-controller-and-platform-updates.md) and record current versions
    as this capstone's firmware baseline:
 
    ```bash
    racadm swinventory > capstone-firmware-baseline.txt
    ```
 
-6. Deploy a test OS using the Virtual Media pattern from Chapter 5:
+6. Deploy a test OS using the Virtual Media pattern from [Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md):
 
    ```bash
    python3 idrac_mount_and_boot.py <idrac-ip> root '<password>' \
@@ -434,11 +434,11 @@ sequence, run first manually as a rehearsal, then as a scripted pass.
    **Expected result:** entries corresponding to each major step (network
    changes if any were reapplied, the firmware inventory check, the
    Virtual Media mount and boot) appear in chronological order, confirming
-   Chapter 6's log guidance holds up as a real audit trail across a
+   [Chapter 6](06-hardware-health-power-thermal-logs-and-support.md)'s log guidance holds up as a real audit trail across a
    multi-step operation.
 8. **Negative test:** deliberately re-run step 6 with an unreachable
    image URL, confirming the same fail-safe behavior validated in
-   Chapter 5's lab still holds when invoked as part of a larger sequence:
+   [Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md)'s lab still holds when invoked as part of a larger sequence:
 
    ```bash
    python3 idrac_mount_and_boot.py <idrac-ip> root '<password>' \
@@ -451,9 +451,9 @@ sequence, run first manually as a rehearsal, then as a scripted pass.
 **Cleanup**
 
 - Eject any mounted Virtual Media and clear one-time boot overrides,
-  following Chapter 5's cleanup procedure.
+  following [Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md)'s cleanup procedure.
 - If this lab server will be decommissioned or repurposed outside this
-  volume's labs, follow Chapter 4's System Erase guidance rather than
+  volume's labs, follow [Chapter 4](04-identity-certificates-security-and-compliance.md)'s System Erase guidance rather than
   leaving lab configuration and test data in place.
 - If it will be reused, retain `pre-capstone-baseline.xml` and
   `capstone-firmware-baseline.txt` as documented reference points for any
@@ -465,17 +465,17 @@ This capstone chapter tied together every prior chapter in the volume
 into a coherent automation model: RACADM, Redfish, and (for historical
 context) WS-Management as the three interfaces every capability in this
 volume is reachable through; idempotent, session-token-based Python
-automation as the scripting pattern used consistently since Chapter 1;
+automation as the scripting pattern used consistently since [Chapter 1](01-architecture-generations-licensing-and-first-access.md);
 the `dellemc.openmanage` Ansible collection as the declarative-automation
 path for teams standardized on Ansible; and an explicit dividing line
 between single-server iDRAC automation (this volume) and fleet-scale
-OpenManage Enterprise orchestration (Volume XXII), which resolves to the
+OpenManage Enterprise orchestration ([Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md)), which resolves to the
 same underlying operations at scale. The capstone lab exercised network,
 identity, storage, firmware, and OS-deployment techniques from every
 chapter in a single, auditable, idempotent-by-design sequence — the
 practical demonstration that this volume's single-server administrative
 model is a complete, production-usable skill set on its own, and the
-foundation every fleet-scale OME workflow in Volume XXII ultimately
+foundation every fleet-scale OME workflow in [Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md) ultimately
 depends on.
 
 - [ ] I can compare RACADM, Redfish, and WS-Management and justify a

@@ -45,7 +45,7 @@ outbound-only internet access for private-subnet resources by translating
 their private addresses to its own Elastic IP, and it must itself sit in a
 public subnet. This asymmetry — private subnets can reach out, nothing can
 reach in — is the basic building block of the three-tier application
-architecture used throughout Chapter 04.
+architecture used throughout [Chapter 04](04-compute-containers-serverless-and-application-architecture.md).
 
 ### Security groups vs. network ACLs
 
@@ -97,7 +97,7 @@ control which attachments can reach which — including deliberately
 non-transitive segmentation between spokes using separate TGW route tables
 and selective route propagation. TGWs can be shared across accounts using
 **AWS Resource Access Manager (RAM)**, which is how the Infrastructure OU's
-network-hub account from Chapter 02 centrally owns a TGW that every
+network-hub account from [Chapter 02](02-multi-account-identity-governance-and-landing-zones.md) centrally owns a TGW that every
 workload account attaches to.
 
 **AWS PrivateLink** solves a different problem: exposing a specific service
@@ -145,7 +145,7 @@ failover path, since VPN requires no physical lead time.
   **weighted** (percentage-based traffic splitting), **latency-based**
   (route to the Region with lowest measured latency), **geolocation**, and
   **failover** (active-passive with health checks) — failover routing is
-  covered in depth as a DR mechanism in Chapter 06.
+  covered in depth as a DR mechanism in [Chapter 06](06-reliability-migration-multi-region-and-disaster-recovery.md).
 - **Amazon CloudFront** is AWS's content delivery network (CDN), caching
   content at edge locations close to users and reducing load on origin
   infrastructure (S3, an ALB, or a non-AWS origin). An **Origin Access
@@ -477,7 +477,7 @@ resource "aws_cloudfront_distribution" "site" {
   DLP/IDS policy rather than each workload account's own uninspected NAT
   gateway.
 - Enable VPC Flow Logs on every VPC in every account and ship them to the
-  centralized log-archive account established in Chapter 02, not to a
+  centralized log-archive account established in [Chapter 02](02-multi-account-identity-governance-and-landing-zones.md), not to a
   workload account's own log group.
 - Protect every public-facing origin with AWS WAF and, for
   internet-critical workloads, AWS Shield Advanced; restrict direct

@@ -18,8 +18,8 @@
 
 ## Theory and Architecture
 
-Chapter 01 introduced the Cybersecurity Apprentice credential as
-vendor-adjacent and portfolio-wide; Chapter 02 built Cybersecurity
+[Chapter 01](01-cybersecurity-apprentice-foundations.md) introduced the Cybersecurity Apprentice credential as
+vendor-adjacent and portfolio-wide; [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md) built Cybersecurity
 Practitioner depth across Strata, Prisma, and Cortex. This chapter closes
 the loop: the **role-based certification portfolio** — anchored by PCNSA
 and PCNSE — assumes exactly the hands-on configuration skill this volume's
@@ -72,9 +72,9 @@ not just the ability to recite a `set` command from memory.
 
 The recommended progression for an engineer working through this volume:
 
-1. **Cybersecurity Apprentice** (Chapter 01) — portfolio-wide conceptual
+1. **Cybersecurity Apprentice** ([Chapter 01](01-cybersecurity-apprentice-foundations.md)) — portfolio-wide conceptual
    foundation, no hands-on PAN-OS prerequisite.
-2. **Cybersecurity Practitioner** (Chapter 02) — licensing, subscription,
+2. **Cybersecurity Practitioner** ([Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)) — licensing, subscription,
    and platform-portfolio depth (Strata, Prisma, Cortex).
 3. **PCNSA** — after completing Chapters 03–05's hands-on labs at least
    once, ideally repeated on a second, independently built lab environment
@@ -98,28 +98,28 @@ topology — the scale a PCNSE-track engineer is expected to reason about:
 
 - **Topology.** A data-center HA pair (VM-Series, active/passive, Chapter
   04) fronting a DMZ and internal trust zone, managed by a Panorama
-  instance (Chapter 06) that also manages a branch-office firewall
-  onboarded via bootstrap (Chapter 03).
+  instance ([Chapter 06](06-panorama-installation-central-management-and-logging.md)) that also manages a branch-office firewall
+  onboarded via bootstrap ([Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md)).
 - **Device group hierarchy.** A `Global-Baseline` parent device group
   carrying Shared/parent pre-rules for non-negotiable controls (known-
   malicious category blocks, DNS Security enforcement), with `DataCenter`
   and `Branch-Offices` child device groups carrying site-appropriate
-  policy — directly reusing the hierarchy pattern from Chapter 06.
+  policy — directly reusing the hierarchy pattern from [Chapter 06](06-panorama-installation-central-management-and-logging.md).
 - **Template stack layering.** A shared `Base-Network` template (NTP, DNS,
   logging/Collector Group assignment) combined with role-specific
   templates (`DataCenter-Network`, `Branch-Network`) into two template
-  stacks — reusing the layering pattern from Chapter 06.
+  stacks — reusing the layering pattern from [Chapter 06](06-panorama-installation-central-management-and-logging.md).
 - **Policy and inspection baseline.** App-ID/User-ID-based rules with a
   standard security profile group attached fleet-wide, plus a phased SSL
   Forward Proxy decryption rollout scoped to lower-risk URL categories
-  first — directly reusing Chapter 05's design guidance.
+  first — directly reusing [Chapter 05](05-application-identity-threat-and-data-security-policy.md)'s design guidance.
 - **Operational lifecycle.** Panorama-scheduled, staged content updates and
-  a documented HA-aware software upgrade ring — reusing Chapter 07's
+  a documented HA-aware software upgrade ring — reusing [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md)'s
   guidance — so the capstone environment is not just built once but
   designed to be operated indefinitely.
 - **Automation touchpoint.** At least one configuration task (for example,
   bulk address-object creation) performed via the XML or REST API rather
-  than manual entry, demonstrating the automation surface from Chapter 07
+  than manual entry, demonstrating the automation surface from [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md)
   integrated into a real build rather than treated as a standalone
   exercise.
 
@@ -132,24 +132,24 @@ cross-chapter dependencies. The Hands-On Lab below executes it concretely.
 ### Build sequence
 
 1. **Provision and bootstrap.** Deploy the data-center HA pair and the
-   branch firewall as VM-Series instances (Chapter 03), each with a
+   branch firewall as VM-Series instances ([Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md)), each with a
    tailored `init-cfg.txt` binding it to the correct Panorama device group
    and template stack from first boot.
 2. **Establish Panorama governance.** Build the device group hierarchy and
-   template stacks (Chapter 06) before pushing any site-specific policy,
+   template stacks ([Chapter 06](06-panorama-installation-central-management-and-logging.md)) before pushing any site-specific policy,
    so every subsequent change flows through centralized management rather
    than local configuration.
 3. **Configure networking and HA.** Push interface, zone, virtual router,
-   and HA configuration via templates (Chapter 04), then verify HA state
+   and HA configuration via templates ([Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md)), then verify HA state
    independently on the data-center pair before layering policy on top.
 4. **Layer security policy.** Push Shared/parent pre-rules first (global,
    non-negotiable controls), then device-group-specific rules with
-   attached security profile groups (Chapter 05).
+   attached security profile groups ([Chapter 05](05-application-identity-threat-and-data-security-policy.md)).
 5. **Enable decryption in scope.** Apply the phased SSL Forward Proxy
-   policy with documented category exclusions (Chapter 05), verified
+   policy with documented category exclusions ([Chapter 05](05-application-identity-threat-and-data-security-policy.md)), verified
    against a client with the decryption CA distributed.
 6. **Configure log forwarding.** Bind the Collector Group assignment into
-   the shared template (Chapter 06) so every managed firewall's logs
+   the shared template ([Chapter 06](06-panorama-installation-central-management-and-logging.md)) so every managed firewall's logs
    consolidate centrally from first push.
 7. **Validate operational readiness.** Confirm content update scheduling,
    document the HA-aware upgrade sequence for this pair, and perform at
@@ -181,25 +181,25 @@ checklist:
 
 - **Bootstrap and licensing.** `show system bootstrap` and `request
   license info` on every instance confirm a clean first-boot state before
-  troubleshooting anything downstream (Chapter 03).
+  troubleshooting anything downstream ([Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md)).
 - **HA state.** `show high-availability state` on the data-center pair
   confirms one `active` and one `passive` member with synchronized
   configuration before assuming any policy or NAT issue is
-  policy-related rather than an underlying HA sync problem (Chapter 04).
+  policy-related rather than an underlying HA sync problem ([Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md)).
 - **Routing and NAT.** `show routing route` and `test nat-policy-match`
   confirm the network layer independently of security policy before
   troubleshooting a "traffic is blocked" report as a policy problem
-  (Chapter 04).
+  ([Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md)).
 - **Policy match.** `test security-policy-match` isolates which rule
   (Shared, parent device group, local device group, or an unexpected local
   firewall rule) actually governs a given flow (Chapters 05–06).
 - **Panorama push state.** Per-device push job status confirms every
   managed firewall actually received the intended configuration, rather
   than assuming a successful Panorama-local commit implies a successful
-  fleet-wide push (Chapter 06).
+  fleet-wide push ([Chapter 06](06-panorama-installation-central-management-and-logging.md)).
 - **Global counters and packet capture.** Reserved for problems that
   survive the checks above — used last, not first, consistent with
-  Chapter 07's layered troubleshooting guidance.
+  [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md)'s layered troubleshooting guidance.
 
 A capstone-level engineer works this checklist top-down rather than
 reaching for packet capture as a first step; most real-world "the firewall
@@ -216,16 +216,16 @@ retained:
 - Administrator RBAC and MFA on every management surface — firewall,
   Panorama, and API service accounts (Chapters 01, 06, 07).
 - CDSS subscription currency and scheduled, staggered content updates
-  across the fleet (Chapter 02).
+  across the fleet ([Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)).
 - HA link isolation and path monitoring for both the data-center pair and
-  any future branch HA expansion (Chapter 04).
+  any future branch HA expansion ([Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md)).
 - Least-privilege, App-ID/User-ID-scoped security rules with an attached
   profile group on every allow rule, and a documented, reviewed decryption
-  exclusion list (Chapter 05).
+  exclusion list ([Chapter 05](05-application-identity-threat-and-data-security-policy.md)).
 - Access-domain-scoped Panorama administration and non-bypassable
-  Shared/parent pre-rules for global controls (Chapter 06).
+  Shared/parent pre-rules for global controls ([Chapter 06](06-panorama-installation-central-management-and-logging.md)).
 - Secrets-managed automation credentials with scoped roles and a rotation
-  schedule (Chapter 07).
+  schedule ([Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md)).
 
 Treat this consolidated review as the capstone's actual security
 deliverable — a design is not complete when it passes functional
@@ -251,7 +251,7 @@ security review.
    scope, and which additional chapters extend that scope to PCNSE?
 2. Why does the recommended study path require completing PCNSA-level
    hands-on repetition before attempting PCNSE, rather than proceeding
-   directly to PCNSE after Chapter 02?
+   directly to PCNSE after [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)?
 3. In the capstone's validation checklist, why are HA state and
    routing/NAT checks positioned before policy-match testing, and policy-
    match testing before packet capture?
@@ -287,7 +287,7 @@ configuration.
 1. **Provisioning phase.** Confirm or (re)bootstrap the data-center HA
    pair and branch firewall with `init-cfg.txt` files binding each to the
    correct device group and template stack names planned for this
-   capstone (Chapter 03). Verify:
+   capstone ([Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md)). Verify:
 
    ```text
    admin@pa-dc-01> show system bootstrap
@@ -345,7 +345,7 @@ configuration.
 
 6. **Decryption phase.** On the `DataCenter-Network` template (create if
    not already present), push a scoped decrypt rule with a category
-   exclusion, consistent with Chapter 05:
+   exclusion, consistent with [Chapter 05](05-application-identity-threat-and-data-security-policy.md):
 
    ```text
    admin@panorama01# set devicegroups DataCenter pre-rulebase decryption rules Decrypt-Exclude-Financial from trust to untrust source any destination any category financial-services action no-decrypt
@@ -398,7 +398,7 @@ configuration.
     ```
 
 11. **Cleanup:** Decide whether to retain the capstone environment for
-    Chapter 09's Cortex Cloud material (recommended, if lab capacity
+    [Chapter 09](09-cortex-cloud-security-professional.md)'s Cortex Cloud material (recommended, if lab capacity
     allows) or decommission it. If decommissioning, remove pushed policy
     from Panorama, detach devices from their device groups and template
     stacks, and power off/delete the VM-Series instances:
@@ -420,7 +420,7 @@ troubleshooting, and automation (Chapters 06–07). This chapter's capstone
 lab is the volume's proof point — a single integrated build that exercises
 every prior chapter's constructs together, validated with the same
 layered troubleshooting discipline expected of a practicing PCNSE-track
-engineer. Chapter 09 extends this same enterprise into Cortex Cloud
+engineer. [Chapter 09](09-cortex-cloud-security-professional.md) extends this same enterprise into Cortex Cloud
 Security Professional territory, applying cloud-native application
 protection to the workloads this capstone's firewalls protect.
 

@@ -55,10 +55,10 @@ platform:
   OS name/version reporting, in-band SSD/NVMe wear data the BMC cannot
   otherwise see cleanly, Windows Server failover cluster awareness, and a
   faster in-band channel for some operations than pure out-of-band
-  polling allows. iSM is covered in depth in Chapter 5.
+  polling allows. iSM is covered in depth in [Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md).
 - **System Event Log (SEL) and Lifecycle Log** — persistent, iDRAC-resident
   event stores that outlive OS reinstalls and even most component
-  replacements, covered in depth in Chapter 6.
+  replacements, covered in depth in [Chapter 6](06-hardware-health-power-thermal-logs-and-support.md).
 
 ### iDRAC9 and iDRAC10: one administrative model, two hardware generations
 
@@ -79,7 +79,7 @@ administrator coming from iDRAC9 should expect are a faster management
 processor and web application stack (the HTML5 console and Redfish
 responses feel noticeably snappier on comparable operations), an expanded
 cyber-resiliency posture built further on the silicon root of trust model
-introduced in iDRAC9 (Chapter 4), and continued convergence toward Redfish
+introduced in iDRAC9 ([Chapter 4](04-identity-certificates-security-and-compliance.md)), and continued convergence toward Redfish
 as the primary automation interface with RACADM increasingly implemented
 as a client that itself calls Redfish under the hood. Confirm the exact
 iDRAC generation shipped with any specific PowerEdge model against Dell's
@@ -125,8 +125,8 @@ between iDRAC9 and iDRAC10:
 | Tier (illustrative) | Representative capability added |
 | --- | --- |
 | Basic | Core out-of-band management: power control, sensor/health monitoring, SEL/Lifecycle Log, RACADM, basic web GUI, IPMI, SNMP alerting. |
-| Express | Virtual Console and Virtual Media (Chapter 5), embedded diagnostics, Quick Sync. |
-| Enterprise | Directory services integration (Active Directory/LDAP, Chapter 4), two-factor and smart-card authentication, group manager, OS-to-iDRAC Pass-through. |
+| Express | Virtual Console and Virtual Media ([Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md)), embedded diagnostics, Quick Sync. |
+| Enterprise | Directory services integration (Active Directory/LDAP, [Chapter 4](04-identity-certificates-security-and-compliance.md)), two-factor and smart-card authentication, group manager, OS-to-iDRAC Pass-through. |
 | Datacenter | Telemetry streaming, expanded Redfish feature surface, System Lockdown Mode, advanced secure-erase capability. |
 
 Treat this table as directional rather than authoritative for a specific
@@ -161,7 +161,7 @@ reaches over HTTPS outbound.
 - **Decide dedicated NIC vs. shared LOM before cabling.** iDRAC on rack and
   tower servers can use a dedicated management port or share host LOM
   ports; this decision affects switch port planning and is detailed in
-  Chapter 3, but it must be made before the first network bootstrap
+  [Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md), but it must be made before the first network bootstrap
   described later in this chapter, since it determines which physical
   port to connect.
 - **Decide the default-credential handling process up front.** Since
@@ -172,18 +172,18 @@ reaches over HTTPS outbound.
   fleet-wide secret) on current hardware. Build the unboxing/racking
   process around capturing that tag's credential into a password manager
   or secrets vault immediately, and changing it during first configuration
-  per Chapter 4, rather than treating it as a throwaway value.
+  per [Chapter 4](04-identity-certificates-security-and-compliance.md), rather than treating it as a throwaway value.
 - **Decide how first access will happen at scale.** For a handful of
   servers, DHCP plus a discovered IP (or the front LCD panel, where
   present) is workable. For a rack or a data center's worth of new
   servers, plan either a static-IP-at-the-switch (via DHCP reservations
   keyed to iDRAC MAC addresses) approach or a documented iDRAC Direct
-  procedure per server (Chapter 5) so first access is not a hunt-and-peck
+  procedure per server ([Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md)) so first access is not a hunt-and-peck
   exercise per unit.
 - **Decide whether iDRAC10's faster refresh cycle changes your firmware
   cadence.** iDRAC10's management stack updates more frequently in early
   platform life than a mature iDRAC9 branch typically does. Factor this
-  into the update cadence you establish in Chapter 8 rather than assuming
+  into the update cadence you establish in [Chapter 8](08-firmware-idrac-bios-lifecycle-controller-and-platform-updates.md) rather than assuming
   the same calendar cadence that worked for a stable iDRAC9 fleet.
 
 ## Implementation and Automation
@@ -208,14 +208,14 @@ tag will not remain conveniently accessible.
 3. Determine the assigned address: from the front LCD panel where present
    (navigate to the network settings menu), from your DHCP server's lease
    table matched against the iDRAC MAC address (also on the info tag), or
-   via iDRAC Direct if no network path is available yet (see Chapter 5 for
+   via iDRAC Direct if no network path is available yet (see [Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md) for
    the full iDRAC Direct procedure).
 4. Browse to `https://<idrac-ip>/` and accept the self-signed certificate
    warning — this is expected on a factory-default iDRAC and is resolved
-   with a proper certificate in Chapter 4.
+   with a proper certificate in [Chapter 4](04-identity-certificates-security-and-compliance.md).
 5. Log in with the credentials from the information tag. iDRAC prompts for
    a password change on first login with the factory-default password
-   still in place; complete this immediately per Chapter 4's identity
+   still in place; complete this immediately per [Chapter 4](04-identity-certificates-security-and-compliance.md)'s identity
    guidance rather than deferring it.
 
 ### Validating identity and firmware from the CLI
@@ -311,14 +311,14 @@ releases within both iDRAC9 and iDRAC10.
 
 - **No IP address obtained via DHCP.** Confirm the correct physical port
   is cabled for your NIC selection setting (dedicated vs. shared LOM,
-  Chapter 3) — the single most common first-boot failure is cabling the
+  [Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)) — the single most common first-boot failure is cabling the
   wrong port for the currently configured NIC selection mode. Use iDRAC
-  Direct (Chapter 5) to check or correct NIC selection without depending
+  Direct ([Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md)) to check or correct NIC selection without depending
   on the very network path you're troubleshooting.
 - **Certificate warning on first browse.** Expected behavior — a
   factory-default iDRAC presents a self-signed certificate. This is not a
   fault; proceed past the browser warning for initial access and replace
-  the certificate per Chapter 4 before production use.
+  the certificate per [Chapter 4](04-identity-certificates-security-and-compliance.md) before production use.
 - **Login rejected with the information-tag credentials.** Confirm you are
   reading the correct tag for the specific chassis (easy to mismatch in a
   multi-server unboxing session) and that Caps Lock or a keyboard-layout
@@ -357,7 +357,7 @@ releases within both iDRAC9 and iDRAC10.
   which service tags hold which tier, since a license is tied to the
   specific unit's service tag and is not fleet-transferable without a
   Dell-mediated reassignment process.
-- Confirm firmware is at a currently supported baseline (Chapter 8) before
+- Confirm firmware is at a currently supported baseline ([Chapter 8](08-firmware-idrac-bios-lifecycle-controller-and-platform-updates.md)) before
   placing a newly racked server into service — a unit that has been in a
   box for months may ship with firmware that predates security fixes
   available at deployment time.

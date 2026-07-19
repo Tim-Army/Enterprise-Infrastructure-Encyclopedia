@@ -5,7 +5,7 @@
 - Convert the manually built `CLOUD1` landing zone and vSphere inventory
   from Chapters 04–05 into Terraform-managed state without recreating any
   resource.
-- Convert the manual host configuration from Chapter 02 into idempotent
+- Convert the manual host configuration from [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) into idempotent
   Ansible playbooks, and prove re-running them changes nothing.
 - Build a pipeline with a policy gate that blocks a non-compliant change
   before it reaches `apply`, using a less-privileged identity for `plan`
@@ -19,30 +19,30 @@
 ## Theory and Architecture
 
 Every chapter so far has deliberately used manual, CLI-driven steps —
-Chapter 01 said as much, so the reader understands exactly what this
+[Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) said as much, so the reader understands exactly what this
 chapter's automation replaces. This chapter converts that manual history
-into code, following Volume IX (Infrastructure Automation): Chapter 02
+into code, following [Volume IX](../../volume-09-infrastructure-automation/README.md) (Infrastructure Automation): [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md)
 (Infrastructure as Code, State, Providers, and Modules) for bringing the
-`CLOUD1` VPC and vSphere inventory under Terraform management, Chapter 03
+`CLOUD1` VPC and vSphere inventory under Terraform management, [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md)
 (Configuration Management and Desired-State Convergence) for turning
-Chapter 02's manual AD/DNS/DHCP steps into Ansible playbooks, Chapter 05
+[Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md)'s manual AD/DNS/DHCP steps into Ansible playbooks, [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md)
 (Automation Pipelines, Testing, and Policy Gates) for the CI pipeline and
 its policy gate, and Chapter 06 (Automation Identity, Secrets, and
 Privileged Execution) for centralizing every secret this volume has
 accumulated into one managed store.
 
 The plan/apply separation this chapter implements is the practical
-application of the principle Volume I, Chapter 03 (Automation Architecture)
+application of the principle [Volume I, Chapter 03](../../volume-01-enterprise-engineering-foundations/chapters/03-automation-architecture.md) (Automation Architecture)
 introduced abstractly: a `plan` identity that can read and diff but not
 write, and a separate, more privileged `apply` identity gated behind human
-approval. Volume IX, Chapter 08 (Automation Security, Governance, and
+approval. [Volume IX, Chapter 08](../../volume-09-infrastructure-automation/chapters/08-automation-security-governance-and-supply-chains.md) (Automation Security, Governance, and
 Supply Chains) frames why this matters beyond convenience — an automation
 identity with unchecked apply rights is one compromised pipeline away from
 being a domain administrator equivalent across every system this volume
 has built.
 
 Two artifacts this chapter produces are meant to outlive this chapter: the
-Terraform/Ansible codebase itself, and a working policy gate. Chapter 09's
+Terraform/Ansible codebase itself, and a working policy gate. [Chapter 09](09-enterprise-resilience-and-lifecycle-capstone.md)'s
 capstone decommissioning exercise runs largely through this chapter's
 automation rather than the manual commands used to build the environment,
 so a gap here becomes a gap in that chapter too.
@@ -61,8 +61,8 @@ into to run commands by hand.
 ## Design Considerations
 
 - **Import existing resources instead of rebuilding.** `terraform import`
-  brings the `CLOUD1` VPC, subnet, and VPN gateway from Chapter 05, and the
-  vSphere cluster/VM inventory from Chapter 04, under management without
+  brings the `CLOUD1` VPC, subnet, and VPN gateway from [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md), and the
+  vSphere cluster/VM inventory from [Chapter 04](04-virtualization-storage-and-data-protection-lab.md), under management without
   destroying and recreating them — the realistic path for automating an
   already-running environment, and a deliberately different exercise than
   greenfield IaC.
@@ -70,25 +70,25 @@ into to run commands by hand.
   at.** Terraform manages resource existence and topology (VPCs, VMs,
   security policy objects); Ansible manages configuration state inside
   already-existing hosts (DNS forwarders, DHCP scopes, package state) —
-  the same division Volume IX, Chapter 02 draws between provisioning and
+  the same division [Volume IX, Chapter 02](../../volume-09-infrastructure-automation/chapters/02-infrastructure-as-code-state-providers-and-modules.md) draws between provisioning and
   configuration concerns.
 - **Policy as code, enforced before apply, not after.** Compliance checks
   (mandatory tags, no `0.0.0.0/0` ingress rules, encrypted state backend)
-  run as an automated gate in the pipeline's `plan` stage. Volume IX,
-  Chapter 05 treats a policy check that only runs after resources already
+  run as an automated gate in the pipeline's `plan` stage. [Volume IX](../../volume-09-infrastructure-automation/README.md),
+  [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md) treats a policy check that only runs after resources already
   exist as a compliance report, not a control — this chapter builds a
   control.
 - **Centralized secrets, referenced not copied.** Every secret this volume
-  has generated so far (the Chapter 02 DHCP failover key, the Chapter 03
-  IPsec pre-shared keys, cloud credentials from Chapter 05) moves into
+  has generated so far (the [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) DHCP failover key, the [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md)
+  IPsec pre-shared keys, cloud credentials from [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md)) moves into
   `vault01`, retrieved at runtime by automation rather than stored in
-  version-controlled files — closing the exact gap Chapter 01's Security
+  version-controlled files — closing the exact gap [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s Security
   and Best Practices section flagged as a dependency of this chapter.
 - **OIDC federation for the apply identity, not a stored long-lived
   credential.** The CI runner exchanges a short-lived, pipeline-scoped
   identity token for cloud and vSphere credentials at apply time,
   eliminating a standing credential an attacker could steal from the CI
-  system at rest — directly reusing the pattern from Volume I, Chapter 03.
+  system at rest — directly reusing the pattern from [Volume I, Chapter 03](../../volume-01-enterprise-engineering-foundations/chapters/03-automation-architecture.md).
 
 ## Implementation and Automation
 
@@ -143,7 +143,7 @@ stages:
         - terraform apply tfplan
 ```
 
-Convert Chapter 02's manual DHCP scope configuration into an idempotent
+Convert [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md)'s manual DHCP scope configuration into an idempotent
 Ansible playbook:
 
 ```yaml
@@ -185,7 +185,7 @@ vault kv get -field=secret meridian/dhcp/failover
 - **Playbook idempotency.** A second, back-to-back run of the DHCP
   playbook must report zero changed tasks — the end state is the same
   after the first run as it is after the second and every intervening
-  run, the definition of idempotency from Volume I, Chapter 01, now
+  run, the definition of idempotency from [Volume I, Chapter 01](../../volume-01-enterprise-engineering-foundations/chapters/01-building-the-enterprise-developer-workstation.md), now
   proven rather than assumed.
 - **Policy gate failure is readable on its own.** A blocked pipeline run
   must show the Conftest `deny` message directly in the pipeline output;
@@ -216,21 +216,21 @@ vault kv get -field=secret meridian/dhcp/failover
   one-person-approves-their-own-change pipeline is not a control.
 - Protect the branch the pipeline treats as authoritative so every change
   arrives as a reviewed pull request rather than a direct push, consistent
-  with the branch protection practices in Volume I, Chapter 02.
+  with the branch protection practices in [Volume I, Chapter 02](../../volume-01-enterprise-engineering-foundations/chapters/02-repository-architecture.md).
 - Rotate the Vault root token generated during initialization and store
   the unseal keys split across more than one location, mirroring the
   key-custody discipline a production secrets manager requires.
 - Scan every Terraform module and Ansible role for known-vulnerable
   provider/collection versions as part of the pipeline, consistent with
-  the supply-chain practices in Volume IX, Chapter 08.
+  the supply-chain practices in [Volume IX, Chapter 08](../../volume-09-infrastructure-automation/chapters/08-automation-security-governance-and-supply-chains.md).
 
 ## References and Knowledge Checks
 
 **References**
 
-- Volume I, Chapter 03 — Automation Architecture (plan/apply separation,
+- [Volume I, Chapter 03](../../volume-01-enterprise-engineering-foundations/chapters/03-automation-architecture.md) — Automation Architecture (plan/apply separation,
   OIDC federation).
-- Volume IX, Chapters 02–03 and 05–06, 08 — IaC/state/providers,
+- [Volume IX](../../volume-09-infrastructure-automation/README.md), Chapters 02–03 and 05–06, 08 — IaC/state/providers,
   configuration management, pipelines/policy gates, automation
   identity/secrets, and automation security/governance.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Terraform 1.9.x
@@ -252,17 +252,17 @@ vault kv get -field=secret meridian/dhcp/failover
 ## Hands-On Lab
 
 **Objective:** Bring the `CLOUD1` landing zone and HQ vSphere inventory
-under Terraform management, convert Chapter 02's manual DHCP configuration
+under Terraform management, convert [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md)'s manual DHCP configuration
 into an idempotent Ansible playbook, centralize this volume's secrets into
 Vault, and prove the pipeline's policy gate blocks a non-compliant change.
 
 **Prerequisites**
 
-- Chapter 05 complete, with the hybrid Kubernetes cluster and `CLOUD1`
+- [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md) complete, with the hybrid Kubernetes cluster and `CLOUD1`
   landing zone healthy.
 - Terraform 1.9.x, Ansible core 2.17, and a Vault-compatible secrets
   manager installed on or reachable from `ctrl01`.
-- Familiarity with Git-based pipelines at the level of Volume I, Chapter
+- Familiarity with Git-based pipelines at the level of [Volume I](../../volume-01-enterprise-engineering-foundations/README.md), Chapter
   04 (GitHub Project and Workflow Management).
 
 **Steps**
@@ -296,7 +296,7 @@ Vault, and prove the pipeline's policy gate blocks a non-compliant change.
    Exit code `0` (no changes) is expected; investigate and reconcile any
    diff before continuing.
 
-6. Convert the Chapter 02 DHCP configuration into the Ansible playbook
+6. Convert the [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) DHCP configuration into the Ansible playbook
    shown in Implementation and Automation, referencing the secret from
    Vault rather than a static value.
 
@@ -361,7 +361,7 @@ than through the manual commands used in Chapters 02–05.
 
 - [ ] Imported the `CLOUD1` VPC and HQ vSphere cluster into Terraform
       state with no unexpected diff.
-- [ ] Converted the Chapter 02 DHCP configuration into an idempotent
+- [ ] Converted the [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) DHCP configuration into an idempotent
       Ansible playbook and proved a second run changes nothing.
 - [ ] Centralized this volume's accumulated secrets into `vault01`.
 - [ ] Built a pipeline with separate `plan`/`apply` identities and a

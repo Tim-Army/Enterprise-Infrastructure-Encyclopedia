@@ -18,8 +18,8 @@
 
 ## Theory and Architecture
 
-Chapter 01 introduced pipeline-driven delivery as the fourth stage of the
-automation maturity curve, and both Chapter 02 and Chapter 03 promised the
+[Chapter 01](01-automation-operating-models-and-engineering-foundations.md) introduced pipeline-driven delivery as the fourth stage of the
+automation maturity curve, and both [Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md) and [Chapter 03](03-configuration-management-and-desired-state-convergence.md) promised the
 detail of what a pipeline actually enforces. This chapter delivers that
 detail: the stages a mature infrastructure pipeline runs, the test pyramid
 that populates those stages, and policy-as-code as the mechanism that turns
@@ -37,7 +37,7 @@ run is not reliably logged or auditable outside shell history, and the
 run's environment (provider versions, collection versions, local
 uncommitted file edits) is not guaranteed to match what is in version
 control. A pipeline fixes all three by construction: it runs with scoped,
-short-lived credentials (Chapter 06), every run is logged by the CI
+short-lived credentials ([Chapter 06](06-automation-identity-secrets-and-privileged-execution.md)), every run is logged by the CI
 platform, and it operates only on the exact commit under review.
 
 ### Pipeline stages
@@ -48,8 +48,8 @@ each with a different purpose and a different acceptable failure mode:
 1. **Lint / static analysis.** `terraform fmt -check`, `terraform validate`,
    `ansible-lint`, `tflint`. Fast, no credentials required, runs on every
    push.
-2. **Unit test.** `terraform test` (Chapter 02) plan-mode runs, Molecule
-   converge tests (Chapter 03). No live infrastructure required if backed
+2. **Unit test.** `terraform test` ([Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md)) plan-mode runs, Molecule
+   converge tests ([Chapter 03](03-configuration-management-and-desired-state-convergence.md)). No live infrastructure required if backed
    by ephemeral or mocked providers.
 3. **Plan.** `terraform plan` against the real target environment's state,
    using read-only credentials. Produces the artifact every later stage
@@ -57,10 +57,10 @@ each with a different purpose and a different acceptable failure mode:
 4. **Policy check.** Automated rules evaluated against the plan's JSON
    output — this chapter's primary new mechanism.
 5. **Human approval.** A required reviewer (or a change-record check
-   against the ITSM integration from Chapter 04) gates the next stage for
+   against the ITSM integration from [Chapter 04](04-api-event-and-integration-automation.md)) gates the next stage for
    anything above a defined risk threshold.
 6. **Apply.** Executes the exact plan that was reviewed, using a separate,
-   more privileged, short-lived credential (Chapter 06) than the plan
+   more privileged, short-lived credential ([Chapter 06](06-automation-identity-secrets-and-privileged-execution.md)) than the plan
    stage used.
 7. **Post-apply validation.** Smoke tests, health checks, or `terraform
    plan` re-run expecting zero diff, confirming the apply achieved the
@@ -139,7 +139,7 @@ state and compute a diff; the apply stage requires write credentials scoped
 to what the configuration actually manages. Using the same broad credential
 for both stages means a compromised or buggy plan-stage step (which runs on
 every pull request, including from less-trusted contributors on a public
-repository) has write access it never needed. Chapter 06 covers the
+repository) has write access it never needed. [Chapter 06](06-automation-identity-secrets-and-privileged-execution.md) covers the
 mechanics of issuing these as separate, short-lived, federated credentials.
 
 ### Handling long-running applies and concurrency
@@ -147,7 +147,7 @@ mechanics of issuing these as separate, short-lived, federated credentials.
 Infrastructure applies that provision genuinely slow resources (a managed
 database, a large compute cluster) can run for tens of minutes. Design the
 pipeline so a second triggered run against the same state does not race the
-first: rely on the backend's state lock (Chapter 02) as the final backstop,
+first: rely on the backend's state lock ([Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md)) as the final backstop,
 but also serialize pipeline execution per environment (GitHub Actions
 `concurrency` groups, or an equivalent CI-native queue) so two applies
 against the same workspace are never even started concurrently, rather than
@@ -300,7 +300,7 @@ Configuring the `prod-apply` GitHub Environment with required reviewers
 means the `apply` job pauses and waits for an explicit approval before it
 runs, giving a human the reviewed plan output and the policy check results
 as the basis for that approval — the plan/apply pipeline's equivalent of
-the Change Advisory Board review from Volume I, Chapter 08, but enforced by
+the Change Advisory Board review from [Volume I, Chapter 08](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md), but enforced by
 the platform instead of relying on process compliance.
 
 ## Validation and Troubleshooting
@@ -320,7 +320,7 @@ the platform instead of relying on process compliance.
 - **Molecule or `terraform test` passes locally but fails in CI.** Compare
   provider/collection versions between the local environment and the CI
   runner — an unpinned dependency resolving differently is the most common
-  cause (Chapter 08 covers pinning as a supply-chain control in depth).
+  cause ([Chapter 08](08-automation-security-governance-and-supply-chains.md) covers pinning as a supply-chain control in depth).
 - **Pipeline queues indefinitely on `concurrency`.** Confirm no earlier run
   is stuck waiting on a manual approval that nobody was notified about;
   check the CI platform's environment protection rule history, not just
@@ -335,7 +335,7 @@ the platform instead of relying on process compliance.
 - Apply the exact saved plan artifact; never let the apply stage
   regenerate its own plan from a possibly-changed source state.
 - Scope plan-stage and apply-stage credentials separately and minimally
-  (Chapter 06); the plan stage should never hold write permissions, even
+  ([Chapter 06](06-automation-identity-secrets-and-privileged-execution.md)); the plan stage should never hold write permissions, even
   though it is by far the more frequently executed job.
 - Make policy checks a required status check on the branch protection rule,
   not merely a job that runs — a non-required check can be merged past.
@@ -389,7 +389,7 @@ demonstrates both a passing and a deliberately failing policy check.
 - Terraform 1.9.x and `conftest` installed locally
   (`brew install conftest` or download from the Conftest releases page).
 - No cloud account required — this lab reuses the `random`/`local`
-  provider pattern from Chapter 02.
+  provider pattern from [Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md).
 
 ### Steps
 
@@ -500,8 +500,8 @@ resolved plan rather than source alone. Conftest and OPA give a
 cloud-neutral way to encode organizational rules as version-controlled,
 testable code, and applying a saved plan artifact — never a freshly
 recomputed one — keeps what was reviewed and what was applied identical.
-Chapter 06 covers the credential mechanics behind the plan/apply separation
-introduced here, and Chapter 08 extends policy-as-code to supply-chain and
+[Chapter 06](06-automation-identity-secrets-and-privileged-execution.md) covers the credential mechanics behind the plan/apply separation
+introduced here, and [Chapter 08](08-automation-security-governance-and-supply-chains.md) extends policy-as-code to supply-chain and
 dependency-pinning controls.
 
 - [ ] Can describe each stage of a plan/test/policy/approve/apply pipeline

@@ -19,7 +19,7 @@
 
 ## Theory and Architecture
 
-Chapter 5 built the mechanisms that limit data loss (backup) and Chapter 6
+[Chapter 5](05-backup-architecture-and-data-protection-policy.md) built the mechanisms that limit data loss (backup) and [Chapter 6](06-snapshots-replication-and-continuous-data-protection.md)
 built the mechanisms that limit it further and enable site-to-site copies
 (snapshots and replication). Recovery engineering is the discipline that
 turns those mechanisms into an actual, working, *timed* recovery — the
@@ -30,18 +30,18 @@ under two hours, and we know that because we have measured it."
 
 | Model | Infrastructure readiness | Data currency | Typical RTO | Relative cost |
 | --- | --- | --- | --- | --- |
-| Cold | No standby infrastructure provisioned; hardware/capacity acquired or repurposed at time of disaster | Restored from backup (Chapter 5) | Days | Lowest |
+| Cold | No standby infrastructure provisioned; hardware/capacity acquired or repurposed at time of disaster | Restored from backup ([Chapter 5](05-backup-architecture-and-data-protection-policy.md)) | Days | Lowest |
 | Warm | Infrastructure provisioned but scaled down or not running; data kept reasonably current via periodic replication or restore | Hours to a day behind, depending on replication schedule | Hours | Moderate |
-| Hot | Infrastructure fully provisioned and running (or ready to start immediately); data kept current via continuous replication (Chapter 6) | Minutes behind (asynchronous) to zero (synchronous) | Minutes to low hours | High |
+| Hot | Infrastructure fully provisioned and running (or ready to start immediately); data kept current via continuous replication ([Chapter 6](06-snapshots-replication-and-continuous-data-protection.md)) | Minutes behind (asynchronous) to zero (synchronous) | Minutes to low hours | High |
 | Active-active | Both sites fully live and serving production traffic simultaneously | Continuous, bidirectional | Near-zero — a site loss is absorbed by the surviving site with minimal disruption | Highest |
 
 These models sit on a well-established cost curve: each step toward a
 lower RTO costs disproportionately more than the previous step, because it
 requires progressively more standing infrastructure, more continuous data
 movement, and more operational sophistication (conflict resolution for
-active-active, per Chapter 6) running at all times rather than only during
+active-active, per [Chapter 6](06-snapshots-replication-and-continuous-data-protection.md)) running at all times rather than only during
 a disaster. The correct model for a given workload is the one that matches
-its RTO requirement from the service catalog (Chapter 1) at the lowest cost
+its RTO requirement from the service catalog ([Chapter 1](01-enterprise-storage-architecture-and-service-design.md)) at the lowest cost
 that still meets it — a Platinum-tier database justifies a hot or active-
 active model; a Bronze-tier file share rarely does.
 
@@ -53,7 +53,7 @@ underestimate their real recovery time:
 
 1. **Detection time** — the time between the failure occurring and the
    organization becoming aware of it. Driven entirely by monitoring and
-   alerting maturity (Chapter 9); a failure that is not detected for 40
+   alerting maturity ([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md)); a failure that is not detected for 40
    minutes has already consumed 40 minutes of whatever RTO budget exists,
    regardless of how fast the technical failover itself runs.
 2. **Decision time** — the time between detection and a formal decision to
@@ -67,7 +67,7 @@ underestimate their real recovery time:
    starting or scaling compute, redirecting traffic (DNS or load-balancer
    pool changes), starting application services in dependency order, and
    validating the result. This is the phase most DR tooling and automation
-   (Chapter 9) is built to accelerate — and the phase most DR test programs
+   ([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md)) is built to accelerate — and the phase most DR test programs
    focus on exclusively, which is precisely why decision time is so often
    the unmeasured, unmanaged risk in an actual event.
 
@@ -271,7 +271,7 @@ section.
 
 Recording explicit start/completion timestamps around the execution phase,
 as shown above, is what makes RTO a measured fact rather than an assumed
-one — Chapter 9 builds this into ongoing observability, but every recovery
+one — [Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md) builds this into ongoing observability, but every recovery
 test should produce this timeline as a baseline artifact.
 
 ## Validation and Troubleshooting
@@ -289,7 +289,7 @@ test should produce this timeline as a baseline artifact.
 
 - Apply the same security posture to the DR site as the primary site —
   access control, patching, and monitoring; a DR site that is a security
-  soft spot undermines the resilience it exists to provide (Chapter 8
+  soft spot undermines the resilience it exists to provide ([Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)
   develops this further).
 - Restrict authority to invoke a real failover to the roles explicitly
   named in the runbook, and log every invocation and every execution step
@@ -311,7 +311,7 @@ test should produce this timeline as a baseline artifact.
 **References**
 
 - NIST SP 800-34 (Contingency Planning Guide for Federal Information
-  Systems), the same source underpinning Chapter 5's RPO/RTO definitions.
+  Systems), the same source underpinning [Chapter 5](05-backup-architecture-and-data-protection-policy.md)'s RPO/RTO definitions.
 - ISO 22301 (Business Continuity Management Systems) for organizational DR
   program structure references.
 - SOFTWARE_VERSIONS.md — dated Linux baseline used for this chapter's
@@ -332,7 +332,7 @@ test should produce this timeline as a baseline artifact.
    and on what each actually validates.
 5. Why does a runbook that has never been executed against the real
    environment carry the same category of risk as an untested backup from
-   Chapter 5?
+   [Chapter 5](05-backup-architecture-and-data-protection-policy.md)?
 
 ## Hands-On Lab
 
@@ -376,7 +376,7 @@ loss risk of a careless failback.
 
 3. Simulate asynchronous replication by running `rsync` from `app01` to
    `app02` (in production this step would run continuously or on a fixed
-   interval — this is the RPO-defining schedule from Chapter 6):
+   interval — this is the RPO-defining schedule from [Chapter 6](06-snapshots-replication-and-continuous-data-protection.md)):
 
    ```bash
    sudo rsync -avz --delete /srv/app/data/ app02:/srv/app/data/

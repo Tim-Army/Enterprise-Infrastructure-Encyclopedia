@@ -47,14 +47,14 @@ overlay option.
 ### Services, EndpointSlices, and kube-proxy
 
 A pod's IP is not a stable address — pods are replaced constantly by
-their controllers (Chapter 03). The **Service** object provides the
+their controllers ([Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md)). The **Service** object provides the
 stable address and load-balancing abstraction pods rely on instead:
 
 | Service type | Address scope | Typical use |
 | --- | --- | --- |
 | `ClusterIP` (default) | Virtual IP, cluster-internal only | Internal service-to-service traffic |
 | `NodePort` | `ClusterIP` plus a port (30000-32767) opened on every node | Simple external access without a cloud load balancer |
-| `LoadBalancer` | `NodePort` plus cloud-provisioned external load balancer (via cloud-controller-manager, Chapter 02) | External access with cloud-native L4 load balancing |
+| `LoadBalancer` | `NodePort` plus cloud-provisioned external load balancer (via cloud-controller-manager, [Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md)) | External access with cloud-native L4 load balancing |
 | `ExternalName` | DNS `CNAME` to an external name, no proxying | Referencing an external dependency by an in-cluster name |
 | Headless (`clusterIP: None`) | No virtual IP; DNS returns pod IPs directly | StatefulSet peer discovery, client-side load balancing |
 
@@ -159,7 +159,7 @@ types. A platform serving many application teams behind a shared entry
 point benefits immediately from Gateway API's role separation — platform
 engineers manage `Gateway`/`GatewayClass`, application teams self-serve
 `HTTPRoute` objects in their own namespaces without needing access to the
-shared listener configuration (Chapter 08 returns to this
+shared listener configuration ([Chapter 08](08-internal-developer-platforms-and-platform-products.md) returns to this
 platform/tenant boundary in depth).
 
 **NetworkPolicy default-allow means segmentation is opt-in, not
@@ -168,7 +168,7 @@ pod-to-pod networking regardless of namespace boundaries. A namespace's
 security posture should include, at minimum, a default-deny-all baseline
 policy per namespace with explicit allow rules layered on top — an
 "implicit trust" cluster network is a common finding in security reviews
-of otherwise well-hardened clusters (Chapter 06 covers this alongside
+of otherwise well-hardened clusters ([Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md) covers this alongside
 RBAC and admission policy as part of the same defense-in-depth posture).
 
 **A service mesh trades operational surface for uniform mTLS, retries,
@@ -183,7 +183,7 @@ reducing the sidecar tax for services that only need mTLS and basic
 authorization without full L7 policy. The decision to adopt a mesh at all
 should be driven by a concrete requirement — mandatory mTLS between
 services, fine-grained traffic shifting for progressive delivery
-(Chapter 07), or uniform retry/circuit-breaking policy — rather than
+([Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md)), or uniform retry/circuit-breaking policy — rather than
 adopted by default, since every mesh adds a control plane, a certificate
 lifecycle, and a new failure domain to operate.
 

@@ -29,7 +29,7 @@ compliance/executive stakeholders consuming reports.
 
 ### Host management from the inventory
 
-While policies (Chapter 3) handle governance at scale, individual host
+While policies ([Chapter 3](03-clarification-compliance-and-control-policies.md)) handle governance at scale, individual host
 records still need day-to-day human management:
 
 - **Manual property overrides.** An administrator can manually set or
@@ -46,7 +46,7 @@ records still need day-to-day human management:
   fixed, well-known populations (a named list of executive devices, for
   example).
 - **Tags.** Lightweight, human-applied labels for ad hoc triage state
-  (Chapter 2), distinct from groups in that a tag typically does not
+  ([Chapter 2](02-console-plugins-properties-and-asset-classification.md)), distinct from groups in that a tag typically does not
   drive policy scope the way a group does, though the platform allows
   tags to be used as policy conditions where useful.
 - **Action history.** Every automated and manual action taken against a
@@ -86,7 +86,7 @@ itself, distinct from the policies and data it manages:
   link state across every appliance, so degradation is caught before it
   becomes a visibility or enforcement gap.
 - **Licensing management.** Tracking licensed host-count consumption
-  against purchased entitlement per capability module (Chapter 1), with
+  against purchased entitlement per capability module ([Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)), with
   alerting before a deployment exceeds its licensed ceiling.
 - **Backup and restore.** Scheduled configuration and database backups
   from the Enterprise Manager, covering policy definitions, plugin
@@ -247,7 +247,7 @@ Console access or query skill:
   deliberate evasion of a compliance or control policy.
 - Retain the administrative audit log for at least as long as the
   organization's compliance or incident-investigation retention
-  requirement, and forward it to the SIEM (Chapter 5) for tamper-resistant
+  requirement, and forward it to the SIEM ([Chapter 5](05-advanced-policy-integrations-and-business-outcomes.md)) for tamper-resistant
   storage independent of the platform itself.
 
 ## References and Knowledge Checks
@@ -301,7 +301,7 @@ restriction and backup/restore behavior.
    scope should not be visible.
 3. Build a dynamic group defined by a property condition using data from
    earlier labs (for example, `Compliance Status = "Non-Compliant: Lab"`
-   from Chapter 3), and confirm membership updates automatically as you
+   from [Chapter 3](03-clarification-compliance-and-control-policies.md)), and confirm membership updates automatically as you
    toggle the underlying property.
 4. Build and run an on-demand report scoped to that dynamic group,
    exporting Host, Function, and Compliance Status fields.
@@ -339,7 +339,7 @@ restriction and backup/restore behavior.
 
 ## Summary and Completion Checklist
 
-This chapter moved from policy design (Chapter 3) to the operational
+This chapter moved from policy design ([Chapter 3](03-clarification-compliance-and-control-policies.md)) to the operational
 layer that keeps a Forescout deployment usable and trustworthy day to day:
 host management actions available directly from the inventory, Console
 user administration and role-based access control, platform

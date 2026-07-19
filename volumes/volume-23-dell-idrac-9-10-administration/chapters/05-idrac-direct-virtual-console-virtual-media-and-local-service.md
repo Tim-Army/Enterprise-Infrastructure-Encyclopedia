@@ -23,7 +23,7 @@ the front of the chassis (Micro-USB on older platforms, USB-C on current
 15G/16G/17G hardware), independent of any network configuration. Connect
 a laptop directly to this port and iDRAC presents itself as a USB network
 adapter, reachable at a fixed local address without needing DHCP, DNS, or
-any of the network configuration covered in Chapter 3. This makes iDRAC
+any of the network configuration covered in [Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md). This makes iDRAC
 Direct the single most important recovery tool in this volume: it works
 even when the management network is entirely misconfigured, unplugged, or
 unreachable, because it bypasses the network path entirely.
@@ -130,7 +130,7 @@ an explicit path to the management network just for iSM's traffic.
 - **Plan for the case where a remote site has no local hands and no
   physical access.** iDRAC Direct's local-only nature means it cannot help
   a truly remote administrator with no one at the site; for such
-  locations, invest more heavily in getting the network path (Chapter 3)
+  locations, invest more heavily in getting the network path ([Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md))
   and Virtual Console/Media reliably right the first time, since physical
   recovery is not a realistic fallback.
 
@@ -303,7 +303,7 @@ racadm get iDRAC.OS-BMC.OSInfo
   plugin/Java or HTML5 renderer compatibility in your browser, and
   confirm `iDRAC.VirtualConsole.Enable` is set to `Enabled`.
 - **Virtual Media mount from a network share fails.** Confirm the iDRAC
-  network path (Chapter 3) can reach the share host specifically — this
+  network path ([Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)) can reach the share host specifically — this
   is a common gap when the share lives on a general file-server VLAN not
   included in the management network's routing/firewall rules — and
   confirm the share credentials and permissions allow read access to the
@@ -463,7 +463,7 @@ checks, Virtual Console for full remote KVM including BIOS-level access,
 Virtual Media for remote OS installation and diagnostics, and the iDRAC
 Service Module as the deliberate, optional bridge between out-of-band and
 in-band visibility. These capabilities underpin the hardware health
-monitoring in Chapter 6 and the firmware/OS deployment workflows in
+monitoring in [Chapter 6](06-hardware-health-power-thermal-logs-and-support.md) and the firmware/OS deployment workflows in
 Chapters 8 and 9.
 
 - [ ] I can use iDRAC Direct to reach iDRAC locally, independent of

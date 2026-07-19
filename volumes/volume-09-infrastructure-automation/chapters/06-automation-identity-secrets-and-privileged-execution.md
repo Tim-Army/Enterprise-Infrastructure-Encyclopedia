@@ -19,9 +19,9 @@
 ## Theory and Architecture
 
 Every chapter so far has deferred a question to this one: what actually
-authenticates the automation itself? Chapter 02 deferred "prefer
-short-lived, federated credentials"; Chapter 03 deferred
-`ansible-vault` and external secrets lookups; Chapter 05 built a pipeline
+authenticates the automation itself? [Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md) deferred "prefer
+short-lived, federated credentials"; [Chapter 03](03-configuration-management-and-desired-state-convergence.md) deferred
+`ansible-vault` and external secrets lookups; [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md) built a pipeline
 around a plan identity and an apply identity without explaining how either
 is issued. This chapter is the mechanics behind all three: how automation
 proves who it is, how it obtains secrets it needs at run time, and how
@@ -30,11 +30,11 @@ privileged execution is scoped and time-limited rather than standing.
 ### Identity types in automation
 
 - **Human identity.** An engineer's own account, used interactively
-  (`terraform apply` from a workstation during a Chapter 02 lab, or an
+  (`terraform apply` from a workstation during a [Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md) lab, or an
   `az login` session). Appropriate for local development and labs, never
   for production pipeline execution.
 - **Static service identity.** A dedicated non-human account (`svc_ansible`
-  from Chapter 03, an IAM user with an access key) with credentials that
+  from [Chapter 03](03-configuration-management-and-desired-state-convergence.md), an IAM user with an access key) with credentials that
   do not expire on their own. Simpler to reason about but a standing
   target: the credential is valid whether or not automation is actively
   running, and compromise or leakage grants access until someone manually
@@ -133,7 +133,7 @@ response), keeping the standing secret's scope as small as achievable.
 
 ### Scoping credentials to plan versus apply
 
-Chapter 05's pipeline used two separate IAM roles: a read-only plan role
+[Chapter 05](05-automation-pipelines-testing-and-policy-gates.md)'s pipeline used two separate IAM roles: a read-only plan role
 and a write-capable apply role. Design the corresponding Vault or cloud
 IAM policies to match that separation explicitly — the plan-stage identity
 should be unable to write, full stop, not merely "trusted not to," because
@@ -533,7 +533,7 @@ authentication, and Vault's AppRole and dynamic secrets engines for
 everything else automation needs to read. `ansible-vault` remains useful
 for small-footprint, version-controlled encrypted content, but is not a
 substitute for centralized, policy-enforced, audited secret issuance at
-any real scale. The plan/apply credential separation from Chapter 05 is
+any real scale. The plan/apply credential separation from [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md) is
 only a real control once the underlying identities are actually distinct
 and actually least-privileged, which is what this chapter's OIDC trust
 policy and Vault AppRole policy both enforce technically rather than by

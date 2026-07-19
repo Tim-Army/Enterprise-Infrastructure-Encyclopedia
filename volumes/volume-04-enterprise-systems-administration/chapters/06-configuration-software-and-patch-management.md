@@ -9,17 +9,17 @@
   where Ansible and PowerShell Desired State Configuration (DSC) fit.
 - Design a staged patch-ring strategy across Linux (`dnf`/`apt`) and
   Windows (WSUS/Windows Update for Business) that respects the change
-  windows introduced in Chapter 01.
+  windows introduced in [Chapter 01](01-systems-administration-architecture-and-operating-model.md).
 - Build and reason about a golden-image pipeline for repeatable
   provisioning.
 - Detect and remediate configuration drift using the automation
-  established in Volume I.
+  established in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md).
 - Pin and control package versions deliberately, rather than allowing
   uncontrolled "latest wins" installs across the fleet.
 
 ## Theory and Architecture
 
-Chapter 01 introduced the layered automation stack (local, CI, CD,
+[Chapter 01](01-systems-administration-architecture-and-operating-model.md) introduced the layered automation stack (local, CI, CD,
 infrastructure) and the declarative/imperative distinction. This chapter
 applies that stack to three related but distinct disciplines that every
 systems administrator touches daily:
@@ -58,11 +58,11 @@ tool such as Packer — that new hosts provision from, rather than each host
 installing its full software stack from scratch at boot. A mature image
 pipeline has four stages: **build** (bake the image from a defined
 manifest), **validate** (automated smoke tests and, ideally, the
-compliance scan from Chapter 08), **promote** (mark the image as the
+compliance scan from [Chapter 08](08-systems-security-automation-and-compliance.md)), **promote** (mark the image as the
 current default for new provisioning), and **retire** (remove an image
 version once no host still depends on it). Treat the image manifest as
 version-controlled source, identical in spirit to the repository practices
-in Volume I.
+in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md).
 
 ### Patch management architecture
 
@@ -99,9 +99,9 @@ enforces state between runs by default.
 
 - **Idempotency is not optional.** Every configuration management task
   must produce the same end state whether it runs once or a hundred times
-  — this is the same idempotency principle from Volume I, and it is what
+  — this is the same idempotency principle from [Volume I](../../volume-01-enterprise-engineering-foundations/README.md), and it is what
   makes drift-correction runs safe to schedule unattended.
-- **Ring design should mirror the change windows from Chapter 01.** A
+- **Ring design should mirror the change windows from [Chapter 01](01-systems-administration-architecture-and-operating-model.md).** A
   canary/pilot ring, a broad ring, and a final "everything else" ring,
   each separated by a minimum soak time, catches a bad patch or a bad
   configuration change before it reaches the full fleet — design the ring
@@ -123,7 +123,7 @@ enforces state between runs by default.
   DSC's credential encryption certificate exist specifically so playbooks
   and configuration MOFs can be committed to version control without
   embedding a plaintext password.
-- **Choose declarative or imperative deliberately per task.** Chapter 01
+- **Choose declarative or imperative deliberately per task.** [Chapter 01](01-systems-administration-architecture-and-operating-model.md)
   established this distinction generally; here it becomes concrete —
   desired-state package presence is naturally declarative
   (`ansible.builtin.package: state=present`), while a one-time data
@@ -320,15 +320,15 @@ sudo systemctl enable --now config-drift-check.timer
   silent, growing security gap.
 - Separate the credential used to author/plan a configuration change from
   the credential used to apply it in production, mirroring the plan/apply
-  separation from Volume I's automation architecture chapter.
+  separation from [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)'s automation architecture chapter.
 - Treat every hardening or baseline setting delivered through
   configuration management as subject to the same code review as
-  application code (Volume I, repository architecture) — this is what
+  application code ([Volume I](../../volume-01-enterprise-engineering-foundations/README.md), repository architecture) — this is what
   makes the change auditable after the fact.
 - Patch known-exploited or critical-severity CVEs on an accelerated
   timeline outside the normal ring cadence; define that expedited path in
   advance rather than improvising it during an active vulnerability
-  disclosure (Volume X covers vulnerability management in depth).
+  disclosure ([Volume X](../../volume-10-enterprise-cybersecurity/README.md) covers vulnerability management in depth).
 
 ## References and Knowledge Checks
 
@@ -463,7 +463,7 @@ rm -rf ~/lab-ansible
 
 Configuration management, software deployment, and patch management are
 three distinct questions answered by different tools working from the
-same automation-first principles established in Volume I: push
+same automation-first principles established in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md): push
 architectures like Ansible and pull architectures like DSC both enforce
 idempotent desired state; golden images and staged repository channels
 control what software reaches a host; and ring-based, availability-aware

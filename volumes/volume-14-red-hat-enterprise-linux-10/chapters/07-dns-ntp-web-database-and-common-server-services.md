@@ -135,7 +135,7 @@ misconfigured application.
   certificate management does not scale past a handful of sites and is
   a common source of expiry-driven outages.
 - **Database version pinning via module streams.** Treat the chosen
-  MariaDB or PostgreSQL module stream the same way Chapter 01 treats
+  MariaDB or PostgreSQL module stream the same way [Chapter 01](01-installation-subscriptions-repositories-and-cockpit.md) treats
   any module stream — a deliberate, fleet-wide decision, because
   switching streams later is disruptive (typically requiring backup,
   removal, and reinstall against the new stream).

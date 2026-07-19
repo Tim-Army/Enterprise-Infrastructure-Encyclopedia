@@ -37,7 +37,7 @@ carried as metadata through storage, processing, and transmission, so
 downstream systems (DLP, backup, access control) can apply
 classification-appropriate controls automatically rather than requiring
 manual per-system judgment. This directly extends the regulatory
-obligations register from Chapter 1 — a classification of "Restricted"
+obligations register from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md) — a classification of "Restricted"
 should programmatically imply which regulations apply and which controls
 are mandatory.
 
@@ -59,10 +59,10 @@ are mandatory.
   simplifying the handshake and removing legacy, weaker cipher suites
   supported in TLS 1.2. Systems still negotiating TLS 1.0/1.1 or weak
   cipher suites should be treated as a hardening finding under the
-  baseline established in Chapter 3.
+  baseline established in [Chapter 3](03-platform-hardening-configuration-and-endpoint-defense.md).
 - **Hashing** (SHA-256 and stronger) provides integrity verification, not
   encryption — a hash cannot be reversed to recover the original data,
-  which is why chain-of-custody integrity checks in Chapter 7 use hashing
+  which is why chain-of-custody integrity checks in [Chapter 7](07-cybersecurity-incident-response-and-digital-evidence.md) use hashing
   rather than encryption.
 
 ### Envelope encryption and key management
@@ -101,7 +101,7 @@ every key rotation would be operationally infeasible.
 certificate authority (CA), intermediate CAs, and issued end-entity
 certificates — that binds a public key to a verified identity, underlying
 both TLS and the certificate-based authentication mechanisms referenced
-in Chapter 2 (FIDO2/WebAuthn credentials, mutual TLS for machine
+in [Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md) (FIDO2/WebAuthn credentials, mutual TLS for machine
 identity). Certificate lifecycle management (issuance, renewal, and
 timely revocation) is a common operational failure point: an expired
 internal CA or leaf certificate causes outages, while a compromised
@@ -123,7 +123,7 @@ significant false-positive volume without classification context to
 narrow scope.
 
 **Secrets management** extends the machine-identity principles from
-Chapter 2 to the credentials, API keys, and certificates an application
+[Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md) to the credentials, API keys, and certificates an application
 needs at runtime: a centralized secrets vault issues short-lived,
 scoped credentials to authenticated workloads rather than embedding
 static secrets in configuration files or source code, and rotates
@@ -149,11 +149,11 @@ Privacy is a design constraint, not solely a legal compliance exercise:
   their data; fulfilling a deletion request requires the organization to
   actually know where every copy of that individual's data resides —
   which is only tractable if data classification and inventory (this
-  chapter) and asset/data-flow inventory (Chapter 1) are maintained
+  chapter) and asset/data-flow inventory ([Chapter 1](01-cybersecurity-governance-risk-and-architecture.md)) are maintained
   continuously, not reconstructed manually per request.
 - **Privacy by design** — considering data minimization and purpose
   limitation during system design (the same SDLC stage as the STRIDE
-  threat-modeling gate in Chapter 1), rather than retrofitting privacy
+  threat-modeling gate in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md)), rather than retrofitting privacy
   controls after a system is already in production.
 
 ### The ransomware kill chain and resilience — a defender's view
@@ -167,12 +167,12 @@ controls from this volume interrupt the chain:
    collectively address this stage).
 2. **Lateral movement and privilege escalation** — the compromised
    foothold is used to reach additional systems and elevate privilege,
-   which network segmentation (Chapter 4) and JIT/PAM controls
-   (Chapter 2) are specifically designed to contain.
+   which network segmentation ([Chapter 4](04-network-security-architecture-and-infrastructure-defense.md)) and JIT/PAM controls
+   ([Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md)) are specifically designed to contain.
 3. **Data exfiltration** — increasingly performed *before* encryption, to
    support "double extortion" (threatening publication in addition to
    withholding decryption), making DLP and network egress monitoring
-   (this chapter and Chapter 6) relevant defensive controls even against
+   (this chapter and [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)) relevant defensive controls even against
    an attack whose final stage is encryption, not just theft.
 4. **Encryption/detonation** — mass, rapid encryption of accessible data,
    including any backup targets reachable from the compromised
@@ -201,11 +201,11 @@ unverified backup is not a proven recovery capability.
   fulfillment at scale. This control comes with direct operational
   responsibility: losing the customer-managed key means losing the data
   irrecoverably, so key backup and access-recovery procedures require the
-  same rigor as the break-glass patterns in Chapter 2.
+  same rigor as the break-glass patterns in [Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md).
 - **DLP false-positive tuning cost.** An overly broad DLP policy
   generates high false-positive volume that erodes both user trust and
   security team attention, mirroring the alert-fatigue problem in
-  Chapter 6. Scope DLP policy by classification and by the highest-risk
+  [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md). Scope DLP policy by classification and by the highest-risk
   egress channels first (email attachments, cloud storage uploads to
   unsanctioned destinations), expanding coverage incrementally.
 - **Backup immutability vs. storage cost and recovery time.** Immutable,
@@ -213,7 +213,7 @@ unverified backup is not a proven recovery capability.
   compared to always-online replicas. Calibrate the immutable-copy
   retention window and recovery time objective (RTO) to the
   organization's actual ransomware risk tolerance, documented alongside
-  the risk register from Chapter 1, rather than defaulting to either
+  the risk register from [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md), rather than defaulting to either
   extreme.
 - **Backup infrastructure credential segregation.** Backup infrastructure
   that is reachable and administrable using the same domain credentials
@@ -221,7 +221,7 @@ unverified backup is not a proven recovery capability.
   administrator account is compromised, the backups are compromised too.
   Segregate backup administration credentials and, where feasible,
   authentication domain from production identity, consistent with the
-  Tier 0 infrastructure treatment described in Chapter 2.
+  Tier 0 infrastructure treatment described in [Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md).
 - **Ransom payment is a business and legal decision, not a technical
   one**, and carries its own regulatory and sanctions-related
   considerations depending on jurisdiction and the payee. This volume
@@ -234,7 +234,7 @@ unverified backup is not a proven recovery capability.
   and under regulatory deadline, is far more expensive than designing
   data flows with DSR fulfillment in mind from the start — an
   architecture decision that belongs in the SDLC privacy-by-design review
-  alongside STRIDE threat modeling (Chapter 1).
+  alongside STRIDE threat modeling ([Chapter 1](01-cybersecurity-governance-risk-and-architecture.md)).
 
 ## Implementation and Automation
 
@@ -378,7 +378,7 @@ storage-cli object lock-status --bucket backup-prod-immutable --key nightly-2026
   that data stores tagged "restricted" in the classification inventory
   are actually encrypted with the expected algorithm and key management
   backend — a classification tag with no enforced control behind it is
-  the same shelfware-policy failure described in Chapter 1.
+  the same shelfware-policy failure described in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md).
 - **Common failure: DEK/KEK confusion in incident scoping.** During a
   key-compromise investigation, confirm precisely which key tier was
   exposed — a compromised DEK affects only the data it wrapped, while a
@@ -425,7 +425,7 @@ storage-cli object lock-status --bucket backup-prod-immutable --key nightly-2026
   schedule.
 - Apply data minimization and purpose limitation as SDLC design
   constraints, reviewed at the same design-proposal gate as STRIDE threat
-  modeling in Chapter 1.
+  modeling in [Chapter 1](01-cybersecurity-governance-risk-and-architecture.md).
 - Automate certificate issuance and renewal (ACME or equivalent) to
   eliminate manual renewal as a recurring outage and trust-liability
   risk.
@@ -542,7 +542,7 @@ decrypted incorrectly.
    ciphertext was modified after encryption and refuses to produce
    output, rather than silently returning corrupted plaintext. This is
    the same tamper-evidence property, applied to encrypted data instead
-   of a hash log, that the chain-of-custody tooling in Chapter 7 relies
+   of a hash log, that the chain-of-custody tooling in [Chapter 7](07-cybersecurity-incident-response-and-digital-evidence.md) relies
    on for evidence integrity.
 
 7. Confirm no `record.tampered.out.txt` file was written, since the

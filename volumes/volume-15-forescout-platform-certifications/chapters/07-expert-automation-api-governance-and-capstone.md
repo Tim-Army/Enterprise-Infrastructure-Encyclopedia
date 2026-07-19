@@ -10,7 +10,7 @@
 - Automate routine platform administration and policy-adjacent tasks
   using scripts and CI/CD-style pipelines built on the API.
 - Evaluate when automation belongs in the platform's native policy engine
-  (Chapter 3) versus in external API-driven automation.
+  ([Chapter 3](03-clarification-compliance-and-control-policies.md)) versus in external API-driven automation.
 - Synthesize Chapters 1–6 into a complete end-to-end deployment design for
   a representative enterprise scenario.
 - Map this volume's content to the FSCA, FSCP, and FSCE certification
@@ -32,7 +32,7 @@ capstone scenario that exercises the full stack built across Chapters
 ### The Web API's role
 
 The Web API is not a replacement for the policy engine — the policy
-engine (Chapter 3) remains the correct place for logic that must
+engine ([Chapter 3](03-clarification-compliance-and-control-policies.md)) remains the correct place for logic that must
 evaluate continuously against every host as its properties change. The
 API is the right tool for:
 
@@ -48,8 +48,8 @@ API is the right tool for:
 - **Read-heavy reporting and analytics** where an external
   business-intelligence or data-warehouse platform needs to pull
   inventory and compliance data on its own schedule rather than consuming
-  the platform's native reporting (Chapter 4) directly.
-- **Custom integrations** the eyeExtend catalog (Chapter 5) does not
+  the platform's native reporting ([Chapter 4](04-host-management-administration-inventory-and-reporting.md)) directly.
+- **Custom integrations** the eyeExtend catalog ([Chapter 5](05-advanced-policy-integrations-and-business-outcomes.md)) does not
   natively cover — building a bespoke connector to an internal or
   less-common third-party system.
 
@@ -63,10 +63,10 @@ that reach:
   identity rather than shared, so that an API-driven action is
   attributable to a specific consumer and revocable independently of any
   other consumer's access.
-- **Scoped permissions**, mirroring the RBAC role model from Chapter 4 —
+- **Scoped permissions**, mirroring the RBAC role model from [Chapter 4](04-host-management-administration-inventory-and-reporting.md) —
   an automation identity that only needs to read compliance status should
   not also hold write access to control policies.
-- **Rate limiting**, protecting appliance and EM capacity (Chapter 6)
+- **Rate limiting**, protecting appliance and EM capacity ([Chapter 6](06-advanced-troubleshooting-performance-and-resilience.md))
   from a runaway or misbehaving automated caller the same way it protects
   against organic load growth.
 - **Token rotation and expiry**, treating long-lived, non-expiring API
@@ -74,12 +74,12 @@ that reach:
   administrator account.
 - **API-specific audit logging**, recording which identity made which
   call against which host or policy, distinct from (but reviewed
-  alongside) the Console administrative audit log from Chapter 4.
+  alongside) the Console administrative audit log from [Chapter 4](04-host-management-administration-inventory-and-reporting.md).
 
 ### Automation patterns
 
 Mature deployments build automation around the API using patterns
-familiar from general infrastructure-as-code practice (see Volume IX of
+familiar from general infrastructure-as-code practice (see [Volume IX](../../volume-09-infrastructure-automation/README.md) of
 this encyclopedia for the underlying automation architecture concepts):
 
 - **Idempotent scripts.** An automation script that sets a property or
@@ -98,7 +98,7 @@ this encyclopedia for the underlying automation architecture concepts):
   discrepancies or flag them for human review, deliberately separating
   the two based on the risk of an incorrect automatic correction.
 - **Event-driven automation.** Where the API supports webhook-style
-  outbound notification or the eyeExtend/SOAR integration from Chapter 5
+  outbound notification or the eyeExtend/SOAR integration from [Chapter 5](05-advanced-policy-integrations-and-business-outcomes.md)
   is available, automation reacts to platform events rather than polling
   on a fixed schedule, reducing both latency and unnecessary API load.
 
@@ -112,7 +112,7 @@ this encyclopedia for the underlying automation architecture concepts):
 - **Blast radius of automated write operations.** Any automation with
   write access to policies, control actions, or bulk property changes
   should be reviewed for blast radius the same way a control policy is
-  (Chapter 3) — a scripting bug in a bulk operation can misconfigure far
+  ([Chapter 3](03-clarification-compliance-and-control-policies.md)) — a scripting bug in a bulk operation can misconfigure far
   more hosts, far faster, than a manual administrator error would.
 - **Credential lifecycle ownership.** Assign clear ownership for every
   API credential's lifecycle (issuance, rotation, revocation on
@@ -121,7 +121,7 @@ this encyclopedia for the underlying automation architecture concepts):
 - **Testing automation against non-production first.** Validate new
   automation scripts against a non-production or narrowly scoped test
   group before pointing them at the full production inventory, mirroring
-  the monitor-mode staging discipline from Chapter 3.
+  the monitor-mode staging discipline from [Chapter 3](03-clarification-compliance-and-control-policies.md).
 - **Rate limit headroom vs. legitimate bulk need.** Size rate limits to
   accommodate legitimate bulk operations (a full-inventory reconciliation
   job, for example) without opening the door to runaway automation;
@@ -138,7 +138,7 @@ this encyclopedia for the underlying automation architecture concepts):
    dedicated credential/token for each distinct automation or integration
    consumer rather than a shared general-purpose token.
 2. **Apply least-privilege API scopes** to each credential, matching the
-   RBAC role model from Chapter 4 — a reconciliation job that only reads
+   RBAC role model from [Chapter 4](04-host-management-administration-inventory-and-reporting.md) — a reconciliation job that only reads
    inventory and compliance data should hold a read-only scope.
 3. **Build a first reconciliation script** that queries host inventory
    and compliance status via the API and compares it against a sample
@@ -164,13 +164,13 @@ this encyclopedia for the underlying automation architecture concepts):
    before any production run.
 5. **Wire the script into a scheduled pipeline** (a CI/CD scheduler or
    general job scheduler, consistent with the automation architecture
-   patterns in Volume IX) with logging of every run's outcome, not only
+   patterns in [Volume IX](../../volume-09-infrastructure-automation/README.md)) with logging of every run's outcome, not only
    failures.
 6. **Configure rate limiting and monitor API consumption** per credential,
    alerting on a consumer that exceeds its expected baseline call volume.
 7. **Document every automation consumer** — owner, purpose, API scope,
    and credential rotation schedule — in a living inventory reviewed on
-   the same cadence as the RBAC access review from Chapter 4.
+   the same cadence as the RBAC access review from [Chapter 4](04-host-management-administration-inventory-and-reporting.md).
 8. **Review the API audit log** alongside the Console administrative
    audit log as a combined periodic review, since a complete picture of
    "who changed what" now spans both surfaces.
@@ -183,26 +183,26 @@ data-center core, several branch offices, a growing IoT/OT footprint, and
 a regulatory obligation (PCI DSS) covering a defined card-data segment.
 Work through, in order:
 
-1. **Architecture (Chapter 1).** Appliance placement (physical for the
+1. **Architecture ([Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)).** Appliance placement (physical for the
    data-center core, virtual for branches), Enterprise Manager topology,
    SPAN/tap capacity planning, and a staged licensing plan (eyeSight
    first, eyeControl once classification is validated).
-2. **Visibility and classification (Chapter 2).** Plugin selection per
+2. **Visibility and classification ([Chapter 2](02-console-plugins-properties-and-asset-classification.md)).** Plugin selection per
    site tier, custom property strategy, and a classification confidence
    threshold appropriate for gating PCI-segment control actions.
-3. **Governance policy (Chapter 3).** Clarification policy for the
+3. **Governance policy ([Chapter 3](03-clarification-compliance-and-control-policies.md)).** Clarification policy for the
    IoT/OT population, a compliance policy protecting the PCI segment with
    an appropriate grace period, and a staged control policy rollout with
    a defined exclusion group and re-admission rule.
-4. **Operations (Chapter 4).** An RBAC model distinguishing central
+4. **Operations ([Chapter 4](04-host-management-administration-inventory-and-reporting.md)).** An RBAC model distinguishing central
    platform administrators from regional NOC analysts, a scheduled PCI
    compliance report for the audit stakeholder, and a backup cadence
    matched to the deployment's change velocity.
-5. **Integrations (Chapter 5).** A SIEM forwarding integration for
+5. **Integrations ([Chapter 5](05-advanced-policy-integrations-and-business-outcomes.md)).** A SIEM forwarding integration for
    security event correlation, an ITSM integration for ticket-driven
    remediation tracking, and an eyeSegment baseline for the PCI segment's
    boundary validation before enforcement.
-6. **Resilience (Chapter 6).** An HA/DR posture for the Enterprise
+6. **Resilience ([Chapter 6](06-advanced-troubleshooting-performance-and-resilience.md)).** An HA/DR posture for the Enterprise
    Manager and for the PCI-segment enforcement appliances specifically,
    with an explicit RTO/RPO and a tested restore procedure.
 7. **Automation and governance (this chapter).** A reconciliation
@@ -223,13 +223,13 @@ certification-level design questions.
   more common cause than an outage, especially just after a credential is
   first issued.
 - **A scheduled automation job silently stops running.** Check the job
-  scheduler/pipeline's own execution history first (Chapter 6's layered
+  scheduler/pipeline's own execution history first ([Chapter 6](06-advanced-troubleshooting-performance-and-resilience.md)'s layered
   diagnostic principle applies here too) before assuming an API-side
   change; an expired credential or a scheduler-side failure is more
   common than an API contract change.
 - **Bulk automation produces unexpected mass changes.** Treat this with
   the same urgency as an unplanned control-policy mass action
-  (Chapter 3) — pause the automation immediately, review its recent
+  ([Chapter 3](03-clarification-compliance-and-control-policies.md)) — pause the automation immediately, review its recent
   write calls via the API audit log, and roll back using the same
   reconciliation logic in reverse if the script was designed
   idempotently.
@@ -247,12 +247,12 @@ certification-level design questions.
 - Never embed API credentials in plaintext scripts or version-controlled
   files; use a secrets manager or the automation platform's native
   credential store, consistent with secrets-handling practice elsewhere
-  in this encyclopedia (see Volume IX).
+  in this encyclopedia (see [Volume IX](../../volume-09-infrastructure-automation/README.md)).
 - Rotate API credentials on a defined schedule and immediately upon
   personnel or integration ownership change, not only on a fixed
   calendar interval.
-- Apply the same least-privilege principle to API scopes that Chapter 2
-  applied to plugin credentials and Chapter 5 applied to integration
+- Apply the same least-privilege principle to API scopes that [Chapter 2](02-console-plugins-properties-and-asset-classification.md)
+  applied to plugin credentials and [Chapter 5](05-advanced-policy-integrations-and-business-outcomes.md) applied to integration
   credentials — this chapter's automation identities are simply another
   category of privileged credential the platform trusts.
 - Require code review for any automation script with write access to
@@ -279,7 +279,7 @@ certification-level design questions.
 - Forescout Technologies certification and training catalog (official
   source for current FSCA/FSCP/FSCE blueprint domains and exam
   registration).
-- Volume IX of this encyclopedia (Infrastructure Automation) for the
+- [Volume IX](../../volume-09-infrastructure-automation/README.md) of this encyclopedia (Infrastructure Automation) for the
   general automation architecture patterns this chapter applies to the
   Forescout Web API.
 
@@ -326,7 +326,7 @@ capstone design document synthesizing the volume.
    discrepancy (introduce one deliberately if your lab data already
    matches).
 4. Re-issue the credential with write scope for a single custom property
-   (for example, `Lab Asset Owner` from Chapter 2), and extend the script
+   (for example, `Lab Asset Owner` from [Chapter 2](02-console-plugins-properties-and-asset-classification.md)), and extend the script
    to correct only that specific discrepancy, idempotently (running it
    twice should produce the same end state, not a duplicated or additive
    change).

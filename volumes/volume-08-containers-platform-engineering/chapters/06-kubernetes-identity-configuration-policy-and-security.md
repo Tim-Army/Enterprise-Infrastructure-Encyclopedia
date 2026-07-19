@@ -15,7 +15,7 @@
 
 ## Theory and Architecture
 
-Chapter 02 traced a request through authentication, authorization, and
+[Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md) traced a request through authentication, authorization, and
 admission at the API server. This chapter goes deep on the three layers
 that turn that pipeline into an enforced security boundary: who a
 workload *is* (identity), what it is *allowed to change* (RBAC), what
@@ -39,7 +39,7 @@ or ServiceAccount is deleted.
 ### RBAC: the authorization layer
 
 Kubernetes RBAC (`rbac.authorization.k8s.io/v1`) is the near-universal
-authorization mode referenced in Chapter 02, built from four object
+authorization mode referenced in [Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md), built from four object
 types:
 
 | Object | Scope | Purpose |
@@ -57,7 +57,7 @@ simply authorizes whatever identity authentication already established.
 `ClusterRole` can accumulate rules from other ClusterRoles labeled to
 match its `aggregationRule` selector, which is how built-in roles like
 `view`/`edit`/`admin` automatically pick up new permissions as CRDs
-(Chapter 02) are installed and label themselves for aggregation, without
+([Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md)) are installed and label themselves for aggregation, without
 anyone hand-editing the base role.
 
 RBAC is strictly additive — there is no `deny` rule. The effective
@@ -74,7 +74,7 @@ period) if the ConfigMap changes — environment-variable consumption does
 not update without a pod restart. **Secrets** use the identical mechanism
 but are base64-encoded (not encrypted — this is an encoding, not a
 security control) and, depending on the API server's
-`EncryptionConfiguration` (Chapter 02), may or may not be encrypted at
+`EncryptionConfiguration` ([Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md)), may or may not be encrypted at
 rest in etcd. Both support `immutable: true`, which prevents further
 updates and lets the kubelet skip watching the object for changes — a
 minor performance win at real scale and a safety win against accidental
@@ -134,7 +134,7 @@ Pod Security admission only covers a fixed, opinionated set of pod-level
 controls. Organization-specific rules — "every image must come from an
 approved registry," "every Deployment must carry a `cost-center` label,"
 "every image must carry a valid cosign signature" (tying directly back to
-Chapter 01's signing workflow) — need a general-purpose policy engine:
+[Chapter 01](01-container-architecture-images-runtimes-and-registries.md)'s signing workflow) — need a general-purpose policy engine:
 
 - **Kyverno** writes policies as native-feeling Kubernetes YAML
   (`ClusterPolicy` objects) with `validate`, `mutate`, `generate`, and
@@ -362,9 +362,9 @@ spec:
   validationActions: ["Deny"]
 ```
 
-The Kyverno policy directly enforces Chapter 01's cosign-signing supply
+The Kyverno policy directly enforces [Chapter 01](01-container-architecture-images-runtimes-and-registries.md)'s cosign-signing supply
 chain control at admission time; the `ValidatingAdmissionPolicy` enforces
-a resource-hygiene rule from Chapter 03 with no webhook in the request
+a resource-hygiene rule from [Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md) with no webhook in the request
 path at all.
 
 ### Workload identity federation (EKS IRSA pattern)
@@ -422,7 +422,7 @@ kubectl logs -n kyverno deploy/kyverno-admission-controller --tail=50
   Workload Identity) as the default authentication path to cloud
   services.
 - Treat base64-encoded Secret content as encoded, not encrypted; rely on
-  API server encryption-at-rest (Chapter 02) and, for stronger separation
+  API server encryption-at-rest ([Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md)) and, for stronger separation
   of duties, an external secrets store rather than the encoding alone.
 - Roll out `restricted` Pod Security admission namespace by namespace
   using `audit`/`warn` before `enforce`, and treat any namespace still on

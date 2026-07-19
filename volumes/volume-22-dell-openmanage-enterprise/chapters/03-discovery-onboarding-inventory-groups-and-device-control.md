@@ -9,7 +9,7 @@
   Redfish-compliant devices, and SNMP-manageable network and storage gear.
 - Design a device-group strategy using static and dynamic (query-based)
   groups that supports both operational views and the scoped
-  administration introduced in Chapter 2.
+  administration introduced in [Chapter 2](02-identity-licensing-security-and-administrative-control.md).
 - Run and schedule discovery and inventory jobs from the console and the
   REST API, and interpret job and device-state outcomes.
 - Perform device control operations (power actions, identification, and
@@ -41,7 +41,7 @@ per discovery job depends on the target device class:
   WS-Management and, increasingly, Redfish, directly against each server's
   iDRAC. This is the primary, richest-fidelity path: iDRAC exposes full
   hardware inventory, firmware versions, and update/configuration control
-  to OME. iDRAC discovery and administration in depth is Volume XXIII's
+  to OME. iDRAC discovery and administration in depth is [Volume XXIII](../../volume-23-dell-idrac-9-10-administration/README.md)'s
   subject; this chapter treats iDRAC as one of several credentialed
   discovery targets from OME's side of the relationship.
 - **Third-party Redfish-compliant servers** — discovered over HTTPS using
@@ -72,7 +72,7 @@ plaintext secrets in their own definitions.
 ### Groups: static and dynamic
 
 OME organizes devices into groups for both operational visibility and, as
-established in Chapter 2, scoped administration:
+established in [Chapter 2](02-identity-licensing-security-and-administrative-control.md), scoped administration:
 
 - **Static groups** hold an explicitly assigned device membership list;
   membership changes only when an administrator (or automation) adds or
@@ -99,7 +99,7 @@ that refresh hardware inventory (CPU, memory, storage controllers and
 drives, network adapters, power supplies), firmware and driver versions,
 and, where license and connectivity permit, warranty entitlement pulled
 from Dell's backend services. Inventory data is what firmware compliance
-(Chapter 5) and configuration compliance (Chapter 8) are evaluated
+([Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)) and configuration compliance ([Chapter 8](08-templates-configuration-compliance-automation-and-apis.md)) are evaluated
 against, so inventory freshness directly affects the accuracy of those
 reports.
 
@@ -121,11 +121,11 @@ reports.
   on scheduled inventory refresh.
 - **Network segmentation and discovery scope.** Scope discovery jobs to
   address ranges or subnets that intentionally match your out-of-band
-  management network design (Chapter 1); an overly broad discovery range
+  management network design ([Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)); an overly broad discovery range
   risks probing devices outside your management intent and generating
   noisy, irrelevant discovery-job results.
 - **Group hierarchy mirrors administrative intent.** Design your dynamic
-  and static group taxonomy together with the scope model from Chapter 2
+  and static group taxonomy together with the scope model from [Chapter 2](02-identity-licensing-security-and-administrative-control.md)
   — decide up front which groups exist to answer an operational question
   ("show me everything running firmware older than X") versus which exist
   to bound who can act on what. Conflating the two produces either overly
@@ -340,7 +340,7 @@ before the next automatic cycle.
   immediately — do not let discovery accounts silently drift out of an
   organization's credential rotation program because they are "just for
   discovery."
-- Align group-based scope (Chapter 2) with actual organizational
+- Align group-based scope ([Chapter 2](02-identity-licensing-security-and-administrative-control.md)) with actual organizational
   boundaries and review group membership periodically, particularly for
   dynamic groups whose membership can shift in ways that quietly widen a
   delegated administrator's effective access.
@@ -384,7 +384,7 @@ a device-control action, without requiring physical Dell hardware.
 
 **Prerequisites**
 
-- The OME appliance from Chapter 1/2's labs, reachable from your
+- The OME appliance from [Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)/2's labs, reachable from your
   workstation, with an account holding at least Device Manager-tier
   rights.
 - A Linux host (a lab VM is sufficient) on the same network as the OME
@@ -460,12 +460,12 @@ a fleet: it explained the discovery-to-onboarding-to-inventory pipeline,
 the protocol tradeoffs between native iDRAC discovery and SNMP/IPMI paths
 for third-party or legacy targets, and how static and dynamic groups
 support both operational visibility and the scoped administration
-established in Chapter 2. The lab exercised the full pipeline — discovery,
+established in [Chapter 2](02-identity-licensing-security-and-administrative-control.md). The lab exercised the full pipeline — discovery,
 onboarding, grouping, inventory refresh, and device control — against a
 reproducible SNMP-based lab target, including a negative test showing why
 network reachability alone does not equal a managed device. With devices
 under management, the volume now turns to monitoring, alerting, and
-reporting on the fleet in Chapter 4.
+reporting on the fleet in [Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md).
 
 - [ ] I can describe the discovery-to-onboarding-to-inventory pipeline and
       why onboarding, not raw discovery, is the gate to full functionality.

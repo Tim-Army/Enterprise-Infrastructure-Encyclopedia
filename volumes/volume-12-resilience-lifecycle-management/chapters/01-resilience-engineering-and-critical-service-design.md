@@ -22,13 +22,13 @@ Four properties distinguish a resilient system from a merely redundant one:
 3. **Recovery** — when absorption capacity is exceeded, the system returns to a known-good state within a bounded time, and that bound is measured, not assumed.
 4. **Adaptation** — lessons from near-misses and actual failures feed back into design, so the same failure mode does not recur unaddressed.
 
-This chapter establishes the vocabulary and design primitives that the rest of Volume XII builds on: Chapter 2 formalizes anticipation through business impact analysis; Chapter 3 formalizes absorption through HA and fault-tolerance patterns; Chapter 4 formalizes recovery through backup and DR engineering; Chapter 5 formalizes adaptation through resilience testing and chaos engineering.
+This chapter establishes the vocabulary and design primitives that the rest of Volume XII builds on: [Chapter 2](02-business-impact-analysis-and-continuity-planning.md) formalizes anticipation through business impact analysis; [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md) formalizes absorption through HA and fault-tolerance patterns; [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md) formalizes recovery through backup and DR engineering; [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md) formalizes adaptation through resilience testing and chaos engineering.
 
 ### Failure Domains and Blast Radius
 
 A **failure domain** is the boundary within which a single fault can propagate without crossing into another domain. Failure domains exist at every layer of an architecture: a power circuit, a top-of-rack switch, a hypervisor host, an availability zone, a database shard, a Kubernetes node pool, a cloud region, or a third-party API provider. **Blast radius** is the practical consequence of a failure domain boundary — the set of users, transactions, or downstream services affected when that domain fails completely.
 
-Resilient architectures are built by deliberately shrinking blast radius: partitioning a monolith into cells, sharding a database by customer or region, deploying compute across multiple availability zones, and isolating noisy-neighbor workloads with resource quotas. The trade-off is complexity and cost — more domains mean more failover logic, more data consistency questions, and more infrastructure to operate. Chapter 3 covers the mechanics of multi-domain HA design in depth; this chapter is concerned with identifying and cataloging the domains that exist in a given architecture before deciding how to protect them.
+Resilient architectures are built by deliberately shrinking blast radius: partitioning a monolith into cells, sharding a database by customer or region, deploying compute across multiple availability zones, and isolating noisy-neighbor workloads with resource quotas. The trade-off is complexity and cost — more domains mean more failover logic, more data consistency questions, and more infrastructure to operate. [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md) covers the mechanics of multi-domain HA design in depth; this chapter is concerned with identifying and cataloging the domains that exist in a given architecture before deciding how to protect them.
 
 ### Criticality Tiering
 
@@ -42,7 +42,7 @@ Not every service warrants the same investment in resilience. A criticality tier
 | Tier 3 | Internal tooling, batch, non-customer-facing | 99–99.5% | Next business day | Backup/restore, no HA requirement |
 | Tier 4 | Development, sandbox, decommission-candidate | Best effort | Not defined | None |
 
-Tiering is a cross-functional decision, not an engineering-only one: it requires input from the business process owner (see Chapter 2's business impact analysis methodology), the application owner, and often legal or compliance for regulated workloads. Tiering feeds directly into the redundancy budget — it is neither affordable nor necessary to run every service active-active across three regions.
+Tiering is a cross-functional decision, not an engineering-only one: it requires input from the business process owner (see [Chapter 2](02-business-impact-analysis-and-continuity-planning.md)'s business impact analysis methodology), the application owner, and often legal or compliance for regulated workloads. Tiering feeds directly into the redundancy budget — it is neither affordable nor necessary to run every service active-active across three regions.
 
 ### Core Resilience Patterns
 
@@ -51,7 +51,7 @@ Four patterns recur throughout this volume and are worth naming precisely before
 - **Redundancy** — duplicating a component so that the failure of one instance does not remove the capability. Redundancy is characterized by an N+M notation: N is the number of units required to carry full load, M is the number of spare units. N+1 tolerates one failure; 2N (equivalent to N+N) tolerates the loss of an entire half of capacity, commonly used for power and cooling.
 - **Isolation** — bounding the blast radius of a failure through bulkheads: separate connection pools, separate thread pools, separate compute nodes, or separate network segments per tenant or function, so that saturation in one area cannot starve another.
 - **Statelessness** — designing compute components to hold no durable state locally, so any instance can be replaced or added without a data-migration step. State is pushed to a purpose-built, independently resilient store (a database, object store, or cache tier).
-- **Graceful degradation** — defining reduced-functionality modes that preserve the most critical capability of a service when full capacity is unavailable, rather than failing the entire request. Chapter 3 covers the implementation mechanics (circuit breakers, load shedding, feature flags) in detail.
+- **Graceful degradation** — defining reduced-functionality modes that preserve the most critical capability of a service when full capacity is unavailable, rather than failing the entire request. [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md) covers the implementation mechanics (circuit breakers, load shedding, feature flags) in detail.
 
 ### Reliability Math Refresher
 
@@ -88,7 +88,7 @@ A SPOF is any component whose failure removes service capability with no automat
 
 - A single DNS zone or single authoritative name server for a critical hostname.
 - A single certificate that, if it expires, takes down TLS termination for every dependent service.
-- A shared authentication or authorization service with no fallback (Chapter 4's dependency on identity, and Volume IV's directory services chapters, both intersect here).
+- A shared authentication or authorization service with no fallback ([Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md)'s dependency on identity, and [Volume IV](../../volume-04-enterprise-systems-administration/README.md)'s directory services chapters, both intersect here).
 - A single human who is the only person who knows how to execute a recovery procedure — an organizational SPOF as real as a hardware one.
 - A single cloud region, single availability zone, or single third-party SaaS dependency embedded deep in a call graph.
 
@@ -103,7 +103,7 @@ Redundancy is not free, and more is not automatically better:
 | Cost | N+1 roughly doubles compute/licensing cost for the protected tier; 2N doubles again |
 | Operational complexity | Failover logic, data synchronization, and split-brain avoidance all add operational surface area |
 | Consistency | Synchronous replication for strong consistency costs latency; asynchronous replication risks data loss on failover |
-| Testing burden | Redundancy that is never exercised is unverified and frequently broken when needed (see Chapter 5) |
+| Testing burden | Redundancy that is never exercised is unverified and frequently broken when needed (see [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md)) |
 
 A resilient design matches redundancy investment to the criticality tier established earlier, and documents the residual risk explicitly rather than implying that redundancy equals zero risk.
 
@@ -252,7 +252,7 @@ Declared redundancy is a hypothesis until it is tested. Validation steps:
 - **Redundant but co-located**: two "redundant" VMs on the same hypervisor host, defeating the purpose of the redundancy.
 - **Shared control plane**: independent data planes that all depend on one unreplicated configuration service or license server.
 - **Silent capacity drift**: N+1 designed at launch that has become N+0 as traffic grew without a corresponding capacity review.
-- **Redundancy without failover testing**: see Chapter 5 — untested failover is common cause of failed recovery during real incidents.
+- **Redundancy without failover testing**: see [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md) — untested failover is common cause of failed recovery during real incidents.
 
 ### Troubleshooting Availability Math Mismatches
 
@@ -265,7 +265,7 @@ When measured availability does not match the calculated theoretical availabilit
 ## Security and Best Practices
 
 - Treat the criticality register and dependency map as sensitive operational data: they are a target map for an attacker planning to maximize impact. Restrict read access appropriately while keeping it available to the teams that need it.
-- Do not let resilience redundancy undermine security segmentation — a redundant path that bypasses a firewall or an approval gate to save failover time is a control gap, not a resilience win. Coordinate with Volume X's cybersecurity architecture guidance when redundant paths cross trust boundaries.
+- Do not let resilience redundancy undermine security segmentation — a redundant path that bypasses a firewall or an approval gate to save failover time is a control gap, not a resilience win. Coordinate with [Volume X](../../volume-10-enterprise-cybersecurity/README.md)'s cybersecurity architecture guidance when redundant paths cross trust boundaries.
 - Avoid single points of failure in identity and secrets management specifically; an expired certificate or a locked-out break-glass account has caused more real outages industry-wide than raw hardware failure.
 - Review the criticality register at a fixed cadence (quarterly is typical) and whenever a service's business role changes materially — a tier assignment that was correct at launch silently becomes wrong as a service's role in the business evolves.
 - Keep tiering decisions and their rationale in version control with reviewable history; an auditor or incident reviewer will ask why a service was tiered the way it was.

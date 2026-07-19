@@ -4,7 +4,7 @@
 
 - Deploy a two-node Active Directory Domain Services forest for
   `corp.meridian.example` with AD-integrated DNS, matching the domain and
-  addressing plan established in Chapter 01.
+  addressing plan established in [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md).
 - Build a layered time-synchronization hierarchy that keeps every
   Kerberos-dependent system inside its authentication tolerance window.
 - Configure DHCP failover for the HQ user and wireless/guest VLANs and prove
@@ -17,31 +17,31 @@
 ## Theory and Architecture
 
 Identity, DNS, and time are the three services every later chapter in this
-volume quietly depends on. Campus and wireless authentication in Chapter 03,
-vSphere and backup service accounts in Chapter 04, cluster and pipeline
+volume quietly depends on. Campus and wireless authentication in [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md),
+vSphere and backup service accounts in [Chapter 04](04-virtualization-storage-and-data-protection-lab.md), cluster and pipeline
 identities in Chapters 05 and 06, and every detection rule and audit trail
-in Chapter 07 all assume a directory that resolves names correctly and
+in [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md) all assume a directory that resolves names correctly and
 agrees on the time. This chapter builds that foundation once, on the `HQ`
 site and the VLAN 110 core-services subnet (`10.13.10.0/24`) defined in
-Chapter 01's topology manifest, so every later chapter can simply point at
+[Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s topology manifest, so every later chapter can simply point at
 `corp.meridian.example` and trust it.
 
-The design follows Volume IV, Chapter 04 (Enterprise Identity and Directory
+The design follows [Volume IV, Chapter 04](../../volume-04-enterprise-systems-administration/chapters/04-enterprise-identity-and-directory-services.md) (Enterprise Identity and Directory
 Services): a single-domain Active Directory forest, DNS integrated directly
 into that directory rather than run as a separate service, and a
 Windows-Time hierarchy rooted at the domain's PDC emulator — the same
-architecture Volume II, Chapter 05 (Core Network Services) treats generically
-for DNS, DHCP, and NTP. Volume IV, Chapters 02 and 03 (Enterprise Linux
+architecture [Volume II, Chapter 05](../../volume-02-network-engineering-foundations/chapters/05-core-network-services.md) (Core Network Services) treats generically
+for DNS, DHCP, and NTP. [Volume IV](../../volume-04-enterprise-systems-administration/README.md), Chapters 02 and 03 (Enterprise Linux
 Administration and Windows Server Administration) supply the host-level
 mechanics this chapter assumes: package management, service management, and
 basic firewall configuration on both operating systems.
 
 At this point in the volume, inter-VLAN traffic still crosses the ad hoc
-lab router/firewall provisioned informally in Chapter 01 to give `ctrl01` a
+lab router/firewall provisioned informally in [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) to give `ctrl01` a
 default gateway and NAT path — not yet the resilient Cisco campus and WAN
-fabric Chapter 03 builds. That is a deliberate sequencing choice: this
+fabric [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) builds. That is a deliberate sequencing choice: this
 chapter's services must work correctly over "good enough" routing before
-Chapter 03 replaces the routing layer underneath them, so any regression
+[Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) replaces the routing layer underneath them, so any regression
 introduced by the network rebuild is easy to attribute.
 
 ### Systems introduced in this chapter
@@ -52,7 +52,7 @@ introduced by the network rebuild is easy to attribute.
 | `dc02` | Additional DC, DNS, global catalog | `10.13.10.12/24` | 110 |
 | `linux01` | Domain-joined Linux validation client | `10.13.20.21/24` | 120 |
 
-`ctrl01` (`10.13.10.30`, provisioned in Chapter 01) remains the automation
+`ctrl01` (`10.13.10.30`, provisioned in [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)) remains the automation
 controller and evidence-capture host for this chapter's lab.
 
 ## Design Considerations
@@ -62,17 +62,17 @@ controller and evidence-capture host for this chapter's lab.
   volume needs — replication, DNS integration, Kerberos, DHCP failover —
   without the added administrative-boundary complexity a multi-domain
   design would add for no lab benefit.
-- **Both domain controllers at HQ, for now.** Chapter 03 introduces a
+- **Both domain controllers at HQ, for now.** [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md) introduces a
   read-only domain controller at `BR1` once a real WAN link exists between
   sites; placing it there before the WAN is real would validate against
-  routing that will be discarded. Note this dependency now so Chapter 03's
+  routing that will be discarded. Note this dependency now so [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md)'s
   design does not appear to arrive out of nowhere.
 - **DNS forwarders, not root hints.** Point `dc01`/`dc02` at the lab
   router's NAT'd resolver as a conditional forwarder for anything outside
   `corp.meridian.example`, rather than letting each DC walk the internet
   root hierarchy from inside a NAT'd lab — faster, and it keeps outbound
   lab DNS traffic attributable to one exit point for the isolation checks
-  Chapter 01 established.
+  [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) established.
 - **Time hierarchy has exactly one root.** The PDC emulator (`dc01`) is the
   only system in the lab that synchronizes from an external source; every
   other domain member — including `dc02` — synchronizes from a domain
@@ -82,7 +82,7 @@ controller and evidence-capture host for this chapter's lab.
 - **DHCP failover mode differs by VLAN.** VLAN 120 (user/endpoint) uses
   load-balance failover so both DCs actively lease during normal operation,
   exercising both partners continuously. VLAN 140 (wireless/guest, built out
-  in Chapter 03) is configured for hot-standby instead, because guest
+  in [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md)) is configured for hot-standby instead, because guest
   traffic tolerates a brief failover pause better than it tolerates
   splitting scope state across two active servers for a segment with much
   higher churn.

@@ -2,7 +2,7 @@
 
 ## Learning Objectives
 
-- Distinguish active-active, active-passive, and clustered HA topologies and select among them based on RTO/RPO from Chapter 2.
+- Distinguish active-active, active-passive, and clustered HA topologies and select among them based on RTO/RPO from [Chapter 2](02-business-impact-analysis-and-continuity-planning.md).
 - Explain quorum, split-brain, and the mechanisms that prevent it in clustered systems.
 - Implement circuit breakers, retries with backoff, timeouts, and bulkheads as fault-tolerance primitives.
 - Design graceful degradation modes, including load shedding and feature-flag-driven fallback, for a Tier 0/1 service.
@@ -13,13 +13,13 @@
 
 ### HA Topologies
 
-High availability is the operational implementation of the absorption property introduced in Chapter 1: the capacity to lose a component without losing service. Three topologies cover the majority of production systems:
+High availability is the operational implementation of the absorption property introduced in [Chapter 1](01-resilience-engineering-and-critical-service-design.md): the capacity to lose a component without losing service. Three topologies cover the majority of production systems:
 
 - **Active-passive** — one instance (or site) serves traffic while a standby remains ready to take over. Failover requires detecting the primary's failure and promoting the standby, which introduces a failover time greater than zero. Data must be replicated to the standby, synchronously or asynchronously (see the RPO trade-off below).
 - **Active-active** — two or more instances serve traffic simultaneously, and a failure of any one instance is absorbed by the remaining capacity with no promotion step. Active-active requires the application to tolerate concurrent writes to shared state (or to partition state so writes never conflict) and typically delivers the lowest RTO, approaching zero for stateless tiers.
 - **Clustering** — a set of nodes cooperate under a shared identity (a virtual IP, a cluster resource manager, or a distributed consensus protocol) to present a single logical service, with the cluster itself handling leader election and failover. Clustering is common for stateful systems — databases, message brokers, and coordination services — where active-active writes are not safe without a coordination layer.
 
-The choice among these is a direct consequence of the Chapter 2 RTO/RPO targets: sub-second RTO effectively requires active-active or a fast-electing cluster; an RTO measured in minutes can be met with active-passive; nothing here removes the need for the backup-and-restore patterns in Chapter 4 for RTOs measured in hours.
+The choice among these is a direct consequence of the [Chapter 2](02-business-impact-analysis-and-continuity-planning.md) RTO/RPO targets: sub-second RTO effectively requires active-active or a fast-electing cluster; an RTO measured in minutes can be met with active-passive; nothing here removes the need for the backup-and-restore patterns in [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md) for RTOs measured in hours.
 
 ### Quorum and Split-Brain
 
@@ -69,7 +69,7 @@ Data replication for HA/failover involves a direct trade-off:
 - **Synchronous replication** guarantees zero data loss on failover (RPO = 0) because a write is not acknowledged until it is durable on both sides, but it adds the round-trip latency between sites to every write, and it stalls writes entirely if the replica is unreachable — availability and consistency are in tension.
 - **Asynchronous replication** acknowledges writes locally and ships them to the replica afterward, preserving low write latency and availability, but risks losing the most recent, unreplicated writes on failover (RPO > 0, bounded by replication lag).
 
-The acceptable choice is dictated by the RPO derived in Chapter 2, not by which option is operationally simpler. A financial ledger with an RPO of zero cannot use asynchronous replication regardless of the latency cost; a metrics ingestion pipeline with an RPO of minutes can, and should, prefer the availability and performance of asynchronous replication.
+The acceptable choice is dictated by the RPO derived in [Chapter 2](02-business-impact-analysis-and-continuity-planning.md), not by which option is operationally simpler. A financial ledger with an RPO of zero cannot use asynchronous replication regardless of the latency cost; a metrics ingestion pipeline with an RPO of minutes can, and should, prefer the availability and performance of asynchronous replication.
 
 ### Sizing Circuit Breakers and Bulkheads
 
@@ -147,7 +147,7 @@ spec:
     matchLabels: { app: checkout-api }
 ```
 
-The `topologySpreadConstraints` block enforces the multi-AZ redundancy from the design section; the `PodDisruptionBudget` prevents voluntary disruptions (node drains during patching, covered in Chapter 6) from taking more capacity offline than the service can tolerate.
+The `topologySpreadConstraints` block enforces the multi-AZ redundancy from the design section; the `PodDisruptionBudget` prevents voluntary disruptions (node drains during patching, covered in [Chapter 6](06-maintenance-patching-and-upgrade-engineering.md)) from taking more capacity offline than the service can tolerate.
 
 ### Example: Load-Shedding Middleware Logic
 
@@ -195,7 +195,7 @@ echo "PASS: target removed from rotation within $(( $(date +%s) - START ))s"
 
 - Confirm quorum configuration matches the documented cluster size and tolerance — an odd number of voting members for majority-quorum systems, or an explicit witness for two-node configurations.
 - Confirm health checks reflect actual service health, not just process liveness: a readiness probe that only checks "is the process running" will not detect a service that is up but unable to reach its database, and traffic will continue to route to a functionally dead instance.
-- Confirm replication lag is monitored continuously for asynchronous replication topologies, with alerting tied to the RPO budget established in Chapter 2.
+- Confirm replication lag is monitored continuously for asynchronous replication topologies, with alerting tied to the RPO budget established in [Chapter 2](02-business-impact-analysis-and-continuity-planning.md).
 
 ### Common Failure Modes
 
@@ -216,7 +216,7 @@ Divergent data between cluster nodes after a network event, or duplicate leader 
 - Health-check and failover-control endpoints are high-value targets: an attacker who can mark healthy targets unhealthy can trigger a denial-of-service through the resilience mechanism itself. Authenticate and restrict access to these control paths.
 - Retry logic must be idempotency-aware; retrying a non-idempotent write (a payment charge, an inventory decrement) without an idempotency key can convert a resilience mechanism into a data-integrity or financial-correctness bug.
 - Do not let graceful-degradation fallback paths bypass authorization or data-validation checks for the sake of availability; a "fail open" security control under load is rarely an acceptable trade-off and should be an explicit, reviewed exception, not a default.
-- Test failover regularly (see Chapter 5) rather than relying on architecture review; untested failover is the single most common cause of an HA design not performing as expected during a real incident.
+- Test failover regularly (see [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md)) rather than relying on architecture review; untested failover is the single most common cause of an HA design not performing as expected during a real incident.
 - Document and rehearse the human procedures around automated failover (who is paged, what the expected automated behavior is, when to intervene manually) so that operators do not fight an automated failover in progress under the false assumption that it has failed.
 
 ## References and Knowledge Checks
@@ -226,7 +226,7 @@ Divergent data between cluster nodes after a network event, or duplicate leader 
 - [Chapter 1](01-resilience-engineering-and-critical-service-design.md) and [Chapter 2](02-business-impact-analysis-and-continuity-planning.md) for the criticality tiers and RTO/RPO values that drive HA topology selection.
 - Kubernetes documentation on topology spread constraints and pod disruption budgets, current to the 1.31.x baseline in [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md).
 - Raft consensus algorithm reference material (raft.github.io) for the leader-election and quorum concepts summarized in this chapter.
-- Volume VII, Cloud Infrastructure, for cloud-provider-specific multi-AZ and multi-region networking patterns referenced here at a vendor-neutral level.
+- [Volume VII](../../volume-07-cloud-infrastructure/README.md), Cloud Infrastructure, for cloud-provider-specific multi-AZ and multi-region networking patterns referenced here at a vendor-neutral level.
 
 ### Knowledge Checks
 
@@ -321,7 +321,7 @@ cd ~ && rm -f /tmp/lb-target-state && rm -rf ~/labs/resilience-ch3
 
 ## Summary and Completion Checklist
 
-High availability and fault tolerance translate the RTO/RPO targets from the BIA into concrete architecture: topology choice (active-active, active-passive, clustered), quorum-safe failover, and request-path resilience primitives (timeouts, retries, circuit breakers, bulkheads), backed by graceful-degradation modes for conditions that exceed absorption capacity. None of these mechanisms are self-verifying — the chapter's emphasis on failover testing sets up Chapter 5's resilience testing and chaos engineering practice, which turns "should fail over correctly" into "verified to fail over correctly."
+High availability and fault tolerance translate the RTO/RPO targets from the BIA into concrete architecture: topology choice (active-active, active-passive, clustered), quorum-safe failover, and request-path resilience primitives (timeouts, retries, circuit breakers, bulkheads), backed by graceful-degradation modes for conditions that exceed absorption capacity. None of these mechanisms are self-verifying — the chapter's emphasis on failover testing sets up [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md)'s resilience testing and chaos engineering practice, which turns "should fail over correctly" into "verified to fail over correctly."
 
 **Completion checklist:**
 

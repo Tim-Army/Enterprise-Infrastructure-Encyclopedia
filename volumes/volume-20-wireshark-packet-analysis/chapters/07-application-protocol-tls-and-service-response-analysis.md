@@ -17,11 +17,11 @@
 
 ## Theory and Architecture
 
-Chapter 06 established how TCP delivers a reliable byte stream; this
+[Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md) established how TCP delivers a reliable byte stream; this
 chapter analyzes what rides inside that stream — HTTP and TLS specifically,
 as the application protocols an enterprise analyst encounters most — and
 how to measure how quickly a service actually responded once the
-transport-layer handshake behavior from Chapter 06 is no longer the
+transport-layer handshake behavior from [Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md) is no longer the
 bottleneck.
 
 ### HTTP/1.1 and HTTP/2 in Wireshark
@@ -113,7 +113,7 @@ segments constitute the request and response boundaries.
   technical one.** Enabling `SSLKEYLOGFILE` on a production browser or
   service, or extracting a private key, both have real security
   implications; confirm authorization and scope before configuring
-  decryption outside a lab or an authorized investigation (Chapter 01's
+  decryption outside a lab or an authorized investigation ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)'s
   evidentiary-handling guidance applies directly).
 - **Multiplexed HTTP/2 streams complicate simple request/response
   timing.** Because many logical HTTP/2 streams share one TCP connection,
@@ -193,7 +193,7 @@ tshark -r capture.pcapng -Y "tls.handshake.type==2" -T fields \
    filename**, point it at `~/tls-keys.log`.
 4. Reload or re-open the capture. Decrypted `Application Data` records now
    dissect as their underlying protocol (commonly HTTP or HTTP/2) instead
-   of opaque encrypted bytes, and Follow Stream (Chapter 03) works on the
+   of opaque encrypted bytes, and Follow Stream ([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md)) works on the
    decrypted content directly.
 
 `tshark` performs the same decryption non-interactively for scripted
@@ -219,7 +219,7 @@ tshark -r capture.pcapng -o "tls.keylog_file:tls-keys.log" \
   between client and server.
 - **HTTP request shows no matching response.** Confirm the TCP stream did
   not reset or time out before a response was sent
-  (`tcp.stream==<N> && tcp.flags.reset==1`, Chapter 06); a genuinely
+  (`tcp.stream==<N> && tcp.flags.reset==1`, [Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md)); a genuinely
   missing response is a server- or path-level failure, not an HTTP
   dissection issue.
 - **`http.time` reports an implausibly large value.** Confirm the request
@@ -252,10 +252,10 @@ tshark -r capture.pcapng -o "tls.keylog_file:tls-keys.log" \
 - **Watch for TLS handshakes with anomalous SNI-to-certificate
   mismatches** or self-signed certificates presented for well-known
   hostnames — both are signatures worth escalating, especially combined
-  with the security investigation techniques in Chapter 08.
+  with the security investigation techniques in [Chapter 08](08-security-investigation-command-line-analysis-and-automation.md).
 - **Redact decrypted Follow Stream output aggressively before sharing.**
   Once TLS is decrypted, the same handling discipline that applies to any
-  cleartext protocol (Chapter 01) applies to the decrypted content —
+  cleartext protocol ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)) applies to the decrypted content —
   credentials, tokens, and personal data are now fully visible in the
   capture.
 
@@ -292,7 +292,7 @@ decrypt it in Wireshark, and measure the underlying HTTP response time.
 
 **Prerequisites**
 
-- Wireshark and `tshark` installed with capture rights (Chapter 01).
+- Wireshark and `tshark` installed with capture rights ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
 - A TLS-capable client that honors `SSLKEYLOGFILE` (most Chromium- and
   Firefox-based browsers, and `curl` built against a compatible TLS
   library).
@@ -377,7 +377,7 @@ suites. Service response time measured directly from a capture (`http.time`
 and its equivalents) is frequently a more trustworthy source of truth than
 application-level logging, because it reflects what was actually observed
 on the wire rather than what the application reported about itself.
-Chapter 08 moves from protocol analysis to security investigation and
+[Chapter 08](08-security-investigation-command-line-analysis-and-automation.md) moves from protocol analysis to security investigation and
 command-line automation, building on every filter and field introduced in
 Chapters 04 through 07.
 

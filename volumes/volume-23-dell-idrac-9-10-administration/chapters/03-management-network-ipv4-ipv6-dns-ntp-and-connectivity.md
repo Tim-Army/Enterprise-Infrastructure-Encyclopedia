@@ -40,7 +40,7 @@ routes through the chassis's Chassis Management Controller (CMC) fabric
 rather than a per-sled dedicated port, which is why this volume's network
 guidance is scoped primarily to rack and tower topology; modular
 management topology is covered under OpenManage Enterprise-Modular in
-Volume XXII's related discussion, not duplicated here.
+[Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md)'s related discussion, not duplicated here.
 
 ### NIC selection and failover modes
 
@@ -83,14 +83,14 @@ address autoconfiguration (SLAAC) and DHCPv6, plus static assignment.
 
 DNS registration (iDRAC registering its own hostname with a DNS server)
 and correct forward/reverse resolution matter beyond simple convenience:
-certificate validation in Chapter 4 depends on the hostname a client
+certificate validation in [Chapter 4](04-identity-certificates-security-and-compliance.md) depends on the hostname a client
 resolves matching the name on iDRAC's TLS certificate, and fleet tools
-(including OME, Volume XXII) that build inventory and alert records from
+(including OME, [Volume XXII](../../volume-22-dell-openmanage-enterprise/README.md)) that build inventory and alert records from
 hostname rather than raw IP produce far more usable records when DNS is
 correct from the start. NTP matters even more acutely: TLS handshakes
 involve certificate validity-period checks that fail confusingly when
 iDRAC's clock has drifted, and every timestamp in the SEL and Lifecycle
-Log (Chapter 6) — the record you will eventually depend on to reconstruct
+Log ([Chapter 6](06-hardware-health-power-thermal-logs-and-support.md)) — the record you will eventually depend on to reconstruct
 an incident timeline — is only as trustworthy as the clock that wrote it.
 Configure NTP during initial network bring-up, not as a follow-up task
 after other issues have already surfaced from clock drift.
@@ -131,7 +131,7 @@ after other issues have already surfaced from clock drift.
 - **Plan firewall rules around the actual protocols iDRAC uses, not just
   HTTPS.** Beyond TCP 443 for the web console and Redfish, plan for SSH
   (TCP 22) for RACADM, SNMP (UDP 161/162) if used for alerting, and
-  virtual media/console-related ports (Chapter 5) if remote KVM/media use
+  virtual media/console-related ports ([Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md)) if remote KVM/media use
   is planned across a routed (not local L2) network path.
 
 ## Implementation and Automation
@@ -291,7 +291,7 @@ the address change has settled.
 - **No link at all on the expected port.** Confirm NIC selection
   (`racadm get iDRAC.NIC.Selection`) matches the physical port actually
   cabled — this remains the single most common iDRAC network issue,
-  especially after a factory reset (Chapter 2), which resets NIC
+  especially after a factory reset ([Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md)), which resets NIC
   selection to its platform default.
 - **Link present but no DHCP address obtained.** Confirm VLAN tagging
   configuration matches the upstream switch port's trunk/access
@@ -313,7 +313,7 @@ the address change has settled.
   networking.** Check NTP sync status first
   (`racadm get iDRAC.NTPConfigGroup` and compare iDRAC's reported time
   against a trusted source) — clock drift produces TLS and Kerberos
-  (Chapter 4) failures that read as credential or certificate problems
+  ([Chapter 4](04-identity-certificates-security-and-compliance.md)) failures that read as credential or certificate problems
   but are actually time problems.
 - **IPv6 address never appears despite `AutoConfig Enabled`.** Confirm the
   upstream network segment actually advertises IPv6 router
@@ -379,7 +379,7 @@ Redfish.
 **Prerequisites**
 
 - The lab iDRAC configured in Chapters 1 and 2, with the SCP baseline
-  exported in Chapter 2's lab retained for rollback.
+  exported in [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md)'s lab retained for rollback.
 - A lab network segment with a known-good static IP range, a reachable
   DNS server accepting dynamic updates (or write access to a test zone),
   and a reachable NTP server.
@@ -476,10 +476,10 @@ Redfish.
 **Cleanup**
 
 - If continuing to later chapters' labs, leave the static IP, DNS
-  registration, and NTP configuration in place — Chapter 4 builds on a
+  registration, and NTP configuration in place — [Chapter 4](04-identity-certificates-security-and-compliance.md) builds on a
   network-reachable, time-synchronized baseline.
 - If this lab environment is shared or temporary, restore the SCP
-  baseline exported in Chapter 2 to return to prior network settings:
+  baseline exported in [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md) to return to prior network settings:
 
   ```bash
   racadm systemconfig import -t xml -f lab-baseline.xml \
@@ -497,7 +497,7 @@ why DNS and NTP in particular are prerequisites for the certificate and
 logging work in later chapters rather than optional conveniences. The lab
 produced a network-reachable, DNS-registered, time-synchronized iDRAC
 ready for the identity, certificate, and security configuration in
-Chapter 4.
+[Chapter 4](04-identity-certificates-security-and-compliance.md).
 
 - [ ] I can choose between dedicated NIC and shared LOM and explain the
       trade-offs, including when VLAN tagging is necessary.
@@ -508,4 +508,4 @@ Chapter 4.
 - [ ] I diagnosed at least one connectivity issue using the RACADM/Redfish
       checks in this chapter's Validation and Troubleshooting section.
 - [ ] I have a network-reachable, DNS-registered, time-synchronized lab
-      iDRAC ready for Chapter 4.
+      iDRAC ready for [Chapter 4](04-identity-certificates-security-and-compliance.md).

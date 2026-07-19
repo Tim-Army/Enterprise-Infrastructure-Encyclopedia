@@ -92,7 +92,7 @@ Context propagation is the single most fragile part of a telemetry
 architecture: any hop that does not forward the incoming `traceparent`
 header (an undocumented internal proxy, a message queue that does not
 carry headers into the message body, a batch job that reads from a queue
-asynchronously) breaks the trace into disconnected fragments. Chapter 05
+asynchronously) breaks the trace into disconnected fragments. [Chapter 05](05-distributed-tracing-profiling-and-dependency-analysis.md)
 covers diagnosing and repairing broken propagation in depth.
 
 ### Pipeline topology: agent and gateway
@@ -109,7 +109,7 @@ standard topology:
 - **Gateway (cluster- or region-level).** A smaller number of Collector
   instances, deployed as a scalable service (a Kubernetes Deployment behind
   a load balancer), that agents forward to. The gateway performs
-  expensive, centralized processing: tail-based sampling (Chapter 05),
+  expensive, centralized processing: tail-based sampling ([Chapter 05](05-distributed-tracing-profiling-and-dependency-analysis.md)),
   PII redaction, cardinality limiting, and fan-out to multiple backends
   (a metrics backend, a trace backend, and a long-term archive, for
   example).
@@ -153,7 +153,7 @@ configuration.
   and slow traces at a higher rate than routine ones) is more valuable but
   requires buffering the full trace at the gateway before deciding,
   increasing gateway memory and requiring all spans of a trace to reach the
-  same gateway instance. Chapter 05 details tail-based sampling
+  same gateway instance. [Chapter 05](05-distributed-tracing-profiling-and-dependency-analysis.md) details tail-based sampling
   configuration.
 - **Backpressure and buffering.** Decide, per signal type, what happens
   when the backend is unavailable or the pipeline is saturated: drop
@@ -349,7 +349,7 @@ processors:
 - Restrict who can modify Collector processor configuration in production;
   a redaction processor removed from a pipeline is a data-exposure
   incident, not a cosmetic configuration change, and should be change-
-  controlled and reviewed like any other security control (see Chapter 07
+  controlled and reviewed like any other security control (see [Chapter 07](07-service-management-incident-problem-and-change-operations.md)
   for change-management process).
 - Do not run Collector instances with broader network egress than
   required — the gateway needs a defined allow-list of backend

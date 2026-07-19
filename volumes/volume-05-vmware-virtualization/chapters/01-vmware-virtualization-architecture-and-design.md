@@ -120,7 +120,7 @@ three practical reasons an architect should be able to articulate:
   exploited to reach the virtualization layer.
 - **Operational model.** Patching, certificate management, and lifecycle
   operations target the hypervisor directly (through vSphere Lifecycle
-  Manager, covered in Chapter 9) rather than through a host OS's own
+  Manager, covered in [Chapter 9](09-vsphere-lifecycle-automation-observability-and-troubleshooting.md)) rather than through a host OS's own
   patch management stack layered underneath a separate hypervisor
   product.
 
@@ -170,7 +170,7 @@ routing I/O through a general-purpose OS's driver stack, hardware
 vendors (or VMware itself) provide drivers written specifically against
 the VMkernel's driver API and packaged as **VIBs** (vSphere Installation
 Bundles) — signed packages that also carry certified/supported metadata
-consumed by vSphere Lifecycle Manager (vLCM, covered in Chapter 9).
+consumed by vSphere Lifecycle Manager (vLCM, covered in [Chapter 9](09-vsphere-lifecycle-automation-observability-and-troubleshooting.md)).
 Drivers run in the VMkernel's address space with direct hardware access,
 which is what makes ESXi's I/O path efficient, but it also means driver
 quality and VMware/vendor certification status materially affect host
@@ -188,7 +188,7 @@ hypervisor and the management layer built around it:
   6.5, vCenter Server ships exclusively as the vCenter Server Appliance
   (VCSA), a preconfigured Linux (VMware Photon OS) virtual appliance;
   the legacy Windows-installable vCenter Server was discontinued.
-  Chapter 3 covers VCSA deployment, identity, and recovery in depth.
+  [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md) covers VCSA deployment, identity, and recovery in depth.
 - **vSphere Client** — the HTML5-based, Clarity Design System web client
   served by vCenter Server. It replaced both the legacy Windows C#
   client and the earlier Flash-based vSphere Web Client, both long since
@@ -322,7 +322,7 @@ is a licensing reference.
   and security data-plane processing (and, in NSX-integrated designs,
   the distributed firewall) onto a DPU/SmartNIC via the vSphere
   Distributed Services Engine model (introduced conceptually in this
-  chapter, detailed in Chapter 4). This frees host CPU cycles otherwise
+  chapter, detailed in [Chapter 4](04-vsphere-virtual-networking.md)). This frees host CPU cycles otherwise
   spent on software packet processing, at the cost of added hardware
   complexity, DPU-specific firmware/driver lifecycle management, and
   dependency on a narrower hardware compatibility list than standard
@@ -340,7 +340,7 @@ is a licensing reference.
   largest single VM the cluster must host comfortably and the
   organization's tolerance for single-host blast radius.
 - **Multi-site and stretched-cluster design.** A stretched cluster (most
-  commonly built on a vSAN stretched cluster, covered in Chapter 6)
+  commonly built on a vSAN stretched cluster, covered in [Chapter 6](06-vsphere-storage-and-vsan.md))
   spans two active sites plus a witness host or appliance at a third
   location, and requires the inter-site network to meet strict latency
   and bandwidth requirements to keep synchronous replication and
@@ -486,7 +486,7 @@ curl -sk -H "vmware-api-session-id: ${SESSION//\"/}" \
   a share/reservation/limit strategy.
 - Assign permissions as close to the objects that need them as
   practical, and prefer group-based role assignment (through an
-  identity source, covered in Chapter 3) over individual named-user
+  identity source, covered in [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md)) over individual named-user
   permissions, so access reviews scale with the organization rather
   than with the object count.
 - Disable permission propagation deliberately wherever a delegated
@@ -503,7 +503,7 @@ curl -sk -H "vmware-api-session-id: ${SESSION//\"/}" \
 - Design the management network, host hardware, and inventory structure
   together — a well-designed permission model does not compensate for a
   management network that is reachable from general-purpose VM traffic
-  (Chapter 4 and Chapter 8 cover network and security architecture in
+  ([Chapter 4](04-vsphere-virtual-networking.md) and [Chapter 8](08-vsphere-and-nsx-security-architecture.md) cover network and security architecture in
   depth).
 
 ## References and Knowledge Checks
@@ -547,7 +547,7 @@ negative test.
 
 - A lab vCenter Server Appliance already deployed and reachable (nested
   or physical), with at least one ESXi host registered — full deployment
-  steps are covered in Chapter 2 (ESXi) and Chapter 3 (vCenter). This
+  steps are covered in [Chapter 2](02-esxi-installation-configuration-and-host-operations.md) (ESXi) and [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md) (vCenter). This
   lab assumes that groundwork already exists.
 - A workstation with PowerShell 7.x and the `VMware.PowerCLI` module
   installed, and `govc` installed for the cross-verification step

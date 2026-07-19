@@ -15,7 +15,7 @@
 
 ## Theory and Architecture
 
-Cybersecurity Apprentice-level knowledge (Chapter 01) establishes what each
+Cybersecurity Apprentice-level knowledge ([Chapter 01](01-cybersecurity-apprentice-foundations.md)) establishes what each
 product family does. Practitioner-level knowledge requires understanding how
 the products are licensed, how they interoperate, and how a security
 architect chooses among deployment models for the same underlying
@@ -45,7 +45,7 @@ Each subscription updates its signature or model content independently on
 its own release cadence; the firewall retrieves updates from the Palo Alto
 Networks update infrastructure on a schedule the administrator configures
 (covered in Implementation and Automation below, and revisited operationally
-in Chapter 07). A Practitioner-level engineer must be able to explain, given
+in [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md)). A Practitioner-level engineer must be able to explain, given
 a customer's risk profile and budget, which subscriptions close which gaps
 — for example, an organization worried about zero-day command-and-control
 channels needs Advanced Threat Prevention, not just Threat Prevention, since
@@ -54,13 +54,13 @@ classic IPS signatures cannot match traffic that has never been seen before.
 ### Strata Cloud Manager and the management-plane spectrum
 
 Historically, PAN-OS firewalls were managed either individually (Web UI/CLI
-per device) or centrally through Panorama (Chapter 06). **Strata Cloud
+per device) or centrally through Panorama ([Chapter 06](06-panorama-installation-central-management-and-logging.md)). **Strata Cloud
 Manager (SCM)** is Palo Alto Networks' cloud-delivered, SaaS management
 plane that provides a unified console across Strata NGFWs (hardware and
 VM-Series), Prisma Access, and Prisma SD-WAN from a single pane of glass,
 with AIOps-driven recommendations layered on top. SCM does not eliminate
 Panorama in every deployment — many enterprises run Panorama for
-on-premises device-group/template policy management (Chapter 06) while
+on-premises device-group/template policy management ([Chapter 06](06-panorama-installation-central-management-and-logging.md)) while
 using SCM for fleet-wide visibility, best-practice assessment, and
 increasingly for direct policy management as feature parity expands release
 over release. A Practitioner-level engineer should understand this as a
@@ -97,7 +97,7 @@ model rather than a capital hardware refresh cycle.
 
 ### Cortex platform depth
 
-Chapter 01 introduced Cortex at a naming level. A Practitioner-level
+[Chapter 01](01-cybersecurity-apprentice-foundations.md) introduced Cortex at a naming level. A Practitioner-level
 engineer must know what problem each Cortex product solves and how they
 compose:
 
@@ -120,7 +120,7 @@ compose:
   know it owns (shadow IT, forgotten cloud resources, misconfigured
   services) before an attacker finds them.
 
-Chapter 09 returns to the Cortex Cloud (formerly Prisma Cloud) product for
+[Chapter 09](09-cortex-cloud-security-professional.md) returns to the Cortex Cloud (formerly Prisma Cloud) product for
 cloud-native application protection platform (CNAPP) capability in depth;
 this chapter's purpose is to place every Cortex product correctly on the
 map so later, more specialized material has context.
@@ -149,7 +149,7 @@ map so later, more specialized material has context.
   parity matures on the version baseline in use.
 - **Cortex data volume and retention economics.** XSIAM and XDR pricing is
   driven substantially by ingested data volume and retention period. Right-size
-  log forwarding sources (Chapter 06) deliberately — forwarding every
+  log forwarding sources ([Chapter 06](06-panorama-installation-central-management-and-logging.md)) deliberately — forwarding every
   verbose debug log from every source rarely improves detection quality
   proportionally to its cost.
 
@@ -196,7 +196,7 @@ admin@pa-lab-fw01# commit
 
 Staggering install times across a fleet (rather than every firewall pulling
 content at the same instant) is a Panorama-level scheduling concern
-addressed operationally in Chapter 07.
+addressed operationally in [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md).
 
 ### Confirming version and content state
 
@@ -249,14 +249,14 @@ url-filtering-version: 20260715.20123
   ad-hoc installs for Applications and Threats content; threat content is
   released frequently, and manual processes drift.
 - Stagger content and software update schedules across redundant firewall
-  pairs and across a large fleet (Panorama-scheduled, Chapter 07) so a bad
+  pairs and across a large fleet (Panorama-scheduled, [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md)) so a bad
   content release does not apply to every enforcement point simultaneously.
 - Scope Strata Cloud Manager and Panorama administrator access with the
-  same RBAC discipline as firewall CLI/Web UI access (Chapter 01); a cloud
+  same RBAC discipline as firewall CLI/Web UI access ([Chapter 01](01-cybersecurity-apprentice-foundations.md)); a cloud
   management plane that manages the entire fleet is a correspondingly
   higher-value target.
 - When adopting Prisma Access, apply the same security policy rigor
-  (Chapter 05) to cloud-delivered enforcement points as to on-premises
+  ([Chapter 05](05-application-identity-threat-and-data-security-policy.md)) to cloud-delivered enforcement points as to on-premises
   ones — SASE changes where enforcement happens, not whether policy
   discipline still applies.
 
@@ -299,7 +299,7 @@ failure case that demonstrates the download-before-install dependency.
   outbound internet reachability from its management interface.
 - A valid evaluation or lab auth code from the Palo Alto Networks Customer
   Support Portal, or a pre-licensed lab instance.
-- CLI access established in Chapter 01's lab.
+- CLI access established in [Chapter 01](01-cybersecurity-apprentice-foundations.md)'s lab.
 
 **Steps**
 
@@ -382,7 +382,7 @@ failure case that demonstrates the download-before-install dependency.
 
 10. **Cleanup:** If this is a shared lab instance, remove the lab-added
     schedule to restore the organization's standard update policy, or leave
-    it in place if this instance will be reused in Chapter 03 and Chapter
+    it in place if this instance will be reused in [Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md) and Chapter
     07:
 
     ```text

@@ -3,7 +3,7 @@
 ## Learning Objectives
 
 - Explain why and when an offline (disconnected) firmware repository
-  model is required instead of Chapter 6's connected online catalog.
+  model is required instead of [Chapter 6](06-connected-online-repositories-and-update-workflows.md)'s connected online catalog.
 - Describe the role of Dell Repository Manager (DRM) in building custom
   and offline-exportable catalogs outside of a live OME appliance.
 - Design a secure transfer and hosting process for moving catalog content
@@ -18,7 +18,7 @@
 
 ### Why offline repositories exist
 
-Chapter 6's connected catalog model assumes the OME appliance can reach
+[Chapter 6](06-connected-online-repositories-and-update-workflows.md)'s connected catalog model assumes the OME appliance can reach
 `downloads.dell.com` directly or through a permitted proxy. Many
 enterprise environments — classified or regulated networks, industrial
 control system enclaves, disconnected edge sites, or any environment
@@ -39,7 +39,7 @@ DRM itself typically runs on a workstation or jump host that *does* have
 internet access to Dell's package sources, and its output — a catalog
 file plus the referenced DUP packages, organized in the directory
 structure OME expects — is what gets transferred into the isolated
-environment. DRM is conceptually the offline equivalent of Chapter 6's
+environment. DRM is conceptually the offline equivalent of [Chapter 6](06-connected-online-repositories-and-update-workflows.md)'s
 `downloads.dell.com` connected source: both ultimately produce the same
 catalog-plus-packages structure that OME's UpdateService consumes; they
 differ only in how that structure reaches the appliance.
@@ -49,9 +49,9 @@ differ only in how that structure reaches the appliance.
 A DRM-exported offline repository is a self-contained set of files: a
 catalog index (commonly XML-based) describing available packages, their
 target models/components, versions, and severity — structurally
-equivalent in purpose to the metadata Chapter 5 and 6 described for the
+equivalent in purpose to the metadata [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md) and 6 described for the
 connected catalog — alongside the actual DUP binaries the catalog index
-references. OME validates catalog and package integrity (Chapter 5's
+references. OME validates catalog and package integrity ([Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s
 signature verification) regardless of source, so a tampered or
 incompletely transferred offline repository is rejected the same way a
 corrupted connected-catalog download would be, rather than being trusted
@@ -65,7 +65,7 @@ for a "custom catalog" source — commonly a network file share (CIFS/SMB
 or NFS) or an internal HTTP/HTTPS server hosting the exported directory
 structure. OME references this location as a **custom repository** source
 in its catalog configuration, functionally parallel to the connected
-source from Chapter 6 but pointed at a location entirely inside the
+source from [Chapter 6](06-connected-online-repositories-and-update-workflows.md) but pointed at a location entirely inside the
 isolated network rather than at Dell's hosted endpoint.
 
 ## Design Considerations
@@ -78,7 +78,7 @@ isolated network rather than at Dell's hosted endpoint.
   change-control and media-handling policy governs the isolated
   environment. This is as much a compliance artifact as a technical step
   in many regulated environments.
-- **Refresh cadence is a manual process now.** Unlike Chapter 6's
+- **Refresh cadence is a manual process now.** Unlike [Chapter 6](06-connected-online-repositories-and-update-workflows.md)'s
   scheduled automatic refresh, an offline repository's currency is
   gated entirely by how often someone runs DRM, exports new content, and
   repeats the transfer process. Define an explicit cadence (monthly or
@@ -238,7 +238,7 @@ drop-in for every build.
 
 - **OME cannot reach the custom catalog source.** Confirm basic network
   reachability from the appliance to the hosting share or HTTP endpoint
-  first (the isolated-network equivalent of Chapter 6's direct
+  first (the isolated-network equivalent of [Chapter 6](06-connected-online-repositories-and-update-workflows.md)'s direct
   reachability check), including any authentication required by a CIFS
   share or HTTP basic-auth front end.
 - **Catalog registers but shows zero packages.** This commonly indicates
@@ -259,7 +259,7 @@ drop-in for every build.
   Considerations, above) will legitimately show fewer applicable updates
   than the full connected catalog would, which is expected, not a fault.
 - **Package retrieval fails during an update job even though the catalog
-  index loaded successfully.** As in Chapter 6, catalog metadata and
+  index loaded successfully.** As in [Chapter 6](06-connected-online-repositories-and-update-workflows.md), catalog metadata and
   package retrieval are separate steps; confirm the actual DUP package
   files, not just the catalog index, were fully transferred and are
   present at the expected relative path under the hosting location.
@@ -284,7 +284,7 @@ drop-in for every build.
   version, export date, source package versions) as part of your
   organization's software bill-of-materials or change-control record for
   the isolated environment, since this content did not arrive through an
-  auditable, always-current connected path the way Chapter 6's catalog
+  auditable, always-current connected path the way [Chapter 6](06-connected-online-repositories-and-update-workflows.md)'s catalog
   does.
 - Do not disable OME's package signature verification to work around an
   offline-repository integration issue; resolve the underlying transfer
@@ -313,7 +313,7 @@ drop-in for every build.
    package signatures?
 4. Why does an offline repository's currency require an explicit,
    organization-defined refresh cadence rather than relying on OME's
-   scheduled refresh behavior from Chapter 6?
+   scheduled refresh behavior from [Chapter 6](06-connected-online-repositories-and-update-workflows.md)?
 5. Why might a custom catalog register successfully in OME but report
    unexpectedly few applicable updates for your fleet?
 
@@ -432,14 +432,14 @@ custom catalog.
 
 ## Summary and Completion Checklist
 
-This chapter covered the offline, air-gapped alternative to Chapter 6's
+This chapter covered the offline, air-gapped alternative to [Chapter 6](06-connected-online-repositories-and-update-workflows.md)'s
 connected catalog model: how Dell Repository Manager separates
 internet-connected catalog *building* from disconnected OME catalog
 *consumption*, how transferred content must be integrity-verified before
 being trusted, and how a custom catalog source — hosted on an internal
 file share or HTTP endpoint — lets an isolated OME appliance evaluate
 firmware compliance with the same baseline and compliance mechanics from
-Chapter 5, entirely without internet access. The lab exercised the full
+[Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md), entirely without internet access. The lab exercised the full
 transfer-verify-host-register workflow using a reproducible synthetic
 export, including a deliberate integrity-failure negative test. With both
 catalog sourcing models covered, the volume turns next to extending the

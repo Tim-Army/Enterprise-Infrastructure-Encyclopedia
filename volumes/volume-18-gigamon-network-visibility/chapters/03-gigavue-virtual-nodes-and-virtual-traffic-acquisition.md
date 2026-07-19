@@ -51,7 +51,7 @@ Series nodes are deployed as VM images (for VMware, KVM/OpenStack) or
 cloud-native instances (AWS, Azure, GCP), and are managed by GigaVUE-FM
 alongside physical nodes as a single fabric — an operator authoring a Flow
 Map in GigaVUE-FM does not need to reason about whether a given tool port
-is physical or virtual; the fabric abstraction (Chapter 04) is deliberately
+is physical or virtual; the fabric abstraction ([Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md)) is deliberately
 uniform.
 
 ### Acquisition mechanisms by environment
@@ -61,7 +61,7 @@ uniform.
 | VMware vSphere / ESXi | G-vTAP agent (per-VM virtual tap) or hypervisor-level tapping feeding a V Series node | Captures inter-VM (east-west) traffic on the same host, invisible to any physical TAP |
 | KVM / OpenStack | G-vTAP agent equivalent, tunneling to a V Series node | Same east-west visibility goal as VMware, in an OpenStack-managed private cloud |
 | AWS | VPC Traffic Mirroring (native AWS feature Gigamon integrates with) or GigaVUE Universal Cloud Tap (UCT), an agentless/lightweight tap that pre-filters at the source | UCT reduces tunneled volume by filtering before traffic leaves the instance, lowering both network egress cost and V Series processing load |
-| Azure | Equivalent virtual tap/agent model, tunneling to V Series nodes deployed in the same virtual network | Supports orchestrated deployment via Terraform/Ansible (Chapter 08) |
+| Azure | Equivalent virtual tap/agent model, tunneling to V Series nodes deployed in the same virtual network | Supports orchestrated deployment via Terraform/Ansible ([Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md)) |
 | Kubernetes | Container-aware tapping integrated with the GigaVUE Cloud Suite for Kubernetes, capturing pod-to-pod traffic that never traverses a node's physical NIC | Necessary because two pods on the same worker node may communicate entirely within that node's network namespace |
 
 Across every environment, the pattern is consistent: a lightweight
@@ -91,7 +91,7 @@ egress cost and V Series processing load at scale.
 The practical outcome for an enterprise running hybrid infrastructure is a
 single logical visibility fabric spanning physical data center nodes and
 virtual/cloud nodes, all authored from GigaVUE-FM with the same Flow
-Mapping concepts introduced in Chapter 01 and detailed in Chapter 05. A
+Mapping concepts introduced in [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md) and detailed in [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md). A
 security tool consuming NDR telemetry, for example, can receive a
 correlated feed built from both a physical data center TAP and a
 Kubernetes cluster's pod-to-pod traffic, without the tool itself needing
@@ -113,7 +113,7 @@ to understand where each packet originated.
 - **Right-size V Series node count and placement to elasticity.** Cloud
   and container workloads scale horizontally on demand; a fixed number of
   V Series nodes sized for average load will bottleneck during a scale-out
-  event. Plan for auto-scaling V Series capacity (Chapter 08 covers
+  event. Plan for auto-scaling V Series capacity ([Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md) covers
   automation) rather than static sizing, especially for environments with
   significant traffic burstiness.
 - **Understand what east-west visibility does not replace.** Virtual and
@@ -141,7 +141,7 @@ to understand where each packet originated.
 3. Power on the VM and complete first-boot configuration — management IP
    addressing and the GigaVUE-FM registration address — either through a
    console-based setup prompt or a bootstrap configuration file, depending
-   on the deployment automation used (Chapter 08 covers orchestrated
+   on the deployment automation used ([Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md) covers orchestrated
    deployment via Terraform/Ansible).
 4. From GigaVUE-FM, confirm the V Series node registers and appears
    alongside physical nodes in the fabric inventory.
@@ -172,10 +172,10 @@ agent:
 ### Registering a V Series tunnel endpoint and a minimal map in GigaVUE-FM
 
 Once virtual taps are tunneling traffic to a V Series node's tunnel
-endpoint, the same Flow Mapping model from Chapter 02 applies: the tunnel
+endpoint, the same Flow Mapping model from [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md) applies: the tunnel
 endpoint is treated as a network-port-equivalent source, and a map defines
 what traffic (all of it, for a first-touch validation, or filtered per
-Chapter 05) is forwarded to a tool-port-equivalent destination — either a
+[Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md)) is forwarded to a tool-port-equivalent destination — either a
 tool reachable from the virtual/cloud environment directly, or a tunnel
 back toward the physical fabric for centralized delivery.
 
@@ -242,10 +242,10 @@ back toward the physical fabric for centralized delivery.
   against the intended tenant boundary rather than assuming initial
   configuration remains correct as the fabric grows.
 - Apply the same credential and management-plane hardening to V Series
-  nodes as to physical nodes (Chapter 02) — a virtual node is a full
+  nodes as to physical nodes ([Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md)) — a virtual node is a full
   fabric participant and an equally valuable target if compromised.
 - Track cloud-provider API and IAM permissions granted to Gigamon
-  orchestration components (Chapter 08) under the same change-controlled
+  orchestration components ([Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md)) under the same change-controlled
   process used for any other automation identity with write access to
   cloud infrastructure.
 

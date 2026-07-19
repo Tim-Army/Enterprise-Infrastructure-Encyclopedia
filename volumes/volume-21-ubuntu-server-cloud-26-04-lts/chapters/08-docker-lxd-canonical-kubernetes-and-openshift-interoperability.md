@@ -19,7 +19,7 @@ Ubuntu Server offers three distinct container/orchestration paths, each
 solving a different problem, plus a practical need — covered here as
 "interoperability" rather than a full OpenShift deployment guide — to
 build workloads on Ubuntu that behave correctly when they land on a
-Red Hat OpenShift cluster (documented in depth in Volume XIV).
+Red Hat OpenShift cluster (documented in depth in [Volume XIV](../../volume-14-red-hat-enterprise-linux-10/README.md)).
 
 ### Docker: application containers
 
@@ -66,7 +66,7 @@ Ubuntu, distributed as a snap.
 upstream-conformant Kubernetes distribution, positioned for production
 clusters that want a CNCF-conformant Kubernetes with Canonical's
 enterprise support and integration with the rest of the Ubuntu
-ecosystem (Juju, Landscape — Chapter 09). It installs as a single snap
+ecosystem (Juju, Landscape — [Chapter 09](09-cloud-init-maas-juju-ansible-landscape-operations-and-capstone.md)). It installs as a single snap
 per node, bundles a default CNI and DNS add-on, and clusters additional
 nodes with a token-based join, deliberately minimizing the number of
 separate components an administrator must assemble compared to a
@@ -74,7 +74,7 @@ from-scratch `kubeadm` build.
 
 ### OpenShift interoperability
 
-Most enterprise environments running Red Hat OpenShift (Volume XIV)
+Most enterprise environments running Red Hat OpenShift ([Volume XIV](../../volume-14-red-hat-enterprise-linux-10/README.md))
 still rely on Ubuntu somewhere in the pipeline — developer
 workstations, CI/CD runners, or hosts building the container images
 OpenShift will run. Two things matter for that hand-off:
@@ -287,7 +287,7 @@ oc logs deployment/demo
   grant, in the general case.
 - **`oc login` fails from an Ubuntu workstation but succeeds from a
   RHEL host.** This is essentially never distribution-specific;
-  confirm system time is correct (Chapter 07 — a skewed clock breaks
+  confirm system time is correct ([Chapter 07](07-dns-ntp-dhcp-web-database-and-common-server-services.md) — a skewed clock breaks
   TLS validation), and confirm the CA bundle the OpenShift API server's
   certificate chains to is trusted on the Ubuntu host
   (`update-ca-certificates` after adding an internal CA).
@@ -314,7 +314,7 @@ oc logs deployment/demo
   portable and more secure than assuming a fixed UID or root.
 - Rotate and scope `oc` and `kubectl` credentials (service account
   tokens, `kubeconfig` contexts) the same way SSH keys are scoped
-  (Chapter 04); do not share a single cluster-admin token across an
+  ([Chapter 04](04-identity-privilege-ssh-netplan-and-firewalling.md)); do not share a single cluster-admin token across an
   entire team's workstations.
 
 ## References and Knowledge Checks
@@ -325,7 +325,7 @@ oc logs deployment/demo
 - LXD documentation, `documentation.ubuntu.com/lxd`.
 - Canonical Kubernetes documentation, `documentation.ubuntu.com/canonical-kubernetes`.
 - OpenShift Security Context Constraints documentation, Red Hat
-  (cross-referenced with Volume XIV).
+  (cross-referenced with [Volume XIV](../../volume-14-red-hat-enterprise-linux-10/README.md)).
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — Ubuntu Server
   26.04 and Kubernetes baselines referenced throughout this chapter.
 

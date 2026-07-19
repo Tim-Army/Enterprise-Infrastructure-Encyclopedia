@@ -18,13 +18,13 @@
 ## Theory and Architecture
 
 Every chapter in this volume has built a piece of an automation control
-plane: state backends and modules (Chapter 02), configuration management
-(Chapter 03), integrations (Chapter 04), pipelines (Chapter 05), identity
-and secrets (Chapter 06), orchestration (Chapter 07), and supply-chain
-integrity (Chapter 08). This closing chapter treats that whole control
+plane: state backends and modules ([Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md)), configuration management
+([Chapter 03](03-configuration-management-and-desired-state-convergence.md)), integrations ([Chapter 04](04-api-event-and-integration-automation.md)), pipelines ([Chapter 05](05-automation-pipelines-testing-and-policy-gates.md)), identity
+and secrets ([Chapter 06](06-automation-identity-secrets-and-privileged-execution.md)), orchestration ([Chapter 07](07-workflow-orchestration-and-event-driven-operations.md)), and supply-chain
+integrity ([Chapter 08](08-automation-security-governance-and-supply-chains.md)). This closing chapter treats that whole control
 plane as what it actually is — a production system with its own
 reliability requirements, not an implementation detail sitting quietly
-underneath the infrastructure it manages. Chapter 03 named this gap
+underneath the infrastructure it manages. [Chapter 03](03-configuration-management-and-desired-state-convergence.md) named this gap
 directly: Ansible Automation Platform's job history and centralized
 logging are "the enterprise-scale mechanism" for auditing playbook runs,
 and this chapter is where that mechanism is built out in full, alongside
@@ -45,25 +45,25 @@ class of silent failure before it becomes a change-freeze or an incident.
 - **Logs.** Structured, queryable records of what a pipeline stage,
   playbook run, or orchestration workflow did — not just whether it
   succeeded, but which resources changed, which policy rules were
-  evaluated (Chapter 05), and which identity executed it (Chapter 06).
+  evaluated ([Chapter 05](05-automation-pipelines-testing-and-policy-gates.md)), and which identity executed it ([Chapter 06](06-automation-identity-secrets-and-privileged-execution.md)).
 - **Metrics.** Numeric time series describing the automation system's
   behavior over time: pipeline duration, success/failure rate, time between
   a merge and a completed apply, number of drifted resources detected per
   scheduled `terraform plan`.
-- **Traces.** For a multi-step workflow (Chapter 07) spanning several
+- **Traces.** For a multi-step workflow ([Chapter 07](07-workflow-orchestration-and-event-driven-operations.md)) spanning several
   systems, a trace ties the diagnose/approve/remediate steps of a single
   logical operation together, so a failure in one step is visible in the
   context of the whole operation rather than as an isolated, hard-to-
   correlate log line.
 
-Volume XI (Observability and Enterprise Operations) covers these pillars
+[Volume XI](../../volume-11-observability-enterprise-operations/README.md) (Observability and Enterprise Operations) covers these pillars
 in general depth; this chapter applies them specifically to the automation
 systems this volume has built.
 
 ### Reliability indicators for automation
 
 Treat the automation control plane's own reliability with the same SLO
-discipline Volume I, Chapter 06 introduced for infrastructure services:
+discipline [Volume I, Chapter 06](../../volume-01-enterprise-engineering-foundations/chapters/06-understanding-enterprise-infrastructure.md) introduced for infrastructure services:
 
 | Indicator | What it measures | Why it matters |
 | --- | --- | --- |
@@ -75,7 +75,7 @@ discipline Volume I, Chapter 06 introduced for infrastructure services:
 ### Automation lifecycle operations
 
 Shared modules, roles, and collections have a lifecycle of their own,
-mirroring the general infrastructure lifecycle from Volume I, Chapter 08:
+mirroring the general infrastructure lifecycle from [Volume I, Chapter 08](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md):
 introduced, actively maintained, deprecated, and retired. A module used by
 forty root configurations across an organization cannot simply be deleted
 or breaking-changed the way a single team's private script can — its
@@ -111,7 +111,7 @@ Every stateful component this volume introduced needs its own backup and
 restore plan, because losing it does not just lose data — it removes the
 organization's ability to manage its own infrastructure:
 
-- **Terraform state.** Backend versioning (Chapter 02) is the primary
+- **Terraform state.** Backend versioning ([Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md)) is the primary
   control; test that a prior state version can actually be restored, not
   just that versioning is enabled.
 - **Vault.** Regular, encrypted snapshots of Vault's storage backend;

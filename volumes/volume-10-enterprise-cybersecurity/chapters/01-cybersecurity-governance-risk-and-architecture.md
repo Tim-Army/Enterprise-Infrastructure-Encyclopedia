@@ -121,7 +121,7 @@ design patterns. Two reference points recur across this volume:
 
 - **Zero Trust Architecture (NIST SP 800-207)** — assumes no implicit trust
   based on network location; every request is authenticated, authorized,
-  and encrypted based on identity and context. Chapter 2 covers its
+  and encrypted based on identity and context. [Chapter 2](02-enterprise-identity-zero-trust-and-privileged-access.md) covers its
   identity and access implementation in depth.
 - **Defense in depth** — layered, independent controls (network, host,
   application, data, identity) so that the failure of any single control
@@ -140,7 +140,7 @@ risk rather than operational risk. Reviews should reference the MITRE
 ATT&CK Enterprise matrix as a coverage checklist during design — not to
 plan attacks, but to confirm that the proposed architecture produces
 telemetry and control points capable of detecting the tactics and
-techniques most relevant to the system's threat profile (see Chapter 6).
+techniques most relevant to the system's threat profile (see [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)).
 
 ### Regulatory and compliance landscape
 
@@ -190,7 +190,7 @@ rather than being tracked once per audit.
   fix cheaply. Place a lightweight design review at the proposal stage
   (data flow diagram plus STRIDE pass) and a full review before the
   production change window, mirroring a shift-left pattern consistent with
-  Volume IX's automation-security guidance.
+  [Volume IX](../../volume-09-infrastructure-automation/README.md)'s automation-security guidance.
 - **Metrics must drive a decision.** Every KRI or KPI on a governance
   dashboard should have an owner, a threshold, and a defined action when
   the threshold is breached. Metrics without an escalation path become
@@ -354,7 +354,7 @@ review evidence is captured where engineers already work:
   documented controls exist and were sampled successfully; it does not
   demonstrate resilience against a motivated adversary. Use compliance
   frameworks as a floor, and use CSF 2.0 outcomes, tabletop exercises, and
-  the detection engineering practices in Chapter 6 to validate the ceiling.
+  the detection engineering practices in [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md) to validate the ceiling.
 - Keep the control crosswalk under version control alongside
   infrastructure-as-code repositories so control mapping changes are
   peer-reviewed like any other production change.

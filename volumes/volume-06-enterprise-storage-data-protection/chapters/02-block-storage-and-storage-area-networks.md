@@ -125,12 +125,12 @@ an optional hardening step.
   domains you must survive (a switch, an HBA, a port), not simply "as many as
   possible."
 - **Zoning strategy** should default to 1:1 zones even though it produces
-  more zones to manage; zone-set automation (Chapter 9) removes the
+  more zones to manage; zone-set automation ([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md)) removes the
   operational burden this otherwise creates at scale.
 - **Queue depth planning** spans host HBA queue depth, multipath queue depth
-  (Chapter 4), and array target port queue limits; an array that silently
+  ([Chapter 4](04-host-storage-integration-and-multipathing.md)), and array target port queue limits; an array that silently
   queues or rejects I/O beyond its port queue depth produces the exact
-  latency-cliff behavior shown in Chapter 1's queue-depth lab, but at the
+  latency-cliff behavior shown in [Chapter 1](01-enterprise-storage-architecture-and-service-design.md)'s queue-depth lab, but at the
   fabric layer instead of the device layer.
 - **iSCSI network isolation.** Dedicate VLANs (and ideally separate physical
   NICs) to iSCSI traffic, enable jumbo frames consistently end to end
@@ -224,7 +224,7 @@ lsblk
 | iSCSI login fails with auth error | CHAP username/password mismatch, wrong direction (uni- vs. mutual) | Compare `iscsid.conf` values against the target ACL; check target and initiator logs (`journalctl -u iscsid`) |
 | Intermittent path loss / flapping | Marginal optic, oversubscribed ISL, MTU mismatch on iSCSI | Check switch port error counters (CRC errors, discards); verify consistent jumbo-frame MTU end to end |
 | High latency, normal IOPS | Array back-end saturation, cache destage bottleneck, ISL oversubscription | Correlate host-side latency against array-side controller/back-end utilization; rule out fabric layer before escalating to array vendor |
-| Rejected or queued I/O under load | Target port queue depth exceeded | Compare aggregate host queue depth per target port against the array's documented port queue limit; tune multipath queue depth (Chapter 4) |
+| Rejected or queued I/O under load | Target port queue depth exceeded | Compare aggregate host queue depth per target port against the array's documented port queue limit; tune multipath queue depth ([Chapter 4](04-host-storage-integration-and-multipathing.md)) |
 
 For iSCSI specifically, `iscsiadm -m session -P 3` reports session state,
 negotiated parameters, and per-session statistics — always the first place to

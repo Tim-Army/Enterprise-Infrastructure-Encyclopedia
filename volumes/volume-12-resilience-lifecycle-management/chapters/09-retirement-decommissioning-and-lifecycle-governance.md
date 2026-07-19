@@ -4,26 +4,26 @@
 
 - Design a decommissioning process from candidate identification through record closure, with an explicit dependency-verification gate.
 - Apply NIST SP 800-88 media sanitization categories (Clear, Purge, Destroy) to select an appropriate method per data sensitivity and media type.
-- Build an automated dependency check that blocks decommissioning of a system with active dependents, extending the Chapter 1 dependency graph.
+- Build an automated dependency check that blocks decommissioning of a system with active dependents, extending the [Chapter 1](01-resilience-engineering-and-critical-service-design.md) dependency graph.
 - Explain the risk of both premature and delayed decommissioning, and how each connects to earlier chapters in this volume.
 - Design a decommission governance model with clear approval authority, communication plan, and rollback window.
-- Close the loop on the volume's full lifecycle model, from criticality tiering (Chapter 1) through retirement (this chapter).
+- Close the loop on the volume's full lifecycle model, from criticality tiering ([Chapter 1](01-resilience-engineering-and-critical-service-design.md)) through retirement (this chapter).
 
 ## Theory and Architecture
 
 ### Decommissioning as the Final, Governed Lifecycle Stage
 
-Every system this volume has discussed — tiered for criticality in Chapter 1, given recovery objectives in Chapter 2, made highly available in Chapter 3, backed up and DR-protected in Chapter 4, tested in Chapter 5, patched in Chapter 6, and eventually modernized or replaced in Chapter 7 — reaches an end state where it no longer needs to run at all. Decommissioning is the deliberate, governed process of retiring a system: verifying it is safe to remove, removing it, sanitizing or destroying its data appropriately, and closing out every record that referenced it. Treated as a first-class lifecycle stage with its own process (rather than an afterthought performed informally whenever someone notices an old system is still running), decommissioning closes the loop this volume opened in Chapter 1: an asset that is no longer tracked as needed but is also never actually removed is not a neutral state — it continues to consume the redundancy, patching, and monitoring investment described throughout this volume while delivering no business value, and it remains an active attack surface with no active owner watching it.
+Every system this volume has discussed — tiered for criticality in [Chapter 1](01-resilience-engineering-and-critical-service-design.md), given recovery objectives in [Chapter 2](02-business-impact-analysis-and-continuity-planning.md), made highly available in [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md), backed up and DR-protected in [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md), tested in [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md), patched in [Chapter 6](06-maintenance-patching-and-upgrade-engineering.md), and eventually modernized or replaced in [Chapter 7](07-technical-debt-modernization-and-platform-renewal.md) — reaches an end state where it no longer needs to run at all. Decommissioning is the deliberate, governed process of retiring a system: verifying it is safe to remove, removing it, sanitizing or destroying its data appropriately, and closing out every record that referenced it. Treated as a first-class lifecycle stage with its own process (rather than an afterthought performed informally whenever someone notices an old system is still running), decommissioning closes the loop this volume opened in [Chapter 1](01-resilience-engineering-and-critical-service-design.md): an asset that is no longer tracked as needed but is also never actually removed is not a neutral state — it continues to consume the redundancy, patching, and monitoring investment described throughout this volume while delivering no business value, and it remains an active attack surface with no active owner watching it.
 
 ### The Decommissioning Lifecycle
 
 A disciplined decommissioning process runs through six stages:
 
-1. **Identify the candidate** — a system reaches end of life through natural attrition (its function was replaced, per Chapter 7's modernization outcomes), a business decision to discontinue a capability, or a forced trigger (vendor EOL/EOS with no remediation path, from Chapter 6 and Chapter 7).
-2. **Verify readiness** — confirm, using the dependency graph established in Chapter 1 and maintained since, that no active dependent relies on the system. This is the single most important gate in the entire process and the one most often skipped under time pressure.
+1. **Identify the candidate** — a system reaches end of life through natural attrition (its function was replaced, per [Chapter 7](07-technical-debt-modernization-and-platform-renewal.md)'s modernization outcomes), a business decision to discontinue a capability, or a forced trigger (vendor EOL/EOS with no remediation path, from [Chapter 6](06-maintenance-patching-and-upgrade-engineering.md) and [Chapter 7](07-technical-debt-modernization-and-platform-renewal.md)).
+2. **Verify readiness** — confirm, using the dependency graph established in [Chapter 1](01-resilience-engineering-and-critical-service-design.md) and maintained since, that no active dependent relies on the system. This is the single most important gate in the entire process and the one most often skipped under time pressure.
 3. **Notify stakeholders** — communicate the planned decommission date, scope, and rollback window to owners of any historically adjacent systems, data consumers, and compliance stakeholders, providing a final opportunity to surface an undocumented dependency the graph missed.
-4. **Preserve required data** — export or archive any data subject to a retention obligation (which may be materially longer than the system's own operational life, as discussed in Chapter 4's retention policy design) before the system or its storage is sanitized.
-5. **Sanitize or destroy media** — apply the NIST SP 800-88 Clear, Purge, or Destroy method appropriate to the data's sensitivity and the media's disposition (reuse, refurbish, or final disposal, per Chapter 8's circular lifecycle).
+4. **Preserve required data** — export or archive any data subject to a retention obligation (which may be materially longer than the system's own operational life, as discussed in [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md)'s retention policy design) before the system or its storage is sanitized.
+5. **Sanitize or destroy media** — apply the NIST SP 800-88 Clear, Purge, or Destroy method appropriate to the data's sensitivity and the media's disposition (reuse, refurbish, or final disposal, per [Chapter 8](08-sustainable-infrastructure-and-resource-lifecycle.md)'s circular lifecycle).
 6. **Close records** — remove or archive the system's entries in the CMDB, criticality register, backup policy, patch policy, monitoring, DNS, certificate inventory, and any other system of record that referenced it, and formally document the decommission's completion.
 
 ### Media Sanitization: Clear, Purge, and Destroy
@@ -33,7 +33,7 @@ NIST SP 800-88 defines three sanitization categories, each providing a different
 | Category | Description | Typical Use Case |
 | --- | --- | --- |
 | Clear | Logical techniques (overwriting) applied to all addressable storage locations, protecting against simple, non-invasive data recovery | Media being reused internally within the same security domain |
-| Purge | Physical or logical techniques (cryptographic erase, degaussing for magnetic media) rendering data infeasible to recover even with advanced laboratory techniques | Media leaving organizational control but not being physically destroyed (for example, returned to a lessor, or refurbished for external reuse per Chapter 8) |
+| Purge | Physical or logical techniques (cryptographic erase, degaussing for magnetic media) rendering data infeasible to recover even with advanced laboratory techniques | Media leaving organizational control but not being physically destroyed (for example, returned to a lessor, or refurbished for external reuse per [Chapter 8](08-sustainable-infrastructure-and-resource-lifecycle.md)) |
 | Destroy | Physical destruction (shredding, disintegration, incineration) rendering the media itself unusable and data unrecoverable by any means | Media containing the most sensitive data, or media with no viable reuse/resale path |
 
 Selecting Clear when Purge or Destroy is warranted is a real and common failure — reused media that only underwent a Clear-level overwrite can, in some cases and with sufficient effort, still yield recoverable data, and this risk should be weighed explicitly against the sensitivity of what the media held, not assumed acceptable because "we ran a wipe tool."
@@ -43,7 +43,7 @@ Selecting Clear when Purge or Destroy is warranted is a real and common failure 
 Both directions carry real risk, and a mature governance process is calibrated against both, not only the more visible one:
 
 - **Premature decommissioning** — a system is retired before every dependent is accounted for, causing an outage in a system that appeared unrelated. This is the direct failure mode the dependency-verification gate exists to prevent, and it is the scenario this chapter's lab is built around.
-- **Delayed decommissioning** — a system that should have been retired continues running indefinitely, accumulating the same costs discussed in Chapter 7 (unpatchable version debt, if it has passed EOL) and Chapter 8 (wasted energy and redundancy investment for a system delivering no value), while also representing an unmonitored or under-monitored attack surface as institutional attention moves elsewhere. A system in this state is sometimes informally called a "zombie system" — nominally retired in intent, or long past the point it should have been, but never actually removed.
+- **Delayed decommissioning** — a system that should have been retired continues running indefinitely, accumulating the same costs discussed in [Chapter 7](07-technical-debt-modernization-and-platform-renewal.md) (unpatchable version debt, if it has passed EOL) and [Chapter 8](08-sustainable-infrastructure-and-resource-lifecycle.md) (wasted energy and redundancy investment for a system delivering no value), while also representing an unmonitored or under-monitored attack surface as institutional attention moves elsewhere. A system in this state is sometimes informally called a "zombie system" — nominally retired in intent, or long past the point it should have been, but never actually removed.
 
 ## Design Considerations
 
@@ -59,25 +59,25 @@ Readiness verification should be systematic and reusable across every decommissi
 
 ### Reversibility Windows
 
-Sanitization (particularly Destroy) is irreversible by design, which means the decision to sanitize should follow a deliberate, bounded period during which the system is disabled but recoverable — traffic and access removed, but data and configuration intact and restorable from the last verified backup (Chapter 4) if an overlooked dependency surfaces. Collapsing this window to zero (sanitizing immediately upon the decision to decommission) removes the last safety margin against an incomplete dependency graph; extending it indefinitely reintroduces the delayed-decommissioning risk above. The window's length should be tied to criticality tier, mirroring every other tier-scaled control in this volume — a Tier 0 system's dependency graph carries more consequence if wrong and warrants a longer reversibility window than a Tier 3 system's.
+Sanitization (particularly Destroy) is irreversible by design, which means the decision to sanitize should follow a deliberate, bounded period during which the system is disabled but recoverable — traffic and access removed, but data and configuration intact and restorable from the last verified backup ([Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md)) if an overlooked dependency surfaces. Collapsing this window to zero (sanitizing immediately upon the decision to decommission) removes the last safety margin against an incomplete dependency graph; extending it indefinitely reintroduces the delayed-decommissioning risk above. The window's length should be tied to criticality tier, mirroring every other tier-scaled control in this volume — a Tier 0 system's dependency graph carries more consequence if wrong and warrants a longer reversibility window than a Tier 3 system's.
 
 ### Sequencing Interdependent Decommissions
 
-When multiple systems are being retired together (common at the end of a modernization program from Chapter 7), sequencing matters: retire consumers before their providers, and re-verify the dependency graph after each individual decommission rather than only once at the start, because removing one system can occasionally reveal that another "already-cleared" system had an indirect dependency through the one just removed that a static, one-time graph snapshot did not surface.
+When multiple systems are being retired together (common at the end of a modernization program from [Chapter 7](07-technical-debt-modernization-and-platform-renewal.md)), sequencing matters: retire consumers before their providers, and re-verify the dependency graph after each individual decommission rather than only once at the start, because removing one system can occasionally reveal that another "already-cleared" system had an indirect dependency through the one just removed that a static, one-time graph snapshot did not surface.
 
 ### Data Retention vs. Legal Hold Conflicts
 
-A system's normal retention policy (Chapter 4) can be overridden by an active legal hold, which requires preserving specific data beyond its normal retention period regardless of the system's own operational status. Decommissioning workflows must check for active legal holds before sanitization proceeds — sanitizing data under an active legal hold, even inadvertently as a side effect of an otherwise routine decommission, can carry serious legal consequences independent of the decommission's technical correctness.
+A system's normal retention policy ([Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md)) can be overridden by an active legal hold, which requires preserving specific data beyond its normal retention period regardless of the system's own operational status. Decommissioning workflows must check for active legal holds before sanitization proceeds — sanitizing data under an active legal hold, even inadvertently as a side effect of an otherwise routine decommission, can carry serious legal consequences independent of the decommission's technical correctness.
 
 ### Governance and Approval Authority
 
-Decommission approval authority should scale with criticality tier and be documented, not informal: a Tier 3 internal tool might reasonably be decommissioned with a single technical lead's sign-off, while a Tier 0 or Tier 1 system should require the same class of cross-functional approval (business process owner, application owner, and often compliance) used for the original criticality tiering decision in Chapter 1 — retiring a system is, after all, the inverse of the decision that originally justified building and protecting it, and deserves comparable rigor.
+Decommission approval authority should scale with criticality tier and be documented, not informal: a Tier 3 internal tool might reasonably be decommissioned with a single technical lead's sign-off, while a Tier 0 or Tier 1 system should require the same class of cross-functional approval (business process owner, application owner, and often compliance) used for the original criticality tiering decision in [Chapter 1](01-resilience-engineering-and-critical-service-design.md) — retiring a system is, after all, the inverse of the decision that originally justified building and protecting it, and deserves comparable rigor.
 
 ## Implementation and Automation
 
 ### Decommission Readiness as an Automated Dependency Check
 
-This directly extends the SPOF-detection approach from Chapter 1's dependency graph, inverted to answer a different question: not "what fails if this is removed," but "does anything still depend on this."
+This directly extends the SPOF-detection approach from [Chapter 1](01-resilience-engineering-and-critical-service-design.md)'s dependency graph, inverted to answer a different question: not "what fails if this is removed," but "does anything still depend on this."
 
 ```python
 import networkx as nx
@@ -167,7 +167,7 @@ echo "{\"asset_id\": \"${ASSET_ID}\", \"method\": \"${METHOD}\", \"operator\": \
 echo "PASS: sanitization recorded for ${ASSET_ID} (method: ${METHOD})"
 ```
 
-Appending to an immutable, append-only log — ideally stored with the same write-once protection used for the "1 immutable" backup copy in Chapter 4 — gives an auditable chain of custody for every sanitization event, which is frequently required evidence for a compliance audit or, for regulated data, a formal certificate of destruction.
+Appending to an immutable, append-only log — ideally stored with the same write-once protection used for the "1 immutable" backup copy in [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md) — gives an auditable chain of custody for every sanitization event, which is frequently required evidence for a compliance audit or, for regulated data, a formal certificate of destruction.
 
 ### Automated Record Closure Check
 
@@ -192,19 +192,19 @@ def record_closure_complete(runbook: dict) -> list[str]:
 | --- | --- |
 | Unexpected outage in an unrelated system shortly after a decommission | Dependency graph was stale or incomplete; an undeclared dependency existed outside the tracked graph |
 | Decommissioned system's DNS name or certificate still resolves and is later reused, causing confusion or a security exposure | Record closure was declared complete without verifying every individual system of record (DNS, certificates, monitoring) |
-| Data later needed for legal or regulatory purposes is unavailable | Legal hold was not checked before sanitization, or retention policy from Chapter 4 was not consulted before disposal |
+| Data later needed for legal or regulatory purposes is unavailable | Legal hold was not checked before sanitization, or retention policy from [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md) was not consulted before disposal |
 | "Decommissioned" system is still running in production | Decommission was approved and communicated but the actual technical shutdown step was never executed or tracked to completion |
 | Refurbished hardware later found to contain recoverable prior data | Clear-level sanitization was used where Purge or Destroy was warranted given the data's sensitivity |
 
 ### Troubleshooting an Emergency Rollback
 
-If a dependency is discovered after decommissioning has begun but before sanitization is irreversible (within the defined rollback window), treat restoration with the same urgency and rigor as a DR failover from Chapter 4: restore from the last verified backup, re-establish any required network or DNS configuration, and — critically — treat the incident as a process failure requiring root-cause analysis, specifically asking why the dependency graph did not catch the dependency in the first place, and correcting the graph before any future decommission relies on it again.
+If a dependency is discovered after decommissioning has begun but before sanitization is irreversible (within the defined rollback window), treat restoration with the same urgency and rigor as a DR failover from [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md): restore from the last verified backup, re-establish any required network or DNS configuration, and — critically — treat the incident as a process failure requiring root-cause analysis, specifically asking why the dependency graph did not catch the dependency in the first place, and correcting the graph before any future decommission relies on it again.
 
 ## Security and Best Practices
 
 - Revoke credentials, API keys, service accounts, and certificates associated with a decommissioned system as an explicit, tracked step, not an assumed side effect of the system being powered off — a credential belonging to a decommissioned system that remains valid is a standing, unmonitored access path with no legitimate owner watching for its misuse.
 - Select the sanitization method (Clear, Purge, Destroy) based on data sensitivity classification, not on convenience or the fastest available tool; when in doubt, select the more rigorous method, since the cost of over-sanitizing is inconvenience while the cost of under-sanitizing is a potential data breach.
-- Obtain and retain a certificate of destruction or an equivalent verifiable record for any Destroy-category disposition, particularly when a third-party vendor performs the physical destruction, mirroring the chain-of-custody diligence discussed for recycling and refurbishment partners in Chapter 8.
+- Obtain and retain a certificate of destruction or an equivalent verifiable record for any Destroy-category disposition, particularly when a third-party vendor performs the physical destruction, mirroring the chain-of-custody diligence discussed for recycling and refurbishment partners in [Chapter 8](08-sustainable-infrastructure-and-resource-lifecycle.md).
 - Do not remove a system from active monitoring before its technical shutdown is fully verified complete; removing monitoring prematurely can mask an incomplete decommission (traffic quietly still flowing to a system believed retired) rather than confirming it.
 - Maintain an accessible historical record of what was decommissioned, when, and why, even after the operational system itself is gone — this record is frequently the only artifact available to answer a future audit, compliance, or incident-investigation question about a system that no longer exists to be inspected directly.
 
@@ -215,7 +215,7 @@ If a dependency is discovered after decommissioning has begun but before sanitiz
 - [Chapter 1](01-resilience-engineering-and-critical-service-design.md) for the dependency graph and criticality register this chapter's readiness gate directly extends.
 - [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md) for the retention policy and immutable-backup practices relevant to data preservation before sanitization.
 - NIST SP 800-88 Rev. 1, *Guidelines for Media Sanitization*, for the Clear, Purge, and Destroy categories detailed in this chapter.
-- Volume I, Chapter 8, *Infrastructure Lifecycle Management*, for the CMDB and decommissioning-adjacent lifecycle stages this chapter completes in depth.
+- [Volume I, Chapter 8](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md), *Infrastructure Lifecycle Management*, for the CMDB and decommissioning-adjacent lifecycle stages this chapter completes in depth.
 
 ### Knowledge Checks
 
@@ -229,7 +229,7 @@ If a dependency is discovered after decommissioning has begun but before sanitiz
 
 ### Lab: Dependency-Gated Decommission With a Blocked Negative Case
 
-**Objective:** Extend the Chapter 1 dependency graph tooling into a decommission-readiness check that correctly blocks decommissioning a system with an active dependent, and correctly allows it once the dependent is retired.
+**Objective:** Extend the [Chapter 1](01-resilience-engineering-and-critical-service-design.md) dependency graph tooling into a decommission-readiness check that correctly blocks decommissioning a system with an active dependent, and correctly allows it once the dependent is retired.
 
 **Prerequisites:**
 
@@ -311,7 +311,7 @@ No shared or production systems were modified; the dependency graph was a local 
 
 ## Summary and Completion Checklist
 
-Decommissioning is the governed, final lifecycle stage for every system this volume has protected, tested, and maintained — and it deserves the same rigor as every stage before it, not the informal treatment it often receives in practice. A dependency-verified readiness gate, built directly on the Chapter 1 dependency graph, prevents the premature-decommission outage that is this chapter's central risk; a bounded rollback window preserves recoverability without indefinitely delaying retirement; and NIST SP 800-88-aligned sanitization, matched to data sensitivity, closes the loop with Chapter 8's circular hardware lifecycle. Taken together, Chapters 1 through 9 form a complete lifecycle: criticality tiering and dependency mapping (Chapter 1), business-derived recovery objectives (Chapter 2), the availability architecture to meet them (Chapter 3), the backup and DR engineering to recover from what availability alone cannot absorb (Chapter 4), the testing discipline that verifies all of it actually works (Chapter 5), the maintenance and patching practice that keeps it current (Chapter 6), the modernization discipline that manages what current means over time (Chapter 7), the sustainability practice that governs resource consumption across that lifetime (Chapter 8), and, finally, the governed retirement that closes a system's lifecycle as deliberately as its creation began it (this chapter).
+Decommissioning is the governed, final lifecycle stage for every system this volume has protected, tested, and maintained — and it deserves the same rigor as every stage before it, not the informal treatment it often receives in practice. A dependency-verified readiness gate, built directly on the [Chapter 1](01-resilience-engineering-and-critical-service-design.md) dependency graph, prevents the premature-decommission outage that is this chapter's central risk; a bounded rollback window preserves recoverability without indefinitely delaying retirement; and NIST SP 800-88-aligned sanitization, matched to data sensitivity, closes the loop with [Chapter 8](08-sustainable-infrastructure-and-resource-lifecycle.md)'s circular hardware lifecycle. Taken together, Chapters 1 through 9 form a complete lifecycle: criticality tiering and dependency mapping ([Chapter 1](01-resilience-engineering-and-critical-service-design.md)), business-derived recovery objectives ([Chapter 2](02-business-impact-analysis-and-continuity-planning.md)), the availability architecture to meet them ([Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md)), the backup and DR engineering to recover from what availability alone cannot absorb ([Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md)), the testing discipline that verifies all of it actually works ([Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md)), the maintenance and patching practice that keeps it current ([Chapter 6](06-maintenance-patching-and-upgrade-engineering.md)), the modernization discipline that manages what current means over time ([Chapter 7](07-technical-debt-modernization-and-platform-renewal.md)), the sustainability practice that governs resource consumption across that lifetime ([Chapter 8](08-sustainable-infrastructure-and-resource-lifecycle.md)), and, finally, the governed retirement that closes a system's lifecycle as deliberately as its creation began it (this chapter).
 
 **Completion checklist:**
 

@@ -8,7 +8,7 @@
   divide-and-conquer, follow-the-path) based on the symptom presented.
 - Explain how the network change lifecycle (request, risk classification,
   approval, maintenance window, rollback) applies the change management
-  discipline introduced in Volume I to network-specific changes.
+  discipline introduced in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md) to network-specific changes.
 - Build and use runbooks for recurring failure classes.
 - Conduct root cause analysis and a blameless post-incident review.
 - Treat documentation — diagrams, IPAM records, configuration backups — as
@@ -64,7 +64,7 @@ the correct choice depends on the symptom:
 | Divide-and-conquer | The middle of the suspected path (e.g., Layer 3/4) | Efficient default when there is no strong signal either direction — narrows the search fastest |
 | Follow-the-path | Trace the actual traffic path device by device, hop by hop | Multi-hop, multi-domain symptom where the specific failing segment is unknown |
 
-Chapter 1 established layered reasoning as the foundation of network
+[Chapter 1](01-network-models-and-protocol-architecture.md) established layered reasoning as the foundation of network
 troubleshooting; these four approaches are simply different strategies for
 walking that same layer stack, chosen based on which strategy reaches the
 fault in the fewest steps for the symptom at hand. An anti-pattern worth
@@ -77,7 +77,7 @@ methodology.
 
 ### The Network Change Lifecycle
 
-Volume I, Chapter 8 established change management's standard, normal, and
+[Volume I, Chapter 8](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md) established change management's standard, normal, and
 emergency risk categories and the Change Advisory Board (CAB) approval
 process. Applied specifically to network changes, the lifecycle looks like:
 
@@ -91,7 +91,7 @@ Two steps are specific to network operations and deserve emphasis:
 
 - **Pre-change validation** captures the current state (interface status,
   routing table, FHRP role, neighbor adjacencies) using the observability
-  tooling from Chapter 8 *before* the change, so post-change validation has
+  tooling from [Chapter 8](08-network-validation-and-observability.md) *before* the change, so post-change validation has
   something concrete to compare against rather than a general impression
   of "it seemed fine before."
 - **Rollback plan** is not "we will figure it out if something breaks" —
@@ -105,7 +105,7 @@ Two steps are specific to network operations and deserve emphasis:
 A **runbook** is a pre-written, tested procedure for a specific, recurring
 failure class — for example, "primary WAN circuit down: failover
 verification and carrier escalation" or "DHCP scope exhaustion: expansion
-procedure" (the failure reproduced in Chapter 5's hands-on lab). Runbooks
+procedure" (the failure reproduced in [Chapter 5](05-core-network-services.md)'s hands-on lab). Runbooks
 exist because an incident is the worst time to design a procedure from
 first principles; a well-maintained runbook turns a novel-feeling 2 a.m.
 page into a known, mechanical sequence, and lets less senior operations
@@ -166,7 +166,7 @@ unclear escalation path) rather than an individual failing to punish.
 
 ### Documentation as an Operational Control
 
-Network diagrams, the IPAM system of record (Chapter 2), configuration
+Network diagrams, the IPAM system of record ([Chapter 2](02-ip-addressing-and-subnetting.md)), configuration
 backups, and runbooks are frequently treated as reference material —
 useful, but not urgent to keep current. During an active incident, that
 framing inverts completely: stale documentation actively misleads
@@ -325,14 +325,14 @@ application shortly after a maintenance window.*
 | Step | Action | Finding |
 | --- | --- | --- |
 | 1. Define the problem | Scope the report: which users, which application, since when | Only users on one access switch, since the 02:00 maintenance window |
-| 2. Gather information | Pull the change record for that window; check Chapter 8 monitoring for correlated events | The change record shows a VLAN trunk was re-terminated on the affected switch's uplink |
-| 3. Establish a theory | Given the change and layered reasoning (Chapter 1/3), suspect a trunk misconfiguration (missing allowed VLAN) rather than an application fault | — |
+| 2. Gather information | Pull the change record for that window; check [Chapter 8](08-network-validation-and-observability.md) monitoring for correlated events | The change record shows a VLAN trunk was re-terminated on the affected switch's uplink |
+| 3. Establish a theory | Given the change and layered reasoning ([Chapter 1](01-network-models-and-protocol-architecture.md)/3), suspect a trunk misconfiguration (missing allowed VLAN) rather than an application fault | — |
 | 4. Test the theory | Bottom-up approach: confirm Layer 2 first | `show interface trunk` on the uplink shows the application's VLAN is not in the allowed list |
 | 5. Implement the fix | Add the missing VLAN to the trunk's allowed list, per the rollback-ready change process | — |
 | 6. Verify | Confirm affected users reach the application; compare against the pre-change baseline snapshot | Application reachable; route/ARP state matches pre-change snapshot |
-| 7. Document | Update the change record with root cause; note in the post-incident review that trunk allowed-VLAN lists are not currently covered by post-change validation | Action item created for Chapter 8 monitoring/validation coverage |
+| 7. Document | Update the change record with root cause; note in the post-incident review that trunk allowed-VLAN lists are not currently covered by post-change validation | Action item created for [Chapter 8](08-network-validation-and-observability.md) monitoring/validation coverage |
 
-The case study deliberately mirrors a Layer 2 fault (Chapter 3) surfacing
+The case study deliberately mirrors a Layer 2 fault ([Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md)) surfacing
 as an application symptom, and resolves it using bottom-up troubleshooting
 justified by the "affects everyone on one switch" signal from the approach
 comparison table — exactly the reasoning pattern this chapter's theory
@@ -340,12 +340,12 @@ section describes, applied rather than only explained.
 
 | General Symptom Pattern | Likely Domain | Chapter to Apply |
 | --- | --- | --- |
-| Works by IP, fails by name | DNS | Chapter 5 |
-| Works on one VLAN/switch, fails on another after a change | Layer 2 (trunk/VLAN) | Chapter 3 |
-| Reaches local subnet, fails beyond it | Routing | Chapter 4 |
-| Fails only for wireless clients, wired clients unaffected | WLAN association or wireless-VLAN-specific service | Chapter 6 |
-| Fails only after a gateway/router failover | FHRP misconfiguration | Chapter 7 |
-| No one noticed until a user complained | Missing or gapped monitoring/alerting | Chapter 8 |
+| Works by IP, fails by name | DNS | [Chapter 5](05-core-network-services.md) |
+| Works on one VLAN/switch, fails on another after a change | Layer 2 (trunk/VLAN) | [Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md) |
+| Reaches local subnet, fails beyond it | Routing | [Chapter 4](04-ip-routing-fundamentals.md) |
+| Fails only for wireless clients, wired clients unaffected | WLAN association or wireless-VLAN-specific service | [Chapter 6](06-wireless-network-foundations.md) |
+| Fails only after a gateway/router failover | FHRP misconfiguration | [Chapter 7](07-enterprise-network-design-and-resilience.md) |
+| No one noticed until a user complained | Missing or gapped monitoring/alerting | [Chapter 8](08-network-validation-and-observability.md) |
 
 ## Security and Best Practices
 
@@ -364,7 +364,7 @@ section describes, applied rather than only explained.
   who can only reach devices through the network they are troubleshooting
   has no path in when that network's management plane is the actual fault.
 - **Handle incident artifacts (packet captures, configuration snapshots,
-  logs) as sensitive data**, consistent with Chapter 1 and Chapter 8's
+  logs) as sensitive data**, consistent with [Chapter 1](01-network-models-and-protocol-architecture.md) and [Chapter 8](08-network-validation-and-observability.md)'s
   guidance, with defined retention and access control — these artifacts
   frequently contain credentials, personal data, or details of the exact
   vulnerability that caused the incident.
@@ -403,7 +403,7 @@ section describes, applied rather than only explained.
 **Objective.** Diagnose and resolve a deliberately injected, single-cause
 network fault using the structured troubleshooting methodology from this
 chapter, in a reproducible Linux network namespace topology combining DNS
-and DHCP from Chapter 5.
+and DHCP from [Chapter 5](05-core-network-services.md).
 
 **Prerequisites**
 
@@ -556,12 +556,12 @@ rm -f /tmp/dnsmasq-ch9.* /tmp/dhclient-ch9.*
 This capstone chapter tied the entire volume together into an operational
 discipline: a structured, seven-step troubleshooting methodology; four
 approaches for choosing where to start looking; the network-specific
-application of Volume I's change management process, including pre/post
+application of [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)'s change management process, including pre/post
 validation and tested rollback plans; runbooks for recurring failure
 classes; root cause analysis via the Five Whys; blameless post-incident
 review; and documentation treated as an operational control. The hands-on
-lab and its worked case study deliberately reused Chapter 5's DHCP/DNS
-services and Chapter 1's layered reasoning to diagnose a single injected
+lab and its worked case study deliberately reused [Chapter 5](05-core-network-services.md)'s DHCP/DNS
+services and [Chapter 1](01-network-models-and-protocol-architecture.md)'s layered reasoning to diagnose a single injected
 fault methodically — and the negative test showed concretely what an
 unverified guess costs compared to testing a theory first.
 
@@ -584,5 +584,5 @@ This completes Volume II — Network Engineering Foundations. The addressing,
 switching, routing, core services, wireless, resilient design,
 observability, and troubleshooting disciplines established across these
 nine chapters are the vendor-neutral foundation the rest of the
-encyclopedia builds on, most directly Volume III's Cisco-specific
-implementation depth and Volume X's identity and security architecture.
+encyclopedia builds on, most directly [Volume III](../../volume-03-cisco-enterprise-networking/README.md)'s Cisco-specific
+implementation depth and [Volume X](../../volume-10-enterprise-cybersecurity/README.md)'s identity and security architecture.

@@ -32,8 +32,8 @@ not a runbook or a set of Terraform modules a team must know exist and
 correctly invoke — it is a curated set of **golden paths**: an opinionated,
 supported, self-service way to get a working, production-ready workload
 from zero to running, with the platform team's operational expertise
-(security defaults from Chapter 06, delivery mechanics from Chapter 07,
-observability wiring from Chapter 09) built into the path rather than
+(security defaults from [Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md), delivery mechanics from [Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md),
+observability wiring from [Chapter 09](09-platform-observability-reliability-and-lifecycle-operations.md)) built into the path rather than
 left as homework for each application team to rediscover. An **Internal
 Developer Platform (IDP)** is the concrete system — often a portal, a set
 of CRDs and operators, a templating and scaffolding layer, and the
@@ -52,7 +52,7 @@ access.
 
 ### Extending the API: CRDs and the operator pattern in depth
 
-Chapter 02 introduced Custom Resource Definitions as the mechanism that
+[Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md) introduced Custom Resource Definitions as the mechanism that
 lets a CRD-backed object receive full CRUD, watch, validation, and
 (paired with a controller) reconciliation identical to a built-in object.
 Platform engineering is where this mechanism becomes the product itself,
@@ -63,7 +63,7 @@ validated custom resource — `PostgresInstance`, `KafkaTopic`,
 resource, commonly scaffolded with **Kubebuilder** or the **Operator
 SDK**, both built on `controller-runtime`) reconciles it into the actual
 underlying infrastructure, whether that infrastructure lives inside the
-cluster (a StatefulSet-backed database from Chapter 05) or outside it
+cluster (a StatefulSet-backed database from [Chapter 05](05-kubernetes-storage-and-stateful-platforms.md)) or outside it
 entirely (a cloud-managed database instance).
 
 ```text
@@ -83,7 +83,7 @@ Developer                        Platform API (CRD)          Operator           
 
 This pattern is what makes the platform's API surface genuinely
 Kubernetes-native rather than a bolt-on web form: the same `kubectl`,
-RBAC, GitOps (Chapter 07), and policy enforcement (Chapter 06) tooling a
+RBAC, GitOps ([Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md)), and policy enforcement ([Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md)) tooling a
 team already uses for a Deployment applies identically to a
 `PostgresInstance`.
 
@@ -130,8 +130,8 @@ microservice" — that generates a populated repository, a CI pipeline, and
 the platform CRDs (a `WebService`, a `DatabaseClaim`) needed to run it,
 all wired together and already compliant with platform defaults on day
 one. Backstage's catalog and scaffolder are extensible via plugins,
-which is how it integrates with whatever CI/CD, GitOps (Chapter 07), and
-observability (Chapter 09) tooling a given organization already runs
+which is how it integrates with whatever CI/CD, GitOps ([Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md)), and
+observability ([Chapter 09](09-platform-observability-reliability-and-lifecycle-operations.md)) tooling a given organization already runs
 rather than replacing any of it.
 
 ### Multi-tenancy models
@@ -183,7 +183,7 @@ by every consuming team.
 
 **Choose multi-tenancy isolation strength per actual risk, not
 uniformly.** Namespace-based soft multi-tenancy, correctly combined with
-the RBAC (Chapter 06), NetworkPolicy (Chapter 04), and resource-quota
+the RBAC ([Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md)), NetworkPolicy ([Chapter 04](04-kubernetes-networking-service-delivery-and-traffic-policy.md)), and resource-quota
 controls already covered in this volume, is entirely adequate for
 internal teams operating under a shared trust boundary and shared
 compliance posture. A tenant with a materially different compliance
@@ -192,7 +192,7 @@ SaaS boundary where one tenant is literally an external, mutually
 distrusting customer) justifies the added cost of virtual or dedicated
 clusters. Applying dedicated-cluster isolation everywhere "to be safe"
 mostly just multiplies the platform team's operational surface — patching,
-upgrades (Chapter 02), and observability (Chapter 09) — by the tenant
+upgrades ([Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md)), and observability ([Chapter 09](09-platform-observability-reliability-and-lifecycle-operations.md)) — by the tenant
 count without a corresponding security benefit for tenants that did not
 need that boundary.
 
@@ -258,9 +258,9 @@ spec:
 
 A `WebService` operator watches this resource and reconciles a
 Deployment, Service, and (when `exposeExternally: true`) an `HTTPRoute`
-against the platform's shared `Gateway` from Chapter 04 — with the
+against the platform's shared `Gateway` from [Chapter 04](04-kubernetes-networking-service-delivery-and-traffic-policy.md) — with the
 platform's default `PodDisruptionBudget`, resource requests, and
-`restricted` Pod Security context (Chapter 06) applied automatically,
+`restricted` Pod Security context ([Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md)) applied automatically,
 never left to the application team to configure or forget.
 
 ### Crossplane: an XRD and Composition exposing a self-service database claim
@@ -365,7 +365,7 @@ spec:
 ```
 
 The generated repository ships a `WebService` manifest and a GitOps
-overlay (Chapter 07) already wired to the platform's golden path, so a
+overlay ([Chapter 07](07-cloud-native-delivery-gitops-and-software-supply-chains.md)) already wired to the platform's golden path, so a
 new service reaches a running, monitored, signed-and-verified deployment
 without the owning team hand-assembling any of Chapters 01 through 07's
 mechanics individually.
@@ -422,7 +422,7 @@ kubectl describe databaseclaim order-db -n payments
 | A platform custom resource never leaves an empty/pending status | Operator pod is down, or the operator lacks RBAC to reconcile the resource | `kubectl get pods -n platform-system`; `kubectl auth can-i --list --as=system:serviceaccount:platform-system:<operator-sa>` |
 | Crossplane claim stuck, never provisions the underlying cloud resource | Provider credentials misconfigured, or the Composition references a provider CRD version mismatch | `kubectl describe databaseclaim`; `kubectl get providerconfig`; provider pod logs |
 | Backstage scaffolder template fails during `publish:github` | CI/SCM integration token expired or lacks repository-creation scope | Backstage backend logs; confirm the integration's token scope |
-| Two tenants' workloads interfere despite separate namespaces | Missing NetworkPolicy default-deny (Chapter 04) or an overly broad ClusterRoleBinding crossing tenant boundaries | `kubectl get networkpolicy -A`; `kubectl get clusterrolebindings -o wide` and audit subjects |
+| Two tenants' workloads interfere despite separate namespaces | Missing NetworkPolicy default-deny ([Chapter 04](04-kubernetes-networking-service-delivery-and-traffic-policy.md)) or an overly broad ClusterRoleBinding crossing tenant boundaries | `kubectl get networkpolicy -A`; `kubectl get clusterrolebindings -o wide` and audit subjects |
 | Application team requests a platform CRD field the schema does not expose | Working as intended if the field is a deliberate guardrail; otherwise a genuine platform gap | Confirm against the platform's documented golden-path scope before adding the field |
 
 ## Security and Best Practices
@@ -439,7 +439,7 @@ kubectl describe databaseclaim order-db -n payments
   region restrictions) inside platform-owned Compositions or operator
   logic, never inside the schema an application team's claim can set
   directly.
-- Apply the same RBAC least-privilege discipline from Chapter 06 to
+- Apply the same RBAC least-privilege discipline from [Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md) to
   operator ServiceAccounts themselves; an operator with cluster-admin
   "because it's easier" is a single point of compromise for every
   resource it reconciles across every tenant.

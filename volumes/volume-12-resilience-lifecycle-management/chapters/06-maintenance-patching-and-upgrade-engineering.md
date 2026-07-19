@@ -4,7 +4,7 @@
 
 - Distinguish patching from upgrading and explain why each carries a different risk profile and testing requirement.
 - Classify patches by severity and map each classification to a remediation SLA.
-- Design a staged rollout (canary, rolling, blue-green) that patches or upgrades a Tier 0/1 service without violating its availability targets from Chapter 3.
+- Design a staged rollout (canary, rolling, blue-green) that patches or upgrades a Tier 0/1 service without violating its availability targets from [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md).
 - Coordinate planned maintenance with HA quorum and disruption-budget constraints so voluntary disruption does not become an involuntary outage.
 - Build automated patch-compliance reporting and a rollback-triggered staged deployment.
 - Explain the exception process for a Tier 0 system that cannot be immediately patched, and the compensating controls it requires.
@@ -20,9 +20,9 @@ Patching applies a vendor-supplied fix — typically a security fix, a bug fix, 
 A mature patch management process runs the same cycle for every patch, with the depth of each stage varying by classification:
 
 1. **Identify** — new patches are discovered through vendor advisories, subscribed CVE feeds, or automated inventory-scanning tools that compare installed versions against known-available updates.
-2. **Classify** — the patch is scored by severity (see below) and cross-referenced against the systems it applies to, using the same asset inventory referenced in Volume I's lifecycle management chapter.
+2. **Classify** — the patch is scored by severity (see below) and cross-referenced against the systems it applies to, using the same asset inventory referenced in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)'s lifecycle management chapter.
 3. **Test** — the patch is applied in a non-production environment that mirrors production configuration closely enough to surface compatibility issues before they reach production.
-4. **Approve** — the patch is scheduled through the organization's change management process (standard, normal, or emergency, per Volume I, Chapter 8), with risk and rollback plan documented.
+4. **Approve** — the patch is scheduled through the organization's change management process (standard, normal, or emergency, per [Volume I, Chapter 8](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md)), with risk and rollback plan documented.
 5. **Deploy** — the patch is applied using a staged rollout strategy matched to the service's criticality tier.
 6. **Verify** — post-patch validation confirms the system is both patched and functioning correctly, not merely that the patch command exited successfully.
 
@@ -35,7 +35,7 @@ A mature patch management process runs the same cycle for every patch, with the 
 | Moderate | CVSS 4.0–6.9, non-security functional fix | Next scheduled maintenance window |
 | Low | CVSS below 4.0, cosmetic or minor fix | Bundled with the next routine upgrade cycle |
 
-Remediation SLAs should be organization-defined and formally approved (often by the same body governing vulnerability management in Volume X's cybersecurity practices), not an engineering team's informal preference, because missed SLAs on critical vulnerabilities are frequently an audit and regulatory finding independent of whether an actual exploit occurred.
+Remediation SLAs should be organization-defined and formally approved (often by the same body governing vulnerability management in [Volume X](../../volume-10-enterprise-cybersecurity/README.md)'s cybersecurity practices), not an engineering team's informal preference, because missed SLAs on critical vulnerabilities are frequently an audit and regulatory finding independent of whether an actual exploit occurred.
 
 ### Upgrade Types and Compatibility Policy
 
@@ -45,17 +45,17 @@ Following semantic versioning conventions broadly (even for platforms that do no
 - **Minor-version** — new functionality added in a backward-compatible way; low-to-moderate risk, occasional deprecation warnings.
 - **Major-version** — may include breaking changes, removed features, or new default behaviors; highest risk, requires the most thorough compatibility testing.
 
-Many platforms also publish an **N-1/N-2 support policy**, supporting only the current and one or two prior major versions with security fixes. A system running a version older than the vendor's supported window is, by definition, unable to receive patches at all — this is a forcing function that connects directly to Chapter 7's modernization discipline: a system that has fallen out of vendor support is technical debt with a hard deadline, not a soft preference to eventually address.
+Many platforms also publish an **N-1/N-2 support policy**, supporting only the current and one or two prior major versions with security fixes. A system running a version older than the vendor's supported window is, by definition, unable to receive patches at all — this is a forcing function that connects directly to [Chapter 7](07-technical-debt-modernization-and-platform-renewal.md)'s modernization discipline: a system that has fallen out of vendor support is technical debt with a hard deadline, not a soft preference to eventually address.
 
 ### Staged Rollout Strategies
 
 Deploying a patch or upgrade to 100% of a fleet simultaneously maximizes blast radius if the change is bad; staged rollout strategies deliberately limit exposure while the change is validated against real traffic:
 
 - **Canary** — the change is applied to a small subset (a single instance, or a low single-digit percentage of traffic) first, observed against defined success metrics, and only promoted to the full fleet if the canary is healthy.
-- **Rolling** — instances are updated in sequential batches, each batch validated (often via the same health checks from Chapter 3) before the next batch proceeds, keeping the service available throughout because only a bounded fraction of capacity is ever offline at once.
+- **Rolling** — instances are updated in sequential batches, each batch validated (often via the same health checks from [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md)) before the next batch proceeds, keeping the service available throughout because only a bounded fraction of capacity is ever offline at once.
 - **Blue-green** — a complete parallel environment (green) is provisioned with the new version while the existing environment (blue) continues serving all traffic; traffic is cut over to green only after validation, and blue is retained briefly for instant rollback.
 
-These strategies are not exclusive to application deployments — the same logic applies to OS patching, firmware updates, and database upgrades, though the mechanics differ (a rolling OS patch cycles nodes through a maintenance state; a blue-green database upgrade typically requires a parallel replica promoted after validation, closely resembling the DR failover pattern from Chapter 4).
+These strategies are not exclusive to application deployments — the same logic applies to OS patching, firmware updates, and database upgrades, though the mechanics differ (a rolling OS patch cycles nodes through a maintenance state; a blue-green database upgrade typically requires a parallel replica promoted after validation, closely resembling the DR failover pattern from [Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md)).
 
 ## Design Considerations
 
@@ -69,7 +69,7 @@ A disciplined patching order limits the population exposed to an undiscovered ba
 
 ### Coordinating Patching With HA Quorum and Disruption Budgets
 
-Planned maintenance is a voluntary disruption, and Chapter 3's Pod Disruption Budget example exists specifically to prevent voluntary disruptions (a node drain during patching) from taking more capacity offline than the service can tolerate. The same principle applies outside Kubernetes: patching nodes in a quorum-based cluster one at a time, always confirming the cluster retains quorum after each node is taken offline, is mandatory — a maintenance operation that drops a cluster below quorum has caused an outage indistinguishable, from the user's perspective, from an unplanned failure, except that it was entirely avoidable. Maintenance runbooks should explicitly state the maximum number of units that may be offline simultaneously, derived from the same redundancy math (N+1, 2N) established in Chapter 1.
+Planned maintenance is a voluntary disruption, and [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md)'s Pod Disruption Budget example exists specifically to prevent voluntary disruptions (a node drain during patching) from taking more capacity offline than the service can tolerate. The same principle applies outside Kubernetes: patching nodes in a quorum-based cluster one at a time, always confirming the cluster retains quorum after each node is taken offline, is mandatory — a maintenance operation that drops a cluster below quorum has caused an outage indistinguishable, from the user's perspective, from an unplanned failure, except that it was entirely avoidable. Maintenance runbooks should explicitly state the maximum number of units that may be offline simultaneously, derived from the same redundancy math (N+1, 2N) established in [Chapter 1](01-resilience-engineering-and-critical-service-design.md).
 
 ### Rollback Strategy as a First-Class Design Decision
 
@@ -233,8 +233,8 @@ When a staged rollout fails partway through (some units patched, some not), resi
 
 - Verify patch and package integrity (signature verification against a trusted vendor key) before installation; supply-chain compromise of a patch distribution channel is a realistic threat, and installing an unsigned or improperly signed patch defeats the purpose of a patch management program.
 - Treat an approved, documented, time-bound exception — not silent non-compliance — as the correct path when a Tier 0 system genuinely cannot be patched within its SLA (a vendor has not yet certified compatibility, for example). The exception must specify compensating controls (increased monitoring, network segmentation, a compensating firewall rule) and an expiration date, and should be visible to the same governance body that owns the patch policy.
-- Align critical and high-severity patch SLAs with the organization's broader vulnerability management program (Volume X); patch management and vulnerability management are frequently the same underlying process viewed from two different chapters of this encyclopedia.
-- Restrict who can approve deployment to production patch pipelines separately from who can author a change, mirroring plan/apply separation from Volume I's automation architecture guidance.
+- Align critical and high-severity patch SLAs with the organization's broader vulnerability management program ([Volume X](../../volume-10-enterprise-cybersecurity/README.md)); patch management and vulnerability management are frequently the same underlying process viewed from two different chapters of this encyclopedia.
+- Restrict who can approve deployment to production patch pipelines separately from who can author a change, mirroring plan/apply separation from [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)'s automation architecture guidance.
 - Retain patch and rollback audit history for the retention period required by applicable compliance frameworks; "we patched it" claims without a verifiable record are difficult to defend during an audit or post-incident review.
 
 ## References and Knowledge Checks
@@ -243,7 +243,7 @@ When a staged rollout fails partway through (some units patched, some not), resi
 
 - [Chapter 1](01-resilience-engineering-and-critical-service-design.md) for the redundancy math (N+1, 2N) that determines safe maintenance concurrency.
 - [Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md) for Pod Disruption Budgets and quorum concepts directly reused here for maintenance safety.
-- Volume I, Chapter 8, *Infrastructure Lifecycle Management*, for the standard/normal/emergency change classification this chapter's approval stage relies on.
+- [Volume I, Chapter 8](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md), *Infrastructure Lifecycle Management*, for the standard/normal/emergency change classification this chapter's approval stage relies on.
 - NIST SP 800-40 Rev. 4, *Guide to Enterprise Patch Management Planning*.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) for the Kubernetes baseline used in this chapter's rollout examples.
 
@@ -343,7 +343,7 @@ No shared or production systems were modified; the cluster and compliance data w
 
 ## Summary and Completion Checklist
 
-Maintenance, patching, and upgrade engineering apply the same staged-rollout, blast-radius, and rollback discipline introduced for chaos experiments in Chapter 5 to routine, planned change — the difference being that here the "fault" is deliberately permanent (a new version) rather than deliberately temporary. Patch severity classification drives remediation SLAs; staged rollout strategies (canary, rolling, blue-green) limit exposure to a bad change; and quorum-aware maintenance sequencing prevents a voluntary disruption from becoming an involuntary outage. A system that consistently cannot meet its patch SLA, or has fallen outside vendor support entirely, is not a patching problem to keep deferring — it is the trigger condition for Chapter 7's modernization and technical-debt discipline.
+Maintenance, patching, and upgrade engineering apply the same staged-rollout, blast-radius, and rollback discipline introduced for chaos experiments in [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md) to routine, planned change — the difference being that here the "fault" is deliberately permanent (a new version) rather than deliberately temporary. Patch severity classification drives remediation SLAs; staged rollout strategies (canary, rolling, blue-green) limit exposure to a bad change; and quorum-aware maintenance sequencing prevents a voluntary disruption from becoming an involuntary outage. A system that consistently cannot meet its patch SLA, or has fallen outside vendor support entirely, is not a patching problem to keep deferring — it is the trigger condition for [Chapter 7](07-technical-debt-modernization-and-platform-renewal.md)'s modernization and technical-debt discipline.
 
 **Completion checklist:**
 

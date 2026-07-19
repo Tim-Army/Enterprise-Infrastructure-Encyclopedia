@@ -1,21 +1,25 @@
 #!/usr/bin/env python3
 """Rewrite links into working links in generated editions.
 
-Two independent link classes are rewritten:
+Three independent link classes are rewritten:
 
 1. Links resolving to volumes/<slug>/chapters/<file>.md — the dominant
    case (chapter-to-chapter cross-references).
-2. Links resolving to publishing/web.css or publishing/theme-toggle.html
+2. Links resolving to volumes/<slug>/README.md — a whole-volume
+   cross-reference. These point at that volume's combined edition, since
+   there is no per-volume README rendered on its own in any output
+   format.
+3. Links resolving to publishing/web.css or publishing/theme-toggle.html
    — these files are never copied into output/ as standalone files
    (Pandoc embeds their content directly via --embed-resources /
    --include-before-body), so a relative link to them has nothing local
    to point at. They're rewritten to the GitHub source instead.
 
-Everything else (links to other root docs, volume/root README/INDEX/
-GLOSSARY, external URLs) is left exactly as written in the source, since
-those targets have no corresponding file in the generated output either
-and there's no single sensible fallback for all of them the way there is
-for these two specific, known asset paths.
+Everything else (links to root docs, volume/root INDEX/GLOSSARY,
+external URLs) is left exactly as written in the source, since those
+targets have no corresponding file in the generated output either and
+there's no single sensible fallback for all of them the way there is
+for these three specific, known cases.
 
 Usage:
     rewrite_chapter_links.py <source-file> <mode> [<current-volume-slug>]
@@ -26,10 +30,13 @@ Usage:
           (a single chapter's own page, or that volume's combined page).
           Same-volume chapter links become a bare "NN-slug.html"; links
           to another volume's chapter become "../other-slug/NN-slug.html".
+          Volume README links become "../other-slug/complete-volume.html"
+          (or a same-volume "complete-volume.html" if self-referential).
 
       html-root
           Rewrite for the complete-series document at output/html/. Every
-          chapter link becomes "volume-slug/NN-slug.html".
+          chapter link becomes "volume-slug/NN-slug.html"; volume README
+          links become "volume-slug/complete-volume.html".
 
       epub-absolute
           Rewrite for any EPUB build. A relative path inside an EPUB
@@ -52,6 +59,7 @@ GITHUB_BLOB_BASE = "https://github.com/derg20/Enterprise-Infrastructure-Encyclop
 
 LINK_RE = re.compile(r"\]\(([^)\s]+\.(?:md|css|html))((?:#[^)]*)?)\)")
 CHAPTER_RE = re.compile(r"^volumes/([^/]+)/chapters/([^/]+)\.md$")
+VOLUME_README_RE = re.compile(r"^volumes/([^/]+)/README\.md$")
 PUBLISHING_ASSETS = {"publishing/web.css", "publishing/theme-toggle.html"}
 
 
@@ -62,6 +70,15 @@ def resolve_chapter_target(source_file: str, target_path: str):
     if not match:
         return None
     return match.group(1), match.group(2)
+
+
+def resolve_volume_readme_target(source_file: str, target_path: str):
+    source_dir = os.path.dirname(source_file)
+    resolved = os.path.normpath(os.path.join(source_dir, target_path))
+    match = VOLUME_README_RE.match(resolved)
+    if not match:
+        return None
+    return match.group(1)
 
 
 def resolve_publishing_asset(source_file: str, target_path: str):
@@ -79,23 +96,37 @@ def rewrite(content: str, source_file: str, mode: str, current_volume: str) -> s
             return f"]({GITHUB_BLOB_BASE}/{asset}{fragment})"
 
         target = resolve_chapter_target(source_file, target_path)
-        if target is None:
-            return m.group(0)
-        target_volume, target_chapter = target
-
-        if mode == "html-flat":
-            if target_volume == current_volume:
-                new_target = f"{target_chapter}.html"
+        if target is not None:
+            target_volume, target_chapter = target
+            if mode == "html-flat":
+                if target_volume == current_volume:
+                    new_target = f"{target_chapter}.html"
+                else:
+                    new_target = f"../{target_volume}/{target_chapter}.html"
+            elif mode == "html-root":
+                new_target = f"{target_volume}/{target_chapter}.html"
+            elif mode == "epub-absolute":
+                new_target = f"{PORTAL_BASE_URL}/html/{target_volume}/{target_chapter}.html"
             else:
-                new_target = f"../{target_volume}/{target_chapter}.html"
-        elif mode == "html-root":
-            new_target = f"{target_volume}/{target_chapter}.html"
-        elif mode == "epub-absolute":
-            new_target = f"{PORTAL_BASE_URL}/html/{target_volume}/{target_chapter}.html"
-        else:
-            raise ValueError(f"unknown mode: {mode}")
+                raise ValueError(f"unknown mode: {mode}")
+            return f"]({new_target}{fragment})"
 
-        return f"]({new_target}{fragment})"
+        volume_target = resolve_volume_readme_target(source_file, target_path)
+        if volume_target is not None:
+            if mode == "html-flat":
+                if volume_target == current_volume:
+                    new_target = "complete-volume.html"
+                else:
+                    new_target = f"../{volume_target}/complete-volume.html"
+            elif mode == "html-root":
+                new_target = f"{volume_target}/complete-volume.html"
+            elif mode == "epub-absolute":
+                new_target = f"{PORTAL_BASE_URL}/html/{volume_target}/complete-volume.html"
+            else:
+                raise ValueError(f"unknown mode: {mode}")
+            return f"]({new_target}{fragment})"
+
+        return m.group(0)
 
     return LINK_RE.sub(replace, content)
 

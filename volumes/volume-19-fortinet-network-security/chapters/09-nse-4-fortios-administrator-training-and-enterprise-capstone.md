@@ -27,16 +27,16 @@ content:
 
 | NSE 4 course | Blueprint domain area | Covered in |
 | --- | --- | --- |
-| FortiGate Security | Initial configuration, administrative access, and hardening | Chapter 04 |
+| FortiGate Security | Initial configuration, administrative access, and hardening | [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md) |
 | FortiGate Security | Firewall policies, NAT, and firewall objects | Chapters 05–06 |
-| FortiGate Security | Authentication (local, LDAP/RADIUS, FSSO) | Chapter 06 |
-| FortiGate Security | SSL VPN and Zero Trust Access | Chapter 06 |
-| FortiGate Security | Security profiles (AV, IPS, web filtering, application control) and SSL inspection | Chapter 07 |
+| FortiGate Security | Authentication (local, LDAP/RADIUS, FSSO) | [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md) |
+| FortiGate Security | SSL VPN and Zero Trust Access | [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md) |
+| FortiGate Security | Security profiles (AV, IPS, web filtering, application control) and SSL inspection | [Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md) |
 | FortiGate Security | Logging and monitoring | Chapters 07–08 |
-| FortiGate Infrastructure | Routing (static, policy-based, dynamic routing overview) | Chapter 05 |
-| FortiGate Infrastructure | Virtual Domains (VDOMs) | Chapter 05 |
-| FortiGate Infrastructure | High availability (FGCP) | Chapter 05 |
-| FortiGate Infrastructure | SD-WAN | Chapter 08 |
+| FortiGate Infrastructure | Routing (static, policy-based, dynamic routing overview) | [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md) |
+| FortiGate Infrastructure | Virtual Domains (VDOMs) | [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md) |
+| FortiGate Infrastructure | High availability (FGCP) | [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md) |
+| FortiGate Infrastructure | SD-WAN | [Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md) |
 | FortiGate Infrastructure | Diagnostics and troubleshooting | Distributed across Chapters 04–08, consolidated in this chapter |
 
 Always confirm the current official blueprint on Fortinet's NSE Training
@@ -47,7 +47,7 @@ repository's release cycle, consistent with the caution in
 
 ### FortiOS configuration hierarchy recap
 
-Chapter 04 introduced the `config`/`edit`/`set`/`next`/`end` model and the
+[Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md) introduced the `config`/`edit`/`set`/`next`/`end` model and the
 distinction between `global` and per-VDOM configuration scope. A complete
 administrator additionally needs fluency in the configuration
 **lifecycle**: how a running configuration is captured, compared across
@@ -63,7 +63,7 @@ volume.
 - **Revision history** — on a device managed by FortiManager, or using
   FortiGate's own local revision tracking where available — allows an
   administrator to compare two configuration states directly, which is
-  the same "diff before apply" discipline Chapter 08 described for
+  the same "diff before apply" discipline [Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md) described for
   FortiManager's install preview, extended here to the device's own
   configuration history.
 
@@ -74,21 +74,21 @@ Chapters 04–08 into a single, coherent enterprise site design:
 
 - **A two-member FGCP HA pair** (FGT-LAB-01 / FGT-LAB-02) providing the
   perimeter and internal segmentation enforcement point, eliminating a
-  single point of failure at the firewall layer (Chapter 05).
+  single point of failure at the firewall layer ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)).
 - **VDOM segmentation** separating corporate and DMZ traffic on the same
   physical HA pair, each with its own routing table and policy set
-  (Chapter 05).
+  ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)).
 - **Dual-ISP SD-WAN** providing WAN path redundancy and performance-aware
-  routing across both circuits (Chapter 08), layered on top of the static
-  and policy routing foundation (Chapter 05).
+  routing across both circuits ([Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md)), layered on top of the static
+  and policy routing foundation ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)).
 - **Site-to-site IPsec and remote-access SSL VPN/ZTNA** providing secure
-  connectivity for branch interconnection and remote users (Chapter 06).
+  connectivity for branch interconnection and remote users ([Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)).
 - **A full FortiGuard security-profile stack with SSL inspection**
   providing threat prevention across every permitted traffic path
-  (Chapter 07).
+  ([Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md)).
 - **Centralized management and logging** via FortiManager and
   FortiAnalyzer, and REST API/Ansible automation for repeatable, reviewed
-  change (Chapter 08).
+  change ([Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md)).
 
 Every layer in this design has redundancy or a defined, deliberate single
 point of control: HA removes device-level single point of failure,
@@ -106,7 +106,7 @@ rather than existing only as undocumented, device-local state.
   local SD-WAN for direct internet breakout of latency-sensitive SaaS
   traffic rather than backhauling everything through HQ. This mirrors the
   hub-and-spoke vs. direct-internet-breakout trade-off discussed for
-  SASE architectures in Volume XVI, applied to an on-premises SD-WAN
+  SASE architectures in [Volume XVI](../../volume-16-palo-alto-networks-security/README.md), applied to an on-premises SD-WAN
   design instead of a cloud-delivered security service.
 - **Redundancy at every layer, deliberately, not by accident.** Review
   the architecture layer by layer and confirm each has an explicit
@@ -115,12 +115,12 @@ rather than existing only as undocumented, device-local state.
   assuming redundancy exists because individual pieces were each
   configured correctly in isolation.
 - **Change management and backup strategy.** Pair FortiManager's
-  policy-package install workflow (Chapter 08) with a scheduled
+  policy-package install workflow ([Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md)) with a scheduled
   configuration backup cadence independent of FortiManager (a periodic
   `execute backup config` exported to secure off-device storage), so
   recovery does not depend solely on FortiManager's own availability.
-- **Capacity planning recap.** Revisit Chapter 04's VM/model sizing
-  guidance and Chapter 07's deep-inspection CPU cost together — the
+- **Capacity planning recap.** Revisit [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)'s VM/model sizing
+  guidance and [Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md)'s deep-inspection CPU cost together — the
   fully loaded capstone architecture (HA sync overhead, SD-WAN health-
   checks, deep inspection, VPN termination, and centralized log
   forwarding all running concurrently) has materially different capacity
@@ -178,7 +178,7 @@ FGT-LAB-01 (automation-stitch) # end
 ```
 
 This directly reuses the automation-trigger/action/stitch pattern
-introduced in Chapter 08, applied here to configuration lifecycle
+introduced in [Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md), applied here to configuration lifecycle
 management rather than threat response — demonstrating that the same
 automation primitives serve both security response and operational
 hygiene use cases.
@@ -241,7 +241,7 @@ the most "interesting" possible cause first:
 This ordering matters because a fault at an earlier layer produces
 symptoms that can look like a fault at a later layer — for example,
 missing return traffic can look like a security-profile block when the
-actual cause is a missing reverse-direction firewall policy (Chapter 06),
+actual cause is a missing reverse-direction firewall policy ([Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)),
 and working through layers in order avoids chasing the wrong control.
 
 ### Common findings when validating the full capstone stack
@@ -253,15 +253,15 @@ and working through layers in order avoids chasing the wrong control.
   only one member will show exactly this symptom until synchronization
   completes or is corrected.
 - **VPN tunnel up but internal hosts unreachable across it.** Almost
-  always a routing or bidirectional-policy gap (Chapter 06) rather than a
+  always a routing or bidirectional-policy gap ([Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)) rather than a
   tunnel-layer fault once `diagnose vpn tunnel list` shows an established
   security association.
 - **Deep inspection enabled but sessions timing out under load.**
-  Revisit Chapter 07's capacity guidance; check `diagnose sys top` and
+  Revisit [Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md)'s capacity guidance; check `diagnose sys top` and
   `get system performance status` for CPU saturation correlated with the
   timeout pattern before assuming a profile misconfiguration.
 - **FortiManager shows the device out of sync after a stitch-driven
-  automated action.** An automation stitch (Chapter 08 and this chapter)
+  automated action.** An automation stitch ([Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md) and this chapter)
   that modifies configuration directly on the device will diverge from
   FortiManager's last-known intended state; reconcile by retrieving the
   device's current configuration into FortiManager rather than
@@ -271,20 +271,20 @@ and working through layers in order avoids chasing the wrong control.
 
 - Consolidate the hardening guidance from every prior chapter as a single
   pre-production checklist: restricted administrative access and MFA
-  (Chapter 04), reviewed and logged firewall policy with no unintended
-  broad rules (Chapter 06), current FortiGuard licensing and a defined
-  SSL inspection privacy posture (Chapter 07), and scoped, piloted
-  automation stitches with documented rollback (Chapter 08).
+  ([Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)), reviewed and logged firewall policy with no unintended
+  broad rules ([Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)), current FortiGuard licensing and a defined
+  SSL inspection privacy posture ([Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md)), and scoped, piloted
+  automation stitches with documented rollback ([Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md)).
 - Test configuration restore, not only backup, on a defined cadence —
   an untested backup is a documentation artifact, not a verified recovery
   capability.
 - Treat the layered troubleshooting decision tree as an operational
   runbook artifact, not just a study aid; codifying it (in a wiki, a
   runbook repository, or directly alongside this encyclopedia's own
-  documentation-as-code practice from Volume I) shortens incident
+  documentation-as-code practice from [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)) shortens incident
   response time for any administrator, not only the one who built the
   original configuration.
-- Revisit Security Rating (Chapter 03) after the full capstone build is
+- Revisit Security Rating ([Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md)) after the full capstone build is
   complete — a device with every subsystem from Chapters 04–08 configured
   is exactly the point at which a best-practice regression (a forgotten
   logging setting, an overly permissive rule added during troubleshooting
@@ -370,7 +370,7 @@ tree — then perform full lab environment cleanup and decommissioning.
    `WAN1-POOL` IP pool's `startip`/`endip` range to overlap with an address
    already in active use elsewhere in the topology, or reorder a firewall
    policy so a broad rule shadows a more specific one created in
-   Chapter 06.
+   [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md).
 
 5. Observe the resulting symptom (a specific traffic flow now fails or
    behaves unexpectedly) and work through the layered troubleshooting

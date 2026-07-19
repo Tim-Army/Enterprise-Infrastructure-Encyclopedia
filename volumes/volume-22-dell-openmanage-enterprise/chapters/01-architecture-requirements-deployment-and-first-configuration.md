@@ -24,7 +24,7 @@ Dell OpenManage Enterprise is a one-to-many systems management console for
 Dell PowerEdge rack, tower, and (to a more limited extent) modular servers.
 It is the aggregation point that turns per-server, out-of-band management —
 delivered by each server's integrated Dell Remote Access Controller
-(iDRAC), covered in depth in Volume XXIII — into fleet-scale discovery,
+(iDRAC), covered in depth in [Volume XXIII](../../volume-23-dell-idrac-9-10-administration/README.md) — into fleet-scale discovery,
 inventory, monitoring, firmware/driver lifecycle management, configuration
 templating, and compliance reporting. OME does not replace iDRAC; it
 orchestrates against the iDRAC (and, for a narrower set of operations,
@@ -47,7 +47,7 @@ distinguishing up front:
   fleet level, with OME onboarding each chassis's compute sleds as managed
   devices.
 - **SupportAssist Enterprise** — Dell's automated support-case and
-  telemetry-to-Dell pipeline, which OME can integrate with (Chapter 4) but
+  telemetry-to-Dell pipeline, which OME can integrate with ([Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)) but
   which is a distinct service with its own lifecycle.
 
 ### Appliance architecture
@@ -105,7 +105,7 @@ OME reaches into the managed fleet almost entirely over HTTPS. iDRAC
 discovery, inventory, and update orchestration use WS-Management and
 Redfish over TCP 443 to each server's iDRAC; SNMP (UDP 161/162), IPMI
 (UDP 623), and SSH (TCP 22) are used for third-party network, storage, and
-Linux in-band targets respectively (Chapter 3 covers protocol selection per
+Linux in-band targets respectively ([Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) covers protocol selection per
 device class in detail). Outbound, the appliance reaches `downloads.dell.com`
 over HTTPS to retrieve the online firmware/driver catalog and, if
 SupportAssist integration is enabled, to submit telemetry and open support
@@ -141,7 +141,7 @@ than only out of it.
   a large fleet between appliances later is disruptive.
 - **Name resolution and time source.** The appliance must resolve
   `downloads.dell.com` (directly or via an explicitly configured proxy,
-  Chapter 6) for online catalog updates, and should resolve forward and
+  [Chapter 6](06-connected-online-repositories-and-update-workflows.md)) for online catalog updates, and should resolve forward and
   reverse DNS for every managed device to avoid inventory and alert records
   falling back to IP addresses. NTP is not optional: TLS certificate
   validation, job scheduling, and alert timestamp correlation with SIEM
@@ -155,7 +155,7 @@ than only out of it.
 - **Licensing runway.** The base OME console is usable immediately after
   deployment, but configuration compliance/deployment templates and some
   advanced integrations require an OpenManage Enterprise Advanced or
-  Advanced Plus entitlement (Chapter 2). Decide before deployment whether
+  Advanced Plus entitlement ([Chapter 2](02-identity-licensing-security-and-administrative-control.md)). Decide before deployment whether
   the environment needs Advanced-tier features so the license can be
   imported during initial setup rather than as a follow-up change.
 
@@ -290,7 +290,7 @@ shifted slightly across OME releases as the API surface has grown.
 - **Confirm the console is reachable and the certificate warning is
   expected.** A freshly deployed appliance presents a self-signed
   certificate; a browser TLS warning at this stage is normal and is
-  resolved in Chapter 2. An *unreachable* console after network bootstrap
+  resolved in [Chapter 2](02-identity-licensing-security-and-administrative-control.md). An *unreachable* console after network bootstrap
   usually indicates a port-group/VLAN mismatch on the VM's virtual NIC
   or a gateway/subnet mask typo entered at the text console.
 - **Verify NTP sync before onboarding devices.** Time drift between the
@@ -307,7 +307,7 @@ shifted slightly across OME releases as the API surface has grown.
   firmware workflow in Chapters 5–6 until corrected.
 - **Collect a support bundle for anything that doesn't self-explain.** The
   application settings area includes a log/diagnostics export function
-  that produces a bundle suitable for Dell support escalation (Chapter 9)
+  that produces a bundle suitable for Dell support escalation ([Chapter 9](09-backup-restore-upgrade-troubleshooting-and-capstone-operations.md))
   — collect it while the failure state is current rather than after a
   remediation attempt has already changed appliance state.
 - **Common first-boot failure: default-gateway unreachable from the port
@@ -327,7 +327,7 @@ shifted slightly across OME releases as the API surface has grown.
   controls as the out-of-band network it manages; OME holds discovery
   credentials for the entire fleet and is a high-value target.
   Replace the appliance's self-signed TLS certificate with one issued by
-  an internal or public CA as soon as practical (Chapter 2) rather than
+  an internal or public CA as soon as practical ([Chapter 2](02-identity-licensing-security-and-administrative-control.md)) rather than
   training administrators and API clients to click through certificate
   warnings.
 - Restrict outbound internet access from the appliance to the specific
@@ -454,7 +454,7 @@ internal architecture (embedded database, job engine, plugin framework),
 covered sizing and network placement decisions that are expensive to
 change after devices are onboarded, and produced a running, validated
 appliance ready for the identity, licensing, and security configuration in
-Chapter 2.
+[Chapter 2](02-identity-licensing-security-and-administrative-control.md).
 
 - [ ] I can explain the relationship between OME, OME-Modular, and iDRAC.
 - [ ] I can describe the appliance's internal components and why its own

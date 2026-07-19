@@ -28,13 +28,13 @@ estate places different workloads at different points on it deliberately:
 | Model | Unit of deployment | Provider manages | Customer manages | Typical fit |
 | --- | --- | --- | --- | --- |
 | Virtual machines (IaaS) | A full OS instance | Hypervisor, host hardware | OS, runtime, scaling logic, patching | Legacy or COTS software, workloads needing OS-level control or specific kernel/driver access |
-| Container orchestration (covered in depth in Volume VIII) | A container image on a scheduler | Node provisioning (if managed), scheduler control plane | Container images, resource requests, in-cluster networking | Microservices, workloads needing fast, dense scaling and packaging portability |
+| Container orchestration (covered in depth in [Volume VIII](../../volume-08-containers-platform-engineering/README.md)) | A container image on a scheduler | Node provisioning (if managed), scheduler control plane | Container images, resource requests, in-cluster networking | Microservices, workloads needing fast, dense scaling and packaging portability |
 | Serverless / function compute | A function and its trigger | Everything except code and configuration | Function code, event bindings, cold-start tuning | Event-driven, bursty, or intermittent workloads where idle cost must be zero |
 | Managed application platform (PaaS) | Application source or container, deployed to a managed runtime | Runtime, scaling, load balancing | Application code and configuration | Web applications and APIs where the team wants to skip infrastructure operations entirely |
 
 This chapter focuses primarily on virtual machines and the placement,
 sizing, and purchasing decisions around them, since container
-orchestration receives dedicated treatment in Volume VIII. The decision
+orchestration receives dedicated treatment in [Volume VIII](../../volume-08-containers-platform-engineering/README.md). The decision
 between these models for a given workload should be revisited
 periodically — a workload built as a virtual machine fleet three years ago
 because container orchestration was immature at the time may now be a
@@ -89,7 +89,7 @@ capacity sized to the workload's stable minimum (the floor that is always
 running), on-demand or spot capacity absorbing the variable portion above
 that floor, and spot specifically reserved for genuinely interruption-
 tolerant components rather than applied indiscriminately across the whole
-fleet. Chapter 08 covers the FinOps discipline of tracking commitment
+fleet. [Chapter 08](08-cloud-governance-security-and-finops.md) covers the FinOps discipline of tracking commitment
 utilization and coverage against this blend over time.
 
 ### Autoscaling models
@@ -137,7 +137,7 @@ Ask, in order: does the workload need OS-level control, a specific kernel
 module, or licensing tied to physical/virtual machine counts (favors VM);
 is the workload naturally decomposed into independently scalable services
 with a fast, uniform deployment/packaging need (favors container
-orchestration, detailed in Volume VIII); is the workload event-driven,
+orchestration, detailed in [Volume VIII](../../volume-08-containers-platform-engineering/README.md)); is the workload event-driven,
 bursty, or has meaningfully idle periods where paying for standing
 capacity is wasteful (favors serverless). A workload can and often does
 mix models — a steady-state API tier on containers, a nightly batch job on
@@ -149,7 +149,7 @@ architecture.
 Size from observed or realistically projected utilization, not from a
 round-number default ("everything gets a large instance"). Establish a
 periodic right-sizing review (monthly or quarterly, tied into the FinOps
-practice in Chapter 08) using actual CPU, memory, network, and disk I/O
+practice in [Chapter 08](08-cloud-governance-security-and-finops.md)) using actual CPU, memory, network, and disk I/O
 utilization data, and treat a persistently underutilized instance family
 as a finding requiring action, not a tolerable safety margin. Distinguish
 genuine headroom (reserved for known future growth or burst tolerance,
@@ -170,7 +170,7 @@ launch and forgotten.
 ### Availability zone distribution vs. cost and latency
 
 Distributing a fleet across multiple availability zones is the baseline
-resilience pattern (established in Chapter 01), but cross-zone network
+resilience pattern (established in [Chapter 01](01-cloud-operating-models-and-architecture-foundations.md)), but cross-zone network
 traffic frequently carries a per-GB cost and marginally higher latency
 than same-zone traffic. For latency- or cost-sensitive tiers with a
 genuine same-zone-affinity requirement (a cache tier tightly coupled to
@@ -333,9 +333,9 @@ resource "cloud_scheduled_scaling_action" "business_hours_prescale" {
   provably identical and the patch is captured in the pipeline for the
   next build.
 - Grant compute instances only the workload identity permissions
-  established in Chapter 03 — never embed a long-lived credential in a
+  established in [Chapter 03](03-cloud-identity-access-and-cryptographic-services.md) — never embed a long-lived credential in a
   golden image or instance user-data script.
-- Apply the network segmentation controls from Chapter 04 to every
+- Apply the network segmentation controls from [Chapter 04](04-cloud-networking-and-hybrid-connectivity.md) to every
   instance regardless of purchasing option; a spot instance is not a
   lower-trust resource from a security perspective and should not receive
   weaker network controls.
@@ -484,7 +484,7 @@ launch-time choice: which service model fits the workload, which instance
 family matches its resource ratio, how purchasing options blend against
 its demand curve, how autoscaling policy responds to (and avoids
 thrashing against) real demand, and how immutable golden images keep the
-resulting fleet free of configuration drift. Chapter 06 turns to the
+resulting fleet free of configuration drift. [Chapter 06](06-cloud-storage-databases-and-data-services.md) turns to the
 storage and database services this compute fleet depends on, and Chapter
 08 returns to purchasing-mix optimization as an ongoing FinOps practice.
 

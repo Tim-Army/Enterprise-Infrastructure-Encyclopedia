@@ -149,7 +149,7 @@ network filesystem hard-mounted at boot via `/etc/fstab`.
   workload's data reduction ratio justifies its CPU overhead — neither
   is a default choice over LVM+XFS for a typical general-purpose
   volume.
-- **NFS vs. Samba vs. block storage (iSCSI, covered in Volume VI).**
+- **NFS vs. Samba vs. block storage (iSCSI, covered in [Volume VI](../../volume-06-enterprise-storage-data-protection/README.md)).**
   NFS is the natural choice for Linux-to-Linux file sharing; Samba is
   required wherever Windows clients or SMB-only tooling is in the mix;
   neither is a substitute for shared block storage when an application
@@ -377,7 +377,7 @@ systemctl enable --now autofs
   `valid users`/`write list`) — a share is only as restrictive as the
   more permissive of the two layers.
 - Encrypt data at rest for volumes holding sensitive data using LUKS
-  (covered in depth in Chapter 06) beneath the LVM/filesystem layer,
+  (covered in depth in [Chapter 06](06-selinux-permissions-cryptography-and-system-hardening.md)) beneath the LVM/filesystem layer,
   not as an afterthought applied only to specific files.
 - Monitor filesystem and volume group free space proactively
   (threshold-based alerting, not manual checks) — an XFS filesystem

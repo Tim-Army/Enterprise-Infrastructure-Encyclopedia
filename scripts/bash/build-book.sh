@@ -13,14 +13,15 @@
 # chapters plus the combined volume edition). --chapter builds only that
 # one chapter.
 #
-# Links to other chapters (volumes/*/chapters/*.md) are rewritten by
+# Links to other chapters (volumes/*/chapters/*.md) and to volume READMEs
+# (volumes/*/README.md) are rewritten by
 # scripts/bash/lib/rewrite_chapter_links.py before each Pandoc invocation:
 # in HTML output they become relative links to that chapter's own .html
-# file; in EPUB output (which cannot address a separate output/html/ file)
-# they become absolute links to the deployed Pages portal. Links to
-# anything other than a chapter file (root docs, volume/root README,
-# INDEX, GLOSSARY) are left as-is, since those have no generated-output
-# equivalent to point at.
+# file (or that volume's complete-volume.html); in EPUB output (which
+# cannot address a separate output/html/ file) they become absolute links
+# to the deployed Pages portal. Links to anything else (root docs,
+# volume/root INDEX, GLOSSARY) are left as-is, since those have no
+# generated-output equivalent to point at.
 #
 # Every link in HTML output (internal and external alike) opens in a new
 # tab via scripts/pandoc/open-links-new-tab.lua, applied at Pandoc

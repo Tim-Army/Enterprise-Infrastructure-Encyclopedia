@@ -60,7 +60,7 @@ implementing change are auditable as the same event.
 | Model | Mechanism | Best suited for |
 | --- | --- | --- |
 | Direct required review | Branch protection requires N approvals before merge | Small to mid-size teams, most enterprise repositories |
-| CODEOWNERS-scoped review | Required reviewers vary by changed path (Chapter 02) | Repositories with distinct ownership domains |
+| CODEOWNERS-scoped review | Required reviewers vary by changed path ([Chapter 02](02-repository-architecture.md)) | Repositories with distinct ownership domains |
 | Merge queue | PRs are serialized and re-tested against the latest `main` before merge | High-throughput repositories where parallel merges cause integration conflicts |
 
 A merge queue solves a specific problem direct required review does not: on

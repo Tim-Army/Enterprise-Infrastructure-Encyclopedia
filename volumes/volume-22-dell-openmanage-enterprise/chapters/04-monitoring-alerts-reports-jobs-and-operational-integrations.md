@@ -69,7 +69,7 @@ warranty expiration, hardware inventory detail). The **custom report
 builder** lets an administrator define a query against the appliance's
 reporting data model — selecting fields, applying filters, and choosing
 a device/group scope — without writing SQL against the embedded database
-directly, which (as established in Chapter 1) has no supported direct
+directly, which (as established in [Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)) has no supported direct
 query path. Reports can be run on demand, scheduled for recurring
 generation, and exported (commonly CSV, and in some builds PDF/HTML) or
 emailed to a distribution list on a schedule.
@@ -77,7 +77,7 @@ emailed to a distribution list on a schedule.
 ### The job engine
 
 Every asynchronous operation in OME — discovery, inventory refresh,
-firmware update orchestration (Chapter 5), template deployment (Chapter
+firmware update orchestration ([Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)), template deployment (Chapter
 8), and report generation — runs as a tracked **job**. Jobs carry a type,
 a target scope, a schedule (immediate or future), an execution history
 with per-target status detail, and, for supported job types, automatic
@@ -93,7 +93,7 @@ result.
 Beyond alert forwarding, OME integrates with the broader operational
 toolchain in a few defined ways:
 
-- **SupportAssist Enterprise** — when registered (Chapter 1), OME can
+- **SupportAssist Enterprise** — when registered ([Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)), OME can
   forward qualifying hardware alerts as automated support cases to Dell,
   attaching relevant telemetry so a support engagement starts with
   diagnostic context already available.
@@ -125,7 +125,7 @@ toolchain in a few defined ways:
 - **SMTP relay placement and authentication.** Decide whether the
   appliance relays through an internal open-relay-restricted SMTP
   server or an authenticated relay, and whether TLS is required — this
-  affects both the trusted-certificate configuration from Chapter 2 and
+  affects both the trusted-certificate configuration from [Chapter 2](02-identity-licensing-security-and-administrative-control.md) and
   firewall rules between the appliance and the relay.
 - **Report scheduling load.** Large, fleet-wide custom reports scheduled
   at high frequency add load to the appliance's reporting engine; align
@@ -133,7 +133,7 @@ toolchain in a few defined ways:
   report is rarely read daily) rather than defaulting every report to the
   shortest available interval.
 - **Job concurrency and maintenance windows.** Some job types (firmware
-  updates in particular, covered in depth in Chapter 5) are sensitive to
+  updates in particular, covered in depth in [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)) are sensitive to
   how many devices execute concurrently and when. Plan job scheduling
   around defined maintenance windows rather than allowing large,
   disruptive jobs to run against production hours by default.
@@ -276,7 +276,7 @@ unreachable relay.
   than assuming the alert policy itself is broken.
 - **Console dashboard shows stale status for a device that is actually
   back online.** As covered in Theory and Architecture, dashboard status
-  is a snapshot; force an inventory/health refresh (Chapter 3's
+  is a snapshot; force an inventory/health refresh ([Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md)'s
   `RefreshInventory` action) rather than assuming a display bug.
 - **A scheduled report never runs.** Check the report's schedule
   definition and the job engine for a corresponding failed or skipped job
@@ -286,7 +286,7 @@ unreachable relay.
 - **SupportAssist does not open a case for a qualifying hardware alert.**
   Confirm the appliance can still reach the SupportAssist submission
   endpoint (a common regression after firewall or proxy changes made
-  after initial registration in Chapter 1) and that the specific alert
+  after initial registration in [Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)) and that the specific alert
   category is one SupportAssist is configured to act on — not every
   alert category is eligible for automatic case creation.
 - **Job execution history shows partial success across a multi-device
@@ -298,7 +298,7 @@ unreachable relay.
 ## Security and Best Practices
 
 - Restrict who can create or modify alert policies and report definitions
-  through role/scope assignment (Chapter 2); alert routing and report
+  through role/scope assignment ([Chapter 2](02-identity-licensing-security-and-administrative-control.md)); alert routing and report
   distribution lists are a data-exposure surface, since reports and
   forwarded alerts can carry sensitive inventory and configuration detail
   off the appliance.
@@ -356,7 +356,7 @@ operations.
 
 **Prerequisites**
 
-- The OME appliance and at least one onboarded device from the Chapter 3
+- The OME appliance and at least one onboarded device from the [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md)
   lab (the SNMP-discovered lab Linux host is sufficient).
 - A syslog listener reachable from the OME appliance. This lab uses a
   simple Python UDP listener on your workstation or lab host rather than
@@ -388,13 +388,13 @@ operations.
    Automation, pointed at your listener host's IP and port 5514 instead
    of 514 to avoid requiring root/administrator privileges on the
    listener host), create an alert policy scoped to the lab device group
-   from Chapter 3, matching Warning-and-above severity across all
+   from [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md), matching Warning-and-above severity across all
    categories, with a syslog forwarding action targeting your listener.
 3. Confirm the policy is enabled and visible in the alert policy list.
 4. Generate a qualifying test event. If your console build offers a
    built-in "generate test alert" action, use it targeting the lab
    device; otherwise, force an event by temporarily stopping the SNMP
-   agent on the lab host from Chapter 3 (`sudo systemctl stop snmpd`) and
+   agent on the lab host from [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) (`sudo systemctl stop snmpd`) and
    forcing an inventory/health refresh so OME detects the device as
    unreachable.
 5. **Expected result:** within a few minutes, a line appears in the
@@ -424,7 +424,7 @@ operations.
 
 ## Summary and Completion Checklist
 
-This chapter connected the managed fleet from Chapter 3 to operational
+This chapter connected the managed fleet from [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) to operational
 visibility: health status roll-up and its snapshot nature, the three-stage
 alert pipeline (sources, policies, actions), the custom report engine, the
 job engine that underlies and makes auditable every asynchronous OME

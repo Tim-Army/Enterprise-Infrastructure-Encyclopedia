@@ -120,7 +120,7 @@ in a **controller** layer that provides:
   provisioning (allocate on write rather than on volume creation),
   deduplication and compression (reduce the physical footprint of stored
   data), snapshots and clones (point-in-time copies, covered in depth in
-  Chapter 6), and quality-of-service controls (per-volume IOPS/throughput
+  [Chapter 6](06-snapshots-replication-and-continuous-data-protection.md)), and quality-of-service controls (per-volume IOPS/throughput
   limits to prevent noisy-neighbor contention).
 - **Back-end connectivity** — the internal fabric connecting controllers to
   drive shelves or, in scale-out designs, the cluster interconnect between
@@ -131,7 +131,7 @@ capacity (what has been presented to hosts) and **physical** capacity (what is
 actually consumed on media). That gap is a planning tool, not a free lunch:
 over-provisioning without capacity monitoring is one of the most common causes
 of an emergency, unplanned outage when a thin pool fills without warning.
-Chapter 9 covers the observability practices that keep that gap under control.
+[Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md) covers the observability practices that keep that gap under control.
 
 ### Performance vocabulary
 
@@ -166,7 +166,7 @@ catalog. At minimum, capture:
    throughput for streaming operations.
 4. **Availability requirement** — acceptable downtime and the fault domains
    the design must survive (drive, controller, node, rack, site).
-5. **Data protection requirement** — RPO/RTO (Chapter 5 and 7 define these
+5. **Data protection requirement** — RPO/RTO ([Chapter 5](05-backup-architecture-and-data-protection-policy.md) and 7 define these
    formally), retention, and immutability needs.
 
 A design built from a vendor spec sheet instead of a workload profile
@@ -279,7 +279,7 @@ service_tiers:
     replication: none
 ```
 
-This file becomes the source of truth an automation pipeline (Chapter 9)
+This file becomes the source of truth an automation pipeline ([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md))
 reads when provisioning a volume, and the reference a capacity report
 validates actual consumption against.
 
@@ -316,7 +316,7 @@ documentation alongside the service tier the device was provisioned against.
   `aqu-sz` on newer util-linux) and `%util`; a device pinned at 100 percent
   utilization with climbing average wait time indicates the queue depth
   presented by the host exceeds what the back end can service — a common
-  symptom of under-sized multipath queue depth settings (Chapter 4) or an
+  symptom of under-sized multipath queue depth settings ([Chapter 4](04-host-storage-integration-and-multipathing.md)) or an
   under-provisioned back-end fabric.
 - **Distinguish capacity exhaustion from performance degradation.** A thin
   pool approaching full commonly degrades write latency well before it
@@ -347,7 +347,7 @@ documentation alongside the service tier the device was provisioned against.
   silently remove the resiliency a workload depends on.
 - Log and retain all administrative actions on storage controllers and
   management planes; these logs are frequently the only forensic trail after
-  a data-integrity incident (see Chapter 8).
+  a data-integrity incident (see [Chapter 8](08-storage-security-ransomware-resilience-and-data-governance.md)).
 - Document the fault domain each service tier actually tolerates (single
   drive, controller, node, rack, site) and validate it periodically — fault
   domain claims drift as hardware is added without re-validating placement
@@ -468,7 +468,7 @@ machine disk is sufficient.
    **Expected result:** IOPS drops sharply compared to the queue-depth-32 run
    even though latency per operation may look similar — this demonstrates why
    queue depth, not just raw device speed, determines achievable IOPS, and
-   why a host misconfigured with a shallow queue depth (Chapter 4) will
+   why a host misconfigured with a shallow queue depth ([Chapter 4](04-host-storage-integration-and-multipathing.md)) will
    under-perform its provisioned storage tier regardless of the array's
    capability.
 

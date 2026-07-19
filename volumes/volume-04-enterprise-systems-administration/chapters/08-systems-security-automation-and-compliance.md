@@ -4,28 +4,28 @@
 
 - Apply CIS Benchmark and DISA STIG hardening baselines through
   automation, extending the enforcing-mode SELinux/AppArmor guidance from
-  Chapter 02 and the Server Core/hardening guidance from Chapter 03.
+  [Chapter 02](02-enterprise-linux-administration.md) and the Server Core/hardening guidance from [Chapter 03](03-windows-server-administration.md).
 - Automate compliance scanning on Linux with OpenSCAP and on Windows with
   local security policy and baseline tooling.
 - Configure host-based audit logging — `auditd` on Linux, Advanced Audit
   Policy on Windows — to produce evidence for compliance frameworks.
 - Detect and remediate drift from a security baseline using the
-  configuration management tooling introduced in Chapter 06.
+  configuration management tooling introduced in [Chapter 06](06-configuration-software-and-patch-management.md).
 - Design an exception-management process for baseline items that conflict
   with a specific application's requirements.
 - Explain how host-level compliance automation in this chapter feeds the
-  broader security program covered in Volume X.
+  broader security program covered in [Volume X](../../volume-10-enterprise-cybersecurity/README.md).
 
 ## Theory and Architecture
 
 Earlier chapters mentioned hardening in passing — SELinux/AppArmor
-enforcing mode (Chapter 02), Server Core and disabled legacy protocols
-(Chapter 03), tiered administration (Chapter 04). This chapter treats
+enforcing mode ([Chapter 02](02-enterprise-linux-administration.md)), Server Core and disabled legacy protocols
+([Chapter 03](03-windows-server-administration.md)), tiered administration ([Chapter 04](04-enterprise-identity-and-directory-services.md)). This chapter treats
 security hardening and compliance as their own discipline: where
 authoritative baselines come from, how to scan and remediate against them
 as code rather than by hand, and how to produce the audit evidence a
 compliance program actually needs. Enterprise-wide security architecture,
-threat detection, and incident response are covered in Volume X; this
+threat detection, and incident response are covered in [Volume X](../../volume-10-enterprise-cybersecurity/README.md); this
 chapter stays at the individual host's configuration and audit-logging
 layer.
 
@@ -55,7 +55,7 @@ system checks, and a **profile** (a named subset of rules — `cis`,
 major distributions. Windows has no single equivalent tool, but the same
 compliance-as-code pattern applies through **DSC's `SecurityPolicyDsc`
 resource module**, **`secedit`** for local security policy export/import,
-and Group Policy for domain-wide baseline delivery (extending Chapter 04).
+and Group Policy for domain-wide baseline delivery (extending [Chapter 04](04-enterprise-identity-and-directory-services.md)).
 
 ### Audit logging architecture
 
@@ -77,7 +77,7 @@ and Group Policy for domain-wide baseline delivery (extending Chapter 04).
 
 Compliance automation is a loop, not a one-time project: **scan** against
 the chosen profile, **report** findings, **remediate** through the
-configuration management tooling from Chapter 06 (never by hand, so the
+configuration management tooling from [Chapter 06](06-configuration-software-and-patch-management.md) (never by hand, so the
 fix is repeatable and auditable), and **re-scan** to confirm. Running
 remediation automatically in production before validating it in a
 non-production ring is the most common way hardening automation causes an
@@ -103,15 +103,15 @@ specific application's assumption.
   scan-result trust over time.
 - **Balance audit verbosity against downstream cost.** Auditing every
   object access on a busy file server can produce more log volume than
-  the SIEM/retention budget can absorb (Chapter 09); scope audit rules to
+  the SIEM/retention budget can absorb ([Chapter 09](09-monitoring-troubleshooting-and-lifecycle-operations.md)); scope audit rules to
   what the compliance requirement and threat model actually need.
 - **Protect who can change the baseline automation itself.** Baseline
   playbooks/configurations are high-leverage code — apply the same
-  CODEOWNERS/branch-protection discipline from Volume I so a change to the
+  CODEOWNERS/branch-protection discipline from [Volume I](../../volume-01-enterprise-engineering-foundations/README.md) so a change to the
   security baseline gets reviewed like any other security-relevant
   change.
 - **Re-scan after every patch cycle**, not only on a fixed calendar —
-  Chapter 06's patch process can silently revert a hardening setting a
+  [Chapter 06](06-configuration-software-and-patch-management.md)'s patch process can silently revert a hardening setting a
   vendor update touches.
 
 ## Implementation and Automation

@@ -6,7 +6,7 @@
   to the compute, storage, networking, and licensing grounding built
   throughout Chapters 2 through 9 of this volume.
 - Explain how this exam's scope (VVF: vSphere and vSAN, without full NSX
-  or multi-domain SDDC Manager orchestration) differs from Chapter 13's
+  or multi-domain SDDC Manager orchestration) differs from [Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md)'s
   VCF Support exam, while recognizing where current VMware by Broadcom
   documentation treats VVF as a licensing/deployment variant within the
   broader Cloud Foundation platform family.
@@ -15,7 +15,7 @@
   troubleshooting.
 - Practice a structured incident-triage approach appropriate to an L2/L3
   support engineer role, distinct from the administrator exam's design-
-  and-deploy emphasis (Chapter 15).
+  and-deploy emphasis ([Chapter 15](15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md)).
 - Complete a comprehensive fault-diagnosis lab spanning compute, storage,
   and network failure domains with deliberately introduced faults.
 
@@ -31,7 +31,7 @@ blueprint or any exam content.
 
 ### Support-role scope within VVF's product boundary
 
-Chapter 15 established that VVF's product scope is substantially
+[Chapter 15](15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md) established that VVF's product scope is substantially
 standalone vSphere and vSAN, without the full NSX network virtualization
 and SDDC Manager-driven multi-domain orchestration that VCF adds. This
 exam applies a support-engineer lens to that same narrower product
@@ -39,7 +39,7 @@ scope: its blueprint's stated candidate profile targets L2/L3 support
 engineers and cloud operations staff with at least a year of hands-on
 experience supporting VVF environments, diagnosing and resolving issues
 across compute, storage, networking, and licensing — the same general
-support orientation as Chapter 13's VCF Support exam, but scoped down to
+support orientation as [Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md)'s VCF Support exam, but scoped down to
 VVF's narrower product surface.
 
 One nuance worth noting: current Broadcom certification materials for
@@ -48,7 +48,7 @@ Fundamentals"-style content even where an exam is scoped to VVF
 specifically, reflecting that current VMware by Broadcom packaging
 increasingly delivers vSphere Foundation as a licensing and deployment
 variant within the same underlying platform family documented in
-Chapter 1's VCF/VVF discussion, rather than as a fully separate,
+[Chapter 1](01-vmware-virtualization-architecture-and-design.md)'s VCF/VVF discussion, rather than as a fully separate,
 independently architected product. Confirm the current exam guide's exact
 domain language before assuming this chapter's description is precisely
 current — treat the underlying compute/storage/networking/licensing
@@ -58,19 +58,19 @@ the blueprint's introductory domain is currently worded.
 ### Blueprint domain structure and its direct chapter mapping
 
 - **Foundational/standards section** — general infrastructure and
-  industry-standard concepts, maps to Chapter 1 and Chapter 4.
+  industry-standard concepts, maps to [Chapter 1](01-vmware-virtualization-architecture-and-design.md) and [Chapter 4](04-vsphere-virtual-networking.md).
 - **Platform fundamentals section** — vSphere Foundation platform
   architecture and component roles, maps to Chapters 1, 2, and 3.
 - **Plan and design section** — present in this blueprint (as in the
   administrator exam) but weighted more lightly for a support-role
-  candidate profile than the design domain in Chapter 15's exam; maps to
+  candidate profile than the design domain in [Chapter 15](15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md)'s exam; maps to
   the same Design Considerations material in Chapters 4, 6, and 7, useful
   here primarily so a support engineer can recognize when a reported
   problem is actually a design/sizing shortfall rather than a
   component fault.
 - **Build, manage, operate, consume, and protect VVF section** — day-2
   operational competency across the same deploy/configure/operate ground
-  as Chapter 15, but from a support-operations lens: confirming
+  as [Chapter 15](15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md), but from a support-operations lens: confirming
   configuration is correct as a first triage step, not performing
   original deployment design.
 - **VCF/VVF support section** — the exam's heaviest-weighted diagnostic
@@ -81,15 +81,15 @@ the blueprint's introductory domain is currently worded.
 
 ### Support-role diagnostic emphasis
 
-As with Chapter 13's VCF Support exam, this exam rewards diagnostic
+As with [Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md)'s VCF Support exam, this exam rewards diagnostic
 reasoning under symptom uncertainty over deployment procedure
 memorization. The specific failure domains most consistently emphasized
 by a support-role candidate profile are: host-level failures (boot,
-network, storage path — Chapter 2), vCenter Server availability and
-identity failures (Chapter 3), vSAN health and datastore connectivity
-issues (Chapter 6), HA/DRS/vMotion failures (Chapter 7), and licensing-
+network, storage path — [Chapter 2](02-esxi-installation-configuration-and-host-operations.md)), vCenter Server availability and
+identity failures ([Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md)), vSAN health and datastore connectivity
+issues ([Chapter 6](06-vsphere-storage-and-vsan.md)), HA/DRS/vMotion failures ([Chapter 7](07-vsphere-availability-mobility-and-cluster-services.md)), and licensing-
 driven feature restrictions presenting as unexplained functional gaps —
-the same pattern Chapter 13 described for the VCF-scoped support exam,
+the same pattern [Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md) described for the VCF-scoped support exam,
 here applied to VVF's narrower compute/storage/networking surface
 without NSX-specific troubleshooting in scope.
 
@@ -97,13 +97,13 @@ without NSX-specific troubleshooting in scope.
 
 - **Recognize the narrower troubleshooting surface relative to Chapter
   13.** This exam does not require NSX troubleshooting (Traceflow, BGP
-  neighbor diagnostics, DFW rule evaluation) the way Chapter 12's exam
+  neighbor diagnostics, DFW rule evaluation) the way [Chapter 12](12-vcp-network-virtualization-2v0-41-24-exam-preparation.md)'s exam
   does, nor SDDC Manager fleet-orchestration troubleshooting the way
-  Chapter 13's does — study time is better spent going deep on
+  [Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md)'s does — study time is better spent going deep on
   ESXi/vCenter/vSAN/networking diagnostics than broad across the full VCF
   component set.
 - **Design literacy as a triage filter, not a deployment skill.** Unlike
-  Chapter 15's administrator exam, this exam's design-domain content
+  [Chapter 15](15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md)'s administrator exam, this exam's design-domain content
   exists mainly so a support engineer can recognize "this is actually an
   undersized cluster" or "this vSAN policy was never achievable with this
   host count" as a root cause, rather than to test original design
@@ -180,25 +180,25 @@ esxcli vsan network list
 
 - **Layered compute-to-storage-to-network triage sequence.** Practice a
   consistent investigation order for an ambiguous "VM is unreachable"
-  report: host connection state and resource health first (Chapter 2),
-  then storage path/vSAN health (Chapter 6), then network path/VLAN/MTU
-  (Chapter 4) — a consistent sequence prevents missing a layer under
+  report: host connection state and resource health first ([Chapter 2](02-esxi-installation-configuration-and-host-operations.md)),
+  then storage path/vSAN health ([Chapter 6](06-vsphere-storage-and-vsan.md)), then network path/VLAN/MTU
+  ([Chapter 4](04-vsphere-virtual-networking.md)) — a consistent sequence prevents missing a layer under
   exam time pressure and mirrors real support triage discipline.
 - **vCenter Server availability triage.** Distinguish, from symptoms
   alone, whether an apparent vCenter Server outage is a VCHA failover in
   progress, a genuine appliance failure requiring restore, or an identity/
-  authentication failure that only looks like an outage (Chapter 3) —
+  authentication failure that only looks like an outage ([Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md)) —
   these three require materially different remediation paths and
   conflating them wastes critical response time.
 - **vSAN health category fluency.** Practice rapidly categorizing a
-  Skyline Health finding (Chapter 6) into network, physical disk,
+  Skyline Health finding ([Chapter 6](06-vsphere-storage-and-vsan.md)) into network, physical disk,
   cluster, or data categories from its description alone, since correct
   categorization determines which deeper diagnostic tool (network MTU
   test, disk device check, cluster membership check) to reach for next.
 - **HA/DRS/vMotion failure signature recognition.** Rehearse
   distinguishing an HA isolation-response-driven restart from a genuine
   host failure, and a vMotion compatibility failure from a vMotion
-  network failure (Chapter 7), from their respective error signatures
+  network failure ([Chapter 7](07-vsphere-availability-mobility-and-cluster-services.md)), from their respective error signatures
   alone.
 - **Licensing symptom recognition.** Practice recognizing that an
   unexpected feature gap with no accompanying configuration error is a
@@ -238,18 +238,18 @@ esxcli vsan network list
   this repository's certification-to-volume mapping.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated vSphere
   9.x / NSX 4.x baseline referenced throughout this volume.
-- See Chapter 1 for the VVF-versus-VCF scope distinction.
-- See Chapter 13 for the parallel VCF-scoped support exam and its
+- See [Chapter 1](01-vmware-virtualization-architecture-and-design.md) for the VVF-versus-VCF scope distinction.
+- See [Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md) for the parallel VCF-scoped support exam and its
   layered diagnostic approach, applicable here within VVF's narrower
   product surface.
-- See Chapter 15 for the VVF administrator exam this chapter's support
+- See [Chapter 15](15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md) for the VVF administrator exam this chapter's support
   scope is paired with.
 
 **Knowledge checks** *(original conceptual review questions — not
 reproductions of any Broadcom exam item)*
 
 1. What specifically is out of scope for this exam's troubleshooting
-   domain that is in scope for Chapter 12's VCP-NV exam and Chapter 13's
+   domain that is in scope for [Chapter 12](12-vcp-network-virtualization-2v0-41-24-exam-preparation.md)'s VCP-NV exam and [Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md)'s
    VCP-VCF Support exam?
 2. Describe the recommended layered triage sequence for an ambiguous "VM
    unreachable" report, and explain why a consistent sequence matters
@@ -262,7 +262,7 @@ reproductions of any Broadcom exam item)*
    check?
 5. Why does this chapter recommend treating the design-domain content on
    this exam as a triage filter rather than a deployment skill, in
-   contrast to how Chapter 15 treats the same design content for the
+   contrast to how [Chapter 15](15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md) treats the same design content for the
    administrator exam?
 
 ## Hands-On Lab
@@ -289,14 +289,14 @@ licensing-recognition exercise, all under time pressure.
 
 2. **Fault 1 (compute domain, timed, target 10 minutes):** stop the
    `hostd` service on one host (or simulate an equivalent host-management
-   symptom) and diagnose using the DCUI/esxcli approach from Chapter 2.
+   symptom) and diagnose using the DCUI/esxcli approach from [Chapter 2](02-esxi-installation-configuration-and-host-operations.md).
 
    **Expected result:** correctly identify the management-agent-level
    issue (as distinct from a full host failure) and restart the affected
    service without a full reboot.
 
 3. **Fault 2 (storage domain, timed, target 15 minutes):** introduce an
-   MTU mismatch on one host's vSAN VMkernel adapter (as in the Chapter 6
+   MTU mismatch on one host's vSAN VMkernel adapter (as in the [Chapter 6](06-vsphere-storage-and-vsan.md)
    lab) and diagnose using `esxcli vsan cluster get` and `vmkping`.
 
    **Expected result:** correctly identify the MTU mismatch as a network-
@@ -305,7 +305,7 @@ licensing-recognition exercise, all under time pressure.
 
 4. **Fault 3 (network domain, timed, target 10 minutes):** deliberately
    misconfigure a port group's VLAN ID so a test VM loses expected
-   connectivity, and diagnose using the approach from Chapter 4.
+   connectivity, and diagnose using the approach from [Chapter 4](04-vsphere-virtual-networking.md).
 
    **Expected result:** correctly identify the VLAN mismatch within the
    time box.
@@ -333,12 +333,12 @@ licensing-recognition exercise, all under time pressure.
 The VCP-VVF Support (2V0-18.25) exam applies a support-engineer,
 troubleshooting-first lens to VVF's narrower product scope — vSphere and
 vSAN administration without full NSX or multi-domain SDDC Manager
-orchestration — distinguishing it from both Chapter 13's VCF-scoped
+orchestration — distinguishing it from both [Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md)'s VCF-scoped
 support exam (broader product surface, same diagnostic orientation) and
-Chapter 15's VVF administrator exam (same product scope, design-and-
+[Chapter 15](15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md)'s VVF administrator exam (same product scope, design-and-
 deploy orientation rather than support orientation). Effective
 preparation applies the same layered, infrastructure-first diagnostic
-habit established in Chapter 13, scoped down to compute, storage, and
+habit established in [Chapter 13](13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md), scoped down to compute, storage, and
 networking failure domains grounded in Chapters 2, 3, 4, 6, 7, and 9,
 plus deliberate attention to licensing-restriction symptom recognition as
 an easily underweighted skill.

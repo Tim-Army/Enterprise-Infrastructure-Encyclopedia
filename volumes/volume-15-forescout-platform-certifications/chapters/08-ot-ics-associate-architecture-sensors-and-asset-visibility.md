@@ -27,7 +27,7 @@ IT/IoT devices. Operational technology (OT) and industrial control system
 management systems, and process-control networks — have fundamentally
 different constraints, and the platform addresses them through a
 dedicated capability: **eyeInspect** (the OT/ICS-focused module
-introduced in Chapter 1's licensing table). This chapter and Chapter 9
+introduced in [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)'s licensing table). This chapter and [Chapter 9](09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md)
 cover the OT/ICS-specific FSCA and FSCE certification tracks referenced in
 [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md).
 
@@ -39,7 +39,7 @@ from earlier chapters unsafe or ineffective to apply unmodified:
 - **Availability and safety take precedence over confidentiality.** A
   process-control network's primary requirement is that the physical
   process it controls keeps running safely; an active scan technique
-  that is routine on an IT segment (Chapter 1) can crash a
+  that is routine on an IT segment ([Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)) can crash a
   legacy programmable logic controller (PLC) or induce unexpected
   behavior in safety-instrumented systems. OT visibility is therefore
   built around **strictly passive** monitoring as the default posture,
@@ -87,7 +87,7 @@ detection within that zone.
 ### eyeInspect sensor architecture
 
 An eyeInspect deployment is architecturally similar in spirit to the
-enterprise appliance model from Chapter 1 — a purpose-built monitoring
+enterprise appliance model from [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md) — a purpose-built monitoring
 node consuming a mirrored traffic feed — but tuned specifically for OT:
 
 - **Passive sensors.** Physical or virtual appliances connected to
@@ -135,13 +135,13 @@ identical at the protocol level to an unauthorized one); that
 authorization context has to come from correlating sensor data with
 change-management records, engineering workstation identity, and
 timing expectations — the asset-curation and threat-detection discipline
-covered in depth in Chapter 9.
+covered in depth in [Chapter 9](09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md).
 
 ## Design Considerations
 
 - **Passive-only as the default, not the exception.** Unlike enterprise
   IT deployments where active scanning is a normal, tunable enhancement
-  (Chapter 1), OT deployments should treat active techniques as an
+  ([Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)), OT deployments should treat active techniques as an
   explicit, individually risk-assessed exception requiring plant
   engineering sign-off — never a default setting.
 - **Sensor placement by zone, not by convenience.** Place sensors
@@ -163,7 +163,7 @@ covered in depth in Chapter 9.
 - **Change-management alignment.** OT environments typically have
   formal, safety-driven change-management processes already in place
   (planned maintenance windows, engineering change orders); design asset
-  visibility and any future control capability (Chapter 9) to integrate
+  visibility and any future control capability ([Chapter 9](09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md)) to integrate
   with those existing processes rather than introducing a parallel,
   IT-style change process unfamiliar to plant operations staff.
 - **Stakeholder alignment between IT security and OT/plant engineering.**
@@ -183,7 +183,7 @@ covered in depth in Chapter 9.
    criticality, rather than attempting full simultaneous coverage across
    every zone in an initial phase.
 3. **Deploy sensors passively**, connecting monitor interfaces to
-   SPAN/mirror sessions or taps exactly as in Chapter 1's enterprise
+   SPAN/mirror sessions or taps exactly as in [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)'s enterprise
    pattern, but with an explicit verification step confirming no sensor
    interface is inadvertently configured to transmit onto the monitored
    segment.
@@ -197,18 +197,18 @@ covered in depth in Chapter 9.
    distinguishable OT-specific properties (protocol role, vendor/model
    where derivable, Purdue level).
 6. **Establish a baseline observation period** (commonly longer than the
-   enterprise IT baseline in Chapter 1 — OT traffic patterns often
+   enterprise IT baseline in [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md) — OT traffic patterns often
    follow production shift schedules and periodic maintenance cycles
    that a short window will not capture) before any classification or
    future policy work depends on the data being representative.
 7. **Document the sensor deployment's Purdue-level coverage map** as a
-   living artifact, so future sensor-placement decisions (Chapter 9)
+   living artifact, so future sensor-placement decisions ([Chapter 9](09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md))
    build on an explicit record of what is and is not currently visible.
 
 ## Validation and Troubleshooting
 
 - **No traffic observed on a newly connected OT sensor.** Apply the same
-  first checks as Chapter 1's enterprise SPAN troubleshooting (switch
+  first checks as [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)'s enterprise SPAN troubleshooting (switch
   SPAN session active, correct source, monitor interface up), but also
   confirm the OT switch itself supports and is licensed for SPAN/mirror
   functionality — a nontrivial share of legacy OT switching hardware does
@@ -248,13 +248,13 @@ covered in depth in Chapter 9.
   network topology) as sensitive in its own right — it is
   reconnaissance-grade information about critical infrastructure, and
   access to it should be scoped as tightly as the RBAC guidance in
-  Chapter 4.
+  [Chapter 4](04-host-management-administration-inventory-and-reporting.md).
 - Coordinate any sensor deployment or configuration change through the
   same change-management process governing the OT environment itself,
   including advance notice to plant operations regardless of how low-risk
   the change appears from a pure IT perspective.
 - Maintain a clear, documented boundary between visibility (this
-  chapter) and any control capability (Chapter 9) — do not enable
+  chapter) and any control capability ([Chapter 9](09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md)) — do not enable
   OT control actions incidentally as a side effect of a visibility
   deployment; treat that as a distinct, separately risk-assessed decision.
 - Recognize that many industrial protocols carry no native
@@ -274,10 +274,10 @@ covered in depth in Chapter 9.
   baseline for this volume.
 - Purdue Enterprise Reference Architecture (PERA) — the industry-standard
   reference model for ICS network layering used throughout this chapter
-  and Chapter 9.
+  and [Chapter 9](09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md).
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   FSCA: OT/ICS and FSCE: OT/ICS blueprint domain mapping for this volume.
-- Chapter 1 of this volume for the enterprise appliance and passive
+- [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md) of this volume for the enterprise appliance and passive
   discovery architecture this chapter adapts for OT/ICS.
 
 **Knowledge Checks**
@@ -291,7 +291,7 @@ covered in depth in Chapter 9.
    describe what passive DPI reveals about each, and one limitation of
    that visibility.
 4. Why does an OT baseline observation period typically need to be
-   longer than the enterprise IT baseline from Chapter 1?
+   longer than the enterprise IT baseline from [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)?
 5. Why must passive protocol-level observation be corroborated with
    change-management and identity context before an operation can be
    judged authorized or unauthorized?
@@ -365,8 +365,8 @@ without any active technique.
 - Remove the lab SPAN session if the switch interfaces are needed
   elsewhere (`no monitor session <ID>` on Cisco IOS-style switches).
 - Stop the PLC/protocol traffic simulator if it will not be reused in
-  Chapter 9's lab.
-- Retain the annotated Purdue-model diagram; Chapter 9's lab builds on
+  [Chapter 9](09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md)'s lab.
+- Retain the annotated Purdue-model diagram; [Chapter 9](09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md)'s lab builds on
   it.
 
 ## Summary and Completion Checklist
@@ -378,7 +378,7 @@ about sensor placement, the eyeInspect sensor architecture and its
 strictly passive default posture, and what passive deep packet inspection
 of industrial protocols (Modbus, DNP3, EtherNet/IP, IEC 61850, S7comm,
 BACnet, and others) can and cannot reveal about process-control
-operations. Chapter 9 builds on this visibility foundation to cover
+operations. [Chapter 9](09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md) builds on this visibility foundation to cover
 OT/ICS deployment design at expert depth, asset curation, and
 OT-specific troubleshooting.
 

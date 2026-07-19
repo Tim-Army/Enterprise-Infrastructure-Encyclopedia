@@ -18,7 +18,7 @@
 ## Theory and Architecture
 
 Enterprise identity is the control plane that both Windows Server
-(Chapter 03) and Linux (Chapter 02) administration ultimately depend on:
+([Chapter 03](03-windows-server-administration.md)) and Linux ([Chapter 02](02-enterprise-linux-administration.md)) administration ultimately depend on:
 almost every access-control decision in this volume — who can log in to a
 host, who can approve a change, which service account a scheduled task
 runs as — traces back to a directory service. This chapter covers Active
@@ -96,7 +96,7 @@ based on their OU, site, or domain membership, following a documented
 precedence order — Local, Site, Domain, OU (LSDOU) — with the closest
 (most specific) GPO winning on conflict unless a parent GPO is enforced.
 Group Policy is the primary mechanism for applying the security and
-configuration baselines discussed in Chapter 08 across a Windows fleet.
+configuration baselines discussed in [Chapter 08](08-systems-security-automation-and-compliance.md) across a Windows fleet.
 
 ### Linux integration with Active Directory
 
@@ -159,7 +159,7 @@ covered in their respective volumes.
   individually (`realm join`, requiring a privileged one-time credential
   per host) or through a pre-provisioned computer-object/keytab pattern
   suitable for automated image builds — the latter scales far better for
-  golden-image pipelines (Chapter 06).
+  golden-image pipelines ([Chapter 06](06-configuration-software-and-patch-management.md)).
 - **Group Policy sprawl.** Every additional GPO adds processing time at
   logon/boot and a place for conflicting settings to hide. Consolidate
   related settings into fewer, well-documented GPOs rather than one GPO

@@ -21,8 +21,8 @@
 ## Theory and Architecture
 
 The preceding chapters built visibility (Chapters 1–2), governance policy
-(Chapter 3), and the operational layer that manages a deployment day to
-day (Chapter 4) largely within the platform's own boundary. Real
+([Chapter 3](03-clarification-compliance-and-control-policies.md)), and the operational layer that manages a deployment day to
+day ([Chapter 4](04-host-management-administration-inventory-and-reporting.md)) largely within the platform's own boundary. Real
 deployments rarely stop at that boundary: Forescout's asset and
 compliance data is valuable to a SIEM correlating security events, a SOAR
 platform orchestrating incident response, an ITSM system tracking
@@ -36,10 +36,10 @@ outcomes rather than isolated technical features.
 
 ### The eyeExtend integration model
 
-eyeExtend is both a licensed capability module (Chapter 1) and the
+eyeExtend is both a licensed capability module ([Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)) and the
 platform's general term for its catalog of third-party integration
 plugins. Architecturally, an eyeExtend module is a specialized plugin
-(Chapter 2) that exchanges data bidirectionally with an external system
+([Chapter 2](02-console-plugins-properties-and-asset-classification.md)) that exchanges data bidirectionally with an external system
 rather than a piece of network infrastructure:
 
 - **Inbound enrichment.** The external system contributes data that
@@ -73,7 +73,7 @@ rather than a piece of network infrastructure:
 
 ### eyeSegment: segmentation visibility and policy modeling
 
-Where eyeControl (Chapter 3) acts on individual hosts, **eyeSegment**
+Where eyeControl ([Chapter 3](03-clarification-compliance-and-control-policies.md)) acts on individual hosts, **eyeSegment**
 operates at the level of traffic flows between groups of hosts. It builds
 a segmentation model from observed and enriched traffic data — which
 groups of assets actually communicate with which other groups, over which
@@ -91,7 +91,7 @@ micro-segmentation overlay.
 
 ### Cross-policy orchestration
 
-The policy engine's shared condition/action model (Chapter 3) allows
+The policy engine's shared condition/action model ([Chapter 3](03-clarification-compliance-and-control-policies.md)) allows
 policies to be chained: a control policy's action can add a host to a
 group that a separate reporting policy watches, which in turn can trigger
 an eyeExtend action that opens an ITSM ticket referencing the specific
@@ -126,7 +126,7 @@ monolithic rule.
   update) require write credentials into the external system; scope those
   credentials to the minimum API surface the integration actually needs,
   mirroring the least-privilege guidance already applied to plugin
-  credentials in Chapter 2.
+  credentials in [Chapter 2](02-console-plugins-properties-and-asset-classification.md).
 - **eyeSegment modeling before enforcement.** Always model a proposed
   segmentation boundary against a representative traffic observation
   window before enforcing it, and involve application/business owners in
@@ -154,7 +154,7 @@ monolithic rule.
    correctly as properties on a sample of known hosts before building any
    policy logic that depends on it.
 3. **Author a policy that consumes the enriched property**, using the
-   same condition/action pattern from Chapter 3. Example: gating a
+   same condition/action pattern from [Chapter 3](03-clarification-compliance-and-control-policies.md). Example: gating a
    control action on an imported vulnerability property:
 
    ```text
@@ -179,7 +179,7 @@ monolithic rule.
    observed baseline, flagging unexpected flows for business-owner review
    before any enforcement is proposed.
 7. **Stage segmentation enforcement** the same way control policies are
-   staged in Chapter 3 — monitor/simulate first, pilot scope next, full
+   staged in [Chapter 3](03-clarification-compliance-and-control-policies.md) — monitor/simulate first, pilot scope next, full
    enforcement last.
 8. **Document the end-to-end orchestrated workflow** (for example, the
    guest onboarding flow spanning clarification through eyeExtend
@@ -215,7 +215,7 @@ monolithic rule.
   every flagged flow as an error to eliminate.
 - **A chained/orchestrated workflow stalls partway through.** Check each
   policy in the chain independently using its own action history
-  (Chapter 4) to isolate which stage failed, rather than assuming the
+  ([Chapter 4](04-host-management-administration-inventory-and-reporting.md)) to isolate which stage failed, rather than assuming the
   entire chain is broken; chained policies fail independently, not as a
   single unit.
 
@@ -252,7 +252,7 @@ monolithic rule.
   administration documentation for the 8.5.x release.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this volume.
-- Chapter 3 of this volume for the policy condition/action model that
+- [Chapter 3](03-clarification-compliance-and-control-policies.md) of this volume for the policy condition/action model that
   integration-driven policies extend.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   FSCA/FSCP/FSCE blueprint domain mapping for this volume.
@@ -282,7 +282,7 @@ action, and validate closed-loop behavior.
 **Prerequisites**
 
 - The lab appliance and Console from Chapters 1–4, with the exclusion
-  group and compliance/control policies from Chapter 3 available for
+  group and compliance/control policies from [Chapter 3](03-clarification-compliance-and-control-policies.md) available for
   reuse.
 - Console access with permission to create custom properties, policies,
   and (if available in the lab license) a test eyeExtend module
@@ -316,7 +316,7 @@ action, and validate closed-loop behavior.
    property, and compare the observed latency and data fidelity against
    the simulation.
 7. **Negative test.** Add the test endpoint to the `Exclusion - Managed
-   Exceptions` group (reused from Chapter 3), set `Lab Vulnerability
+   Exceptions` group (reused from [Chapter 3](03-clarification-compliance-and-control-policies.md)), set `Lab Vulnerability
    Severity` to `Critical` again, and confirm the policy does **not**
    escalate the excluded host — demonstrating that integration-triggered
    policies respect the same exclusion-group safeguard as directly

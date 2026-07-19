@@ -26,10 +26,10 @@ transaction but the continuous, accurate delivery of traffic to every
 subscribed tool. Day-2 operations for a Gigamon fabric center on three
 recurring disciplines:
 
-1. **Health monitoring.** GigaVUE-FM's dashboards (Chapter 04) surface
+1. **Health monitoring.** GigaVUE-FM's dashboards ([Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md)) surface
    node health, port utilization, GigaSMART engine utilization
-   (Chapter 06), inline tool group status and fail-mode state
-   (Chapter 07), and cluster membership health (Chapter 02) as a
+   ([Chapter 06](06-gigasmart-traffic-intelligence-and-packet-transformation.md)), inline tool group status and fail-mode state
+   ([Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md)), and cluster membership health ([Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md)) as a
    consolidated fabric-wide view. Establishing baseline utilization for
    every port and GigaSMART engine — not just alerting on hard failures —
    is what allows an operator to notice a slow drift toward
@@ -43,7 +43,7 @@ recurring disciplines:
    (tracked against the baseline in
    [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md)) should be kept
    current against a defined maintenance cadence, using the phased,
-   cluster-aware upgrade pattern introduced in Chapter 08's Ansible
+   cluster-aware upgrade pattern introduced in [Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md)'s Ansible
    example — never left indefinitely on an end-of-support release, since
    the fabric sits in the path of, or directly handles copies of,
    security-relevant traffic across the entire enterprise.
@@ -81,7 +81,7 @@ patterns recur across a fabric's operational life:
 
 - **Silent configuration drift**, where a change made directly against a
   node or through the GigaVUE-FM UI diverges from the version-controlled
-  source of truth established in Chapter 08 — caught by scheduled
+  source of truth established in [Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md) — caught by scheduled
   reconciliation, not by symptomatic troubleshooting.
 - **Licensing expiry**, where a GigaSMART application or advanced-feature
   license lapses and a previously functioning capability (deduplication,
@@ -141,7 +141,7 @@ and certification program materials before planning a study timeline.
   engineers who will not sit the exam.
 - **Plan the capstone (and any major fabric change) with a rollback path
   defined before starting**, consistent with the change-management
-  discipline in Volume I — a capstone-scale exercise touching
+  discipline in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md) — a capstone-scale exercise touching
   acquisition, mapping, GigaSMART, and inline configuration
   simultaneously has more moving parts than any single prior chapter's
   lab, and deserves the same rollback discipline as a production change
@@ -166,7 +166,7 @@ Dashboard > Fabric Health
   - License expiration timeline
 ```
 
-### Scripted health/capacity reconciliation (extending Chapter 08's API patterns)
+### Scripted health/capacity reconciliation (extending [Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md)'s API patterns)
 
 ```bash
 #!/usr/bin/env bash
@@ -186,8 +186,8 @@ curl -sk "https://${FM_HOST}/v1/fabric/utilization" \
 ```
 
 Run on a schedule (a CI/CD scheduled pipeline, or a cron-triggered job,
-per Volume I's automation architecture patterns) and route findings to
-the same ticketing integration configured in Chapter 08, turning
+per [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)'s automation architecture patterns) and route findings to
+the same ticketing integration configured in [Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md), turning
 capacity review from a manual quarterly exercise into a continuously
 enforced check.
 
@@ -239,9 +239,9 @@ enforced check.
   higher-severity "inline path fails closed and blocks production
   traffic" scenario — with defined escalation paths and rehearsed
   procedures, extending the inline-specific rehearsal recommendation from
-  Chapter 07 to the fabric's full operational lifecycle.
-- Review fabric-wide RBAC (Chapter 04) and automation credential scope
-  (Chapter 08) on a recurring audit cadence, not only at initial
+  [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md) to the fabric's full operational lifecycle.
+- Review fabric-wide RBAC ([Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md)) and automation credential scope
+  ([Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md)) on a recurring audit cadence, not only at initial
   deployment, since access accumulates and drifts from least-privilege
   over an operational lifetime exactly as it does in any other system.
 - Track every engineer's Gigamon-specific training and certification
@@ -257,7 +257,7 @@ enforced check.
   points, and expired temporary maps (the "undocumented tribal-knowledge
   maps" pattern from Theory and Architecture) are actually removed, not
   merely disabled, closing the configuration-hygiene loop this volume has
-  emphasized since Chapter 01's tap inventory.
+  emphasized since [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md)'s tap inventory.
 
 ## References and Knowledge Checks
 
@@ -299,12 +299,12 @@ negative test, and a documented rollback.
 **Prerequisites**
 
 - Lab GigaVUE node(s) and GigaVUE-FM instance from prior chapters'
-  exercises (physical or virtual), with the Chapter 02, 04, 05, 06, and 07
+  exercises (physical or virtual), with the [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md), 04, 05, 06, and 07
   lab configurations available as a starting baseline (or rebuilt fresh,
   following those chapters' steps).
 - A lab traffic generator and at least two capture/receiving tools (one
-  out-of-band, one representing an inline tool per Chapter 07's pattern).
-- API access to the lab GigaVUE-FM instance, per Chapter 08.
+  out-of-band, one representing an inline tool per [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md)'s pattern).
+- API access to the lab GigaVUE-FM instance, per [Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md).
 - An isolated lab network segment.
 - A written rollback plan drafted before starting (see step 1).
 
@@ -316,17 +316,17 @@ negative test, and a documented rollback.
    definitions, and inline tool group settings from prior chapters'
    labs).
 2. Configure an acquisition source (a TAP, SPAN, or virtual tap, per
-   Chapter 01 or 03) feeding a network port on the lab node.
+   [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md) or 03) feeding a network port on the lab node.
 3. Configure a first-level Flow Map filtering that source to a specific
-   traffic subset (per Chapter 05), destined to a GigaSMART group.
+   traffic subset (per [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md)), destined to a GigaSMART group.
 4. Configure GigaSMART packet slicing and Application Metadata
-   Intelligence export on that group (per Chapter 06), with a
+   Intelligence export on that group (per [Chapter 06](06-gigasmart-traffic-intelligence-and-packet-transformation.md)), with a
    second-level map delivering processed traffic to an out-of-band
    capture tool.
 5. Separately, configure an inline network group and inline tool group
-   with heartbeat-based fail-open behavior (per Chapter 07), positioned on
+   with heartbeat-based fail-open behavior (per [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md)), positioned on
    a distinct lab link from the out-of-band path in steps 2–4.
-6. Using the GigaVUE-FM API (per Chapter 08), query the fabric's current
+6. Using the GigaVUE-FM API (per [Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md)), query the fabric's current
    map inventory and confirm both the out-of-band chain and the inline
    map appear as expected, and record this output as your pre-validation
    baseline.
@@ -343,9 +343,9 @@ negative test, and a documented rollback.
    link and confirm it passes through the lab inline tool successfully.
 9. **Multi-stage negative test:** (a) narrow the first-level map's rule to
    exclude the test traffic and confirm the out-of-band chain correctly
-   shows no output (reproducing Chapter 05's rule-scope behavior); restore
+   shows no output (reproducing [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md)'s rule-scope behavior); restore
    the rule; then (b) fail the lab inline tool and confirm the inline path
-   fails open per Chapter 07's behavior; restore the inline tool.
+   fails open per [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md)'s behavior; restore the inline tool.
    **Expected result:** both negative tests reproduce the specific,
    isolated failure behavior documented in their respective chapters,
    confirming the integrated deployment did not introduce unexpected

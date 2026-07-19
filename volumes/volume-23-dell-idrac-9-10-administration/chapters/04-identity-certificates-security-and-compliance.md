@@ -12,7 +12,7 @@
 - Explain and configure the silicon root of trust, Secure Boot, and System
   Lockdown Mode as layered hardening controls.
 - Perform a System Erase and explain how it differs from the factory reset
-  covered in Chapter 2.
+  covered in [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md).
 - Map iDRAC security controls to common compliance frameworks referenced
   by enterprise security teams.
 
@@ -34,7 +34,7 @@ capability without full administrative control.
 
 ### Directory services integration
 
-Beyond local accounts, iDRAC (Express tier and above, per Chapter 1's
+Beyond local accounts, iDRAC (Express tier and above, per [Chapter 1](01-architecture-generations-licensing-and-first-access.md)'s
 licensing discussion) integrates with centralized identity through two
 distinct mechanisms:
 
@@ -59,7 +59,7 @@ production fleet rather than relying on local accounts everywhere.
 ### Certificates: why the factory default isn't enough
 
 Every iDRAC ships with a self-signed TLS certificate, sufficient to
-establish encryption for first access (Chapter 1) but insufficient for
+establish encryption for first access ([Chapter 1](01-architecture-generations-licensing-and-first-access.md)) but insufficient for
 production use for two reasons: it triggers a browser/API trust warning
 that trains administrators and automation alike to click through
 certificate errors, which is precisely the behavior that makes a genuine
@@ -102,7 +102,7 @@ firmware change would itself constitute a compliance event.
 
 ### System Erase and its relationship to factory reset
 
-Chapter 2 introduced factory reset as an iDRAC-configuration-only
+[Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md) introduced factory reset as an iDRAC-configuration-only
 operation and flagged System Erase as the correct tool for genuine
 sanitization. System Erase is a Lifecycle Controller capability that can
 selectively or comprehensively wipe: iDRAC configuration and logs, BIOS
@@ -112,8 +112,8 @@ card content, and — critically, unlike factory reset — can be extended to
 trigger storage-level secure erase on attached drives that support it.
 This makes System Erase the appropriate procedure before a server leaves
 organizational control, aligned with the media sanitization principles in
-NIST SP 800-88 referenced elsewhere in this encyclopedia (Volume I,
-Chapter 8).
+NIST SP 800-88 referenced elsewhere in this encyclopedia ([Volume I](../../volume-01-enterprise-engineering-foundations/README.md),
+[Chapter 8](08-firmware-idrac-bios-lifecycle-controller-and-platform-updates.md)).
 
 ## Design Considerations
 
@@ -272,7 +272,7 @@ administration until the erase job finishes.
 ## Validation and Troubleshooting
 
 - **Directory-integrated login fails despite correct group
-  membership.** Confirm NTP sync (Chapter 3) first — Kerberos and LDAPS
+  membership.** Confirm NTP sync ([Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)) first — Kerberos and LDAPS
   operations underlying AD/LDAP integration are time-sensitive and fail
   with authentication errors that do not obviously point to a clock
   problem. Also confirm the domain controller addresses configured in
@@ -280,7 +280,7 @@ administration until the erase job finishes.
   from a general management workstation.
 - **Certificate upload rejected.** Confirm the certificate's common name
   or Subject Alternative Name matches the exact hostname configured in
-  DNS (Chapter 3) and that the uploaded chain includes any required
+  DNS ([Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)) and that the uploaded chain includes any required
   intermediate CA certificates — a certificate valid in isolation is
   often rejected by strict clients if the intermediate chain is
   incomplete.
@@ -350,7 +350,7 @@ administration until the erase job finishes.
 - Dell Technologies, *iDRAC Redfish API Guide* — `AccountService`,
   `CertificateService`, and `SecureBoot` resources
 - NIST Special Publication 800-88, *Guidelines for Media Sanitization*
-  (referenced in Volume I, Chapter 08)
+  (referenced in [Volume I, Chapter 08](../../volume-01-enterprise-engineering-foundations/chapters/08-infrastructure-lifecycle-management.md))
 - `SOFTWARE_VERSIONS.md` in this repository for the dated iDRAC9/iDRAC10
   baseline
 
@@ -364,8 +364,8 @@ administration until the erase job finishes.
 3. What does the silicon root of trust protect against that a purely
    software-based integrity check cannot?
 4. How does System Erase differ from the factory reset covered in
-   Chapter 2, and why does that difference matter for decommissioning?
-5. Why does clock drift (Chapter 3) so often present as an authentication
+   [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md), and why does that difference matter for decommissioning?
+5. Why does clock drift ([Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)) so often present as an authentication
    or certificate failure rather than an obvious time-related error?
 
 ## Hands-On Lab
@@ -406,7 +406,7 @@ lab execution.
    plus Virtual Console access without configuration privilege, per the
    RACADM CLI Guide's current privilege table.
 2. Log in as `lab-operator` in a separate browser session and confirm you
-   can view system health but cannot modify network settings (Chapter 3).
+   can view system health but cannot modify network settings ([Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)).
    **Expected result:** configuration pages are visible but read-only or
    inaccessible, confirming the scoped privilege took effect.
 3. Generate a CSR:
@@ -450,7 +450,7 @@ lab execution.
    **Expected result:** both commands report consistent Secure Boot state
    (Enabled or Disabled, matching your BIOS configuration).
 7. **Negative test:** attempt to log in as `lab-operator` and change a
-   network setting from Chapter 3:
+   network setting from [Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md):
 
    ```bash
    racadm -u lab-operator -p 'LabOperator!2026' set iDRAC.IPv4.Gateway 10.20.30.99
@@ -480,7 +480,7 @@ Directory/LDAP integration for centralized authentication, certificate
 lifecycle management, and the layered hardware-anchored security model —
 silicon root of trust, Secure Boot, and System Lockdown Mode — that
 distinguishes iDRAC9/iDRAC10 from a purely software-hardened management
-controller. It also distinguished System Erase from the Chapter 2 factory
+controller. It also distinguished System Erase from the [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md) factory
 reset, establishing System Erase as the correct, comprehensive tool for
 decommissioning. The lab produced a scoped local account and a properly
 signed certificate, completing the security baseline this volume assumes

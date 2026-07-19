@@ -18,7 +18,7 @@
 
 ## Theory and Architecture
 
-Chapter 01's portfolio table placed Cortex Cloud (formerly Prisma Cloud) at
+[Chapter 01](01-cybersecurity-apprentice-foundations.md)'s portfolio table placed Cortex Cloud (formerly Prisma Cloud) at
 the cloud workload and posture security layer of defense-in-depth,
 distinct from Strata's network-perimeter enforcement and from the
 detection/response focus of Cortex XDR and XSIAM. This chapter goes deep on
@@ -89,7 +89,7 @@ overly permissive roles (a role granting `*:*` when the identity's actual
 usage touches three specific actions), and toxic combinations (a set of
 permissions that individually look reasonable but together enable a
 privilege-escalation or data-exfiltration path). This is a distinct
-discipline from network-layer least privilege (Chapter 05) but the same
+discipline from network-layer least privilege ([Chapter 05](05-application-identity-threat-and-data-security-policy.md)) but the same
 underlying principle — Zero Trust's "use least-privilege access" — applied
 to cloud identity rather than network traffic.
 
@@ -120,7 +120,7 @@ maintained policy sets that can drift apart.
   on day one. Prioritize agent coverage by workload risk: Internet-facing
   tiers and regulated-data workloads first, internal/low-risk batch
   workloads later or not at all if agentless coverage and compensating
-  network controls (Chapter 05) are judged sufficient for that tier.
+  network controls ([Chapter 05](05-application-identity-threat-and-data-security-policy.md)) are judged sufficient for that tier.
 - **Policy tuning against alert fatigue.** A freshly onboarded cloud
   account commonly surfaces a large initial backlog of CSPM findings.
   Triage by severity and exploitability (Internet-facing plus
@@ -249,7 +249,7 @@ curl -sk -X GET \
 - **Agent-based workload not reporting runtime data.** Confirm the agent
   process is running and has outbound reachability to the Cortex Cloud
   compute/runtime service endpoint; a common cause in restrictive network
-  environments is an egress security policy (Chapter 05) blocking the
+  environments is an egress security policy ([Chapter 05](05-application-identity-threat-and-data-security-policy.md)) blocking the
   agent's reporting traffic, which is a self-inflicted visibility gap
   worth checking before assuming an agent installation defect.
 - **CIEM shows a permission as "unused" that is actually used
@@ -274,13 +274,13 @@ curl -sk -X GET \
   surface reductions available in a cloud environment and are frequently
   under-prioritized relative to their risk.
 - Correlate CSPM/CWPP findings with Cortex XDR/XSIAM detections
-  (Chapter 02) for the same workload rather than reviewing each platform's
+  ([Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)) for the same workload rather than reviewing each platform's
   findings in isolation — the unified Cortex Cloud data model exists
   specifically to make this correlation available without manual
   cross-referencing.
 - Rotate and scope any Cortex Cloud API tokens used for automation
   (Checkov CI/CD integration, CIEM API queries) with the same discipline
-  as the PAN-OS/Panorama automation credentials from Chapter 07.
+  as the PAN-OS/Panorama automation credentials from [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md).
 - Periodically re-validate that agent-based coverage still matches the
   current risk-tiered rollout plan — workload inventories drift, and a
   newly provisioned Internet-facing tier deployed outside the original
@@ -301,7 +301,7 @@ curl -sk -X GET \
   this volume's certification mapping.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated baseline
   reference for this volume.
-- Volume VII — Cloud Infrastructure and Volume IX — Infrastructure
+- [Volume VII](../../volume-07-cloud-infrastructure/README.md) — Cloud Infrastructure and [Volume IX](../../volume-09-infrastructure-automation/README.md) — Infrastructure
   Automation, for the IAM and CI/CD pipeline concepts this chapter builds
   on.
 
@@ -442,13 +442,13 @@ known-bad configuration before remediation.
 ## Summary and Completion Checklist
 
 Cortex Cloud extends Zero Trust's least-privilege and continuous-
-verification principles from Chapter 01 into the cloud control plane
+verification principles from [Chapter 01](01-cybersecurity-apprentice-foundations.md) into the cloud control plane
 itself: CSPM continuously assesses configuration posture, CWPP protects
 running workloads, CIEM closes the identity-entitlement gap traditional
 network controls cannot see, and IaC scanning with Checkov shifts the same
 policy enforcement left into CI/CD so misconfiguration is rejected before
-it ever reaches production. Combined with Chapter 02's portfolio-wide
-Cortex overview and Chapter 08's enterprise capstone, this chapter
+it ever reaches production. Combined with [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)'s portfolio-wide
+Cortex overview and [Chapter 08](08-role-based-certification-portfolio-and-enterprise-capstone.md)'s enterprise capstone, this chapter
 completes the volume's coverage of the Palo Alto Networks platform across
 network, management, and cloud-native security domains.
 

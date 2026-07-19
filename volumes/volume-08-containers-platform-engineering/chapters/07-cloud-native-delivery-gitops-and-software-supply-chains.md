@@ -16,7 +16,7 @@
 
 ## Theory and Architecture
 
-Chapter 01 covered building, scanning, and signing an image. This chapter
+[Chapter 01](01-container-architecture-images-runtimes-and-registries.md) covered building, scanning, and signing an image. This chapter
 picks up immediately after the registry push: how that signed artifact
 becomes a running, continuously reconciled workload, and how the delivery
 pipeline itself becomes a verifiable part of the supply chain rather than
@@ -64,7 +64,7 @@ apply` or `helm upgrade` at the end of a build, an **in-cluster
 controller** continuously pulls the desired state from a Git repository
 and reconciles the live cluster toward it — the same
 watch-and-reconcile pattern that underlies every Kubernetes controller
-described in Chapter 02, applied to the cluster's own application
+described in [Chapter 02](02-kubernetes-architecture-and-cluster-lifecycle.md), applied to the cluster's own application
 manifests.
 
 ```text
@@ -122,14 +122,14 @@ metrics provider — typically Prometheus — for error rate, latency, or a
 custom business metric, and automatically **aborts and rolls back** if
 the new version's metrics breach a defined threshold before traffic
 shifts further. This closes the loop between deployment and the
-observability stack covered in depth in Chapter 09: a rollout is not
+observability stack covered in depth in [Chapter 09](09-platform-observability-reliability-and-lifecycle-operations.md): a rollout is not
 "successful" merely because pods reached `Running`, it is successful
 because the metrics that matter stayed within bounds while real traffic
 hit the new version.
 
 ### Software supply chain security: from provenance to enforcement
 
-Chapter 01 covered signing an individual image digest with cosign.
+[Chapter 01](01-container-architecture-images-runtimes-and-registries.md) covered signing an individual image digest with cosign.
 Enterprise supply chain security extends that single control into a
 framework:
 
@@ -149,7 +149,7 @@ framework:
   require an SBOM exists and reference it during admission, not merely
   generate one as a build-time artifact nobody consults.
 
-The chain closes at deployment time: Chapter 06's Kyverno `verifyImages`
+The chain closes at deployment time: [Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md)'s Kyverno `verifyImages`
 rule (or an equivalent Gatekeeper/OPA policy, or Sigstore's dedicated
 `policy-controller`) enforces that only images carrying a valid signature
 — and, at higher maturity, a valid provenance attestation matching an
@@ -195,16 +195,16 @@ business-logic correctness bug that returns `200` with wrong data, for
 example. Progressive delivery reduces blast radius for the failure modes
 its Analysis step actually measures; it does not substitute for adequate
 pre-production testing, and the Analysis metrics chosen deserve the same
-design scrutiny as an SLO (Chapter 09).
+design scrutiny as an SLO ([Chapter 09](09-platform-observability-reliability-and-lifecycle-operations.md)).
 
 **Supply chain enforcement should ratchet up, not appear fully-formed.**
 Requiring valid signatures on every image is a reasonable starting
-enforcement point with low false-positive risk once Chapter 01's signing
+enforcement point with low false-positive risk once [Chapter 01](01-container-architecture-images-runtimes-and-registries.md)'s signing
 step is already in every pipeline. Requiring a specific provenance
 attestation and matching builder identity is a stronger control but a
 larger lift — every existing pipeline needs a compliant attestation
 step before enforcement can flip from `audit` to `enforce`, mirroring the
-Pod Security admission rollout pattern from Chapter 06 exactly.
+Pod Security admission rollout pattern from [Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md) exactly.
 
 ## Implementation and Automation
 
@@ -399,7 +399,7 @@ kubectl describe analysisrun -n payments -l rollout=checkout-api
 | --- | --- | --- |
 | Argo CD/Flux shows `OutOfSync` indefinitely | A cluster-side field is mutated by another controller (HPA-managed `replicas`, a mutating webhook) not accounted for with an `ignoreDifferences` rule | `argocd app diff`; add a targeted `ignoreDifferences`/`ignore` entry rather than disabling self-heal broadly |
 | Progressive delivery rollout stuck at a partial weight | An `AnalysisRun` failed and `failureLimit` was reached, halting promotion by design | `kubectl describe analysisrun`; check the underlying Prometheus query result |
-| Deployment succeeds but the pod is immediately blocked at admission | Image signature/provenance policy from Chapter 06/07 rejected the digest (expected, working as intended, or a broken pipeline step) | `kubectl get events --field-selector reason=FailedCreate`; confirm the CI signing/attestation step actually ran and succeeded |
+| Deployment succeeds but the pod is immediately blocked at admission | Image signature/provenance policy from [Chapter 06](06-kubernetes-identity-configuration-policy-and-security.md)/07 rejected the digest (expected, working as intended, or a broken pipeline step) | `kubectl get events --field-selector reason=FailedCreate`; confirm the CI signing/attestation step actually ran and succeeded |
 | Helm upgrade fails with `another operation (install/upgrade) in progress` | A prior Helm operation was interrupted, leaving the release lock held | `helm history <release>`; `helm rollback` to the last good revision or `--force` only after confirming no partial write is stuck |
 | Self-healing GitOps reverts an emergency manual `kubectl edit` mid-incident | Working as designed — Git is the source of truth | Use the tool's documented sync-pause/override path; commit the emergency change to Git immediately afterward |
 
@@ -410,11 +410,11 @@ kubectl describe analysisrun -n payments -l rollout=checkout-api
   model — that access belongs solely to the in-cluster controller.
 - Enable `selfHeal` deliberately and document the break-glass override
   procedure before an incident forces the team to discover it live.
-- Require signature verification (Chapter 01/06) as a baseline admission
+- Require signature verification ([Chapter 01](01-container-architecture-images-runtimes-and-registries.md)/06) as a baseline admission
   control for every production namespace before layering stronger
   provenance-attestation requirements on top.
 - Pin canary/blue-green Analysis metrics to the same SLO definitions used
-  for ongoing production alerting (Chapter 09) so a rollout gate and a
+  for ongoing production alerting ([Chapter 09](09-platform-observability-reliability-and-lifecycle-operations.md)) so a rollout gate and a
   production alert never disagree about what "healthy" means.
 - Separate Git repository access by environment or team boundary rather
   than granting broad write access to a single monorepo covering every
@@ -422,11 +422,11 @@ kubectl describe analysisrun -n payments -l rollout=checkout-api
   (CODEOWNERS, branch protection) genuinely enforce the same boundary.
 - Store Helm chart repositories and OCI-based chart registries behind the
   same scanning and mirroring controls established for container images
-  in Chapter 01 — a chart can reference or template arbitrary manifests
+  in [Chapter 01](01-container-architecture-images-runtimes-and-registries.md) — a chart can reference or template arbitrary manifests
   and deserves the same supply-chain scrutiny as an image.
 - Version-pin chart dependencies and Kustomize remote bases to a specific
   Git ref or chart version rather than a floating branch/tag, for the
-  same tag-mutability reasons discussed for images in Chapter 01.
+  same tag-mutability reasons discussed for images in [Chapter 01](01-container-architecture-images-runtimes-and-registries.md).
 
 ## References and Knowledge Checks
 
@@ -623,7 +623,7 @@ controller, shrinking pipeline blast radius and making Git the
 continuously enforced source of truth. Progressive delivery layers
 metrics-gated, automatically-rolled-back rollout strategies on top of
 that reconciliation loop. Software supply chain security extends
-Chapter 01's per-image signing into a full framework — SLSA provenance,
+[Chapter 01](01-container-architecture-images-runtimes-and-registries.md)'s per-image signing into a full framework — SLSA provenance,
 in-toto attestations, and admission-time enforcement — turning delivery
 integrity from a set of independently useful practices into an
 end-to-end verifiable property.

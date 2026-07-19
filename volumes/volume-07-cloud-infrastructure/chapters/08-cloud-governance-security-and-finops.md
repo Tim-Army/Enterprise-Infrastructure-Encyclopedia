@@ -32,7 +32,7 @@ last quarter's audit can drift out of compliance the same afternoon
 through a routine, individually reasonable change. CSPM tooling
 continuously inventories deployed resources, evaluates them against a
 benchmark (commonly a CIS Benchmark for the specific provider, or an
-organization's own policy-as-code rule set from Chapter 02), and reports
+organization's own policy-as-code rule set from [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md)), and reports
 or remediates findings on an ongoing basis rather than a periodic cycle.
 
 ### Compliance mapping and shared responsibility
@@ -43,7 +43,7 @@ the cloud provider in isolation. A provider's compliance attestation
 (commonly delivered as a SOC 2 Type II report or an ISO 27001
 certification covering the provider's own infrastructure and services)
 demonstrates that the provider's portion of the shared responsibility
-boundary (established in Chapter 01) meets the framework's control
+boundary (established in [Chapter 01](01-cloud-operating-models-and-architecture-foundations.md)) meets the framework's control
 objectives — it says nothing about whether the customer's configuration
 of identity, network exposure, data handling, and application logic on
 top of that infrastructure also meets them. Treat a provider attestation
@@ -57,7 +57,7 @@ configuration change.
 
 FinOps is the operating discipline that brings financial accountability
 to the variable, consumption-based spending model cloud introduces
-(established in Chapter 01's cloud economics discussion). The FinOps
+(established in [Chapter 01](01-cloud-operating-models-and-architecture-foundations.md)'s cloud economics discussion). The FinOps
 Foundation's model organizes the discipline into three iterative phases:
 
 1. **Inform** — establish visibility: allocate every cost to an owning
@@ -68,7 +68,7 @@ Foundation's model organizes the discipline into three iterative phases:
    cost, not only to finance.
 2. **Optimize** — act on that visibility: right-size resources (Chapter
    05), apply the correct storage tier and database instance class
-   (Chapter 06), eliminate idle or orphaned resources, and increase
+   ([Chapter 06](06-cloud-storage-databases-and-data-services.md)), eliminate idle or orphaned resources, and increase
    commitment-discount coverage for well-understood steady-state demand.
 3. **Operate** — operationalize the first two phases as a continuous,
    cross-functional practice: define who owns cost anomaly response, set
@@ -90,12 +90,12 @@ Two complementary mechanisms make cost allocation possible:
 - **Tagging/labeling** — every resource is tagged with attributes
   (environment, owning team, cost center, workload) at creation time,
   enforced through the same policy-as-code guardrails introduced in
-  Chapter 02. Tags enable granular showback (reporting cost by owner
+  [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md). Tags enable granular showback (reporting cost by owner
   without a billing consequence) and chargeback (actually billing the
   cost back to the owning team's budget) at the resource level, within a
   shared account.
 - **Account/subscription structure** — the resource hierarchy from
-  Chapter 02 provides a coarser, structurally enforced cost boundary:
+  [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md) provides a coarser, structurally enforced cost boundary:
   every resource in a given account or subscription is unambiguously
   attributable to whatever that account represents (a business unit, an
   environment), without depending on tag hygiene being perfect.
@@ -109,7 +109,7 @@ enforced tagging for granular attribution within it.
 
 ### Commitment-discount strategy as an ongoing practice
 
-Reserved and committed-use discount instruments (introduced in Chapter 05
+Reserved and committed-use discount instruments (introduced in [Chapter 05](05-cloud-compute-and-workload-placement.md)
 for compute, and applicable to several other service categories) require
 two ongoing metrics to manage well, not just a one-time purchase decision:
 
@@ -130,7 +130,7 @@ adoption and revisit only at renewal.
 
 ### Preventive and detective guardrails applied to cost
 
-The guardrail model from Chapter 02 extends directly to cost governance:
+The guardrail model from [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md) extends directly to cost governance:
 preventive cost controls (a policy blocking creation of an
 instance family known to be inappropriate for the workload, or requiring
 a cost-center tag before resource creation succeeds) and detective cost
@@ -147,10 +147,10 @@ to an accountable owner.
 Adopt an established benchmark (a CIS Benchmark for the relevant provider,
 or a framework-specific control set) as the starting point rather than
 building a bespoke rule set from nothing, and layer organization-specific
-rules (from the landing zone guardrails in Chapter 02) on top for
+rules (from the landing zone guardrails in [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md)) on top for
 requirements the generic benchmark does not cover. Avoid enabling every
 available benchmark rule indiscriminately at full enforcement from day
-one — the progressive rollout discipline from Chapter 02 (detective mode
+one — the progressive rollout discipline from [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md) (detective mode
 first, burn-in, then enforcing) applies directly to CSPM rule rollout as
 well.
 
@@ -194,7 +194,7 @@ Both security and cost guardrails, applied too aggressively as preventive
 controls, create friction that pushes teams toward workarounds
 (shadow IT, undocumented exceptions) that undermine the guardrail's
 purpose more than a well-calibrated detective control would have. Apply
-the same preventive/detective/responsive triage from Chapter 02 to cost
+the same preventive/detective/responsive triage from [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md) to cost
 guardrails specifically: prevent the small set of clearly indefensible
 patterns (an unbounded instance size with no approval, a public storage
 bucket), and handle the long tail of optimization opportunities
@@ -320,7 +320,7 @@ fi
 ## Security and Best Practices
 
 - Run CSPM continuously against a recognized benchmark, layered with
-  organization-specific policy from Chapter 02, and route findings to the
+  organization-specific policy from [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md), and route findings to the
   owning team with enough context to act, not just a resource ID.
 - Maintain the compliance control-to-evidence map as a living document
   updated on every material service or configuration change, with
@@ -338,7 +338,7 @@ fi
   schedule as part of the standing FinOps Operate phase, not only at
   contract renewal.
 - Alert on guardrail and budget policy changes themselves, consistent
-  with the guidance in Chapter 02 — a weakened cost or security guardrail
+  with the guidance in [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md) — a weakened cost or security guardrail
   is frequently the actual finding, not a side effect of one.
 
 ## References and Knowledge Checks
@@ -368,7 +368,7 @@ fi
    period of accurate showback, rather than immediately?
 5. Give an example of a cost guardrail that should be preventive and one
    that should be detective, and justify the difference using the same
-   reasoning applied to security guardrails in Chapter 02.
+   reasoning applied to security guardrails in [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md).
 
 ## Hands-On Lab
 
@@ -503,14 +503,14 @@ credentials are required.
 ## Summary and Completion Checklist
 
 Cloud governance, security, and FinOps share the same underlying pattern
-established in Chapter 02: continuous, policy-as-code evaluation against
+established in [Chapter 02](02-landing-zones-resource-organization-and-guardrails.md): continuous, policy-as-code evaluation against
 a defined benchmark, preferring prevention where it is safe and detection
 everywhere else, with findings routed to an accountable owner. This
 chapter applied that pattern to continuous security posture management,
 compliance control mapping against the shared responsibility model, and
 the FinOps Inform/Optimize/Operate cycle, including cost allocation
 through tagging and account structure and ongoing commitment-discount
-coverage and utilization management. Chapter 09 completes the volume with
+coverage and utilization management. [Chapter 09](09-cloud-automation-observability-resilience-and-lifecycle-operations.md) completes the volume with
 the automation, observability, resilience, and lifecycle operations
 practices that keep all of this running day to day.
 

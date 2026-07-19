@@ -40,15 +40,15 @@ release:
   spend most of their time here.
 - **Policy management.** The authoring surface for classification,
   compliance, and control policies (the policy engine covered in depth in
-  Chapter 3).
+  [Chapter 3](03-clarification-compliance-and-control-policies.md)).
 - **Plugin/module configuration.** Where each installed plugin is
   configured — credentials, scan/poll intervals, scope (which appliances
   run it, which IP ranges or switches it applies to).
 - **Platform administration.** Appliance and Enterprise Manager health,
   user/role management, licensing, backup, and update management (covered
-  in depth in Chapter 4).
+  in depth in [Chapter 4](04-host-management-administration-inventory-and-reporting.md)).
 - **Reporting and dashboards.** Scheduled and ad hoc reports built from
-  inventory and policy data (covered in depth in Chapter 4).
+  inventory and policy data (covered in depth in [Chapter 4](04-host-management-administration-inventory-and-reporting.md)).
 
 ### The plugin architecture
 
@@ -64,7 +64,7 @@ exam-style domain mapping:
 | Directory and identity | Active Directory, LDAP | User/owner association, domain membership, group policy context. |
 | Infrastructure telemetry | DHCP, NetFlow/IPFIX, DNS | Enrichment data that improves fingerprinting accuracy and fills gaps between active scan cycles. |
 | Endpoint agent | SecureConnector | Optional lightweight client for environments where agentless visibility cannot answer a required compliance question. |
-| eyeExtend integrations | SIEM, SOAR, ITSM, vulnerability management, MDM/UEM, EDR, firewall/NAC vendors | Bidirectional data exchange with third-party security and IT systems (covered in Chapter 5). |
+| eyeExtend integrations | SIEM, SOAR, ITSM, vulnerability management, MDM/UEM, EDR, firewall/NAC vendors | Bidirectional data exchange with third-party security and IT systems (covered in [Chapter 5](05-advanced-policy-integrations-and-business-outcomes.md)). |
 | OT/ICS | eyeInspect sensor integration | Passive deep packet inspection of industrial protocols (covered in Chapters 8 and 9). |
 
 Each plugin is licensed and enabled independently, is scoped to run on
@@ -80,7 +80,7 @@ A property is a single named attribute of a host record — for example, `IP
 Address`, `Function`, `Operating System`, `Compliance Status`, or `Switch
 Port`. The platform ships a large catalog of built-in properties populated
 automatically by the discovery mechanisms and plugins described in
-Chapter 1. Administrators can also define **custom properties** to track
+[Chapter 1](01-platform-architecture-installation-and-deployment-planning.md). Administrators can also define **custom properties** to track
 organization-specific facts that no built-in property covers — for example,
 an internally assigned asset-criticality tier, a business-unit owner tag
 sourced from a CMDB integration, or a flag indicating a device is part of a
@@ -93,7 +93,7 @@ the fact you need, because built-in properties are maintained by the vendor
 across releases and are automatically populated by existing plugins. Reach
 for a custom property only when the fact is genuinely organization-specific
 or must be sourced from a system the platform does not natively integrate
-with (commonly resolved via a script or the Web API — see Chapter 7).
+with (commonly resolved via a script or the Web API — see [Chapter 7](07-expert-automation-api-governance-and-capstone.md)).
 
 ### Classification
 
@@ -108,7 +108,7 @@ active scan banner and a directory lookup. Confidence level matters
 operationally because compliance and control policies commonly gate
 enforcement actions on a minimum classification confidence, so that a
 device the platform is still unsure about is not misclassified into an
-enforcement action it does not warrant (see Chapter 3 for the "clarification"
+enforcement action it does not warrant (see [Chapter 3](03-clarification-compliance-and-control-policies.md) for the "clarification"
 workflow that resolves low-confidence classifications).
 
 ## Design Considerations
@@ -159,7 +159,7 @@ workflow that resolves low-confidence classifications).
    connectivity from the plugin's test/status view before saving.
 4. **Build a basic classification policy.** Classification policies use the
    same condition/action structure as compliance and control policies
-   (detailed in Chapter 3): a set of conditions evaluated against host
+   (detailed in [Chapter 3](03-clarification-compliance-and-control-policies.md)): a set of conditions evaluated against host
    properties, and an action that sets a property (commonly `Function` or a
    custom classification tag) when the conditions match. A simple example in
    pseudocode form:
@@ -207,7 +207,7 @@ workflow that resolves low-confidence classifications).
 - **Inventory view performance degrades** as host count grows. Prefer
   indexed/built-in property filters over complex custom-property text
   searches in high-host-count views, and confirm Console/EM sizing still
-  matches current host count (see Chapter 1).
+  matches current host count (see [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)).
 
 ## Security and Best Practices
 
@@ -237,7 +237,7 @@ workflow that resolves low-confidence classifications).
   configuration guides for the 8.5.x release.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated platform
   baseline for this volume.
-- Chapter 1 of this volume for the underlying appliance and discovery
+- [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md) of this volume for the underlying appliance and discovery
   architecture that plugins depend on.
 - Forescout Technologies eyeExtend module catalog (official source for the
   current list of available integration plugins).
@@ -262,7 +262,7 @@ policy, and validate classification coverage using an inventory view.
 
 **Prerequisites**
 
-- The lab appliance and Console from Chapter 1's lab, with passive
+- The lab appliance and Console from [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)'s lab, with passive
   visibility already validated.
 - At least one test endpoint whose `Function` property is currently
   unclassified or generic.

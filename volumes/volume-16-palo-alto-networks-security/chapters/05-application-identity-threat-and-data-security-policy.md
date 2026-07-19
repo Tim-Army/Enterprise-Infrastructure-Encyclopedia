@@ -16,10 +16,10 @@
 
 ## Theory and Architecture
 
-Chapter 04 built the network plumbing — zones, routing, and NAT. This
+[Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md) built the network plumbing — zones, routing, and NAT. This
 chapter builds the policy that actually decides what happens to traffic
 once it arrives, which is where App-ID, User-ID, and Content-ID (introduced
-conceptually in Chapter 01) become concrete rule configuration.
+conceptually in [Chapter 01](01-cybersecurity-apprentice-foundations.md)) become concrete rule configuration.
 
 ### Anatomy of a PAN-OS security policy rule
 
@@ -28,7 +28,7 @@ richer than a traditional five-tuple firewall rule:
 
 | Match field | Purpose |
 | --- | --- |
-| Source/destination zone | Coarse network-topology scoping (Chapter 04) |
+| Source/destination zone | Coarse network-topology scoping ([Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md)) |
 | Source/destination address | IP, FQDN, or address group objects |
 | Source user | User-ID identity or group, not just source IP |
 | Application | App-ID-classified application, not port |
@@ -39,7 +39,7 @@ richer than a traditional five-tuple firewall rule:
 | Log settings | Log at session start and/or end, forwarding profile |
 
 Rules are evaluated top-down, first match wins — identical in principle to
-NAT policy evaluation from Chapter 04. The single most important shift
+NAT policy evaluation from [Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md). The single most important shift
 from legacy firewall design is that **Application replaces Service as the
 primary match dimension**: a rule permitting `application: ssl` restricted
 to `service: application-default` still only permits SSL/TLS traffic that
@@ -50,7 +50,7 @@ port-hopping evasion that a port-only rule cannot.
 
 App-ID classifies traffic using signatures, protocol decoding, and
 heuristics, updated continuously through the Applications and Threats
-content updates (Chapter 02). Two behaviors are essential to understand:
+content updates ([Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)). Two behaviors are essential to understand:
 
 - **Application dependencies.** Many applications are built on other
   applications — for example, `facebook-posting` depends on `facebook-base`,
@@ -110,11 +110,11 @@ security profiles perform the deep inspection:
 | Antivirus | Signature-based malware detection in file transfers |
 | Anti-Spyware | Detects command-and-control traffic and spyware phone-home behavior |
 | Vulnerability Protection | IPS — blocks exploit attempts against known CVEs |
-| URL Filtering | Category-based web access control, integrated with Advanced URL Filtering (Chapter 02) |
+| URL Filtering | Category-based web access control, integrated with Advanced URL Filtering ([Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)) |
 | File Blocking | Controls file types allowed to transfer, by direction and application |
 | WildFire Analysis | Forwards unknown files for cloud/appliance sandbox detonation |
 | Data Filtering | Pattern-based data loss prevention (predates and complements Enterprise DLP) |
-| DoS Protection | Per-zone or per-rule flood protection, distinct from zone protection profiles (Chapter 04) |
+| DoS Protection | Per-zone or per-rule flood protection, distinct from zone protection profiles ([Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md)) |
 
 Profiles are typically bundled into a **security profile group** and
 attached to a rule as a set, rather than attaching each profile
@@ -176,7 +176,7 @@ crossing it, regardless of how well-tuned the App-ID and User-ID rules are.
   formats, keyword lists). Organizations with cross-platform data
   protection requirements (the same policy enforced consistently across
   NGFW, Prisma Access, and SaaS Security) should evaluate the Enterprise
-  DLP subscription (Chapter 02) instead of maintaining parallel,
+  DLP subscription ([Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)) instead of maintaining parallel,
   platform-specific pattern sets.
 
 ## Implementation and Automation
@@ -263,7 +263,7 @@ admin@pa-fw01> test security-policy-match from trust to untrust source 10.10.20.
   IDs), and that the zone has `enable-user-identification` set — User-ID
   only maps within zones explicitly enabled for it.
 - **Application misclassified as `unknown-tcp`/`unknown-udp`.** Confirm
-  Applications and Threats content (Chapter 02) is current, since new
+  Applications and Threats content ([Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)) is current, since new
   application signatures ship in every content release; if the traffic is
   a legitimate internal/custom protocol with no existing signature,
   evaluate a custom application definition or an App-ID enhancement
@@ -326,7 +326,7 @@ admin@pa-fw01> test security-policy-match from trust to untrust source 10.10.20.
    security rule, even though the application has already been correctly
    classified?
 2. What is the practical difference between the built-in Data Filtering
-   profile and the Enterprise DLP subscription introduced in Chapter 02?
+   profile and the Enterprise DLP subscription introduced in [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)?
 3. Why can Content-ID security profiles not inspect the payload of an
    undecrypted TLS session, and which PAN-OS feature addresses that gap
    for outbound traffic initiated by internal clients?
@@ -345,8 +345,8 @@ blocked.
 **Prerequisites**
 
 - A lab PAN-OS firewall with the Layer 3 interfaces, zones, routing, and
-  NAT configured in Chapter 04's lab.
-- Current Applications and Threats content (Chapter 02).
+  NAT configured in [Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md)'s lab.
+- Current Applications and Threats content ([Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)).
 - A test client in the trust zone able to generate outbound HTTPS traffic.
 - Administrative access to distribute a certificate to the test client's
   trust store (or a test client where trust warnings can be manually
@@ -365,7 +365,7 @@ blocked.
    admin@pa-fw01# commit
    ```
 
-2. Replace the Chapter 04 lab's broad outbound rule with an application-
+2. Replace the [Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md) lab's broad outbound rule with an application-
    scoped rule:
 
    ```text
@@ -443,7 +443,7 @@ together into enforceable rules: applications and identities replace ports
 and subnets as the primary match criteria, security profile groups apply
 consistent deep inspection, and decryption is the prerequisite that makes
 that inspection meaningful against the TLS-encrypted majority of modern
-traffic. Chapter 06 extends this same rule model to Panorama-managed device
+traffic. [Chapter 06](06-panorama-installation-central-management-and-logging.md) extends this same rule model to Panorama-managed device
 groups so it can be applied consistently across a fleet rather than one
 firewall at a time.
 

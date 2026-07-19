@@ -90,7 +90,7 @@ a nuisance to suppress.
 
 RHEL 10 manages all network interfaces through **NetworkManager**,
 exposed via the `nmcli` command-line tool, the `nmtui` text UI, and
-Cockpit's networking module (Chapter 01) — all three ultimately create
+Cockpit's networking module ([Chapter 01](01-installation-subscriptions-repositories-and-cockpit.md)) — all three ultimately create
 and modify the same **connection profiles**, stored as keyfiles under
 `/etc/NetworkManager/system-connections/`. A connection profile binds
 settings (IPv4/IPv6 addressing, DNS, routes) to a device or a matching

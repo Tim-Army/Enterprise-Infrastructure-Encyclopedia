@@ -54,7 +54,7 @@ defensive interruption rather than a single point of failure:
 
 | Stage | Attacker objective | Representative defensive control |
 | --- | --- | --- |
-| Reconnaissance | Identify targets, exposed services, personnel | Attack surface management, awareness training (Chapter 01) |
+| Reconnaissance | Identify targets, exposed services, personnel | Attack surface management, awareness training ([Chapter 01](01-nse-1-cybersecurity-awareness-and-digital-safety.md)) |
 | Weaponization | Pair an exploit with a deliverable payload | Threat intelligence, patch management |
 | Delivery | Get the payload to the target (email, web, USB, supply chain) | Secure email gateway, web filtering, sandboxing |
 | Exploitation | Trigger the vulnerability or user action | IPS, endpoint protection, application control |
@@ -78,7 +78,7 @@ which kill-chain stage(s) each category interrupts.
 | VPN (site-to-site and remote access) | N/A (transport security) | Confidentiality and integrity for traffic crossing an untrusted network |
 | Sandboxing | Delivery, exploitation | Detonates unknown files in an isolated environment to observe behavior before the payload reaches a real endpoint |
 | Endpoint protection / EDR | Installation, actions on objectives | Detects and responds to malicious behavior on the host itself, independent of network visibility |
-| SD-WAN | N/A (transport/performance) | Application-aware path selection across multiple WAN circuits; increasingly bundled with security enforcement (Chapter 08) |
+| SD-WAN | N/A (transport/performance) | Application-aware path selection across multiple WAN circuits; increasingly bundled with security enforcement ([Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md)) |
 | Secure email gateway | Delivery | Filters phishing, malware attachments, and business email compromise attempts before they reach a mailbox |
 | Web application firewall (WAF) | Exploitation | Protects internet-facing applications against injection, request forgery, and other application-layer attacks |
 | Cloud security (CASB/CNAPP) | Reconnaissance, actions on objectives | Visibility and policy enforcement over SaaS usage and cloud workload configuration/posture |
@@ -90,7 +90,7 @@ which kill-chain stage(s) each category interrupts.
 Fortinet organizes its product portfolio as fabric components that share
 telemetry and can be centrally orchestrated, rather than as independent
 point products. The following mapping connects each technology category
-above to its primary Fortinet product family; Chapter 03 covers the
+above to its primary Fortinet product family; [Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md) covers the
 Security Fabric's architectural integration in depth.
 
 | Technology category | Fortinet product family |
@@ -153,11 +153,11 @@ between native fabric components.
 ## Implementation and Automation
 
 NSE 2-level material precedes hands-on FortiOS configuration, which begins
-in Chapter 04. The practical deliverable at this stage is a structured
+in [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md). The practical deliverable at this stage is a structured
 planning artifact: a technology-to-risk inventory that an organization (or
 a student building a portfolio) can produce and keep under version control
 alongside the rest of its infrastructure-as-code, consistent with this
-encyclopedia's documentation-as-code approach (Volume I).
+encyclopedia's documentation-as-code approach ([Volume I](../../volume-01-enterprise-engineering-foundations/README.md)).
 
 ```yaml
 # security-technology-inventory.yaml
@@ -218,7 +218,7 @@ budget request against a named, unaddressed kill-chain stage.
   high-volume, low-fidelity logs without tuning produces so many alerts
   that real detections are missed in the noise; this is a technology
   category failure mode distinct from simply "not having a SIEM," and is
-  covered operationally in Volume XI.
+  covered operationally in [Volume XI](../../volume-11-observability-enterprise-operations/README.md).
 
 ## Security and Best Practices
 
@@ -237,7 +237,7 @@ budget request against a named, unaddressed kill-chain stage.
   threat capability when sizing controls — assume any organization,
   regardless of size or perceived obscurity, is a viable target for an
   affiliate operating at scale against many victims simultaneously.
-- Cross-reference this chapter's category gaps against Volume X (Enterprise
+- Cross-reference this chapter's category gaps against [Volume X](../../volume-10-enterprise-cybersecurity/README.md) (Enterprise
   Cybersecurity) for vendor-neutral control design principles that apply
   regardless of which product fills a given category.
 
@@ -327,7 +327,7 @@ entry.
 **Cleanup**
 
 - No system changes to revert; retain the inventory file as a reference
-  artifact for Chapter 03's Security Fabric mapping exercise.
+  artifact for [Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md)'s Security Fabric mapping exercise.
 
 ## Summary and Completion Checklist
 
@@ -337,7 +337,7 @@ the organizing model for where defensive technology categories intervene,
 surveyed the major enterprise security technology categories, and mapped
 each to its corresponding Fortinet Security Fabric product family. The
 technology-to-risk inventory produced in the hands-on lab is a reusable
-planning artifact that Chapter 03 extends into Security Fabric
+planning artifact that [Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md) extends into Security Fabric
 architecture, and that Chapters 04–09 fill in with actual FortiGate
 configuration.
 

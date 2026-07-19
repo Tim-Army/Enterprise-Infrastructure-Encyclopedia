@@ -8,7 +8,7 @@
 - Configure Prometheus Alertmanager routing, grouping, inhibition, and
   silencing to control alert volume and correlate related failures.
 - Design an on-call rotation and escalation policy that matches paging
-  urgency to the service tiering defined in Chapter 01.
+  urgency to the service tiering defined in [Chapter 01](01-observability-operating-model-and-service-ownership.md).
 - Measure and reduce alert fatigue using quantitative signals (page
   volume, acknowledgment time, false-positive rate).
 - Write a runbook that reduces mean time to resolution for a specific,
@@ -38,14 +38,14 @@ SRE Workbook's alerting philosophy:
 - **Real.** The underlying condition genuinely reflects degraded user
   experience or imminent risk, not a transient blip that resolves itself
   before a human could act (the multi-window burn-rate design in
-  Chapter 03 exists specifically to filter this case).
+  [Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md) exists specifically to filter this case).
 
 ### Symptom-based versus cause-based alerting
 
 **Cause-based alerting** fires on an internal signal presumed to
 precede a problem: high CPU, a queue depth threshold, a specific error
 log pattern. **Symptom-based alerting** fires on user-visible impact
-directly: the SLO burn-rate alerts from Chapter 03 are the canonical
+directly: the SLO burn-rate alerts from [Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md) are the canonical
 symptom-based alert, because they measure exactly what a user
 experiences (successful, timely requests) rather than a proxy for it.
 
@@ -68,7 +68,7 @@ user-visible symptom is genuinely too late to act.
 ### Alertmanager: routing, grouping, inhibition, silencing
 
 Prometheus Alertmanager receives fired alerts from Prometheus rule
-evaluation (the burn-rate rules from Chapter 03, for example) and applies
+evaluation (the burn-rate rules from [Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md), for example) and applies
 four distinct mechanisms before any notification is sent:
 
 - **Routing** — a tree of matchers that directs an alert to the correct
@@ -149,7 +149,7 @@ rotation) to a specific person. An escalation policy defines what
 happens if the primary does not acknowledge within a target window:
 escalate to a secondary, then to a manager, then potentially to a
 broader incident-response bridge. Escalation timing should map directly
-to the service-tiering acknowledgment targets established in Chapter 01:
+to the service-tiering acknowledgment targets established in [Chapter 01](01-observability-operating-model-and-service-ownership.md):
 
 | Tier | Ack target | Escalation if unacknowledged |
 | --- | --- | --- |
@@ -197,7 +197,7 @@ A **Network Operations Center (NOC)** and a **Security Operations Center
 service-team on-call model described above. A NOC typically owns
 infrastructure-layer monitoring (network, data center, and
 platform-level health) and first-line triage before escalating to the
-owning service team; a SOC (covered in depth in Volume X) owns security
+owning service team; a SOC (covered in depth in [Volume X](../../volume-10-enterprise-cybersecurity/README.md)) owns security
 event monitoring and incident response. The relationship between a NOC
 and per-service on-call should be explicit: the NOC is commonly the
 first responder for a Tier 0 alert during off-hours, performing initial
@@ -280,7 +280,7 @@ schedules:
       - carmen@example.com
 ```
 
-Apply the same nightly audit discipline from Chapter 01's catalog check
+Apply the same nightly audit discipline from [Chapter 01](01-observability-operating-model-and-service-ownership.md)'s catalog check
 to escalation policy completeness, extending that script's pattern to
 confirm every Tier 0/1 service in the catalog has a linked, non-empty
 escalation policy and schedule:
@@ -317,7 +317,7 @@ exit "$missing"
 ```
 
 A minimal runbook, linked directly from the alert's `annotations.runbook`
-field (Chapter 03's generated alert already includes this field) so a
+field ([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)'s generated alert already includes this field) so a
 responder reaches it in one click from the page itself:
 
 ```markdown
@@ -374,7 +374,7 @@ the service's escalation policy.
   silently fails to inhibit with no error surfaced.
 - **Rising false-positive rate on a specific rule.** Pull the alert's
   firing history alongside its linked incident/ticket resolution
-  disposition (Chapter 07) for the last quarter; a rule with a
+  disposition ([Chapter 07](07-service-management-incident-problem-and-change-operations.md)) for the last quarter; a rule with a
   false-positive rate trending upward is either measuring a signal that
   no longer correlates with real impact (a system changed underneath
   it) or was never symptom-based to begin with and should be converted
@@ -392,7 +392,7 @@ the service's escalation policy.
   in production Alertmanager configuration; an unauthorized silence is a
   realistic way to suppress paging ahead of a planned malicious action,
   echoing the same concern raised for catalog tier downgrades in
-  Chapter 01.
+  [Chapter 01](01-observability-operating-model-and-service-ownership.md).
 - Set an expiration on every silence and alert on any silence approaching
   or exceeding a reasonable maximum duration (for example, a week) —
   an indefinite silence is functionally equivalent to permanently
@@ -400,12 +400,12 @@ the service's escalation policy.
   alert rule outright.
 - Keep paging-platform API keys and webhook secrets in a secrets
   manager, scoped per integration, and rotated on the same schedule as
-  other operational credentials (Chapter 02); a leaked paging
+  other operational credentials ([Chapter 02](02-telemetry-architecture-instrumentation-and-pipelines.md)); a leaked paging
   integration key can be used to inject fabricated pages or, more
   seriously, to silence real ones.
 - Log every acknowledgment, escalation, and silence action with actor
   identity, and review this log periodically — the same audit posture
-  applied to the service catalog in Chapter 01 applies directly to the
+  applied to the service catalog in [Chapter 01](01-observability-operating-model-and-service-ownership.md) applies directly to the
   paging system, since it is operationally equivalent infrastructure.
 - Require a named, individually accountable on-call participant, not a
   shared or generic credential, in every rotation; shared paging
@@ -424,7 +424,7 @@ the service's escalation policy.
 - PagerDuty, *Incident Response Documentation*, for escalation policy
   and on-call scheduling patterns referenced in this chapter.
 - Allspaw, J., "Blameless PostMortems and a Just Culture" (Etsy
-  engineering blog), for the cultural foundation Chapter 07 builds on.
+  engineering blog), for the cultural foundation [Chapter 07](07-service-management-incident-problem-and-change-operations.md) builds on.
 
 **Knowledge Checks**
 
@@ -594,14 +594,14 @@ rm -rf ~/alert-lab
 ## Summary and Completion Checklist
 
 An alert earns a page only by being actionable, urgent, and real;
-symptom-based, SLO-burn alerting (Chapter 03) should be the primary
+symptom-based, SLO-burn alerting ([Chapter 03](03-metrics-service-level-objectives-and-error-budgets.md)) should be the primary
 page-worthy signal, with cause-based alerts supporting diagnosis rather
 than driving pages directly. Alertmanager's routing, grouping,
 inhibition, and silencing mechanisms exist to deliver the right alert to
 the right person once, not repeatedly and not to the wrong team.
 On-call rotations and escalation policy should map directly to service
 tier, and alert fatigue should be tracked quantitatively, not left to
-anecdote. Chapter 07 continues directly from a fired, acknowledged page
+anecdote. [Chapter 07](07-service-management-incident-problem-and-change-operations.md) continues directly from a fired, acknowledged page
 into the formal incident, problem, and change management processes that
 follow it.
 

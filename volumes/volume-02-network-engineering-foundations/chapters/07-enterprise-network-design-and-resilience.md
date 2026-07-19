@@ -5,7 +5,7 @@
 - Explain the three-tier hierarchical design model (core, distribution,
   access) and when a collapsed-core variant is appropriate.
 - Explain spine-leaf (Clos) fabric architecture as introduced conceptually
-  in Chapter 3, and contrast its convergence and scalability properties
+  in [Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md), and contrast its convergence and scalability properties
   with traditional hierarchical design.
 - Configure and explain First-Hop Redundancy Protocols (HSRP, VRRP, GLBP)
   for default-gateway resilience.
@@ -51,7 +51,7 @@ and correct choice for branch offices and small campuses.
 
 ### Spine-Leaf (Clos) Fabric Architecture
 
-Chapter 3 introduced spine-leaf fabric conceptually as an alternative to
+[Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md) introduced spine-leaf fabric conceptually as an alternative to
 Spanning Tree-based Layer 2 designs. A spine-leaf (Clos) fabric consists of
 two tiers:
 
@@ -78,7 +78,7 @@ that matters operationally:
 | Scalability pattern | Add distribution blocks; core becomes a bottleneck if not re-architected | Add leaf switches for server capacity, add spine switches for fabric bandwidth — independently |
 | Typical domain | Campus | Data center |
 
-The practical consequence, referenced from Chapter 3's discussion of
+The practical consequence, referenced from [Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md)'s discussion of
 convergence behavior: a spine-leaf fabric does not "converge" around a
 failed link in the way STP does, because it never blocked any link to begin
 with — every spine-leaf link was already forwarding traffic, and ECMP
@@ -96,14 +96,14 @@ active forwarder:
 | Protocol | Standard | Election Model | Notes |
 | --- | --- | --- | --- |
 | VRRP (Virtual Router Redundancy Protocol) | RFC 5798, open standard | Highest-priority router becomes Master; others are Backup | Multi-vendor interoperable |
-| HSRP (Hot Standby Router Protocol) | Cisco-proprietary | Highest-priority router becomes Active; others are Standby | Covered in vendor-specific depth in Volume III |
+| HSRP (Hot Standby Router Protocol) | Cisco-proprietary | Highest-priority router becomes Active; others are Standby | Covered in vendor-specific depth in [Volume III](../../volume-03-cisco-enterprise-networking/README.md) |
 | GLBP (Gateway Load Balancing Protocol) | Cisco-proprietary | All group members can actively forward simultaneously | Adds load balancing on top of FHRP's basic redundancy model |
 
 This chapter treats VRRP as the primary vendor-neutral example since it is
 an open IETF standard implementable across vendors; HSRP and GLBP behave
 similarly at a conceptual level (a virtual gateway address shared across
 physical routers) but are Cisco-specific implementations covered alongside
-Cisco platform configuration in Volume III.
+Cisco platform configuration in [Volume III](../../volume-03-cisco-enterprise-networking/README.md).
 
 All three protocols share the same basic mechanism: group members exchange
 periodic hello messages carrying priority; the highest-priority (or, for
@@ -149,12 +149,12 @@ designed otherwise. Common redundancy patterns:
 | --- | --- |
 | Dual-homed, single ISP | Two circuits to the same provider; protects against a single circuit/interface failure, not a provider-wide outage |
 | Dual-homed, dual ISP | Two circuits to two different providers; protects against a provider-wide outage, at higher cost and complexity |
-| BGP-based edge routing | The enterprise runs BGP (introduced in Chapter 4) with its edge routers, advertising and receiving routes from each provider, allowing automatic failover and, with an autonomous system number and provider-independent address space, mobility between providers |
+| BGP-based edge routing | The enterprise runs BGP (introduced in [Chapter 4](04-ip-routing-fundamentals.md)) with its edge routers, advertising and receiving routes from each provider, allowing automatic failover and, with an autonomous system number and provider-independent address space, mobility between providers |
 | Static-route edge (no BGP) | Simpler, but failover typically depends on interface/route tracking rather than routing-protocol convergence, and does not support provider-independent addressing |
 
 Enterprises large enough to require provider independence or fine-grained
 inbound/outbound path control typically justify running BGP at the edge
-despite its operational complexity (Chapter 4); smaller sites commonly
+despite its operational complexity ([Chapter 4](04-ip-routing-fundamentals.md)); smaller sites commonly
 accept static or tracked-route failover as a simpler, adequately resilient
 option.
 
@@ -187,7 +187,7 @@ covered further in Design Considerations below.
 - **Match the FHRP protocol to the environment.** VRRP is the correct
   choice in genuinely multi-vendor environments; a single-vendor Cisco
   environment may reasonably prefer HSRP or GLBP for tighter platform
-  integration (Volume III covers the trade-offs in vendor-specific depth).
+  integration ([Volume III](../../volume-03-cisco-enterprise-networking/README.md) covers the trade-offs in vendor-specific depth).
 - **Decide active/active vs. active/standby per service, not globally.**
   A stateful firewall pair may require active/standby to keep session
   state simple, while an ECMP-routed core benefits from active/active
@@ -201,7 +201,7 @@ covered further in Design Considerations below.
 - **Test convergence, don't assume it.** A design that is redundant on
   paper but has never had a link or device failure deliberately induced in
   a controlled window carries unverified risk; planned failure testing
-  (Chapter 9) is part of validating a resilience design, not a separate
+  ([Chapter 9](09-network-troubleshooting-and-operations.md)) is part of validating a resilience design, not a separate
   concern.
 
 ## Implementation and Automation
@@ -224,7 +224,7 @@ router2(config-if)# vrrp 20 authentication text <SHARED_SECRET>
 
 `router1` becomes VRRP Master (priority 150 beats 100) and answers ARP for
 the shared virtual IP `10.1.2.129`, which matches the gateway address
-convention established in Chapter 2's addressing-by-function design.
+convention established in [Chapter 2](02-ip-addressing-and-subnetting.md)'s addressing-by-function design.
 
 ### ECMP Verification (Vendor-Neutral Pseudo-CLI)
 
@@ -291,7 +291,7 @@ ip neigh show 10.1.2.129
 | Both FHRP peers show as Master/Active simultaneously (split-brain) | Hello traffic blocked between peers (ACL, VLAN misconfiguration, STP blocking the peer link) | Verify Layer 2 connectivity and hello reachability between peers |
 | Failover takes much longer than expected | Hold timer set too high, or hello timer mismatch between peers | Compare configured timers on both peers |
 | Traffic uses only one of several ECMP paths | Hashing algorithm producing poor distribution, or one path not actually equal-cost | Check per-path traffic counters; confirm metrics are truly equal |
-| Asymmetric routing after a link failure | ECMP path selection differs between forward and return direction for a stateful flow | Trace both directions; confirm stateful devices (firewalls, NAT from Chapter 5) sit where path symmetry is guaranteed |
+| Asymmetric routing after a link failure | ECMP path selection differs between forward and return direction for a stateful flow | Trace both directions; confirm stateful devices (firewalls, NAT from [Chapter 5](05-core-network-services.md)) sit where path symmetry is guaranteed |
 | Gateway unreachable after a planned router reload | FHRP priority not preserved correctly, or preemption disabled when expected | Check `vrrp brief` state and preemption configuration on both peers |
 | Spine-leaf fabric shows uneven link utilization | Hash polarization or insufficient flow entropy (few large flows) rather than a fault | Compare against expected flow characteristics before treating as a defect |
 
@@ -314,13 +314,13 @@ check (or an actual failure event) reveals.
 - **Test failover in a controlled window, not only in production
   emergencies.** A redundancy design that has never been deliberately
   exercised carries unverified assumptions; schedule periodic failover
-  tests as an operational practice (developed further in Chapter 9).
+  tests as an operational practice (developed further in [Chapter 9](09-network-troubleshooting-and-operations.md)).
 - **Maintain physical path diversity for links protecting critical
   services**, and periodically re-verify that diversity — carrier
   mergers, facility changes, and undocumented rerouting can silently
   collapse previously diverse paths onto shared physical infrastructure.
 - **Scope BGP edge sessions with explicit prefix filters and maximum-prefix
-  limits** (introduced in Chapter 4) on every external session, since a
+  limits** (introduced in [Chapter 4](04-ip-routing-fundamentals.md)) on every external session, since a
   redundant WAN edge that accepts unfiltered routes from two providers
   doubles the blast radius of a provider-side routing leak instead of
   halving the risk.
@@ -501,11 +501,11 @@ rm -f /tmp/keepalived-r1.* /tmp/keepalived-r2.* /tmp/vrrp-failover.log
 
 ## Summary and Completion Checklist
 
-This chapter connected the switching (Chapter 3) and routing (Chapter 4)
+This chapter connected the switching ([Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md)) and routing ([Chapter 4](04-ip-routing-fundamentals.md))
 building blocks into deliberate, resilient network architectures: the
 three-tier hierarchical campus model and its collapsed-core variant,
 spine-leaf fabric as the data-center-native alternative referenced from
-Chapter 3, first-hop redundancy protocols for gateway availability, ECMP
+[Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md), first-hop redundancy protocols for gateway availability, ECMP
 for active/active path utilization, and redundant WAN edge design. The
 hands-on lab built a working VRRP-protected gateway, measured an actual
 failover event with a continuous ping, and confirmed the Backup peer

@@ -58,7 +58,7 @@ covered in depth by a later chapter in this volume:
    obtain a copy of network traffic without altering the original path:
    optical/copper TAPs, SPAN/mirror ports, and virtual taps inside
    hypervisors, cloud VPCs, and container platforms. This chapter and
-   Chapter 03 cover acquisition in depth.
+   [Chapter 03](03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md) cover acquisition in depth.
 2. **The visibility fabric** — the GigaVUE nodes (physical appliances and
    virtual nodes) and the GigaSMART traffic-intelligence engine that
    receive acquired traffic, apply Flow Mapping rules, optionally
@@ -76,7 +76,7 @@ monitoring tools — acquisition into the fabric, fabric out to tools — and
 bidirectionally, in-path, for inline security tools such as intrusion
 prevention systems (IPS) that must be able to block or modify a packet
 before it reaches its destination. Both models exist within the same
-physical fabric; Chapter 07 covers inline design specifically.
+physical fabric; [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md) covers inline design specifically.
 
 ### TAP versus SPAN acquisition
 
@@ -126,18 +126,18 @@ must solve a many-to-many mapping problem:
 This N:M mapping is implemented by **Flow Mapping**, the packet-forwarding
 rule engine built into every GigaVUE node's operating system (GigaVUE-OS)
 and centrally authored through GigaVUE-FM. Flow Mapping is covered in
-architectural depth in Chapter 05.
+architectural depth in [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md).
 
 ### The GigaVUE portfolio at a glance
 
 | Component | Role | Covered in |
 | --- | --- | --- |
-| GigaVUE TA Series | Fixed-configuration, COTS-switch-based traffic aggregation nodes; high port density at the acquisition edge | Chapter 02 |
-| GigaVUE HC Series (HCT, HC1, HC1-Plus, HC3) | Modular/chassis-capable nodes hosting GigaSMART traffic-intelligence engines | Chapter 02 |
-| GigaVUE V Series (virtual nodes) | Software visibility nodes for hypervisors, private cloud, and public cloud VPCs | Chapter 03 |
-| GigaVUE Cloud Suite / Universal Cloud Tap (UCT) | Cloud-native and container tapping for AWS, Azure, GCP, OpenStack, and Kubernetes | Chapter 03 |
-| GigaVUE-FM | Centralized fabric manager: configuration, Flow Mapping authoring, RBAC, licensing, monitoring, and REST API | Chapter 04 |
-| GigaSMART | Traffic-intelligence processing engine: slicing, masking, deduplication, metadata generation, SSL/TLS decryption | Chapter 06 |
+| GigaVUE TA Series | Fixed-configuration, COTS-switch-based traffic aggregation nodes; high port density at the acquisition edge | [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md) |
+| GigaVUE HC Series (HCT, HC1, HC1-Plus, HC3) | Modular/chassis-capable nodes hosting GigaSMART traffic-intelligence engines | [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md) |
+| GigaVUE V Series (virtual nodes) | Software visibility nodes for hypervisors, private cloud, and public cloud VPCs | [Chapter 03](03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md) |
+| GigaVUE Cloud Suite / Universal Cloud Tap (UCT) | Cloud-native and container tapping for AWS, Azure, GCP, OpenStack, and Kubernetes | [Chapter 03](03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md) |
+| GigaVUE-FM | Centralized fabric manager: configuration, Flow Mapping authoring, RBAC, licensing, monitoring, and REST API | [Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md) |
+| GigaSMART | Traffic-intelligence processing engine: slicing, masking, deduplication, metadata generation, SSL/TLS decryption | [Chapter 06](06-gigasmart-traffic-intelligence-and-packet-transformation.md) |
 
 ## Design Considerations
 
@@ -162,7 +162,7 @@ architectural depth in Chapter 05.
   or modified in real time (IPS, inline DLP enforcement, inline
   decryption for downstream OOB tools) belongs on an inline path. Placing
   a tool inline that does not require it introduces an unnecessary
-  single point of failure into the production path; Chapter 07 covers the
+  single point of failure into the production path; [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md) covers the
   resiliency mechanisms (bypass, heartbeat) that make inline deployment
   safe when it is genuinely required.
 - **Model growth in tap points, not just throughput.** A fabric sized for
@@ -173,8 +173,8 @@ architectural depth in Chapter 05.
 
 ## Implementation and Automation
 
-Formal implementation begins in Chapter 02 (physical node deployment) and
-Chapter 04 (GigaVUE-FM), but the acquisition-layer decisions below are made
+Formal implementation begins in [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md) (physical node deployment) and
+[Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md) (GigaVUE-FM), but the acquisition-layer decisions below are made
 before any node is racked, because they determine cabling and site
 requirements.
 
@@ -212,7 +212,7 @@ Production switch A ──▶ [ TAP ] ──▶ Production switch B
 Where a TAP is not yet feasible, a SPAN/mirror session on the source
 switch is configured to send a copy of one or more source interfaces (or a
 VLAN) to a destination interface that is cabled to a GigaVUE network port.
-Exact SPAN syntax is switch-platform-specific (see Volume III for Cisco
+Exact SPAN syntax is switch-platform-specific (see [Volume III](../../volume-03-cisco-enterprise-networking/README.md) for Cisco
 IOS XE monitor-session configuration); regardless of platform, record the
 following for every SPAN session created for Gigamon acquisition:
 
@@ -222,7 +222,7 @@ following for every SPAN session created for Gigamon acquisition:
   itself cause oversubscription on the SPAN destination if the source
   link is heavily utilized in both directions simultaneously.
 - The destination switch port and the GigaVUE network port it connects to,
-  recorded in the fabric's port-mapping documentation (Chapter 02
+  recorded in the fabric's port-mapping documentation ([Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md)
   introduces the node/slot/port addressing scheme used throughout this
   volume).
 
@@ -253,7 +253,7 @@ subscribed to that traffic. A minimal structure:
 ```
 
 This inventory becomes the source of truth reconciled against GigaVUE-FM's
-live configuration (Chapter 04 covers GigaVUE-FM's REST API and how to
+live configuration ([Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md) covers GigaVUE-FM's REST API and how to
 automate that reconciliation) and prevents "mystery cables" — TAPs or SPAN
 sessions nobody can explain — from accumulating over the fabric's life.
 
@@ -301,7 +301,7 @@ sessions nobody can explain — from accumulating over the fabric's life.
   production-risk and a data-exposure event.
 - Document acquisition points that carry traffic to inline (in-path)
   security tools separately from purely out-of-band taps, since inline
-  paths carry additional availability risk covered in Chapter 07.
+  paths carry additional availability risk covered in [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md).
 
 ## References and Knowledge Checks
 
@@ -333,7 +333,7 @@ sessions nobody can explain — from accumulating over the fabric's life.
 plan for a simulated two-segment network, then validate the plan's logic
 with a tabletop trace of expected traffic flow — no physical GigaVUE
 hardware is required for this planning-level lab (physical configuration
-begins in Chapter 02).
+begins in [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md)).
 
 **Prerequisites**
 
@@ -391,7 +391,7 @@ Understanding the three logical planes — acquisition, fabric, and tool
 delivery — and the many-to-many mapping problem they solve (N:1
 aggregation, 1:N replication, filtered delivery, tool chaining) is the
 conceptual foundation the rest of this volume builds on, starting with
-physical node deployment in Chapter 02.
+physical node deployment in [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md).
 
 - [ ] Can explain why a dedicated visibility fabric reduces both tool
       sprawl and production risk compared to SPAN-only designs.

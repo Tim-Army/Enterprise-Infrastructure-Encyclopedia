@@ -21,7 +21,7 @@
 
 ## Theory and Architecture
 
-Chapter 2 built a fabric with two independent paths from every host to
+[Chapter 2](02-block-storage-and-storage-area-networks.md) built a fabric with two independent paths from every host to
 every array controller — the fabric-layer half of storage redundancy.
 Host-side multipathing is the layer that turns that fabric redundancy into
 something the operating system, and the applications running on it, can
@@ -141,13 +141,13 @@ Application
             -> Array front-end port queue depth (Chapter 2)
 ```
 
-Chapter 1's `fio` lab demonstrated that achievable IOPS is bounded by queue
+[Chapter 1](01-enterprise-storage-architecture-and-service-design.md)'s `fio` lab demonstrated that achievable IOPS is bounded by queue
 depth at the device layer; this chapter's queue depth chain is the same
 principle applied across every layer between the application and the
 array. A host HBA driver defaulting to a shallow per-LUN queue depth (a
 common out-of-box setting on some driver stacks) will bottleneck a
 workload long before the array's own front-end port queue limit from
-Chapter 2 is ever reached, and no amount of array-side tuning fixes a
+[Chapter 2](02-block-storage-and-storage-area-networks.md) is ever reached, and no amount of array-side tuning fixes a
 host-side ceiling.
 
 ### Persistent device naming
@@ -167,7 +167,7 @@ raw device references — should use the resulting `/dev/mapper/<alias>` or
   total, two per HBA port) covers the common failure domains — a switch, an
   HBA port, a controller — without the diminishing-returns complexity of
   eight or more paths per LUN; size path count to the failure domains the
-  design must survive, consistent with the same principle from Chapter 2.
+  design must survive, consistent with the same principle from [Chapter 2](02-block-storage-and-storage-area-networks.md).
 - **`no_path_retry` / `queue_if_no_path` vs. fail-fast.** When all paths to
   a LUN are lost, the host can either queue I/O indefinitely (waiting for a
   path to return) or fail I/O immediately. Queuing is usually correct for
@@ -182,11 +182,11 @@ raw device references — should use the resulting `/dev/mapper/<alias>` or
   inconsistent, hard-to-diagnose latency.
 - **Queue depth alignment.** Set host HBA and multipath queue depth
   deliberately against the array's documented per-port and per-LUN queue
-  limits from Chapter 2's array capacity planning, not the driver default;
+  limits from [Chapter 2](02-block-storage-and-storage-area-networks.md)'s array capacity planning, not the driver default;
   under-sizing wastes available array performance, and over-sizing across
   many hosts sharing a front-end port can collectively exceed the array's
   port queue limit and trigger the same latency-cliff behavior from
-  Chapter 1's queue-depth lab.
+  [Chapter 1](01-enterprise-storage-architecture-and-service-design.md)'s queue-depth lab.
 - **Boot-from-SAN.** Hosts booting from a SAN LUN need multipath support
   built into the initial RAM disk (initramfs/dracut), not only the running
   system; a host that boots successfully once but cannot rebuild its
@@ -195,7 +195,7 @@ raw device references — should use the resulting `/dev/mapper/<alias>` or
 - **NVMe/TCP and native multipathing convergence.** As NVMe-oF adoption
   grows, expect native NVMe multipathing to gradually replace DM-Multipath
   for NVMe-attached storage; plan host build standards and automation
-  (Chapter 9) to support both models during the transition rather than
+  ([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md)) to support both models during the transition rather than
   assuming one stack indefinitely.
 
 ## Implementation and Automation

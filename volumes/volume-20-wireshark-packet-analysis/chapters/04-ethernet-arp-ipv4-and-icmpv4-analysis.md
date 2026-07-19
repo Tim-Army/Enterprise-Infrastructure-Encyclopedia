@@ -15,10 +15,10 @@
 
 ## Theory and Architecture
 
-This chapter is the first of two (with Chapter 05) that apply the interface
-and filtering skills from Chapter 03 to specific protocol layers, working
-bottom-up through the encapsulation chain introduced in Chapter 01. This
-chapter covers the IPv4 protocol family; Chapter 05 covers its IPv6
+This chapter is the first of two (with [Chapter 05](05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md)) that apply the interface
+and filtering skills from [Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md) to specific protocol layers, working
+bottom-up through the encapsulation chain introduced in [Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md). This
+chapter covers the IPv4 protocol family; [Chapter 05](05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md) covers its IPv6
 counterpart plus the transport- and application-layer protocols that ride
 on both.
 
@@ -63,7 +63,7 @@ address changes, or a failover event (VRRP/HSRP) promotes a new active
 node. It becomes a security signal when the same IP address is announced
 with two different MAC addresses in a short window from hosts that have no
 legitimate failover relationship — the packet-level signature of ARP
-spoofing/cache poisoning, covered further in Chapter 08.
+spoofing/cache poisoning, covered further in [Chapter 08](08-security-investigation-command-line-analysis-and-automation.md).
 
 ### IPv4 header fields
 
@@ -86,7 +86,7 @@ Internet Protocol Version 4, Src: 10.0.20.15, Dst: 10.0.30.20
 | Field | Use in analysis |
 | --- | --- |
 | TTL | Decrements once per router hop; a TTL that is unexpectedly low for a known-local destination indicates extra hops (routing loop or unexpected path); TTL is also a coarse OS fingerprint (common starting values: 64 Linux/macOS, 128 Windows, 255 many network appliances). |
-| Flags (Don't Fragment / More Fragments) and Fragment Offset | Identify fragmented traffic; `ip.flags.mf==1` matches non-final fragments, and a nonzero `ip.frag_offset` matches every fragment after the first. Fragmentation is frequently a Path MTU problem (Chapter 06) rather than a protocol-level issue. |
+| Flags (Don't Fragment / More Fragments) and Fragment Offset | Identify fragmented traffic; `ip.flags.mf==1` matches non-final fragments, and a nonzero `ip.frag_offset` matches every fragment after the first. Fragmentation is frequently a Path MTU problem ([Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md)) rather than a protocol-level issue. |
 | DSCP | Differentiated Services value used for QoS marking/remarking verification — confirm a marking policy is applied at the expected point in the path rather than assuming it based on configuration alone. |
 | Protocol | Identifies the next-layer protocol (1 ICMP, 6 TCP, 17 UDP) and is what the dissector engine uses to hand off to the transport-layer dissector. |
 | Header Checksum | Wireshark can validate this, but many NICs perform checksum offload, which means the value captured at the sending host is frequently `0x0000` and not actually invalid — see Validation and Troubleshooting. |
@@ -122,7 +122,7 @@ TTL values.
 - **ARP is inherently local-segment-only.** ARP traffic never crosses a
   Layer 3 boundary; if an ARP-based finding (spoofing, excessive
   broadcast) needs to be correlated across segments, it must be captured
-  independently on each segment's mirror/TAP point (Chapter 02).
+  independently on each segment's mirror/TAP point ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md)).
   Gratuitous ARP baselines should be established per segment, since normal
   failover patterns (VRRP/HSRP) differ by environment.
 - **Checksum offload changes what "invalid checksum" means.** Deciding
@@ -157,7 +157,7 @@ arp.src.proto_ipv4 == arp.dst.proto_ipv4   # gratuitous ARP (announcing own IP)
 ```
 
 `tshark` scripted extraction of every IP-to-MAC mapping observed in a
-capture, useful as an ARP-spoofing baseline (expanded in Chapter 08):
+capture, useful as an ARP-spoofing baseline (expanded in [Chapter 08](08-security-investigation-command-line-analysis-and-automation.md)):
 
 ```bash
 tshark -r capture.pcapng -Y "arp.opcode==2" \
@@ -251,7 +251,7 @@ icmp.type==11 || icmp.type==0 || icmp.type==8
   volume of ICMP Echo traffic to sequential addresses in a short window is
   host discovery (network sweep); unusually large or irregular ICMP Echo
   payloads can indicate data exfiltration over an ICMP tunnel — both are
-  covered further with `tshark` scripted detection in Chapter 08.
+  covered further with `tshark` scripted detection in [Chapter 08](08-security-investigation-command-line-analysis-and-automation.md).
 - **Do not disable ICMP entirely as a blanket hardening measure.** Blocking
   Type 3 Code 4 (fragmentation needed and DF set) breaks Path MTU
   Discovery for legitimate traffic; if ICMP must be restricted, permit the
@@ -291,7 +291,7 @@ sequence, and a traceroute, and build display filters that isolate each.
 
 **Prerequisites**
 
-- Wireshark and `tshark` installed with capture rights (Chapter 01).
+- Wireshark and `tshark` installed with capture rights ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
 - Network connectivity to a local gateway and a public or internal host
   reachable via multiple hops.
 
@@ -382,8 +382,8 @@ sequence, and a traceroute, and build display filters that isolate each.
 Ethernet, ARP, IPv4, and ICMPv4 are the layers every other protocol in this
 volume rides on, and Wireshark's dissection of them turns abstract
 concepts — address resolution, TTL, fragmentation, path diagnostics — into
-directly observable fields. Chapter 05 extends this same bottom-up analysis
-to IPv6, ICMPv6, UDP, DHCP, and DNS; Chapter 06 builds on the IPv4/IPv6
+directly observable fields. [Chapter 05](05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md) extends this same bottom-up analysis
+to IPv6, ICMPv6, UDP, DHCP, and DNS; [Chapter 06](06-tcp-reliability-flow-control-and-performance-analysis.md) builds on the IPv4/IPv6
 foundation here to analyze TCP's reliability and performance behavior in
 depth.
 

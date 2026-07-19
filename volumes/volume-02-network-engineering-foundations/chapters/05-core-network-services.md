@@ -6,23 +6,23 @@
   between recursive and authoritative resolution and the role of caching
   and TTLs.
 - Explain the DHCP four-message exchange (DORA), DHCP relay, and DHCPv6/SLAAC
-  interaction introduced conceptually in Chapter 2.
+  interaction introduced conceptually in [Chapter 2](02-ip-addressing-and-subnetting.md).
 - Explain NTP's stratum hierarchy and why accurate time is a prerequisite
   for security, logging, and troubleshooting across the rest of this volume.
 - Distinguish NAT and PAT, explain why NAT is a translation mechanism rather
-  than a security control (as stated in Chapter 2), and identify when it is
+  than a security control (as stated in [Chapter 2](02-ip-addressing-and-subnetting.md)), and identify when it is
   and is not required.
 - Configure and validate DNS, DHCP, NTP, and NAT/PAT services using
   vendor-neutral tooling.
 - Diagnose common failures in each service using layered troubleshooting
-  reasoning established in Chapter 1.
+  reasoning established in [Chapter 1](01-network-models-and-protocol-architecture.md).
 - Apply security hardening appropriate to each core service.
 
 ## Theory and Architecture
 
 Every enterprise network depends on a small set of infrastructure services
 that most users never interact with directly but that every application
-depends on implicitly. If IP addressing (Chapter 2) and routing (Chapter 4)
+depends on implicitly. If IP addressing ([Chapter 2](02-ip-addressing-and-subnetting.md)) and routing ([Chapter 4](04-ip-routing-fundamentals.md))
 answer "how do packets get from A to B," the services in this chapter answer
 "how does a host learn what B is called, what address it should use, what
 time it is, and how it reaches a destination that does not share its address
@@ -123,11 +123,11 @@ DHCP server on every subnet.
 | --- | --- |
 | Scope | The contiguous address range a DHCP server can assign from for a given subnet |
 | Lease time | How long a client may use an assigned address before renewal is required |
-| Exclusion range | Addresses within a scope reserved for static assignment (see Chapter 2's addressing-by-function convention) |
+| Exclusion range | Addresses within a scope reserved for static assignment (see [Chapter 2](02-ip-addressing-and-subnetting.md)'s addressing-by-function convention) |
 | Reservation | A specific address bound to a specific MAC/client identifier, still delivered via DHCP |
 | Option | Additional configuration delivered with the lease (Option 3 = router, Option 6 = DNS servers, Option 42 = NTP servers, Option 66/67 = PXE boot server/filename) |
 
-**DHCPv6 and SLAAC.** Chapter 2 introduced IPv6's Stateless Address
+**DHCPv6 and SLAAC.** [Chapter 2](02-ip-addressing-and-subnetting.md) introduced IPv6's Stateless Address
 Autoconfiguration (SLAAC), in which a host derives its own address from a
 Router Advertisement's prefix and generates its interface identifier
 locally — no server assigns the address. DHCPv6 can operate in stateful mode
@@ -152,7 +152,7 @@ clocks across a network using a hierarchical stratum model:
 Accurate, synchronized time is a silent dependency of nearly everything else
 in this volume and the chapters that follow: TLS certificate validation
 depends on clock accuracy, Kerberos authentication fails outside a small
-clock-skew tolerance, and — most relevant to Chapter 8 and Chapter 9 —
+clock-skew tolerance, and — most relevant to [Chapter 8](08-network-validation-and-observability.md) and [Chapter 9](09-network-troubleshooting-and-operations.md) —
 correlating syslog messages and flow records across multiple devices during
 an incident is only possible if every device's clock agrees. A network
 where every device free-runs its own clock cannot produce a trustworthy
@@ -193,7 +193,7 @@ the one that performed the outbound translation — breaks connectivity
 outright rather than merely degrading it; the returning device has no
 matching translation table entry.
 
-As established in Chapter 2, **NAT is a translation mechanism, not a
+As established in [Chapter 2](02-ip-addressing-and-subnetting.md), **NAT is a translation mechanism, not a
 security boundary.** A PAT device only forwards return traffic that matches
 an existing outbound-initiated translation, which incidentally behaves
 similarly to a stateful firewall for unsolicited inbound traffic — but this
@@ -223,7 +223,7 @@ security reasons independent of translation.
 - **Treat internal NTP servers as infrastructure, not convenience.**
   Point every managed device at the same pair of internal NTP servers
   (rather than a mix of public/internal sources) so that clock skew between
-  devices stays within the tolerance that log correlation (Chapter 8) and
+  devices stays within the tolerance that log correlation ([Chapter 8](08-network-validation-and-observability.md)) and
   authentication protocols require.
 - **Minimize NAT/PAT scope deliberately.** Use static NAT only for the
   specific services that must be reachable inbound; do not expose more
@@ -325,7 +325,7 @@ for name, expected_ips in expected.items():
 ```
 
 Configuration management (Ansible, or an IPAM tool's API as introduced in
-Chapter 2) should generate DNS zone records, DHCP scopes, and NTP client
+[Chapter 2](02-ip-addressing-and-subnetting.md)) should generate DNS zone records, DHCP scopes, and NTP client
 configuration from the same source-of-truth inventory used for IP address
 allocation, so that a new subnet's addressing, naming, DHCP scope, and time
 source are provisioned together rather than as four manually synchronized
@@ -366,7 +366,7 @@ frequently actually "DNS could not resolve the application's name" or "the
 client never received a DHCP lease" — both of which are core-services
 failures that will masquerade as an application or Layer 3 problem until a
 `dig` or lease check narrows it down, consistent with the layered
-troubleshooting order established in Chapter 1.
+troubleshooting order established in [Chapter 1](01-network-models-and-protocol-architecture.md).
 
 ## Security and Best Practices
 
@@ -377,10 +377,10 @@ troubleshooting order established in Chapter 1.
   it. Rate-limit and monitor for anomalous query volume, which can indicate
   DNS tunneling used for data exfiltration.
 - **DHCP.** Enable DHCP snooping on access-layer switches (Layer 2
-  infrastructure covered in Chapter 3) to prevent rogue DHCP servers from
+  infrastructure covered in [Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md)) to prevent rogue DHCP servers from
   handing out malicious gateway or DNS options; combine with the IPv6
   Router Advertisement Guard and DHCPv6 Guard controls introduced in
-  Chapter 2.
+  [Chapter 2](02-ip-addressing-and-subnetting.md).
 - **NTP.** Restrict which hosts may query an internal NTP server (`allow`
   statements scoped to internal ranges) and consider NTP authentication
   (symmetric keys or NTS) for high-assurance environments, since an
@@ -575,7 +575,7 @@ translation. The hands-on lab combined DHCP-assigned addressing, custom DNS
 resolution, and PAT into a single working topology and reproduced a DHCP
 scope exhaustion failure — a fault class that presents as "the network is
 down" but is actually a core-services problem, reinforcing the layered
-diagnostic habit from Chapter 1.
+diagnostic habit from [Chapter 1](01-network-models-and-protocol-architecture.md).
 
 **Completion Checklist**
 
