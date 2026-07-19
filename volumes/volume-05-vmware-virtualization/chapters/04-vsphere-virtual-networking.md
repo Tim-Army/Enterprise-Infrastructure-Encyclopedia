@@ -340,6 +340,7 @@ Get-VDPortgroup -Name "pg-vm-app-tier" | Get-VDSecurityPolicy |
   # pktcap-uw: capture traffic on a specific VM's vNIC (identify the switch port with --uplink or vsish first)
   pktcap-uw --vmk vmk0 --dir 2 -o /tmp/capture-vmk0.pcap
   ```
+
 - **Throughput/statistics review.** `esxtop` in network mode (`n`) and
   `net-stats -A -t vW` report per-vNIC/per-uplink throughput, dropped
   packet counts, and (on a VDS) NIOC-reserved-versus-consumed bandwidth,

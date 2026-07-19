@@ -385,6 +385,7 @@ custom catalog.
    echo "placeholder DUP content for lab purposes only" > \
      /tmp/drm-export/packages/BIOS_LAB_2.15.0.EXE
    ```
+
 4. Host the (now verified) export over HTTP from the lab host:
 
    ```bash

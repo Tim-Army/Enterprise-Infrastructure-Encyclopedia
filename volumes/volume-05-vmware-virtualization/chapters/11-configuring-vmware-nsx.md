@@ -347,6 +347,7 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PUT \
   # Edge node CLI: check BGP neighbor state
   get bgp neighbor summary
   ```
+
 - **Traceflow.** **Traceflow** injects a synthetic packet at a specified
   source and traces its actual path — hop by hop, including which DFW
   rule (if any) dropped it — through the logical topology to a specified

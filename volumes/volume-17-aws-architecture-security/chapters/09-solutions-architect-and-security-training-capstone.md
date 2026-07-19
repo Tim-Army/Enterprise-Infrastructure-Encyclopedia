@@ -250,7 +250,7 @@ for bucket in $(aws s3api list-buckets --query "Buckets[].Name" --output text); 
   status=$(aws s3api get-public-access-block --bucket "$bucket" \
     --query "PublicAccessBlockConfiguration.[BlockPublicAcls,BlockPublicPolicy,IgnorePublicAcls,RestrictPublicBuckets]" \
     --output text 2>/dev/null || echo "NOT_SET")
-  if [[ "$status" != "True	True	True	True" ]]; then
+  if [[ "$status" != $'True\tTrue\tTrue\tTrue' ]]; then
     echo "  GAP: $bucket -> $status"
   fi
 done

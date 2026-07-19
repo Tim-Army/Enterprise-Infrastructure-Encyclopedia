@@ -250,7 +250,7 @@ EDGE-01(config)# interface Vlan30
 EDGE-01(config-if)# ip policy route-map GUEST-PBR
 ```
 
-### VRF-lite
+### Configuring VRF-lite for guest traffic isolation
 
 ```text
 BRANCH-01(config)# vrf definition GUEST

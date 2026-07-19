@@ -88,6 +88,7 @@ example, a one-time data migration).
   but become infrastructure the team must patch, scale, and secure —
   effectively expanding the automation architecture to include runner
   fleet management.
+
 2. **Secrets in CI: static vs. federated.** Static long-lived secrets
   stored as CI secrets are simple but represent a standing credential that
   can leak through logs, forks, or compromised dependencies. OpenID Connect
@@ -95,6 +96,7 @@ example, a one-time data migration).
   token for cloud credentials that expire in minutes, with no long-lived
   secret stored anywhere. Prefer OIDC federation wherever the cloud
   provider supports it.
+
 - **Blast radius of a single pipeline identity.** A CI pipeline that can
   both plan and apply infrastructure changes with the same broad credential
   collapses the review/execution boundary that pull-request review is

@@ -285,7 +285,7 @@ Reassigning `port3` moves it (and the DMZ traffic it carries) out of the
 now communicate only across the `vlink-corp-dmz` pair, each side routable
 within its own VDOM's routing table.
 
-### FGCP high availability
+### Configuring FGCP high availability
 
 Applied identically on both cluster members (`FGT-LAB-01` and
 `FGT-LAB-02`), except for `priority`, which should differ to give a

@@ -34,7 +34,7 @@
 
 - One `H1` per file, matching the file's title.
 - Relative links for anything inside the repository.
-- Fenced code blocks with a language hint (```bash, ```yaml, ```text).
+- Fenced code blocks with a language hint (`bash`, `yaml`, `text`).
 - Tables for structured reference data (ports, version baselines, comparison
   matrices) rather than nested bullet lists.
 

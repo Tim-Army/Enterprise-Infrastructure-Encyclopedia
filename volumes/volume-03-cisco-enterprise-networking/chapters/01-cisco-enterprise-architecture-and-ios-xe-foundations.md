@@ -403,7 +403,7 @@ from factory defaults to a hardened, licensed, install-mode device.
    password from your terminal:
 
    ```text
-   $ ssh netadmin@10.10.99.10
+   ssh netadmin@10.10.99.10
    ```
 
    **Expected result:** authentication is rejected after three attempts and

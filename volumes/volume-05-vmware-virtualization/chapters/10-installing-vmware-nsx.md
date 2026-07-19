@@ -363,6 +363,7 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PUT \
   ```bash
   curl -k -u admin:'<NSX_ADMIN_PASSWORD>' https://nsx-vip.corp.example/api/v1/cluster/status
   ```
+
 - **Transport node preparation failures.** A host stuck in `Installing` or
   showing a preparation failure most often traces to a VDS/uplink
   mismatch (the uplink profile references uplink names that do not exist

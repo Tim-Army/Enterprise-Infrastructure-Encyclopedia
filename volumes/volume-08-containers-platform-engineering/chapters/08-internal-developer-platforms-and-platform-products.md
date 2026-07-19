@@ -143,7 +143,7 @@ legitimately warrant different points on this spectrum:
 | Model | Isolation boundary | Trade-off |
 | --- | --- | --- |
 | **Namespace-based soft multi-tenancy** | Kubernetes namespace, enforced by RBAC + NetworkPolicy + resource quotas | Cheapest, highest density; a control-plane or kernel-level vulnerability can still cross tenants |
-| **Virtual clusters (vcluster)** | A control-plane-per-tenant running inside a namespace of a shared host cluster | Each tenant gets its own API server and object namespace (even cluster-scoped resources feel dedicated) without a dedicated set of nodes | 
+| **Virtual clusters (vcluster)** | A control-plane-per-tenant running inside a namespace of a shared host cluster | Each tenant gets its own API server and object namespace (even cluster-scoped resources feel dedicated) without a dedicated set of nodes |
 | **Hierarchical namespaces / Capsule-style tenancy** | Namespace, with policy inherited down a namespace hierarchy and self-service sub-namespace creation | Improves on flat soft multi-tenancy's admin burden without the overhead of a virtual or dedicated cluster |
 | **Dedicated (hard) cluster per tenant** | Full cluster — separate control plane, separate nodes | Strongest isolation, including kernel-level; highest cost and operational overhead, multiplied by tenant count |
 

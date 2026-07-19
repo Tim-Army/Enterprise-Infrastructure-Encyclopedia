@@ -3,6 +3,17 @@ config:
   MD013: false
   MD033: false
   MD041: false
+  # Every chapter uses bold sub-labels ("**References**", "**Prerequisites**",
+  # "**Cleanup**") inside combined sections (see templates/chapter.md) rather
+  # than nesting an extra heading level under the mandated 9-section
+  # structure. This is a deliberate, repository-wide convention, not a defect.
+  MD036: false
+  # A direct consequence of the above: a bold/heading callout ("**Negative
+  # test**") between two numbered steps ends the first ordered list and
+  # starts a new one at that literal number. CommonMark/GFM preserve the
+  # list's `start` value from the source number, so the step number still
+  # displays correctly — this is cosmetic, not a rendering defect.
+  MD029: false
 globs:
   - "**/*.md"
 ignores:

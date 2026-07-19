@@ -379,6 +379,7 @@ for a full restore test) a validated backup destination.
    ```bash
    ls -lh /srv/ome-backup
    ```
+
 5. Run the `ome_pre_change_snapshot.py` script from Implementation and
    Automation and save its output:
 
@@ -386,6 +387,7 @@ for a full restore test) a validated backup destination.
    python3 ome_pre_change_snapshot.py <appliance-ip> admin '<password>' \
      > pre-change-snapshot.json
    ```
+
 6. Exercise a representative cross-chapter operational sequence: force an
    inventory refresh on your lab device(s) (Chapter 3), confirm no new
    unexpected alerts appear in the alert log (Chapter 4), and if you

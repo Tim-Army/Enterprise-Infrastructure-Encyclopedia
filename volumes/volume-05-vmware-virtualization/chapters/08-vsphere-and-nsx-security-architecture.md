@@ -11,7 +11,7 @@
 - Explain the security implications of VMCA-issued certificates versus
   enterprise-CA-signed certificates in a vSphere PKI.
 - Design least-privilege custom roles and explain why daily operations
-  should never run as Administrator@vsphere.local.
+  should never run as `Administrator@vsphere.local`.
 - Compare the vSphere Native Key Provider against an external
   KMIP-compliant KMS for VM and vSAN encryption key management.
 - Explain NSX's Distributed Firewall (DFW) and Gateway Firewall
@@ -849,7 +849,7 @@ networking from a principle into enforceable, auditable policy.
 - [ ] Can explain the security trade-off between default VMCA-issued and
       enterprise-CA-signed certificates.
 - [ ] Can design a least-privilege custom role and explain why
-      Administrator@vsphere.local should not be used for daily operations.
+      `Administrator@vsphere.local` should not be used for daily operations.
 - [ ] Can compare the Native Key Provider and an external KMIP KMS and
       choose correctly based on a separation-of-duties requirement.
 - [ ] Can design an NSX micro-segmentation policy using dynamic,
