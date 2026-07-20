@@ -225,7 +225,7 @@ build_volume_html() {
   pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" \
     -f markdown-implicit_figures \
     --standalone --embed-resources \
-    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_body[@]}")" \
+    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
     --include-after-body=publishing/repo-link.html \
@@ -255,7 +255,7 @@ build_series_html() {
   pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_body[@]}" \
     -f markdown-implicit_figures \
     --standalone --embed-resources \
-    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
+    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_body[@]}")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
     --include-after-body=publishing/repo-link.html \
