@@ -89,19 +89,31 @@ manage this risk.
 
 ### Supported deployment platforms
 
-At the 4.7.x baseline, OME is distributed as appliance images for:
+At the 4.7.x baseline, OME is distributed as three appliance image formats,
+which between them cover six supported hypervisor platforms:
 
-- VMware vSphere/ESXi (OVF/OVA)
-- Microsoft Hyper-V (VHD)
-- KVM (QCOW2)
+| Platform | Image format | Notes |
+| --- | --- | --- |
+| VMware vSphere/ESXi 8.0 and 9.x | OVF/OVA | Deployed via vCenter, `govc`, or PowerCLI. |
+| Microsoft Hyper-V (Windows Server 2022, 2025) | VHD | |
+| KVM on Red Hat Enterprise Linux 9.6 and 10 | QCOW2 | |
+| Nutanix AHV 10.0.1.1 and later | QCOW2 | |
+| Proxmox VE 9.0 and later | QCOW2 | Documented GUI and CLI procedures; VE 8.x is not supported. |
+| Red Hat OpenShift v4.19.11 and later | QCOW2 | Boots from the primary virtual disk only. |
 
-All three images are functionally identical; the only difference is the
-virtualization-platform-specific packaging. Nested or cloud-hosted
-hypervisors (for example, a vSphere or KVM host running inside a public
-cloud VM) are commonly used for lab and training environments such as the
-one in this chapter's Hands-On Lab, though production deployments are
-almost always on-premises alongside the managed fleet's out-of-band
-network.
+The images are functionally identical; the only difference is the
+virtualization-platform-specific packaging, and the four QCOW2-based
+platforms all consume the same `openmanage_enterprise_kvm_format` archive.
+Confirm the exact supported version ranges against the OpenManage
+Enterprise Support Matrix for your release — the hypervisor list has
+expanded steadily across the 4.x series, and a platform absent from an
+older matrix may be supported in a newer one.
+
+Nested or cloud-hosted hypervisors (for example, a vSphere or KVM host
+running inside a public cloud VM) are commonly used for lab and training
+environments such as the one in this chapter's Hands-On Lab, though
+production deployments are almost always on-premises alongside the managed
+fleet's out-of-band network.
 
 ### Communication model
 
@@ -120,14 +132,14 @@ than only out of it.
 
 ## Design Considerations
 
-- **Sizing profile.** Dell's deployment guidance for OME has historically
-  offered a smaller appliance profile (on the order of 4 vCPUs and 16 GB
-  RAM) suited to a few thousand managed devices, and a larger profile (on
-  the order of 8 vCPUs and 32 GB RAM) suited to tens of thousands. Treat
-  these as directional: confirm the exact vCPU, memory, and disk figures
-  for 4.7.x against the current OpenManage Enterprise deployment guide
-  before sizing a production appliance, since sizing tables are revised
-  between releases as feature scope changes.
+- **Sizing profile.** The appliance ships preconfigured at the maximum
+  recommended specification — 64 GB RAM, 8 processor cores, and 830 GB of
+  disk — so that it runs out of the box with every plugin installed. That
+  shipped default is a ceiling, not a floor: size down against the tables
+  in *Appliance sizing baseline* below if the estate is smaller. Sizing
+  tables are revised between releases as feature scope changes, so
+  re-check them when upgrading rather than assuming a 4.7.x figure carries
+  forward.
 - **Network placement.** Place the OME appliance's management interface on
   the same out-of-band/management network segment as the iDRACs it will
   discover, or ensure routed connectivity with no blocking firewall between
@@ -163,6 +175,35 @@ than only out of it.
   the environment needs Advanced-tier features so the license can be
   imported during initial setup rather than as a follow-up change.
 
+### Appliance sizing baseline
+
+The 4.7.x minimum requirements scale with the number of managed devices.
+The "with all plugins" column is the figure to budget against unless you
+are certain no plugin will ever be installed, since adding one to an
+undersized appliance means a disruptive resize rather than a
+configuration change.
+
+| Deployment | Devices | Minimum RAM | Minimum cores | RAM with all plugins |
+| --- | --- | --- | --- | --- |
+| Small | Up to 1,000 | 19 GB | 4 | 40 GB |
+| Large | Up to 8,000 | 40 GB | 8 | 64 GB |
+| Extra-large | Up to 25,000 | 256 GB | 64 | Plugins not supported |
+
+Individual plugins add to the base figure — Services is the largest at
++8 GB, followed by the vSphere integration (OMEVV) at +5 GB and the SCOM
+integration at +3 GB. The extra-large tier is monitoring-only: discovery,
+hardware inventory, health, and alerting are supported at 25,000 devices,
+but no plugins and no other features are.
+
+Storage is fixed regardless of tier. The appliance is configured with two
+virtual disks of 415 GB each: the primary carries the core application and
+database, and the secondary is required for additional features and
+supporting plugins. Both must be attached at deployment. Provision the
+830 GB total *plus* headroom for hypervisor snapshots and future virtual
+disk expansion — the embedded database grows with alert and inventory
+history, and exhausting the backing store corrupts it rather than
+degrading gracefully.
+
 ## Implementation and Automation
 
 ### Deploying the virtual appliance
@@ -191,6 +232,76 @@ Start-VM -VM "ome-prod-01"
 Equivalent deployments are performed with `govc import.ova` for
 vSphere/vCenter via the CLI, `New-VHD` plus `New-VM` for Hyper-V, or
 `virt-install` referencing the QCOW2 image for KVM.
+
+### Deploying on Proxmox VE
+
+Proxmox VE 9.0 and later is a supported deployment target, and Dell
+documents both a GUI and a CLI procedure for it. The CLI path is the more
+repeatable of the two and is shown below. It uses the same
+`openmanage_enterprise_kvm_format` archive as any other QCOW2 platform.
+
+Three platform constraints are non-negotiable, and getting any of them
+wrong produces a virtual machine that will not boot:
+
+- **UEFI is mandatory.** The appliance requires OVMF; SeaBIOS is
+  explicitly unsupported.
+- **VirtIO Block is unsupported** for the appliance disks. Attach them as
+  SCSI devices — the `virtio-scsi-pci` *controller* is fine and is what
+  Dell's own procedure uses.
+- **Proxmox VE must be 9.0 or above.** VE 8.x is not a supported target.
+
+```bash
+VMID=<VM_ID>
+QCOW_DIR=/var/lib/vz/template/qcow
+STORAGE=<STORAGE_POOL>
+
+# Create the VM shell sized per the Appliance sizing baseline table.
+qm create "$VMID" --name ome-prod-01 --memory 65536 --cores 8 \
+  --net0 virtio,bridge=<MGMT_BRIDGE>
+
+# Import both QCOW2 disks from the extracted archive.
+qm importdisk "$VMID" "$QCOW_DIR/<primary>.qcow2"   "$STORAGE" --format qcow2
+qm importdisk "$VMID" "$QCOW_DIR/<secondary>.qcow2" "$STORAGE" --format qcow2
+
+# Confirm the device names Proxmox assigned before attaching them.
+qm config "$VMID"
+
+# Attach both disks to a SCSI controller.
+qm set "$VMID" --scsihw virtio-scsi-pci \
+  --scsi0 "$STORAGE:vm-$VMID-disk-0" \
+  --scsi1 "$STORAGE:vm-$VMID-disk-1"
+
+# Enable UEFI boot; SeaBIOS is not supported.
+qm set "$VMID" --bios ovmf
+qm set "$VMID" --efidisk0 "$STORAGE:0,format=raw,efitype=4m,pre-enrolled-keys=1"
+
+# Boot from the primary disk.
+qm set "$VMID" --boot c --bootdisk scsi0
+
+qm start "$VMID"
+```
+
+Two cautions specific to this platform:
+
+- Dell's published CLI procedure imports only one QCOW2 file, although the
+  same document states the archive contains two. Treat that as a
+  documentation gap rather than evidence the second disk is optional: the
+  hardware requirements are explicit that the secondary virtual disk is
+  required for plugins and additional features. Import both, as shown
+  above.
+- The disk device names Proxmox assigns depend on the storage backend, so
+  run `qm config` after importing and confirm the actual names before
+  attaching them rather than assuming `vm-<VM_ID>-disk-0` and `-1`.
+
+If the appliance fails to boot, check the boot order before investigating
+anything else. This is the most commonly reported Proxmox-specific
+failure: the imported disk lands at the bottom of the VM's boot device
+list, and the UEFI firmware never reaches it. Confirm in **Options → Boot
+Order** that the primary SCSI disk is both enabled and first.
+
+Note also that expanding a virtual disk on this platform requires
+starting the virtual machine for the change to take effect — resizing the
+disk in Proxmox alone does not apply the new capacity to the appliance.
 
 ### Text-console network bootstrap
 
