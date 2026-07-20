@@ -14,6 +14,14 @@ This rewrites both so the cover is the declared starting point: the guide
 gains a `text` reference pointing at the cover and lists the cover first,
 and the landmarks nav is reordered to lead with the cover.
 
+It also adds a "Table of Contents" entry at the head of the table of
+contents itself. Pandoc's nav lists only the body matter, so the nav
+document -- which sits in the spine and is a readable page -- is the one
+page in the book with no way to reach it from the contents. Readers that
+render the nav as a panel rather than a page gain nothing from the entry
+but are not harmed by it; readers that page through the spine get a way
+back.
+
 The archive is rebuilt rather than patched in place, because an EPUB
 requires `mimetype` to be the first entry and stored uncompressed; a naive
 rewrite loses that and produces a file some readers reject.
@@ -28,6 +36,9 @@ import zipfile
 from pathlib import Path
 
 COVER_HREF = "text/cover.xhtml"
+NAV_HREF = "nav.xhtml"
+NAV_TITLE = "Table of Contents"
+NAV_ITEM = f'<li id="toc-li-contents"><a href="{NAV_HREF}">{NAV_TITLE}</a></li>'
 
 
 def fix_opf(xml: str) -> str:
@@ -66,6 +77,18 @@ def fix_nav(xml: str) -> str:
     return xml[: match.start(2)] + inner + xml[match.end(2):]
 
 
+def add_contents_entry(xml: str) -> str:
+    """Add a self-referencing entry at the head of the table of contents."""
+    if NAV_ITEM in xml:
+        return xml
+
+    match = re.search(r'<nav[^>]*epub:type="toc".*?<ol[^>]*>', xml, re.S)
+    if not match:
+        return xml
+
+    return xml[: match.end()] + NAV_ITEM + xml[match.end():]
+
+
 def main():
     if len(sys.argv) != 2:
         print("usage: finalize_epub.py <book.epub>", file=sys.stderr)
@@ -84,7 +107,8 @@ def main():
 
     entries[opf] = fix_opf(entries[opf].decode("utf-8")).encode("utf-8")
     if nav:
-        entries[nav] = fix_nav(entries[nav].decode("utf-8")).encode("utf-8")
+        text = fix_nav(entries[nav].decode("utf-8"))
+        entries[nav] = add_contents_entry(text).encode("utf-8")
 
     tmp = Path(tempfile.mkstemp(suffix=".epub")[1])
     with zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as out:
