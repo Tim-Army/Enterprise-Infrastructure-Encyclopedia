@@ -172,7 +172,7 @@ written below `output/`.
 
 The HTML edition uses Pandoc with [publishing/web.css](publishing/web.css) and
 the [theme switcher](publishing/theme-toggle.html). It opens in dark mode with
-a black background and `#060` body text; the fixed upper-right control switches
+a black background and `#008800` body text; the fixed upper-right control switches
 to light mode and remembers the reader's choice in that browser. The generated
 reading and download portal uses the same dark-first theme and its upper-right
 control.
