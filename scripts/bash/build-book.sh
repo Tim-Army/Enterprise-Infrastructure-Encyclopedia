@@ -130,6 +130,59 @@ first_line_title() {
   head -1 "$1" | sed -E 's/^# (Chapter [0-9]+: )?//'
 }
 
+# Volume order, read once, for the previous/next links in each page footer.
+# Directory order is the reading order -- zero-padded slugs sort correctly,
+# and volume-99 lands last, matching its place in the series.
+volume_slugs=()
+volume_titles=()
+for _vol in volumes/*/; do
+  volume_slugs+=("$(basename "${_vol%/}")")
+  volume_titles+=("$(first_line_title "${_vol}README.md")")
+done
+unset _vol
+
+# Prints the position of a slug within volume_slugs, or -1 if absent.
+volume_index() {
+  local want="$1" i
+  for i in "${!volume_slugs[@]}"; do
+    [[ "${volume_slugs[$i]}" == "$want" ]] && { printf '%s' "$i"; return 0; }
+  done
+  printf '%s' "-1"
+}
+
+# Renders the footer shared by every generated page and prints its path.
+#
+# $1 is the relative prefix that reaches output/html/ from the page being
+# built ("" for the series edition, "../" for anything inside a volume
+# directory). $2, when given, is the volume the page belongs to, which adds
+# the previous/next volume links; the series edition omits them because it
+# already contains every volume.
+footer_for() {
+  local prefix="$1" volume_slug="${2:-}" dest links idx last
+  dest="$link_tmp/footer.html"
+  links="<li><a href=\"${prefix}complete-encyclopedia.html#TOC\">Contents</a></li>"
+  links+="<li><a href=\"#\">Back to top</a></li>"
+
+  if [[ -n "$volume_slug" ]]; then
+    idx="$(volume_index "$volume_slug")"
+    last=$(( ${#volume_slugs[@]} - 1 ))
+    if [[ "$idx" -gt 0 ]]; then
+      links+="<li><a href=\"${prefix}${volume_slugs[$((idx - 1))]}/complete-volume.html\">"
+      links+="&#8592; ${volume_titles[$((idx - 1))]}</a></li>"
+    fi
+    if [[ "$idx" -ge 0 && "$idx" -lt "$last" ]]; then
+      links+="<li><a href=\"${prefix}${volume_slugs[$((idx + 1))]}/complete-volume.html\">"
+      links+="${volume_titles[$((idx + 1))]} &#8594;</a></li>"
+    fi
+  fi
+
+  {
+    printf '<nav id="page-nav" aria-label="Page navigation"><ul>%s</ul></nav>\n' "$links"
+    cat publishing/repo-link.html
+  } > "$dest"
+  printf '%s' "$dest"
+}
+
 # Renders publishing/title-page.md and prints the path to the rendered copy.
 #
 # This is the cover page of the encyclopedia as a whole, so it is built into
@@ -207,7 +260,7 @@ build_chapter_html() {
     --resource-path="$(resource_path_for "$rewritten")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
-    --include-after-body=publishing/repo-link.html \
+    --include-after-body="$(footer_for ../ "$volume_slug")" \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=2 \
     --metadata "title=$title" \
@@ -238,7 +291,7 @@ build_volume_html() {
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
-    --include-after-body=publishing/repo-link.html \
+    --include-after-body="$(footer_for ../ "$volume_slug")" \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=2 \
     --metadata "title=$title" \
@@ -268,7 +321,7 @@ build_series_html() {
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_body[@]}")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
-    --include-after-body=publishing/repo-link.html \
+    --include-after-body="$(footer_for '')" \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=2 \
     --metadata "title=$series_title — Complete Edition" \

@@ -88,6 +88,30 @@ img {
   margin: 1.5rem auto 2rem;
 }
 
+#page-nav {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--eie-rule);
+  font-size: 0.9rem;
+}
+
+#page-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.4rem;
+}
+
+/* The footer nav already carries the rule above it, so the repo line that
+   follows it does not need a second one. */
+#page-nav + #repo-link {
+  margin-top: 1rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
 #repo-link {
   margin-top: 3rem;
   padding-top: 1rem;
