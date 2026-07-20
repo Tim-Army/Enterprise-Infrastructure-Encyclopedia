@@ -1,10 +1,24 @@
+/* Colours mirror the mindthedark template on tim.army, taken from its
+   Template Style Settings. Placeholder names are given so the two can be
+   reconciled later; the dark scheme's *_color_dark values are the defaults
+   here, and body.light carries the light scheme.
+
+   Two pairs fall below WCAG AA and are kept deliberately, for fidelity to
+   the template rather than by oversight: the dark link (#0e67cf on
+   #1e1e1e, 3.06:1) and the inline-code pair (#b10000 on #b19f9f, 2.90:1).
+   Links stay underlined, so colour is never their only signal. */
 :root {
   color-scheme: dark light;
-  --eie-bg: #000000;
-  --eie-fg: #008800;
-  --eie-link: #00aa00;
-  --eie-bg-light: #ffffff;
-  --eie-fg-light: #060606;
+  --eie-bg: #1e1e1e;          /* __background_color_dark__ */
+  --eie-fg: #76d40b;          /* __text_color_dark__       */
+  --eie-link: #0e67cf;        /* __link_color_dark__       */
+  --eie-rule: #666666;        /* __border_color_dark__     */
+  --eie-code-bg: #b19f9f;     /* __pre_background_color_dark__ */
+  --eie-code-fg: #b10000;     /* __pre_text_color_dark__       */
+  --eie-select-bg: #275c9c;   /* __selection_background_color_dark__ */
+  --eie-select-fg: #ffffff;   /* __selection_color_dark__            */
+  --eie-bg-light: #ffffff;    /* __background__ */
+  --eie-fg-light: #333333;    /* __text__       */
 }
 
 body {
@@ -20,18 +34,26 @@ body {
 body.light {
   background: var(--eie-bg-light);
   color: var(--eie-fg-light);
+  --eie-link: #2b73b7;        /* __link__                  */
+  --eie-rule: #cccccc;        /* __border__                */
+  --eie-code-bg: #f0d2d2;     /* __pre_background_color__  */
+  --eie-code-fg: #b10000;     /* __pre_text_color__        */
+  --eie-select-bg: #3584e4;   /* __selection_background_color__ */
+  --eie-select-fg: #ffffff;   /* __selection_color__            */
 }
 
 a {
   color: var(--eie-link);
 }
 
-body.light a {
-  color: #046804;
+::selection {
+  background: var(--eie-select-bg);
+  color: var(--eie-select-fg);
 }
 
 pre, code {
-  background: rgba(0, 136, 0, 0.12);
+  background: var(--eie-code-bg);
+  color: var(--eie-code-fg);
   border-radius: 4px;
 }
 
@@ -69,12 +91,8 @@ img {
 #repo-link {
   margin-top: 3rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(0, 136, 0, 0.35);
+  border-top: 1px solid var(--eie-rule);
   font-size: 0.9rem;
-}
-
-body.light #repo-link {
-  border-top-color: rgba(4, 104, 4, 0.35);
 }
 
 table {
@@ -83,7 +101,7 @@ table {
 }
 
 th, td {
-  border: 1px solid rgba(0, 136, 0, 0.35);
+  border: 1px solid var(--eie-rule);
   padding: 0.4rem 0.6rem;
   text-align: left;
 }
