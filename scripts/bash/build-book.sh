@@ -86,6 +86,16 @@ author="Enterprise Infrastructure Encyclopedia Project"
 title_page_created="2026-07-18"
 title_page_updated="$(date +%Y-%m-%d)"
 
+# The EPUB's dc:identifier. Pandoc mints a fresh random UUID whenever one is
+# not supplied, which makes every rebuild a different publication: readers
+# stack the builds up as separate books rather than replacing the previous
+# one, and the reader's position is lost each time. Pinning it keeps a
+# rebuild an update to the same book. dcterms:modified still carries the
+# build timestamp, so revisions remain distinguishable.
+#
+# Do not regenerate this value.
+epub_identifier="https://github.com/derg20/Enterprise-Infrastructure-Encyclopedia"
+
 link_tmp="$(mktemp -d)"
 trap 'rm -rf "$link_tmp"' EXIT
 
@@ -288,6 +298,7 @@ build_series_epub() {
     --css=publishing/web.css \
     --metadata "title=$series_title — Complete Edition" \
     --metadata "author=$author" \
+    --metadata "identifier=$epub_identifier" \
     -o "output/epub/Enterprise-Infrastructure-Encyclopedia.epub"
   # Pandoc leaves the cover first in the spine but not in the navigation
   # metadata, so readers that consult the guide or landmarks open elsewhere.
