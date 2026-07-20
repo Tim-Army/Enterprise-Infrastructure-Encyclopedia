@@ -140,6 +140,63 @@ service facts.
   official AWS exam guide before using any material — including this
   volume — as final exam preparation.
 
+### A six-to-eight week SAA-C03 study plan
+
+The schedule below sequences this volume against the **AWS Certified
+Solutions Architect – Associate (SAA-C03)** blueprint for a reader with
+production infrastructure experience who is new to AWS specifically. It
+assumes **8–10 hours per week**; at 15 hours it compresses to roughly
+four weeks, and a reader without hands-on infrastructure background
+should plan closer to twelve.
+
+The exam's scored content divides into four domains:
+
+| Domain | Weight | Where this volume covers it |
+| --- | --- | --- |
+| 1 — Design Secure Architectures | 30% | [Ch. 02](02-multi-account-identity-governance-and-landing-zones.md), [Ch. 08](08-security-architecture-detection-and-incident-response.md), [Ch. 03](03-secure-networking-hybrid-connectivity-and-edge.md) |
+| 2 — Design Resilient Architectures | 26% | [Ch. 06](06-reliability-migration-multi-region-and-disaster-recovery.md), [Ch. 01](01-cloud-foundations-accounts-and-well-architected-design.md) |
+| 3 — Design High-Performing Architectures | 24% | [Ch. 04](04-compute-containers-serverless-and-application-architecture.md), [Ch. 05](05-storage-databases-analytics-and-data-protection.md) |
+| 4 — Design Cost-Optimized Architectures | 20% | [Ch. 07](07-observability-automation-performance-and-cost-governance.md) |
+
+Weighting is a guide to *exam* emphasis, not to study effort. Effort
+should go where the reader's existing knowledge is weakest, which for an
+infrastructure engineer is rarely Domain 1's networking content and
+frequently Domain 3's managed-service selection.
+
+| Week | Focus | Chapters | Practical work |
+| --- | --- | --- | --- |
+| 1 | Account structure, IAM, Well-Architected vocabulary | 01, 02 | Build an organization with an SCP guardrail; write one IAM policy from scratch rather than copying |
+| 2 | Networking, hybrid connectivity, edge | 03 | VPC with public and private subnets across two AZs; reach it over a VPN or Direct Connect equivalent |
+| 3 | Compute and application architecture | 04 | EC2 behind an ALB across two AZs; the same workload again as Lambda plus API Gateway |
+| 4 | Storage and database selection | 05 | Exercise S3 classes and lifecycle rules; compare EBS, EFS, and FSx on one workload; contrast RDS with DynamoDB |
+| 5 | Resilience, DR, and migration | 06 | Fail an AZ deliberately and observe recovery; write an RTO/RPO statement for the capstone workload |
+| 6 | Observability, automation, cost | 07 | Budgets and alarms; price the same workload On-Demand, Reserved, Spot, and Savings Plan |
+| 7 | Security architecture and detection | 08 | Enable detection services; run the incident-response walkthrough |
+| 8 | Capstone and consolidation | 09 | This chapter's lab and Well-Architected review; re-read weak domains only |
+
+Weeks 7 and 8 are where a six-week schedule compresses: a reader already
+strong in security operations can fold Week 7 into Week 6, and Week 8's
+consolidation into whatever time remains.
+
+Two habits matter more than the schedule itself. **Build in a sandbox
+account rather than reading**, because the exam rewards knowing which
+managed service fits a scenario, and that judgment does not survive
+passive study. And **track readiness against scenario-style practice
+rather than recall**, since the questions are multiple-choice and
+multiple-response scenarios, not definitions — consistent scores in the
+low-to-mid eighties on realistic practice material is a more reliable
+signal than finishing a syllabus.
+
+**Exam mechanics, as published in the official guide:** 50 scored
+questions plus 15 unscored, a scaled score of 100–1,000 with 720 to pass,
+and a compensatory model — a weak domain does not fail the exam provided
+the overall score clears the bar. AWS states a target candidate has at
+least one year of hands-on AWS design experience. Question count, scoring,
+and domain weights come from the SAA-C03 exam guide; **seat time, price,
+and exam version are not reproduced here because they change** and are
+region-dependent. Confirm all of them, and that SAA-C03 is still the
+current version, on the official certification page at registration.
+
 ## Implementation and Automation
 
 ### 1. A minimal, secure serverless capstone stack (Terraform)

@@ -79,6 +79,7 @@ introduced or covered in depth. See also the
 - **Reference architecture (volume capstone)** — [Chapter 09, Theory and Architecture](chapters/09-solutions-architect-and-security-training-capstone.md)
 - **Region selection criteria** — [Chapter 01, Design Considerations](chapters/01-cloud-foundations-accounts-and-well-architected-design.md)
 - **Root user hardening** — [Chapter 01, Implementation and Automation](chapters/01-cloud-foundations-accounts-and-well-architected-design.md)
+- **SAA-C03 study plan (six to eight weeks)** — [Chapter 09, Design Considerations](chapters/09-solutions-architect-and-security-training-capstone.md)
 - **Savings Plans / Reserved Instances** — [Chapter 07, Theory and Architecture](chapters/07-observability-automation-performance-and-cost-governance.md)
 - **Service control policy (SCP)** — [Chapter 02, Theory and Architecture](chapters/02-multi-account-identity-governance-and-landing-zones.md)
 - **Shared responsibility model** — [Chapter 01, Theory and Architecture](chapters/01-cloud-foundations-accounts-and-well-architected-design.md)
