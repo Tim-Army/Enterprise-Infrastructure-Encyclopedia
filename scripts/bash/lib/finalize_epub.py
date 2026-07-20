@@ -34,11 +34,40 @@ import sys
 import tempfile
 import zipfile
 from pathlib import Path
+from typing import Optional
 
 COVER_HREF = "text/cover.xhtml"
-NAV_HREF = "nav.xhtml"
-NAV_TITLE = "Table of Contents"
-NAV_ITEM = f'<li id="toc-li-contents"><a href="{NAV_HREF}">{NAV_TITLE}</a></li>'
+
+# The contents entry cannot point at nav.xhtml. Readers consume the document
+# carrying properties="nav" to build their own contents UI and never render
+# it as a page, so a link to it lands nowhere -- in Apple Books the row is
+# simply dead. The entry therefore points at an ordinary content document
+# generated here, holding the same list.
+#
+# contents.xhtml sits beside nav.xhtml at the EPUB root rather than under
+# text/, so every href copied out of the nav (text/chNNN.xhtml#...) and the
+# stylesheet path resolve unchanged.
+CONTENTS_ID = "contents_xhtml"
+CONTENTS_HREF = "contents.xhtml"
+CONTENTS_TITLE = "Table of Contents"
+CONTENTS_ITEM = (
+    f'<li id="toc-li-contents"><a href="{CONTENTS_HREF}">{CONTENTS_TITLE}</a></li>'
+)
+CONTENTS_DOC = """<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="en-US" xml:lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <title>{title}</title>
+  <link rel="stylesheet" type="text/css" href="styles/stylesheet1.css" />
+</head>
+<body epub:type="frontmatter">
+<section id="contents">
+{body}
+</section>
+</body>
+</html>
+"""
 
 
 def fix_opf(xml: str) -> str:
@@ -77,16 +106,45 @@ def fix_nav(xml: str) -> str:
     return xml[: match.start(2)] + inner + xml[match.end(2):]
 
 
+def build_contents_doc(nav_xml: str) -> Optional[str]:
+    """Render the nav's contents list as an ordinary, readable page."""
+    match = re.search(r'<nav[^>]*epub:type="toc"[^>]*>(.*?)</nav>', nav_xml, re.S)
+    if not match:
+        return None
+    return CONTENTS_DOC.format(title=CONTENTS_TITLE, body=match.group(1))
+
+
 def add_contents_entry(xml: str) -> str:
-    """Add a self-referencing entry at the head of the table of contents."""
-    if NAV_ITEM in xml:
+    """Add an entry for the contents page at the head of the contents."""
+    if CONTENTS_ITEM in xml:
         return xml
 
     match = re.search(r'<nav[^>]*epub:type="toc".*?<ol[^>]*>', xml, re.S)
     if not match:
         return xml
 
-    return xml[: match.end()] + NAV_ITEM + xml[match.end():]
+    return xml[: match.end()] + CONTENTS_ITEM + xml[match.end():]
+
+
+def register_contents(xml: str) -> str:
+    """Declare the contents page in the manifest and place it in the spine."""
+    if f'id="{CONTENTS_ID}"' in xml:
+        return xml
+
+    item = (
+        f'<item id="{CONTENTS_ID}" href="{CONTENTS_HREF}" '
+        'media-type="application/xhtml+xml" />'
+    )
+    xml = xml.replace("</manifest>", f"  {item}\n  </manifest>", 1)
+
+    # Sit ahead of nav.xhtml so a reader paging through the spine meets the
+    # readable contents first; fall back to the head of the spine.
+    itemref = f'<itemref idref="{CONTENTS_ID}" />'
+    nav_ref = re.search(r'<itemref[^>]*idref="nav"[^>]*/>', xml)
+    if nav_ref:
+        return xml[: nav_ref.start()] + itemref + "\n    " + xml[nav_ref.start():]
+    spine = re.search(r"<spine[^>]*>", xml)
+    return xml[: spine.end()] + f"\n    {itemref}" + xml[spine.end():]
 
 
 def main():
@@ -108,7 +166,20 @@ def main():
     entries[opf] = fix_opf(entries[opf].decode("utf-8")).encode("utf-8")
     if nav:
         text = fix_nav(entries[nav].decode("utf-8"))
+        # Build the readable page from the nav before the entry pointing at
+        # that page is inserted, so the page does not list itself.
+        contents = build_contents_doc(text)
         entries[nav] = add_contents_entry(text).encode("utf-8")
+
+        if contents:
+            root = nav[: -len("nav.xhtml")]
+            name = f"{root}{CONTENTS_HREF}"
+            if name not in entries:
+                names.append(name)
+            entries[name] = contents.encode("utf-8")
+            entries[opf] = register_contents(
+                entries[opf].decode("utf-8")
+            ).encode("utf-8")
 
     tmp = Path(tempfile.mkstemp(suffix=".epub")[1])
     with zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as out:
