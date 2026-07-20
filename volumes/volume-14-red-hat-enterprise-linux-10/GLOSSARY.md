@@ -171,6 +171,13 @@ containers, pods, networks, and volumes as systemd units, generated
 automatically from `.container`/`.pod`/`.network`/`.volume` files.
 Introduced in Chapter 08.
 
+**Red Hat Developer Subscription for Individuals** — A no-cost,
+self-supported subscription obtained through the Red Hat Developer
+program, entitling up to 16 physical or virtual nodes to the same
+content as a paid subscription. Issued to a person rather than an
+organization, so it cannot entitle an employer's systems. Introduced in
+Chapter 01.
+
 **Red Hat Insights** — A telemetry and analysis service fed by
 `insights-client` that provides fleet-wide visibility into known CVEs,
 misconfigurations, and compliance drift for registered systems.

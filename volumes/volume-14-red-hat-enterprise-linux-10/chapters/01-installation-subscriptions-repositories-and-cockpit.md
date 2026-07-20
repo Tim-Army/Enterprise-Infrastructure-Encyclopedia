@@ -78,6 +78,41 @@ eligibility, and — when paired with `insights-client` — it feeds
 telemetry into Red Hat Insights for proactive vulnerability, compliance,
 and configuration-drift analysis.
 
+### No-cost subscriptions for lab use
+
+Every registration procedure in this chapter assumes an entitled account,
+which is the first obstacle most people hit when building a lab. Red Hat's
+Developer Program removes it: the **Red Hat Developer Subscription for
+Individuals** costs nothing, is obtained by creating an account at
+`developers.redhat.com`, and entitles the same content as a paid
+subscription through the same `subscription-manager` commands used below.
+There is no separate lab edition or feature-reduced build.
+
+| Term | Detail |
+| --- | --- |
+| Cost | None |
+| Systems | Up to 16 physical or virtual nodes |
+| Eligibility | Individuals only — not organizations or teams |
+| Per account | One developer subscription per Red Hat login |
+| Support | Self-supported; no support-case entitlement |
+| Permitted use | Development, testing, demos, prototyping, QA, and small production |
+| Renewal | Periodic; content access lapses if the subscription is not renewed |
+
+Sixteen nodes covers every lab in this volume, including the multi-host
+exercises, with room for a Satellite or Ansible control node alongside
+them.
+
+Two limits matter before anyone stretches this further. The subscription
+is issued to a person, not a company, so it cannot entitle an employer's
+systems no matter how few — an organization needs its own agreement. And
+it is self-supported: the bits are identical to a paid subscription, but
+no support entitlement exists behind them, which rules it out for
+anything whose failure needs a vendor response.
+
+Red Hat has revised these terms before — the node count went from 1 to 16
+in 2021 — so confirm the current limits against the Red Hat Developer
+program's own FAQ rather than treating this table as durable.
+
 ### Repository and content architecture
 
 Once registered, `subscription-manager` writes repository definitions

@@ -56,6 +56,7 @@ introduced or covered in depth. See also the
 - **podman-docker (Docker CLI compatibility)** — [Chapter 08, Theory and Architecture](chapters/08-podman-docker-compatibility-kubernetes-and-openshift-foundations.md)
 - **PostgreSQL / pg_hba.conf** — [Chapter 07, Theory and Architecture / Implementation and Automation](chapters/07-dns-ntp-web-database-and-common-server-services.md)
 - **Quadlet (systemd-native containers)** — [Chapter 08, Theory and Architecture / Implementation and Automation](chapters/08-podman-docker-compatibility-kubernetes-and-openshift-foundations.md)
+- **Red Hat Developer Subscription for Individuals (no-cost)** — [Chapter 01, Theory and Architecture](chapters/01-installation-subscriptions-repositories-and-cockpit.md)
 - **Red Hat Insights** — [Chapter 01, Implementation and Automation](chapters/01-installation-subscriptions-repositories-and-cockpit.md)
 - **Red Hat Subscription Management (RHSM)** — [Chapter 01, Theory and Architecture](chapters/01-installation-subscriptions-repositories-and-cockpit.md)
 - **RHEL System Roles** — [Chapter 09, Theory and Architecture / Implementation and Automation](chapters/09-ansible-system-roles-operations-and-rhcsa-capstone.md)
