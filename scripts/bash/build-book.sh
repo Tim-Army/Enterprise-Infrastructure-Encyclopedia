@@ -204,8 +204,8 @@ build_chapter_html() {
     --metadata "author=$author" \
     -o "$outdir/$base.html"
   inject_toc_links "$outdir/$base.html" \
-    "Encyclopedia title page|../complete-encyclopedia.html#title-page" \
-    "Volume title page|complete-volume.html#title-page"
+    "Encyclopedia Cover Page|../complete-encyclopedia.html#title-page" \
+    "Volume Cover Page|complete-volume.html#title-page"
 }
 
 build_volume_html() {
@@ -235,7 +235,7 @@ build_volume_html() {
     --metadata "author=$author" \
     -o "output/html/$volume_slug/complete-volume.html"
   inject_toc_links "output/html/$volume_slug/complete-volume.html" \
-    "Encyclopedia title page|../complete-encyclopedia.html#title-page"
+    "Encyclopedia Cover Page|../complete-encyclopedia.html#title-page"
 }
 
 build_series_html() {
