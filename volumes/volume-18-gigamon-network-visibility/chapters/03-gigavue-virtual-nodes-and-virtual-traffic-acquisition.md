@@ -313,8 +313,8 @@ a negative test demonstrating a coverage gap.
    tunnel-endpoint IP.
 4. On the V Series node, configure a minimal all-pass Flow Map from the
    tunnel-endpoint source to a designated output (a local capture tool, or
-   a tool-facing interface), following the mapping pattern from Chapter
-   02.
+   a tool-facing interface), following the mapping pattern from
+   [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md).
 5. From the second workload VM, generate traffic toward the first
    workload VM (for example, an HTTP request or a sustained `ping`).
 6. Observe the capture tool connected to the V Series node's output.

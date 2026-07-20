@@ -309,8 +309,8 @@ available; a Markdown editor.
    `tcpdump -ni <iface> tcp port <port> -c 6` (or the equivalent Wireshark
    capture filter) while initiating a connection from the second host.
    **Expected result:** the capture shows SYN, SYN-ACK, ACK in order,
-   confirming the flow matches the five-field statement recorded in step
-   2.
+   confirming the flow matches the five-field statement recorded in
+   step 2.
 6. Negative test: attempt a connection to a port you have not opened
    (for example, an unused high port) and record whether the result is a
    TCP RST, an ICMP unreachable, or silence (timeout). **Expected

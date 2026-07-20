@@ -408,8 +408,8 @@ firmware change.
 7. If you have an explicit, approved maintenance window and are working
    against a genuine lab device where a reboot is acceptable, submit an
    update job using the `run_update` function from Implementation and
-   Automation against the single non-compliant device identified in step
-   5. Otherwise, skip execution and instead document the exact API call
+   Automation against the single non-compliant device identified in
+   step 5. Otherwise, skip execution and instead document the exact API call
    you would run, including its target device ID and baseline ID, as the
    deliverable for this step.
 8. If you executed step 7, poll the job to completion, then force an

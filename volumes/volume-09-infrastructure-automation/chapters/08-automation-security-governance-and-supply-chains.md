@@ -323,8 +323,8 @@ control simultaneously true instead of trading one for the other.
   equivalent on every change; treat an unpinned or floating dependency
   version as a finding, not a style preference.
 - Require static scanning (Checkov/tfsec or equivalent) as a required,
-  pre-merge CI check, separate from the plan-JSON policy check in Chapter
-  05.
+  pre-merge CI check, separate from the plan-JSON policy check in
+  [Chapter 05](05-automation-pipelines-testing-and-policy-gates.md).
 - Generate and retain an SBOM for every release or environment promotion,
   and establish a process for matching newly disclosed CVEs against stored
   SBOMs on a defined cadence.

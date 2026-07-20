@@ -102,8 +102,8 @@ you are authorized to disrupt.
   per-server operations this volume teaches directly.
 - **Volume IX — Infrastructure Automation** — general automation
   principles (idempotency, declarative vs. imperative automation) applied
-  throughout this volume's implementation sections, particularly Chapter
-  09.
+  throughout this volume's implementation sections, particularly
+  Chapter 09.
 
 ## Software and platform baseline
 

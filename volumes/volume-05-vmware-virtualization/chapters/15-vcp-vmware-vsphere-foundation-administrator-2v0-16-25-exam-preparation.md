@@ -60,8 +60,8 @@ already build for standalone vSphere deployments.
   clusters (minimum host counts, disk group configuration under OSA, or
   the simplified ESA model), planning network topology (VSS versus VDS,
   VLAN trunking, NIC teaming), and designing HA/DRS clusters. Maps
-  directly to the Design Considerations sections of Chapters 4, 5, 6, and
-  7.
+  directly to the Design Considerations sections of Chapters 4, 5, 6,
+  and 7.
 - **Deploy, configure, and operate section** — the hands-on
   administration workload: host installation and configuration
   ([Chapter 2](02-esxi-installation-configuration-and-host-operations.md)), vCenter Server deployment ([Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md)), virtual networking

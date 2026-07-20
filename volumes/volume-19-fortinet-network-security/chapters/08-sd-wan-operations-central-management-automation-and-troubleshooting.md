@@ -64,8 +64,8 @@ firmware management across a fleet of FortiGates. Key concepts:
 - **Installation workflow** — FortiManager computes and displays a diff
   between the intended policy package and each target device's current
   configuration before install, supporting a plan/review/apply pattern
-  consistent with the infrastructure-as-code discipline covered in Volume
-  IX.
+  consistent with the infrastructure-as-code discipline covered in
+  Volume IX.
 
 **FortiAnalyzer** complements FortiManager as the centralized logging and
 analytics plane — FortiGates forward logs to FortiAnalyzer for long-term
