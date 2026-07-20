@@ -14,7 +14,7 @@ the reader already has that understanding from the relevant volume and
 instead answers a narrower, more urgent question: "what is the port
 number," "what does this error mean," "what is the exact syntax," "who do
 I escalate to," or "what standard governs this." It is the volume a reader
-keeps open in a second window while working, not the volume read start to
+keeps open in a second window while working, not the volume to read start to
 finish before starting.
 
 Because of that purpose, this volume deliberately inverts the usual
