@@ -262,8 +262,9 @@ evidentiary use — file hashes, covered next.
   referral. [Volume X](../../volume-10-enterprise-cybersecurity/README.md) (Enterprise Cybersecurity) covers formal evidence
   handling in depth; this volume assumes those practices apply to packet
   evidence specifically.
-- **Scope captures to the minimum necessary.** Use a capture filter (Chapter
-  02) to exclude unrelated hosts and protocols rather than capturing an
+- **Scope captures to the minimum necessary.** Use a capture filter
+  ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md))
+  to exclude unrelated hosts and protocols rather than capturing an
   entire segment and filtering later — this both reduces exposure of
   unrelated users' traffic and reduces storage/handling burden.
 - **Never run the Wireshark GUI as root/Administrator to bypass a

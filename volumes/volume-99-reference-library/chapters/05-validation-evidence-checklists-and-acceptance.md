@@ -165,8 +165,9 @@ partial acceptance.
   record; timestamp every captured artifact.
 - **When a checklist item fails intermittently on re-run, do not simply
   re-run until it passes.** Intermittent failure is itself a finding;
-  document the failure rate observed and investigate root cause (Chapter
-  06) before accepting a later "lucky" pass as sufficient evidence.
+  document the failure rate observed and investigate root cause
+  ([Chapter 06](06-troubleshooting-decision-aids-and-escalation.md)) before
+  accepting a later "lucky" pass as sufficient evidence.
 - **Reconcile checklist disposition against the change record's stated
   validation plan.** A checklist that diverges from what the change
   record promised to check (more, fewer, or different items) should be

@@ -450,8 +450,9 @@ shifted slightly across OME releases as the API surface has grown.
   submission endpoints) rather than granting unrestricted egress, and
   route that access through an explicit, logged proxy where enterprise
   policy requires it.
-- Snapshot the appliance VM (or take an application-level backup, Chapter
-  9) immediately after first-run configuration completes, before
+- Snapshot the appliance VM (or take an application-level backup,
+  [Chapter 9](09-backup-restore-upgrade-troubleshooting-and-capstone-operations.md))
+  immediately after first-run configuration completes, before
   onboarding any devices — this gives you a clean rollback point if
   early discovery or licensing configuration needs to be redone.
 - Treat the appliance's patch/upgrade cadence as part of your regular

@@ -237,8 +237,9 @@ daemon (`rpcapd`) on the target host.
 - **VLAN tag missing from mirrored frames.** Some switch platforms strip
   the 802.1Q tag on frames mirrored from an access port; mirror from the
   trunk side of the path, or confirm the platform's documented mirroring
-  behavior for tagged frames before relying on `vlan.id` filters (Chapter
-  04) against that capture point.
+  behavior for tagged frames before relying on `vlan.id` filters
+  ([Chapter 04](04-ethernet-arp-ipv4-and-icmpv4-analysis.md)) against that
+  capture point.
 - **Ring buffer fills faster than expected.** Recalculate `file size × file
   count` against observed throughput rather than assumed throughput; a
   burst of replication or backup traffic can inflate the true capture rate

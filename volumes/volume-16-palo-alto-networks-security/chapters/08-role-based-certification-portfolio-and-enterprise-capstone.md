@@ -100,8 +100,9 @@ one integrated architecture. The design below is deliberately
 representative of a small-to-mid-size enterprise perimeter and branch
 topology — the scale a PCNSE-track engineer is expected to reason about:
 
-- **Topology.** A data-center HA pair (VM-Series, active/passive, Chapter
-  04) fronting a DMZ and internal trust zone, managed by a Panorama
+- **Topology.** A data-center HA pair (VM-Series, active/passive,
+  [Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md))
+  fronting a DMZ and internal trust zone, managed by a Panorama
   instance ([Chapter 06](06-panorama-installation-central-management-and-logging.md)) that also manages a branch-office firewall
   onboarded via bootstrap ([Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md)).
 - **Device group hierarchy.** A `Global-Baseline` parent device group
