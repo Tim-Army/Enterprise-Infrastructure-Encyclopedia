@@ -187,6 +187,22 @@ multiple-response scenarios, not definitions — consistent scores in the
 low-to-mid eighties on realistic practice material is a more reliable
 signal than finishing a syllabus.
 
+**Study materials.** This volume is written to stand on its own, but most
+candidates pair a video course with a practice-exam bank, and that
+combination has a better track record than either alone:
+
+| Role | Resource | Why |
+| --- | --- | --- |
+| Course spine | Stephane Maarek's SAA-C03 course (Udemy) | Broad service coverage in blueprint order; useful for the services this volume treats only as design inputs |
+| Readiness measurement | Tutorials Dojo practice exams (Jon Bonso) | Scenario-style questions with explanations that argue why the distractors are wrong, which is the reasoning the exam tests |
+| Hands-on | An AWS free-tier account | Non-negotiable; see the weekly practical work above |
+| Official | [AWS Skill Builder](https://skillbuilder.aws/) and the exam guide | Authority on domains, weights, and version — outranks any third-party material where they disagree |
+
+Treat the third-party material as a supplement to building, not a
+substitute. A candidate who has watched a full course and scored well on
+practice exams without provisioning anything tends to fail on the
+scenario questions that hinge on operational detail.
+
 **Exam mechanics, as published in the official guide:** 50 scored
 questions plus 15 unscored, a scaled score of 100–1,000 with 720 to pass,
 and a compensatory model — a weak domain does not fail the exam provided
