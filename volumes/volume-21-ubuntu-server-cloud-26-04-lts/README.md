@@ -135,6 +135,81 @@ the track — installation, application management, and desktop security.
 | Using DevOps Principles | [08](chapters/08-docker-lxd-canonical-kubernetes-and-openshift-interoperability.md) (containers and Kubernetes), [09](chapters/09-cloud-init-maas-juju-ansible-landscape-operations-and-capstone.md) (cloud-init, MAAS, Juju, Ansible, Landscape) |
 | Using Ubuntu Desktop | Not covered — see the scope gap above |
 
+### A complete training plan for all four exams
+
+Roughly **fourteen weeks at 8–10 hours per week** for the full SysAdmin
+qualification, assuming general Linux familiarity. An experienced
+administrator can compress the first block considerably; someone new to
+Linux should expect closer to twenty.
+
+The order below is deliberate. *Using Linux Terminal* first, because
+every other exam assumes it. *Ubuntu Server* second, because it is this
+volume's center of gravity. *DevOps Principles* third, because it builds
+on server administration. *Ubuntu Desktop* last and separately, because
+it is the one exam this volume does not serve.
+
+**Block 1 — Using Linux Terminal (weeks 1–3, 75-minute exam)**
+
+| Week | Domain and weight | Chapters | Focus |
+| --- | --- | --- | --- |
+| 1 | Navigating Files and Filesystems (34%) | 02 | Terminal navigation, file manipulation, regular expressions, pipes and redirection |
+| 2 | Managing System Resources (33%) | 03, 05 | Log locations and rotation, `fdisk`/`fsck`/`parted`, crontab format, reading logs while troubleshooting |
+| 3 | Securing Filesystem Access (33%) | 04, 06 | SSH keys, password complexity and expiry, sudo policy, user and group management, ownership and permissions |
+
+The three domains are near-equal, so split time evenly. Sit this exam
+before starting Block 2 — it is the cheapest of the four to pass and
+confirms your practice environment works.
+
+**Block 2 — Using Ubuntu Server (weeks 4–7, 90-minute exam)**
+
+| Week | Domain and weight | Chapters | Focus |
+| --- | --- | --- | --- |
+| 4 | Deploying Ubuntu Server (27%) | 01 | Subiquity, autoinstall, Ubuntu Pro entitlements, APT components and pockets |
+| 5 | Managing Processes (26%) | 03 | systemd units and targets, cgroups, journald, timers versus cron |
+| 6 | Securing Server Access (24%) | 04, 06 | SSH hardening, Netplan, `ufw`/`nftables`, AppArmor profiles |
+| 7 | Configuring Servers and Services (23%) | 07 | BIND9 and systemd-resolved, chrony, Kea DHCP, web and database services |
+
+Weights here are flat — 23% to 27% — so no domain dominates. Deployment
+edges ahead, which rewards actually installing servers repeatedly rather
+than reading about the installer.
+
+**Block 3 — Using DevOps Principles (weeks 8–11, 90–120-minute exam)**
+
+| Week | Domain and weight | Chapters | Focus |
+| --- | --- | --- | --- |
+| 8 | Understanding Deployment Technologies (34%) | 08 | Docker Engine, LXD system containers, Canonical Kubernetes |
+| 9 | Understanding Deployment Technologies, continued | 08, 09 | Juju charms and bundles, MAAS bare-metal provisioning |
+| 10 | Tools for Automation and System Updating (32%) | 09, 01, 02 | cloud-init, Ansible, Landscape, unattended upgrades, APT and Snap update paths |
+| 11 | Monitoring and Troubleshooting Systems | 03, 09 | Log analysis, service failure diagnosis, fleet health |
+
+The third domain's weight is not published; the other two account for
+66%, so treat the remainder as substantial rather than incidental.
+
+**Block 4 — Using Ubuntu Desktop (weeks 12–14, 90-minute exam)**
+
+This volume does not cover Desktop, so this block runs on separate
+material — install Ubuntu Desktop in a virtual machine and work through
+Canonical's own documentation and tutorials.
+
+| Week | Domain and weight | Focus |
+| --- | --- | --- |
+| 12 | Managing Applications (28%) and Installing Ubuntu Desktop (10%) | Installation, `apt` and Snap on the desktop, application sources and updates |
+| 13 | Configuring Networking Capabilities (25%) | Desktop network configuration, wireless, VPN clients, sharing |
+| 14 | Securing Desktop Systems (22%) and Engaging with the Open Source Community (10%) | Desktop hardening and user security; Launchpad, bug reporting, licensing, contribution norms |
+
+**Do not skip the community domain.** *Engaging with the Open Source
+Community* is 10% — as heavily weighted as installation — and it is
+unlike anything else in the qualification or in this encyclopedia. It
+covers how the Ubuntu project actually works: reporting bugs usefully,
+Launchpad, licenses, and the norms of contributing. It cannot be inferred
+from technical skill, and it is the domain most likely to surprise an
+experienced administrator.
+
+**Readiness signals.** Because the exams are partly performance-based,
+the useful check is not a practice score but a timed rebuild: provision a
+server unattended, harden it, stand up a service, and verify it — inside
+the exam's time budget, unaided. If that is comfortable, sit the exam.
+
 ### Practicing
 
 Ubuntu shares Wireshark's advantage: the platform is free, so lab access
