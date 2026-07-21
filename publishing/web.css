@@ -1,4 +1,4 @@
-/* Colours mirror the mindthedark template on tim.army, taken from its
+/* Colors mirror the mindthedark template on tim.army, taken from its
    Template Style Settings. Placeholder names are given so the two can be
    reconciled later; the dark scheme's *_color_dark values are the defaults
    here, and body.light carries the light scheme.
@@ -18,21 +18,35 @@
       The background is #352828 rather than a flatter #2a2020 so the code
       surface stays visible against the #1e1e1e page (1.18:1 rather than
       1.05:1). That matters for inline code, which would otherwise read as
-      coloured text with no chip around it. Lightening the surface costs
+      colored text with no chip around it. Lightening the surface costs
       legibility on the text above it, so the two move against each other:
       #352828 is the point where the chip is discernible and the text still
       clears AAA. Do not lighten it further without re-measuring.
 
-   2. The dark link (#0e67cf on #1e1e1e, 3.06:1) is kept as the template
-      sets it, and still falls below AA for normal text. Links stay
-      underlined, so colour is never their only signal — a mitigation code
-      blocks do not have, which is why that pair was changed and this one
-      was not. */
+   2. The dark link does NOT track the template either. The template's
+      #0e67cf on #1e1e1e measures 3.06:1, below AA for normal text. It is
+      replaced with #4d9bf0 (5.77:1), which keeps the template's blue
+      family — same broad hue, lifted lightness — rather than reaching for
+      a cyan that would clear AAA at the cost of looking like a different
+      site. Light mode is unaffected: #2b73b7 on #ffffff already measures
+      4.95:1 and still tracks the template.
+
+      A brighter blue was available and deliberately not taken. At around
+      8.9:1 a link would match the body text's own contrast and stop
+      reading as subordinate to the prose it sits in, which costs more on
+      these link-dense chapters than the extra rating is worth.
+
+      Links remain underlined by browser default — no text-decoration rule
+      here overrides it — so color is not their only signal. That was the
+      argument for leaving this pair alone when the code pair was fixed;
+      it made the link change optional rather than required, not
+      unnecessary. If a text-decoration rule is ever added, this comment
+      stops being true. */
 :root {
   color-scheme: dark light;
   --eie-bg: #1e1e1e;          /* __background_color_dark__ */
   --eie-fg: #76d40b;          /* __text_color_dark__       */
-  --eie-link: #0e67cf;        /* __link_color_dark__       */
+  --eie-link: #4d9bf0;        /* departs from __link_color_dark__ (#0e67cf) */
   --eie-rule: #666666;        /* __border_color_dark__     */
   --eie-code-bg: #352828;     /* departs from __pre_background_color_dark__ (#b19f9f) */
   --eie-code-fg: #ff9e9e;     /* departs from __pre_text_color_dark__ (#b10000)       */
