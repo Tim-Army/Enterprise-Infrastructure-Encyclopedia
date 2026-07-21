@@ -240,8 +240,33 @@ covers. The NSX labs above start from a working fabric. For that build,
 Chapters 10–11 and VCP-NV preparation still need a nested lab or the
 instructor-led course below.
 
-Note also that labs cycle through maintenance windows; a lab listed here
-may show as unavailable temporarily rather than having been withdrawn.
+**Do not trust the product filters to find everything.** Filtering by
+NSX returns three labs, but *Building Resilient Networks with NSX*
+carries no product tag and so does not appear, and the vDefend
+micro-segmentation labs are filed under vDefend Firewall rather than NSX.
+Search by title, and browse the catalogs as well as the product list.
+
+### Mind the version: 9.1 labs, 9.0 exams
+
+The catalog is organized into several collections alongside the main
+Hands-on Labs one — *Explore Labs 2025*, *Test your Skills Play Odyssey*,
+and a **VCF 9.1 Labs** set covering material newer than any current exam:
+
+| Lab | Covers |
+| --- | --- |
+| `HOL-2701-01-VCF-L` | What's New in VCF 9.1: Highlights |
+| `HOL-2702-01-VCF-L` | Kubernetes updates in VCF 9.1 (VKS, VM Service, Supervisor) |
+| `HOL-2703-01-VCF-L` | Memory Tiering in VCF 9.1 |
+
+All five VCP exams target **9.0** releases. The 9.1 labs are worth doing
+for currency in a production role, but their content sits ahead of every
+blueprint — time spent there is professional development, not exam
+preparation, and should not displace the 9.0 material when a test date is
+booked.
+
+Note finally that labs cycle through maintenance windows; a lab listed
+here may show as unavailable temporarily rather than having been
+withdrawn.
 
 For the NSX build specifically, the depth exists on **Learning@Broadcom**
 rather than in Hands-on Labs. The three courses named on the VCP-NV exam
