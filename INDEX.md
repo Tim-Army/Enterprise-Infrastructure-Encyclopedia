@@ -31,4 +31,5 @@ full detail. Regenerated as each volume completes — see
 - [Volume XXII — Dell OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/INDEX.md)
 - [Volume XXIII — Dell iDRAC 9 and 10 Administration](volumes/volume-23-dell-idrac-9-10-administration/INDEX.md)
 - [Volume XXIV — Dell VxRail Hyperconverged Infrastructure](volumes/volume-24-dell-vxrail-hci/INDEX.md)
+- [Volume XXV — Cisco Security](volumes/volume-25-cisco-security/INDEX.md)
 - [Volume XCIX — Reference Library](volumes/volume-99-reference-library/INDEX.md)

@@ -346,6 +346,20 @@ table of contents for that volume.
 8. VxRail API, Automation, and Ecosystem Integrations
 9. Day-2 Operations, Troubleshooting, Support, and Capstone
 
+## Volume XXV — Cisco Security
+
+[Volume README](volumes/volume-25-cisco-security/README.md) · [Index](volumes/volume-25-cisco-security/INDEX.md) · [Glossary](volumes/volume-25-cisco-security/GLOSSARY.md)
+
+1. Security Concepts, the Threat Landscape, and the CCNP Security Track
+2. Network Security with Cisco Secure Firewall and IPS
+3. Cloud Security and the Secure Service Edge
+4. Content Security and Endpoint Protection
+5. Secure Network Access, Visibility, and Enforcement
+6. Identity Services Engine: Deployment, Policy, and Services
+7. Secure VPNs: Site-to-Site, Remote Access, and Troubleshooting
+8. Zero-Trust Secure Cloud Access for Users and Endpoints
+9. Designing Security Infrastructure, Automation, and Capstone
+
 ## Volume XCIX — Reference Library
 
 [Volume README](volumes/volume-99-reference-library/README.md) · [Index](volumes/volume-99-reference-library/INDEX.md) · [Glossary](volumes/volume-99-reference-library/GLOSSARY.md)

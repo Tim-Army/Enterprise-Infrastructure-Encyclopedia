@@ -840,6 +840,40 @@ volumes:
       - id: 09
         title: "Day-2 Operations, Troubleshooting, Support, and Capstone"
         path: volumes/volume-24-dell-vxrail-hci/chapters/09-day-2-operations-troubleshooting-support-and-capstone.md
+  - id: volume-25
+    number: "XXV"
+    slug: volume-25-cisco-security
+    title: "Cisco Security"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Security Concepts, the Threat Landscape, and the CCNP Security Track"
+        path: volumes/volume-25-cisco-security/chapters/01-security-concepts-the-threat-landscape-and-the-ccnp-security-track.md
+      - id: 02
+        title: "Network Security with Cisco Secure Firewall and IPS"
+        path: volumes/volume-25-cisco-security/chapters/02-network-security-with-cisco-secure-firewall-and-ips.md
+      - id: 03
+        title: "Cloud Security and the Secure Service Edge"
+        path: volumes/volume-25-cisco-security/chapters/03-cloud-security-and-the-secure-service-edge.md
+      - id: 04
+        title: "Content Security and Endpoint Protection"
+        path: volumes/volume-25-cisco-security/chapters/04-content-security-and-endpoint-protection.md
+      - id: 05
+        title: "Secure Network Access, Visibility, and Enforcement"
+        path: volumes/volume-25-cisco-security/chapters/05-secure-network-access-visibility-and-enforcement.md
+      - id: 06
+        title: "Identity Services Engine: Deployment, Policy, and Services"
+        path: volumes/volume-25-cisco-security/chapters/06-identity-services-engine-deployment-policy-and-services.md
+      - id: 07
+        title: "Secure VPNs: Site-to-Site, Remote Access, and Troubleshooting"
+        path: volumes/volume-25-cisco-security/chapters/07-secure-vpns-site-to-site-remote-access-and-troubleshooting.md
+      - id: 08
+        title: "Zero-Trust Secure Cloud Access for Users and Endpoints"
+        path: volumes/volume-25-cisco-security/chapters/08-zero-trust-secure-cloud-access-for-users-and-endpoints.md
+      - id: 09
+        title: "Designing Security Infrastructure, Automation, and Capstone"
+        path: volumes/volume-25-cisco-security/chapters/09-designing-security-infrastructure-automation-and-capstone.md
   - id: volume-99
     number: "XCIX"
     slug: volume-99-reference-library

@@ -18,6 +18,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXI — Ubuntu Server and Cloud | Canonical Academy SysAdmin qualification (four exams) | Canonical Academy |
 | XXII / XXIII — Dell OpenManage / iDRAC | PowerEdge Foundations v2 (D-PE-FN-01), PowerEdge Operate v2 (D-PE-OE-01; supersedes the retired D-PE-OE-23) | Dell Technologies Proven Professional |
 | XXIV — Dell VxRail | VxRail Deploy v2 (D-VXR-DY-01), VxRail Operate v2 (D-VXR-OE-01) | Dell Technologies Proven Professional |
+| XXV — Cisco Security | CCNP Security: SCOR core (350-701) + concentrations SVPN (300-730), SCAZT (300-740), SISE (300-715), SDSI (300-745); SCOR also qualifies CCIE Security | Cisco Learning & Certifications |
 
 Volumes not listed (I, II, IV, VI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -42,6 +43,15 @@ nine Palo Alto certifications matched as written; the ninth was corrected
 from "Cortex Cloud Security Professional" to **Cloud Security
 Professional**, its official credential name — *Cortex Cloud* is the
 platform the exam secures, not part of the certification's title.
+
+The Cisco CCNP Security exams (Volume XXV) were added the same day, each
+verified against its Cisco exam-topics document and each summing to 100%.
+**Two are mid-transition on 26–27 August 2026:** SCOR `350-701` moves
+v1.1→v2.0 (a real reweighting — Content Security dropped as a domain,
+Secure Service Edge added), and SISE `300-715` moves v1.1→v1.2 (identical
+weights, label change only). Volume XXV targets SCOR v2.0 because its
+study plan outlasts the v1.1 cutoff. Re-confirm both at the next currency
+check, which now falls inside the transition window.
 
 Drift in this table is normal and has been frequent. Within a single year
 the Dell PowerEdge Operate exam was rebuilt and renumbered, AWS replaced

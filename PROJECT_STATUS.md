@@ -35,7 +35,7 @@ does not by itself verify every technical claim in it.
 | XXIII — Dell iDRAC 9 and 10 Administration | 9 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 231 of 231 drafted (100%). Every volume has a
+**Total declared chapters:** 240 of 240 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

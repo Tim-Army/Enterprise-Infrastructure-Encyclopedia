@@ -130,6 +130,7 @@ this repository's release cycle.
 | XXI — Ubuntu Server and Cloud | Canonical Academy SysAdmin qualification (four exams) | Canonical Academy |
 | XXII / XXIII — Dell OpenManage / iDRAC | PowerEdge Foundations v2 (D-PE-FN-01), PowerEdge Operate v2 (D-PE-OE-01; supersedes the retired D-PE-OE-23) | Dell Technologies Proven Professional |
 | XXIV — Dell VxRail | VxRail Deploy v2 (D-VXR-DY-01), VxRail Operate v2 (D-VXR-OE-01) | Dell Technologies Proven Professional |
+| XXV — Cisco Security | CCNP Security: SCOR core (350-701) + concentrations SVPN (300-730), SCAZT (300-740), SISE (300-715), SDSI (300-745); SCOR also qualifies CCIE Security | Cisco Learning & Certifications |
 
 Volumes I, II, IV, VI–XIII, and this volume (XCIX) are
 vendor-neutral or cross-domain and are not mapped to a single
@@ -142,7 +143,7 @@ above with foundational and integrated reference material.
 | --- | --- | --- |
 | Red Hat (RHEL) | `access.redhat.com/documentation` | XIV |
 | Canonical (Ubuntu) | `documentation.ubuntu.com` | XXI |
-| Cisco | `cisco.com` (Cisco Community and Documentation), IOS XE Command Reference | III |
+| Cisco | `cisco.com` (Cisco Community and Documentation), IOS XE Command Reference, Secure Firewall/ISE docs | III, XXV |
 | Broadcom/VMware | VMware by Broadcom TechDocs | V |
 | Palo Alto Networks | Palo Alto Networks TechDocs (PAN-OS, Panorama) | XVI |
 | Fortinet | Fortinet Document Library | XIX |
@@ -316,7 +317,7 @@ reference.
 
 This closing chapter consolidated the standards bodies, certification
 blueprints, and vendor documentation portals that anchor every technical
-claim across all 25 volumes, and it defined the reference-governance
+claim across all 26 volumes, and it defined the reference-governance
 discipline — provenance, as-of dating, dual-trigger review — that keeps
 this reference volume from becoming exactly the kind of stale, drifted
 documentation the rest of the encyclopedia warns readers to avoid. With
