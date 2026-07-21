@@ -154,13 +154,15 @@ from a cloud marketplace with usage-based billing, requiring no separate
 Palo Alto Networks auth code for the base firewall. Introduced in
 Chapter 03.
 
-**PCNSA (Certified Network Security Administrator)** — The role-based,
-hands-on certification validating day-to-day PAN-OS operation and
-maintenance skill. Introduced in Chapter 08.
+**PCNSA (Certified Network Security Administrator)** — Retired 31 January
+2025. Validated day-to-day PAN-OS operation and maintenance skill;
+succeeded by Network Security Analyst. Existing credentials remain valid.
+Introduced in Chapter 08.
 
-**PCNSE (Certified Network Security Engineer)** — The role-based,
-hands-on certification validating design, deployment, and troubleshooting
-skill across PAN-OS and Panorama at fleet scale. Introduced in Chapter 08.
+**PCNSE (Certified Network Security Engineer)** — Retired 31 July 2025.
+Validated design, deployment, and troubleshooting skill across PAN-OS and
+Panorama at fleet scale; succeeded by Next-Generation Firewall Engineer.
+Existing credentials remain valid. Introduced in Chapter 08.
 
 **Post-rules (Panorama)** — Device-group security, NAT, or decryption
 rules evaluated after any rules configured locally on the managed

@@ -135,10 +135,11 @@ output for management CPU versus dataplane utilization.
 - **Certification sequencing.** The Cybersecurity Apprentice credential is
   intentionally vendor-adjacent and portfolio-wide; it assumes no prior
   hands-on PAN-OS experience. Cybersecurity Practitioner ([Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)) adds
-  platform depth. The role-based portfolio (PCNSA, then PCNSE) requires
-  hands-on configuration skill built in Chapters 03–07. Plan a study path
-  that does not skip straight to PCNSE without the intermediate hands-on
-  repetitions — the exam blueprint assumes muscle memory with the CLI and
+  platform depth. The Specialist tier (Network Security Analyst, then
+  Next-Generation Firewall Engineer) requires hands-on configuration skill
+  built in Chapters 03–07. Plan a study path that does not skip straight to
+  NGFW Engineer without the intermediate hands-on repetitions — its
+  blueprint is 80% configuration and assumes muscle memory with the CLI and
   Web UI, not just conceptual recall.
 - **Lab platform choice.** Three common ways to get hands-on PAN-OS
   practice exist: a VM-Series evaluation license running under a local

@@ -27,8 +27,8 @@ The volume is organized in three parts:
   security policy and decryption (05); Panorama device groups, templates,
   and centralized logging (06); and fleet-scale operations,
   troubleshooting, upgrades, and API/Terraform/Ansible automation (07).
-- **Chapters 08–09** synthesize and extend: the role-based PCNSA/PCNSE
-  certification portfolio with an integrated enterprise capstone build
+- **Chapters 08–09** synthesize and extend: the role-based certification
+  portfolio with an integrated enterprise capstone build
   (08), and Cortex Cloud Security Professional coverage of CNAPP —
   CSPM, CWPP, CIEM, and IaC security scanning (09).
 
@@ -51,7 +51,7 @@ test, and cleanup instructions.
 5. [Application, Identity, Threat, and Data Security Policy](chapters/05-application-identity-threat-and-data-security-policy.md) — App-ID- and User-ID-based security policy, security profiles, and SSL Forward Proxy decryption.
 6. [Panorama Installation, Central Management, and Logging](chapters/06-panorama-installation-central-management-and-logging.md) — deployment modes, device group hierarchy, template stacks, managed-device onboarding, and Collector Groups.
 7. [Firewall Operations, Troubleshooting, Upgrades, and Automation](chapters/07-firewall-operations-troubleshooting-upgrades-and-automation.md) — HA-aware upgrade sequencing, the troubleshooting toolkit, and XML API/REST API/Terraform/Ansible automation.
-8. [Role-Based Certification Portfolio and Enterprise Capstone](chapters/08-role-based-certification-portfolio-and-enterprise-capstone.md) — PCNSA/PCNSE blueprint mapping, study sequencing, and an integrated multi-firewall capstone build.
+8. [Role-Based Certification Portfolio and Enterprise Capstone](chapters/08-role-based-certification-portfolio-and-enterprise-capstone.md) — the four-level Network Security track, blueprint domains and weights, study sequencing and plans, and an integrated multi-firewall capstone build.
 9. [Cortex Cloud Security Professional](chapters/09-cortex-cloud-security-professional.md) — CNAPP architecture (CSPM, CWPP, CIEM, IaC/API security), agentless and agent-based workload visibility, and Checkov-based shift-left scanning.
 
 ## Volume resources
@@ -66,7 +66,13 @@ This volume aligns to the Palo Alto Networks certification and training
 paths recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md):
 Cybersecurity Apprentice, Cybersecurity Practitioner, the role-based
-PCNSA/PCNSE portfolio, and Cortex Cloud Security Professional. Chapters
+Network Security track (Network Security Professional, Network Security
+Analyst, Next-Generation Firewall Engineer, SD-WAN Engineer, Security
+Service Edge Engineer, and Network Security Architect), and Cortex Cloud
+Security Professional. The product-centric exams this volume originally
+tracked — PCNSA and PCNSE — were retired during 2025; see
+[Chapter 08](chapters/08-role-based-certification-portfolio-and-enterprise-capstone.md)
+for where that material now maps. Chapters
 describe blueprint domains and point to official Palo Alto Networks
 Education sources; they do not reproduce proprietary assessment content.
 Always confirm the current blueprint against the vendor's official page

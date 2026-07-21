@@ -6,9 +6,9 @@
 
 ## Learning Objectives
 
-- Map the role-based PCNSA (Certified Network Security Administrator) and
-  PCNSE (Certified Network Security Engineer) certification blueprint
-  domains to the chapters and hands-on labs in this volume.
+- Map the role-based certification portfolio — Network Security Analyst,
+  Next-Generation Firewall Engineer, and the Professional and Architect
+  tiers — to the chapters and hands-on labs in this volume.
 - Plan a study path from Cybersecurity Apprentice/Practitioner (Chapters
   01–02) through role-based, hands-on certification, sequenced against
   actual configuration repetition rather than passive review alone.
@@ -25,52 +25,122 @@
 [Chapter 01](01-cybersecurity-apprentice-foundations.md) introduced the Cybersecurity Apprentice credential as
 vendor-adjacent and portfolio-wide; [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md) built Cybersecurity
 Practitioner depth across Strata, Prisma, and Cortex. This chapter closes
-the loop: the **role-based certification portfolio** — anchored by PCNSA
-and PCNSE — assumes exactly the hands-on configuration skill this volume's
+the loop: the **role-based certification portfolio** — anchored at the
+Specialist tier by Network Security Analyst and Next-Generation Firewall
+Engineer — assumes exactly the hands-on configuration skill this volume's
 Chapters 03 through 07 were built to develop, and requires demonstrable
 muscle memory with the CLI and Web UI rather than conceptual recall alone.
 
-### PCNSA: administrator-level blueprint domains
+### The role-based certification portfolio
 
-PCNSA validates the skills of an engineer who operates and maintains an
-already-designed PAN-OS deployment day to day. Its blueprint domains
-(described here at the domain level, without reproducing any proprietary
-assessment content) generally cover:
+Palo Alto Networks **retired its product-centric exams during 2025** —
+PCNSA on 31 January and PCNSE on 31 July, along with PCCET, PCDRA, PCCSE,
+PCSAE, and PCSFE. They were replaced by a role-based portfolio of four
+levels across three tracks. A reader holding PCNSA or PCNSE still holds a
+valid credential; there is simply no longer an exam by that name to sit,
+and the material below is where that knowledge now maps.
 
-| Domain area | Chapters in this volume |
-| --- | --- |
-| Core NGFW concepts (App-ID, User-ID, Content-ID, SP3 architecture) | 01 |
-| Firewall initial configuration and management interfaces | 01, 03 |
-| Interface, zone, and virtual router configuration | 04 |
-| Security and NAT policy fundamentals | 04, 05 |
-| Security profiles and Content-ID inspection | 05 |
-| App-ID and User-ID policy application | 05 |
-| Basic monitoring, logging, and reporting | 05, 06 |
-| Certificate management and decryption fundamentals | 05 |
+The Network Security track, which this volume covers:
 
-### PCNSE: engineer-level blueprint domains
+| Level | Certification | Chapters |
+| --- | --- | --- |
+| Foundational | Cybersecurity Apprentice | 01 |
+| Foundational | Cybersecurity Practitioner | 02 |
+| Professional | Network Security Professional | 02–05 |
+| Specialist | Network Security Analyst | 05 |
+| Specialist | Next-Generation Firewall Engineer | 03, 04, 06, 07 |
+| Specialist | SD-WAN Engineer | 04 |
+| Specialist | Security Service Edge Engineer | 02 |
+| Architect | Network Security Architect | 08 |
 
-PCNSE validates the skills of an engineer who designs, deploys, configures,
-and troubleshoots PAN-OS and Panorama across a more complex, often
-multi-firewall or fleet-scale environment. Its blueprint domains build on
-PCNSA's and generally extend into:
+The Security Operations and Cloud Security tracks sit outside this
+volume's scope, except where
+[Chapter 09](09-cortex-cloud-security-professional.md) reaches into
+Cortex.
 
-| Domain area | Chapters in this volume |
-| --- | --- |
-| Advanced NAT, routing (including dynamic routing), and HA design | 04 |
-| Panorama architecture, device groups, templates, and log collection | 06 |
-| Advanced security policy design, decryption architecture, and DLP | 05 |
-| VM-Series deployment, licensing, and bootstrap at scale | 03 |
-| Troubleshooting methodology (counters, packet capture, logs) | 07 |
-| Software/content lifecycle and upgrade planning | 02, 07 |
-| Automation and API-driven operations | 07 |
-| GlobalProtect, SASE, and CDSS subscription awareness | 02 |
+**Where the retired exams went.** Network Security Analyst is the closest
+successor to PCNSA — policy and object creation, day-to-day operations.
+Next-Generation Firewall Engineer is the closest successor to PCNSE, and
+is the exam most readers of Chapters 03–07 will be aiming at.
 
-A Practitioner-level engineer moving toward PCNSE should expect the exam to
-assume comfort designing trade-offs (active/passive vs. active/active HA,
-device group hierarchy design, decryption rollout sequencing) — the kind of
-judgment calls captured in every chapter's Design Considerations section —
-not just the ability to recite a `set` command from memory.
+### Blueprint domains and weights
+
+Weights below come from each certification's official datasheet; each set
+totals 100%. Datasheets are revised — the dates given are the versions
+these tables were taken from.
+
+**Next-Generation Firewall Engineer** (datasheet dated November 2025).
+Recommended experience: 2–3 years in IT security, 2 years with Palo Alto
+Networks NGFW. Recommended prior certifications: Network Security
+Professional and Network Security Analyst.
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1. PAN-OS Networking Configuration | 40% | 04 |
+| 2. PAN-OS Device Setting Configuration | 40% | 03, 05, 06 |
+| 3. Integration and Automation | 20% | 03, 06, 07 |
+
+Two domains at 40% each make this overwhelmingly a configuration exam.
+Domain 1 is interfaces, zones, HA, routing, GlobalProtect, and tunnels;
+Domain 2 is authentication, VSYS, logging, updates, certificates,
+User-ID, and web proxy. Automation is real but is the smallest slice.
+
+**Network Security Analyst** (datasheet dated August 2025).
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1. Object Configuration Creation and Application | 30% | 05 |
+| 2. Policy Creation and Application | 30% | 05 |
+| 3. Management and Operations | 26% | 06, 07 |
+| 4. Troubleshooting | 14% | 07 |
+
+**Network Security Professional** (datasheet dated June 2026).
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1. Network Security Fundamentals | 17% | 01 |
+| 2. NGFW and SASE Solution Functionality | 13% | 02 |
+| 3. Platform Solutions, Services, and Tools | 30% | 02 |
+| 4. NGFW and SASE Solution Maintenance and Configuration | 10% | 03, 07 |
+| 5. Infrastructure Management and CDSS | 17% | 02, 06 |
+| 6. Connectivity and Security | 13% | 04, 05 |
+
+**Cybersecurity Practitioner** (datasheet dated December 2025).
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1. Cybersecurity | 19% | 02 |
+| 2. Network Security | 19% | 02 |
+| 3. Secure Access | 14% | 02 |
+| 4. Cloud Security | 20% | 02, 09 |
+| 5. Endpoint Security | 15% | 02 |
+| 6. Security Operations | 13% | 02 |
+
+**Cybersecurity Apprentice** (datasheet dated May 2026).
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1. Cybersecurity | 16% | 01 |
+| 2. Network Fundamentals | 16% | 01 |
+| 3. Network Security | 14% | 01 |
+| 4. Endpoint Security | 10% | 01 |
+| 5. Cloud Security | 13% | 01 |
+| 6. Security Operations | 13% | 01 |
+| 7. Identity Security | 18% | 01 |
+
+The remaining Specialist and Architect exams are outside most readers'
+immediate path but are covered by this volume in part: **SD-WAN Engineer**
+(August 2025) weights Planning and Design 24%, Deployment and
+Configuration 24%, Troubleshooting 20%, Operations and Monitoring 18%,
+Unified SASE 14%. **Security Service Edge Engineer** (March 2026) weights
+Prisma Access Planning and Deployment, Prisma Access Services, and Prisma
+Browser at 22% each, Troubleshooting 18%, Administration and Operation
+16%. **Network Security Architect** (October 2025) spreads across ten
+domains, none above 13%, which is itself the point: it tests breadth of
+design judgment rather than depth in any one product.
+
+All exams are delivered in English worldwide, with a 30-minute extension
+provided by default in non-English-speaking countries.
 
 ### Certification sequencing and study path
 
@@ -80,25 +150,65 @@ The recommended progression for an engineer working through this volume:
    foundation, no hands-on PAN-OS prerequisite.
 2. **Cybersecurity Practitioner** ([Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)) — licensing, subscription,
    and platform-portfolio depth (Strata, Prisma, Cortex).
-3. **PCNSA** — after completing Chapters 03–05's hands-on labs at least
-   once, ideally repeated on a second, independently built lab environment
-   to confirm the configuration steps are retained rather than
-   copy-pasted.
-4. **PCNSE** — after completing Chapters 06–07 and this chapter's capstone
-   lab, which specifically exercises the fleet-scale, troubleshooting, and
-   automation skills PCNSE's blueprint assumes.
+3. **Network Security Professional** — the Professional-level exam, and
+   the one whose 30% Platform Solutions domain rewards Chapter 02's
+   portfolio breadth most directly.
+4. **Network Security Analyst** — after completing Chapters 03–05's
+   hands-on labs at least once, ideally repeated on a second,
+   independently built lab environment to confirm the configuration steps
+   are retained rather than copy-pasted.
+5. **Next-Generation Firewall Engineer** — after Chapters 06–07 and this
+   chapter's capstone lab, which exercises the fleet-scale,
+   troubleshooting, and automation skills its blueprint assumes.
 
-Do not attempt PCNSE without the PCNSA-level hands-on repetition first; the
-blueprint explicitly builds on that foundation rather than re-testing it,
-and gaps at the administrator level compound into larger gaps at the
-engineer level.
+Do not attempt NGFW Engineer without the Analyst-level hands-on repetition
+first. Its own datasheet recommends both Network Security Professional and
+Network Security Analyst beforehand, and gaps at the operational level
+compound into larger gaps at the engineering level.
+
+### A study plan for NGFW Engineer
+
+Eight to ten weeks at **8–10 hours per week**, for a reader who has worked
+through Chapters 01–07. Weighted toward configuration, because 80% of the
+exam is.
+
+| Week | Focus | Chapters |
+| --- | --- | --- |
+| 1 | Interfaces, zones, virtual wire, aggregate Ethernet | 04 |
+| 2 | High availability: active/active, active/passive, link and path monitoring | 04 |
+| 3 | Routing, redistribution, and the Advanced Routing Engine | 04 |
+| 4 | GlobalProtect portals, gateways, authentication, split tunneling; IPSec and GRE tunnels | 04 |
+| 5 | Authentication profiles and sequences, VSYS, certificates and decryption | 05 |
+| 6 | Logging, Strata Logging Service, log collectors, software updates | 06 |
+| 7 | User-ID and Cloud Identity Engine, web proxy | 05 |
+| 8 | Deployment options (PA-, VM-, CN-Series, Cloud NGFW), APIs, Terraform and Ansible | 03, 07 |
+| 9 | Panorama, templates, device groups, pre- and post-rulesets, ACC dashboards | 06, 07 |
+| 10 | Capstone lab, then timed configuration drills against the blueprint tasks | 08 |
+
+### Study materials
+
+| Role | Resource | Why |
+| --- | --- | --- |
+| Official blueprint | The certification datasheet for your exam | Authority on domains, weights, and tasks; each lists subtopics far more specific than the domain titles |
+| Official training | [Palo Alto Networks Education](https://www.paloaltonetworks.com/services/education) digital learning paths | Free digital learning and instructor-led courses aligned to each certification |
+| Reference | Palo Alto Networks TechDocs | PAN-OS and Panorama administrator guides; the datasheets explicitly point at product documentation as the source exam items are written against |
+| Community | [LIVEcommunity](https://live.paloaltonetworks.com/) | Practitioner answers on behavior the documentation does not cover |
+| Lab | VM-Series in a hypervisor or public cloud trial | The exam is configuration-weighted; console repetition is the preparation |
+| Practice exams | Third-party banks exist for the retired exams and are appearing for the new ones | Useful for exam stamina, but verify any bank targets the current exam and not PCNSE |
+
+Note the last row carefully. Because the portfolio changed in 2025, a
+large amount of PCNSA and PCNSE study material remains in circulation and
+still sells. It is not worthless — the underlying PAN-OS knowledge
+overlaps heavily — but it is not written to the current blueprints, and
+anything claiming to be exam-accurate for PCNSE is by definition
+describing an exam that no longer exists.
 
 ## Design Considerations
 
 This chapter's capstone synthesizes every prior chapter's constructs into
 one integrated architecture. The design below is deliberately
 representative of a small-to-mid-size enterprise perimeter and branch
-topology — the scale a PCNSE-track engineer is expected to reason about:
+topology — the scale a Specialist-tier engineer is expected to reason about:
 
 - **Topology.** A data-center HA pair (VM-Series, active/passive,
   [Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md))
@@ -166,7 +276,7 @@ cross-chapter dependencies. The Hands-On Lab below executes it concretely.
 ```bash
 # Bulk-create branch server address objects via the REST API, rather than
 # manual entry for each object — representative of the automation
-# integration expected at PCNSE-track maturity.
+# integration expected at Specialist-tier maturity.
 for host in app-server-01:10.10.20.50 db-server-01:10.10.20.60; do
   name="${host%%:*}"
   ip="${host##*:}"
@@ -241,8 +351,10 @@ security review.
 
 **References**
 
-- [Palo Alto Networks, *PCNSA Study Guide* and official blueprint page.](https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/pdf/datasheets/education/pcnsa-study-guide.pdf)
-- [Palo Alto Networks, *PCNSE Study Guide* and official blueprint page.](https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/pdf/datasheets/education/pcnse-study-guide.pdf)
+- [Palo Alto Networks, *Next-Generation Firewall Engineer* datasheet.](https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/pdf/datasheets/education/ngfw-engineer-datasheet.pdf)
+- [Palo Alto Networks, *Network Security Analyst* datasheet.](https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/pdf/datasheets/education/netsec-analyst-datasheet.pdf)
+- [Palo Alto Networks, *Network Security Professional* datasheet.](https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/pdf/datasheets/education/netsec-professional-datasheet.pdf)
+- [Palo Alto Networks certification portfolio.](https://www.paloaltonetworks.com/services/education/certification) — the current four-level, three-track program
 - [Palo Alto Networks Beacon (training.paloaltonetworks.com)](https://beacon.paloaltonetworks.com/) — role-based
   learning paths and hands-on units.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
@@ -252,11 +364,11 @@ security review.
 
 **Knowledge checks**
 
-1. Which chapters in this volume map most directly to PCNSA's blueprint
-   scope, and which additional chapters extend that scope to PCNSE?
-2. Why does the recommended study path require completing PCNSA-level
-   hands-on repetition before attempting PCNSE, rather than proceeding
-   directly to PCNSE after [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)?
+1. Which chapters map most directly to Network Security Analyst's
+   blueprint scope, and which extend that scope to NGFW Engineer?
+2. Why does the recommended study path require Analyst-level hands-on
+   repetition before attempting NGFW Engineer, rather than proceeding
+   directly there after [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)?
 3. In the capstone's validation checklist, why are HA state and
    routing/NAT checks positioned before policy-match testing, and policy-
    match testing before packet capture?
@@ -418,18 +530,19 @@ configuration.
 ## Summary and Completion Checklist
 
 The role-based certification portfolio validates exactly the skill
-progression this volume was built to develop: PCNSA-level administrator
+progression this volume was built to develop: Analyst-level operational
 fluency across initial configuration, networking, and policy (Chapters
-01–05), extended by PCNSE-level engineer depth across Panorama, advanced
+01–05), extended by NGFW Engineer depth across Panorama, advanced
 troubleshooting, and automation (Chapters 06–07). This chapter's capstone
 lab is the volume's proof point — a single integrated build that exercises
 every prior chapter's constructs together, validated with the same
-layered troubleshooting discipline expected of a practicing PCNSE-track
+layered troubleshooting discipline expected of a practicing Specialist-tier
 engineer. [Chapter 09](09-cortex-cloud-security-professional.md) extends this same enterprise into Cortex Cloud
 Security Professional territory, applying cloud-native application
 protection to the workloads this capstone's firewalls protect.
 
-- [ ] Can map this volume's chapters to PCNSA and PCNSE blueprint domains.
+- [ ] Can map this volume's chapters to the current blueprint domains and
+      their weights.
 - [ ] Can articulate and follow the recommended certification study
       sequence.
 - [ ] Designed an integrated, multi-firewall, Panorama-managed architecture
