@@ -32,6 +32,12 @@ cp -R output/epub "$output/epub"
 
 page_head() {
   # $1 = <title> text
+  # $2 = relative prefix from this page back to the site root, e.g. "../../"
+  #      Defaults to "" for pages written at the root. Volume index pages sit
+  #      two levels down under html/<slug>/, so a bare "web.css" resolves
+  #      against their own directory and 404s, leaving the page unstyled and
+  #      the theme toggle inert.
+  local prefix="${2-}"
   cat <<HTML
 <!doctype html>
 <html>
@@ -39,7 +45,7 @@ page_head() {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>$1</title>
-<link rel="stylesheet" href="web.css" />
+<link rel="stylesheet" href="${prefix}web.css" />
 </head>
 <body>
 HTML
@@ -81,7 +87,7 @@ for volume_dir in volumes/*/; do
   slug="$(basename "${volume_dir%/}")"
   title="$(volume_title "$slug")"
   {
-    page_head "$title"
+    page_head "$title" "../../"
     echo "<p><a href=\"../../index.html\">&larr; All volumes</a></p>"
     echo "<h1>$title</h1>"
     echo "<h2>Complete volume</h2>"
@@ -114,7 +120,7 @@ while IFS= read -r -d '' html_file; do
       broken=1
     fi
   done < <(grep -oE 'href="[^"]+"' "$html_file" | sed -E 's/href="([^"]+)"/\1/')
-done < <(find "$output" -maxdepth 2 -name "index.html" -print0)
+done < <(find "$output" -name "index.html" -print0)
 
 if [[ "$broken" -ne 0 ]]; then
   echo "build-download-site.sh: FAILED — portal has broken links" >&2
