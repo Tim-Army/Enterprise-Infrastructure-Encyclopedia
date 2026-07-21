@@ -148,13 +148,29 @@ roughly six months with NSX and two years in IT.
 | Official training | The recommended course named on each exam page | VVF Administrator points at *vSphere Foundation: Build, Manage and Operate*; both Support exams at *VMware Cloud Foundation: Troubleshooting*; VCF Administrator at *Build, Manage, and Secure* plus *Automate and Operate* |
 | Reference | Broadcom Tech Docs | Product documentation for vSphere, vSAN, NSX, and VCF Operations |
 | Practice exams | Third-party banks | Useful for pacing against 135 minutes; verify the bank targets your exam number, since the 9.0-generation codes are recent |
-| Lab | Nested ESXi, VMware Workstation, or a VMUG Advantage subscription | The administrator and support exams reward console familiarity that reading does not build |
+| Lab | VMware Hands-on Labs, or nested ESXi under Workstation/Fusion | The administrator and support exams reward console familiarity that reading does not build; see the licensing note below before planning a home lab |
 | Community | VMware Certification community and VMUG | Where blueprint revisions and exam-version changes surface first |
 
-A note on lab access. Broadcom's licensing changes have made evaluation
-licenses harder to obtain than they once were. VMUG Advantage remains the
-most reliable route to a legitimate home lab for these exams, and it is
-worth budgeting for alongside the $250 exam fee.
+**Lab licensing is now a chicken-and-egg problem, and it is worth
+planning around.** The EvalExperience program that once bundled 365-day
+evaluation licenses with a VMUG Advantage subscription ended in 2024.
+VMUG Advantage membership alone no longer entitles you to download the
+software. Personal-use licenses are now unlocked by *passing a VCP exam*
+— VCP-VCF, for instance, releases three-year VMware Cloud Foundation
+licenses at 128 cores, along with vDefend Firewall and Avi Load Balancer
+entitlements.
+
+Read that ordering carefully: **VMUG Advantage is a reward for
+certifying, not a route to preparing for it.** Budgeting for it as study
+tooling, as was reasonable a few years ago, no longer works.
+
+For preparation before you hold a certification, the practical options
+are VMware Hands-on Labs — free, browser-based, and requiring no
+licensing at all — nested ESXi under VMware Workstation or Fusion, which
+are free for personal use, and whatever evaluation period the product
+currently offers at the time you download it. Confirm the current terms
+rather than assuming, since this is the part of the VMware landscape that
+has changed most since the Broadcom acquisition.
 
 ## Software and platform baseline
 
