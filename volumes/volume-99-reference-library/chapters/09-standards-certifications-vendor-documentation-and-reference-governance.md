@@ -125,7 +125,7 @@ this repository's release cycle.
 | XVI — Palo Alto Networks Security | Cybersecurity Apprentice/Practitioner, Network Security Professional/Analyst, NGFW Engineer, Network Security Architect, Cortex Cloud Security Professional (PCNSA/PCNSE retired 2025) | Palo Alto Networks Education |
 | XVII — AWS Architecture and Security | AWS Certified Solutions Architect, AWS Certified Security | AWS Training and Certification |
 | XVIII — Gigamon Network Visibility | Gigamon Certified Professional (GCP) | Gigamon Education Services |
-| XIX — Fortinet Network Security | NSE 1–4 of the NSE 1–8 program (FCF/FCA/FCP/FCSS/FCX retired 15 July 2026) | Fortinet Training Institute |
+| XIX — Fortinet Network Security | NSE 1–4 of the NSE 1–8 program; NSE 4 — FortiOS 7.6 Administrator (FCF/FCA/FCP/FCSS/FCX retired 15 July 2026) | Fortinet Training Institute |
 | XX — Wireshark and Packet Analysis | WCA-101 | Wireshark Certified Analyst Program |
 | XXI — Ubuntu Server and Cloud | Canonical Academy SysAdmin qualification (four exams) | Canonical Academy |
 | XXII / XXIII — Dell OpenManage / iDRAC | PowerEdge Foundations v2 (D-PE-FN-01), PowerEdge Operate v2 (D-PE-OE-01; supersedes the retired D-PE-OE-23) | Dell Technologies Proven Professional |

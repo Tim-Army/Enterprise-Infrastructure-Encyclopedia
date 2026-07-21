@@ -117,6 +117,49 @@ Note that the published certification datasheet carries a 2022 copyright.
 It remains the current published document, but treat the figures above as
 needing confirmation at registration rather than as freshly restated.
 
+### Mapping the exam to this volume
+
+Gigamon publishes no domain list beyond the 35/65 split, so the mapping
+below is inferred from the competencies the datasheet names — architect
+and implement the packet broker and the full GigaSMART feature set,
+design and implement Gigamon solutions into an enterprise network — and
+should be treated as this encyclopedia's reading rather than a published
+blueprint.
+
+| Exam portion | Weight | Where it is covered |
+| --- | --- | --- |
+| General security, networking, and cloud | **35%** | [Volume II](../volume-02-network-engineering-foundations/README.md) and [Volume X](../volume-10-enterprise-cybersecurity/README.md) far more than this volume; [Chapter 01](chapters/01-visibility-architecture-traffic-acquisition-and-tool-delivery.md) supplies the visibility-architecture framing |
+| Gigamon implementation and configuration | **65%** | [Chapters 02–08](chapters/02-gigavue-appliance-first-deployment-and-fabric-foundations.md) — appliances, virtual nodes, GigaVUE-FM, flow mapping, GigaSMART, inline and TLS, hybrid cloud |
+
+**That 35% is the part this volume deliberately does not carry.** It is
+general security, networking, and cloud knowledge — the material of
+Volumes II and X — and a candidate who works only this volume has
+prepared for roughly two-thirds of the exam. Read the split as an
+instruction about where to spend time, not as a description of what
+Gigamon teaches.
+
+### Study plan
+
+Six weeks at eight to ten hours a week for a network or security engineer
+with solid fundamentals. A candidate without those fundamentals should
+budget longer and spend it outside this volume, for the reason above.
+
+| Week | Focus | Portion |
+| --- | --- | --- |
+| 1 | Honest self-assessment against the 35%: general networking, security, and cloud. If TLS, packet flow, or cloud networking models are shaky, fix that now — it is a third of the exam and the hardest to cram late. Chapter 01 for the visibility framing. | 35% |
+| 2 | Visibility architecture and physical fabric: traffic acquisition, TAPs versus SPAN, appliance deployment, cluster foundations. Chapters 01–02. | part of 65% |
+| 3 | GigaVUE-FM and virtual acquisition: installation, onboarding, security and governance, virtual nodes. Chapters 03–04. Run the FM Test Drive alongside. | |
+| 4 | The core operational material: ports, flow mapping, traffic policy, tool delivery, then GigaSMART transformation — masking, de-duplication, slicing, Application Intelligence. Chapters 05–06. | |
+| 5 | Inline bypass, TLS/SSL decryption, and production safety, then hybrid-cloud visibility, APIs, and integrations. Chapters 07–08. | |
+| 6 | Operations, troubleshooting, and the capstone in [Chapter 09](chapters/09-operations-troubleshooting-training-and-enterprise-capstone.md). Consider the GCP Boot Camp here if it is funded — it is the only route to sustained hands-on time. | |
+
+**Two scheduling constraints specific to this exam.** The trial licenses
+described below run 30 and 60 days, so start them in week 2 rather than
+week 1 — beginning them before you can use them wastes the window. And
+the boot camp offers the test at the end of day five, which is worth
+taking if your employer is funding the course, but only if the 35% is
+already solid; the boot camp does not teach it.
+
 ### Practicing without a production fabric
 
 Gigamon has no free interactive lab catalog of the kind Red Hat or VMware

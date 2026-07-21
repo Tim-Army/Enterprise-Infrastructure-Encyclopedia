@@ -110,6 +110,78 @@ lag the naming in both directions for some months. Material written
 against FCP is not wrong about the technology; it is wrong about the
 label.
 
+### The NSE 4 exam, and how Fortinet publishes weights
+
+NSE 4 is where this volume ends and the first level with a substantial
+proctored exam behind it. The current exam is **Fortinet NSE 4 — FortiOS
+7.6 Administrator**, which matches the FortiOS baseline in
+[SOFTWARE_VERSIONS.md](../../SOFTWARE_VERSIONS.md).
+
+| Term | Detail |
+| --- | --- |
+| Duration | 80–90 minutes |
+| Questions | 50–55 |
+| Format | Multiple choice and drag-and-drop, built on operational scenarios, configuration extracts, and troubleshooting captures |
+| Scoring | Answers must be **100% correct** to score; no partial credit, and no deduction for wrong answers |
+| Languages | English and Japanese |
+| Product version | FortiOS 7.6.0 |
+
+**Fortinet publishes weights as ranges, not fixed percentages** — a
+different convention from most vendors in this encyclopedia, and one that
+changes how the numbers should be read:
+
+| Objective | Weight | Chapters |
+| --- | --- | --- |
+| Content Inspection | **25–30%** | [07](chapters/07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md) |
+| Deployment and System Configuration | **20–25%** | [04](chapters/04-fortigate-first-deployment-licensing-management-and-hardening.md), [05](chapters/05-interfaces-routing-nat-virtual-domains-and-high-availability.md) |
+| Firewall Policies and Authentication | **20–25%** | [06](chapters/06-firewall-policy-authentication-vpn-and-zero-trust-access.md) |
+| Routing | 10–15% | [05](chapters/05-interfaces-routing-nat-virtual-domains-and-high-availability.md), [08](chapters/08-sd-wan-operations-central-management-automation-and-troubleshooting.md) |
+| VPNs | 10–15% | [06](chapters/06-firewall-policy-authentication-vpn-and-zero-trust-access.md) |
+
+**The ranges do not sum to 100% at either bound** — the minimums total
+85% and the maximums 110%. That is not an error to correct; it is what
+ranges mean. Any given sitting lands somewhere inside, and the practical
+consequence is that you cannot budget study time by exact proportion the
+way a Dell or Cisco blueprint allows. Plan against the *upper* bound of
+each objective, because a sitting weighted toward the top of one range is
+entirely possible.
+
+**Content inspection is the largest single objective** at up to 30%, and
+it is the one candidates most often under-prepare: SSL/SSH deep
+inspection, web filtering behavior differences across inspection modes,
+application control, antivirus scanning modes, and IPS. All of it lands
+in [Chapter 07](chapters/07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md).
+
+Two things inside the objectives are worth flagging because they sit
+outside the classic on-box FortiGate picture: the deployment objective
+now names **cloud-native firewall, public cloud solutions, and FortiSASE
+administration**. A candidate preparing only against an on-premises
+FortiGate VM will meet questions the lab did not cover.
+
+### Study plan
+
+Six to eight weeks to NSE 4 at eight to ten hours a week for someone with
+general networking experience, assuming NSE 1–3 are taken as they are
+reached rather than studied separately — they are short, free, and
+largely awareness-level.
+
+| Week | Focus | Objective weight |
+| --- | --- | --- |
+| 1 | NSE 1–3 end to end: cybersecurity awareness, threat landscape, the Fortinet portfolio, and Security Fabric concepts. Chapters 01–03. Sit all three as you finish them. | — |
+| 2 | First FortiGate deployment: initial configuration, licensing, administrative access, DHCP, logging and diagnostics, hardening. Chapter 04. | part of 20–25% |
+| 3 | Interfaces, routing, NAT, VDOMs, and FGCP high availability. Chapters 04–05. Add SD-WAN load balancing from Chapter 08 here, since routing owns it. | 10–15% + rest of 20–25% |
+| 4 | Firewall policies, inspection modes, SNAT and DNAT with VIPs, and authentication — LDAP, RADIUS, FSSO. Chapter 06. | 20–25% |
+| 5–6 | **The heavy weeks.** Content inspection in full: SSL/SSH inspection, web filtering across modes, application control, antivirus scanning modes, IPS. Chapter 07, with deliberate time on inspection-mode differences rather than reading them once. | 25–30% |
+| 7 | IPsec VPN implementation and troubleshooting, then cloud-native firewall and FortiSASE — the objectives an on-box lab does not reach. Chapters 06 and 08. | 10–15% + cloud coverage |
+| 8 | The capstone in [Chapter 09](chapters/09-nse-4-fortios-administrator-training-and-enterprise-capstone.md), then targeted revision. | — |
+
+**Practice the scoring rule, not just the material.** Multi-select
+questions score only when *every* selection is right, with no partial
+credit — so a candidate who half-knows six topics scores worse than one
+who fully knows four. When revising, drill to the point of being able to
+exclude wrong options confidently rather than to the point of
+recognition.
+
 ### Practicing without hardware
 
 Fortinet's own training is unusually accessible compared with most
