@@ -204,12 +204,27 @@ in, though the public view is a subset of the full catalog.
 | 13 | Upgrade and migration paths | `HOL-2603-01-VCF-S` VCF 9.0 — Upgrading from vSphere 8 |
 
 **Two gaps worth knowing before you rely on this.** NSX coverage in the
-public catalog is thin — three labs, none of them an install-and-configure
-walkthrough — so Chapters 10–12 and VCP-NV preparation still need a
-nested NSX build or the deeper labs behind a sign-in. And Hands-on Labs
-are guided: they teach the workflow but do not make you derive it, which
-is precisely what the Support-track exams test. Use them to see a feature
-working, then rebuild it unguided.
+public Hands-on Labs catalog is thin — three labs, none of them an
+install-and-configure walkthrough — so Chapters 10–12 and VCP-NV
+preparation are the least well served by the free route. And Hands-on
+Labs are guided: they teach the workflow but do not make you derive it,
+which is precisely what the Support-track exams test. Use them to see a
+feature working, then rebuild it unguided.
+
+For NSX specifically, the depth exists on **Learning@Broadcom** rather
+than in Hands-on Labs. The three courses named on the VCP-NV exam page —
+*VMware NSX: Install, Configure, Manage [V4.0]*, *VMware NSX:
+Troubleshooting and Operations [V4.x]*, and *VMware NSX: Design [V4.x]* —
+run 40 hours each and are the install-and-configure coverage the free
+labs lack. The platform also hosts the official exam guides as
+downloadable material, including 2V0-41.24's. Access depends on your
+organization's entitlement, which is worth checking before assuming a
+paid course is the only route.
+
+Note also that NSX continues past VCP. The same catalog carries exam
+guides for **3V0-42.23** (NSX 4.x Advanced Design) and **3V0-41.22**
+(Advanced Deploy NSX-T 3.x) at the VCAP level, which is where Chapters
+10–11's design material points if you continue beyond VCP-NV.
 
 Lab IDs rotate as the catalog is refreshed — the `HOL-25xx`, `HOL-26xx`,
 and `HOL-27xx` prefixes above reflect different catalog generations that
