@@ -81,6 +81,73 @@ credential. Chapter 09 provides a domain-to-chapter mapping and readiness
 checklist; always confirm the current official blueprint directly with the
 certifying program before scheduling an exam.
 
+### The exam
+
+| Term | Detail |
+| --- | --- |
+| Questions | 50–60 |
+| Duration | 120 minutes |
+| Cost | $349 per attempt |
+| Delivery | Kryterion Webassessor — test center or online with secure browser and live proctor |
+| Retakes | One attempt every 15 days |
+| Validity | Three years |
+
+### Domain weights, mapped to this volume
+
+Weights are from the published WCA-101 objectives; they total 100%.
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 Utilize key features of Wireshark | 10% | 01, 03 |
+| 2.0 Utilize different methods of capturing traffic | 10% | 02 |
+| 3.0 Filter traffic using capture and display filters | 12% | 03 |
+| 4.0 Configure, adapt, and use the interface for different scenarios | 5% | 03 |
+| 5.0 Identify and explain common network protocols | **43%** | 04–07 |
+| 6.0 Troubleshoot common issues with those protocols | 20% | 06–08 |
+
+**Two numbers should drive the study plan.** Protocol identification at
+43% is nearly half the exam, and within it **TCP alone is 17%, scored
+separately** — more than any other single topic and more than domains 1,
+2 and 4 combined. [Chapter 06](chapters/06-tcp-reliability-flow-control-and-performance-analysis.md)
+is therefore the highest-value chapter in this volume for exam purposes,
+with the remaining 27% of protocol content spread across
+[Chapters 04](chapters/04-ethernet-arp-ipv4-and-icmpv4-analysis.md),
+[05](chapters/05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md) and
+[07](chapters/07-application-protocol-tls-and-service-response-analysis.md).
+
+Conversely, interface configuration is 5%. It is worth knowing and quick
+to learn, but it is not worth extended study time.
+
+### Practice: the tool is free, the captures are the constraint
+
+Wireshark inverts the usual problem. Every other volume in this
+encyclopedia needs licenses, trial windows, or hosted sandboxes to get
+hands-on; here the software is free, open source, and installs in
+minutes. What a candidate actually lacks is **interesting traffic** —
+captures containing the retransmissions, resets, malformed headers, and
+failure patterns the exam asks you to recognize.
+
+| Source | What it gives you |
+| --- | --- |
+| [Wireshark sample captures wiki](https://wiki.wireshark.org/SampleCaptures) | The canonical library, organized by protocol — the first place to look for a specific protocol's normal and abnormal behavior |
+| [malware-traffic-analysis.net](https://www.malware-traffic-analysis.net/) | Dated exercises with real infection traffic, each posed as a question with published answers — the closest thing to graded practice |
+| [Netresec public PCAP list](https://www.netresec.com/?page=PcapFiles) | An aggregated index of publicly available capture repositories |
+| Your own network | Irreplaceable for [Chapter 02](chapters/02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md)'s capture engineering — placement, SPAN versus TAP, and ring buffers cannot be learned from someone else's file |
+
+**Generate your own failures.** The most efficient practice is to break
+something deliberately and capture it: block a port mid-transfer to
+produce retransmissions, force a TLS version mismatch, point a resolver
+at a dead server. Reading a clean capture teaches protocol structure;
+capturing a broken one teaches the diagnostic reasoning domain 6 tests at
+20%.
+
+Note that the certification is delivered by the **Wireshark Foundation**,
+the nonprofit steward of the tool, and its official training partners are
+named on the certification page. Because the credential is comparatively
+new, third-party practice material is thinner than for older
+certifications — the published objectives PDF is the authoritative study
+map, and it is more specific than most vendors publish.
+
 ## Building and validating this volume
 
 From the repository root, after completing
