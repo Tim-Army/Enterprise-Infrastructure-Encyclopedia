@@ -75,6 +75,108 @@ exam questions or licensed courseware. Always confirm the current
 blueprint against Forescout's official certification page before using
 this volume for exam preparation.
 
+### The certifications
+
+| Certification | Level | Course | Exam | Prerequisite |
+| --- | --- | --- | --- | --- |
+| FSCA | Associate | Four days, instruction plus hands-on labs | 120 minutes, online | None |
+| FSCP | Professional | Instructor-led or eLearning | Mixed question types, including applied scenarios | FSCA-level knowledge |
+| FSCE | Expert | Five-day boot camp, closing with three classroom days | Eight hours, proctored, lab-based | FSCA required before attending |
+| FSCA: OT/ICS | Associate, OT track | Instructor-led or eLearning | Online | None stated |
+| FSCE: OT/ICS | Expert, OT track | Instructor-led | Proctored | FSCA: OT/ICS-level knowledge |
+
+Forescout issues digital badges through Credly, whose published earning
+criteria state a **minimum passing score of 80%** and require completing
+the corresponding course before sitting the exam.
+
+### What Forescout does not publish
+
+Unlike AWS or Cisco, Forescout publishes **no per-domain blueprint with
+percentage weightings**, no public exam pricing, and no stated validity
+or recertification period. The Academy is behind a customer or partner
+login, and courses are delivered by Forescout or by Authorized Training
+Partners.
+
+Three consequences follow, and they shape how this volume should be used:
+
+- **The course is the blueprint.** There is no published domain list to
+  study against, so the authoritative syllabus is the course you attend.
+  Take the course material as primary and this volume as reinforcement,
+  which is the reverse of the AWS and Cisco volumes.
+- **Certification is not realistically self-study.** FSCA gates FSCE, and
+  both expect course attendance. Budget for the course, not just the exam.
+- **The FSCE exam is a lab, not a question bank.** Eight proctored hours
+  of building and troubleshooting rewards console fluency that only comes
+  from operating a deployment. Reading cannot substitute.
+
+Because no weights exist to prioritize against, the plans below sequence
+by dependency — what you must understand before the next thing makes
+sense — rather than by exam emphasis.
+
+### Study plans
+
+Each assumes **8–10 hours per week** alongside the relevant course, and
+access to a lab or non-production deployment.
+
+**FSCA — four to six weeks**
+
+| Week | Focus | Chapters |
+| --- | --- | --- |
+| 1 | Platform architecture, appliance roles, deployment planning | 01 |
+| 2 | Console, plugins, properties, asset classification | 02 |
+| 3 | Classification, compliance, and control policies | 03 |
+| 4 | Host management, administration, inventory, reporting | 04 |
+| 5–6 | Consolidation: build policies end to end in a lab, then break them | 01–04 |
+
+**FSCP — three to four weeks**, taken while FSCA material is current.
+
+| Week | Focus | Chapters |
+| --- | --- | --- |
+| 1 | Advanced policy design and evaluation order | 05 |
+| 2 | Integrations and the business outcomes they serve | 05 |
+| 3 | Performance, scale, and resilience considerations | 06 |
+| 4 | Applied scenarios: justify a design, not just configure it | 05–06 |
+
+**FSCE — six to eight weeks.** Weight this toward the console, not the
+page, since the exam is eight hours of lab work.
+
+| Week | Focus | Chapters |
+| --- | --- | --- |
+| 1–2 | Advanced policy and integration depth | 05 |
+| 3–4 | Troubleshooting, performance tuning, resilience | 06 |
+| 5 | Automation, API use, and governance | 07 |
+| 6 | Capstone: deploy Enterprise Manager and appliances to a project plan | 07 |
+| 7–8 | Timed lab drills against deliberately broken deployments | 05–07 |
+
+**OT/ICS track.** FSCA: OT/ICS runs three to four weeks against
+[Chapter 08](chapters/08-ot-ics-associate-architecture-sensors-and-asset-visibility.md)
+— OT architecture, sensor placement, and passive asset visibility. FSCE:
+OT/ICS runs four to six weeks against
+[Chapter 09](chapters/09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md)
+— design, deployment, curation, and troubleshooting. The OT track assumes
+IT-side platform familiarity; take FSCA first unless you already operate
+the platform.
+
+### Study materials
+
+The resource picture is thinner here than for AWS or Cisco, and honestly
+so: **there is no substantial third-party Forescout training market** —
+no widely used independent video courses or practice-exam banks. Nearly
+everything authoritative comes from Forescout directly.
+
+| Role | Resource | Why |
+| --- | --- | --- |
+| Official training | [Forescout Academy](https://www.forescout.com/support-hub/training-academy/) | eLearning and instructor-led delivery; the course is the syllabus, so this is primary rather than supplementary |
+| Classroom | [Authorized Training Partners](https://www.forescout.com/support-hub/training/) | Regional in-person or virtual delivery with local language support; Forescout supplies content and labs |
+| Reference | Forescout Documentation Portal | Administration and initialization guides, licensing and sizing, compatibility matrix — the detail the exams assume |
+| Peers | Forescout Community Portal and Slack community | Knowledge articles and practitioner answers for behavior the documentation does not cover |
+| Lab | A non-production eyeSight/eyeControl deployment | The only way to build the console fluency the FSCE lab exam tests |
+
+Given the absence of practice-exam banks, self-assessment has to come
+from the lab: set yourself a policy or troubleshooting objective, work to
+it under time pressure, and treat the console rather than a score as the
+readiness signal.
+
 ## Software and platform baseline
 
 Chapters in this volume reference the dated baseline recorded in
