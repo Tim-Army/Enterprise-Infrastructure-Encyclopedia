@@ -105,6 +105,73 @@ you are authorized to disrupt.
   throughout this volume's implementation sections, particularly
   Chapter 09.
 
+## Certification alignment
+
+Dell's server certifications sit in the **Dell Technologies Proven
+Professional** program, recorded in
+[CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). Two
+exams cover this volume's material, and both span it and
+[Volume XXII](../volume-22-dell-openmanage-enterprise/README.md):
+
+| Exam | Level | Duration | Domains |
+| --- | --- | --- | --- |
+| **D-PE-FN-01** PowerEdge Foundations v2 | Foundational | 90 min | Introduction to Servers 28%; Server Architecture and Roles 22%; Maintenance 18%; Server Management 14%; Security 12%; Networking and Connectivity 6% |
+| **D-PE-OE-23** PowerEdge Operate | Specialist | 120 min | Server Troubleshooting 32%; Server Components 26%; System Administration 18%; Server Management and Configuration Tools 14%; Server Portfolio and Features 10% |
+
+Both are delivered through Pearson VUE. Question counts and cut scores
+are set per exam and are not restated here; confirm them at registration.
+
+**This volume is the higher-value one for the Operate exam.**
+Troubleshooting at 32% and server components at 26% together make up 58%
+of it, and both map to chapters here rather than to fleet management.
+Take Foundations first — its heaviest domains, introduction to servers
+(28%) and architecture (22%), are also grounded in this volume.
+
+| Domain | Weight in Operate | Chapters here |
+| --- | --- | --- |
+| Server Troubleshooting | 32% | [02](chapters/02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md), [06](chapters/06-hardware-health-power-thermal-logs-and-support.md) |
+| Server Components | 26% | [06](chapters/06-hardware-health-power-thermal-logs-and-support.md), [07](chapters/07-storage-arrays-boss-raid-configuration-and-maintenance.md) |
+| System Administration | 18% | [04](chapters/04-identity-certificates-security-and-compliance.md), [07](chapters/07-storage-arrays-boss-raid-configuration-and-maintenance.md) |
+| Server Management and Configuration Tools | 14% | [05](chapters/05-idrac-direct-virtual-console-virtual-media-and-local-service.md), [09](chapters/09-racadm-redfish-openmanage-automation-and-capstone-operations.md) |
+| Server Portfolio and Features | 10% | [01](chapters/01-architecture-generations-licensing-and-first-access.md) |
+
+For Foundations, [Chapter 01](chapters/01-architecture-generations-licensing-and-first-access.md)
+covers portfolio and architecture,
+[Chapter 03](chapters/03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)
+the 6% networking domain,
+[Chapter 04](chapters/04-identity-certificates-security-and-compliance.md)
+security, and [Chapter 08](chapters/08-firmware-idrac-bios-lifecycle-controller-and-platform-updates.md)
+maintenance.
+
+### Practicing — the hardware problem
+
+iDRAC is the one platform in this encyclopedia with **no software-only
+practice path**. It is a physical baseboard management controller; there
+is no virtual appliance, no hosted sandbox, and no simulator. The console
+this volume teaches exists only on a PowerEdge server.
+
+That leaves three honest routes:
+
+| Route | Notes |
+| --- | --- |
+| Second-hand PowerEdge | An older generation with iDRAC9 is inexpensive and covers most of this volume; note that iDRAC10 features will be absent |
+| Employer hardware | A non-production or decommissioned server is the ideal lab, since [Chapter 02](chapters/02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md)'s factory reset and recovery work needs a machine you may safely break |
+| Dell trial licenses | Dell publishes trials for iDRAC, OpenManage Enterprise, OMIWAC and DPAT — these unlock Enterprise and Datacenter-tier iDRAC features on hardware you already have, not access to hardware |
+
+**Plan around the license tier, not just the hardware.** Much of what
+this volume covers — virtual console, virtual media, and the automation
+in [Chapter 09](chapters/09-racadm-redfish-openmanage-automation-and-capstone-operations.md)
+— requires iDRAC Enterprise or Datacenter rather than the base license.
+A trial license on an otherwise basic server is often the difference
+between a lab that exercises this volume and one that cannot.
+
+The complementary move is
+[Volume XXII](../volume-22-dell-openmanage-enterprise/README.md): the
+OpenManage Enterprise appliance is a free download and runs on a
+hypervisor, so fleet-management practice needs no hardware at all. A
+reader without a PowerEdge should work Volume XXII first and treat this
+volume as reading until hardware is available.
+
 ## Software and platform baseline
 
 Chapters in this volume reference the dated baseline recorded in

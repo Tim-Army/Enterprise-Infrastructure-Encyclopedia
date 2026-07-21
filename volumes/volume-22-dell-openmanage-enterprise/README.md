@@ -90,6 +90,61 @@ core mechanics remain reproducible without requiring Dell hardware.
   OME manages, distinct from the appliance-level backup covered in
   Chapter 9.
 
+## Certification alignment
+
+Dell's server certifications sit in the **Dell Technologies Proven
+Professional** program, recorded in
+[CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). Two
+exams cover this volume's material, and both span it and
+[Volume XXIII](../volume-23-dell-idrac-9-10-administration/README.md):
+
+| Exam | Level | Duration | Domains |
+| --- | --- | --- | --- |
+| **D-PE-FN-01** PowerEdge Foundations v2 | Foundational | 90 min | Introduction to Servers 28%; Server Architecture and Roles 22%; Maintenance 18%; Server Management 14%; Security 12%; Networking and Connectivity 6% |
+| **D-PE-OE-23** PowerEdge Operate | Specialist | 120 min | Server Troubleshooting 32%; Server Components 26%; System Administration 18%; Server Management and Configuration Tools 14%; Server Portfolio and Features 10% |
+
+Both are delivered through Pearson VUE. Question counts and cut scores
+are set per exam and are not restated here; confirm them at registration.
+
+**Read the weights before planning study time.** Troubleshooting alone is
+**32% of the Operate exam** — the single largest domain across both — and
+server components another 26%. Together they are well over half the exam,
+and both lean toward the hardware and diagnostics covered in Volume
+XXIII rather than the fleet-management workflows covered here.
+
+**This volume goes deeper than the exams require.** OpenManage Enterprise
+appears inside *Server Management and Configuration Tools*, worth 14% of
+Operate and 14% of Foundations, alongside iDRAC, RACADM, OMSA, iSM, and
+the Lifecycle Controller. A reader working this volume end to end will be
+comfortably past what either exam asks about OME specifically. That is
+not wasted effort — it is the daily work of managing a fleet — but a
+candidate optimizing purely for exam pass should weight Volume XXIII more
+heavily than the chapter count here suggests.
+
+| Domain | Chapters here | In Volume XXIII |
+| --- | --- | --- |
+| Server Management and Configuration Tools | 01–04, 08 | 05, 09 |
+| System Administration | 02, 03 | 04, 07 |
+| Maintenance | 05, 06, 07 | 08 |
+| Server Troubleshooting | 09 | 02, 06 |
+| Server Components, Portfolio, Architecture | — | 01, 06, 07 |
+
+### Practicing
+
+The OpenManage Enterprise appliance is a **free download** from Dell
+Support and runs on any supported hypervisor — including Proxmox VE 9.0+,
+which [Chapter 01](chapters/01-architecture-requirements-deployment-and-first-configuration.md)
+covers. That makes this volume unusually cheap to practice: no
+entitlement is needed to stand up the console itself.
+
+What costs money is the fleet underneath it. Dell publishes **trial
+licenses for iDRAC, OpenManage Enterprise, the OpenManage Integration
+for Windows Admin Center, and DPAT**, which is the practical route to
+exercising licensed features without buying them. Without any PowerEdge
+hardware, the console can still be deployed, configured, secured, and
+explored end to end — discovery and inventory are where a lab without
+servers stops.
+
 ## Software and platform baseline
 
 Chapters in this volume reference the dated baseline recorded in
