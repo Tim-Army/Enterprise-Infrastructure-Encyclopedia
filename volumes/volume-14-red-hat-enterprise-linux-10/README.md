@@ -144,14 +144,49 @@ account, which is free, and no subscription.
 | — | Unstructured practice | *Red Hat Enterprise Linux open lab* (50 mins) |
 
 **The open lab is the one to return to.** *Red Hat Enterprise Linux open
-lab* gives a system with no prescribed task list, which is the closest
-free analogue to exam conditions — set yourself an objective from the
-RHCSA blueprint and work it unaided.
+lab* runs 50 minutes on **RHEL 10 specifically** — the same release EX200
+now tests — and gives a system with no prescribed task list. That makes
+it the closest free analogue to exam conditions: set yourself an
+objective from the RHCSA blueprint and work it unaided. Every other lab
+here is guided.
 
-Two labs worth knowing about that sit outside RHCSA scope but inside this
-volume's: *Introduction to image mode for Red Hat Enterprise Linux*
-covers bootc, and *Red Hat Satellite Basics* runs two hours on fleet
-content management.
+Three labs sit outside RHCSA scope but inside this volume's:
+*Introduction to image mode for Red Hat Enterprise Linux* and *Day 2
+operations with image mode* cover bootc, and *Red Hat Satellite Basics*
+runs two hours on fleet content management.
+
+### Ansible Automation Platform labs
+
+Red Hat publishes a [second lab
+collection](https://www.redhat.com/en/interactive-labs/ansible) for
+Ansible Automation Platform, on the same free terms. These serve
+[Chapter 09](chapters/09-ansible-system-roles-operations-and-rhcsa-capstone.md)
+and, past it, the RHCE in Ansible (EX294) that RHCSA gates.
+
+| Topic | Lab |
+| --- | --- |
+| Command-line entry point | *Get started with ansible-navigator* (30 mins) |
+| Execution environments | *Get started with ansible-builder* (45 mins) |
+| Controller interface | *Get Started with Automation Controller* (55 mins) |
+| Content signing and supply chain | *Sign Ansible Content Collections with private automation hub* (30 mins) |
+| Windows targets | *Getting Started with Windows Automation* (55 mins) |
+| Event-driven automation | *Get started with Event-Driven Ansible and Ansible Rulebooks* (30 mins); *Event-Driven Ansible controller* (55 mins) |
+| ITSM integration | *Get started with ServiceNow automation* (60 mins) |
+
+**These labs reach beyond this volume.** Six *Network automation* labs
+run against Cisco IOS XE devices — first playbook, facts, resource
+modules, surveys, backup and restore, and infrastructure awareness —
+which makes them a practical companion to
+[Volume III, Chapter 08](../volume-03-cisco-enterprise-networking/chapters/08-ios-xe-programmability-and-network-automation.md)
+on IOS XE programmability, and to
+[Volume IX](../volume-09-infrastructure-automation/README.md) generally.
+Six more *Hybrid cloud automation* labs cover infrastructure visibility,
+cloud operations, and optimization against AWS and Azure, which pair with
+[Volume XVII](../volume-17-aws-architecture-security/README.md).
+
+That cross-coverage is worth knowing about: the Ansible lab collection is
+the single free resource in this encyclopedia that serves four volumes at
+once.
 
 ### Other Red Hat practice routes
 
