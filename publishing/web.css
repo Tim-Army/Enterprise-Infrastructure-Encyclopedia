@@ -9,11 +9,19 @@
    1. The dark-mode code pair does NOT track the template. The template's
       #b10000 on #b19f9f measures 2.90:1, which fails WCAG AA for normal
       text and for large text alike — and code is among the most-read text
-      in this encyclopedia. It is replaced with #ff9e9e on #2a2020 (8.02:1,
+      in this encyclopedia. It is replaced with #ff9e9e on #352828 (7.16:1,
       clears AAA), a conventional dark code block rather than a light panel
       on a dark page. The template values are retained in comments below so
       the divergence stays visible. Light mode is unaffected: #b10000 on
       #f0d2d2 already measures 5.18:1 and still tracks the template.
+
+      The background is #352828 rather than a flatter #2a2020 so the code
+      surface stays visible against the #1e1e1e page (1.18:1 rather than
+      1.05:1). That matters for inline code, which would otherwise read as
+      coloured text with no chip around it. Lightening the surface costs
+      legibility on the text above it, so the two move against each other:
+      #352828 is the point where the chip is discernible and the text still
+      clears AAA. Do not lighten it further without re-measuring.
 
    2. The dark link (#0e67cf on #1e1e1e, 3.06:1) is kept as the template
       sets it, and still falls below AA for normal text. Links stay
@@ -26,7 +34,7 @@
   --eie-fg: #76d40b;          /* __text_color_dark__       */
   --eie-link: #0e67cf;        /* __link_color_dark__       */
   --eie-rule: #666666;        /* __border_color_dark__     */
-  --eie-code-bg: #2a2020;     /* departs from __pre_background_color_dark__ (#b19f9f) */
+  --eie-code-bg: #352828;     /* departs from __pre_background_color_dark__ (#b19f9f) */
   --eie-code-fg: #ff9e9e;     /* departs from __pre_text_color_dark__ (#b10000)       */
   --eie-select-bg: #275c9c;   /* __selection_background_color_dark__ */
   --eie-select-fg: #ffffff;   /* __selection_color_dark__            */
