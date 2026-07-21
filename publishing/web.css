@@ -3,18 +3,31 @@
    reconciled later; the dark scheme's *_color_dark values are the defaults
    here, and body.light carries the light scheme.
 
-   Two pairs fall below WCAG AA and are kept deliberately, for fidelity to
-   the template rather than by oversight: the dark link (#0e67cf on
-   #1e1e1e, 3.06:1) and the inline-code pair (#b10000 on #b19f9f, 2.90:1).
-   Links stay underlined, so colour is never their only signal. */
+   Two deliberate departures from the template, both documented rather than
+   accidental:
+
+   1. The dark-mode code pair does NOT track the template. The template's
+      #b10000 on #b19f9f measures 2.90:1, which fails WCAG AA for normal
+      text and for large text alike — and code is among the most-read text
+      in this encyclopedia. It is replaced with #ff9e9e on #2a2020 (8.02:1,
+      clears AAA), a conventional dark code block rather than a light panel
+      on a dark page. The template values are retained in comments below so
+      the divergence stays visible. Light mode is unaffected: #b10000 on
+      #f0d2d2 already measures 5.18:1 and still tracks the template.
+
+   2. The dark link (#0e67cf on #1e1e1e, 3.06:1) is kept as the template
+      sets it, and still falls below AA for normal text. Links stay
+      underlined, so colour is never their only signal — a mitigation code
+      blocks do not have, which is why that pair was changed and this one
+      was not. */
 :root {
   color-scheme: dark light;
   --eie-bg: #1e1e1e;          /* __background_color_dark__ */
   --eie-fg: #76d40b;          /* __text_color_dark__       */
   --eie-link: #0e67cf;        /* __link_color_dark__       */
   --eie-rule: #666666;        /* __border_color_dark__     */
-  --eie-code-bg: #b19f9f;     /* __pre_background_color_dark__ */
-  --eie-code-fg: #b10000;     /* __pre_text_color_dark__       */
+  --eie-code-bg: #2a2020;     /* departs from __pre_background_color_dark__ (#b19f9f) */
+  --eie-code-fg: #ff9e9e;     /* departs from __pre_text_color_dark__ (#b10000)       */
   --eie-select-bg: #275c9c;   /* __selection_background_color_dark__ */
   --eie-select-fg: #ffffff;   /* __selection_color_dark__            */
   --eie-bg-light: #ffffff;    /* __background__ */
