@@ -176,8 +176,13 @@ has changed most since the Broadcom acquisition.
 
 [Hands-on Labs](https://labs.hol.vmware.com/HOL/catalog) are the closest
 substitute for a licensed home lab: a running environment in the browser,
-no download, no entitlement. The catalog can be browsed without signing
-in, though the public view is a subset of the full catalog.
+no download, no entitlement.
+
+**Sign in.** The catalog can be browsed anonymously, but the public view
+shows roughly a fifth of what is there — around 99 labs are available to
+a signed-in account against about twenty visible without one. Several of
+the labs below, and the whole Odyssey category, appear only after signing
+in. Registration is free.
 
 | Chapters | Topic | Hands-on Lab |
 | --- | --- | --- |
@@ -196,23 +201,51 @@ in, though the public view is a subset of the full catalog.
 | 09 | API and SDK automation | `HOL-2530-05-VCF-L` vSphere Automation and Development — API and SDK |
 | 09, 13, 16 | Operations, logs, metrics, troubleshooting | `HOL-2601-04-VCF-L` Troubleshooting the Private Cloud with VCF Operations |
 | 09, 13 | Log and flow analysis | `HOL-2601-06-VCF-L` VCF 9.0 Operations — Analyzing Logs, Metrics, and Network Flows |
-| 10–11 | NSX logical networking | `HOL-2640-01-VCF-L` Simplified Application Networking with NSX VPC |
+| 10–11 | NSX logical networking and VPCs | `HOL-2640-01-VCF-L` Simplified Application Networking with NSX VPC |
+| 10–11 | NSX resilience | `HOL-2640-02-VCF-L` Building Resilient Networks with NSX |
 | 11 | Multi-tenant NSX | `HOL-2640-03-VCF-L` Multi-Tenant Networking with NSX |
+| 08, 11 | Gateway firewall and rule analysis | `HOL-2670-03-ANS-L` Advanced Security with vDefend Firewall |
+| 03 | Identity and single sign-on | `HOL-2610-50-VCF-S` VCF 9 Single Sign-On Configuration |
 | 13–14 | VCF platform and operations | `HOL-2610-01-VCF-L` What's New in VCF 9.0 — Platform |
 | 14 | VCF automation | `HOL-2610-02-VCF-L` What's New in VCF 9.0 — Automation |
+| 13–14, 16 | Day-2 operations, lifecycle, certificates | `HOL-2608-01-VCF-L` VCF — Maintaining Your Private Cloud |
 | 13–14 | VCF advanced operations tooling | `HOL-2608-03-VCF-L` VCF Advanced Operations and Tools |
 | 13 | Upgrade and migration paths | `HOL-2603-01-VCF-S` VCF 9.0 — Upgrading from vSphere 8 |
 
-**Two gaps worth knowing before you rely on this.** NSX coverage in the
-public Hands-on Labs catalog is thin — three labs, none of them an
-install-and-configure walkthrough — so Chapters 10–12 and VCP-NV
-preparation are the least well served by the free route. And Hands-on
-Labs are guided: they teach the workflow but do not make you derive it,
-which is precisely what the Support-track exams test. Use them to see a
-feature working, then rebuild it unguided.
+### Odyssey: the unguided half
 
-For NSX specifically, the depth exists on **Learning@Broadcom** rather
-than in Hands-on Labs. The three courses named on the VCP-NV exam page —
+Standard Hands-on Labs are guided — they teach a workflow but do not make
+you derive it, which is precisely what the Support-track exams test. The
+**Odyssey** labs are the answer to that: timed, scored skill challenges
+that set an objective and leave you to reach it.
+
+| Level | Lab |
+| --- | --- |
+| Introductory | `HOL-2530-81-ODY` vSphere Learning the Basics |
+| Intermediate | `HOL-2530-82-ODY` Building Your vSphere Skills |
+| Advanced | `HOL-2530-83-ODY` Mastering vSphere |
+
+A second set — `HOL-2530-84-ODY` through `-86-ODY` — repeats the three
+levels with different scenarios, which matters because the value is in
+working an unfamiliar problem rather than repeating a remembered one.
+
+Use the guided labs to see a feature work, then Odyssey to prove you can
+do it cold. That pairing is a closer analogue to the exams than either
+half alone, and it is free.
+
+**One real gap remains.** No lab walks through deploying NSX from
+scratch — Manager cluster, transport zones, uplink profiles, Edge nodes —
+which is exactly what [Chapter 10](chapters/10-installing-vmware-nsx.md)
+covers. The NSX labs above start from a working fabric. For that build,
+Chapters 10–11 and VCP-NV preparation still need a nested lab or the
+instructor-led course below.
+
+Note also that labs cycle through maintenance windows; a lab listed here
+may show as unavailable temporarily rather than having been withdrawn.
+
+For the NSX build specifically, the depth exists on **Learning@Broadcom**
+rather than in Hands-on Labs. The three courses named on the VCP-NV exam
+page —
 *VMware NSX: Install, Configure, Manage [V4.0]*, *VMware NSX:
 Troubleshooting and Operations [V4.x]*, and *VMware NSX: Design [V4.x]* —
 run 40 hours each and are the install-and-configure coverage the free
