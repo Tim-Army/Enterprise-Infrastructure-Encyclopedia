@@ -114,6 +114,97 @@ any reading list:
   fix, and rebuild — which is what the labs in Chapters 01–09 are already
   built around, and why each carries a cleanup step.
 
+### What Red Hat publishes, and what it does not
+
+Red Hat publishes the EX200 objectives as ten task groups, in this order,
+with **no percentage weights attached to any of them**:
+
+| # | Objective group | Chapters |
+| --- | --- | --- |
+| 1 | Understand and use essential tools | [02](chapters/02-essential-tools-shell-scripting-and-software-management.md) |
+| 2 | Manage software | [01](chapters/01-installation-subscriptions-repositories-and-cockpit.md), [02](chapters/02-essential-tools-shell-scripting-and-software-management.md) |
+| 3 | Create simple shell scripts | [02](chapters/02-essential-tools-shell-scripting-and-software-management.md) |
+| 4 | Operate running systems | [03](chapters/03-boot-systemd-processes-logging-and-scheduled-work.md) |
+| 5 | Configure local storage | [05](chapters/05-storage-lvm-filesystems-swap-and-shared-storage-services.md) |
+| 6 | Create and configure file systems | [05](chapters/05-storage-lvm-filesystems-swap-and-shared-storage-services.md) |
+| 7 | Deploy, configure, and maintain systems | [01](chapters/01-installation-subscriptions-repositories-and-cockpit.md), [03](chapters/03-boot-systemd-processes-logging-and-scheduled-work.md) |
+| 8 | Manage basic networking | [04](chapters/04-users-privilege-ssh-networking-and-firewalld.md) |
+| 9 | Manage users and groups | [04](chapters/04-users-privilege-ssh-networking-and-firewalld.md) |
+| 10 | Manage security | [04](chapters/04-users-privilege-ssh-networking-and-firewalld.md), [06](chapters/06-selinux-permissions-cryptography-and-system-hardening.md) |
+
+The absence of weights is not an oversight. On a performance-based exam
+the unit of scoring is the task, not the question, and Red Hat does not
+publish a task count either. Plan by objective coverage and by speed
+rather than by proportion.
+
+**Red Hat also does not publish the exam duration or passing score on its
+public exam or certification pages.** Both are stated in the certification
+program guide and confirmed at booking. This encyclopedia does not restate
+figures it cannot verify from a primary source; check them yourself rather
+than planning against a number found on a forum.
+
+### Containers are no longer on the RHCSA blueprint
+
+Worth stating explicitly, because it changes how to spend time and
+because material written for RHEL 8 and 9 says otherwise.
+
+**The RHEL 10 EX200 objectives contain no container section.** There is no
+podman objective, no container-image objective, and no
+containers-as-systemd-services objective. Earlier RHCSA blueprints
+carried a *Manage containers* group; it is gone.
+
+Note that Red Hat's own RHCSA overview page still describes the
+certification as covering "container basics" while the EX200 objectives
+page lists nothing of the kind. Where two vendor pages disagree, the
+exam objectives page is the controlling one — it is what the exam is
+built from.
+
+The practical consequence for this volume:
+[Chapter 08](chapters/08-podman-docker-compatibility-kubernetes-and-openshift-foundations.md)
+is **not RHCSA preparation**. Podman, Quadlet, Kubernetes, and OpenShift
+are valuable and they are the direction the platform is going, but a
+candidate optimizing for EX200 should read that chapter after the exam,
+not before it. The same applies to
+[Chapter 07](chapters/07-dns-ntp-web-database-and-common-server-services.md)
+and the Ansible half of
+[Chapter 09](chapters/09-ansible-system-roles-operations-and-rhcsa-capstone.md),
+which sit closer to RHCE (EX294) than to RHCSA.
+
+That leaves **Chapters 01–06 plus the capstone** as the RHCSA path — six
+chapters, not nine.
+
+### Study plan
+
+Six to eight weeks at eight to ten hours a week, with the overwhelming
+majority of that time at a shell rather than reading. The ratio that
+matters is roughly **one part reading to four parts typing**; a plan that
+inverts it fails this exam specifically.
+
+| Week | Focus | Objectives |
+| --- | --- | --- |
+| 1 | Installation, subscriptions, repositories, and the essential-tools group: shell, redirection, grep and regex, SSH, tar/gzip/bzip2, file and directory management, links, permissions, and finding documentation. Chapters 01–02. | 1, 2 |
+| 2 | Shell scripting to the level asked — conditionals, `for` loops, script inputs and command output — then running systems: boot targets, interrupting boot, process management, tuning profiles, journals. Chapters 02–03. | 3, 4 |
+| 3 | **Storage, twice.** GPT partitions, physical volumes, volume groups, logical volumes, mounting by UUID or label, adding partitions and swap non-destructively. Chapter 05. Then do it all again on a fresh system without notes. | 5 |
+| 4 | File systems: VFAT, ext4, XFS, NFS mounts, autofs, extending logical volumes, and diagnosing permission problems. Chapter 05. Scheduled work with `at`, `cron`, and systemd timers, plus bootloader modification. Chapter 03. | 6, 7 |
+| 5 | Networking and identity: IPv4 and IPv6 addressing, hostname resolution, firewalld, users, groups, password aging, privileged access. Chapter 04. | 8, 9 |
+| 6 | **SELinux properly.** Modes, contexts, restoring defaults, port labels, booleans — plus SSH key authentication and default permissions. Chapter 06. This is the group candidates most often fail on, because it is the one where guessing does not work. | 10 |
+| 7–8 | Timed full rehearsals against the capstone in [Chapter 09](chapters/09-ansible-system-roles-operations-and-rhcsa-capstone.md). Rebuild from a clean image each time. Stop when you can complete a full run comfortably inside the time limit, not merely complete it. | all |
+
+**Three habits that decide this exam.**
+
+Work from a clean image every session — a system you have already fixed
+teaches nothing the second time. Learn to break things deliberately:
+misconfigure `/etc/fstab` and recover from the resulting boot failure,
+because the exam can hand you a broken system rather than an empty one.
+And practice `man`, `--help`, and `/usr/share/doc` as a *skill* — the
+exam allows documentation, and knowing where to look is faster than
+half-remembering syntax.
+
+**Do not skip the root-password-recovery drill.** Interrupting the boot
+process to gain access is an explicit objective, it is entirely
+procedural, and it is unrecoverable in the exam if you have never done
+it.
+
 ### Mapping this volume to Red Hat interactive labs
 
 Red Hat publishes free browser-based [interactive

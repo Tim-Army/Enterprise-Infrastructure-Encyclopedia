@@ -1599,6 +1599,7 @@
     "versionlock",
     "Versionlock",
     "veth",
+    "vfat",
     "vflash",
     "vgdisplay",
     "vgextend",

@@ -140,6 +140,75 @@ Exam guides do state a **minimally qualified candidate** profile, which is
 the closest thing to a difficulty signal. VCP-NV's, for example, expects
 roughly six months with NSX and two years in IT.
 
+### Which exam to take, and in what order
+
+Five exams is the largest certification surface in this encyclopedia, and
+the first real question is not how to study but **which of these you
+should sit at all**. Most readers should take one or two, not five.
+
+| If you… | Take | Why |
+| --- | --- | --- |
+| Run vSphere without VCF | **2V0-16.25** VVF Administrator | The narrowest product boundary and the closest match to ordinary vSphere administration |
+| Run vSphere and work a support queue | **2V0-18.25** VVF Support | Same product boundary, diagnostic emphasis |
+| Run or are moving to VCF | **2V0-17.25** VCF Administrator | Adds SDDC Manager, workload domains, and lifecycle across the stack |
+| Support a VCF estate | **2V0-15.25** VCF Support | Failure-domain reasoning across a much wider component set |
+| Work primarily in NSX | **2V0-41.24** VCP-NV | Independent of the VVF/VCF split — a different product, not a different tier |
+
+Two structural points that are easy to miss. **The administrator and
+support exams are siblings, not a ladder** — neither is a prerequisite for
+the other, and they differ in emphasis rather than difficulty, so taking
+both of a pair is a modest increment over taking one. And **VCF is a
+superset of VVF**, so the VCF exams assume the vSphere material the VVF
+exams test; going VVF first is the lower-risk order even though nothing
+requires it.
+
+**VCP-NV sits outside the sequence entirely.** It targets NSX 4.x on a
+2024-generation blueprint while the other four target 9.0 products on
+2025-generation blueprints, and as noted above its question formats are
+wider. Treat it as a separate project rather than a fifth step.
+
+### Study plan
+
+Eight weeks for a first VCP for a candidate already administering
+vSphere, at eight to ten hours a week. A second exam within the same
+family costs far less — typically three to four weeks, because the
+product knowledge transfers and only the emphasis changes.
+
+**Weeks 1–5 are common to all five exams**, because they are this
+volume's core and every blueprint rests on them:
+
+| Week | Focus | Chapters |
+| --- | --- | --- |
+| 1 | Architecture and design, ESXi installation and host operations | [01](chapters/01-vmware-virtualization-architecture-and-design.md), [02](chapters/02-esxi-installation-configuration-and-host-operations.md) |
+| 2 | vCenter deployment, identity, and recovery; virtual networking | [03](chapters/03-vcenter-server-deployment-identity-and-recovery.md), [04](chapters/04-vsphere-virtual-networking.md) |
+| 3 | VM lifecycle and resource management; storage and vSAN | [05](chapters/05-virtual-machine-lifecycle-and-resource-management.md), [06](chapters/06-vsphere-storage-and-vsan.md) |
+| 4 | Availability, mobility, and cluster services — HA, DRS, vMotion | [07](chapters/07-vsphere-availability-mobility-and-cluster-services.md) |
+| 5 | Security architecture; lifecycle, automation, and troubleshooting | [08](chapters/08-vsphere-and-nsx-security-architecture.md), [09](chapters/09-vsphere-lifecycle-automation-observability-and-troubleshooting.md) |
+
+**Weeks 6–8 diverge by exam**, and each has a preparation chapter that
+carries its own blueprint mapping and study tracker:
+
+| Exam | Weeks 6–8 | Preparation chapter |
+| --- | --- | --- |
+| 2V0-16.25 VVF Administrator | Blueprint mapping, then `esxtop` and DRS/HA optimization, which that chapter singles out for extra attention | [15](chapters/15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md) |
+| 2V0-18.25 VVF Support | Cross-layer diagnostic fluency and licensing-restriction recognition | [16](chapters/16-vcp-vmware-vsphere-foundation-support-2v0-18-25-exam-preparation.md) |
+| 2V0-17.25 VCF Administrator | Workload domain deployment models and day-2 administration, plus certificate lifecycle | [14](chapters/14-vcp-vmware-cloud-foundation-administrator-2v0-17-25-exam-preparation.md) |
+| 2V0-15.25 VCF Support | VCF component failure domains and certificate/credential expiration triage | [13](chapters/13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md) |
+| 2V0-41.24 VCP-NV | NSX blueprint mapping, plus deliberate practice on the wider question formats | [12](chapters/12-vcp-network-virtualization-2v0-41-24-exam-preparation.md) |
+
+Run the Hands-on Labs mapped below **during weeks 1–5**, not saved for the
+end. They are the only lab environment most readers will have, and used
+alongside the chapters they reinforce, they substitute for the home lab
+this volume otherwise assumes.
+
+**Because Broadcom publishes no domain weights**, the study tracker in
+each preparation chapter is doing the job a weight table would do
+elsewhere: it forces you to record confidence per blueprint section, so
+your own weakest area determines where time goes. That is a genuinely
+worse instrument than published weights, and it is the best available
+one — build it in week 6 rather than week 8, so it has time to redirect
+you.
+
 ### Study materials
 
 | Role | Resource | Why |
