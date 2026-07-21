@@ -168,7 +168,7 @@ Publishing navigation for the generated editions. Mirrors
   * [Panorama Installation, Central Management, and Logging](volumes/volume-16-palo-alto-networks-security/chapters/06-panorama-installation-central-management-and-logging.md)
   * [Firewall Operations, Troubleshooting, Upgrades, and Automation](volumes/volume-16-palo-alto-networks-security/chapters/07-firewall-operations-troubleshooting-upgrades-and-automation.md)
   * [Role-Based Certification Portfolio and Enterprise Capstone](volumes/volume-16-palo-alto-networks-security/chapters/08-role-based-certification-portfolio-and-enterprise-capstone.md)
-  * [Cortex Cloud Security Professional](volumes/volume-16-palo-alto-networks-security/chapters/09-cortex-cloud-security-professional.md)
+  * [Cloud Security Professional and the Cortex Cloud Platform](volumes/volume-16-palo-alto-networks-security/chapters/09-cortex-cloud-security-professional.md)
 * [Volume XVII — AWS Architecture and Security](volumes/volume-17-aws-architecture-security/README.md)
   * [Cloud Foundations, Accounts, and Well-Architected Design](volumes/volume-17-aws-architecture-security/chapters/01-cloud-foundations-accounts-and-well-architected-design.md)
   * [Multi-Account Identity, Governance, and Landing Zones](volumes/volume-17-aws-architecture-security/chapters/02-multi-account-identity-governance-and-landing-zones.md)

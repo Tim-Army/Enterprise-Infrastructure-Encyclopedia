@@ -1,4 +1,4 @@
-# Chapter 09: Cortex Cloud Security Professional
+# Chapter 09: Cloud Security Professional and the Cortex Cloud Platform
 
 ![Lab flow for this chapter: a sample Terraform file with an unrestricted SSH ingress rule and an unencrypted S3 bucket is scanned with Checkov, reporting at least one failed check for the open ingress rule — the expected, correct behavior for a known-bad configuration, since a scan reporting no findings against this specific file would indicate a broken Checkov installation, not a secure configuration. Narrowing the security group's CIDR block to a lab subnet and re-scanning shows the finding now passing, and a documented suppression is added for the remaining S3 finding. Pushed to a CI/CD pipeline, the unremediated branch fails the check and the remediated branch passes.](../../../diagrams/volume-16-palo-alto-networks-security/chapter-09-checkov-iac-scan-remediation-flow.svg)
 
@@ -17,8 +17,9 @@
   aligned with Cortex Cloud's policy set.
 - Interpret CSPM findings and CIEM entitlement risk, and describe a
   remediation workflow that closes the loop from detection to fixed code.
-- Map foundational knowledge to the Cortex Cloud Security Professional
-  certification blueprint domains.
+- Map foundational knowledge to the Cloud Security Professional
+  certification blueprint (the credential that secures the Cortex Cloud
+  platform) domains.
 
 ## Theory and Architecture
 
@@ -299,8 +300,8 @@ curl -sk -X GET \
 - [Palo Alto Networks / Bridgecrew, *Checkov* open-source documentation.](https://www.checkov.io/)
 - [Palo Alto Networks, *Cortex Cloud Compute* (container/twistcli) scanning
   documentation.](https://docs-cortex.paloaltonetworks.com/r/Cortex-CLOUD/Cortex-Cloud-Runtime-Security-Documentation/Code-Security-scanners)
-- [Palo Alto Networks, *Cortex Cloud Security Professional* certification
-  blueprint.](https://www.paloaltonetworks.com/services/education/certification)
+- [Palo Alto Networks, *Cloud Security Professional* certification
+  blueprint (secures the Cortex Cloud platform).](https://www.paloaltonetworks.com/services/education/certification)
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this volume's certification mapping.
 - [SOFTWARE_VERSIONS.md](../../../SOFTWARE_VERSIONS.md) — dated baseline

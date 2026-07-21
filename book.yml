@@ -566,7 +566,7 @@ volumes:
         title: "Role-Based Certification Portfolio and Enterprise Capstone"
         path: volumes/volume-16-palo-alto-networks-security/chapters/08-role-based-certification-portfolio-and-enterprise-capstone.md
       - id: 09
-        title: "Cortex Cloud Security Professional"
+        title: "Cloud Security Professional and the Cortex Cloud Platform"
         path: volumes/volume-16-palo-alto-networks-security/chapters/09-cortex-cloud-security-professional.md
   - id: volume-17
     number: "XVII"

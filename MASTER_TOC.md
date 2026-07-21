@@ -232,7 +232,7 @@ table of contents for that volume.
 6. Panorama Installation, Central Management, and Logging
 7. Firewall Operations, Troubleshooting, Upgrades, and Automation
 8. Role-Based Certification Portfolio and Enterprise Capstone
-9. Cortex Cloud Security Professional
+9. Cloud Security Professional and the Cortex Cloud Platform
 
 ## Volume XVII — AWS Architecture and Security
 

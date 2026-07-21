@@ -29,7 +29,7 @@ The volume is organized in three parts:
   troubleshooting, upgrades, and API/Terraform/Ansible automation (07).
 - **Chapters 08–09** synthesize and extend: the role-based certification
   portfolio with an integrated enterprise capstone build
-  (08), and Cortex Cloud Security Professional coverage of CNAPP —
+  (08), and Cloud Security Professional coverage of CNAPP —
   CSPM, CWPP, CIEM, and IaC security scanning (09).
 
 Every chapter follows the same structure — learning objectives, theory and
@@ -52,7 +52,7 @@ test, and cleanup instructions.
 6. [Panorama Installation, Central Management, and Logging](chapters/06-panorama-installation-central-management-and-logging.md) — deployment modes, device group hierarchy, template stacks, managed-device onboarding, and Collector Groups.
 7. [Firewall Operations, Troubleshooting, Upgrades, and Automation](chapters/07-firewall-operations-troubleshooting-upgrades-and-automation.md) — HA-aware upgrade sequencing, the troubleshooting toolkit, and XML API/REST API/Terraform/Ansible automation.
 8. [Role-Based Certification Portfolio and Enterprise Capstone](chapters/08-role-based-certification-portfolio-and-enterprise-capstone.md) — the four-level Network Security track, blueprint domains and weights, study sequencing and plans, and an integrated multi-firewall capstone build.
-9. [Cortex Cloud Security Professional](chapters/09-cortex-cloud-security-professional.md) — CNAPP architecture (CSPM, CWPP, CIEM, IaC/API security), agentless and agent-based workload visibility, and Checkov-based shift-left scanning.
+9. [Cloud Security Professional and the Cortex Cloud Platform](chapters/09-cortex-cloud-security-professional.md) — CNAPP architecture (CSPM, CWPP, CIEM, IaC/API security), agentless and agent-based workload visibility, and Checkov-based shift-left scanning.
 
 ## Volume resources
 

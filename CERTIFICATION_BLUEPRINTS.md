@@ -10,7 +10,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | V — VMware Virtualization | VCP-NV (2V0-41.24), VCP-VCF Support (2V0-15.25), VCP-VCF Administrator (2V0-17.25), VCP-VVF Administrator (2V0-16.25), VCP-VVF Support (2V0-18.25) | Broadcom/VMware Learning |
 | XIV — Red Hat Enterprise Linux 10 | RHCSA (EX200) | Red Hat Training and Certification |
 | XV — Forescout Platform | FSCA, FSCP, FSCE, FSCA: OT/ICS, FSCE: OT/ICS | Forescout Technologies |
-| XVI — Palo Alto Networks Security | Cybersecurity Apprentice, Cybersecurity Practitioner, Network Security Professional, Network Security Analyst, Next-Generation Firewall Engineer, SD-WAN Engineer, Security Service Edge Engineer, Network Security Architect, Cortex Cloud Security Professional | Palo Alto Networks Education |
+| XVI — Palo Alto Networks Security | Cybersecurity Apprentice, Cybersecurity Practitioner, Network Security Professional, Network Security Analyst, Next-Generation Firewall Engineer, SD-WAN Engineer, Security Service Edge Engineer, Network Security Architect, Cloud Security Professional (secures the Cortex Cloud platform) | Palo Alto Networks Education |
 | XVII — AWS Architecture and Security | AWS Certified Solutions Architect – Associate (SAA-C03), AWS Certified Security – Specialty (SCS-C03) | AWS Training and Certification |
 | XVIII — Gigamon Network Visibility | Gigamon Certified Professional (GCP) | Gigamon Education Services |
 | XIX — Fortinet Network Security | NSE 1–4 of the NSE 1–8 program; NSE 4 — FortiOS 7.6 Administrator (FCF/FCA/FCP/FCSS/FCX retired 15 July 2026) | Fortinet Training Institute |
@@ -35,6 +35,13 @@ published exam description or exam-topics document on **21 July 2026**.
 Third-party summaries were not treated as sources; several were found to
 be wrong during the check, including one that reported a superseded Cisco
 ENCOR version.
+
+The Palo Alto Networks and Canonical Academy programs were confirmed in a
+follow-up pass the same day. All four Canonical exams and eight of the
+nine Palo Alto certifications matched as written; the ninth was corrected
+from "Cortex Cloud Security Professional" to **Cloud Security
+Professional**, its official credential name — *Cortex Cloud* is the
+platform the exam secures, not part of the certification's title.
 
 Drift in this table is normal and has been frequent. Within a single year
 the Dell PowerEdge Operate exam was rebuilt and renumbered, AWS replaced
