@@ -113,35 +113,141 @@ Professional** program, recorded in
 exams cover this volume's material, and both span it and
 [Volume XXII](../volume-22-dell-openmanage-enterprise/README.md):
 
-| Exam | Level | Duration | Domains |
+| Exam | Level | Duration | Questions |
 | --- | --- | --- | --- |
-| **D-PE-FN-01** PowerEdge Foundations v2 | Foundational | 90 min | Introduction to Servers 28%; Server Architecture and Roles 22%; Maintenance 18%; Server Management 14%; Security 12%; Networking and Connectivity 6% |
-| **D-PE-OE-23** PowerEdge Operate | Specialist | 120 min | Server Troubleshooting 32%; Server Components 26%; System Administration 18%; Server Management and Configuration Tools 14%; Server Portfolio and Features 10% |
+| **D-PE-FN-01** PowerEdge Foundations v2 | Foundational | 90 min | Not stated in the exam description |
+| **D-PE-OE-01** PowerEdge Operate v2 | Specialist | 90 min | 50 |
 
-Both are delivered through Pearson VUE. Question counts and cut scores
-are set per exam and are not restated here; confirm them at registration.
+Both are delivered through Pearson VUE. Operate v2 is offered in English,
+French, and Japanese.
 
-**This volume is the higher-value one for the Operate exam.**
-Troubleshooting at 32% and server components at 26% together make up 58%
-of it, and both map to chapters here rather than to fleet management.
-Take Foundations first — its heaviest domains, introduction to servers
-(28%) and architecture (22%), are also grounded in this volume.
+**`D-PE-OE-23` PowerEdge Operate 2023 has been superseded by
+`D-PE-OE-01`.** This is not a renumbering — the blueprint was rebuilt.
+The 2023 exam ran 120 minutes across five domains led by Server
+Troubleshooting at 32%; the v2 exam runs 90 minutes across five
+*different* domains, and its recommended training is built explicitly
+around **iDRAC 10**. Material written against `D-PE-OE-23`, including
+earlier revisions of this volume, describes an exam that is no longer
+offered. Dell Learning currently lists only `D-PE-OE-01`.
 
-| Domain | Weight in Operate | Chapters here |
+### Domain weights, mapped to this volume
+
+Transcribed from Dell's published exam descriptions. Both sets sum to
+exactly 100%. Dell states each percentage "reflects the approximate
+distribution of the total question set" — question-count proportions, not
+scoring weights.
+
+**D-PE-OE-01 Operate v2** — and note how flat it is:
+
+| Domain | Weight | Chapters here | In Volume XXII |
+| --- | --- | --- | --- |
+| Server Management | 22% | [01](chapters/01-architecture-generations-licensing-and-first-access.md), [05](chapters/05-idrac-direct-virtual-console-virtual-media-and-local-service.md), [07](chapters/07-storage-arrays-boss-raid-configuration-and-maintenance.md), [09](chapters/09-racadm-redfish-openmanage-automation-and-capstone-operations.md) | 01–04, 08 |
+| Troubleshooting | 22% | [02](chapters/02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md), [06](chapters/06-hardware-health-power-thermal-logs-and-support.md) | 09 |
+| Server Monitoring | 20% | [06](chapters/06-hardware-health-power-thermal-logs-and-support.md) | 04 |
+| System Administration | 20% | [04](chapters/04-identity-certificates-security-and-compliance.md), [05](chapters/05-idrac-direct-virtual-console-virtual-media-and-local-service.md) | 02, 03 |
+| Server Maintenance | 16% | [08](chapters/08-firmware-idrac-bios-lifecycle-controller-and-platform-updates.md) | 05, 06, 07 |
+
+**The v2 blueprint is materially flatter than the one it replaced.** The
+2023 exam spread 22 percentage points between its largest and smallest
+domain; v2 spreads six. There is no dominant domain to prioritize and no
+domain small enough to skip — every one is worth between a sixth and
+roughly a quarter of the questions. Study strategies built around
+"troubleshooting is a third of the exam" no longer apply.
+
+**D-PE-FN-01 Foundations v2** — unchanged, and still front-loaded:
+
+| Domain | Weight | Chapters here |
 | --- | --- | --- |
-| Server Troubleshooting | 32% | [02](chapters/02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md), [06](chapters/06-hardware-health-power-thermal-logs-and-support.md) |
-| Server Components | 26% | [06](chapters/06-hardware-health-power-thermal-logs-and-support.md), [07](chapters/07-storage-arrays-boss-raid-configuration-and-maintenance.md) |
-| System Administration | 18% | [04](chapters/04-identity-certificates-security-and-compliance.md), [07](chapters/07-storage-arrays-boss-raid-configuration-and-maintenance.md) |
-| Server Management and Configuration Tools | 14% | [05](chapters/05-idrac-direct-virtual-console-virtual-media-and-local-service.md), [09](chapters/09-racadm-redfish-openmanage-automation-and-capstone-operations.md) |
-| Server Portfolio and Features | 10% | [01](chapters/01-architecture-generations-licensing-and-first-access.md) |
+| Introduction to Servers | 28% | [01](chapters/01-architecture-generations-licensing-and-first-access.md), [07](chapters/07-storage-arrays-boss-raid-configuration-and-maintenance.md) |
+| Server Architecture and Roles | 22% | [01](chapters/01-architecture-generations-licensing-and-first-access.md) |
+| Maintenance | 18% | [06](chapters/06-hardware-health-power-thermal-logs-and-support.md), [08](chapters/08-firmware-idrac-bios-lifecycle-controller-and-platform-updates.md) |
+| Server Management | 14% | [01](chapters/01-architecture-generations-licensing-and-first-access.md), [05](chapters/05-idrac-direct-virtual-console-virtual-media-and-local-service.md) |
+| Security | 12% | [04](chapters/04-identity-certificates-security-and-compliance.md) |
+| Server Networking and Connectivity | 6% | [03](chapters/03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md) |
 
-For Foundations, [Chapter 01](chapters/01-architecture-generations-licensing-and-first-access.md)
-covers portfolio and architecture,
-[Chapter 03](chapters/03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)
-the 6% networking domain,
-[Chapter 04](chapters/04-identity-certificates-security-and-compliance.md)
-security, and [Chapter 08](chapters/08-firmware-idrac-bios-lifecycle-controller-and-platform-updates.md)
-maintenance.
+**Take Foundations first.** Half of it — introduction to servers plus
+architecture and roles — is hardware knowledge this volume grounds
+directly, and Operate assumes it.
+
+### Where the exams reach beyond this volume
+
+Foundations is broader than iDRAC administration. Two of its domains ask
+about things no amount of iDRAC study covers:
+
+- **Server Architecture and Roles (22%)** asks candidates to position
+  PowerEdge for edge/ROBO, cloud, and core, and to compare storage
+  topologies (DAS, NAS, SAN) and workload solutions for file sharing,
+  HPC, and generative AI. That is portfolio and solution-design material,
+  covered here only in passing.
+- **Introduction to Servers (28%)** includes chassis form factors,
+  generations, and nomenclature at a level of product detail this volume
+  assumes rather than teaches.
+
+For both, Dell's `ESSVRD05641` concepts course is the efficient route;
+[Volume IV](../volume-04-enterprise-systems-administration/README.md)
+supplies the general systems-administration grounding.
+
+### Study plan
+
+Six to eight weeks for both exams together, at eight to ten hours a week,
+for a candidate with general server administration experience. Take
+Foundations at the end of week 3 and Operate at the end of week 7 — the
+gap matters, because Operate's Server Management domain assumes the
+management-tool vocabulary Foundations tests.
+
+**Weeks 1–3 — Foundations (D-PE-FN-01)**
+
+| Week | Focus | Weight |
+| --- | --- | --- |
+| 1 | Servers, components, storage (HDD/SSD/PERC/BOSS/M.2/backplanes), generations and nomenclature. Chapters 01 and 07 here. | 28% |
+| 2 | Architecture and roles, form factors, data flow, storage topologies, workload positioning. Chapter 01, plus `ESSVRD05641` for the portfolio material this volume does not carry. | 22% |
+| 3 | Management concepts (in-band, out-of-band, at-the-box, BIOS vs UEFI, iDRAC licensing tiers, OMSA), maintenance, security, networking. Chapters 03, 04, 05, 06, 08. **Sit the exam.** | 50% |
+
+**Weeks 4–7 — Operate (D-PE-OE-01)**
+
+| Week | Focus | Weight |
+| --- | --- | --- |
+| 4 | Server Management: iDRAC settings, the tool landscape (Lifecycle Controller, RACADM, iSM, OME), and storage management. Chapters 01, 05, 07, 09, plus [Volume XXII](../volume-22-dell-openmanage-enterprise/README.md) 01–04. | 22% |
+| 5 | Monitoring and System Administration: health checks, iDRAC monitoring, OS installation via virtual media, server security. Chapters 04, 05, 06. | 40% |
+| 6 | Troubleshooting and Maintenance: hardware faults, proactive detection, firmware and BIOS updates through iDRAC, Lifecycle Controller, and CLI. Chapters 02, 06, 08. | 38% |
+| 7 | Consolidation on the capstone in [Chapter 09](chapters/09-racadm-redfish-openmanage-automation-and-capstone-operations.md), which exercises the whole blueprint end to end. **Sit the exam.** | — |
+
+Because v2 is flat, resist the urge to over-weight any single week. The
+plan above deliberately pairs domains rather than isolating them.
+
+### Study materials
+
+Dell's recommended training, transcribed with course numbers. These are
+paid, commercial courses.
+
+**For D-PE-FN-01 Foundations v2** — a single course:
+
+| Course | Number | Mode |
+| --- | --- | --- |
+| Dell PowerEdge Server Concepts | `ESSVRD05641` | On demand |
+
+**For D-PE-OE-01 Operate v2** — two routes, both built around iDRAC 10:
+
+| Option | Course | Number | Mode | Duration |
+| --- | --- | --- | --- | --- |
+| 1 | Dell PowerEdge Features, Administration and Troubleshooting with iDRAC 10 | `ESSVRS08588` | ILT / VILT | 24h |
+| 2 | Dell PowerEdge Features with iDRAC10 | `ESSVRD08582` | On demand | 8h |
+| 2 | Dell PowerEdge Administration with iDRAC10 | `ESSVRD08583` | On demand | 4.5h |
+| 2 | Dell PowerEdge Troubleshooting with iDRAC10 | `ESSVRD08584` | On demand | 4.5h |
+
+**The iDRAC 10 framing is the clearest signal that v2 is a genuine
+refresh**, not a renumbering — the superseded 2023 courses
+(`ESSVRD05997`, `ESSVRD05893`, `ESSVRD05894`) carried no generation in
+their titles. This volume covers iDRAC 9 and 10 together and flags
+generational differences in
+[Chapter 01](chapters/01-architecture-generations-licensing-and-first-access.md),
+which is the right shape for the current exam.
+
+**Currency warning.** The Foundations description is dated 28 March 2025;
+the Operate v2 description carries no date at all. Confirm codes,
+weights, and course numbers against
+[Dell Learning](https://learning.dell.com/content/dell/en-us/home/certification-overview.html)
+at registration rather than trusting this table.
 
 ### Practicing — the hardware problem
 

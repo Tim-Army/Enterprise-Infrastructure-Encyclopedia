@@ -98,36 +98,51 @@ Professional** program, recorded in
 exams cover this volume's material, and both span it and
 [Volume XXIII](../volume-23-dell-idrac-9-10-administration/README.md):
 
-| Exam | Level | Duration | Domains |
+| Exam | Level | Duration | Questions |
 | --- | --- | --- | --- |
-| **D-PE-FN-01** PowerEdge Foundations v2 | Foundational | 90 min | Introduction to Servers 28%; Server Architecture and Roles 22%; Maintenance 18%; Server Management 14%; Security 12%; Networking and Connectivity 6% |
-| **D-PE-OE-23** PowerEdge Operate | Specialist | 120 min | Server Troubleshooting 32%; Server Components 26%; System Administration 18%; Server Management and Configuration Tools 14%; Server Portfolio and Features 10% |
+| **D-PE-FN-01** PowerEdge Foundations v2 | Foundational | 90 min | Not stated in the exam description |
+| **D-PE-OE-01** PowerEdge Operate v2 | Specialist | 90 min | 50 |
 
-Both are delivered through Pearson VUE. Question counts and cut scores
-are set per exam and are not restated here; confirm them at registration.
+Both are delivered through Pearson VUE. Operate v2 is offered in English,
+French, and Japanese.
 
-**Read the weights before planning study time.** Troubleshooting alone is
-**32% of the Operate exam** — the single largest domain across both — and
-server components another 26%. Together they are well over half the exam,
-and both lean toward the hardware and diagnostics covered in Volume
-XXIII rather than the fleet-management workflows covered here.
+**`D-PE-OE-23` PowerEdge Operate 2023 has been superseded by
+`D-PE-OE-01`**, and the blueprint was rebuilt rather than renumbered. See
+[Volume XXIII](../volume-23-dell-idrac-9-10-administration/README.md#certification-alignment)
+for the full weights of both exams, the domain-to-chapter mapping across
+the pair, the study plan, and Dell's recommended courses — that volume
+carries the heavier share of both blueprints, so the combined walkthrough
+lives there rather than being split across two files.
 
-**This volume goes deeper than the exams require.** OpenManage Enterprise
-appears inside *Server Management and Configuration Tools*, worth 14% of
-Operate and 14% of Foundations, alongside iDRAC, RACADM, OMSA, iSM, and
-the Lifecycle Controller. A reader working this volume end to end will be
-comfortably past what either exam asks about OME specifically. That is
-not wasted effort — it is the daily work of managing a fleet — but a
-candidate optimizing purely for exam pass should weight Volume XXIII more
-heavily than the chapter count here suggests.
+### What the exams ask of *this* volume
 
-| Domain | Chapters here | In Volume XXIII |
-| --- | --- | --- |
-| Server Management and Configuration Tools | 01–04, 08 | 05, 09 |
-| System Administration | 02, 03 | 04, 07 |
-| Maintenance | 05, 06, 07 | 08 |
-| Server Troubleshooting | 09 | 02, 06 |
-| Server Components, Portfolio, Architecture | — | 01, 06, 07 |
+OpenManage Enterprise sits inside **Server Management**, worth 22% of
+Operate v2 and 14% of Foundations, alongside iDRAC, the Lifecycle
+Controller, RACADM, iSM, and OMSA. OME is one item in a list.
+
+| Operate v2 domain | Weight | Chapters here | In Volume XXIII |
+| --- | --- | --- | --- |
+| Server Management | 22% | 01–04, 08 | 01, 05, 07, 09 |
+| Troubleshooting | 22% | 09 | 02, 06 |
+| Server Monitoring | 20% | 04 | 06 |
+| System Administration | 20% | 02, 03 | 04, 05 |
+| Server Maintenance | 16% | 05, 06, 07 | 08 |
+
+**This volume goes considerably deeper than either exam requires.** A
+reader working it end to end will be far past what the exams ask about
+OME specifically. That is not wasted effort — it is the daily work of
+managing a fleet — but a candidate optimizing purely for exam pass should
+weight Volume XXIII more heavily than the chapter count here suggests.
+
+**The v2 rewrite did not change that conclusion, though it changed the
+reasoning.** Under the superseded 2023 blueprint the argument was
+lopsidedness: troubleshooting at 32% plus server components at 26% put
+well over half the exam in hardware territory. Under v2 the spread is
+only six percentage points across five domains, so the case is no longer
+that one area dominates — it is that four of the five domains
+(management, troubleshooting, monitoring, and system administration, 84%
+together) are anchored in per-server work rather than fleet workflows.
+Same recommendation, different arithmetic.
 
 ### Practicing
 
