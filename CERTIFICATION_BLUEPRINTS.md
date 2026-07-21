@@ -15,7 +15,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XVIII — Gigamon Network Visibility | Gigamon Certified Professional (GCP) | Gigamon Education Services |
 | XIX — Fortinet Network Security | NSE 1–4 of the NSE 1–8 program (FCF/FCA/FCP/FCSS/FCX retired 15 July 2026) | Fortinet Training Institute |
 | XX — Wireshark and Packet Analysis | WCA-101 | Wireshark Certified Analyst Program |
-| XXI — Ubuntu Server and Cloud | Ubuntu Certified Administrator (where applicable) | Canonical |
+| XXI — Ubuntu Server and Cloud | Canonical Academy SysAdmin qualification (four exams) | Canonical Academy |
 | XXII / XXIII — Dell OpenManage / iDRAC | Dell certified systems administrator paths (where applicable) | Dell Technologies Education Services |
 
 Volumes not listed (I, II, IV, VI–XIII, XVIII, XCIX) are vendor-neutral or

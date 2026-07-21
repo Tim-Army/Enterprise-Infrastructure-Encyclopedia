@@ -72,6 +72,87 @@ cleanup instructions.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this
   volume.
 
+## Certification alignment
+
+Canonical's certification offering is **Canonical Academy**, whose
+**SysAdmin** qualification is the track this volume relates to. It is
+recorded in
+[CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md).
+Chapters describe the competencies the exams assess and point to
+Canonical's published exam guide; no proprietary assessment content is
+reproduced. Confirm current details against Canonical Academy before
+planning a study timeline.
+
+### The qualification is four exams, not one
+
+The SysAdmin qualification requires a passing score on **all four** of
+the following. They can be taken individually, in any order, and the
+badge and certificate are issued through Credly once all four are
+complete.
+
+| Exam | Duration | Published domain weights |
+| --- | --- | --- |
+| Using Linux Terminal | 75 min | Navigating Files and Filesystems 34%; Managing System Resources 33%; Securing Filesystem Access 33% |
+| Using Ubuntu Desktop | 90 min | Managing Applications 28%; Configuring Networking Capabilities 25%; Securing Desktop Systems 22%; Installing Ubuntu Desktop 10%; Engaging with the Open Source Community 10% |
+| Using Ubuntu Server | 90 min | Deploying Ubuntu Server 27%; Managing Processes 26%; Securing Server Access 24%; Configuring Servers and Services 23% |
+| Using DevOps Principles | 90–120 min (estimated) | Understanding Deployment Technologies 34%; Using Tools for Automation and System Updating 32%; Monitoring and Troubleshooting Systems (weight not published) |
+
+**The format is partly hands-on.** Each exam is hybrid — multiple choice,
+scenario-based, *and* performance-based, with candidates working in a
+virtual system to perform administrative tasks while instructions sit
+alongside the environment. Canonical is explicit that this is a
+qualification validating occupational competence rather than a
+certificate of course completion. Only Red Hat's EX200 goes further in
+this direction among the certifications in this encyclopedia.
+
+Canonical publishes a passing score of **70** for the 2024 edition of
+*Using Linux Terminal*, and notes that cut scores are set per exam and
+may change between editions.
+
+### Two version and scope gaps to plan around
+
+**The exams lag this volume by an LTS cycle.** Canonical states that
+exams are based on the LTS running on the test nodes, that the 2024
+exams are all built on **24.04 (Noble Numbat)**, and that they will not
+change until the 2026 exams arrive for the **26.04** cycle. This volume
+is written against 26.04. The gap is mostly immaterial for fundamentals —
+filesystem navigation and process management do not change between LTS
+releases — but anything this volume covers *because* it is new in 26.04
+is by definition not yet examinable. Check which edition you are sitting.
+
+**This volume does not cover Ubuntu Desktop.** *Using Ubuntu Desktop* is
+one of the four required exams, and it is out of scope here: this is a
+server and cloud volume throughout. A reader pursuing the full SysAdmin
+qualification needs separate desktop preparation for roughly a quarter of
+the track — installation, application management, and desktop security.
+
+### Mapping the exams to this volume
+
+| Exam | Chapters |
+| --- | --- |
+| Using Linux Terminal | [02](chapters/02-essential-tools-shell-scripting-apt-and-snap-management.md) (shell and text processing), [03](chapters/03-boot-systemd-processes-logging-and-scheduled-work.md) (logs, scheduled work), [04](chapters/04-identity-privilege-ssh-netplan-and-firewalling.md) (users, SSH keys, sudo), [05](chapters/05-storage-lvm-filesystems-swap-and-shared-storage-services.md) (partitions and filesystems), [06](chapters/06-apparmor-permissions-cryptography-and-system-hardening.md) (ownership and access) |
+| Using Ubuntu Server | [01](chapters/01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md) (deployment and autoinstall), [03](chapters/03-boot-systemd-processes-logging-and-scheduled-work.md) (process management), [04](chapters/04-identity-privilege-ssh-netplan-and-firewalling.md) (server access), [07](chapters/07-dns-ntp-dhcp-web-database-and-common-server-services.md) (services) |
+| Using DevOps Principles | [08](chapters/08-docker-lxd-canonical-kubernetes-and-openshift-interoperability.md) (containers and Kubernetes), [09](chapters/09-cloud-init-maas-juju-ansible-landscape-operations-and-capstone.md) (cloud-init, MAAS, Juju, Ansible, Landscape) |
+| Using Ubuntu Desktop | Not covered — see the scope gap above |
+
+### Practicing
+
+Ubuntu shares Wireshark's advantage: the platform is free, so lab access
+is not the constraint. Any hypervisor, cloud instance, or spare machine
+runs the real thing, and Ubuntu Server installs in minutes with no
+license, trial window, or entitlement.
+
+That makes the performance-based half of these exams unusually cheap to
+prepare for. Build a virtual machine, work the tasks in each chapter's
+lab, then destroy and rebuild it — the same break-and-rebuild loop the
+Red Hat volume recommends, with none of the subscription friction.
+
+For the DevOps exam specifically, the tooling in
+[Chapter 09](chapters/09-cloud-init-maas-juju-ansible-landscape-operations-and-capstone.md)
+— cloud-init, MAAS, Juju, Landscape — is all freely available for
+evaluation, though MAAS in particular wants more than one machine to be
+worth exercising properly.
+
 ## Software and platform baseline
 
 Chapters in this volume reference the dated baseline recorded in
