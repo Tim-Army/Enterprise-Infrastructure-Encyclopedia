@@ -79,6 +79,127 @@ training sources; it does not reproduce proprietary exam questions or
 licensed courseware. Always confirm the current blueprint against Cisco
 Learning & Certifications before using a chapter for exam preparation.
 
+### The exams
+
+| Exam | Version | Duration | Price (US) | Earns |
+| --- | --- | --- | --- | --- |
+| 200-301 CCNA | v1.1 | 120 min | $300 | CCNA |
+| 350-401 ENCOR | v1.2 | 120 min | $400 | Enterprise Core specialist; core exam for CCNP Enterprise and CCIE Enterprise Infrastructure |
+| 300-410 ENARSI | v1.1 | 90 min | $300 | Enterprise Advanced Infrastructure specialist; a CCNP Enterprise concentration |
+
+CCNP Enterprise requires ENCOR plus one concentration exam; ENARSI is the
+concentration this volume supports. All three use performance-based,
+multiple-choice, and drag-and-drop question formats.
+
+**A dated deadline worth planning around:** the last date to test CCNA
+v1.1 is **2 February 2027**, with v2.0 first testable on 3 February 2027.
+A reader starting CCNA close to that boundary should either finish
+against v1.1 or prepare against v2.0 deliberately, not drift across it.
+
+### Domain weights, mapped to this volume
+
+**200-301 CCNA v1.1**
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 Network Fundamentals | 20% | 01 |
+| 2.0 Network Access | 20% | 02, 05 |
+| 3.0 IP Connectivity | 25% | 03 |
+| 4.0 IP Services | 10% | 06 |
+| 5.0 Security Fundamentals | 15% | 07 |
+| 6.0 Automation and Programmability | 10% | 08 |
+
+**350-401 ENCOR v1.2**
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 Architecture | 15% | 01, 09 |
+| 2.0 Virtualization | 10% | 01, 04 |
+| 3.0 Infrastructure | 30% | 02, 03, 05, 06 |
+| 4.0 Network Assurance | 10% | 09 |
+| 5.0 Security | 20% | 07 |
+| 6.0 Automation and Artificial Intelligence | 15% | 08 |
+
+**300-410 ENARSI v1.1**
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 Layer 3 Technologies | 35% | 03 |
+| 2.0 VPN Technologies | 20% | 04 |
+| 3.0 Infrastructure Security | 20% | 07 |
+| 4.0 Infrastructure Services | 25% | 06 |
+
+Infrastructure at 30% makes ENCOR a breadth exam: switching, routing,
+wireless, and IP services together outweigh any single specialism. ENARSI
+inverts that — Layer 3 alone is 35%, and the exam rewards depth in
+troubleshooting rather than coverage.
+
+### Study plans
+
+Each plan assumes **8–10 hours per week**. Times are for a reader with
+production networking exposure; someone new to enterprise networking
+should plan roughly half again as long for CCNA.
+
+**CCNA — six to eight weeks**
+
+| Week | Focus | Chapters |
+| --- | --- | --- |
+| 1 | Architecture, IOS XE, addressing, and the CLI | 01 |
+| 2 | Switching, VLANs, trunking, EtherChannel, spanning tree | 02 |
+| 3 | Routing tables, static routing, single-area OSPFv2, FHRP | 03 |
+| 4 | Wireless fundamentals and WLC operation | 05 |
+| 5 | IP services: NAT, NTP, DHCP, DNS, SNMP, syslog, QoS basics | 06 |
+| 6 | Security fundamentals, port security, ACLs, wireless security | 07 |
+| 7 | Automation, APIs, JSON, controller-based networking | 08 |
+| 8 | Full-blueprint review and timed practice | — |
+
+**ENCOR — eight to ten weeks**
+
+| Week | Focus | Chapters |
+| --- | --- | --- |
+| 1 | Enterprise architecture, campus design, high availability | 01 |
+| 2 | Virtualization: VRF, GRE/IPsec, LISP and VXLAN concepts | 01, 04 |
+| 3–4 | Infrastructure: advanced switching and multi-area OSPF, BGP | 02, 03 |
+| 5 | Infrastructure: wireless architecture, roaming, RF | 05 |
+| 6 | Infrastructure: QoS and application delivery | 06 |
+| 7 | Network assurance: SNMP, NetFlow, SPAN, IP SLA, Assurance | 09 |
+| 8 | Security: access control, segmentation, device hardening | 07 |
+| 9 | Automation and AI: Python, REST, YANG/NETCONF, Catalyst Center | 08 |
+| 10 | Review weighted to Infrastructure, then timed practice | — |
+
+**ENARSI — four to six weeks**, taken after ENCOR while the routing
+material is fresh.
+
+| Week | Focus | Chapters |
+| --- | --- | --- |
+| 1–2 | Layer 3: EIGRP, OSPF, BGP, redistribution, route policy | 03 |
+| 3 | VPN technologies: MPLS, DMVPN, IPsec, SD-WAN context | 04 |
+| 4 | Infrastructure security: ACLs, control-plane policing, device access | 07 |
+| 5 | Infrastructure services: DHCP, logging, SLA, NetFlow, troubleshooting | 06 |
+| 6 | Troubleshooting drills against deliberately broken topologies | — |
+
+Sequence the path CCNA → ENCOR → ENARSI. ENCOR and ENARSI overlap enough
+that taking ENARSI within a few months of ENCOR saves re-learning the
+routing material.
+
+### Study materials
+
+This volume is written to stand on its own, but the Cisco path rewards
+pairing reading with a lab and a practice-exam bank:
+
+| Role | Resource | Why |
+| --- | --- | --- |
+| Official blueprint | [Cisco Learning Network exam topics](https://learningnetwork.cisco.com/s/ccna-exam-topics) | Authority on domains, weights, and version — outranks any third-party material where they disagree |
+| Reference text | Cisco Press Official Cert Guide (Odom for CCNA; Hucaby for ENCOR) | Blueprint-ordered and thorough; the closest thing to a canonical text |
+| Video course | Jeremy's IT Lab (free, CCNA); CBT Nuggets or INE for CCNP | Jeremy's IT Lab is unusually complete for a free course; CCNP-level video is thinner and worth paying for |
+| Practice exams | Boson ExSim-Max | Consistently the closest simulation of Cisco question style, with explanations that reason through the distractors |
+| Lab | Cisco Packet Tracer (CCNA); Cisco Modeling Labs, EVE-NG, or GNS3 (CCNP) | Packet Tracer covers the CCNA blueprint; CCNP needs real IOS XE images |
+| Official training | [Cisco U.](https://u.cisco.com/) | Guided paths, hands-on labs, and prep bundles from Cisco directly |
+
+Build the topologies rather than reading about them. Cisco's
+performance-based questions test configuration and troubleshooting under
+time pressure, which passive study does not develop.
+
 ## Building and validating this volume
 
 From the repository root, after completing
