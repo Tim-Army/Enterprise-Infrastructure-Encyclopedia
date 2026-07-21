@@ -231,6 +231,45 @@ and `HOL-27xx` prefixes above reflect different catalog generations that
 were all live when this was written. Search the catalog by title if an
 identifier no longer resolves.
 
+### Official courses by exam
+
+Where Hands-on Labs give a guided hour, the instructor-led courses on
+Learning@Broadcom are the depth behind each exam. These are the courses
+Broadcom names on the certification pages themselves, all 40 hours unless
+noted:
+
+| Exam | Official course |
+| --- | --- |
+| 2V0-16.25 VCP-VVF Administrator | VMware vSphere Foundation: Build, Manage and Operate [V9.0] |
+| 2V0-17.25 VCP-VCF Administrator | VMware Cloud Foundation: Build, Manage and Secure [V9.0] **and** VMware Cloud Foundation: Automate and Operate [V9.0] |
+| 2V0-15.25 VCP-VCF Support | VMware Cloud Foundation: Troubleshooting [V9.0] |
+| 2V0-18.25 VCP-VVF Support | VMware Cloud Foundation: Troubleshooting [V9.0] |
+| 2V0-41.24 VCP-NV | VMware NSX: Install, Configure, Manage [V4.0]; Troubleshooting and Operations [V4.x]; Design [V4.x] |
+
+Two observations that matter when planning.
+
+**The two Support exams share one course.** *VMware Cloud Foundation:
+Troubleshooting [V9.0]* serves both 2V0-15.25 and 2V0-18.25, which makes
+taking them close together considerably more efficient than treating them
+as separate tracks.
+
+**Course versions do not always match exam versions.** The VCF and VVF
+exams target 9.0 and have matching V9.0 courses, and a V9.1 edition of
+*Build, Manage and Secure* already exists. NSX is the outlier: VCP-NV
+tests NSX 4.x against V4.0 and V4.x courses, consistent with it being the
+older-generation exam. Where a course version leads the exam, the extra
+material is not wasted, but the blueprint remains the authority on what
+is testable.
+
+Beyond the VCP path, the catalog also carries *VMware Cloud Foundation:
+Solution Architecture and Design [V9.0]* for the architect track, and
+supporting courses worth knowing about if a specific area is weak —
+*VMware vSAN: Install, Configure, Manage [V8]* (32 hours) and *vSAN:
+Troubleshooting [V8]* (16 hours) for Chapter 06, *vSphere: Troubleshooting
+[V8]* for Chapters 07 and 09, and *VMware Data Center Virtualization: Core
+Technical Skills* (32 hours) as an on-ramp for readers new to the
+platform.
+
 ## Software and platform baseline
 
 Chapters in this volume reference the dated baseline recorded in
