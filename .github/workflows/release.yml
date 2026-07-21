@@ -30,9 +30,21 @@ jobs:
         run: scripts/bash/validate.sh
 
       - name: Install Pandoc
+        env:
+          PANDOC_VERSION: '3.10'
+          PANDOC_SHA256: 'd502599878eb29af3ae5f0cb5d559134df96534125d452c7a0674a5bad2c5ecf'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc
+          set -euo pipefail
+          deb="pandoc-${PANDOC_VERSION}-1-amd64.deb"
+          curl -fsSL --retry 3 -o "$deb" \
+            "https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/${deb}"
+          echo "${PANDOC_SHA256}  ${deb}" | sha256sum --check --strict
+          sudo dpkg --install "$deb"
+          rm -f "$deb"
+          # Fail loudly if the installed build is not the pinned one, so a
+          # silent toolchain change cannot alter published output.
+          pandoc --version | head -1
+          test "$(pandoc --version | head -1)" = "pandoc ${PANDOC_VERSION}"
 
       - name: Build complete-encyclopedia artifacts
         run: scripts/bash/build-book.sh --format all

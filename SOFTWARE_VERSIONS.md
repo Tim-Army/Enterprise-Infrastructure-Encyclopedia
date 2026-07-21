@@ -28,7 +28,7 @@ rewritten against a newer release, and record the date of the change.
 | Proxmox VE | 9.x | 2026-07 |
 | Node.js (publishing toolchain) | 22.x LTS | 2026-07 |
 | pnpm | 11.9.0 | 2026-07 |
-| Pandoc | 3.x | 2026-07 |
+| Pandoc | 3.10 (pinned by checksum in the build workflows) | 2026-07 |
 
 Chapters that reference a version not listed here should add it to this table
 in the same change.
