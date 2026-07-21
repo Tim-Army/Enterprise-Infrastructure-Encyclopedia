@@ -113,9 +113,9 @@ against v1.1 or prepare against v2.0 deliberately, not drift across it.
 
 | Domain | Weight | Chapters |
 | --- | --- | --- |
-| 1.0 Architecture | 15% | 01, 09 |
+| 1.0 Architecture | 15% | 01, 04, 06, 09 |
 | 2.0 Virtualization | 10% | 01, 04 |
-| 3.0 Infrastructure | 30% | 02, 03, 05, 06 |
+| 3.0 Infrastructure | 30% | 02, 03, 06 |
 | 4.0 Network Assurance | 10% | 09 |
 | 5.0 Security | 20% | 07 |
 | 6.0 Automation and Artificial Intelligence | 15% | 08 |
@@ -157,15 +157,20 @@ should plan roughly half again as long for CCNA.
 
 | Week | Focus | Chapters |
 | --- | --- | --- |
-| 1 | Enterprise architecture, campus design, high availability | 01 |
+| 1 | Architecture: design principles, high availability, SD-WAN and SD-Access working principles, **and QoS interpretation** — QoS sits in this domain in v1.2, not in Infrastructure | 01, 04, 06, 09 |
 | 2 | Virtualization: VRF, GRE/IPsec, LISP and VXLAN concepts | 01, 04 |
-| 3–4 | Infrastructure: advanced switching and multi-area OSPF, BGP | 02, 03 |
-| 5 | Infrastructure: wireless architecture, roaming, RF | 05 |
-| 6 | Infrastructure: QoS and application delivery | 06 |
-| 7 | Network assurance: SNMP, NetFlow, SPAN, IP SLA, Assurance | 09 |
-| 8 | Security: access control, segmentation, device hardening | 07 |
-| 9 | Automation and AI: Python, REST, YANG/NETCONF, Catalyst Center | 08 |
-| 10 | Review weighted to Infrastructure, then timed practice | — |
+| 3–5 | **The heavy weeks.** Infrastructure in full: Layer 2 trunking, EtherChannel and RSTP/MST; Layer 3 EIGRP/OSPF comparison, OSPFv2/v3 multi-area, eBGP, policy-based routing; IP services NTP/PTP, NAT/PAT, HSRP/VRRP, and multicast | 02, 03, 06 |
+| 6 | Network assurance: debugs, Flexible NetFlow, SPAN/RSPAN/ERSPAN, IP SLA, Catalyst Center, NETCONF/RESTCONF | 09 |
+| 7–8 | Security: device access control, infrastructure security features, REST API security, network security design | 07 |
+| 9 | Automation and AI: Python, JSON, YANG, Catalyst Center and SD-WAN Manager APIs, EEM applets, agent vs. agentless | 08 |
+| 10 | Review weighted to Infrastructure and Security, then timed practice | — |
+
+**Do not study wireless for ENCOR.** Version 1.2 removed it entirely —
+the exam topics contain no reference to wireless, WLC, roaming, or access
+points. [Chapter 05](chapters/05-catalyst-wireless-architecture-and-operations.md)
+remains required for **CCNA**, whose Network Access domain still covers
+Cisco wireless architectures, AP modes, WLAN components, and the WLC GUI.
+It is simply not ENCOR material any more.
 
 **ENARSI — four to six weeks**, taken after ENCOR while the routing
 material is fresh.
