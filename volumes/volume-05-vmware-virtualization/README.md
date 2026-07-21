@@ -172,6 +172,50 @@ currently offers at the time you download it. Confirm the current terms
 rather than assuming, since this is the part of the VMware landscape that
 has changed most since the Broadcom acquisition.
 
+### Mapping this volume to VMware Hands-on Labs
+
+[Hands-on Labs](https://labs.hol.vmware.com/HOL/catalog) are the closest
+substitute for a licensed home lab: a running environment in the browser,
+no download, no entitlement. The catalog can be browsed without signing
+in, though the public view is a subset of the full catalog.
+
+| Chapters | Topic | Hands-on Lab |
+| --- | --- | --- |
+| 01 | Virtualization fundamentals | `HOL-2535-01-VCF-L` Virtualization 101 |
+| 01–02 | vSphere platform and what's new | `HOL-2630-01-VCF-L` What's New with vSphere in VCF 9.0 |
+| 02–05 | Host and VM administration depth | `HOL-2637-02-VCF-L` vSphere in VCF 9.0 — Advanced Topics |
+| 02, 09 | Host configuration at fleet scale | `HOL-2538-01-VCF-L` vSphere Configuration Profiles |
+| 05, 07 | Performance and resource contention | `HOL-2637-07-VCF-L` Introduction to vSphere Performance |
+| 05, 07 | Host subsystem performance testing | `HOL-2637-09-VCF-L` vSphere Performance Testing of ESXi Host Subsystems |
+| 06 | Storage, vSAN, SPBM, stretched clusters | `HOL-2634-01-VCF-L` vSAN — Getting Started and Advanced Topics |
+| 06, 07 | Replication and recovery | `HOL-2634-02-VCF-S` Enhanced vSphere Replication |
+| 08 | Platform security | `HOL-2530-03-VCF-L` vSphere Security — Getting Started |
+| 08, 11 | Distributed Firewall and micro-segmentation | `HOL-2670-01-ANS-L` vDefend Distributed Firewall Getting Started |
+| 08 | Advanced threat protection | `HOL-2670-04-ANS-L` vDefend Firewall with Advanced Threat Protection |
+| 09 | Automation with PowerCLI | `HOL-2637-05-VCF-L` vSphere Automation — PowerCLI |
+| 09 | API and SDK automation | `HOL-2530-05-VCF-L` vSphere Automation and Development — API and SDK |
+| 09, 13, 16 | Operations, logs, metrics, troubleshooting | `HOL-2601-04-VCF-L` Troubleshooting the Private Cloud with VCF Operations |
+| 09, 13 | Log and flow analysis | `HOL-2601-06-VCF-L` VCF 9.0 Operations — Analyzing Logs, Metrics, and Network Flows |
+| 10–11 | NSX logical networking | `HOL-2640-01-VCF-L` Simplified Application Networking with NSX VPC |
+| 11 | Multi-tenant NSX | `HOL-2640-03-VCF-L` Multi-Tenant Networking with NSX |
+| 13–14 | VCF platform and operations | `HOL-2610-01-VCF-L` What's New in VCF 9.0 — Platform |
+| 14 | VCF automation | `HOL-2610-02-VCF-L` What's New in VCF 9.0 — Automation |
+| 13–14 | VCF advanced operations tooling | `HOL-2608-03-VCF-L` VCF Advanced Operations and Tools |
+| 13 | Upgrade and migration paths | `HOL-2603-01-VCF-S` VCF 9.0 — Upgrading from vSphere 8 |
+
+**Two gaps worth knowing before you rely on this.** NSX coverage in the
+public catalog is thin — three labs, none of them an install-and-configure
+walkthrough — so Chapters 10–12 and VCP-NV preparation still need a
+nested NSX build or the deeper labs behind a sign-in. And Hands-on Labs
+are guided: they teach the workflow but do not make you derive it, which
+is precisely what the Support-track exams test. Use them to see a feature
+working, then rebuild it unguided.
+
+Lab IDs rotate as the catalog is refreshed — the `HOL-25xx`, `HOL-26xx`,
+and `HOL-27xx` prefixes above reflect different catalog generations that
+were all live when this was written. Search the catalog by title if an
+identifier no longer resolves.
+
 ## Software and platform baseline
 
 Chapters in this volume reference the dated baseline recorded in
