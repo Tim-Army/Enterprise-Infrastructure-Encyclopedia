@@ -487,6 +487,14 @@ rm -f /tmp/eda-lab-actions.log
 cd .. && rm -rf eda-lab
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Workflow orchestration and event-driven automation extend the pipeline and

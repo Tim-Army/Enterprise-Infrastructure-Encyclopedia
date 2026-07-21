@@ -507,6 +507,14 @@ verify both from the command line and a browser.
    dnf clean all
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 RHEL 10 systems are provisioned through Anaconda, Kickstart, or Image

@@ -386,6 +386,14 @@ without enabling any control action.
 - Retain the curation findings, asset register, and updated Purdue
   diagram as artifacts for this chapter's design synthesis deliverable.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter completed the volume's OT/ICS track by extending [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md)'s

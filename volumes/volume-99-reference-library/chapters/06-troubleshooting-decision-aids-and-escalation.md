@@ -350,6 +350,14 @@ conditions, confirm the lab service is restored to its normal running
 state, and delete lab-only incident records if they reference
 non-representative test data.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter provided three text-based decision trees covering the

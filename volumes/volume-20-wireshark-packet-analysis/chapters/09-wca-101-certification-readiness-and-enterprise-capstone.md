@@ -329,6 +329,14 @@ reveals, following the domain sequence from Design Considerations.
     rm -f capstone_*.pcapng capstone-no-scan.pcapng
     ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This volume built from installation and evidentiary handling ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md))

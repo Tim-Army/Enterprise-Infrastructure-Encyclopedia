@@ -377,6 +377,14 @@ enforcement and re-admission paths.
 - Leave `Lab Agent Running` in place if later chapter labs may reuse it;
   otherwise remove it.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter extended the policy engine model from [Chapter 2](02-console-plugins-properties-and-asset-classification.md) into the

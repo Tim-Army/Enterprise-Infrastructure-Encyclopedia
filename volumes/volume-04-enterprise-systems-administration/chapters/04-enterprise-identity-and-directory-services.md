@@ -433,6 +433,14 @@ Remove-GPO -Name 'Lab Baseline'
 Get-ADComputer -Filter "Name -eq '<linux-hostname>'" | Remove-ADObject -Recursive -Confirm:$true
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Active Directory Domain Services is the identity backbone this volume's

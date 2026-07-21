@@ -447,6 +447,14 @@ test using an invalid API key.
 
    Revoke or rotate the lab automation API key if it will not be reused.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Sustained PAN-OS operations depend on a disciplined upgrade sequence that

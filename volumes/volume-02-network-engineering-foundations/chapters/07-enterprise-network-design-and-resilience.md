@@ -503,6 +503,14 @@ sudo ip link del br-vrrp 2>/dev/null || true
 rm -f /tmp/keepalived-r1.* /tmp/keepalived-r2.* /tmp/vrrp-failover.log
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter connected the switching ([Chapter 3](03-ethernet-switching-vlans-and-layer-2-resilience.md)) and routing ([Chapter 4](04-ip-routing-fundamentals.md))

@@ -348,6 +348,14 @@ cd ~ && rm -rf ~/labs/resilience-ch1
 
 No shared or production systems were modified; this lab is entirely local to the working directory.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Resilience engineering starts with an honest inventory: which services matter, how much, and what they depend on. Criticality tiering translates business impact into an engineering budget for redundancy; failure-domain and dependency analysis surface the SPOFs that undermine that redundancy; and the reliability math grounds availability targets in verifiable numbers rather than aspiration. Every later chapter in this volume — BIA, HA design, backup/DR, chaos testing, patching, modernization, sustainability, and decommissioning — treats the criticality register and dependency map built here as a foundational input.

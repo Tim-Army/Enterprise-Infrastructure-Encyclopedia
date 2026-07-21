@@ -521,6 +521,14 @@ deliberate non-compliant-component negative test.
    Get-AlarmDefinition -Name "Datastore Usage Critical" | Remove-AlarmDefinition -Confirm:$false
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 vSphere Lifecycle Manager's image-based cluster management is the current

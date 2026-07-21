@@ -328,6 +328,14 @@ against a simulated intrusion.
     git commit -m "Chapter 07: zero trust, detection, and incident response"
     ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter replaced implicit VLAN trust with 802.1X authentication and a

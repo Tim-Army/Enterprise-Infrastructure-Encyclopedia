@@ -556,6 +556,14 @@ attached to a real identity. No cloud account or credentials are required.
    **Expected result:** The directory no longer exists. No cloud identity,
    role, or credential was created at any point in this lab.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Identity is the primary control boundary in cloud infrastructure. This

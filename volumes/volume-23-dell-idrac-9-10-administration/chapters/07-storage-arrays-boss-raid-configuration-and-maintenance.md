@@ -449,6 +449,14 @@ since virtual disk creation/deletion is destructive to any data present.
 - Confirm all disks used in this lab return to an unassigned/Ready state
   before considering the lab complete.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter covered iDRAC's role as the management plane for PERC and

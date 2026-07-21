@@ -630,6 +630,14 @@ Reachability Analyzer itself bills per analysis run at a small flat fee.
 
    The query must return an empty list.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 A VPC's public, private, and isolated subnet tiers are defined entirely by

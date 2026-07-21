@@ -446,6 +446,14 @@ ssh web01 'sudo sed -i "/sshd: 10.0.0.10/d" /etc/hosts.allow; \
 rm -f ~/.ssh/id_ed25519_lab ~/.ssh/id_ed25519_lab.pub inventory.txt
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter established the operating model that the rest of Volume IV

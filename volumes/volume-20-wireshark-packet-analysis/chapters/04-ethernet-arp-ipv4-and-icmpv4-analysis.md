@@ -381,6 +381,14 @@ sequence, and a traceroute, and build display filters that isolate each.
    rm -f lab04.pcapng
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Ethernet, ARP, IPv4, and ICMPv4 are the layers every other protocol in this

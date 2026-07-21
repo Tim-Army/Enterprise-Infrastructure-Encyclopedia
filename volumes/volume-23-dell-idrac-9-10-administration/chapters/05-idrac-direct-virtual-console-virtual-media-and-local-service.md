@@ -458,6 +458,14 @@ share, and boot to it via Virtual Console.
   lab; running its normal OS, if it was running one) to leave the lab
   server in the same condition later chapters expect.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter covered the full set of local and remote interactive access

@@ -794,6 +794,14 @@ behavior — then restore the cluster to its prior configuration.
    select cluster > Configure > vSphere Availability > Edit`, and power off
    /remove `lab-ha-test-vm` if it was created solely for this lab.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 vSphere HA's Fault Domain Manager provides host-failure protection through

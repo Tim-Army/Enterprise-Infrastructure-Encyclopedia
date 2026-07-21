@@ -452,6 +452,14 @@ verified data sanitization.
     a complete, tamper-evident record of every chapter's evidence from
     [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) through this capstone.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This capstone tested the whole reference lab against a failure no earlier

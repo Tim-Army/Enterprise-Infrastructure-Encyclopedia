@@ -433,6 +433,14 @@ sudo ip netns del ns-router
 sudo ip netns del ns-conflict 2>/dev/null || true
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter covered IPv4 and IPv6 address structure, CIDR notation, VLSM

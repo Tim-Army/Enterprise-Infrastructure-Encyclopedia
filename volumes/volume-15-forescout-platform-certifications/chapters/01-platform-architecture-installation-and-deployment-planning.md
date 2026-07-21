@@ -372,6 +372,14 @@ control policy is introduced.
 - Leave the appliance's base configuration in place; it is reused in later
   chapters' labs.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter established the architectural vocabulary used throughout the

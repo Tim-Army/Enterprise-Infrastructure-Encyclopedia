@@ -348,6 +348,14 @@ major-incident cycle against an injected resource-exhaustion failure.
     git commit -m "Chapter 08: observability, operations, and major-incident lab"
     ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter instrumented every system built across the volume, defined a

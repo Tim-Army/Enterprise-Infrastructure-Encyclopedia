@@ -332,6 +332,14 @@ sufficient).
 remove any temporary backup files, and delete lab-only entries from
 version control if the repository is shared beyond this exercise.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter distinguished three artifacts that are often conflated —

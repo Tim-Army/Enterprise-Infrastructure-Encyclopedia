@@ -345,6 +345,14 @@ cd ~ && rm -rf ~/labs/resilience-ch6
 
 No shared or production systems were modified; the cluster and compliance data were entirely local simulations.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Maintenance, patching, and upgrade engineering apply the same staged-rollout, blast-radius, and rollback discipline introduced for chaos experiments in [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md) to routine, planned change — the difference being that here the "fault" is deliberately permanent (a new version) rather than deliberately temporary. Patch severity classification drives remediation SLAs; staged rollout strategies (canary, rolling, blue-green) limit exposure to a bad change; and quorum-aware maintenance sequencing prevents a voluntary disruption from becoming an involuntary outage. A system that consistently cannot meet its patch SLA, or has fallen outside vendor support entirely, is not a patching problem to keep deferring — it is the trigger condition for [Chapter 7](07-technical-debt-modernization-and-platform-renewal.md)'s modernization and technical-debt discipline.

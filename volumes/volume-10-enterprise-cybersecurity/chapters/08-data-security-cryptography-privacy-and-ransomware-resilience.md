@@ -566,6 +566,14 @@ decrypted incorrectly.
 cd ~ && rm -rf ~/labs/vol10-ch08
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter covered data-centric protection: classification as the

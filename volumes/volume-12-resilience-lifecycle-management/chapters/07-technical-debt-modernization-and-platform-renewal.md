@@ -324,6 +324,14 @@ cd ~ && rm -rf ~/labs/resilience-ch7
 
 No shared or production systems were modified; the register was a local YAML file.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Technical debt is a normal, sometimes deliberate and prudent, engineering reality — the failure mode is leaving it untracked and unprioritized rather than the debt's mere existence. A structured debt register, scored with both impact and EOL urgency, turns modernization into a resourced, prioritized program rather than a series of ad hoc rewrites. The 6 Rs give a deliberate vocabulary for matching remediation effort to the actual problem, and the strangler fig pattern provides the low-blast-radius migration mechanism preferred throughout this volume over high-risk, single-event cutovers. Modernization intersects directly with sustainability ([Chapter 8](08-sustainable-infrastructure-and-resource-lifecycle.md), where hardware refresh and decommissioning decisions carry their own resource-lifecycle considerations) and with retirement ([Chapter 9](09-retirement-decommissioning-and-lifecycle-governance.md), where a fully strangled legacy system's remaining lifecycle stage is formal decommissioning).

@@ -321,6 +321,14 @@ licensed appliances: CML routers carry site-to-site IKEv2 fully.
 7. Remove the lab tunnel configuration or revert to saved baselines, and
    end the CML or dCloud session.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 SVPN is a troubleshooting-and-architecture exam wearing a configuration

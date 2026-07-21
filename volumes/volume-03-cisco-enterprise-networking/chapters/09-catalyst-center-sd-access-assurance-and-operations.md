@@ -472,6 +472,14 @@ policy enforcement between two test endpoints.
 - Release any reserved DevNet sandbox session per its posted reservation
   window.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Catalyst Center closes the loop on this volume: it automates the

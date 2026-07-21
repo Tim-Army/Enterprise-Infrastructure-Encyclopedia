@@ -548,6 +548,14 @@ credentials are required.
    **Expected result:** Terraform reports the resource destroyed, and the
    working directory no longer exists.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter closes the volume with the operational practices that keep a

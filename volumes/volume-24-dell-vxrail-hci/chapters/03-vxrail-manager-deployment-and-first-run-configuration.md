@@ -357,6 +357,14 @@ genuinely practice and which use standard vSphere tooling throughout.
    baseline files — [Chapter 06](06-lifecycle-management-and-the-continuously-validated-state.md)
    compares against them.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 VxRail first run is a six-stage sequence that validates everything before

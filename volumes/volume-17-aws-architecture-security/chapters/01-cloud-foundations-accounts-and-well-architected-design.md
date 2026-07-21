@@ -455,6 +455,14 @@ leaving unused artifacts in the account.
 
    Both queries should return no trace of the lab artifacts.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 AWS infrastructure is organized as Regions built from independent

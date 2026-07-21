@@ -332,6 +332,14 @@ licensing-recognition exercise, all under time pressure.
    group VLAN ID, and confirm the baseline health check from step 1
    passes again for all three layers.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 The VCP-VVF Support (2V0-18.25) exam applies a support-engineer,

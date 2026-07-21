@@ -439,6 +439,14 @@ VRF.
 - Restore redistribution and area configuration to the lab's baseline or
   remove it entirely if the topology will be reused for a later chapter.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Enterprise path control combines a chosen IGP (OSPF for vendor-neutral

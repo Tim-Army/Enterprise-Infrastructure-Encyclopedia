@@ -371,6 +371,14 @@ capstone design document synthesizing the volume.
 - Archive the capstone design document as the volume's completion
   artifact.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter completed the volume's enterprise-track material by covering

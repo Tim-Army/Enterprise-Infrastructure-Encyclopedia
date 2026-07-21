@@ -340,6 +340,14 @@ cd ~ && rm -rf ~/labs/resilience-ch4
 
 No shared or production systems were modified; all artifacts were local to the working directory.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Backup engineering turns [Chapter 2](02-business-impact-analysis-and-continuity-planning.md)'s RPO into a concrete schedule, retention policy, and immutability control; DR engineering turns its RTO into a site strategy, replication mechanism, and tested failover runbook. Neither is complete as a design on paper — the 3-2-1-1-0 rule's final "0" (zero verification errors) and this chapter's emphasis on restore testing exist because an unverified backup or an untested DR runbook is a liability disguised as a control. [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md) extends this testing discipline from scheduled restore drills into a broader resilience-testing and chaos-engineering practice that exercises far more than the recovery path alone.

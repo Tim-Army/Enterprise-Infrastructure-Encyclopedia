@@ -491,6 +491,14 @@ FGCP HA cluster, including a forced-failover negative test.
   disable HA (`config system ha` `set mode standalone` `end`) on both
   members before making further independent changes.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter built FGT-LAB-01's data-plane foundation: physical and VLAN

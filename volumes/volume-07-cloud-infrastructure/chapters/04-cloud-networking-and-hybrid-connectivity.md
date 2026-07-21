@@ -508,6 +508,14 @@ it requires no cloud account or credentials.
    **Expected result:** The directory no longer exists. No cloud network
    resources were created at any point in this lab.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Cloud networking starts with a deliberately sized, centrally tracked

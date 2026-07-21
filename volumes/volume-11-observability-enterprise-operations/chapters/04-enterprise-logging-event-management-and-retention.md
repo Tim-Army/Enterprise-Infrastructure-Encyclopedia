@@ -587,6 +587,14 @@ cd ~
 rm -rf ~/log-lab
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Structured logging, disciplined log levels, and a collection-processing-

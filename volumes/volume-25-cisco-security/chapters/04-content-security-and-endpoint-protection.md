@@ -281,6 +281,14 @@ observable without any real malware.
 7. Delete the EICAR test file, confirm the connector is running and
    reporting, and end the evaluation session.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Content security inspects the email and web channels most malware and

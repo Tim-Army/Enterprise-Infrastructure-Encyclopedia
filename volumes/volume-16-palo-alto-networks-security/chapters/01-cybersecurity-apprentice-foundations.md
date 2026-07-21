@@ -412,6 +412,14 @@ validation.
    If the instance is disposable, power it off and discard the VM rather
    than leaving an internet-reachable management interface active.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 An apprentice-level Palo Alto Networks engineer needs fluency in three

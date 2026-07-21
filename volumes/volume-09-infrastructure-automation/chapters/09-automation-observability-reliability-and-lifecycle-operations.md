@@ -520,6 +520,14 @@ kill %1 2>/dev/null || true
 cd .. && rm -rf observability-lab
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 The automation control plane built across this volume — state and

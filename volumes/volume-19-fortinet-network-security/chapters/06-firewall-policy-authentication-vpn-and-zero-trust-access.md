@@ -500,6 +500,14 @@ key mismatch as a negative test.
   forward, disable (rather than delete) the `to-Branch02` phase1-interface
   to preserve the configuration as a reference.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter completed the NAT design from [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md) with permitting

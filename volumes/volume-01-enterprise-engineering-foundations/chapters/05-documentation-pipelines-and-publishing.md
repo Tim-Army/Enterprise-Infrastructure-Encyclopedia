@@ -459,6 +459,14 @@ correctly blocks a broken link before it would reach a published build.
    cd ~ && rm -rf ~/docs-lab
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Docs-as-code treats Markdown as the single, version-controlled source of

@@ -555,6 +555,14 @@ configuration drift, detect it, and remediate.
    Get-VMHostProfile -Name "lab-standard-profile" | Remove-VMHostProfile -Confirm:$false
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 ESXi installation scales from a manual interactive install through

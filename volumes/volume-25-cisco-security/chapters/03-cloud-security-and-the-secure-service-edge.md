@@ -271,6 +271,14 @@ real systems to real threats.
 7. Restore the client's original DNS settings and end the evaluation
    session; retain the SSE-to-threat mapping for Chapter 08.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Cloud security starts with the shared-responsibility boundary, which moves

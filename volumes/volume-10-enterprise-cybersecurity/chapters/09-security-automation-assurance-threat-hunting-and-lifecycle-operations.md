@@ -536,6 +536,14 @@ exits with a non-zero status suitable for CI/CD gating.
 cd ~ && rm -rf ~/labs/vol10-ch09
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This closing chapter tied together every preceding chapter in Volume X

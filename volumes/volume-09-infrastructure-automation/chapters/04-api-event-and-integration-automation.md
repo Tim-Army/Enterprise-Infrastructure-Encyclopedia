@@ -572,6 +572,14 @@ signature header itself is a real, previously valid value.
 cd .. && rm -rf webhook-lab
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 API and event automation extends infrastructure-as-code and configuration

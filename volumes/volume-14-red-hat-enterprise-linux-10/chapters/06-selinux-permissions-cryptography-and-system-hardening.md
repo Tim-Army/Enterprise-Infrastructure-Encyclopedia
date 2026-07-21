@@ -500,6 +500,14 @@ access, and encrypt a scratch volume with LUKS.
    sudo rm -rf /data/web
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Standard permissions and ACLs express discretionary, owner-granted

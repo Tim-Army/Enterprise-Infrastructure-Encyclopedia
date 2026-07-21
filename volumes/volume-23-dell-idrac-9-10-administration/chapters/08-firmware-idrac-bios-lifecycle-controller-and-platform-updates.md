@@ -441,6 +441,14 @@ reasonable choice, since updating it does not require a host OS reboot).
   firmware in place — this is a supported, non-destructive end state for
   the lab.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter covered the mechanics of firmware update orchestration

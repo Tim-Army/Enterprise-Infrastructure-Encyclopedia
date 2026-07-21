@@ -359,6 +359,14 @@ before a simulated hand-off.
    rm -f lab08.pcapng lab08-sanitized.pcapng lab08-syn-attempts.csv
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 `tshark` and its companion utilities extend every filter and field

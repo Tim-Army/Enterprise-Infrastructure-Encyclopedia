@@ -558,6 +558,14 @@ REST API.
   rm -f ~/Downloads/OME-4.7.x.ova
   ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter established the architectural foundation for the rest of the

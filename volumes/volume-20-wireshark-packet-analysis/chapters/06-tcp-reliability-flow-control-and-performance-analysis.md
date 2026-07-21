@@ -397,6 +397,14 @@ observe Wireshark's retransmission analysis.
    sudo tc qdisc show dev <INTERFACE_NAME>
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 TCP's sequence numbers, acknowledgment numbers, and window mechanism are

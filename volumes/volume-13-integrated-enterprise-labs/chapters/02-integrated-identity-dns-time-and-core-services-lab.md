@@ -375,6 +375,14 @@ controller failure.
     git commit -m "Chapter 02: identity, DNS, time, and core services"
     ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter built the identity, DNS, and time foundation every later

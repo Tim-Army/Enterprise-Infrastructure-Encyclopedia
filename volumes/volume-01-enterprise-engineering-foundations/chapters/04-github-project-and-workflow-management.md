@@ -441,6 +441,14 @@ malformed link fails to auto-close.
    git branch -D lab/close-issue lab/no-close
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 GitHub's native planning primitives — issues, labels, milestones, Projects

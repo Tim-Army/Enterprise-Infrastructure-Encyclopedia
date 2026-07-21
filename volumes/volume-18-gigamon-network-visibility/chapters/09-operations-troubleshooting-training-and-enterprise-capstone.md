@@ -364,6 +364,14 @@ negative test, and a documented rollback.
     pre-capstone baseline, and confirm via the API that the fabric state
     matches the documented baseline afterward.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Operating a Gigamon fabric in production is a continuous discipline of

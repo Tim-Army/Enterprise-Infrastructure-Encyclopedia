@@ -340,6 +340,14 @@ Stream to read a reassembled conversation.
    Optionally remove the lab profile via **Edit > Configuration Profiles >
    Lab03-Analysis > -**.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 The Wireshark GUI's value over raw `tshark` output is its synchronized

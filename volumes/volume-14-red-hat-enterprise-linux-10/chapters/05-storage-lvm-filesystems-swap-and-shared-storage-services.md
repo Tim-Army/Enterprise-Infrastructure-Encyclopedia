@@ -540,6 +540,14 @@ group, and export the filesystem over NFS to a second host.
    sudo rmdir /srv/nfs/lab-share
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 RHEL 10 storage layers partitions, LVM, and a filesystem into a stack

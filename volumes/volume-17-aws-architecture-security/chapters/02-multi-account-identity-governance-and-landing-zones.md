@@ -482,6 +482,14 @@ against an OU containing production accounts.
    list-organizational-units-for-parent --parent-id "$ROOT_ID"`; the
    `Sandbox-Test` OU must no longer appear.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 AWS Organizations and organizational units give a platform team a single

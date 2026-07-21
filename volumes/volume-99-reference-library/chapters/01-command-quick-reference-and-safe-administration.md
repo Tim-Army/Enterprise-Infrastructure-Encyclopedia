@@ -242,6 +242,14 @@ repository (optional but recommended).
 temporary backup files created during the exercise, and revoke any
 elevated access granted solely for the lab.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter established a cross-platform command quick-reference table

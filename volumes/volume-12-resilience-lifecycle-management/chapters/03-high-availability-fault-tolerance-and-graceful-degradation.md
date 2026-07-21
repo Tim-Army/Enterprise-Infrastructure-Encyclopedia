@@ -323,6 +323,14 @@ Divergent data between cluster nodes after a network event, or duplicate leader 
 cd ~ && rm -f /tmp/lb-target-state && rm -rf ~/labs/resilience-ch3
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 High availability and fault tolerance translate the RTO/RPO targets from the BIA into concrete architecture: topology choice (active-active, active-passive, clustered), quorum-safe failover, and request-path resilience primitives (timeouts, retries, circuit breakers, bulkheads), backed by graceful-degradation modes for conditions that exceed absorption capacity. None of these mechanisms are self-verifying — the chapter's emphasis on failover testing sets up [Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md)'s resilience testing and chaos engineering practice, which turns "should fail over correctly" into "verified to fail over correctly."

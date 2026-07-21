@@ -437,6 +437,14 @@ reserved space to observe the resulting failure mode.
    sudo rmdir /mnt/lvm-lab /mnt/lvm-lab-snap
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter covered snapshot mechanisms (copy-on-write vs. redirect-on-

@@ -295,6 +295,14 @@ scaffolding; the product-specific labs begin in Chapter 02.
 7. This lab produces notes and an account, not infrastructure; retain
    both. The map and timeline are inputs to every subsequent chapter.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 CCNP Security is SCOR plus one concentration, and SCOR comes first because

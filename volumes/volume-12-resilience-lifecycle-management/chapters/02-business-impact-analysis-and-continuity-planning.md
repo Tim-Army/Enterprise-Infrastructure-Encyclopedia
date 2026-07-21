@@ -273,6 +273,14 @@ Keep continuity plans in the same version-controlled repository as the criticali
 cd ~ && rm -rf ~/labs/resilience-ch2
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 The business impact analysis converts business consequence into the technical vocabulary — RTO, RPO, MTD — that drives every recovery investment decision in this volume. It is process-centric, cause-agnostic, and multi-dimensional, and its output must be traceable and defensible, not asserted. BCP, COOP, and DRP are related but distinct plan types drawing on the same BIA data at different scopes. The next chapter ([Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md)) picks up where the BIA's fast-RTO strategies leave off, detailing the HA and fault-tolerance architecture needed to actually hit sub-minute and sub-hour recovery targets.

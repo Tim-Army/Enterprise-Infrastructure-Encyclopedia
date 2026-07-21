@@ -386,6 +386,14 @@ begins in [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundati
    `tap-inventory.yaml` scratch file; no production or lab infrastructure
    was touched in this lab.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 A Gigamon visibility fabric exists to solve two problems SPAN-only

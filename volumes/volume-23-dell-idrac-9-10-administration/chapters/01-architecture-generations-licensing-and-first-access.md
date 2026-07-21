@@ -468,6 +468,14 @@ before any further configuration.
 - Otherwise, no further cleanup is required — this lab makes no
   destructive configuration changes.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter established the architectural foundation for the entire

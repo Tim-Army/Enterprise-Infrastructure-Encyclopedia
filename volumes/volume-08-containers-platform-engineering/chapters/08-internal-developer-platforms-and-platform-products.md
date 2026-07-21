@@ -648,6 +648,14 @@ kind delete cluster --name platform-lab
 rm -f webservice-crd.yaml reconcile.sh claim.yaml claim-oversized.yaml
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Platform engineering treats infrastructure as a product with golden

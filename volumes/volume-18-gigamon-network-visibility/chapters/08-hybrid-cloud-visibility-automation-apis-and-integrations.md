@@ -430,6 +430,14 @@ deliberately over-scoped call that should be rejected.
      -H "Authorization: Bearer $FM_TOKEN_WRITE"
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 A hybrid enterprise visibility fabric outgrows manual, UI-driven

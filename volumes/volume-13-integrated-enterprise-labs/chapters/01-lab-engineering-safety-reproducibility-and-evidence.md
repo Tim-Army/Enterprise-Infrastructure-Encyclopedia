@@ -391,6 +391,14 @@ volume builds on.
     Retake the `ch01-baseline` snapshot if any state changed since step 7,
     so [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) starts from a known-clean point.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter established the single reference lab — addressing, naming, and

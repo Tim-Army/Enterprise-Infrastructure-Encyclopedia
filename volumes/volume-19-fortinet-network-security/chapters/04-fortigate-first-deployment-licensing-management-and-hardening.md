@@ -395,6 +395,14 @@ policy.
   scratch for a different purpose, record these settings so they can be
   reapplied quickly.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter took FGT-LAB-01 from [Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md)'s factory-default state

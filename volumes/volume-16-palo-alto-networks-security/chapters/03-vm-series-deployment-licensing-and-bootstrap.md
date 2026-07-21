@@ -435,6 +435,14 @@ malformed bootstrap file.
    remove any lab-only port group mappings created solely for this
    exercise.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 VM-Series brings PAN-OS to any hypervisor or public cloud as software,

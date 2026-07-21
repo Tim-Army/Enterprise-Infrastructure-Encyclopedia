@@ -441,6 +441,14 @@ demonstrates local device drift overriding expected behavior.
     admin@panorama01> request batch-push device-group Branch-Offices
     ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Panorama turns individually configured firewalls into a governed fleet:

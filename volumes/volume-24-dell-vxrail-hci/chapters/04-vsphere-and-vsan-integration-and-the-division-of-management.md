@@ -399,6 +399,14 @@ approximation of it.
 9. Return the test VMs to their original policy, allow resync to
    complete, and remove the policies created during the lab.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 VxRail owns the platform's own configuration — firmware, hypervisor

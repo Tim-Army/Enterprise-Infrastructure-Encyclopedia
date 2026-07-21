@@ -547,6 +547,14 @@ health check charges.
 
    The command must return a `NoSuchHostedZone` error.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Recovery Time Objective and Recovery Point Objective are business

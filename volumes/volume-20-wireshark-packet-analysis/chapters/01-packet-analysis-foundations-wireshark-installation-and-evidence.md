@@ -368,6 +368,14 @@ documented evidence-handling record for it.
    rm -f lab01-baseline.pcapng lab01-baseline.pcapng.sha256 lab01-baseline.collected-at.txt
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Packet analysis provides ground truth that logs and summaries cannot, and

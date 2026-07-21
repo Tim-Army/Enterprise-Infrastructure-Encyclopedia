@@ -424,6 +424,14 @@ requirement — including a negative test exempting one category.
 - Optionally uninstall the FortiGate CA certificate from the test
   client if it will not be used again in later chapters.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter turned [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)'s permit/deny/NAT firewall policies into

@@ -495,6 +495,14 @@ verifies successfully and a tampered artifact is detected and rejected.
 cd ~ && rm -rf ~/labs/vol10-ch07
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter built the incident response and digital evidence discipline

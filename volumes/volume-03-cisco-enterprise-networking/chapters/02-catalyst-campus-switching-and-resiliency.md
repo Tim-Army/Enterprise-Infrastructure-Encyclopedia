@@ -422,6 +422,14 @@ protection.
 
 - Save or discard configuration per your lab's standard practice.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Campus resiliency rests on three cooperating layers: VLAN/trunk hygiene

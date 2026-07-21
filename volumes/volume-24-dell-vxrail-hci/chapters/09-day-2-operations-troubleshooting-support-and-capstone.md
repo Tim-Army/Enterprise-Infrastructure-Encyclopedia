@@ -437,6 +437,14 @@ scenario.
     complete, and retain the handover document — it is the template for
     the real one.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Day-2 VxRail operations are a cadence rather than a set of skills: daily

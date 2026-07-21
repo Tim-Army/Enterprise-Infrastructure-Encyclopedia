@@ -283,6 +283,14 @@ incident, revert any hardening control changed only for lab purposes if
 it is not intended to persist, and confirm the lab system returns to its
 baseline state from [Chapter 04](04-configuration-templates-baselines-and-change-records.md).
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter consolidated the CIA triad and defense-in-depth as the

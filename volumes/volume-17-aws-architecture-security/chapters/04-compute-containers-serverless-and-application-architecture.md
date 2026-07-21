@@ -571,6 +571,14 @@ avoid leaving unused resources.
 
    The command must return a `ResourceNotFoundException`.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 AWS compute options form a spectrum from EC2's full instance control

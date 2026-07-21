@@ -317,6 +317,14 @@ policy, and validate classification coverage using an inventory view.
 - Remove the temporary inventory view if it was created only for this
   exercise.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter mapped the Console's functional areas to the underlying data

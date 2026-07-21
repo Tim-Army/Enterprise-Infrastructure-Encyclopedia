@@ -428,6 +428,14 @@ change to a live device.
   reviewing the reference device's configuration is unchanged from before
   the lab began.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter extended the catalog/baseline/compliance pattern the volume

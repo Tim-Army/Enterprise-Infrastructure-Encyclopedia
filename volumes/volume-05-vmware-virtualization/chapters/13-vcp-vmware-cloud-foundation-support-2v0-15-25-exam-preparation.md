@@ -354,6 +354,14 @@ introduced faults diagnosed without reference material.
    connectivity), and confirm the baseline health check from step 1
    passes again.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 The VCP-VCF Support (2V0-15.25) exam is explicitly troubleshooting-

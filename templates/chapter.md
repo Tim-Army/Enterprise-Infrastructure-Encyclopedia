@@ -33,6 +33,15 @@ Authoritative references and self-check questions.
 A reproducible lab with prerequisites, numbered procedure, expected results,
 validation evidence, and cleanup steps.
 
+## Lab Verification
+
+Sign-off block, completed once the lab has been run end to end (including
+the negative test). Left blank until a reviewer verifies it — never
+pre-filled, since that would assert a verification that has not happened.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Recap of key points and a checklist confirming the chapter's objectives were met.

@@ -313,6 +313,14 @@ sources. Remove any locally cached copies of vendor documentation pages
 downloaded solely for verification if they are not needed for future
 reference.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This closing chapter consolidated the standards bodies, certification

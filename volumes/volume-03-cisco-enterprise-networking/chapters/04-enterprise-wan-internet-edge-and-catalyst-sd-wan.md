@@ -437,6 +437,14 @@ dual-path failover on the hub's internet edge.
   HUB-01# clear crypto ipsec sa
   ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Modern enterprise WAN design blends traditional provider-managed MPLS,

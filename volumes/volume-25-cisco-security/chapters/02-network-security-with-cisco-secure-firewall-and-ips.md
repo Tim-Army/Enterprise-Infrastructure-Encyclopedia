@@ -297,6 +297,14 @@ volume's *Practicing* section. No production firewall.
    test policy or revert to a saved baseline so the next chapter starts
    clean.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Network Security is SCOR's largest domain because the firewall is still

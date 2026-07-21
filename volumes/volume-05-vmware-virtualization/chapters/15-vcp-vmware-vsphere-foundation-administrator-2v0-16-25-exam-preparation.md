@@ -329,6 +329,14 @@ self-assessment.
    lab, and remove the VDS/port groups if created solely for this
    exercise.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 The VCP-VVF Administrator (2V0-16.25) exam is, in substance, a standalone

@@ -392,6 +392,14 @@ segment is available.
    rm -f lab05.pcapng
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 IPv6 restructures IPv4's header into a leaner base header plus optional

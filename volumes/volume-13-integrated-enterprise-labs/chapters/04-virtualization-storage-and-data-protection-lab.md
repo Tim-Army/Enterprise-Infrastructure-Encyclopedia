@@ -346,6 +346,14 @@ actually be restored.
     git commit -m "Chapter 04: virtualization, storage, and data protection"
     ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter consolidated every VM built so far into a managed,

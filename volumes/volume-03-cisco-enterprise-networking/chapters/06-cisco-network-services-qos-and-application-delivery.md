@@ -443,6 +443,14 @@ class is throttled under congestion while the priority class is protected.
 - Stop the traffic generator and confirm interface utilization returns to
   baseline.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Consistent application delivery in an enterprise network depends on

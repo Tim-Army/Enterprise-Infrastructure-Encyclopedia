@@ -570,6 +570,14 @@ sudo ip netns del ns-wan 2>/dev/null || true
 rm -f /tmp/dnsmasq-lab.* /tmp/dhclient-lab*
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter covered the four core services every enterprise network

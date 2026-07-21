@@ -433,6 +433,14 @@ practice safe rollback.
    cd ~ && rm -rf ~/lab-tools
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Command-line fluency with coreutils, `grep`/`sed`/`awk`, `find`, and

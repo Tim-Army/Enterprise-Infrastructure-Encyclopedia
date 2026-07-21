@@ -313,6 +313,14 @@ cd ~ && rm -rf ~/labs/resilience-ch9
 
 No shared or production systems were modified; the dependency graph was a local YAML fixture.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Decommissioning is the governed, final lifecycle stage for every system this volume has protected, tested, and maintained — and it deserves the same rigor as every stage before it, not the informal treatment it often receives in practice. A dependency-verified readiness gate, built directly on the [Chapter 1](01-resilience-engineering-and-critical-service-design.md) dependency graph, prevents the premature-decommission outage that is this chapter's central risk; a bounded rollback window preserves recoverability without indefinitely delaying retirement; and NIST SP 800-88-aligned sanitization, matched to data sensitivity, closes the loop with [Chapter 8](08-sustainable-infrastructure-and-resource-lifecycle.md)'s circular hardware lifecycle. Taken together, Chapters 1 through 9 form a complete lifecycle: criticality tiering and dependency mapping ([Chapter 1](01-resilience-engineering-and-critical-service-design.md)), business-derived recovery objectives ([Chapter 2](02-business-impact-analysis-and-continuity-planning.md)), the availability architecture to meet them ([Chapter 3](03-high-availability-fault-tolerance-and-graceful-degradation.md)), the backup and DR engineering to recover from what availability alone cannot absorb ([Chapter 4](04-backup-recovery-and-disaster-recovery-engineering.md)), the testing discipline that verifies all of it actually works ([Chapter 5](05-resilience-testing-exercises-and-chaos-engineering.md)), the maintenance and patching practice that keeps it current ([Chapter 6](06-maintenance-patching-and-upgrade-engineering.md)), the modernization discipline that manages what current means over time ([Chapter 7](07-technical-debt-modernization-and-platform-renewal.md)), the sustainability practice that governs resource consumption across that lifetime ([Chapter 8](08-sustainable-infrastructure-and-resource-lifecycle.md)), and, finally, the governed retirement that closes a system's lifecycle as deliberately as its creation began it (this chapter).

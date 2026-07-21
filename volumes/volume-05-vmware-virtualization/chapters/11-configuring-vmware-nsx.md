@@ -520,6 +520,14 @@ validate a negative test (blocked traffic) before allowing it.
    rules, delete the segment, Tier-1 gateway, and Tier-0 gateway (and its
    BGP neighbor configuration) if these were created solely for this lab.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 NSX's logical networking layer builds directly on the transport fabric

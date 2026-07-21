@@ -419,6 +419,14 @@ verifies the configuration — safely, in a disposable environment.
    gh ssh-key delete <key-id>
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 A reproducible enterprise workstation treats configuration as versioned,

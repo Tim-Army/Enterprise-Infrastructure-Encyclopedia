@@ -492,6 +492,14 @@ Re-enable password authentication only if your lab environment's baseline
 requires it; in a production-representative environment, the hardened
 state should remain in place.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter covered platform hardening as a layered discipline: baseline

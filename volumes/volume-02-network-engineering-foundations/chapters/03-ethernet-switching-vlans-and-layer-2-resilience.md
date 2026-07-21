@@ -463,6 +463,14 @@ sudo ip netns del ns-host-c
 sudo ip netns del ns-switch
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter covered Ethernet's flood-and-learn switching behavior, VLAN

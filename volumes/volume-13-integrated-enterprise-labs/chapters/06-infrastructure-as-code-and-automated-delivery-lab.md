@@ -353,6 +353,14 @@ Vault, and prove the pipeline's policy gate blocks a non-compliant change.
     git commit -m "Chapter 06: infrastructure as code and automated delivery"
     ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter converted five chapters' worth of manual builds into

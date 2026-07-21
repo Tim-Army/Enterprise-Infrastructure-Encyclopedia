@@ -444,6 +444,14 @@ known-bad configuration before remediation.
     aws cloudformation delete-stack --stack-name cortex-cloud-onboarding
     ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Cortex Cloud extends Zero Trust's least-privilege and continuous-

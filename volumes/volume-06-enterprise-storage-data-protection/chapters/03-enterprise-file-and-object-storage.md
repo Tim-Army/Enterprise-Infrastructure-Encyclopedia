@@ -416,6 +416,14 @@ security implication is directly observable rather than theoretical.
    sudo rm -rf /export/lab
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter compared NFS and SMB as enterprise file protocols, introduced

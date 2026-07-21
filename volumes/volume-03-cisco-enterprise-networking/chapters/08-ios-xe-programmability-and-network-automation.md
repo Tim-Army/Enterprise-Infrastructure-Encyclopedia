@@ -482,6 +482,14 @@ the same device.
   DIST-01# guestshell destroy
   ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 IOS XE's programmability stack — YANG-modeled data exposed through

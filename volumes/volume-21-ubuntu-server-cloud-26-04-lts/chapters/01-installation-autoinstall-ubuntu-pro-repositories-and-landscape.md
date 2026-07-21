@@ -470,6 +470,14 @@ disposable VM so the exercise is safe to repeat.
    rm -rf ~/lab-autoinstall
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Ubuntu Server 26.04 LTS installs either interactively through Subiquity

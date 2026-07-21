@@ -457,6 +457,14 @@ a device-control action, without requiring physical Dell hardware.
   sudo apt-get remove -y snmpd
   ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter turned a bare, secured appliance into one actively managing

@@ -341,6 +341,14 @@ restriction and backup/restore behavior.
 - Retain the configuration backup taken in step 6 as a general good
   practice, or delete it if lab storage is constrained.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter moved from policy design ([Chapter 3](03-clarification-compliance-and-control-policies.md)) to the operational

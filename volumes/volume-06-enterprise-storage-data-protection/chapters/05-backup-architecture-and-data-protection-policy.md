@@ -489,6 +489,14 @@ cosmetic.
    rm -rf ~/backup-lab
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter formally defined RPO and RTO, established the 3-2-1-1-0

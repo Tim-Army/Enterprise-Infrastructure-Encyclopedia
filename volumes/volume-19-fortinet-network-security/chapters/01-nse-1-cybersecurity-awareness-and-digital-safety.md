@@ -359,6 +359,14 @@ chapter.
 - If a shared or lab email account was used for the phishing sample review,
   delete the sample from the mailbox after analysis is recorded.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Security awareness is the human-layer control every subsequent chapter's

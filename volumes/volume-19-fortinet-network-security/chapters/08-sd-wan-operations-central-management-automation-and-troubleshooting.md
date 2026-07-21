@@ -438,6 +438,14 @@ REST API to retrieve system status.
   none` `end`) after validation. Revoke or delete the lab API token if it
   will not be reused.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter added SD-WAN path selection on top of the routing foundation

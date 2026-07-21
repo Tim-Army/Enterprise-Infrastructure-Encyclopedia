@@ -313,6 +313,14 @@ log to confirm auth succeeded while the wrong authz rule matched — the
 7. Restore the correct policy ordering, and end the dCloud or evaluation
    session.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 The Identity Services Engine implements most of the enforcement Chapter 05

@@ -392,6 +392,14 @@ deactivate
 rm -rf ~/netlab-venv
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter established the layered vocabulary that the rest of the volume

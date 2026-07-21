@@ -595,6 +595,14 @@ cd ~
 rm -rf ~/alert-lab
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 An alert earns a page only by being actionable, urgent, and real;

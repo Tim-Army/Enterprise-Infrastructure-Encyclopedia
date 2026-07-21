@@ -555,6 +555,14 @@ sudo ip netns del ns-router 2>/dev/null || true
 rm -f /tmp/dnsmasq-ch9.* /tmp/dhclient-ch9.*
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This capstone chapter tied the entire volume together into an operational

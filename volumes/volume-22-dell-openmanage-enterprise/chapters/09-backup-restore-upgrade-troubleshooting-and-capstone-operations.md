@@ -445,6 +445,14 @@ for a full restore test) a validated backup destination.
   appliance as a standing lab environment for further study at your
   discretion.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter closed the volume by covering how to protect the OME

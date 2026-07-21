@@ -418,6 +418,14 @@ then prove the controls work with both a passing and a failing change.
    gh repo delete repo-architecture-lab --yes
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Repository architecture is a durable design decision, not an incidental

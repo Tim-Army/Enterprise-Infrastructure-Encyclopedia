@@ -399,6 +399,14 @@ evaluation.
   to remain configured for use in [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s baseline exercises and
   later chapters.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter went deep on the connected, online catalog sourcing model

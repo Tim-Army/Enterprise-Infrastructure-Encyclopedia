@@ -394,6 +394,14 @@ failure case that demonstrates the download-before-install dependency.
     admin@pa-lab-fw01# commit
     ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Practitioner-level knowledge extends Apprentice-level portfolio awareness

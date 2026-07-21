@@ -472,6 +472,14 @@ negative test against a naively-built image.
    cd ~ && rm -rf ~/lab-oc-image
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Docker, LXD, and Canonical Kubernetes cover three distinct needs on

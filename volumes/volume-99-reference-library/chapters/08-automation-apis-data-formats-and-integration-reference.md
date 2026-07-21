@@ -309,6 +309,14 @@ HTTP client; `jq` or `yq` for structured output; a Markdown editor.
 for this lab, and redact any token, key, or secret value from all saved
 evidence before committing the card to version control.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter consolidated the HTTP method and status-code vocabulary

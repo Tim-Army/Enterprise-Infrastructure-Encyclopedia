@@ -364,6 +364,14 @@ and perform a validated backup/restore drill.
 - Remove or archive the restored duplicate instance if one was created
   only for this lab's restore drill.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter built a structured, layered approach to diagnosing platform

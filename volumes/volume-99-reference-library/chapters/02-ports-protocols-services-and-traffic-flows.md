@@ -326,6 +326,14 @@ available; a Markdown editor.
 test in step 6, and remove any packet-capture files containing
 environment-specific addressing before sharing the card outside your team.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter consolidated the transport-layer theory (TCP, UDP, ICMP, and

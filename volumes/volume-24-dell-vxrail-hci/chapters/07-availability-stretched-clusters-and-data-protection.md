@@ -428,6 +428,14 @@ be nothing like a real inter-site link.
    return fault domain configuration to its original state, and allow all
    resync to complete before leaving the cluster.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Availability, replication, and backup solve three different problems, and

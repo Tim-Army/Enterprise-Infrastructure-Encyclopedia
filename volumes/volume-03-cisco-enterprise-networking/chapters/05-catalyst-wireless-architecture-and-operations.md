@@ -445,6 +445,14 @@ enabled, and validate client association.
 - Reset the AP's tags to the controller's default tags before returning it
   to a shared pool.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Catalyst wireless design centers on the split-MAC CAPWAP relationship

@@ -343,6 +343,14 @@ when the hybrid link fails.
     git commit -m "Chapter 05: hybrid cloud, Kubernetes, and platform services"
     ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter turned `CLOUD1` from a name in a topology manifest into a

@@ -468,6 +468,14 @@ pair with a deliberate failover test.
     admin@pa-fw01# commit
     ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Interfaces, zones, virtual routers, and NAT are the constructs that place a

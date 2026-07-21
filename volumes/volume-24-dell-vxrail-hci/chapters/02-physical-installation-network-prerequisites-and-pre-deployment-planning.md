@@ -439,6 +439,14 @@ volume — the checks below are exactly the checks a real engagement runs.
    the deployment plan as input to
    [Chapter 03](03-vxrail-manager-deployment-and-first-run-configuration.md).
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 VxRail deployment is unforgiving of unmet prerequisites and generous when

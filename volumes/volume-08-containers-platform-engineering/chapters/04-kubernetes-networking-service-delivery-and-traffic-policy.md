@@ -535,6 +535,14 @@ kind delete cluster --name netpol-lab
 rm -f kind-config.yaml default-deny.yaml allow-client-to-server.yaml
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Kubernetes networking guarantees a flat, NAT-free pod address space and

@@ -472,6 +472,14 @@ that its restricted role correctly denies an administrative action.
   replace it with a real CA-issued certificate before any further use of
   this appliance.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter built the identity, licensing, and security foundation that

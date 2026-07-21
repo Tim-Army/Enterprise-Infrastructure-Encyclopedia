@@ -361,6 +361,14 @@ paths.
     created solely for this lab, and note whether `lab-fabric-01` and the
     onboarded node should be retained for later chapters' exercises.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 GigaVUE-FM is the centralized control plane that turns individually

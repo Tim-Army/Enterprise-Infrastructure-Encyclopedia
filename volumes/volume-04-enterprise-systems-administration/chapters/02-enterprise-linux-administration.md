@@ -414,6 +414,14 @@ sudo userdel -r labsvc
 sudo groupdel labops 2>/dev/null || true
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Enterprise Linux administration is built on a small, consistent core

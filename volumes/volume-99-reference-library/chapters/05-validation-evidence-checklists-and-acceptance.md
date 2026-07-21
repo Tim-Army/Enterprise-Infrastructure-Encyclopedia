@@ -275,6 +275,14 @@ evidence before committing; remove evidence for the intentional Fail test
 if it referenced a non-representative lab condition that could confuse
 future readers, or clearly label it as a lab exercise artifact.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter separated validation (the technical check), evidence (the

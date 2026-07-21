@@ -408,6 +408,14 @@ sudo xfs_quota -x -c 'limit -p bhard=0 labexport' /data
 sudo rm -rf /data/labexport
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter extended the [Chapter 02](02-enterprise-linux-administration.md) LVM foundation to the full host

@@ -338,6 +338,14 @@ misconfiguration that exposes unmasked data.
    configuration, remove the `gsgroup` reference from both maps before
    deleting the `gsgroup` itself.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 GigaSMART is the traffic-intelligence engine that transforms and enriches

@@ -524,6 +524,14 @@ when one path is deliberately removed.
    sudo rm -f /var/lib/multipath-lab-lun.img
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter covered why host-side multipathing is required to safely

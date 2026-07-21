@@ -368,6 +368,14 @@ HSRP failover and OSPF adjacency both behave as designed.
     git commit -m "Chapter 03: campus, WAN, wireless, and network services"
     ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter replaced [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s placeholder gateway with a resilient

@@ -285,6 +285,14 @@ zero-trust *properties*, though, are observable in those environments.
 
 7. Remove the lab access policy and end the evaluation or dCloud session.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 SCAZT is the zero-trust concentration, and zero trust is the model that

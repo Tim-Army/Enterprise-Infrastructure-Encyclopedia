@@ -512,6 +512,14 @@ service to a specific source network with firewalld.
    rm -f ~/.ssh/lab_operator1 ~/.ssh/lab_operator1.pub
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Identity (the shadow password suite), privilege delegation (`sudo`

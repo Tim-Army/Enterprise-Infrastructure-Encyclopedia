@@ -469,6 +469,14 @@ sudo systemctl daemon-reload
 sudo rm -f /usr/local/bin/slow-job.sh /var/log/slow-job.log /var/lock/slow-job.lock
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter moved from the service basics in Chapters 02 and 03 to the

@@ -607,6 +607,14 @@ cd ~
 rm -rf ~/capacity-lab
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Capacity planning forecasts organic, seasonal, and event-driven demand

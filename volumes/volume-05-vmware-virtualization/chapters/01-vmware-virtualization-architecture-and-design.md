@@ -670,6 +670,14 @@ Remove-Datacenter -Datacenter 'LAB-DC' -Confirm:$false
 Disconnect-VIServer -Server vcenter01.lab.local -Confirm:$false
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 x86 virtualization went from software-only binary translation, through

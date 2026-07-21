@@ -493,6 +493,14 @@ quality with a scripted check.
 cd ~ && rm -rf ~/labs/vol10-ch01
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter established the governance foundation the rest of Volume X

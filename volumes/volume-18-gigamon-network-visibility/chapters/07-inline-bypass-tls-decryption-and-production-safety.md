@@ -386,6 +386,14 @@ segment.
     entirely if the lab topology will be reused for [Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md) or 09),
     and stop the continuous traffic test.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Inline deployment trades the safety of out-of-band delivery for the

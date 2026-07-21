@@ -521,6 +521,14 @@ cloud account or credentials are required.
    **Expected result:** The directory no longer exists. No cloud storage
    or database resources were created at any point in this lab.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Cloud data services span object, block, and file storage, each suited to

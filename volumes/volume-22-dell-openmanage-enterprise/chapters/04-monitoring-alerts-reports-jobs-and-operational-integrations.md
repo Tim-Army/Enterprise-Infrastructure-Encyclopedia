@@ -426,6 +426,14 @@ operations.
 - Confirm the lab device's health status has returned to Normal before
   proceeding to later chapters' labs.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter connected the managed fleet from [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) to operational

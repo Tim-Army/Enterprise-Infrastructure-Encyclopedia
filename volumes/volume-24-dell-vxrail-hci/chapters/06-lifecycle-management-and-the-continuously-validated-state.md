@@ -437,6 +437,14 @@ upgrade windows are actually won or lost.
 9. Restore DRS automation and workload levels, and retain the timing
    figures — they are the basis of every future window estimate.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 The lifecycle bundle is VxRail's product. It exists because the number of

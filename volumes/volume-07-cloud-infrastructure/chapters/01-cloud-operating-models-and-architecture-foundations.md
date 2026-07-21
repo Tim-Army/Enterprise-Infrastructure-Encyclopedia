@@ -522,6 +522,14 @@ repeatedly on a laptop or CI runner.
    **Expected result:** Terraform reports `Destroy complete! Resources: 2
    destroyed`, and the working directory no longer exists.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter established the vocabulary and mental models the rest of the

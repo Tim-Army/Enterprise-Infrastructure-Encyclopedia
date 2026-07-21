@@ -542,6 +542,14 @@ every step.
    sudo firewall-cmd --reload
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Time synchronization, DNS, web, and database services form the core of

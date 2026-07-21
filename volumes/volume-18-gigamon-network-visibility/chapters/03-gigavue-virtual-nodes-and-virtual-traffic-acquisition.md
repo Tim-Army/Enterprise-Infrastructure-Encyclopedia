@@ -338,6 +338,14 @@ a negative test demonstrating a coverage gap.
    configuration if the environment will be reused, and power off or
    discard the lab VMs if they are disposable.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Physical TAPs and SPAN ports cannot see traffic that never crosses a

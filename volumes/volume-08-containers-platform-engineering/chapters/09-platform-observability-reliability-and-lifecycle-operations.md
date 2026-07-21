@@ -590,6 +590,14 @@ kind delete cluster --name observability-lab
 rm -f app.yaml pod-kill.yaml pod-kill-all.yaml
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Platform observability rests on three distinct metrics signals

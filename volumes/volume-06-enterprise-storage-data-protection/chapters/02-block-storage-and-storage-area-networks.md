@@ -384,6 +384,14 @@ failure negative test.
    sudo rm -f /var/lib/iscsi-lab-lun.img
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter covered SAN transports (FC, iSCSI, FCoE, NVMe-oF), fabric

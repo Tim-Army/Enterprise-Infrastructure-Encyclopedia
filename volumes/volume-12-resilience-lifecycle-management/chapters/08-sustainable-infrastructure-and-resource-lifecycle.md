@@ -334,6 +334,14 @@ cd ~ && rm -rf ~/labs/resilience-ch8
 
 No shared or production systems were modified; all data was a local YAML fixture.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Sustainable infrastructure practice extends the same discipline this volume has applied to availability and cost throughout: measure actual consumption against actual need, and manage every stage of an asset's lifecycle deliberately. PUE and related efficiency metrics describe delivery efficiency, not utilization, and must be read alongside right-sizing data that itself must be redundancy-aware to avoid silently eroding the resilience investments from earlier chapters. The embodied-versus-operational carbon distinction reframes "replace it, it's more efficient" as a calculation rather than an assumption, and the circular hardware lifecycle (reduce, reuse, refurbish, recycle) extends useful asset life before final disposition — which [Chapter 9](09-retirement-decommissioning-and-lifecycle-governance.md) covers in full, including the secure data sanitization every disposition path in this chapter ultimately depends on.

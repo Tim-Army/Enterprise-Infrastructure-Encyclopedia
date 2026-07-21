@@ -337,6 +337,14 @@ cd ~ && rm -rf ~/labs/resilience-ch5
 
 No shared or production systems were modified; the experiment was entirely simulated in local Python state.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Resilience testing closes the loop this volume has been building since [Chapter 1](01-resilience-engineering-and-critical-service-design.md): every architectural and procedural control — redundancy, HA failover, backup, DR — is a hypothesis until it is exercised under conditions that resemble reality. Exercises (tabletop through full interruption) validate human procedure and coordination at increasing realism and cost; chaos engineering validates system behavior against a defined steady-state hypothesis with a controlled, reversible blast radius. Neither substitutes for the other, and both require a cadence tied to the criticality tiers established in [Chapter 1](01-resilience-engineering-and-critical-service-design.md). [Chapter 6](06-maintenance-patching-and-upgrade-engineering.md) shifts from testing resilience under injected failure to maintaining it under routine, planned change — patching and upgrades — where many of the same safety disciplines (staged rollout, abort criteria, rollback) reappear in a different context.

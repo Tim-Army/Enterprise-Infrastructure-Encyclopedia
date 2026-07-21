@@ -543,6 +543,14 @@ confirm the validator correctly rejects a malformed record.
    cd ~ && rm -rf ~/infra-lab
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Enterprise infrastructure is defined by scale, shared risk, regulatory

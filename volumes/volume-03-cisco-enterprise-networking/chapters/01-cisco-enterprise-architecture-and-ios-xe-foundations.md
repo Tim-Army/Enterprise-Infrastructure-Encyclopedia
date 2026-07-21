@@ -437,6 +437,14 @@ from factory defaults to a hardened, licensed, install-mode device.
 - In CML, delete or reset the lab topology once validation evidence has
   been captured.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter mapped the Cisco Enterprise Architecture model to the rest of

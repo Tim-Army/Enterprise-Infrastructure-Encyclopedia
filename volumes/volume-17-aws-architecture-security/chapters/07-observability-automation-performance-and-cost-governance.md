@@ -501,6 +501,14 @@ charge beyond the free tier.
    automatically per CloudWatch's retention schedule and require no
    separate deletion.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 CloudWatch metrics, logs, alarms, and dashboards form the core

@@ -463,6 +463,14 @@ sudo rm -f /etc/lab-baseline.conf
 rm -rf ~/lab-ansible
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Configuration management, software deployment, and patch management are

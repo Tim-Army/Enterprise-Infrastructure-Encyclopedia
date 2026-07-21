@@ -575,6 +575,14 @@ kind delete cluster --name workloads-lab
 rm -f kind-config.yaml app.yaml
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Workload controllers encode identity and lifecycle semantics — Deployment

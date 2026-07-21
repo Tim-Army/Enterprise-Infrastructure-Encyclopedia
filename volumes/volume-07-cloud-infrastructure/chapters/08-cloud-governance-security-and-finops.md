@@ -504,6 +504,14 @@ credentials are required.
    resources, budgets, or commitments were created at any point in this
    lab.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Cloud governance, security, and FinOps share the same underlying pattern

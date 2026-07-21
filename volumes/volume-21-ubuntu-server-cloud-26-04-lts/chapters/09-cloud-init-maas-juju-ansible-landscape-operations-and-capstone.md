@@ -568,6 +568,14 @@ unintended change before it applies.
    cd ~ && rm -rf ~/lab-capstone
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 cloud-init's datasource/module/stage architecture governs every

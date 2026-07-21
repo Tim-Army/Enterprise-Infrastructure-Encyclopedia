@@ -484,6 +484,14 @@ polling asynchronous operations, and never embedding secrets.
    [Chapter 09](09-day-2-operations-troubleshooting-support-and-capstone.md)
    builds it into a day-2 operations routine.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 VxRail exposes two APIs along the same line that divides management

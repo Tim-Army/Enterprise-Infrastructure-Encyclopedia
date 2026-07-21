@@ -501,6 +501,14 @@ cd .. && rm -rf infra-automation-lab
 gh repo delete infra-automation-lab --yes   # if you no longer need the remote
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter framed infrastructure automation as a software engineering

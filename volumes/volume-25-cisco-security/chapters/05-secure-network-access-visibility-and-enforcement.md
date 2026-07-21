@@ -289,6 +289,14 @@ self-hosted route). A test endpoint. No production access network.
 7. Return the switch port to its original configuration and end the lab
    session; the ISE policy detail carries into Chapter 06.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Secure network access is how an enterprise controls who and what may

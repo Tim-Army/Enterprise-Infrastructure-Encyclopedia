@@ -481,6 +481,14 @@ are required.
    resources or purchasing commitments were created at any point in this
    lab.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Cloud compute placement is a continuous set of decisions, not a single

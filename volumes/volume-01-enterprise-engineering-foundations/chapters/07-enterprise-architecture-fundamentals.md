@@ -589,6 +589,14 @@ correctly rejects a malformed ADR before it would reach review.
    cd ~ && rm -rf ~/ea-lab
    ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Enterprise architecture aligns business strategy with technology direction

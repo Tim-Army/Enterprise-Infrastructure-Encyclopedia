@@ -333,6 +333,14 @@ entry.
 - No system changes to revert; retain the inventory file as a reference
   artifact for [Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md)'s Security Fabric mapping exercise.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter traced cybercrime's evolution from individual actors to a

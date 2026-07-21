@@ -507,6 +507,14 @@ charges, since it otherwise continues running (and billing) indefinitely.
    The query must return an empty list, confirming GuardDuty analysis
    (and its associated charges) has stopped.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Amazon GuardDuty, Amazon Inspector, and Amazon Macie provide continuous,

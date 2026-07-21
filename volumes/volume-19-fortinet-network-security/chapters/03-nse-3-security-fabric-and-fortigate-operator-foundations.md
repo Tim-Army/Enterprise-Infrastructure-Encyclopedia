@@ -376,6 +376,14 @@ no longer shows `operator1`, and `show system accprofile` no longer shows
 `operator-readonly`. The device retains only its new `admin` password from
 step 1, ready for [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)'s licensing and hardening.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This chapter connected the individual products from [Chapter 02](02-nse-2-threat-landscape-security-technologies-and-fortinet-portfolio.md) into the

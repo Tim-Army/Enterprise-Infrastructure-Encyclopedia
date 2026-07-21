@@ -387,6 +387,14 @@ an expansion is planned correctly.
    history CSV — it is the input to the day-2 operations work in
    [Chapter 09](09-day-2-operations-troubleshooting-support-and-capstone.md).
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Expansion is a VxRail Manager operation whose most common planning

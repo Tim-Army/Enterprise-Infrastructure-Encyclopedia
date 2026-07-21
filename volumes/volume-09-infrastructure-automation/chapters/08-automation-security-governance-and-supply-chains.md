@@ -471,6 +471,14 @@ undetected.
 cd .. && rm -rf supplychain-lab
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Automation supply-chain security extends far past pinning a provider

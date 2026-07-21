@@ -463,6 +463,14 @@ sequence, run first manually as a rehearsal, then as a scripted pass.
   `capstone-firmware-baseline.txt` as documented reference points for any
   future troubleshooting.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 This capstone chapter tied together every prior chapter in the volume

@@ -515,6 +515,14 @@ then validate and clean up.
    SFTP target, and decommission the lab VCSA if it was deployed solely
    for this exercise.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 vCenter Server ships exclusively as the VCSA, with SSO, certificate

@@ -439,6 +439,14 @@ docker rmi localhost:5000/app:1.0.0
 rm -f cosign.key cosign.pub app-1.0.0.sbom.json
 ```
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 Containers are ordinary Linux processes confined by namespaces, cgroups, and

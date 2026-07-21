@@ -369,6 +369,14 @@ style workflow, with a deliberate prerequisite-failure negative test.
    workload-domain-style cluster if created solely for this exercise, and
    restore any hosts to their prior state.
 
+## Lab Verification
+
+Complete this sign-off once the lab has been run end to end, including the
+negative test. Until then, the lab is unverified.
+
+- **Lab verified by:** *pending*
+- **Date:** *pending*
+
 ## Summary and Completion Checklist
 
 The VCP-VCF Administrator (2V0-17.25) exam blueprint covers both planning/
