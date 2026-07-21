@@ -166,6 +166,62 @@ first. Its own datasheet recommends both Network Security Professional and
 Network Security Analyst beforehand, and gaps at the operational level
 compound into larger gaps at the engineering level.
 
+### The remaining paths, and how far this volume takes you
+
+The sequence above covers five of the nine certifications in this
+volume's blueprint row. Of the remaining four, one is covered elsewhere
+in this volume and three are not — stated here so a reader planning a
+path does not discover the gap after committing to it.
+
+| Certification | Tier | Scope | Coverage here |
+| --- | --- | --- | --- |
+| **Cloud Security Professional** | Professional | Cortex Cloud platform, Cloud Runtime Security, Application Security, Cloud Posture Security, and SOC processes | **Covered** — [Chapter 09](09-cortex-cloud-security-professional.md) treats CNAPP architecture, agentless versus agent-based visibility, CIEM, and shift-left IaC scanning, and maps to the blueprint directly |
+| **SD-WAN Engineer** | Specialist | Plan, deploy, configure, operate, monitor, and troubleshoot SD-WAN environments | Partial — [Chapter 04](04-pan-os-networking-nat-routing-and-high-availability.md) covers routing and [Chapter 06](06-panorama-installation-central-management-and-logging.md) central management, but SD-WAN as a product is not developed |
+| **Security Service Edge Engineer** | Specialist | Deploy, configure, manage, and troubleshoot SSE environments | Minimal — SSE is Prisma Access territory, named in [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md)'s portfolio survey and not built on |
+| **Network Security Architect** | Architect | Architecting secure, highly available, scalable systems across the network security portfolio | Partial — this volume builds the components an architect composes, but design judgment at architect tier is beyond its scope |
+
+**Cortex Cloud is a genuine second track within this volume, not an
+appendix to the network security one.** Chapter 09 stands apart from
+Chapters 03–08 deliberately: it is a different platform, a different
+console, and a different problem — securing workloads, configurations,
+and identities *inside* public cloud rather than enforcing at the network
+perimeter. A reader pursuing Cloud Security Professional can work
+Chapters 01–02 for portfolio context and then go straight to Chapter 09,
+skipping the PAN-OS chapters entirely. That path is roughly four to six
+weeks rather than the six-to-nine months the network security sequence
+takes, and [Volume VII](../../volume-07-cloud-infrastructure/README.md)
+is the useful companion for the cloud-side fundamentals it assumes.
+
+**The architect tier is a different kind of exam, not a harder one.** It
+tests design judgment and trade-off reasoning across a portfolio rather
+than configuration fluency on a product, which is why more lab repetition
+does not prepare for it. Approach it after production design experience,
+not after more study.
+
+Palo Alto publishes no prerequisites for any of these — the
+certification pages state tiers, not pathways — so sequencing is a matter
+of judgment rather than a rule. The recommendation from the datasheets
+that Network Security Professional and Network Security Analyst precede
+NGFW Engineer is the only explicit ordering the vendor gives.
+
+### Timelines for the first four exams
+
+The NGFW Engineer plan below is the detailed one because it is where this
+volume's material concentrates. The four exams preceding it in the
+sequence are shorter propositions, and a reader working the volume in
+order can reasonably slot them in as they arrive:
+
+| Exam | Realistic preparation | Prerequisite reading |
+| --- | --- | --- |
+| Cybersecurity Apprentice | 1–2 weeks | [Chapter 01](01-cybersecurity-apprentice-foundations.md); no hands-on PAN-OS needed |
+| Cybersecurity Practitioner | 2–3 weeks | [Chapter 02](02-cybersecurity-practitioner-and-platform-portfolio.md); portfolio and licensing breadth |
+| Network Security Professional | 3–4 weeks | Chapters 01–03, with Chapter 02 carrying the 30% Platform Solutions domain |
+| Network Security Analyst | 4–6 weeks | Chapters 03–05 worked hands-on at least twice, on independently built labs |
+
+Taken end to end alongside the ten-week NGFW Engineer plan, the full
+sequence is realistically a six-to-nine month undertaking rather than
+something to compress into a quarter.
+
 ### A study plan for NGFW Engineer
 
 Eight to ten weeks at **8–10 hours per week**, for a reader who has worked

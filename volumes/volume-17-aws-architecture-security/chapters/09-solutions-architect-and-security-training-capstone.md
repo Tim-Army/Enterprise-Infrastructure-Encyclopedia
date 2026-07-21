@@ -213,6 +213,79 @@ and exam version are not reproduced here because they change** and are
 region-dependent. Confirm all of them, and that SAA-C03 is still the
 current version, on the official certification page at registration.
 
+### The Security exam is now SCS-C03, and it was restructured
+
+The security path is **AWS Certified Security – Specialty**, currently
+**SCS-C03**. It replaced SCS-C02 on **2 December 2025**, and the change
+was a restructure rather than a refresh: SCS-C02's five domains became
+six, with detection and incident response split apart and a new
+governance domain added. Material written to SCS-C02 describes a
+blueprint that no longer matches.
+
+| Term | Detail |
+| --- | --- |
+| Scored questions | 50 (plus 15 unscored, not identified during the exam) |
+| Scoring | Scaled 100–1,000; **minimum passing score 750** |
+| Model | **Compensatory** — you need only pass overall, not each domain |
+| Question types | Multiple choice, multiple response, **ordering**, and **matching** |
+| Target candidate | 3–5 years securing cloud solutions |
+
+**The question types deserve attention.** Ordering questions require the
+correct responses *in the correct sequence*, and matching questions
+require every pair correct, to score at all. Both are unforgiving in a
+way multiple choice is not, and both suit incident-response and
+key-rotation content — which is exactly where this exam concentrates.
+Unanswered questions score as incorrect and there is no guessing penalty,
+so never leave one blank.
+
+| Content domain | Weight | Where this volume covers it |
+| --- | --- | --- |
+| 4 — Identity and Access Management | **20%** | [Ch. 02](02-multi-account-identity-governance-and-landing-zones.md) |
+| 3 — Infrastructure Security | 18% | [Ch. 03](03-secure-networking-hybrid-connectivity-and-edge.md), [Ch. 04](04-compute-containers-serverless-and-application-architecture.md) |
+| 5 — Data Protection | 18% | [Ch. 05](05-storage-databases-analytics-and-data-protection.md), [Ch. 08](08-security-architecture-detection-and-incident-response.md) |
+| 1 — Detection | 16% | [Ch. 08](08-security-architecture-detection-and-incident-response.md), [Ch. 07](07-observability-automation-performance-and-cost-governance.md) |
+| 2 — Incident Response | 14% | [Ch. 08](08-security-architecture-detection-and-incident-response.md) |
+| 6 — Security Foundations and Governance | 14% | [Ch. 01](01-cloud-foundations-accounts-and-well-architected-design.md), [Ch. 02](02-multi-account-identity-governance-and-landing-zones.md) |
+
+The weights sum to exactly 100%, and the spread is narrow — six points
+between the largest and smallest domain. Like the Fortinet and PowerEdge
+v2 blueprints, there is no domain to skip.
+
+**Identity is the largest domain and the one this volume front-loads.**
+[Chapter 02](02-multi-account-identity-governance-and-landing-zones.md)
+carries 20% of the exam on its own and contributes to the governance
+domain as well, which makes it roughly a third of the paper between the
+two. A reader who works only one chapter deeply should work that one.
+
+**Note that AWS does not state the exam duration in the exam guide**, and
+this encyclopedia does not restate figures it cannot source. Confirm it
+at registration.
+
+### A six-to-eight week SCS-C03 study plan
+
+For a reader who has completed the SAA-C03 path above, or who has
+equivalent AWS breadth. Someone coming to this exam without that
+breadth should work Chapters 01–07 first — the security exam assumes the
+architecture, not the other way round.
+
+| Week | Focus | Chapters | Domain |
+| --- | --- | --- | --- |
+| 1 | Security foundations and governance: the shared responsibility model, multi-account structure, Organizations, SCPs, Control Tower, audit posture | 01, 02 | 6 — 14% |
+| 2–3 | **Identity, in depth.** IAM policy evaluation logic, permission boundaries, resource policies, cross-account access, identity federation, and managing identity at scale. Write policies from scratch rather than reading them | 02 | 4 — 20% |
+| 4 | Infrastructure security: VPC design, security groups versus NACLs, layer 3–7 firewall rules at scale, edge protection, and securing compute and container workloads | 03, 04 | 3 — 18% |
+| 5 | Data protection: KMS key policies and grants, envelope encryption, key rotation, encryption at rest and in transit across S3, EBS, RDS, and Secrets Manager | 05, 08 | 5 — 18% |
+| 6 | Detection: GuardDuty, Security Hub, Config, CloudTrail, Detective, Inspector, Macie, and logging strategy — what each detects and, more importantly, what each does *not* | 07, 08 | 1 — 16% |
+| 7 | Incident response: containment, forensic isolation, credential compromise, root-cause analysis. Run this chapter's incident-response walkthrough | 08 | 2 — 14% |
+| 8 | Capstone, Well-Architected security-pillar review, and drills on ordering and matching question formats | 09 | all |
+
+**Two habits specific to this exam.** Practice *reading* IAM policy
+documents and predicting the evaluation outcome — explicit deny, then
+organization SCP, then resource policy, then identity policy — because
+that reasoning underlies far more questions than the 20% domain weight
+suggests. And for every detection service, be able to state what it does
+*not* cover; the exam's distractors are frequently a service that would
+plausibly but wrongly catch the described event.
+
 ### Mapping this volume to AWS hands-on resources
 
 AWS has no single free sandbox lab catalog. Practice is spread across

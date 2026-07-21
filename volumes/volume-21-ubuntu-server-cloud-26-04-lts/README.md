@@ -210,6 +210,44 @@ the useful check is not a practice score but a timed rebuild: provision a
 server unattended, harden it, stand up a service, and verify it — inside
 the exam's time budget, unaided. If that is comfortable, sit the exam.
 
+### Study materials
+
+Canonical's own resources are unusually well aligned to the exams,
+because the exams and the material come from the same place.
+
+| Resource | Cost | What it gives you |
+| --- | --- | --- |
+| [Canonical Academy exam content](https://canonical.com/academy/exam-content) | Free | The published objectives per exam — the controlling source for what is testable, and the thing to plan against |
+| [Canonical Academy self-study resources](https://canonical.com/academy/self-study) | Free | Canonical's curated preparation material, organized against the exam content |
+| Per-exam study guides | Free | Canonical states every exam is accompanied by a study guide built from the official exam content |
+| [Ubuntu Server documentation](https://documentation.ubuntu.com/server/) | Free | The reference the server exam is written against, and available *inside* the exam |
+| Community material | Free | Canonical explicitly points at community-made resources alongside its own |
+
+**There is no paid Canonical course in this list, and that is not an
+omission.** Unlike Dell, Palo Alto, or Gigamon, Canonical does not gate
+preparation behind commercial courseware — the objectives, the study
+guides, and the product documentation are all free, and the platform
+itself costs nothing to run. Of every certification in this
+encyclopedia, this track has the lowest cost of entry after Wireshark.
+
+**Two things about the exam environment change how to prepare.**
+
+Canonical states that the exam environment provides **an in-exam browser
+with access to documentation and Ubuntu man pages**, running on Minimal
+Ubuntu images with man pages pre-loaded. Memorizing syntax is therefore
+poor use of study time; knowing *which* page to open, and finding it
+quickly, is the skill worth drilling — the same argument the Red Hat
+volume makes about `man` and `--help`.
+
+And Canonical's guidance on the hybrid format is specific enough to be
+worth following exactly: **performance-based questions carry a
+significant portion of the score, every successful step is counted, and
+partial credit applies — so do them first.** That is the opposite of the
+Fortinet advice in [Volume XIX](../volume-19-fortinet-network-security/README.md),
+where multi-select answers score only when wholly correct. Two exams,
+two scoring models, two different strategies; do not carry a habit from
+one into the other.
+
 ### Practicing
 
 Ubuntu shares Wireshark's advantage: the platform is free, so lab access
