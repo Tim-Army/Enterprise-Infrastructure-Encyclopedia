@@ -122,14 +122,15 @@ this repository's release cycle.
 | V — VMware Virtualization | VCP-NV, VCP-VCF Support/Administrator, VCP-VVF Administrator/Support | Broadcom/VMware Learning |
 | XIV — Red Hat Enterprise Linux 10 | RHCSA (EX200) | Red Hat Training and Certification |
 | XV — Forescout Platform | FSCA, FSCP, FSCE, FSCA: OT/ICS, FSCE: OT/ICS | Forescout Technologies |
-| XVI — Palo Alto Networks Security | Cybersecurity Apprentice/Practitioner, PCNSA/PCNSE portfolio, Cortex Cloud Security Professional | Palo Alto Networks Education |
+| XVI — Palo Alto Networks Security | Cybersecurity Apprentice/Practitioner, Network Security Professional/Analyst, NGFW Engineer, Network Security Architect, Cortex Cloud Security Professional (PCNSA/PCNSE retired 2025) | Palo Alto Networks Education |
 | XVII — AWS Architecture and Security | AWS Certified Solutions Architect, AWS Certified Security | AWS Training and Certification |
-| XIX — Fortinet Network Security | NSE 1–4 progression | Fortinet Training Institute |
+| XVIII — Gigamon Network Visibility | Gigamon Certified Professional (GCP) | Gigamon Education Services |
+| XIX — Fortinet Network Security | NSE 1–4 of the NSE 1–8 program (FCF/FCA/FCP/FCSS/FCX retired 15 July 2026) | Fortinet Training Institute |
 | XX — Wireshark and Packet Analysis | WCA-101 | Wireshark Certified Analyst Program |
 | XXI — Ubuntu Server and Cloud | Ubuntu Certified Administrator (where applicable) | Canonical |
 | XXII / XXIII — Dell OpenManage / iDRAC | Dell certified systems administrator paths (where applicable) | Dell Technologies Education Services |
 
-Volumes I, II, IV, VI–XIII, XVIII, and this volume (XCIX) are
+Volumes I, II, IV, VI–XIII, and this volume (XCIX) are
 vendor-neutral or cross-domain and are not mapped to a single
 certification blueprint; they support the certification-track volumes
 above with foundational and integrated reference material.

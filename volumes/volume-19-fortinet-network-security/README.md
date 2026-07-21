@@ -68,13 +68,66 @@ point for the next.
 
 ## Certification alignment
 
-This volume aligns to the Fortinet NSE 1–4 training and certification
-progression tracked in
+This volume covers NSE 1–4 of the Fortinet NSE 1–8 training and
+certification program, tracked in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). It
 names blueprint domains and points to the Fortinet Training Institute as
 the controlling source; it does not reproduce proprietary assessment
 content. Always confirm the current blueprint against Fortinet's official
 training site before using this volume for exam preparation.
+
+### The program changed on 15 July 2026 — and changed back
+
+Fortinet's certification naming has now moved twice. The NSE 1–8 levels
+were replaced by named credentials — FCF, FCA, FCP, FCSS, and FCX — and
+then, **effective 15 July 2026, those five were retired and NSE levels
+returned**, in an expanded eight-level form.
+
+This volume's NSE naming is therefore current again, but for an accident
+of timing rather than because it was never revised. The structure it
+describes is now incomplete: the program runs to NSE 8 and branches at
+the upper levels.
+
+| Level | Structure after 15 July 2026 |
+| --- | --- |
+| NSE 1–3 | Entry-level, foundational |
+| NSE 4 | Administrator level — where this volume ends |
+| NSE 5, 6, 7 | Four tracks each: Secure Networking, Security Operations, SASE, Cloud Security |
+| NSE 8 | Expert |
+| Industry | Separate certifications in OT Security and MSSP Security |
+
+**If you hold an FCP or FCSS, you have not lost it.** Fortinet maps
+existing credentials automatically, and exams passed on or after **15
+July 2024** qualify for the new mappings even without an active prior
+certification. Published examples: FCP FortiGate Administrator maps to
+NSE 4; FortiManager Administrator to NSE 6; FCSS Network Security Support
+Engineer to NSE 6; Enterprise Firewall Administrator to NSE 7.
+
+This transition is days old at the time of writing. Treat every detail
+here as needing confirmation against the Fortinet Training Institute, and
+expect third-party material — courses, practice exams, study guides — to
+lag the naming in both directions for some months. Material written
+against FCP is not wrong about the technology; it is wrong about the
+label.
+
+### Practicing without hardware
+
+Fortinet's own training is unusually accessible compared with most
+vendors in this encyclopedia:
+
+| Route | Cost | Notes |
+| --- | --- | --- |
+| [Fortinet Training Institute](https://training.fortinet.com/) | Free self-paced tiers | The entry levels have long been free; this volume's Chapters 01–03 follow them |
+| FortiGate VM trial | Free, own hypervisor | A time-limited evaluation image — the practical route to Chapters 04–08 |
+| Fortinet Free NSE Training | Free | Self-paced courses with lab access varying by course |
+| Instructor-led courses | Paid | Delivered by Fortinet and Authorized Training Centers |
+
+The FortiGate VM evaluation image is the important one. Chapters 04
+through 08 — deployment, interfaces and routing, policy and VPN, security
+profiles, SD-WAN — are all reachable on a virtual FortiGate in a
+hypervisor, which is the same break-and-rebuild loop the labs in those
+chapters assume. Confirm current evaluation terms before planning around
+them, since licensing conditions change more often than the software.
 
 ## Software and platform baseline
 

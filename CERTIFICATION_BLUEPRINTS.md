@@ -13,7 +13,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XVI — Palo Alto Networks Security | Cybersecurity Apprentice, Cybersecurity Practitioner, Network Security Professional, Network Security Analyst, Next-Generation Firewall Engineer, SD-WAN Engineer, Security Service Edge Engineer, Network Security Architect, Cortex Cloud Security Professional | Palo Alto Networks Education |
 | XVII — AWS Architecture and Security | AWS Certified Solutions Architect, AWS Certified Security | AWS Training and Certification |
 | XVIII — Gigamon Network Visibility | Gigamon Certified Professional (GCP) | Gigamon Education Services |
-| XIX — Fortinet Network Security | NSE 1–4 progression | Fortinet Training Institute |
+| XIX — Fortinet Network Security | NSE 1–4 of the NSE 1–8 program (FCF/FCA/FCP/FCSS/FCX retired 15 July 2026) | Fortinet Training Institute |
 | XX — Wireshark and Packet Analysis | WCA-101 | Wireshark Certified Analyst Program |
 | XXI — Ubuntu Server and Cloud | Ubuntu Certified Administrator (where applicable) | Canonical |
 | XXII / XXIII — Dell OpenManage / iDRAC | Dell certified systems administrator paths (where applicable) | Dell Technologies Education Services |
