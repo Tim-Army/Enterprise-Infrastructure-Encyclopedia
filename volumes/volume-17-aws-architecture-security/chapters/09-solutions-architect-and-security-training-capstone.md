@@ -213,6 +213,54 @@ and exam version are not reproduced here because they change** and are
 region-dependent. Confirm all of them, and that SAA-C03 is still the
 current version, on the official certification page at registration.
 
+### Mapping this volume to AWS hands-on resources
+
+AWS has no single free sandbox lab catalog. Practice is spread across
+four platforms with different cost models, and knowing which is which
+saves both money and wasted effort.
+
+| Platform | Cost | What it is |
+| --- | --- | --- |
+| [AWS Skill Builder](https://skillbuilder.aws/) free tier | Free | 600+ courses, Exam Prep Review and Practice, Cloud Quest, SimuLearn, Escape Room, Card Clash |
+| Skill Builder subscription | $29/month or $449/year | Adds AWS Builder Labs — the sandbox environments — plus official pretests |
+| [AWS Workshops](https://builder.aws.com/build/workshops) | **Your own AWS bill** | ~229 self-paced workshops; a few offer a free sandbox, most do not |
+| [Well-Architected Labs](https://www.wellarchitectedlabs.com/) | Free, own account | Now largely cost-optimization and Cloud Intelligence Dashboards |
+
+**Start with the free tier of Skill Builder, not the subscription.**
+Cloud Quest, SimuLearn, the Escape Room, and the per-domain Exam Prep
+Review and Practice are all free, and between them cover more of SAA-C03
+than most candidates realize. Pay for the subscription when you
+specifically want AWS Builder Labs' provisioned sandboxes or the official
+pretests — not as a default first step.
+
+| Chapters | Topic | Resource |
+| --- | --- | --- |
+| 01 | Well-Architected as design vocabulary | *How to run an AWS Well-Architected Framework Review* workshop |
+| 01–09 | Whole-blueprint practice | Skill Builder **Exam Prep Review** and **Exam Prep Practice** for SAA-C03, per domain |
+| 01–09 | Scenario reasoning, gamified | **AWS Cloud Quest** (Solutions Architect role) and **AWS SimuLearn** |
+| 03 | VPC, subnets, routing, hybrid connectivity | *AWS Networking Workshop* |
+| 04, 06 | Resilient multi-AZ application design | *Building Modern Resilient Applications* workshops |
+| 05 | Database selection and DynamoDB modeling | *Amazon DynamoDB Workshop* |
+| 06 | Migration and recovery | *Migrate with AWS Application Migration Service (MGN)* |
+| 07 | Cost visibility and optimization | Well-Architected Labs cost-optimization content and the CUR Query Library |
+| 08 | Identity and detection | *Amazon Cognito Workshop*; *EKS Security Workshop* for container-side controls |
+| 09 | Capstone self-assessment | The Well-Architected Tool review described above |
+
+**Two cautions specific to AWS.** Workshops run in *your own account*, so
+unlike a vendor-hosted sandbox they bill you for whatever they provision
+— follow the teardown steps, and set a budget alarm before starting, as
+[Chapter 07](07-observability-automation-performance-and-cost-governance.md)
+covers. And the workshop catalog is weighted heavily toward generative AI,
+containers, and modern application development rather than the
+architecture fundamentals SAA-C03 tests; it rewards searching by service
+name over browsing.
+
+Note also that Well-Architected Labs has been restructured. Its
+six-pillar lab collection is no longer where older references point — the
+pillar URLs now redirect to the site root — and what remains is centered
+on cost optimization and the Cloud Intelligence Dashboards. Treat older
+blog posts linking to per-pillar labs as stale.
+
 ## Implementation and Automation
 
 ### 1. A minimal, secure serverless capstone stack (Terraform)
