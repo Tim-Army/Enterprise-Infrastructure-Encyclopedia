@@ -87,6 +87,87 @@ official certification page before using this volume for exam
 preparation, since blueprints change independently of this
 repository's release cycle.
 
+### The exam is performance-based, and that changes everything
+
+**EX200 is not a multiple-choice exam.** It is performance-based: you are
+given a live Red Hat Enterprise Linux system and a set of tasks, and you
+are scored on whether the system ends up in the required state. Nothing
+is asked about a command; the command either worked or it did not.
+
+The exam is currently based on **Red Hat Enterprise Linux 10**, matching
+this volume's baseline. Red Hat states the prerequisites as either the
+RH124 and RH134 courses, or the RH199 Rapid Track that combines them, or
+comparable production experience. RHCSA is also a hard prerequisite for
+both Red Hat Certified Engineer credentials, in Enterprise Linux and in
+Ansible.
+
+Three consequences follow, and they should shape preparation more than
+any reading list:
+
+- **Reading cannot prepare you.** Every other certification in this
+  encyclopedia can be partly passed on recall. This one cannot. Time not
+  spent at a shell is close to wasted.
+- **Speed is part of the assessment.** Tasks are timed in aggregate.
+  Knowing *how* to configure LVM is necessary but not sufficient if it
+  takes forty minutes.
+- **Practice on a system you can destroy.** The productive loop is break,
+  fix, and rebuild — which is what the labs in Chapters 01–09 are already
+  built around, and why each carries a cleanup step.
+
+### Mapping this volume to Red Hat interactive labs
+
+Red Hat publishes free browser-based [interactive
+labs](https://www.redhat.com/en/interactive-labs/enterprise-linux) — over
+fifty for RHEL alone — each a preconfigured environment with a stated
+objective, most running ten to twenty minutes. They need a Red Hat
+account, which is free, and no subscription.
+
+| Chapter | Topic | Interactive lab |
+| --- | --- | --- |
+| 01 | Subscriptions and entitlement | *Subscription management basics*; *The remote host configuration tool – rhc* |
+| 01 | Web console administration | *Update a Red Hat Enterprise Linux host with the web console* |
+| 02 | Package management and streams | *Install software using package managers*; *Manage software from an application stream*; *Extra Packages for Enterprise Linux* |
+| 02 | Shell fundamentals | *Helpful Linux commands*; *Unusual unixisms* |
+| 02 | Building packages | *Build software into RPM packages* (50 mins) |
+| 03 | Services and processes | *Service administration basics* |
+| 03 | Performance observation | *Performance Co-Pilot*; *Performance observability in practice with bcc tools*; *Use the web console to monitor performance* |
+| 04 | Users, groups, permissions | *Manage user basics*; *Use file permissions* |
+| 04 | Networking and firewalls | *Networking basics*; *Configure firewalls with RHEL system roles* |
+| 05 | Storage | *Configure system storage with Stratis* |
+| 06 | SELinux and containers | *Secure containers with SELinux (Udica)* |
+| 06 | Cryptographic policy | *Configure the system-wide cryptographic policy*; *Customize the system-wide cryptographic policy* |
+| 06 | Compliance and hardening | *Use OpenSCAP for security compliance and vulnerability scanning*; *Approve applications using file access policy (fapolicyd)*; *Configure terminal session recording* |
+| 07 | Databases and services | *Intro to Databases*; *Use system roles to install Microsoft SQL Server* |
+| 08 | Containers | *Deploy containers using Podman container tools*; *Create and manage Podman pods*; *Configure a rootless Podman service*; *Build container images with RHEL container tools*; *Create images with container tools (Buildah)* |
+| 09 | System roles and automation | *Build a standard operating environment with system roles* |
+| 09 | Image building | *Build custom images with Red Hat Image Builder*; *Build machine images with the web console and image builder* |
+| — | Unstructured practice | *Red Hat Enterprise Linux open lab* (50 mins) |
+
+**The open lab is the one to return to.** *Red Hat Enterprise Linux open
+lab* gives a system with no prescribed task list, which is the closest
+free analogue to exam conditions — set yourself an objective from the
+RHCSA blueprint and work it unaided.
+
+Two labs worth knowing about that sit outside RHCSA scope but inside this
+volume's: *Introduction to image mode for Red Hat Enterprise Linux*
+covers bootc, and *Red Hat Satellite Basics* runs two hours on fleet
+content management.
+
+### Other Red Hat practice routes
+
+| Route | Cost | Notes |
+| --- | --- | --- |
+| Interactive labs | Free, account required | The table above; short, guided, no local setup |
+| Developer subscription | Free | Up to 16 nodes for your own lab — see [Chapter 01](chapters/01-installation-subscriptions-repositories-and-cockpit.md) |
+| [Developer Sandbox](https://developers.redhat.com/developer-sandbox) | Free | Hosted OpenShift, relevant to [Chapter 08](chapters/08-podman-docker-compatibility-kubernetes-and-openshift-foundations.md) |
+| [Red Hat Learning Subscription](https://www.redhat.com/en/services/training/learning-subscription) | Paid, no-cost trial available | RH124, RH134, RH199 and exam attempts bundled |
+| RH199 Rapid Track | Paid | Combines RH124 and RH134 for candidates with existing experience |
+
+For a reader with production Linux experience, the developer
+subscription plus the interactive labs is a complete free path to
+RHCSA-level competence. The Learning Subscription earns its cost mainly
+when an exam attempt is bundled or an employer is paying.
+
 ## Software and platform baseline
 
 Chapters in this volume reference the dated baseline recorded in
