@@ -76,6 +76,77 @@ cleanup instructions.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this
   volume.
 
+## Certification alignment
+
+This volume maps to the **Gigamon Certified Professional (GCP)**
+certification, described in more depth in
+[Chapter 09](chapters/09-operations-troubleshooting-training-and-enterprise-capstone.md).
+Chapters describe the competencies the program validates and point to
+Gigamon's official education services; no proprietary exam questions or
+licensed courseware are reproduced. Confirm current details against
+Gigamon Education Services before planning a study timeline.
+
+### The exam
+
+| Term | Detail |
+| --- | --- |
+| Format | Multiple choice, scenario-based |
+| Passing score | 70% |
+| Delivery | Remote proctored — anywhere with connectivity, webcam, and microphone |
+| Cost | $250 US per attempt; vouchers available |
+| Result | Pass or fail within 48 hours |
+| Retakes | Permitted, but each needs a new voucher |
+| Validity | **Two years**, then a renewal test focused on what has changed |
+
+**The one weighting Gigamon publishes is unusual and useful.** The test
+splits **35% general security, networking, and cloud knowledge** against
+**65% Gigamon-specific implementation and configuration**. That ratio is
+worth taking seriously in both directions: a third of the exam is not
+about Gigamon at all, so a candidate who only knows the product will
+struggle, while an experienced network engineer already holds much of
+that third and should spend accordingly.
+
+Gigamon states the prerequisite as extensive network security experience
+plus product-specific knowledge — the latter normally acquired through
+the **GCP Boot Camp**, a five-day instructor-led course with hands-on
+labs, offered for a fee through Gigamon Education Services and its
+Premium Training Partner network. The certification test is sold
+separately and can be taken at the end of day five.
+
+Note that the published certification datasheet carries a 2022 copyright.
+It remains the current published document, but treat the figures above as
+needing confirmation at registration rather than as freshly restated.
+
+### Practicing without a production fabric
+
+Gigamon has no free interactive lab catalog of the kind Red Hat or VMware
+publish, and the hands-on labs that exist sit inside the paid boot camp.
+Three routes give genuine console time without one:
+
+| Route | Cost | What it gives you |
+| --- | --- | --- |
+| [GigaVUE-FM Test Drive](https://www.gigamon.com/lp/fm-test-drive.html) | Free | A hosted GigaVUE-FM with a step-by-step guide covering flow mapping, TLS/SSL decryption, and Application Intelligence — the closest free analogue to a lab |
+| AWS Test Drive | Free | A launched environment with emailed access, time-boxed to about three hours per session |
+| Trial licensing | Free, own infrastructure | GigaVUE-FM ships a 30-day trial bundle, plus a one-time 60-day 1TB SecureVUE Plus volume-based license from installation |
+| [Live demos](https://www.gigamon.com/lp/free-trial.html) | Free | Expert-led sessions for data-center and hybrid-cloud visibility — watching, not driving |
+
+The Test Drive maps most directly onto
+[Chapter 04](chapters/04-gigavue-fm-installation-onboarding-security-and-governance.md)
+(GigaVUE-FM),
+[Chapter 05](chapters/05-ports-flow-mapping-traffic-policy-and-tool-delivery.md)
+(flow mapping and tool delivery),
+[Chapter 06](chapters/06-gigasmart-traffic-intelligence-and-packet-transformation.md)
+(GigaSMART and Application Intelligence), and
+[Chapter 07](chapters/07-inline-bypass-tls-decryption-and-production-safety.md)
+(TLS decryption).
+
+**The time limits are the constraint to plan around.** Three hours is
+enough to follow a guided path, not enough to break something and rebuild
+it — which is the loop that actually builds competence. For sustained
+practice, the trial licenses on your own virtual infrastructure are the
+better route: 30 and 60 days is long enough to deploy a fabric, map
+traffic through it, and take it apart deliberately.
+
 ## Software and platform baseline
 
 Chapters in this volume reference the dated baseline recorded in
