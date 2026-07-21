@@ -24,6 +24,7 @@ rewritten against a newer release, and record the date of the change.
 | Wireshark | 4.4.x | 2026-07 |
 | Dell OpenManage Enterprise | 4.7.x | 2026-07 |
 | Dell iDRAC | iDRAC9 / iDRAC10 | 2026-07 |
+| Dell VxRail | Version-locked to the vSphere release its bundle carries — confirm the pairing against Dell's VxRail release notes | 2026-07 |
 | Proxmox VE | 9.x | 2026-07 |
 | Node.js (publishing toolchain) | 22.x LTS | 2026-07 |
 | pnpm | 11.9.0 | 2026-07 |

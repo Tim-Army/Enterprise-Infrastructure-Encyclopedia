@@ -17,8 +17,9 @@ vendor source; it does not reproduce proprietary assessment content.
 | XX — Wireshark and Packet Analysis | WCA-101 | Wireshark Certified Analyst Program |
 | XXI — Ubuntu Server and Cloud | Canonical Academy SysAdmin qualification (four exams) | Canonical Academy |
 | XXII / XXIII — Dell OpenManage / iDRAC | PowerEdge Foundations v2 (D-PE-FN-01), PowerEdge Operate (D-PE-OE-23) | Dell Technologies Proven Professional |
+| XXIV — Dell VxRail | VxRail Deploy (D-VXR-DY-01), VxRail Operate (D-VXR-OE-01) | Dell Technologies Proven Professional |
 
-Volumes not listed (I, II, IV, VI–XIII, XVIII, XCIX) are vendor-neutral or
+Volumes not listed (I, II, IV, VI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
 support the certification-track volumes above with foundational and
 integrated-lab material.

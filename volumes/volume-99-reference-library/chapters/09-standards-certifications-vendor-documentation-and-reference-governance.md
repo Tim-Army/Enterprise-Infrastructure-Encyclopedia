@@ -13,7 +13,7 @@
   current certification blueprint without relying on a stale, cached
   memory of exam content.
 - Locate the authoritative, current documentation portal for every major
-  vendor covered in Volumes III–XXIII.
+  vendor covered in Volumes III–XXIV.
 - Apply a reference-governance discipline — review cadence, version
   pinning, and change tracking — to keep this reference volume itself from
   becoming the stale documentation it warns against elsewhere.
@@ -41,7 +41,7 @@ recur across this encyclopedia:
 - **Vendor documentation** describes a specific product's implementation
   and is authoritative only for that product and only for the version it
   documents. Every vendor-specific volume in this encyclopedia (III, V,
-  XIV–XXIII) is scoped to a dated baseline in `SOFTWARE_VERSIONS.md`
+  XIV–XXIV) is scoped to a dated baseline in `SOFTWARE_VERSIONS.md`
   precisely because vendor documentation is not durable in the way an
   open standard is — a command, API endpoint, or default setting
   routinely changes between major releases.
@@ -129,6 +129,7 @@ this repository's release cycle.
 | XX — Wireshark and Packet Analysis | WCA-101 | Wireshark Certified Analyst Program |
 | XXI — Ubuntu Server and Cloud | Canonical Academy SysAdmin qualification (four exams) | Canonical Academy |
 | XXII / XXIII — Dell OpenManage / iDRAC | PowerEdge Foundations v2 (D-PE-FN-01), PowerEdge Operate (D-PE-OE-23) | Dell Technologies Proven Professional |
+| XXIV — Dell VxRail | VxRail Deploy (D-VXR-DY-01), VxRail Operate (D-VXR-OE-01) | Dell Technologies Proven Professional |
 
 Volumes I, II, IV, VI–XIII, and this volume (XCIX) are
 vendor-neutral or cross-domain and are not mapped to a single
@@ -148,7 +149,7 @@ above with foundational and integrated reference material.
 | Forescout | Forescout Resources/Documentation portal | XV |
 | Gigamon | Gigamon Documentation Library | XVIII |
 | Wireshark | `wireshark.org/docs` | XX |
-| Dell Technologies | Dell Technologies Support/Documentation (OpenManage, iDRAC) | XXII, XXIII |
+| Dell Technologies | Dell Technologies Support/Documentation (OpenManage, iDRAC, VxRail) | XXII, XXIII, XXIV |
 | AWS | `docs.aws.amazon.com` | XVII |
 | Kubernetes | `kubernetes.io/docs` | VIII |
 | HashiCorp (Terraform) | `developer.hashicorp.com/terraform` | IX |
@@ -315,7 +316,7 @@ reference.
 
 This closing chapter consolidated the standards bodies, certification
 blueprints, and vendor documentation portals that anchor every technical
-claim across all 24 volumes, and it defined the reference-governance
+claim across all 25 volumes, and it defined the reference-governance
 discipline — provenance, as-of dating, dual-trigger review — that keeps
 this reference volume from becoming exactly the kind of stale, drifted
 documentation the rest of the encyclopedia warns readers to avoid. With

@@ -1,8 +1,8 @@
-# 24-Volume Curriculum Roadmap
+# 25-Volume Curriculum Roadmap
 
 This roadmap is the authoritative plan for the Enterprise Infrastructure
 Encyclopedia: approved titles, stable slugs, scope, and chapter counts for
-all 24 volumes. Dependencies are noted where a volume assumes prior volumes
+all 25 volumes. Dependencies are noted where a volume assumes prior volumes
 as prerequisite reading.
 
 | # | Volume | Slug | Chapters | Primary Dependency |
@@ -30,7 +30,8 @@ as prerequisite reading.
 | 21 | XXI — Ubuntu Server and Cloud 26.04 LTS | `volume-21-ubuntu-server-cloud-26-04-lts` | 9 | Volume IV |
 | 22 | XXII — Dell OpenManage Enterprise | `volume-22-dell-openmanage-enterprise` | 9 | Volume IV |
 | 23 | XXIII — Dell iDRAC 9 and 10 Administration | `volume-23-dell-idrac-9-10-administration` | 9 | Volume IV |
-| 24 | XCIX — Reference Library | `volume-99-reference-library` | 9 | Volumes I–XXIII |
+| 24 | XXIV — Dell VxRail Hyperconverged Infrastructure | `volume-24-dell-vxrail-hci` | 9 | Volume V |
+| 25 | XCIX — Reference Library | `volume-99-reference-library` | 9 | Volumes I–XXIV |
 
 ## Ownership and scope control
 

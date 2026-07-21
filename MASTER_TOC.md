@@ -332,6 +332,20 @@ table of contents for that volume.
 8. Firmware, iDRAC, BIOS, Lifecycle Controller, and Platform Updates
 9. RACADM, Redfish, OpenManage, Automation, and Capstone Operations
 
+## Volume XXIV — Dell VxRail Hyperconverged Infrastructure
+
+[Volume README](volumes/volume-24-dell-vxrail-hci/README.md) · [Index](volumes/volume-24-dell-vxrail-hci/INDEX.md) · [Glossary](volumes/volume-24-dell-vxrail-hci/GLOSSARY.md)
+
+1. HCI Architecture, VxRail Positioning, and Platform Models
+2. Physical Installation, Network Prerequisites, and Pre-Deployment Planning
+3. VxRail Manager Deployment and First-Run Configuration
+4. vSphere and vSAN Integration and the Division of Management
+5. Cluster Expansion, Scale-Out, and Capacity Planning
+6. Lifecycle Management and the Continuously Validated State
+7. Availability, Stretched Clusters, and Data Protection
+8. VxRail API, Automation, and Ecosystem Integrations
+9. Day-2 Operations, Troubleshooting, Support, and Capstone
+
 ## Volume XCIX — Reference Library
 
 [Volume README](volumes/volume-99-reference-library/README.md) · [Index](volumes/volume-99-reference-library/INDEX.md) · [Glossary](volumes/volume-99-reference-library/GLOSSARY.md)

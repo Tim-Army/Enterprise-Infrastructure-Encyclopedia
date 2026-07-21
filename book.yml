@@ -807,6 +807,40 @@ volumes:
         title: "RACADM, Redfish, OpenManage, Automation, and Capstone Operations"
         path: volumes/volume-23-dell-idrac-9-10-administration/chapters/09-racadm-redfish-openmanage-automation-and-capstone-operations.md
   - id: volume-24
+    number: "XXIV"
+    slug: volume-24-dell-vxrail-hci
+    title: "Dell VxRail Hyperconverged Infrastructure"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "HCI Architecture, VxRail Positioning, and Platform Models"
+        path: volumes/volume-24-dell-vxrail-hci/chapters/01-hci-architecture-vxrail-positioning-and-platform-models.md
+      - id: 02
+        title: "Physical Installation, Network Prerequisites, and Pre-Deployment Planning"
+        path: volumes/volume-24-dell-vxrail-hci/chapters/02-physical-installation-network-prerequisites-and-pre-deployment-planning.md
+      - id: 03
+        title: "VxRail Manager Deployment and First-Run Configuration"
+        path: volumes/volume-24-dell-vxrail-hci/chapters/03-vxrail-manager-deployment-and-first-run-configuration.md
+      - id: 04
+        title: "vSphere and vSAN Integration and the Division of Management"
+        path: volumes/volume-24-dell-vxrail-hci/chapters/04-vsphere-and-vsan-integration-and-the-division-of-management.md
+      - id: 05
+        title: "Cluster Expansion, Scale-Out, and Capacity Planning"
+        path: volumes/volume-24-dell-vxrail-hci/chapters/05-cluster-expansion-scale-out-and-capacity-planning.md
+      - id: 06
+        title: "Lifecycle Management and the Continuously Validated State"
+        path: volumes/volume-24-dell-vxrail-hci/chapters/06-lifecycle-management-and-the-continuously-validated-state.md
+      - id: 07
+        title: "Availability, Stretched Clusters, and Data Protection"
+        path: volumes/volume-24-dell-vxrail-hci/chapters/07-availability-stretched-clusters-and-data-protection.md
+      - id: 08
+        title: "VxRail API, Automation, and Ecosystem Integrations"
+        path: volumes/volume-24-dell-vxrail-hci/chapters/08-vxrail-api-automation-and-ecosystem-integrations.md
+      - id: 09
+        title: "Day-2 Operations, Troubleshooting, Support, and Capstone"
+        path: volumes/volume-24-dell-vxrail-hci/chapters/09-day-2-operations-troubleshooting-support-and-capstone.md
+  - id: volume-99
     number: "XCIX"
     slug: volume-99-reference-library
     title: "Reference Library"
