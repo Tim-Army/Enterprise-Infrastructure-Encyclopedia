@@ -27,3 +27,25 @@ integrated-lab material.
 Always confirm the current blueprint against the vendor's official page
 before using a chapter for exam preparation — blueprints change independently
 of this repository's release cycle.
+
+## Currency
+
+Every exam code in this table was verified against its vendor's own
+published exam description or exam-topics document on **21 July 2026**.
+Third-party summaries were not treated as sources; several were found to
+be wrong during the check, including one that reported a superseded Cisco
+ENCOR version.
+
+Drift in this table is normal and has been frequent. Within a single year
+the Dell PowerEdge Operate exam was rebuilt and renumbered, AWS replaced
+its Security Specialty blueprint, Fortinet retired and then restored its
+NSE naming, and Cisco moved ENCOR to v1.2. **Treat any code here older
+than a few months as needing re-confirmation**, and re-run the check when
+planning study time rather than assuming this file is current.
+
+Two vendor-side arithmetic artifacts are recorded deliberately in the
+volumes rather than silently corrected, because a reader who adds the
+numbers up will otherwise assume the transcription is wrong: the Dell
+VxRail Operate weights sum to 101%, and the Wireshark WCA-101 protocol
+domain is published as 43% while its stated internal split sums to 44%.
+Both are as published.

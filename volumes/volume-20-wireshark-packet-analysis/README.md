@@ -94,7 +94,8 @@ certifying program before scheduling an exam.
 
 ### Domain weights, mapped to this volume
 
-Weights are from the published WCA-101 objectives; they total 100%.
+Weights are from the published WCA-101 objectives; the six domains
+total 100%.
 
 | Domain | Weight | Chapters |
 | --- | --- | --- |
@@ -114,6 +115,13 @@ with the remaining 27% of protocol content spread across
 [Chapters 04](chapters/04-ethernet-arp-ipv4-and-icmpv4-analysis.md),
 [05](chapters/05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md) and
 [07](chapters/07-application-protocol-tls-and-service-response-analysis.md).
+
+**One caveat on the protocol domain's internal split.** The objectives
+give domain 5.0 as 43%, then state within it that TCP is 17% and non-TCP
+protocols are 27% — which sums to 44%, not 43%. The one-point gap is in
+the published document, not in this table, and it is the same kind of
+rounding artifact as the Dell Operate blueprint's 101%. Do not try to
+reconcile it; the top-level six domains do sum cleanly to 100%.
 
 Conversely, interface configuration is 5%. It is worth knowing and quick
 to learn, but it is not worth extended study time.

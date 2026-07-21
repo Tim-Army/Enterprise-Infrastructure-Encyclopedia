@@ -101,16 +101,24 @@ pass, and priced at $250 US.
 | 2V0-18.25 | VCP-VVF Support | vSphere Foundation 9.0 | 135 min | 60 |
 | 2V0-17.25 | VCP-VCF Administrator | Cloud Foundation 9.0 | 135 min | 60 |
 | 2V0-15.25 | VCP-VCF Support | Cloud Foundation 9.0 | 135 min | 60 |
-| 2V0-41.24 | VCP-NV | NSX 4.x | 135 min | 70 |
+| 2V0-41.24 | VCP-NV | NSX 4.x | 135 min | 55 |
 
 The four 2025-generation exams use multiple choice and multiple-selection
 multiple choice only. **VCP-NV is the outlier**: a 2024-generation exam
-with 70 questions and a much wider format range — drag and drop, point and
-click, hot-area, and matching alongside multiple choice. Prepare for the
-interaction styles, not only the content.
+with the widest format range of the five — its exam guide names
+build-list, matching, drag-and-drop, point-and-click, and hot-area
+alongside multiple choice and multiple-selection multiple choice, and
+notes that further item types may appear. Prepare for the interaction
+styles, not only the content. It is also the *shortest* of the five at 55
+items rather than 60, which cuts the other way: each question carries
+more weight.
 
-Language availability differs too: 2V0-18.25 and 2V0-41.24 are English
-only, while the other three are offered in English and Japanese.
+Language availability differs, and the exam guides are sparing about it.
+Broadcom explicitly describes **2V0-15.25 and 2V0-18.25** as delivered
+"in English"; the guides for 2V0-16.25, 2V0-17.25, and 2V0-41.24 make no
+language statement at all. Absence of a statement is not a promise of
+other languages — confirm what you need at registration rather than
+inferring it from silence.
 
 ### The five standardized blueprint sections
 
