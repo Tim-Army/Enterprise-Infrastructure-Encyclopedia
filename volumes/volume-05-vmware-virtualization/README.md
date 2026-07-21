@@ -90,6 +90,72 @@ length, and registration requirements against Broadcom's official exam
 guides before scheduling, since blueprints are revised independently of
 this repository's release cycle.
 
+### The exams
+
+All five are proctored, scored on a scaled 100–500 range with 300 to
+pass, and priced at $250 US.
+
+| Exam | Certification | Targets | Duration | Questions |
+| --- | --- | --- | --- | --- |
+| 2V0-16.25 | VCP-VVF Administrator | vSphere Foundation 9.0 | 135 min | 60 |
+| 2V0-18.25 | VCP-VVF Support | vSphere Foundation 9.0 | 135 min | 60 |
+| 2V0-17.25 | VCP-VCF Administrator | Cloud Foundation 9.0 | 135 min | 60 |
+| 2V0-15.25 | VCP-VCF Support | Cloud Foundation 9.0 | 135 min | 60 |
+| 2V0-41.24 | VCP-NV | NSX 4.x | 135 min | 70 |
+
+The four 2025-generation exams use multiple choice and multiple-selection
+multiple choice only. **VCP-NV is the outlier**: a 2024-generation exam
+with 70 questions and a much wider format range — drag and drop, point and
+click, hot-area, and matching alongside multiple choice. Prepare for the
+interaction styles, not only the content.
+
+Language availability differs too: 2V0-18.25 and 2V0-41.24 are English
+only, while the other three are offered in English and Japanese.
+
+### The five standardized blueprint sections
+
+Broadcom standardized VMware exam blueprints into five sections, and its
+exam guides state plainly that some **may not appear** in a given exam
+where that exam has no testable objectives for them:
+
+1. IT Architectures, Technologies, Standards
+2. VMware Solution
+3. Plan and Design the VMware Solution
+4. Install, Configure, Administrate the VMware Solution
+5. Troubleshoot and Optimize the VMware Solution
+
+Chapters 12–16 map this volume against each exam's section structure.
+
+### What Broadcom does not publish
+
+**Percentage weights.** The exam guides list sections and their testable
+objectives but assign no weighting to them. That is a real difference
+from AWS, Cisco, and Palo Alto Networks, and it has a practical
+consequence: you cannot allocate study time by exam emphasis, because the
+emphasis is not stated. Sequence by dependency and by your own weakest
+objectives instead — which is what the study trackers in Chapters 12–16
+are built to surface.
+
+Exam guides do state a **minimally qualified candidate** profile, which is
+the closest thing to a difficulty signal. VCP-NV's, for example, expects
+roughly six months with NSX and two years in IT.
+
+### Study materials
+
+| Role | Resource | Why |
+| --- | --- | --- |
+| Official blueprint | The exam guide for your exam number | Authority on sections and testable objectives; download it before planning anything |
+| Official training | The recommended course named on each exam page | VVF Administrator points at *vSphere Foundation: Build, Manage and Operate*; both Support exams at *VMware Cloud Foundation: Troubleshooting*; VCF Administrator at *Build, Manage, and Secure* plus *Automate and Operate* |
+| Reference | Broadcom Tech Docs | Product documentation for vSphere, vSAN, NSX, and VCF Operations |
+| Practice exams | Third-party banks | Useful for pacing against 135 minutes; verify the bank targets your exam number, since the 9.0-generation codes are recent |
+| Lab | Nested ESXi, VMware Workstation, or a VMUG Advantage subscription | The administrator and support exams reward console familiarity that reading does not build |
+| Community | VMware Certification community and VMUG | Where blueprint revisions and exam-version changes surface first |
+
+A note on lab access. Broadcom's licensing changes have made evaluation
+licenses harder to obtain than they once were. VMUG Advantage remains the
+most reliable route to a legitimate home lab for these exams, and it is
+worth budgeting for alongside the $250 exam fee.
+
 ## Software and platform baseline
 
 Chapters in this volume reference the dated baseline recorded in
