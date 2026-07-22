@@ -185,6 +185,39 @@ engineers (Chapter 06), or DCAI where AI clusters are landing (Chapter
 | Practice exams | Boson ExSim-Max where available | Closest simulation of Cisco question style, with reasoned explanations |
 | Lab | Cisco Modeling Labs for NX-OS; the ACI Simulator and Cisco U. sandboxes for ACI and UCS | Nexus 9000v labs VXLAN EVPN well; ACI and UCS need the simulator and sandboxes — see Practicing |
 
+### CCIE lab readiness
+
+**CCIE Data Center v3.1** sits above the CCNP track, reached by first
+passing the `DCCOR 350-601` core. It is an **eight-hour, hands-on
+practical exam** in the standard CCIE two-module shape — a **3-hour
+Design** module (scenario-based, no device access) and a **5-hour
+Deploy, Operate, and Optimize** module — covering the full data center
+lifecycle: NX-OS and VXLAN EVPN fabrics, ACI, UCS compute, storage
+networking, and automation, with programmability expected throughout.
+Cisco is adding a **new AI module** to its CCIE practical exams —
+fitting for a track that already gained the DCAI specialist; confirm the
+current format at registration.
+
+**What the lab adds over this volume.** These chapters build data
+center knowledge and configuration skill at professional depth; the lab
+tests **speed, cross-domain integration, and troubleshooting under
+time** — building a VXLAN EVPN fabric, an ACI tenant, and UCS service
+profiles that interoperate, quickly and correctly, then fixing
+deliberately broken scenarios across network, compute, and storage at
+once.
+
+**How to prepare.** Rehearse full topologies against the clock in the
+lab environments Chapter 01 and the Practicing section describe — Nexus
+9000v in Cisco Modeling Labs, the ACI Simulator or DevNet sandboxes for
+ACI, and the UCS Platform Emulator for compute — a complete build end to
+end, then the same estate broken for you to repair. Pair each chapter's
+Hands-On Lab with a timed rebuild, drill the Design module using the
+method in [Volume XXX](../volume-30-cisco-ccde-network-design/README.md),
+and use Cisco's official CCIE Data Center practice labs before exam day.
+Confirm the current lab blueprint and format on the Cisco Learning
+Network before scheduling — CCIE lab topics are separate from the
+written exam topics and change independently.
+
 ## Practicing
 
 NX-OS practice is straightforward: the Nexus 9000v image in Cisco

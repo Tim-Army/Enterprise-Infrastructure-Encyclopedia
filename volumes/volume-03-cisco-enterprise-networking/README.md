@@ -292,6 +292,50 @@ Build the topologies rather than reading about them. Cisco's
 performance-based questions test configuration and troubleshooting under
 time pressure, which passive study does not develop.
 
+### CCIE lab readiness
+
+Two expert-level labs sit above this volume's professional tracks, each
+reached by first passing the matching core written exam (ENCOR for
+Enterprise Infrastructure, WLCOR for Wireless):
+
+| Lab | Version | Qualifying written |
+| --- | --- | --- |
+| **CCIE Enterprise Infrastructure** | v1.1 | 350-401 ENCOR |
+| **CCIE Wireless** (renamed from CCIE Enterprise Wireless) | v1.1 | 350-101 WLCOR |
+
+Both are **eight-hour, hands-on practical exams** in the standard CCIE
+two-module shape: a **3-hour Design** module (scenario-based, no device
+access — the reasoning skills of [Volume XXX](../volume-30-cisco-ccde-network-design/README.md)
+applied to one track) followed by a **5-hour Deploy, Operate, and
+Optimize** module on real equipment, over a **dual-stack (IPv4 and
+IPv6)** network, with programmability and automation expected
+throughout. Cisco is adding a **new AI module** to its CCIE practical
+exams — confirm the current format at registration. The CCIE Wireless
+lab now incorporates **Cisco Meraki** alongside Wi-Fi 6 and Wi-Fi 7,
+and its written qualifier moved from ENCOR to WLCOR.
+
+**What the lab adds over this volume.** These chapters build the
+knowledge and the configuration skills at professional depth; the lab
+tests something further — **speed, integration, and troubleshooting
+under time pressure**. You must configure complex multi-technology
+topologies quickly and correctly, diagnose deliberately broken
+scenarios, and keep an eight-hour pace. That is a distinct skill from
+knowing the technology, and it is built only by doing full-scale timed
+labs, not by reading.
+
+**How to prepare.** Build complete topologies in Cisco Modeling Labs
+(the standalone Catalyst 9000v/IOS XE nodes for Enterprise
+Infrastructure; a 9800-CL controller for Wireless), and rehearse them
+repeatedly against the clock — a full scenario end to end, then the
+same scenario broken for you to fix. Pair every chapter's Hands-On Lab
+with a timed rebuild, drill the Design module using the CCDE-style
+method in [Volume XXX](../volume-30-cisco-ccde-network-design/README.md),
+and use Cisco's official CCIE practice labs and equipment-rental or
+BYOD options to work on the real platforms before exam day. Confirm the
+current lab blueprint and format on the Cisco Learning Network before
+scheduling — CCIE lab topics are separate documents from the written
+exam topics and change independently.
+
 ## Building and validating this volume
 
 From the repository root, after completing

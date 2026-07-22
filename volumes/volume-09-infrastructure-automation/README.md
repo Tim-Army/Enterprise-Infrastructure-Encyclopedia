@@ -146,6 +146,43 @@ For the core exam afterward, extend the same structure by three to four
 weeks, weighting evenly — its five domains are a flat 20% each, so
 weakest-domain-first beats weight-ordered study.
 
+### CCIE lab readiness
+
+**CCIE Automation** — rebranded from DevNet Expert on 3 February 2026 —
+is the expert tier above this track, reached by first passing the
+`350-901` core. It is a **hands-on practical lab exam** in which you
+design, build, and operate software and automation solutions across
+Cisco platforms end to end; Cisco has announced **minor (v1.2) updates**
+and is adding a **new AI module** to its CCIE practical exams, so confirm
+the current format at registration. Unlike the infrastructure CCIEs, the
+Automation lab is a **programming and automation** exam — pipelines,
+APIs, model-driven interfaces, and orchestration under time — rather than
+a device-configuration one.
+
+**What the lab adds over this volume.** These chapters build automation
+as a vendor-neutral discipline — IaC, configuration management, CI/CD,
+event-driven orchestration, and secure execution — and that discipline
+is exactly what the lab assumes. What the lab tests further is **speed
+and Cisco-platform depth**: driving Catalyst Center, Meraki, NSO, IOS XR
+model-driven interfaces, and the Cisco API surface specifically, and
+building working automation against them under an exam clock. That
+platform-specific breadth is deliberately beyond a vendor-neutral volume
+— pair these chapters with hands-on time on the Cisco platforms
+themselves.
+
+**How to prepare.** Take the idempotent, asserted, vaulted habits this
+volume teaches and apply them repeatedly against **Cisco DevNet
+sandboxes** (Catalyst Center, Meraki, NSO, IOS XR) until building and
+debugging Cisco-platform automation is fast and reflexive. Rehearse full
+automation scenarios end to end against the clock, drill the design and
+architecture reasoning using [Volume XXX](../volume-30-cisco-ccde-network-design/README.md),
+and draw platform depth from the Cisco technology volumes —
+[XXVII](../volume-27-cisco-data-center/README.md) and
+[XXIX](../volume-29-cisco-service-provider/README.md) for their
+model-driven and NSO material. Confirm the current lab blueprint and
+format on the Cisco Learning Network before scheduling — CCIE lab topics
+are separate from the written exam topics and change independently.
+
 ## Building and validating this volume
 
 From the repository root, after completing

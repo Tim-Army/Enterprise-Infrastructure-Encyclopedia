@@ -42,7 +42,7 @@ does not by itself verify every technical claim in it.
 | XXX — Cisco CCDE Network Design | 9 | Drafted |
 | XCIX — Reference Library | 10 | Drafted |
 
-**Total declared chapters:** 285 of 285 drafted (100%). Every volume has a
+**Total declared chapters:** 286 of 286 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

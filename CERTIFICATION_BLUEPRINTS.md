@@ -47,6 +47,18 @@ alignment sections cover the entry/associate CCST, Automation, and
 Cybersecurity tracks (Volumes II, IV, IX, X). No Cisco track is
 awaiting a volume.
 
+The **CCIE expert lab** for each track has a **CCIE lab readiness**
+section in its owning volume — CCIE Enterprise Infrastructure (v1.1) and
+CCIE Wireless (v1.1) in III, CCIE Automation in IX, CCIE Security (v6.1)
+in XXV, CCIE Data Center (v3.1) in XXVII, CCIE Collaboration (v3.1) in
+XXVIII, and CCIE Service Provider (v5.1) in XXIX. These cover the
+qualifying-written and technology preparation and how to build hands-on
+lab speed; they are not a substitute for Cisco's official CCIE practice
+labs. The lab versions above were verified against the Cisco Learning
+Network CCIE track pages on 22 July 2026; a new AI module is being added
+to the CCIE practical exams (and CCIE Automation carries a v1.2 minor
+update), so confirm the current lab format before scheduling.
+
 ## Currency
 
 Every exam code in this table was verified against its vendor's own

@@ -177,6 +177,39 @@ announced end-of-life.
 | Practice exams | Boson ExSim-Max where available | Closest simulation of Cisco question style |
 | Lab | CUCM/IM&P/Unity Connection VMs on ESXi or Proxmox; Webex free tier; Expressway trial OVAs | Collaboration labs are appliance VMs — see Practicing |
 
+### CCIE lab readiness
+
+**CCIE Collaboration v3.1** sits above the CCNP track, reached by first
+passing the `CLCOR 350-801` core. It is an **eight-hour, hands-on
+practical exam** in the standard CCIE two-module shape — a **3-hour
+Design** module (scenario-based, no device access) and a **5-hour
+Deploy, Operate, and Optimize** module — covering the full collaboration
+lifecycle: call control, protocols and endpoints, applications, the
+edge, and media, with programmability expected throughout. Cisco is
+adding a **new AI module** to its CCIE practical exams — confirm the
+current format at registration.
+
+**What the lab adds over this volume.** These chapters build
+collaboration knowledge and configuration skill at professional depth;
+the lab tests **speed, integration, and troubleshooting under time** —
+standing up CUCM, IM&P, Unity Connection, CUBE, and Expressway so they
+interoperate (registration, dial plan, MRA, voicemail all working end to
+end), quickly, then diagnosing deliberately broken call flows across the
+whole estate.
+
+**How to prepare.** Build the complete collaboration estate as virtual
+appliances (the Practicing section's CUCM/IM&P/Unity/Expressway VMs, or
+DevNet's collaboration sandboxes) and rehearse it against the clock: a
+full build with a working call, MRA sign-in, and voicemail end to end,
+then the same estate broken for you to fix — reading SIP and diagnosing
+by Call-ID as Chapter 02 teaches, at pace. Pair each chapter's Hands-On
+Lab with a timed rebuild, drill the Design module using the method in
+[Volume XXX](../volume-30-cisco-ccde-network-design/README.md), and use
+Cisco's official CCIE Collaboration practice labs before exam day.
+Confirm the current lab blueprint and format on the Cisco Learning
+Network before scheduling — CCIE lab topics are separate from the
+written exam topics and change independently.
+
 ## Practicing
 
 Cisco distributes Unified CM, IM and Presence, Unity Connection, and

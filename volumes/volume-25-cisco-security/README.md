@@ -277,6 +277,40 @@ transition-aware discussion. Confirm every course code and edition at
 purchase — the August 2026 refresh is retiring and replacing courseware
 alongside the exams.
 
+### CCIE lab readiness
+
+**CCIE Security v6.1** sits above the CCNP track, reached by first
+passing the `SCOR 350-701` core (the same qualifier as CCNP Security).
+It is an **eight-hour, hands-on practical exam** in the standard CCIE
+two-module shape — a **3-hour Design** module (scenario-based, no device
+access) and a **5-hour Deploy, Operate, and Optimize** module — in which
+you design, deploy, operate, and optimize end-to-end security for a
+**dual-stack (IPv4 and IPv6)** enterprise network, and are expected to
+**program and automate** it as well. Cisco is adding a **new AI module**
+to its CCIE practical exams — confirm the current format at
+registration.
+
+**What the lab adds over this volume.** These chapters build security
+knowledge and configuration skill at professional depth; the lab tests
+**speed, cross-product integration, and troubleshooting under time**.
+You must stand up and interconnect Secure Firewall, ISE, VPNs, secure
+access, and cloud/content controls quickly, then diagnose deliberately
+broken scenarios — a distinct skill from knowing each product, built
+only by full-scale timed labs.
+
+**How to prepare.** Build a complete security topology in a lab
+(Secure Firewall/FMC, ISE, and the VPN and secure-access components of
+Chapters 02–08 together), and rehearse it against the clock: a full
+build end to end, then the same estate broken for you to fix. Pair each
+chapter's Hands-On Lab with a timed rebuild, drill the Design module
+using the method in [Volume XXX](../volume-30-cisco-ccde-network-design/README.md),
+and use Cisco's official CCIE Security practice labs and
+equipment-rental or BYOD options before exam day. Confirm the current
+lab blueprint and format on the Cisco Learning Network before
+scheduling — CCIE lab topics are separate from the written exam topics
+and change independently, and the SCOR qualifier itself moves v1.1→v2.0
+on 26 August 2026.
+
 ## Practicing
 
 **Cisco's security portfolio is commercial, and most of it has no free

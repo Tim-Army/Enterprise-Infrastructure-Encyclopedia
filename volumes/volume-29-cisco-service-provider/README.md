@@ -150,6 +150,39 @@ Chapter 09 carries its material.
 | Practice exams | Boson ExSim-Max where available | Closest simulation of Cisco question style |
 | Lab | Cisco Modeling Labs with IOS XRv 9000 nodes | XRv carries the whole blueprint short of hardware-specific forwarding — see Practicing |
 
+### CCIE lab readiness
+
+**CCIE Service Provider v5.1** sits above the CCNP track, reached by
+first passing the `SPCOR 350-501` core. It is an **eight-hour, hands-on
+practical exam** in the standard CCIE two-module shape — a **3-hour
+Design** module (scenario-based, no device access) and a **5-hour
+Deploy, Operate, and Optimize** module — covering the full provider
+lifecycle: IS-IS and BGP at scale, MPLS and Segment Routing, traffic
+engineering, L3VPN and L2VPN/EVPN, QoS, and multicast on IOS XR, with
+programmability and model-driven operation expected throughout. Cisco is
+adding a **new AI module** to its CCIE practical exams — confirm the
+current format at registration.
+
+**What the lab adds over this volume.** These chapters build
+provider-technology knowledge and IOS XR configuration skill at
+professional depth; the lab tests **speed, integration, and
+troubleshooting under time** — building a provider core with services
+layered on it (SR transport, TI-LFA protection, L3VPN and EVPN isolation
+all working together), quickly, then diagnosing deliberately broken
+scenarios where IP reachability and label reachability diverge, at pace.
+
+**How to prepare.** Rehearse full topologies against the clock with IOS
+XRv 9000 in Cisco Modeling Labs (or the DevNet IOS XR sandboxes): a
+complete provider build — core IGP, BGP/RR, SR transport, TI-LFA, L3VPN,
+EVPN — end to end, then the same network broken for you to repair using
+the layer-by-layer method the chapters teach. Pair each chapter's
+Hands-On Lab with a timed rebuild, drill the Design module using the
+method in [Volume XXX](../volume-30-cisco-ccde-network-design/README.md),
+and use Cisco's official CCIE Service Provider practice labs before exam
+day. Confirm the current lab blueprint and format on the Cisco Learning
+Network before scheduling — CCIE lab topics are separate from the
+written exam topics and change independently.
+
 ## Practicing
 
 The service provider blueprint is almost entirely testable in Cisco
