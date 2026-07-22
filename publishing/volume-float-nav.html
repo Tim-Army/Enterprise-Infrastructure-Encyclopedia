@@ -8,15 +8,16 @@
      absent, so a link can never go dead. The header button collapses the
      panel to a compact "Volumes" handle and expands it again, and that
      choice is remembered in localStorage. Included only in the series build;
-     on any page with no volume headings it hides itself. Back to top
-     lives in the frozen table-of-contents header (publishing/
-     toc-freeze.html), not here. Progressive enhancement — the main table
+     on any page with no volume headings it hides itself. The panel links
+     to the main table of contents; Back to top lives in the frozen
+     table-of-contents header (publishing/toc-freeze.html), not here. Progressive enhancement — the main table
      of contents works without it. -->
 <aside id="volume-float" aria-label="Volume navigation">
   <button id="vf-toggle" class="vf-toggle" type="button" aria-expanded="true" aria-controls="vf-body">
     <span class="vf-caret" aria-hidden="true"></span><span class="vf-label">Volumes</span>
   </button>
   <div id="vf-body" class="vf-body">
+    <div class="vf-toc-row"><a href="#TOC" class="vf-toc">Table of contents</a></div>
     <nav aria-label="Volumes"><ul id="vf-list"></ul></nav>
   </div>
 </aside>
@@ -71,6 +72,13 @@
      the volume list below it scrolls when the panel hits its max height. */
   #volume-float .vf-body { display: flex; flex-direction: column; min-height: 0; }
   #volume-float .vf-body nav { overflow-y: auto; min-height: 0; }
+  #volume-float .vf-toc-row {
+    margin-bottom: 0.45rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--eie-rule);
+  }
+  #volume-float .vf-toc { color: var(--eie-link); font-weight: 600; text-decoration: none; }
+  #volume-float .vf-toc:hover { text-decoration: underline; }
   #volume-float ul { list-style: none; margin: 0; padding: 0; }
   #volume-float li { margin: 0.2rem 0; }
   #volume-float a { color: var(--eie-link); text-decoration: none; }
