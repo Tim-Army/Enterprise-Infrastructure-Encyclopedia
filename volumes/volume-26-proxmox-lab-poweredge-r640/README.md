@@ -124,23 +124,6 @@ two machines much as the single RHEL image serves both Red Hat machines.
 See [Chapter 07](chapters/07-building-the-iso-library.md) and
 [Chapter 08](chapters/08-deploying-the-virtual-machines.md).
 
-### Corrections applied to the original specification
-
-Two conflicts in the source specification were resolved before this volume
-was written, and are recorded here so the build is internally consistent:
-
-- **The server trunk now allows VLAN 3.** The server VMs are tagged VLAN 3,
-  but the originally stated trunk allow-list (6, 10, 200, 202) omitted it,
-  which would have blocked all server-VLAN traffic. VLAN 3 has been added
-  to the allowed list.
-- **Windows Server uses 10.30.10.89, not .88.** The original specification
-  assigned 10.30.10.88 to both Red Hat Server and Windows Server. Red Hat
-  Server keeps .88; Windows Server moves to the next free address, .89.
-
-EVE-ng was not given a VLAN in the source specification; it sits on the
-10.30.10.0/24 server subnet and is therefore placed on **VLAN 3** with the
-other server-subnet machines.
-
 ## Chapters
 
 1. [iDRAC Out-of-Band Access and First Configuration](chapters/01-idrac-out-of-band-access-and-first-configuration.md)

@@ -5,13 +5,19 @@
      Each link targets that volume's entry in the main table of contents at
      the top of the page (Pandoc gives every TOC entry an id of the form
      "toc-<heading-id>"), falling back to the body heading if that entry is
-     absent, so a link can never go dead. Included only in the series build;
+     absent, so a link can never go dead. The header button collapses the
+     panel to a compact "Volumes" handle and expands it again, and that
+     choice is remembered in localStorage. Included only in the series build;
      on any page with no volume headings it hides itself. Progressive
      enhancement — the main table of contents works without it. -->
 <aside id="volume-float" aria-label="Volume navigation">
-  <div class="vf-top-row"><a href="#" class="vf-top">&uarr; Back to top</a></div>
-  <p class="vf-title">Volumes</p>
-  <nav aria-label="Volumes"><ul id="vf-list"></ul></nav>
+  <button id="vf-toggle" class="vf-toggle" type="button" aria-expanded="true" aria-controls="vf-body">
+    <span class="vf-caret" aria-hidden="true"></span><span class="vf-label">Volumes</span>
+  </button>
+  <div id="vf-body" class="vf-body">
+    <div class="vf-top-row"><a href="#" class="vf-top">&uarr; Back to top</a></div>
+    <nav aria-label="Volumes"><ul id="vf-list"></ul></nav>
+  </div>
 </aside>
 <style>
   #volume-float {
@@ -30,6 +36,35 @@
     line-height: 1.35;
     z-index: 9;
   }
+  /* Header button that collapses and expands the panel. */
+  #volume-float .vf-toggle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0 0 0.4rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.72rem;
+    opacity: 0.75;
+    cursor: pointer;
+  }
+  #volume-float .vf-toggle:hover,
+  #volume-float .vf-toggle:focus-visible { opacity: 1; }
+  #volume-float .vf-caret {
+    width: 0;
+    height: 0;
+    margin-right: 0.4rem;
+    border-left: 0.3rem solid transparent;
+    border-right: 0.3rem solid transparent;
+    border-top: 0.34rem solid currentColor;
+    transition: transform 0.15s ease;
+  }
   #volume-float .vf-top-row {
     margin-bottom: 0.45rem;
     padding-bottom: 0.45rem;
@@ -37,18 +72,16 @@
   }
   #volume-float .vf-top { color: var(--eie-link); font-weight: 600; text-decoration: none; }
   #volume-float .vf-top:hover { text-decoration: underline; }
-  #volume-float .vf-title {
-    margin: 0 0 0.3rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-size: 0.72rem;
-    opacity: 0.75;
-  }
   #volume-float ul { list-style: none; margin: 0; padding: 0; }
   #volume-float li { margin: 0.2rem 0; }
   #volume-float a { color: var(--eie-link); text-decoration: none; }
   #volume-float a:hover { text-decoration: underline; }
+  /* Collapsed: shrink to just the header handle, point the caret right, and
+     hide the volume list. */
+  #volume-float.vf-collapsed { width: auto; }
+  #volume-float.vf-collapsed .vf-toggle { margin-bottom: 0; }
+  #volume-float.vf-collapsed .vf-caret { transform: rotate(-90deg); }
+  #volume-float.vf-collapsed .vf-body { display: none; }
   /* Only render where the right margin beside the centered 52rem body is
      genuinely wide enough for the 14rem panel; below ~1340px the panel
      would overlap the text, so it is hidden and the top-of-page table of
@@ -59,7 +92,8 @@
   (function () {
     var list = document.getElementById('vf-list');
     var floatEl = document.getElementById('volume-float');
-    if (!list || !floatEl) { return; }
+    var toggle = document.getElementById('vf-toggle');
+    if (!list || !floatEl || !toggle) { return; }
     var found = 0;
     document.querySelectorAll('h1').forEach(function (h) {
       var text = (h.textContent || '').replace(/\s+/g, ' ').trim();
@@ -76,6 +110,20 @@
       list.appendChild(li);
       found++;
     });
-    if (found === 0) { floatEl.style.display = 'none'; }
+    if (found === 0) { floatEl.style.display = 'none'; return; }
+
+    // Collapsible panel: the header button hides or shows the volume list,
+    // and the choice is remembered across pages and visits.
+    var STORAGE_KEY = 'eie-volfloat-collapsed';
+    function setCollapsed(collapsed) {
+      floatEl.classList.toggle('vf-collapsed', collapsed);
+      toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    }
+    try { setCollapsed(localStorage.getItem(STORAGE_KEY) === '1'); } catch (e) {}
+    toggle.addEventListener('click', function () {
+      var collapsed = !floatEl.classList.contains('vf-collapsed');
+      setCollapsed(collapsed);
+      try { localStorage.setItem(STORAGE_KEY, collapsed ? '1' : '0'); } catch (e) {}
+    });
   })();
 </script>

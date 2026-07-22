@@ -12,7 +12,7 @@ topic is introduced or covered in depth. See also the
 - **BOSS boot mirror (RAID 1)** — [Chapter 02, Theory and Architecture / Implementation and Automation](chapters/02-storage-boss-boot-mirror-and-the-river-raid-5-array.md)
 - **Cisco CML (licensing)** — [Chapter 07, Theory and Architecture](chapters/07-building-the-iso-library.md); [Chapter 08](chapters/08-deploying-the-virtual-machines.md)
 - **Content types (Proxmox storage)** — [Chapter 06, Theory and Architecture](chapters/06-proxmox-storage-the-river-datastore-and-iso-repository.md)
-- **Corrections to the specification** — [README](README.md); [Chapter 05](chapters/05-network-architecture-management-nic-vlan-trunk-and-bridges.md); [Chapter 08](chapters/08-deploying-the-virtual-machines.md)
+- **Corrections to the specification** — [Chapter 05](chapters/05-network-architecture-management-nic-vlan-trunk-and-bridges.md); [Chapter 08](chapters/08-deploying-the-virtual-machines.md)
 - **DNS and NTP via the gateway** — [Chapter 04, Theory and Architecture / Implementation and Automation](chapters/04-no-subscription-repository-updates-and-core-services.md)
 - **Duplicate address correction (10.30.10.88 → .89)** — [Chapter 08, Theory and Architecture / Validation and Troubleshooting](chapters/08-deploying-the-virtual-machines.md)
 - **EVE-ng virtual machine** — [Chapter 08, Theory and Architecture](chapters/08-deploying-the-virtual-machines.md)
