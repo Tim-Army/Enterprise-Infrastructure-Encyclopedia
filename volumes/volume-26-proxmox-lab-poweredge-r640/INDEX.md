@@ -6,6 +6,8 @@ topic is introduced or covered in depth. See also the
 [volume glossary](GLOSSARY.md) for term definitions and the
 [master index](../../INDEX.md) for cross-volume topics.
 
+- **Appendix A: IPv4 table** — [README](README.md)
+- **Appendix B: IPv6 table (template, IPv4-only build)** — [README](README.md)
 - **Appliance import (GNS3, EVE-ng)** — [Chapter 07, Theory and Architecture](chapters/07-building-the-iso-library.md); [Chapter 08, Implementation and Automation](chapters/08-deploying-the-virtual-machines.md)
 - **BOSS boot mirror (RAID 1)** — [Chapter 02, Theory and Architecture / Implementation and Automation](chapters/02-storage-boss-boot-mirror-and-the-river-raid-5-array.md)
 - **Cisco CML (licensing)** — [Chapter 07, Theory and Architecture](chapters/07-building-the-iso-library.md); [Chapter 08](chapters/08-deploying-the-virtual-machines.md)
