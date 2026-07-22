@@ -1057,6 +1057,25 @@ volumes:
       - id: 02
         title: "Appendix — Proxmox Lab IPv4 and IPv6 Address Tables"
         path: volumes/volume-97-master-appendices/chapters/02-appendix-proxmox-lab-ipv4-and-ipv6-address-tables.md
+  - id: volume-98
+    number: "XCVIII"
+    slug: volume-98-acronyms
+    title: "Acronyms"
+    chapter_count: 4
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Acronyms A through D"
+        path: volumes/volume-98-acronyms/chapters/01-acronyms-a-through-d.md
+      - id: 02
+        title: "Acronyms E through L"
+        path: volumes/volume-98-acronyms/chapters/02-acronyms-e-through-l.md
+      - id: 03
+        title: "Acronyms M through R"
+        path: volumes/volume-98-acronyms/chapters/03-acronyms-m-through-r.md
+      - id: 04
+        title: "Acronyms S through Z"
+        path: volumes/volume-98-acronyms/chapters/04-acronyms-s-through-z.md
   - id: volume-99
     number: "XCIX"
     slug: volume-99-reference-library

@@ -437,6 +437,15 @@ table of contents for that volume.
 1. Appendix — Cisco U. Learning Paths and Continuing Education Credits
 2. Appendix — Proxmox Lab IPv4 and IPv6 Address Tables
 
+## Volume XCVIII — Acronyms
+
+[Volume README](volumes/volume-98-acronyms/README.md) · [Index](volumes/volume-98-acronyms/INDEX.md) · [Glossary](volumes/volume-98-acronyms/GLOSSARY.md)
+
+1. Acronyms A through D
+2. Acronyms E through L
+3. Acronyms M through R
+4. Acronyms S through Z
+
 ## Volume XCIX — Reference Library
 
 [Volume README](volumes/volume-99-reference-library/README.md) · [Index](volumes/volume-99-reference-library/INDEX.md) · [Glossary](volumes/volume-99-reference-library/GLOSSARY.md)
