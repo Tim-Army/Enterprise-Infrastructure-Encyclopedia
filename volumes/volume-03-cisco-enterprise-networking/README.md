@@ -71,9 +71,9 @@ changes.
 
 ## Certification alignment
 
-This volume maps to the CCNA and CCNP Enterprise (ENCOR/ENARSI)
-certification and training paths, as recorded in
-[CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). Chapter
+This volume maps to the CCNA, CCNP Enterprise (ENCOR/ENARSI), and CCNP
+Wireless (WLCOR/WLSD/WLSI) certification and training paths, as recorded
+in [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). Chapter
 content describes blueprint domains and points to Cisco's official
 training sources; it does not reproduce proprietary exam questions or
 licensed courseware. Always confirm the current blueprint against Cisco
@@ -170,7 +170,9 @@ the exam topics contain no reference to wireless, WLC, roaming, or access
 points. [Chapter 05](chapters/05-catalyst-wireless-architecture-and-operations.md)
 remains required for **CCNA**, whose Network Access domain still covers
 Cisco wireless architectures, AP modes, WLAN components, and the WLC GUI.
-It is simply not ENCOR material any more.
+It is simply not ENCOR material any more — that content moved to the new
+professional wireless track, covered in **The CCNP Wireless track**
+below.
 
 **ENARSI — four to six weeks**, taken after ENCOR while the routing
 material is fresh.
@@ -186,6 +188,91 @@ material is fresh.
 Sequence the path CCNA → ENCOR → ENARSI. ENCOR and ENARSI overlap enough
 that taking ENARSI within a few months of ENCOR saves re-learning the
 routing material.
+
+### The CCNP Wireless track
+
+Cisco split wireless into its own professional track on **19 March
+2026**, realigning the content that ENCOR v1.2 removed. CCNP Wireless
+requires the `WLCOR` core exam plus **one** concentration exam, and
+`WLCOR` also replaces ENCOR as the qualifying written exam for **CCIE
+Wireless** (renamed from CCIE Enterprise Wireless). Cisco highly
+recommends the Understanding Cisco Wireless Foundations (WLFNDU)
+training as foundation knowledge before attempting the track.
+
+| Exam | Title | Duration | Role in the track |
+| --- | --- | --- | --- |
+| **350-101 WLCOR** v1.0 | Implementing and Operating Cisco Wireless Core Technologies | 120 min | Core — required for CCNP Wireless and CCIE Wireless |
+| **300-110 WLSD** v1.2 | Designing Cisco Wireless Networks | 90 min | Concentration |
+| **300-120 WLSI** v1.2 | Implementing Cisco Wireless Advanced Solutions | 90 min | Concentration |
+
+All are delivered through Pearson VUE. Question counts, cut scores, and
+pricing are set per exam and are not restated here; confirm them at
+registration.
+
+**350-101 WLCOR v1.0**
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 RF Fundamentals | 15% | 05 |
+| 2.0 802.11 Technology Fundamentals | 10% | 05 |
+| 3.0 Wireless Network Implementation | 10% | 05, 09 |
+| 4.0 Wireless Network Operation | 20% | 05, 07, 09 |
+| 5.0 Client Connectivity Configuration | 20% | 05, 07 |
+| 6.0 Wireless Monitoring and Management | 15% | 05, 09 |
+| 7.0 Automation and AI | 10% | 08, 09 |
+
+**300-110 WLSD v1.2**
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 Wireless Site Survey | 25% | 05 |
+| 2.0 Wired and Wireless Infrastructure | 30% | 02, 05 |
+| 3.0 Mobility | 25% | 05 |
+| 4.0 WLAN High Availability | 20% | 05 |
+
+**300-120 WLSI v1.2**
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 FlexConnect | 15% | 05 |
+| 2.0 QoS on a Wireless Network | 10% | 06 |
+| 3.0 Multicast | 10% | 03, 06 |
+| 4.0 Location Services | 10% | 09 |
+| 5.0 Advanced Location Services | 10% | 09 |
+| 6.0 Security for Wireless Client Connectivity | 20% | 05, 07 |
+| 7.0 Monitoring | 15% | 09 |
+| 8.0 Device Hardening | 10% | 07 |
+
+Be clear-eyed about depth. [Chapter 05](chapters/05-catalyst-wireless-architecture-and-operations.md)
+anchors the track — CAPWAP split-MAC architecture, Catalyst 9800
+deployment models, AP modes, RF fundamentals, fast roaming, tags and
+profiles — and chapters 02–09 carry the wired, QoS, multicast, identity,
+automation, and assurance domains. But the concentrations reach beyond
+this volume: WLSD's site-survey methodology (25% of that exam) and
+WLSI's location services (20% across its two location domains) are
+wireless-specialist material with no dedicated chapter here. Treat this
+volume as the architecture-and-operations backbone and pair it with
+wireless-specific lab time on a Catalyst 9800 — the 9800-CL virtual
+controller runs in Cisco Modeling Labs.
+
+**WLCOR — eight weeks**, using the same 8–10 hours per week as the plans
+above:
+
+| Week | Focus | Chapters |
+| --- | --- | --- |
+| 1 | RF fundamentals and 802.11: propagation, signal measurements, antennas, governance, bands and channels, MIMO — a quarter of the exam | 05 |
+| 2–3 | **The heavy block at 30%.** Implementation and operation: architectures (local, mesh, fabric, cloud), physical infrastructure, AP discovery and join, AP modes, WLAN access, client policy across WLC, Catalyst Center, ISE, and Spaces | 05, 09 |
+| 4–5 | Client connectivity: WLAN authentication on and off the controller, client-side configuration, roaming, guest networking | 05, 07 |
+| 6 | Monitoring and management: maintenance, client monitoring, connectivity troubleshooting, platform integrations | 05, 09 |
+| 7 | Automation and AI: Python, NETCONF/YANG, wireless APIs, AI analytics, AI operations, and AI-RRM in Catalyst Center | 08, 09 |
+| 8 | Full-blueprint review and timed practice | — |
+
+Then take the concentration within a few months, three to four weeks
+each: for **WLSD**, weight study toward wired and wireless
+infrastructure (30%) and site surveys (25%), and practice a predictive
+survey end to end; for **WLSI**, weight it toward client security (20%)
+and the FlexConnect-plus-monitoring pair (30% together), and lab CWA and
+LWA flows against ISE before exam day.
 
 ### Study materials
 

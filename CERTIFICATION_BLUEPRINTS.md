@@ -6,7 +6,7 @@ vendor source; it does not reproduce proprietary assessment content.
 
 | Volume | Certification / Training Path | Vendor Source |
 | --- | --- | --- |
-| III — Cisco Enterprise Networking | CCNA, CCNP Enterprise (ENCOR/ENARSI) | Cisco Learning & Certifications |
+| III — Cisco Enterprise Networking | CCNA, CCNP Enterprise (ENCOR/ENARSI), CCNP Wireless: WLCOR core (350-101) + WLSD (300-110) or WLSI (300-120); WLCOR also qualifies CCIE Wireless | Cisco Learning & Certifications |
 | V — VMware Virtualization | VCP-NV (2V0-41.24), VCP-VCF Support (2V0-15.25), VCP-VCF Administrator (2V0-17.25), VCP-VVF Administrator (2V0-16.25), VCP-VVF Support (2V0-18.25) | Broadcom/VMware Learning |
 | XIV — Red Hat Enterprise Linux 10 | RHCSA (EX200) | Red Hat Training and Certification |
 | XV — Forescout Platform | FSCA, FSCP, FSCE, FSCA: OT/ICS, FSCE: OT/ICS | Forescout Technologies |
@@ -52,6 +52,14 @@ Secure Service Edge added), and SISE `300-715` moves v1.1→v1.2 (identical
 weights, label change only). Volume XXV targets SCOR v2.0 because its
 study plan outlasts the v1.1 cutoff. Re-confirm both at the next currency
 check, which now falls inside the transition window.
+
+The CCNP Wireless track (Volume III) was added on **22 July 2026**:
+WLCOR `350-101` v1.0, WLSD `300-110` v1.2, and WLSI `300-120` v1.2 were
+each verified against its Cisco exam-topics document, and each domain
+set sums to 100%. The track launched 19 March 2026, carrying the
+wireless content that ENCOR v1.2 removed; WLCOR also replaces ENCOR as
+the qualifying written exam for CCIE Wireless (renamed from CCIE
+Enterprise Wireless).
 
 Drift in this table is normal and has been frequent. Within a single year
 the Dell PowerEdge Operate exam was rebuilt and renumbered, AWS replaced
