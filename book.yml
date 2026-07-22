@@ -1044,11 +1044,45 @@ volumes:
       - id: 09
         title: "The CCDE Practical: Scenario Method, Trade-offs, and Readiness"
         path: volumes/volume-30-cisco-ccde-network-design/chapters/09-the-ccde-practical-scenario-method-trade-offs-and-readiness.md
+  - id: volume-31
+    number: "XXXI"
+    slug: volume-31-juniper-networks-certifications
+    title: "Juniper Networks Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Junos OS Foundations and the JNCIA-Junos"
+        path: volumes/volume-31-juniper-networks-certifications/chapters/01-junos-os-foundations-and-the-jncia-junos.md
+      - id: 02
+        title: "Enterprise Routing and Switching — JNCIS-ENT to JNCIP-ENT"
+        path: volumes/volume-31-juniper-networks-certifications/chapters/02-enterprise-routing-and-switching-jncis-ent-to-jncip-ent.md
+      - id: 03
+        title: "Service Provider Routing and Switching — MPLS and the Core"
+        path: volumes/volume-31-juniper-networks-certifications/chapters/03-service-provider-routing-and-switching-mpls-and-the-core.md
+      - id: 04
+        title: "Juniper Security — SRX from JNCIA-SEC to JNCIP-SEC"
+        path: volumes/volume-31-juniper-networks-certifications/chapters/04-juniper-security-srx-from-jncia-sec-to-jncip-sec.md
+      - id: 05
+        title: "Data Center Fabrics — EVPN-VXLAN and the DC Track"
+        path: volumes/volume-31-juniper-networks-certifications/chapters/05-data-center-fabrics-evpn-vxlan-and-the-dc-track.md
+      - id: 06
+        title: "Automation, DevOps, and Cloud — Junos as Code"
+        path: volumes/volume-31-juniper-networks-certifications/chapters/06-automation-devops-and-cloud-junos-as-code.md
+      - id: 07
+        title: "Mist AI and the AI-Driven Enterprise"
+        path: volumes/volume-31-juniper-networks-certifications/chapters/07-mist-ai-and-the-ai-driven-enterprise.md
+      - id: 08
+        title: "Network Design and the JNCIA-Design"
+        path: volumes/volume-31-juniper-networks-certifications/chapters/08-network-design-and-the-jncia-design.md
+      - id: 09
+        title: "JNCIE Lab Readiness and Certification Operations"
+        path: volumes/volume-31-juniper-networks-certifications/chapters/09-jncie-lab-readiness-and-certification-operations.md
   - id: volume-97
     number: "XCVII"
     slug: volume-97-master-appendices
     title: "Master Appendices"
-    chapter_count: 2
+    chapter_count: 3
     build_eligible: true
     chapters:
       - id: 01
@@ -1057,6 +1091,9 @@ volumes:
       - id: 02
         title: "Appendix — Proxmox Lab IPv4 and IPv6 Address Tables"
         path: volumes/volume-97-master-appendices/chapters/02-appendix-proxmox-lab-ipv4-and-ipv6-address-tables.md
+      - id: 03
+        title: "Appendix — Juniper Courses and Certification Alignment"
+        path: volumes/volume-97-master-appendices/chapters/03-appendix-juniper-courses-and-certification-alignment.md
   - id: volume-98
     number: "XCVIII"
     slug: volume-98-acronyms

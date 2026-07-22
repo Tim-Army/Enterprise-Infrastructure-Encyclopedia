@@ -26,6 +26,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXVII — Cisco Data Center | CCNP Data Center: DCCOR core (350-601) + concentrations DCID (300-610), DCIT (300-615), DCACI (300-620), DCNAUTO (300-635 v2.0, formerly DCAUTO), DCAI (300-640); DCCOR also qualifies CCIE Data Center | Cisco Learning & Certifications |
 | XXVIII — Cisco Collaboration | CCNP Collaboration: CLCOR core (350-801 v2.0) + concentrations CLACC (300-815 v2.0, formerly CLACCM), CLHCT (300-820 v2.0, formerly CLCEI), CLCCE (300-830); CLICA (300-810) and CLAUTO (300-835) retired February 2026; CLCOR also qualifies CCIE Collaboration | Cisco Learning & Certifications |
 | XXIX — Cisco Service Provider | CCNP Service Provider: SPCOR core (350-501) + concentrations SPRI (300-510), SPVI (300-515), SPCNI (300-540); SPAUTO (300-535) retired 2026; SPCOR also qualifies CCIE Service Provider | Cisco Learning & Certifications |
+| XXXI — Juniper Networks Certification Tracks | Juniper, all 8 tracks: JNCIA-Junos JN0-106; ENT JN0-352/JN0-650/JPR-946; SP JN0-364/JN0-664/JPR-962; SEC JN0-232/JN0-336/JN0-637/JPR-935; DC JN0-281/JN0-481/JN0-683/JPR-981; DevOps JN0-224/JN0-423; Cloud JN0-214; Mist AI JN0-253/JN0-452/JN0-460/JN0-750; Design JN0-1103 | Juniper certification pages |
 | XXX — Cisco CCDE Network Design | CCDE (expert-level design): Written (400-007) + Practical, v3.1 unified topics, with AI Infrastructure / Large Scale Networks / On-Prem and Cloud Services / Workforce Mobility electives | Cisco Learning & Certifications |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
@@ -168,3 +169,16 @@ numbers up will otherwise assume the transcription is wrong: the Dell
 VxRail Operate weights sum to 101%, and the Wireshark WCA-101 protocol
 domain is published as 43% while its stated internal split sums to 44%.
 Both are as published.
+
+Volume XXXI (Juniper Networks Certification Tracks) was created on
+**22 July 2026**. All 23 current exams across Juniper's eight tracks
+were verified the same day against Juniper's certification track pages
+(every written exam 90 minutes / 65 multiple-choice via Pearson VUE;
+every JNCIE a six-hour practical): the codes are recorded in the
+volume README's exam table. Notable currency facts captured at
+verification: JN0-106 replaced the retired JN0-105 (5 April 2026);
+JNCIE-ENT JPR-946 first delivered 13 July 2026, succeeding JPR-944;
+JNCIS-SP JN0-364 is written to Junos OS 25.2, JNCIS-SEC JN0-336 and
+JNCIS-DevOps JN0-423 to 24.4; JNCIS-ENT is an accepted alternative
+prerequisite for JNCIP-DC. Domain lists live on each exam's Juniper
+page, which this volume treats as the authority.

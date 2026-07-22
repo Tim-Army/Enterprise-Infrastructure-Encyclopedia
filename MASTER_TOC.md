@@ -430,12 +430,27 @@ table of contents for that volume.
 8. Designing for the Electives: AI, Large-Scale, Cloud, and Mobility
 9. The CCDE Practical: Scenario Method, Trade-offs, and Readiness
 
+## Volume XXXI — Juniper Networks Certification Tracks
+
+[Volume README](volumes/volume-31-juniper-networks-certifications/README.md) · [Index](volumes/volume-31-juniper-networks-certifications/INDEX.md) · [Glossary](volumes/volume-31-juniper-networks-certifications/GLOSSARY.md)
+
+1. Junos OS Foundations and the JNCIA-Junos
+2. Enterprise Routing and Switching — JNCIS-ENT to JNCIP-ENT
+3. Service Provider Routing and Switching — MPLS and the Core
+4. Juniper Security — SRX from JNCIA-SEC to JNCIP-SEC
+5. Data Center Fabrics — EVPN-VXLAN and the DC Track
+6. Automation, DevOps, and Cloud — Junos as Code
+7. Mist AI and the AI-Driven Enterprise
+8. Network Design and the JNCIA-Design
+9. JNCIE Lab Readiness and Certification Operations
+
 ## Volume XCVII — Master Appendices
 
 [Volume README](volumes/volume-97-master-appendices/README.md) · [Index](volumes/volume-97-master-appendices/INDEX.md) · [Glossary](volumes/volume-97-master-appendices/GLOSSARY.md)
 
 1. Appendix — Cisco U. Learning Paths and Continuing Education Credits
 2. Appendix — Proxmox Lab IPv4 and IPv6 Address Tables
+3. Appendix — Juniper Courses and Certification Alignment
 
 ## Volume XCVIII — Acronyms
 
