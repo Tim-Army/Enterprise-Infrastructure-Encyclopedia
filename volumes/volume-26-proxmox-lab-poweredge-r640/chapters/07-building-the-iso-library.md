@@ -12,14 +12,23 @@
 
 ### The library and where it lives
 
-The nine virtual machines in
-[Chapter 08](08-deploying-the-virtual-machines.md) are each built from an
-image in the ISO repository created on `river` in
+The ten virtual machines in
+[Chapter 08](08-deploying-the-virtual-machines.md) are built from the images
+in the ISO repository created on `river` in
 [Chapter 06](06-proxmox-storage-the-river-datastore-and-iso-repository.md).
 This chapter assembles that library. The images fall into three groups by
 how you obtain them, and being honest about that distinction matters — some
 are free downloads, some need an account or entitlement, and one is
 commercial and cannot be redistributed.
+
+**Nine images serve ten machines.** As with the single RHEL image that
+builds both Red Hat machines, the Ubuntu Server image builds two: the
+`ubuntu-server1` VM and the `netbox` VM. NetBox Community Edition is a
+Django web application with no operating-system ISO of its own — it is
+installed onto a new Ubuntu Server guest, so it needs no tenth image. The
+library therefore holds nine operating-system images, and NetBox is
+deployed in [Chapter 08](08-deploying-the-virtual-machines.md) as an
+application on top of the Ubuntu Server base.
 
 ### The honest licensing picture
 
@@ -264,7 +273,7 @@ appliances that are imported rather than installed, unlike the plain OS
 ISOs. The one non-negotiable control is checksum verification: an image
 becomes a running system, so an unverified or tampered image becomes a
 compromised VM. With a complete, verified library in the repository, the
-build is ready to deploy the nine machines.
+build is ready to deploy the ten machines.
 
 - [ ] All nine images obtained through legitimate sources.
 - [ ] Every image checksum-verified against its publisher's value.

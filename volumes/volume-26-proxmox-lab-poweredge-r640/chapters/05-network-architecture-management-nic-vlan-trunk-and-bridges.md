@@ -80,7 +80,7 @@ describes, realized in Proxmox's bridge configuration.
   original VLAN-3 omission would have caused.
 - **Use one VLAN-aware bridge rather than many per-VLAN bridges.** It is
   simpler to operate and lets each VM select its VLAN by tag, which is how
-  the nine VMs in [Chapter 08](08-deploying-the-virtual-machines.md) are
+  the ten VMs in [Chapter 08](08-deploying-the-virtual-machines.md) are
   placed.
 - **Make the network configuration persistent.** Set the addressing and
   bridge in Proxmox's network configuration (`/etc/network/interfaces` or the
@@ -273,7 +273,7 @@ The network splits cleanly across two NICs: management on the dedicated port
 added to the originally specified allow-list**, without which every server
 VM on 10.30.10.0/24 would have been silently cut off. A single VLAN-aware
 Linux bridge over the trunk lets each virtual machine select its VLAN by tag,
-which is how the nine VMs are placed. Both ends of the trunk must permit the
+which is how the ten VMs are placed. Both ends of the trunk must permit the
 same VLANs, or traffic on the mismatched VLAN disappears without an error —
 and because a network change can lock out the web interface, the iDRAC
 out-of-band console established in Chapter 01 is the recovery path.

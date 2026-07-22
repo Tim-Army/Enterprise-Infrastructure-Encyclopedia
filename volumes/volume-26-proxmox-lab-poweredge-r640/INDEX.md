@@ -22,6 +22,7 @@ topic is introduced or covered in depth. See also the
 - **LVM-Thin VM storage** — [Chapter 06, Theory and Architecture](chapters/06-proxmox-storage-the-river-datastore-and-iso-repository.md)
 - **Management interface (10.30.161.10)** — [Chapter 05, Implementation and Automation](chapters/05-network-architecture-management-nic-vlan-trunk-and-bridges.md)
 - **Nested virtualization (emulators)** — [Chapter 08, Design Considerations / Implementation and Automation](chapters/08-deploying-the-virtual-machines.md)
+- **NetBox (on an Ubuntu Server guest)** — [Chapter 07, Theory and Architecture](chapters/07-building-the-iso-library.md); [Chapter 08, Theory and Architecture / Implementation and Automation](chapters/08-deploying-the-virtual-machines.md)
 - **No-subscription repository** — [Chapter 04, Theory and Architecture / Implementation and Automation](chapters/04-no-subscription-repository-updates-and-core-services.md)
 - **Proxmox VE installation** — [Chapter 03, Theory and Architecture / Implementation and Automation](chapters/03-installing-proxmox-ve.md)
 - **RAID 5 array (`river`)** — [Chapter 02, Theory and Architecture / Implementation and Automation](chapters/02-storage-boss-boot-mirror-and-the-river-raid-5-array.md)

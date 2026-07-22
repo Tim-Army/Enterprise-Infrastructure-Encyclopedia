@@ -19,7 +19,7 @@ VMs actually work together. The build is a stack, and each layer depends on
 the ones beneath it:
 
 ```text
-Virtual machines (Ch 08)   — nine VMs, tagged VLANs, fixed addresses
+Virtual machines (Ch 08)   — ten VMs, tagged VLANs, fixed addresses
   Network (Ch 05)          — management NIC + VLAN trunk + VLAN-aware bridge
   Storage in Proxmox (Ch 06) — river datastore + ISO repository
   Proxmox VE (Ch 03-04)    — installed, updated, DNS/NTP via gateway
@@ -72,7 +72,7 @@ ssh root@10.30.161.10 'chronyc sources | grep 10.30.161.1'   # time via gateway
 ssh root@10.30.161.10 'bridge vlan show | grep -E " 3| 6"'   # VLANs present
 
 # --- VM layer: every VM up, on its VLAN, at its address ---
-ssh root@10.30.161.10 'qm list'          # all nine running
+ssh root@10.30.161.10 'qm list'          # all ten running
 ```
 
 ### 2. Confirming each VM against the table
@@ -193,7 +193,7 @@ to accept. The spec is the definition of done.
 the layered troubleshooting method, and establish day-2 operations.
 
 **Prerequisites:** The complete build from Chapters 01–08 — hardware,
-Proxmox, network, storage, and the nine VMs.
+Proxmox, network, storage, and the ten VMs.
 
 **The validation is fully reproducible on the built environment;** the
 capstone composes every prior chapter.
@@ -202,7 +202,7 @@ capstone composes every prior chapter.
 
 1. Walk the stack top to bottom with the commands above: confirm the arrays
    are healthy, Proxmox is current with time via the gateway, the bridge
-   carries VLANs 3 and 6, and all nine VMs are running.
+   carries VLANs 3 and 6, and all ten VMs are running.
 2. For each VM, confirm its hostname, address, VLAN tag, and gateway
    reachability against the specification table.
 3. Confirm no address is duplicated — specifically that Red Hat Server (.88)
@@ -235,7 +235,7 @@ capstone composes every prior chapter.
 
 **Cleanup**
 
-8. Restore any change made in the negative test, confirm all nine VMs are
+8. Restore any change made in the negative test, confirm all ten VMs are
    healthy on their correct VLANs, and retain the as-built record as the
    reference for future changes.
 
@@ -250,7 +250,7 @@ negative test. Until then, the lab is unverified.
 ## Summary and Completion Checklist
 
 The build is a stack — iDRAC, hardware storage, Proxmox, network, Proxmox
-storage, and the nine VMs — and this chapter validates the composition rather
+storage, and the ten VMs — and this chapter validates the composition rather
 than any single layer, checking the running system against the exact
 specification that serves as its acceptance test. Troubleshooting works down
 the stack: a VM symptom is localized to the layer that owns it before
@@ -263,7 +263,7 @@ backups off `river`, a patch cadence across the whole stack, and monitoring
 from Proxmox and the iDRAC — keep the environment healthy past the build.
 
 - [ ] Every value in the specification table confirmed true of the system.
-- [ ] All nine VMs running on their correct VLANs at their fixed addresses.
+- [ ] All ten VMs running on their correct VLANs at their fixed addresses.
 - [ ] No duplicate addresses — Red Hat Server .88, Windows Server .89.
 - [ ] A scheduled backup targeting storage other than `river`.
 - [ ] The layered troubleshooting method exercised and understood.

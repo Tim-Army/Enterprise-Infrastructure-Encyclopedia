@@ -17,7 +17,7 @@
 **Proxmox VE** is a free, open-source virtualization platform built on
 Debian Linux, KVM for virtual machines, and LXC for containers, managed
 through a web interface. This build uses it as the hypervisor hosting the
-nine virtual machines.
+ten virtual machines.
 
 The critical installation decision is the **target disk**: Proxmox VE
 installs onto the **BOSS RAID 1 mirror** from

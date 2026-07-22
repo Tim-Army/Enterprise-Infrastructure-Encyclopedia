@@ -33,6 +33,12 @@ Introduced in Chapter 01.
 supports snapshots and efficient space use for VM disks; it holds VM images
 but not ISO files. Introduced in Chapter 06.
 
+**NetBox** — A free, open-source Django web application for network
+source-of-truth and IP-address management. It has no operating-system ISO;
+in this build it is deployed as an application on a new Ubuntu Server guest
+(`netbox`, 10.30.10.62, VLAN 3), so the Ubuntu Server image serves two
+machines. Introduced in Chapter 08.
+
 **No-subscription repository** — Proxmox's free update stream, requiring no
 key, enabled in place of the enterprise repository for a lab. Enabling it is
 what "activating the free version" of Proxmox actually means. Introduced in

@@ -3,7 +3,7 @@
 > An end-to-end, hands-on build of a single-node virtualization lab on a
 > Dell PowerEdge R640: iDRAC out-of-band setup, a BOSS boot mirror and a
 > RAID 5 data array, Proxmox VE installation and update, a VLAN-trunked
-> network with a management NIC, an ISO library, and a fleet of nine
+> network with a management NIC, an ISO library, and a fleet of ten
 > virtual machines on tagged VLANs.
 
 ## Overview
@@ -11,7 +11,7 @@
 Volume XXVI is different in character from the reference volumes that
 precede it. Where they teach a technology, this volume **builds one
 specific thing**, start to finish: it takes a bare Dell PowerEdge R640 and
-turns it into a working Proxmox virtualization lab hosting nine virtual
+turns it into a working Proxmox virtualization lab hosting ten virtual
 machines across two VLANs. It is an *integration* volume — the
 counterpart, for a real build, to
 [Volume XIII — Integrated Enterprise Labs](../volume-13-integrated-enterprise-labs/README.md).
@@ -46,7 +46,7 @@ then the workloads:
 - **Chapters 05–06** build the network — a dedicated management NIC and a
   VLAN-trunked NIC feeding a VLAN-aware bridge — and the storage layout in
   Proxmox: the `river` datastore for VMs and an ISO repository on it.
-- **Chapters 07–08** assemble the ISO library and deploy the nine virtual
+- **Chapters 07–08** assemble the ISO library and deploy the ten virtual
   machines, each on its assigned VLAN with its fixed address and hostname.
 - **Chapter 09** validates the whole build end to end, troubleshoots the
   failures this kind of build most commonly produces, and closes with
@@ -109,10 +109,20 @@ Each VM is deployed from the ISO library on `river`, on its assigned VLAN:
 | Red Hat Server | `rhel-server1` | 10.30.10.88/24 | 10.30.10.1 | 3 |
 | Windows 11 | `win11-1` | 10.30.12.102/24 | 10.30.12.1 | 6 |
 | Windows Server | `win-server1` | 10.30.10.89/24 | 10.30.10.1 | 3 |
+| NetBox | `netbox` | 10.30.10.62/24 | 10.30.10.1 | 3 |
 
 The VLAN scheme is: **VLAN 6 → 10.30.12.0/24** (desktop workloads) and
 **VLAN 3 → 10.30.10.0/24** (server workloads). VLANs 10, 200, and 202 are
 carried on the trunk for future use but host no VM in this build.
+
+**NetBox is deployed differently from the other machines.** NetBox
+Community Edition is a Django web application, not a bootable
+operating-system image — there is no NetBox ISO. It runs on **its own new
+Ubuntu Server guest** (built from the Ubuntu Server image already in the
+library, with NetBox installed on top), so the Ubuntu Server image serves
+two machines much as the single RHEL image serves both Red Hat machines.
+See [Chapter 07](chapters/07-building-the-iso-library.md) and
+[Chapter 08](chapters/08-deploying-the-virtual-machines.md).
 
 ### Corrections applied to the original specification
 

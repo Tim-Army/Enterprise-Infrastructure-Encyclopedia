@@ -44,7 +44,7 @@ drive is replaced without reinstalling.
 
 ### Why RAID 5 for `river`
 
-The data array holds nine virtual machines and a library of ISO files, so
+The data array holds ten virtual machines and a library of ISO files, so
 its priorities are *usable capacity with fault tolerance*. RAID 5 across six
 drives gives the capacity of five drives (one drive's worth of space is
 consumed by parity) and tolerates any single drive failing without data

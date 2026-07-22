@@ -2,7 +2,7 @@
 
 ## Learning Objectives
 
-- Create each of the nine virtual machines with its exact parameters.
+- Create each of the ten virtual machines with its exact parameters.
 - Place each VM on its assigned VLAN using the VLAN-aware bridge.
 - Assign each VM its fixed address, gateway, and hostname.
 - Distinguish installer-ISO VMs from imported-appliance VMs.
@@ -10,9 +10,9 @@
 
 ## Theory and Architecture
 
-### The nine machines and their addressing
+### The ten machines and their addressing
 
-This chapter deploys the workload the whole build has been leading to: nine
+This chapter deploys the workload the whole build has been leading to: ten
 virtual machines, each from an image in the
 [Chapter 07](07-building-the-iso-library.md) library, each on its assigned
 VLAN through the [Chapter 05](05-network-architecture-management-nic-vlan-trunk-and-bridges.md)
@@ -29,10 +29,27 @@ bridge, with a fixed address:
 | Red Hat Server | `rhel-server1` | 10.30.10.88/24 | 10.30.10.1 | 3 |
 | Windows 11 | `win11-1` | 10.30.12.102/24 | 10.30.12.1 | 6 |
 | Windows Server | `win-server1` | 10.30.10.89/24 | 10.30.10.1 | 3 |
+| NetBox | `netbox` | 10.30.10.62/24 | 10.30.10.1 | 3 |
 
 The pattern is consistent: **VLAN 6 machines** (`ubuntu1`, `rhel-desktop1`,
 `win11-1`) are the desktops on 10.30.12.0/24; **VLAN 3 machines** (everything
 else) are the servers on 10.30.10.0/24, gateway 10.30.10.1.
+
+### NetBox: an application on a new Ubuntu Server guest
+
+Nine of the ten machines are deployed from an operating-system image — an
+installer ISO or an imported appliance. **NetBox is the exception, and it
+is worth being clear about why.** NetBox Community Edition is a Django web
+application for network source-of-truth and IP-address management; it is not
+an operating system and ships as no bootable ISO. It is deployed by
+building a **new Ubuntu Server guest** — from the same Ubuntu Server image
+already in the library — and installing NetBox onto it.
+
+This is the same one-image-serves-two-machines pattern the RHEL image
+already follows for the two Red Hat machines: the Ubuntu Server image now
+backs both `ubuntu-server1` and `netbox`. The `netbox` VM is a full server
+in its own right — VLAN 3, 10.30.10.62/24, gateway 10.30.10.1 — that happens
+to run NetBox as its purpose.
 
 ### Two corrections carried into this chapter
 
@@ -59,7 +76,7 @@ address's gateway.
 
 ### Installer ISOs versus imported appliances
 
-Most of the nine are installed from an ISO — you attach the installer,
+Most of the ten are installed from an ISO — you attach the installer,
 boot, and run setup. Two are different:
 
 - **GNS3** and **EVE-ng** are **appliances** (Chapter 07). They are imported
@@ -86,7 +103,7 @@ its ISO into setup; an appliance VM is created around an imported disk.
   `cml`, `win-server1`) keep the inventory legible and reduce the chance of
   configuring the wrong machine.
 - **Store every VM disk on `river`.** The VM datastore from Chapter 06 is the
-  target for all nine; none belong on the boot mirror.
+  target for all ten; none belong on the boot mirror.
 
 ## Implementation and Automation
 
@@ -141,7 +158,7 @@ console for CML/EVE-ng/GNS3).
 
 ### 4. The full deployment, machine by machine
 
-Repeat the appropriate pattern for all nine, tagging each NIC to its VLAN and
+Repeat the appropriate pattern for all ten, tagging each NIC to its VLAN and
 setting each guest's address and hostname:
 
 ```text
@@ -154,7 +171,49 @@ rhel-desktop1  VLAN 6  10.30.12.101/24  gw 10.30.12.1   (installer ISO)
 rhel-server1   VLAN 3  10.30.10.88/24   gw 10.30.10.1   (installer ISO)
 win11-1        VLAN 6  10.30.12.102/24  gw 10.30.12.1   (installer ISO)
 win-server1    VLAN 3  10.30.10.89/24   gw 10.30.10.1   (installer ISO)
+netbox         VLAN 3  10.30.10.62/24   gw 10.30.10.1   (Ubuntu guest + NetBox)
 ```
+
+### 5. Deploying the NetBox machine
+
+NetBox is deployed as an Ubuntu Server guest with NetBox installed on it,
+rather than from a NetBox ISO. First build the guest exactly as any other
+Ubuntu Server VM, tagged VLAN 3 and addressed 10.30.10.62/24, hostname
+`netbox`:
+
+```bash
+# A new Ubuntu Server guest for NetBox — VLAN 3, on river.
+qm create 118 --name netbox --memory 4096 --cores 2 \
+  --scsihw virtio-scsi-single \
+  --scsi0 river-vm:32 \
+  --net0 virtio,bridge=vmbr1,tag=3 \
+  --ide2 river-iso:iso/ubuntu-<ver>-live-server-amd64.iso,media=cdrom \
+  --boot order=ide2
+qm start 118
+# In the installer set: address 10.30.10.62/24, gateway 10.30.10.1,
+# hostname netbox.
+```
+
+Then install NetBox Community Edition on the running guest. NetBox is a
+Django application with a small set of dependencies; the two supported
+routes are its documented bare-metal install and its container deployment:
+
+```bash
+# On the netbox guest. NetBox needs PostgreSQL, Redis, and Python; the
+# official installation documents the exact steps and current versions.
+sudo apt update && sudo apt install -y \
+  postgresql redis-server python3 python3-pip python3-venv \
+  build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev \
+  libssl-dev zlib1g-dev git
+
+# Then follow the official NetBox installation to create the database,
+# clone/unpack NetBox, configure it, and serve it behind gunicorn + nginx.
+# (Alternatively, netbox-docker runs the same application via Docker
+# Compose on this guest — a container deployment rather than bare-metal.)
+```
+
+Confirm NetBox answers on the guest at `https://10.30.10.62/` once its web
+front end is running.
 
 ## Validation and Troubleshooting
 
@@ -231,7 +290,7 @@ to prevent exactly this; confirm the two are on distinct addresses.
 
 ## Hands-On Lab
 
-**Objective:** Deploy all nine virtual machines with their exact VLANs,
+**Objective:** Deploy all ten virtual machines with their exact VLANs,
 addresses, gateways, and hostnames, and confirm each reaches its gateway.
 
 **Prerequisites:** The VM datastore and verified ISO library from Chapters
@@ -252,7 +311,7 @@ the licensed ones with your entitlements.
 3. For each VM, confirm the NIC's VLAN tag matches its subnet (3 for
    10.30.10.x, 6 for 10.30.12.x).
 4. From each guest, ping its gateway and confirm connectivity.
-5. Confirm all nine addresses are unique — in particular that Red Hat Server
+5. Confirm all ten addresses are unique — in particular that Red Hat Server
    (.88) and Windows Server (.89) do not collide.
 
 **Negative test**
@@ -263,7 +322,7 @@ the licensed ones with your entitlements.
 
 **Expected results**
 
-- All nine VMs running, each on its correct VLAN with its fixed address and
+- All ten VMs running, each on its correct VLAN with its fixed address and
   hostname.
 - Each guest reaches its gateway.
 - No duplicate addresses — the .88/.89 split in effect.
@@ -283,7 +342,7 @@ negative test. Until then, the lab is unverified.
 
 ## Summary and Completion Checklist
 
-The nine virtual machines are the point of the whole build, each deployed
+The ten virtual machines are the point of the whole build, each deployed
 from the `river` ISO library onto `river` VM storage, each placed on its VLAN
 by a tag on its virtual NIC on the VLAN-aware bridge, and each given its fixed
 address, gateway, and hostname inside the guest. The desktops (`ubuntu1`,
@@ -296,7 +355,7 @@ nested virtualization. The failure to watch for is a guest with the right
 address but the wrong VLAN tag — correct IP, no connectivity — which the
 Chapter 05 trunk correction and careful tagging together prevent.
 
-- [ ] All nine VMs created, each with its disk on `river`.
+- [ ] All ten VMs created, each with its disk on `river`.
 - [ ] Each NIC tagged to the correct VLAN (3 or 6).
 - [ ] Each guest set to its fixed address, gateway, and hostname.
 - [ ] GNS3 and EVE-ng imported as appliances with nested virtualization.

@@ -18,7 +18,7 @@ exists at the hardware level, but Proxmox does not use it until it is added
 as a **storage** in Proxmox's own configuration. This chapter makes `river`
 serve two purposes:
 
-- **Virtual-machine storage** — the disks of the nine VMs live here.
+- **Virtual-machine storage** — the disks of the ten VMs live here.
 - **An ISO repository** — the installation media (`.iso` files) the VMs are
   built from live here too.
 
@@ -252,7 +252,7 @@ negative test. Until then, the lab is unverified.
 
 The `river` RAID 5 array becomes usable only once it is added to Proxmox as
 storage, and this build gives it two roles through Proxmox's content-type
-model: `images` for the nine VMs' disks and `iso` for the installation media
+model: `images` for the ten VMs' disks and `iso` for the installation media
 they are built from. Both sit on `river` and off the small BOSS boot mirror.
 VM disks suit a snapshot-capable type such as LVM-Thin, while the ISO
 repository must be a directory (filesystem) storage — because ISOs are
