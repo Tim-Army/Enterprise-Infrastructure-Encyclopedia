@@ -430,6 +430,13 @@ table of contents for that volume.
 8. Designing for the Electives: AI, Large-Scale, Cloud, and Mobility
 9. The CCDE Practical: Scenario Method, Trade-offs, and Readiness
 
+## Volume XCVII — Master Appendices
+
+[Volume README](volumes/volume-97-master-appendices/README.md) · [Index](volumes/volume-97-master-appendices/INDEX.md) · [Glossary](volumes/volume-97-master-appendices/GLOSSARY.md)
+
+1. Appendix — Cisco U. Learning Paths and Continuing Education Credits
+2. Appendix — Proxmox Lab IPv4 and IPv6 Address Tables
+
 ## Volume XCIX — Reference Library
 
 [Volume README](volumes/volume-99-reference-library/README.md) · [Index](volumes/volume-99-reference-library/INDEX.md) · [Glossary](volumes/volume-99-reference-library/GLOSSARY.md)
@@ -443,4 +450,3 @@ table of contents for that volume.
 7. Security, Hardening, Incident Response, and Risk Reference
 8. Automation, APIs, Data Formats, and Integration Reference
 9. Standards, Certifications, Vendor Documentation, and Reference Governance
-10. Appendix — Cisco U. Learning Paths and Continuing Education Credits

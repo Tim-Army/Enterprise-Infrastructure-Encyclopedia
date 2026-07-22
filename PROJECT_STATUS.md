@@ -40,9 +40,10 @@ does not by itself verify every technical claim in it.
 | XXVIII — Cisco Collaboration | 9 | Drafted |
 | XXIX — Cisco Service Provider | 9 | Drafted |
 | XXX — Cisco CCDE Network Design | 9 | Drafted |
-| XCIX — Reference Library | 10 | Drafted |
+| XCVII — Master Appendices | 2 | Drafted |
+| XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 286 of 286 drafted (100%). Every volume has a
+**Total declared chapters:** 287 of 287 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

@@ -61,7 +61,10 @@ stand alone and can be consulted independently:
 7. [Security, Hardening, Incident Response, and Risk Reference](chapters/07-security-hardening-incident-response-and-risk-reference.md) — CIS Benchmark profile levels, the NIST SP 800-61 incident response lifecycle, CVSS severity bands, a likelihood-times-impact risk matrix, and a data classification reference.
 8. [Automation, APIs, Data Formats, and Integration Reference](chapters/08-automation-apis-data-formats-and-integration-reference.md) — HTTP methods and status codes, JSON/YAML/XML comparison, an automation-tool comparison, API authentication patterns, and a webhook-integration checklist.
 9. [Standards, Certifications, Vendor Documentation, and Reference Governance](chapters/09-standards-certifications-vendor-documentation-and-reference-governance.md) — standards-body and vendor-documentation reference tables, the certification blueprint cross-reference, and the reference-governance discipline that keeps this volume current.
-10. [Appendix — Cisco U. Learning Paths and Continuing Education Credits](chapters/10-appendix-cisco-u-learning-paths-and-continuing-education-credits.md) — every Cisco U. Learning Path with the exam it prepares for, its Continuing Education credit value, and whether it is free or needs a subscription; snapshot dated 22 July 2026.
+
+The Cisco U. Learning Paths appendix now lives in
+[Volume XCVII — Master Appendices](../volume-97-master-appendices/chapters/01-appendix-cisco-u-learning-paths-and-continuing-education-credits.md),
+the encyclopedia's single home for appendices.
 
 ## Volume resources
 

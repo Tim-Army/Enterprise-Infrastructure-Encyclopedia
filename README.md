@@ -51,7 +51,8 @@ The series combines architecture and theory with implementation guidance, automa
 | XXVIII | [Cisco Collaboration](volumes/volume-28-cisco-collaboration/README.md) | 9 |
 | XXIX | [Cisco Service Provider](volumes/volume-29-cisco-service-provider/README.md) | 9 |
 | XXX | [Cisco CCDE Network Design](volumes/volume-30-cisco-ccde-network-design/README.md) | 9 |
-| XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 10 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 2 |
+| XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
 Technical review and lab-validation sign-off for all 286 chapters are
 tracked in [PROJECT_STATUS.md](PROJECT_STATUS.md). The
@@ -81,7 +82,7 @@ ascending order.
 | Operating systems | [XIV Red Hat Enterprise Linux 10](volumes/volume-14-red-hat-enterprise-linux-10/README.md) → [XXI Ubuntu Server and Cloud 26.04 LTS](volumes/volume-21-ubuntu-server-cloud-26-04-lts/README.md) |
 | Virtualization | [V VMware](volumes/volume-05-vmware-virtualization/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Cloud | [VII Cloud Infrastructure](volumes/volume-07-cloud-infrastructure/README.md) → [XVII AWS Architecture and Security](volumes/volume-17-aws-architecture-security/README.md) |
-| Reference | [XCIX Reference Library](volumes/volume-99-reference-library/README.md) — cross-volume reference material, always last |
+| Reference | [XCVII Master Appendices](volumes/volume-97-master-appendices/README.md) and [XCIX Reference Library](volumes/volume-99-reference-library/README.md) — appendices and cross-volume reference material, always last |
 
 ## Volume-first layout
 

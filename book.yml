@@ -1044,11 +1044,24 @@ volumes:
       - id: 09
         title: "The CCDE Practical: Scenario Method, Trade-offs, and Readiness"
         path: volumes/volume-30-cisco-ccde-network-design/chapters/09-the-ccde-practical-scenario-method-trade-offs-and-readiness.md
+  - id: volume-97
+    number: "XCVII"
+    slug: volume-97-master-appendices
+    title: "Master Appendices"
+    chapter_count: 2
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Appendix — Cisco U. Learning Paths and Continuing Education Credits"
+        path: volumes/volume-97-master-appendices/chapters/01-appendix-cisco-u-learning-paths-and-continuing-education-credits.md
+      - id: 02
+        title: "Appendix — Proxmox Lab IPv4 and IPv6 Address Tables"
+        path: volumes/volume-97-master-appendices/chapters/02-appendix-proxmox-lab-ipv4-and-ipv6-address-tables.md
   - id: volume-99
     number: "XCIX"
     slug: volume-99-reference-library
     title: "Reference Library"
-    chapter_count: 10
+    chapter_count: 9
     build_eligible: true
     chapters:
       - id: 01
@@ -1078,6 +1091,3 @@ volumes:
       - id: 09
         title: "Standards, Certifications, Vendor Documentation, and Reference Governance"
         path: volumes/volume-99-reference-library/chapters/09-standards-certifications-vendor-documentation-and-reference-governance.md
-      - id: 10
-        title: "Appendix — Cisco U. Learning Paths and Continuing Education Credits"
-        path: volumes/volume-99-reference-library/chapters/10-appendix-cisco-u-learning-paths-and-continuing-education-credits.md
