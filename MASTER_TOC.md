@@ -374,6 +374,20 @@ table of contents for that volume.
 8. Deploying the Virtual Machines
 9. Validation, Troubleshooting, and Operations
 
+## Volume XXVII — Cisco Data Center
+
+[Volume README](volumes/volume-27-cisco-data-center/README.md) · [Index](volumes/volume-27-cisco-data-center/INDEX.md) · [Glossary](volumes/volume-27-cisco-data-center/GLOSSARY.md)
+
+1. Data Center Architecture and the CCNP Data Center Track
+2. Nexus Switching, vPC, and VXLAN EVPN Fabrics
+3. ACI: Policy Model, Fabric Operations, and External Connectivity
+4. UCS Compute and Hyperconverged Platforms
+5. Storage Networking: Fibre Channel, FCoE, and NVMe
+6. Data Center Automation: NX-API, Models, and Tooling
+7. Data Center AI Infrastructure
+8. Data Center Security and Segmentation
+9. Design, Troubleshooting, and Certification Readiness
+
 ## Volume XCIX — Reference Library
 
 [Volume README](volumes/volume-99-reference-library/README.md) · [Index](volumes/volume-99-reference-library/INDEX.md) · [Glossary](volumes/volume-99-reference-library/GLOSSARY.md)

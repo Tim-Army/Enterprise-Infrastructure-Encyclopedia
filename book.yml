@@ -908,6 +908,40 @@ volumes:
       - id: 09
         title: "Validation, Troubleshooting, and Operations"
         path: volumes/volume-26-proxmox-lab-poweredge-r640/chapters/09-validation-troubleshooting-and-operations.md
+  - id: volume-27
+    number: "XXVII"
+    slug: volume-27-cisco-data-center
+    title: "Cisco Data Center"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Data Center Architecture and the CCNP Data Center Track"
+        path: volumes/volume-27-cisco-data-center/chapters/01-data-center-architecture-and-the-ccnp-data-center-track.md
+      - id: 02
+        title: "Nexus Switching, vPC, and VXLAN EVPN Fabrics"
+        path: volumes/volume-27-cisco-data-center/chapters/02-nexus-switching-vpc-and-vxlan-evpn-fabrics.md
+      - id: 03
+        title: "ACI: Policy Model, Fabric Operations, and External Connectivity"
+        path: volumes/volume-27-cisco-data-center/chapters/03-aci-policy-model-fabric-and-external-connectivity.md
+      - id: 04
+        title: "UCS Compute and Hyperconverged Platforms"
+        path: volumes/volume-27-cisco-data-center/chapters/04-ucs-compute-and-hyperconverged-platforms.md
+      - id: 05
+        title: "Storage Networking: Fibre Channel, FCoE, and NVMe"
+        path: volumes/volume-27-cisco-data-center/chapters/05-storage-networking-fibre-channel-fcoe-and-nvme.md
+      - id: 06
+        title: "Data Center Automation: NX-API, Models, and Tooling"
+        path: volumes/volume-27-cisco-data-center/chapters/06-data-center-automation-nx-api-models-and-tooling.md
+      - id: 07
+        title: "Data Center AI Infrastructure"
+        path: volumes/volume-27-cisco-data-center/chapters/07-data-center-ai-infrastructure.md
+      - id: 08
+        title: "Data Center Security and Segmentation"
+        path: volumes/volume-27-cisco-data-center/chapters/08-data-center-security-and-segmentation.md
+      - id: 09
+        title: "Design, Troubleshooting, and Certification Readiness"
+        path: volumes/volume-27-cisco-data-center/chapters/09-design-troubleshooting-and-certification-readiness.md
   - id: volume-99
     number: "XCIX"
     slug: volume-99-reference-library

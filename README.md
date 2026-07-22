@@ -47,6 +47,7 @@ The series combines architecture and theory with implementation guidance, automa
 | XXIV | [Dell VxRail Hyperconverged Infrastructure](volumes/volume-24-dell-vxrail-hci/README.md) | 9 |
 | XXV | [Cisco Security](volumes/volume-25-cisco-security/README.md) | 9 |
 | XXVI | [Proxmox Virtualization Lab on Dell PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) | 9 |
+| XXVII | [Cisco Data Center](volumes/volume-27-cisco-data-center/README.md) | 9 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
 Technical review and lab-validation sign-off for all 249 chapters are

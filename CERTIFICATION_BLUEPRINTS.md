@@ -23,6 +23,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXII / XXIII — Dell OpenManage / iDRAC | PowerEdge Foundations v2 (D-PE-FN-01), PowerEdge Operate v2 (D-PE-OE-01; supersedes the retired D-PE-OE-23) | Dell Technologies Proven Professional |
 | XXIV — Dell VxRail | VxRail Deploy v2 (D-VXR-DY-01), VxRail Operate v2 (D-VXR-OE-01) | Dell Technologies Proven Professional |
 | XXV — Cisco Security | CCNP Security: SCOR core (350-701) + concentrations SVPN (300-730), SCAZT (300-740), SISE (300-715), SDSI (300-745); SCOR also qualifies CCIE Security | Cisco Learning & Certifications |
+| XXVII — Cisco Data Center | CCNP Data Center: DCCOR core (350-601) + concentrations DCID (300-610), DCIT (300-615), DCACI (300-620), DCAUTO (300-635, rebranding to DCNAUTO), DCAI (300-640); DCCOR also qualifies CCIE Data Center | Cisco Learning & Certifications |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -35,12 +36,10 @@ of this repository's release cycle.
 
 ## Cisco tracks awaiting a volume
 
-Three Cisco professional tracks have no owning volume yet. Their core
+Two Cisco professional tracks have no owning volume yet. Their core
 exams were verified against Cisco's exam-topics documents on 22 July
 2026 and are recorded here so the portfolio view stays complete:
 
-- **CCNP/CCIE Data Center** — DCCOR `350-601` v1.2 core (120 min), plus
-  one concentration exam.
 - **CCNP/CCIE Collaboration** — CLCOR `350-801` v2.0 core (120 min),
   plus one concentration exam; a new cloud specialist exam, CLCCE
   `300-830` (Implementing Cisco Collaboration Cloud Customer
@@ -97,6 +96,17 @@ three unmapped cores (DCCOR 350-601 v1.2, CLCOR 350-801 v2.0, SPCOR
 find worth recording: Cisco's own exam page still described SPCOR as
 v1.0 while its Learning Network exam-topics page carries v1.1 — the
 topics page is the authority.
+
+Volume XXVII (Cisco Data Center) was created on **22 July 2026**,
+promoting the Data Center track out of the awaiting list. All six exams
+were verified against their Cisco exam-topics documents the same day:
+DCCOR `350-601` v1.2 (120 min) and the 90-minute concentrations DCID
+`300-610` v1.2, DCIT `300-615` v1.2, DCACI `300-620` v1.2, DCAUTO
+`300-635` v1.1, and DCAI `300-640` v1.0 (GA 3 February 2026 — DCAI
+plus DCCOR earns the certification). Each domain set sums to 100%.
+DCAUTO is being rebranded DCNAUTO under the CCNP Automation
+restructure with the code unchanged; confirm its Data Center
+concentration status at registration.
 
 Drift in this table is normal and has been frequent. Within a single year
 the Dell PowerEdge Operate exam was rebuilt and renumbered, AWS replaced
