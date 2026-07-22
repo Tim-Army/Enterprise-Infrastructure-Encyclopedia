@@ -75,6 +75,38 @@ current Windows Server with PowerShell 7.4+, and Ansible core 2.17 /
 `ansible` 10.x for the cross-platform configuration management examples.
 Update that file, not individual chapters, when the baseline changes.
 
+## Certification alignment
+
+This volume maps to the entry-level **Cisco Certified Support Technician
+(CCST) IT Support** certification, as recorded in
+[CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). Chapter
+content describes blueprint domains and points to Cisco's official
+sources; it does not reproduce proprietary exam content. Always confirm
+the current blueprint against Cisco Learning & Certifications before
+using a chapter for exam preparation.
+
+### CCST IT Support (100-140)
+
+A **50-minute** entry-level exam covering help-desk and endpoint-support
+job tasks. Cisco does not publish domain weights for the CCST exams; the
+six domains map to this volume as:
+
+| Domain | Chapters |
+| --- | --- |
+| 1.0 IT Support Job Tasks and Responsibilities | 01 |
+| 2.0 Hardware Issues | 05, 07 |
+| 3.0 Connectivity and Resource Access Issues | 04 |
+| 4.0 Operating System and Application Issues | 02, 03, 06 |
+| 5.0 Common Threats and Preventions | 08 |
+| 6.0 Job Tools | 06, 09 |
+
+Two to three weeks at 8–10 hours per week suits a reader with help-desk
+exposure. This volume runs deeper than the exam in most domains — it is
+written for administrators, not first-line support — so treat the exam
+as a checkpoint on the way into the volume rather than the goal of it.
+Basic network connectivity questions draw on
+[Volume II](../volume-02-network-engineering-foundations/README.md).
+
 ## Building and validating this volume
 
 From the repository root, after completing

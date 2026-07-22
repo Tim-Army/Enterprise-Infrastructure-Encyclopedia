@@ -74,6 +74,78 @@ Conftest/OPA, HashiCorp Vault, Event-Driven Ansible, Checkov, `cosign`, and
 date; update [SOFTWARE_VERSIONS.md](../../SOFTWARE_VERSIONS.md), not
 individual chapters, when the baseline changes.
 
+## Certification alignment
+
+This volume maps to the **Cisco Automation** certification track, as
+recorded in
+[CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). Cisco
+rebranded its DevNet certifications as **CCNA, CCNP, and CCIE
+Automation on 3 February 2026**, migrating existing DevNet holders to
+the new names; the exam-topics documents still carry their DevNet-era
+titles, which is a naming lag, not a content difference. Cisco has also
+announced upcoming v1.2 minor updates across the Automation exams —
+re-confirm versions at the next currency check. Chapter content
+describes blueprint domains and points to Cisco's official sources; it
+does not reproduce proprietary exam content.
+
+### The exams
+
+| Exam | Title | Duration | Role in the track |
+| --- | --- | --- | --- |
+| **200-901** v1.1 | CCNA Automation (published as "DevNet Associate Exam") | 120 min | Associate |
+| **350-901** v1.1 | Developing Applications using Cisco Core Platforms and APIs | 120 min | Core — required for CCNP Automation |
+| CCIE Automation | Practical (lab) exam | — | Expert tier; Cisco is adding an AI module to its practical exams |
+
+CCNP Automation requires the core exam plus **one** concentration exam;
+the concentration set carried over from the DevNet specialist exams and
+is not restated here — confirm the current list with Cisco at
+registration, along with question counts and pricing.
+
+**200-901 CCNA Automation v1.1**
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 Software Development and Design | 15% | 01, 05 |
+| 2.0 Understanding and Using APIs | 20% | 04 |
+| 3.0 Cisco Platforms and Development | 15% | 04 |
+| 4.0 Application Deployment and Security | 15% | 05, 06 |
+| 5.0 Infrastructure and Automation | 20% | 02, 03, 07 |
+| 6.0 Network Fundamentals | 15% | Volume II |
+
+**350-901 CCNP Automation core v1.1**
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 Software Development and Design | 20% | 01, 05 |
+| 2.0 Using APIs | 20% | 04 |
+| 3.0 Cisco Platforms | 20% | 04 |
+| 4.0 Application Deployment and Security | 20% | 05, 06, 08 |
+| 5.0 Infrastructure and Automation | 20% | 02, 03, 07, 09 |
+
+Be clear-eyed about depth: this volume is deliberately vendor-neutral —
+its Terraform, Ansible, pipeline, and orchestration material carries the
+automation domains well, but the **Cisco Platforms** domains test
+platform-specific APIs (Catalyst Center, Meraki, Webex, and peers) that
+a vendor-neutral volume does not drill. Pair the associate plan below
+with Cisco U. platform sandboxes, and expect the platform domain to need
+dedicated lab time.
+
+**CCNA Automation — six weeks** at 8–10 hours per week, assuming the
+Python fluency this volume already expects:
+
+| Week | Focus | Chapters |
+| --- | --- | --- |
+| 1 | Software development and design: version control, formats, methodologies | 01 |
+| 2 | APIs in depth: REST semantics, authentication, webhooks — **a fifth of the exam** | 04 |
+| 3 | Cisco platform APIs and SDKs, against live sandboxes | 04 |
+| 4 | Deployment and security: containers, CI/CD, secrets handling | 05, 06 |
+| 5 | Infrastructure and automation: IaC, configuration management, orchestration — the other heavy domain | 02, 03, 07 |
+| 6 | Network fundamentals refresh, then full-blueprint timed practice | Volume II |
+
+For the core exam afterward, extend the same structure by three to four
+weeks, weighting evenly — its five domains are a flat 20% each, so
+weakest-domain-first beats weight-ordered study.
+
 ## Building and validating this volume
 
 From the repository root, after completing

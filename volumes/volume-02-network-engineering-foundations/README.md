@@ -76,6 +76,39 @@ anticipate Volume III). Protocol-level content (IPv4/IPv6, Ethernet,
 cited in each chapter's references rather than to a single product
 version, consistent with this volume's vendor-neutral scope.
 
+## Certification alignment
+
+This volume maps to the entry-level **Cisco Certified Support Technician
+(CCST) Networking** certification, as recorded in
+[CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). Chapter
+content describes blueprint domains and points to Cisco's official
+sources; it does not reproduce proprietary exam content. Always confirm
+the current blueprint against Cisco Learning & Certifications before
+using a chapter for exam preparation.
+
+### CCST Networking (100-150)
+
+A **50-minute** entry-level exam. Cisco does not publish domain weights
+for the CCST exams; the six domains map to this volume as:
+
+| Domain | Chapters |
+| --- | --- |
+| 1.0 Standards and Concepts | 01 |
+| 2.0 Addressing and Subnet Formats | 02 |
+| 3.0 Endpoints and Media Types | 03, 06 |
+| 4.0 Infrastructure | 03, 04, 07 |
+| 5.0 Diagnosing Problems | 08, 09 |
+| 6.0 Security | 05, 07 |
+
+Two to three weeks at 8–10 hours per week is enough for a reader working
+through this volume in order — the exam is deliberately entry level. The
+security domain here is foundational only; deeper defensive material
+lives in
+[Volume X](../volume-10-enterprise-cybersecurity/README.md). CCST
+Networking is also the natural on-ramp to **CCNA** in
+[Volume III](../volume-03-cisco-enterprise-networking/README.md), which
+carries the same topics at associate depth and rigor.
+
 ## Building and validating this volume
 
 From the repository root, after completing

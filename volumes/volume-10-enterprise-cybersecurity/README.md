@@ -89,6 +89,94 @@ Network Visibility), Volume XIX (Fortinet Network Security), and
 Volume XX (Wireshark and Packet Analysis), which cover specific vendor
 implementations of controls introduced here.
 
+## Certification alignment
+
+This volume maps to the **Cisco Cybersecurity** certification path —
+entry through professional — as recorded in
+[CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). Cisco
+rebranded its CyberOps certifications as **CCNA and CCNP Cybersecurity
+on 3 February 2026**, migrating existing holders to the new names; the
+exam-topics documents still carry their CyberOps-era titles, which is a
+naming lag, not a content difference. Chapter content describes
+blueprint domains and points to Cisco's official sources; it does not
+reproduce proprietary exam content.
+
+### The exams
+
+| Exam | Title | Duration | Role in the track |
+| --- | --- | --- | --- |
+| **100-160** | CCST Cybersecurity | 50 min | Entry |
+| **200-201** v1.1 | CCNA Cybersecurity (published as "Understanding Cisco Cybersecurity Operations Fundamentals", CBROPS) | 120 min | Associate |
+| **350-201 CBRCOR** v1.1 | Performing CyberOps Using Cisco Security Technologies | 120 min | Core — required for CCNP Cybersecurity |
+| **300-215 CBRFIR** v1.1 | Conducting Forensic Analysis and Incident Response Using Cisco Technologies for CyberOps | 90 min | Concentration |
+
+Question counts, cut scores, and pricing are set per exam and are not
+restated here; confirm them at registration.
+
+**CCST Cybersecurity (100-160)** — Cisco does not publish domain weights
+for the CCST exams; the five domains map to this volume as:
+
+| Domain | Chapters |
+| --- | --- |
+| 1.0 Essential Security Principles | 01 |
+| 2.0 Basic Network Security Concepts | 04 |
+| 3.0 Endpoint Security Concepts | 03 |
+| 4.0 Vulnerability Assessment and Risk Management | 05 |
+| 5.0 Incident Handling | 07 |
+
+**200-201 CCNA Cybersecurity v1.1**
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 Security Concepts | 20% | 01 |
+| 2.0 Security Monitoring | 25% | 06 |
+| 3.0 Host-Based Analysis | 20% | 03, 07 |
+| 4.0 Network Intrusion Analysis | 20% | 04, 06 |
+| 5.0 Security Policies and Procedures | 15% | 01, 07 |
+
+**350-201 CBRCOR v1.1**
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 Fundamentals | 20% | 01, 04 |
+| 2.0 Techniques | 30% | 06, 07 |
+| 3.0 Processes | 30% | 06, 07, 09 |
+| 4.0 Automation | 20% | 09 |
+
+**300-215 CBRFIR v1.1**
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 Fundamentals | 20% | 07 |
+| 2.0 Forensics Techniques | 20% | 07, 08 |
+| 3.0 Incident Response Techniques | 30% | 07 |
+| 4.0 Forensics Processes | 15% | 07 |
+| 5.0 Incident Response Processes | 15% | 07, 09 |
+
+This volume's SOC, detection-engineering, and incident-response chapters
+carry these domains naturally, but the professional exams test Cisco's
+own tooling — Secure Firewall, Secure Endpoint, Splunk-style analytics
+through Cisco's stack, and XDR workflows — so pair the plan below with
+hands-on time in Cisco U.'s CyberOps labs rather than treating the
+vendor-neutral chapters as sufficient.
+
+**CCNA Cybersecurity — six to eight weeks** at 8–10 hours per week:
+
+| Week | Focus | Chapters |
+| --- | --- | --- |
+| 1 | Security concepts: CIA, defense in depth, threat actors and vectors | 01 |
+| 2–3 | **Security monitoring — the heaviest domain at 25%.** Telemetry sources, detection engineering, SOC workflow | 06 |
+| 4 | Host-based analysis: endpoint defense, artifacts, evidence handling | 03, 07 |
+| 5 | Network intrusion analysis: packet and flow interpretation, infrastructure defense | 04, 06 |
+| 6 | Policies and procedures: incident response lifecycle, evidence, playbooks | 01, 07 |
+| 7–8 | Full-blueprint review and timed practice | — |
+
+Take CCST Cybersecurity first only if new to security — two to three
+weeks suffices. For CCNP Cybersecurity afterward, CBRCOR's Techniques
+and Processes domains are 60% combined — drill investigation workflow
+before anything else, then take CBRFIR while the forensics material is
+fresh.
+
 ## Building and validating this volume
 
 From the repository root, after completing
