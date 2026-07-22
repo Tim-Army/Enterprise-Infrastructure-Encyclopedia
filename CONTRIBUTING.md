@@ -24,8 +24,12 @@ Thank you for improving the Enterprise Infrastructure Encyclopedia.
 
 ## Scope boundaries
 
-- Do not commit credentials, license keys, personal data, or proprietary
-  exam/training content.
+- Do not commit real or production credentials, license keys, personal
+  data, or proprietary exam/training content.
+- Default vendor usernames and passwords — the factory logins a device or
+  appliance ships with — may be documented in plain text, since a reader
+  needs them to reach a fresh system and then change them. This covers
+  well-known defaults only, never a real or production secret.
 - Vendor guidance should reflect the dated baseline in
   [SOFTWARE_VERSIONS.md](SOFTWARE_VERSIONS.md); update that file in the same
   change if you write against a newer release.
