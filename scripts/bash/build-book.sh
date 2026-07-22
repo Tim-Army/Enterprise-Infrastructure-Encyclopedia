@@ -272,6 +272,7 @@ build_volume_html() {
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
     --include-after-body="$(footer_for ../)" \
+    --include-after-body=publishing/toc-freeze.html \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=3 \
     --metadata "title=$title" \
@@ -305,6 +306,7 @@ build_series_html() {
     --include-before-body=publishing/theme-toggle.html \
     --include-after-body="$(footer_for '')" \
     --include-after-body=publishing/volume-float-nav.html \
+    --include-after-body=publishing/toc-freeze.html \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=3 \
     --metadata "title=$series_title — Complete Edition" \

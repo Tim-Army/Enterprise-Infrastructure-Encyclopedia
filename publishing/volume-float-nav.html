@@ -8,18 +8,15 @@
      absent, so a link can never go dead. The header button collapses the
      panel to a compact "Volumes" handle and expands it again, and that
      choice is remembered in localStorage. Included only in the series build;
-     on any page with no volume headings it hides itself. The script also
-     gives the main table of contents a frozen header — a "Table of
-     contents" label and a Back to top link that stay pinned while the
-     reader scrolls through the TOC, and release once the TOC is past.
-     Progressive enhancement — the main table of contents works without
-     any of it. -->
+     on any page with no volume headings it hides itself. Back to top
+     lives in the frozen table-of-contents header (publishing/
+     toc-freeze.html), not here. Progressive enhancement — the main table
+     of contents works without it. -->
 <aside id="volume-float" aria-label="Volume navigation">
   <button id="vf-toggle" class="vf-toggle" type="button" aria-expanded="true" aria-controls="vf-body">
     <span class="vf-caret" aria-hidden="true"></span><span class="vf-label">Volumes</span>
   </button>
   <div id="vf-body" class="vf-body">
-    <div class="vf-top-row"><a href="#" class="vf-top">&uarr; Back to top</a></div>
     <nav aria-label="Volumes"><ul id="vf-list"></ul></nav>
   </div>
 </aside>
@@ -74,13 +71,6 @@
      the volume list below it scrolls when the panel hits its max height. */
   #volume-float .vf-body { display: flex; flex-direction: column; min-height: 0; }
   #volume-float .vf-body nav { overflow-y: auto; min-height: 0; }
-  #volume-float .vf-top-row {
-    margin-bottom: 0.45rem;
-    padding-bottom: 0.45rem;
-    border-bottom: 1px solid var(--eie-rule);
-  }
-  #volume-float .vf-top { color: var(--eie-link); font-weight: 600; text-decoration: none; }
-  #volume-float .vf-top:hover { text-decoration: underline; }
   #volume-float ul { list-style: none; margin: 0; padding: 0; }
   #volume-float li { margin: 0.2rem 0; }
   #volume-float a { color: var(--eie-link); text-decoration: none; }
@@ -91,32 +81,6 @@
   #volume-float.vf-collapsed .vf-toggle { margin-bottom: 0; }
   #volume-float.vf-collapsed .vf-caret { transform: rotate(-90deg); }
   #volume-float.vf-collapsed .vf-body { display: none; }
-  /* Frozen header for the main table of contents: sticks to the viewport
-     top while the reader scrolls through the TOC, releases after it. The
-     scroll-margin keeps the float's jump links from landing under it. */
-  #TOC .toc-head {
-    position: sticky;
-    top: 0;
-    z-index: 8;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1rem;
-    background: var(--eie-bg);
-    padding: 0.5rem 0 0.45rem;
-    margin-bottom: 0.4rem;
-    border-bottom: 1px solid var(--eie-rule);
-  }
-  #TOC .toc-head .toc-label {
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-size: 0.72rem;
-    opacity: 0.75;
-  }
-  #TOC .toc-head .toc-top { color: var(--eie-link); font-weight: 600; font-size: 0.8rem; text-decoration: none; }
-  #TOC .toc-head .toc-top:hover { text-decoration: underline; }
-  #TOC [id^="toc-"] { scroll-margin-top: 2.6rem; }
   /* Only render where the right margin beside the centered 52rem body is
      genuinely wide enough for the 14rem panel; below ~1340px the panel
      would overlap the text, so it is hidden and the top-of-page table of
@@ -146,16 +110,6 @@
       found++;
     });
     if (found === 0) { floatEl.style.display = 'none'; return; }
-
-    // Frozen header for the main table of contents.
-    var toc = document.getElementById('TOC');
-    if (toc) {
-      var head = document.createElement('div');
-      head.className = 'toc-head';
-      head.innerHTML = '<span class="toc-label">Table of contents</span>' +
-        '<a href="#" class="toc-top">\u2191 Back to top</a>';
-      toc.insertBefore(head, toc.firstChild);
-    }
 
     // Collapsible panel: the header button hides or shows the volume list,
     // and the choice is remembered across pages and visits.

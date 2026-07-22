@@ -1,0 +1,42 @@
+<!-- Frozen header for the page's main table of contents: a "Table of
+     contents" label and a Back to top link that stick to the viewport top
+     while the reader scrolls through the TOC, and release with the TOC once
+     it is past. Included in the complete-encyclopedia and per-volume
+     builds; on any page without a nav#TOC it does nothing. Progressive
+     enhancement — the table of contents works without it. -->
+<style>
+  #TOC .toc-head {
+    position: sticky;
+    top: 0;
+    z-index: 8;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    background: var(--eie-bg);
+    padding: 0.5rem 0 0.45rem;
+    margin-bottom: 0.4rem;
+    border-bottom: 1px solid var(--eie-rule);
+  }
+  #TOC .toc-head .toc-label {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.72rem;
+    opacity: 0.75;
+  }
+  #TOC .toc-head .toc-top { color: var(--eie-link); font-weight: 600; font-size: 0.8rem; text-decoration: none; }
+  #TOC .toc-head .toc-top:hover { text-decoration: underline; }
+  #TOC [id^="toc-"] { scroll-margin-top: 2.6rem; }
+</style>
+<script>
+  (function () {
+    var toc = document.getElementById('TOC');
+    if (!toc) { return; }
+    var head = document.createElement('div');
+    head.className = 'toc-head';
+    head.innerHTML = '<span class="toc-label">Table of contents</span>' +
+      '<a href="#" class="toc-top">↑ Back to top</a>';
+    toc.insertBefore(head, toc.firstChild);
+  })();
+</script>
