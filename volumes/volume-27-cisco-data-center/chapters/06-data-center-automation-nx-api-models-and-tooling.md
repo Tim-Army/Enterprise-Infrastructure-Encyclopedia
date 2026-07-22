@@ -21,9 +21,9 @@ automation stops being optional. A VXLAN EVPN leaf takes ~200 lines of
 patterned configuration; a tenant onboarding touches fabric, ACI, UCS,
 and zoning; and drift between "the standard" and "what is on box 47"
 is how outages incubate. The blueprint agrees: DCCOR gives Automation
-and AI 15%, and DCAUTO's domains — programmability foundation 10%,
-controller-based 30%, device-centric 30%, compute 30% — are this
-chapter's outline in exam form.
+and AI 15%, and DCNAUTO's v2.0 domains — automation foundation 15%,
+infrastructure as code 25%, element programmability 25%, operations
+25%, AI in automation 15% — are this chapter's outline in exam form.
 
 ### The device APIs
 
@@ -51,8 +51,8 @@ native tongue, and everything the UI does maps to objects under
 underlay/overlay provisioning from templates, configuration compliance
 (it diffs actual against intended and can enforce), imaging, and a
 REST API that makes "fabric as data" real for non-ACI estates. The
-DCAUTO split — controller-based versus device-centric — is exactly
-this section versus the previous one.
+DCNAUTO split — controller-level versus device-level programmability —
+is exactly this section versus the previous one.
 
 ### The tools
 
@@ -167,8 +167,8 @@ templates fighting device-default rendering — compare against
 - Cisco NX-OS programmability guide (NX-API, NETCONF, telemetry)
 - Cisco DevNet: ACI, NDFC, and Intersight API documentation and
   sandboxes
-- DCAUTO 300-635 v1.1 exam topics (rebranding to DCNAUTO under CCNP
-  Automation — same code)
+- DCNAUTO 300-635 v2.0 exam topics (formerly DCAUTO v1.1 — same
+  code)
 
 Knowledge checks:
 
@@ -208,9 +208,9 @@ unverified.
 The data center automates or it drifts. NX-API and YANG models make
 switches addressable, the APIC, Intersight, and NDFC make estates
 addressable, and Ansible and Terraform turn patterns into rendered,
-diffable, assertable state. The DCAUTO exam splits along the same
-lines this chapter does — foundation, controller-based,
-device-centric, compute — and the habits here (idempotency, external
+diffable, assertable state. The DCNAUTO exam splits along the same
+lines this chapter does — foundation, infrastructure as code, element
+programmability, operations, AI — and the habits here (idempotency, external
 truth, post-condition asserts) are what Chapters 07–09 assume.
 
 - [ ] I pulled structured state through NX-API and knew which style I

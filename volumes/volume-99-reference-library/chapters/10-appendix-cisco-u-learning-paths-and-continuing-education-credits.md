@@ -22,7 +22,7 @@ for** (where one maps), its CE-credit value, and whether it is **Free**
 > are the realigned successors of the retired 300-425 ENWLSD and 300-430 ENWLSI that
 > the two "Enterprise Wireless" paths were built for. A blank ("—") means no current
 > exam maps; the Collaboration Applications/Conferencing courses stay blank because
-> their concentration exams (e.g., CLICA 300-810) are retiring in 2026. **Currency:**
+> their concentration exams (e.g., CLICA 300-810) were retired in February 2026. **Currency:**
 > catalog contents, credit values, exam codes, and access change often; verify on each
 > path's page and at [ce.cisco.com](https://ce.cisco.com) before relying on a value.
 

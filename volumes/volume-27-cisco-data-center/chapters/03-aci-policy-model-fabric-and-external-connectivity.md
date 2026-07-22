@@ -93,7 +93,7 @@ that tracks it.
 
 ACI work is done against the APIC — UI for learning, API for
 everything repeated. The canonical objects, as the REST payloads the
-DCAUTO exam also expects (abbreviated):
+DCNAUTO exam also expects (abbreviated):
 
 ```json
 POST /api/mo/uni.json

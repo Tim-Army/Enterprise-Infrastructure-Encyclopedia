@@ -76,11 +76,11 @@ data center is unreachable?
 
 CLCOR v2.0 (120 minutes) is the core; one 90-minute concentration
 completes CCNP Collaboration, and CLCOR also qualifies the CCIE
-Collaboration lab. The concentrations divide by role — CLACCM (call
-control depth), CLICA (applications), CLCEI (cloud and edge), CLCCE
-(contact center, new in 2026), CLAUTO (automation, end-of-life
-announced) — and the README's alignment tables map each to this
-volume's chapters.
+Collaboration lab. The concentrations divide by role — CLACC (call
+control depth, formerly CLACCM), CLHCT (hybrid and cloud, formerly
+CLCEI), CLCCE (contact center, new in 2026) — with CLICA
+(applications) and CLAUTO (automation) retired in February 2026 — and
+the README's alignment tables map each to this volume's chapters.
 
 ## Design Considerations
 

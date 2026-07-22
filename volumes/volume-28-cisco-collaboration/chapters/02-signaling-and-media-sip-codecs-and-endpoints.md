@@ -18,7 +18,7 @@
 ### SIP: the protocol you will read every week
 
 SIP is text over UDP, TCP, or TLS (5060/5061), and reading it raw is
-a daily skill CLCOR and CLACCM both assume. The grammar:
+a daily skill CLCOR and CLACC both assume. The grammar:
 
 - **Methods** — INVITE (start/modify a session), ACK (complete the
   INVITE handshake), BYE, CANCEL, REGISTER, OPTIONS (keepalive and
@@ -151,7 +151,7 @@ dialogs.
 ## References and Knowledge Checks
 
 - RFC 3261 (SIP), RFC 3264 (offer/answer), RFC 4733 (DTMF events)
-- CLACCM 300-815 v1.2 domain 1 (Signaling and Media Protocols, 20%)
+- CLACC 300-815 v2.0 domain 1 (Signaling and Media Protocols, 10%)
 - Cisco Collaboration SRND, media and codec sections
 
 Knowledge checks:

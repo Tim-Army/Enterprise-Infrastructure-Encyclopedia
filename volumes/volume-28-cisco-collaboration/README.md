@@ -63,7 +63,9 @@ This volume maps to the **CCNP Collaboration** certification track, as
 recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). CCNP
 Collaboration requires the `CLCOR` core exam plus **one** concentration
-exam; this volume covers the core and all five concentrations. `CLCOR`
+exam; this volume covers the core and every concentration blueprint —
+the three current ones and the two Cisco retired in February 2026.
+`CLCOR`
 is also the qualifying exam for **CCIE Collaboration**. Chapter content
 describes blueprint domains and points to Cisco's official sources; it
 does not reproduce proprietary exam questions or licensed courseware.
@@ -73,11 +75,11 @@ does not reproduce proprietary exam questions or licensed courseware.
 | Exam | Title | Duration | Role in the track |
 | --- | --- | --- | --- |
 | **350-801 CLCOR** v2.0 | Implementing and Operating Cisco Collaboration Core Technologies | 120 min | Core — required for CCNP Collaboration and CCIE Collaboration |
-| **300-810 CLICA** v1.2 | Implementing Cisco Collaboration Applications | 90 min | Concentration |
-| **300-815 CLACCM** v1.2 | Implementing Cisco Advanced Call Control and Mobility Services | 90 min | Concentration |
-| **300-820 CLCEI** v1.2 | Implementing Cisco Collaboration Cloud and Edge Solutions | 90 min | Concentration |
+| **300-810 CLICA** v1.2 | Implementing Cisco Collaboration Applications | 90 min | **Retired February 2026** — kept for the record |
+| **300-815 CLACC** v2.0 | Implementing Cisco Advanced Call Control On-Premises | 90 min | Concentration |
+| **300-820 CLHCT** v2.0 | Implementing Cisco Collaboration Hybrid and Cloud Technologies | 90 min | Concentration |
 | **300-830 CLCCE** v1.0 | Implementing Cisco Collaboration Cloud Customer Experience | 90 min | Concentration (new, GA 3 February 2026) |
-| **300-835 CLAUTO** v1.1 | Automating and Programming Cisco Collaboration Solutions | 90 min | Concentration — **end-of-life announced** by Cisco under the Automation restructure; confirm availability before scheduling |
+| **300-835 CLAUTO** v1.1 | Automating and Programming Cisco Collaboration Solutions | 90 min | **Retired in the February 2026 restructure** — kept for the record |
 
 All are delivered through Pearson VUE. Question counts, cut scores,
 and pricing are set per exam and are not restated here; confirm them
@@ -96,7 +98,7 @@ at registration.
 | 5.0 Cloud and Hybrid Services | 25% | 07 |
 | 6.0 Media and QoS | 10% | 08 |
 
-**300-810 CLICA v1.2**
+**300-810 CLICA v1.2** *(retired February 2026 — kept for the record)*
 
 | Domain | Weight | Chapters |
 | --- | --- | --- |
@@ -105,25 +107,27 @@ at registration.
 | 3.0 Cisco Unity Connection | 30% | 06 |
 | 4.0 Application Clients | 25% | 06 |
 
-**300-815 CLACCM v1.2**
+**300-815 CLACC v2.0** *(formerly CLACCM v1.2)*
 
 | Domain | Weight | Chapters |
 | --- | --- | --- |
-| 1.0 Signaling and Media Protocols | 20% | 02 |
-| 2.0 Gateway Technologies | 10% | 05 |
-| 3.0 Cisco Unified Border Element | 15% | 05 |
-| 4.0 Call Control and Dial Planning | 25% | 04 |
-| 5.0 Cisco Unified CM Call Control Features | 20% | 04 |
-| 6.0 Mobility | 10% | 04 |
+| 1.0 Signaling and Media Protocols | 10% | 02 |
+| 2.0 Session Border Controller and Voice Gateway Technologies | 30% | 05 |
+| 3.0 Advanced Call Control | 25% | 04 |
+| 4.0 Supplemental Features and Security | 20% | 04 |
+| 5.0 Remote Connectivity and Business to Business Solutions | 15% | 05, 07 |
 
-**300-820 CLCEI v1.2**
+**300-820 CLHCT v2.0** *(formerly CLCEI v1.2)*
 
 | Domain | Weight | Chapters |
 | --- | --- | --- |
-| 1.0 Key Concepts | 25% | 07 |
-| 2.0 Initial Expressway Configurations | 25% | 07 |
-| 3.0 Mobile and Remote Access | 25% | 07 |
-| 4.0 Cisco WebEx Technologies | 25% | 07 |
+| 1.0 Suite and Devices Configuration | 25% | 07 |
+| 2.0 Cloud Management | 10% | 07 |
+| 3.0 Suite and Devices Management | 25% | 07 |
+| 4.0 Suite and Device Administration | 10% | 07 |
+| 5.0 Hybrid and Migration to the Cloud | 10% | 07 |
+| 6.0 Security | 10% | 07 |
+| 7.0 APIs and Programmability | 10% | 09 |
 
 **300-830 CLCCE v1.0**
 
@@ -134,7 +138,7 @@ at registration.
 | 3.0 Digital Channels | 15% | 09 |
 | 4.0 Advanced Features and AI | 25% | 09 |
 
-**300-835 CLAUTO v1.1** *(EOL announced — see above)*
+**300-835 CLAUTO v1.1** *(retired in the February 2026 restructure — kept for the record)*
 
 | Domain | Weight | Chapters |
 | --- | --- | --- |
@@ -160,12 +164,12 @@ Volume II networking foundation:
 | 10 | Full-blueprint review weighted to call control and cloud, timed practice | 09 |
 
 Then one concentration within a few months, three to five weeks each,
-by role: **CLACCM** for dial-plan-heavy estates (Chapter 04 plus 02
-and 05 in depth), **CLICA** for the applications layer (Chapter 06),
-**CLCEI** for edge and Webex integration (Chapter 07), **CLCCE** where
-Webex Contact Center is landing (Chapter 09) — and treat **CLAUTO** as
-schedulable only after confirming Cisco still offers it, given the
-announced end-of-life.
+by role: **CLACC** for dial-plan-heavy estates (Chapter 04 plus 02
+and 05 in depth), **CLHCT** for Webex and hybrid estates (Chapter 07),
+**CLCCE** where Webex Contact Center is landing (Chapter 09). **CLICA**
+and **CLAUTO** were retired by Cisco in February 2026; their material
+(Chapters 06 and 09) still serves CLCOR's applications domain and
+day-to-day operations.
 
 ### Study materials
 

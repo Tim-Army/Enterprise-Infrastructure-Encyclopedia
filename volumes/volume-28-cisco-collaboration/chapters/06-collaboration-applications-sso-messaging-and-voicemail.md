@@ -17,7 +17,7 @@
 
 ### SAML SSO: one login, many applications
 
-CLICA opens with SSO (15%) because everything else authenticates
+CLICA opened with SSO (15%) because everything else authenticates
 through it. The flow to internalize: the client requests a protected
 resource (CUCM user page, Unity web, Jabber/Webex App login); the
 service (SP) redirects to the **identity provider** (IdP — AD FS,
@@ -153,7 +153,7 @@ diagnostics bundle.
 
 ## References and Knowledge Checks
 
-- CLICA 300-810 v1.2 exam topics (SSO 15%, IM&P and cloud messaging
+- CLICA 300-810 v1.2 exam topics (retired February 2026 — SSO 15%, IM&P and cloud messaging
   30%, Unity Connection 30%, clients 25%)
 - Cisco SAML SSO deployment guide; Unity Connection and IM&P
   configuration guides
@@ -202,7 +202,7 @@ identity singular, IM&P makes presence and messaging a fabric,
 Unity Connection answers what the dial plan forwards, and the
 clients assemble it all through service discovery. Every
 integration is a seam with named failure classes — and all four
-CLICA domains map to this one chapter.
+CLICA domains map to this one chapter (CLICA was retired in February 2026; the material still serves CLCOR's applications domain).
 
 - [ ] I can trace a SAML assertion and name its three failure points
 - [ ] My voicemail seams (CSS, MWI, routing rules) are deliberate

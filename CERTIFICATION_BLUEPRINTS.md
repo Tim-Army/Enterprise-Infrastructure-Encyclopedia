@@ -23,9 +23,9 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXII / XXIII — Dell OpenManage / iDRAC | PowerEdge Foundations v2 (D-PE-FN-01), PowerEdge Operate v2 (D-PE-OE-01; supersedes the retired D-PE-OE-23) | Dell Technologies Proven Professional |
 | XXIV — Dell VxRail | VxRail Deploy v2 (D-VXR-DY-01), VxRail Operate v2 (D-VXR-OE-01) | Dell Technologies Proven Professional |
 | XXV — Cisco Security | CCNP Security: SCOR core (350-701) + concentrations SVPN (300-730), SCAZT (300-740), SISE (300-715), SDSI (300-745); SCOR also qualifies CCIE Security | Cisco Learning & Certifications |
-| XXVII — Cisco Data Center | CCNP Data Center: DCCOR core (350-601) + concentrations DCID (300-610), DCIT (300-615), DCACI (300-620), DCAUTO (300-635, rebranding to DCNAUTO), DCAI (300-640); DCCOR also qualifies CCIE Data Center | Cisco Learning & Certifications |
-| XXVIII — Cisco Collaboration | CCNP Collaboration: CLCOR core (350-801) + concentrations CLICA (300-810), CLACCM (300-815), CLCEI (300-820), CLCCE (300-830), CLAUTO (300-835, EOL announced); CLCOR also qualifies CCIE Collaboration | Cisco Learning & Certifications |
-| XXIX — Cisco Service Provider | CCNP Service Provider: SPCOR core (350-501) + concentrations SPRI (300-510), SPVI (300-515), SPAUTO (300-535, EOL announced); SPCOR also qualifies CCIE Service Provider | Cisco Learning & Certifications |
+| XXVII — Cisco Data Center | CCNP Data Center: DCCOR core (350-601) + concentrations DCID (300-610), DCIT (300-615), DCACI (300-620), DCNAUTO (300-635 v2.0, formerly DCAUTO), DCAI (300-640); DCCOR also qualifies CCIE Data Center | Cisco Learning & Certifications |
+| XXVIII — Cisco Collaboration | CCNP Collaboration: CLCOR core (350-801 v2.0) + concentrations CLACC (300-815 v2.0, formerly CLACCM), CLHCT (300-820 v2.0, formerly CLCEI), CLCCE (300-830); CLICA (300-810) and CLAUTO (300-835) retired February 2026; CLCOR also qualifies CCIE Collaboration | Cisco Learning & Certifications |
+| XXIX — Cisco Service Provider | CCNP Service Provider: SPCOR core (350-501) + concentrations SPRI (300-510), SPVI (300-515), SPCNI (300-540); SPAUTO (300-535) retired 2026; SPCOR also qualifies CCIE Service Provider | Cisco Learning & Certifications |
 | XXX — Cisco CCDE Network Design | CCDE (expert-level design): Written (400-007) + Practical, v3.1 unified topics, with AI Infrastructure / Large Scale Networks / On-Prem and Cloud Services / Workforce Mobility electives | Cisco Learning & Certifications |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
@@ -109,22 +109,24 @@ Volume XXVII (Cisco Data Center) was created on **22 July 2026**,
 promoting the Data Center track out of the awaiting list. All six exams
 were verified against their Cisco exam-topics documents the same day:
 DCCOR `350-601` v1.2 (120 min) and the 90-minute concentrations DCID
-`300-610` v1.2, DCIT `300-615` v1.2, DCACI `300-620` v1.2, DCAUTO
-`300-635` v1.1, and DCAI `300-640` v1.0 (GA 3 February 2026 — DCAI
-plus DCCOR earns the certification). Each domain set sums to 100%.
-DCAUTO is being rebranded DCNAUTO under the CCNP Automation
-restructure with the code unchanged; confirm its Data Center
-concentration status at registration.
+`300-610` v1.2, DCIT `300-615` v1.2, DCACI `300-620` v1.2, DCNAUTO
+`300-635` v2.0 (formerly DCAUTO v1.1), and DCAI `300-640` v1.0 (GA
+3 February 2026 — DCAI plus DCCOR earns the certification). Each
+domain set sums to 100%. The DCAUTO-to-DCNAUTO rebrand is complete
+with a v2.0 refresh, code unchanged; Cisco's current Data Center
+lineup lists DCNAUTO as a concentration (re-verified 22 July 2026).
 
 Volume XXVIII (Cisco Collaboration) was created on **22 July 2026**,
 promoting the Collaboration track out of the awaiting list. All six
 exams were verified against their Cisco exam-topics documents the same
-day: CLCOR `350-801` v2.0 (120 min) and the 90-minute concentrations
-CLICA `300-810` v1.2, CLACCM `300-815` v1.2, CLCEI `300-820` v1.2,
-CLCCE `300-830` v1.0 (new, GA 3 February 2026), and CLAUTO `300-835`
-v1.1. Each domain set sums to 100%. **CLAUTO's end-of-life is
-announced** under the Automation restructure — the volume records it
-and tells readers to confirm availability before scheduling.
+day: CLCOR `350-801` v2.0 (120 min) and the 90-minute concentrations.
+A re-check against Cisco's CCNP Collaboration exam listings on **22
+July 2026** found the lineup had moved: the current concentrations are
+CLACC `300-815` v2.0 (formerly CLACCM v1.2), CLHCT `300-820` v2.0
+(formerly CLCEI v1.2), and CLCCE `300-830` v1.0 (GA 3 February 2026),
+while **CLICA `300-810` and CLAUTO `300-835` were retired in the
+February 2026 restructure**. The volume keeps the retired blueprints,
+marked as retired, for the record. Each domain set sums to 100%.
 
 Volume XXIX (Cisco Service Provider) was created on **22 July 2026**,
 promoting the last CCNP track out of the awaiting list — only the CCDE
@@ -133,10 +135,12 @@ the same day (SPCOR against its Learning Network exam-topics page,
 which carries v1.1 where Cisco's exam page still shows v1.0; the rest
 against their exam-topics documents): SPCOR `350-501` v1.1 (120 min)
 and the 90-minute concentrations SPRI `300-510` v1.1, SPVI `300-515`
-v1.1, and SPAUTO `300-535` v1.1. Each domain set sums to 100%.
-**SPAUTO's end-of-life is announced** under the Automation restructure
-— the volume records it and tells readers to confirm availability
-before scheduling.
+v1.1, and SPCNI `300-540` v1.0 (Designing and Implementing Cisco
+Service Provider Cloud Network Infrastructure, added in a 22 July 2026
+re-check). Each domain set sums to 100%. That re-check also found
+**SPAUTO `300-535` retired** under the Automation restructure — it no
+longer appears in Cisco's concentration lineup; the volume keeps its
+blueprint, marked as retired, for the record.
 
 Volume XXX (Cisco CCDE Network Design) was created on **22 July 2026**,
 completing the Cisco portfolio. The CCDE was verified the same day

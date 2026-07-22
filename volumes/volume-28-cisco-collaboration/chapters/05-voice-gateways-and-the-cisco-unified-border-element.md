@@ -170,8 +170,8 @@ so the fix is named and reviewable.
 
 ## References and Knowledge Checks
 
-- CLACCM 300-815 v1.2 domains 2–3 (Gateway Technologies 10%, CUBE
-  15%); CLCOR domain 4 (10%)
+- CLACC 300-815 v2.0 domain 2 (Session Border Controller and Voice
+  Gateway Technologies, 30%); CLCOR domain 4 (10%)
 - Cisco CUBE configuration guide; IOS XE voice translation
   documentation
 
@@ -217,7 +217,7 @@ The border element turns every call into two governable legs: dial
 peers route them, translation rules localize them, SIP profiles
 speak each provider's dialect, and security thresholds keep the
 internet's dial tone out. TDM literacy persists at the edges. This
-is CLACCM's gateway/CUBE 25% and CLCOR's border domain, and it
+is CLACC's SBC-and-gateway 30% and CLCOR's border domain, and it
 completes the on-premises calling path Chapters 03–04 built.
 
 - [ ] My inbound legs never land on peer 0

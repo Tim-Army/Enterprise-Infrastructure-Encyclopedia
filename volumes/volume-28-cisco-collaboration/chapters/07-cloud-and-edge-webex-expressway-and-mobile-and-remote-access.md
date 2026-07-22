@@ -23,7 +23,7 @@ inner firewall (so no inbound holes to the trusted network), and E
 listens to the internet for the published services. Traffic
 patterns: signaling and media both relay through the pair (SSH
 tunnels for the traversal link's control; TURN/media relay on E for
-media). What this buys CLCEI's Key Concepts domain: no VPN client,
+media). What this buys CLHCT's hybrid domains: no VPN client,
 no inbound trust-network exposure, per-service publishing rather
 than network access.
 
@@ -155,7 +155,7 @@ and Control Hub's per-user service status narrate their own faults.
 
 ## References and Knowledge Checks
 
-- CLCEI 300-820 v1.2 exam topics (four domains at 25% each)
+- CLHCT 300-820 v2.0 exam topics (formerly CLCEI — seven domains led by Suite and Devices Configuration and Management, 25% each)
 - CLCOR 350-801 v2.0 domain 5 (Cloud and Hybrid Services, 25%)
 - Cisco Expressway MRA and B2B deployment guides; Webex Control Hub
   documentation
@@ -203,7 +203,7 @@ The edge publishes collaboration per-service instead of per-network:
 the traversal pair's outbound trust design, MRA's
 DNS-certificate-discovery chain, B2B's DNS-and-search-rule
 federation, and Webex hybrid stitching cloud onto premises. It is
-CLCEI entire and the core's heaviest cloud domain — and it is where
+CLHCT entire and the core's heaviest cloud domain — and it is where
 Chapter 02's protocols, 05's border craft, and 06's SSO all meet
 the internet.
 

@@ -76,7 +76,7 @@ does not reproduce proprietary exam questions or licensed courseware.
 | **300-610 DCID** v1.2 | Designing Cisco Data Center Infrastructure | 90 min | Concentration |
 | **300-615 DCIT** v1.2 | Troubleshooting Cisco Data Center Infrastructure | 90 min | Concentration |
 | **300-620 DCACI** v1.2 | Implementing Cisco Application Centric Infrastructure | 90 min | Concentration |
-| **300-635 DCAUTO** v1.1 | Automating Cisco Data Center Solutions | 90 min | Concentration |
+| **300-635 DCNAUTO** v2.0 | Automating Cisco Data Center Networking Solutions | 90 min | Concentration — formerly DCAUTO |
 | **300-640 DCAI** v1.0 | Implementing Cisco Data Center AI Infrastructure | 90 min | Concentration (specialist, GA 3 February 2026) |
 
 All are delivered through Pearson VUE. Question counts, cut scores, and
@@ -85,11 +85,10 @@ registration.
 
 **Two portfolio movements to know about.** DCAI arrived on 3 February
 2026 as the newest path to the certification — DCAI plus DCCOR earns
-CCNP Data Center. In the same restructure, Cisco began rebranding
-`300-635 DCAUTO` as `DCNAUTO` under the new CCNP Automation track;
-the code is unchanged, but confirm its concentration status for the
-Data Center track at registration if automation is your chosen
-concentration.
+CCNP Data Center. In the same restructure, Cisco rebranded
+`300-635 DCAUTO` as `DCNAUTO` with a v2.0 refresh; the code is
+unchanged, and Cisco's current lineup lists DCNAUTO as a Data Center
+concentration (re-verified 22 July 2026).
 
 ### Domain weights, mapped to this volume
 
@@ -133,14 +132,15 @@ concentration.
 | 5.0 ACI Management | 20% | 03, 08 |
 | 6.0 ACI Anywhere | 10% | 03 |
 
-**300-635 DCAUTO v1.1**
+**300-635 DCNAUTO v2.0** *(formerly DCAUTO v1.1)*
 
 | Domain | Weight | Chapters |
 | --- | --- | --- |
-| 1.0 Network Programmability Foundation | 10% | 06 |
-| 2.0 Controller Based Data Center Networking | 30% | 03, 06 |
-| 3.0 Data Center Device-centric Networking | 30% | 02, 06 |
-| 4.0 Data Center Compute | 30% | 04, 06 |
+| 1.0 Network Automation Foundation | 15% | 06 |
+| 2.0 Infrastructure as Code | 25% | 06 |
+| 3.0 Network Element Programmability | 25% | 03, 06 |
+| 4.0 Operations | 25% | 06 |
+| 5.0 AI in Automation | 15% | 06, 07 |
 
 **300-640 DCAI v1.0**
 
@@ -171,7 +171,7 @@ Then take **one concentration** within a few months, three to five
 weeks each, matched to your role: DCACI for ACI-operating shops (Chapter
 03 in depth), DCID for design (35% of it is network design — drill
 Chapter 02's topologies), DCIT for operations (its Management and
-Operations domain is 20% — Chapter 09), DCAUTO/DCNAUTO for automation
+Operations domain is 20% — Chapter 09), DCNAUTO for automation
 engineers (Chapter 06), or DCAI where AI clusters are landing (Chapter
 07).
 

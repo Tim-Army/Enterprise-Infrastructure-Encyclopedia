@@ -8,7 +8,7 @@
   manipulation at the right layer
 - Explain globalized (+E.164) dial plan design and why it scales
   where site-prefix schemes collapse
-- Configure the features CLACCM weights: hunt constructs, call park
+- Configure the features CLACC weights: hunt constructs, call park
   and pickup, transfer and forward chains
 - Deliver mobility: extension mobility, single number reach, and
   SRST survivability
@@ -43,7 +43,7 @@ requires a local format.
 
 ### Globalized dial plans
 
-The +E.164 design CLACCM rewards: all DNs stored as +E.164; ingress
+The +E.164 design CLACC rewards: all DNs stored as +E.164; ingress
 gateways globalize calling/called numbers; users dial habits
 (4-digit, 9-prefixed) that **translation patterns** normalize;
 routing operates on `\+!` patterns; egress localizes per trunk. What
@@ -55,7 +55,7 @@ you to read both.
 
 ### The feature set
 
-CLACCM's Call Control Features domain (20%) is the daily-driver
+CLACC's Supplemental Features and Security domain (20%) is the daily-driver
 list: **hunt pilots → hunt lists → line groups** (distribution
 algorithms, hunting versus queuing); **call park/directed park** and
 **pickup groups**; transfer and forward chains (CFA/CFB/CFNA and
@@ -164,8 +164,8 @@ egress (fallback dial plan or FXO/trunk config at the branch).
 
 ## References and Knowledge Checks
 
-- CLACCM 300-815 v1.2 domains 4–6 (Call Control and Dial Planning
-  25%, Features 20%, Mobility 10%)
+- CLACC 300-815 v2.0 domains 3–4 (Advanced Call Control 25%,
+  Supplemental Features and Security 20%)
 - Cisco SRND dial plan chapters; Unified CM feature configuration
   guides
 
@@ -210,7 +210,7 @@ is unverified.
 The dial plan is policy: partitions and CSS express who may call
 what, globalized routing keeps one core for any topology, features
 ride the same containment, and mobility — EM, SNR, SRST — moves
-identity without moving policy. This chapter is CLACCM's center of
+identity without moving policy. This chapter is CLACC's center of
 gravity and the second half of CLCOR's heaviest domain.
 
 - [ ] My CSS matrix exists on paper and matches the build

@@ -53,7 +53,7 @@ on-premises heritage.)
 
 ### Automation across the estate
 
-Collaboration is deeply programmable, and the retiring CLAUTO exam's
+Collaboration is deeply programmable, and the retired CLAUTO exam's
 domains map the surfaces:
 
 - **AXL** (Chapter 03) — SOAP/XML provisioning of CUCM: bulk device,
@@ -167,8 +167,8 @@ monitor — validate both deliberately.
 ## References and Knowledge Checks
 
 - CLCCE 300-830 v1.0 exam topics (four domains: 30/30/15/25)
-- CLAUTO 300-835 v1.1 exam topics (EOL announced — confirm before
-  scheduling)
+- CLAUTO 300-835 v1.1 exam topics (retired February 2026 — kept for
+  the record)
 - Cisco Webex Contact Center and DevNet collaboration API
   documentation
 

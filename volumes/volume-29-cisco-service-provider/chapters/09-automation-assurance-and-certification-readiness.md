@@ -21,7 +21,7 @@ Chapter 01 named the scale: tens of thousands of devices, millions of
 routes, SLAs measured in milliseconds of restoration. No team hand-
 configures that, and no human polls it fast enough to meet an
 assurance SLA. SPCOR's Automation and Assurance domain (15%) and the
-whole of SPAUTO (its four domains outline this chapter) treat
+whole of the retired SPAUTO (its four domains outline this chapter) treat
 programmability as the operating model, and IOS XR — structured,
 committed, model-native (Chapter 01) — is built for it.
 
@@ -156,7 +156,7 @@ by hand (reconcile, then find who and fix the process — the Chapter
 ## References and Knowledge Checks
 
 - SPCOR 350-501 v1.1 Automation and Assurance (15%); SPAUTO 300-535
-  v1.1 (all four domains) — EOL announced, confirm before scheduling
+  v1.1 (all four domains) — retired 2026, kept for the record
 - Cisco IOS XR programmability and telemetry configuration guides;
   Cisco NSO documentation; OpenConfig models
 
@@ -206,9 +206,9 @@ YANG over NETCONF/RESTCONF/gNMI configures the network, model-driven
 telemetry observes it fast enough to keep SLAs, and NSO orchestrates
 the services customers buy while detecting drift — all riding IOS XR's
 native commit, confirm, and rollback. This closes SPCOR's Automation
-and Assurance domain and the whole of SPAUTO, and with core and three
-concentrations verified, mapped, and practiced, the CCNP Service
-Provider track is yours to schedule.
+and Assurance domain and the whole of the retired SPAUTO, and with
+the core and concentrations verified, mapped, and practiced, the CCNP
+Service Provider track is yours to schedule.
 
 - [ ] I can match the model-driven interfaces to their tasks
 - [ ] My provisioning is idempotent, asserted, and confirm-committed

@@ -58,8 +58,9 @@ This volume maps to the **CCNP Service Provider** certification track,
 as recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). CCNP
 Service Provider requires the `SPCOR` core exam plus **one**
-concentration exam; this volume covers the core and all three
-concentrations. `SPCOR` is also the qualifying exam for **CCIE Service
+concentration exam; this volume covers the core, SPRI, SPVI, and the
+retired SPAUTO in depth; the new SPCNI cloud-infrastructure
+concentration is mapped in the exam table below. `SPCOR` is also the qualifying exam for **CCIE Service
 Provider**. Chapter content describes blueprint domains and points to
 Cisco's official sources; it does not reproduce proprietary exam
 questions or licensed courseware.
@@ -71,7 +72,8 @@ questions or licensed courseware.
 | **350-501 SPCOR** v1.1 | Implementing and Operating Cisco Service Provider Network Core Technologies | 120 min | Core — required for CCNP Service Provider and CCIE Service Provider |
 | **300-510 SPRI** v1.1 | Implementing Cisco Service Provider Advanced Routing Solutions | 90 min | Concentration |
 | **300-515 SPVI** v1.1 | Implementing Cisco Service Provider VPN Solutions | 90 min | Concentration |
-| **300-535 SPAUTO** v1.1 | Automating and Programming Cisco Service Provider Solutions | 90 min | Concentration — **end-of-life announced** by Cisco under the Automation restructure; confirm availability before scheduling |
+| **300-540 SPCNI** v1.0 | Designing and Implementing Cisco Service Provider Cloud Network Infrastructure | 90 min | Concentration |
+| **300-535 SPAUTO** v1.1 | Automating and Programming Cisco Service Provider Solutions | 90 min | **Retired 2026** under the Automation restructure — kept for the record |
 
 All are delivered through Pearson VUE. Question counts, cut scores,
 and pricing are set per exam and are not restated here; confirm them
@@ -107,7 +109,18 @@ at registration.
 | 3.0 Layer 3 VPNs | 35% | 06 |
 | 4.0 IPv6 VPNs | 10% | 06 |
 
-**300-535 SPAUTO v1.1** *(EOL announced — see above)*
+**300-540 SPCNI v1.0** *(new for 2026 — no dedicated chapter yet;
+study from Cisco's exam-topics page)*
+
+| Domain | Weight | Chapters |
+| --- | --- | --- |
+| 1.0 Virtualized Architecture | 25% | — |
+| 2.0 Cloud Interconnect | 25% | — |
+| 3.0 High Availability | 20% | — |
+| 4.0 Security | 15% | — |
+| 5.0 Service Assurance and Optimization | 15% | — |
+
+**300-535 SPAUTO v1.1** *(retired 2026 — kept for the record)*
 
 | Domain | Weight | Chapters |
 | --- | --- | --- |
@@ -136,9 +149,11 @@ Then one concentration within a few months, three to five weeks each,
 by role: **SPRI** for the routing specialist (Chapters 02–05 in
 depth — its Unicast Routing domain alone is 35%), **SPVI** for the
 services engineer (Chapters 06–07; its L3VPN and L2VPN domains are 65%
-combined), and **SPAUTO** for automation — schedulable only after
-confirming Cisco still offers it, given the announced end-of-life;
-Chapter 09 carries its material.
+combined), and **SPCNI** for the cloud-infrastructure designer (new
+for 2026 — no dedicated chapter here; study from Cisco's SPCNI v1.0
+exam topics). **SPAUTO** was retired by Cisco in 2026; Chapter 09
+still carries its automation material for SPCOR's Automation and
+Assurance domain.
 
 ### Study materials
 
