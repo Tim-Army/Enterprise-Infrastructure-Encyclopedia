@@ -1048,7 +1048,7 @@ volumes:
     number: "XCIX"
     slug: volume-99-reference-library
     title: "Reference Library"
-    chapter_count: 9
+    chapter_count: 10
     build_eligible: true
     chapters:
       - id: 01
@@ -1078,3 +1078,6 @@ volumes:
       - id: 09
         title: "Standards, Certifications, Vendor Documentation, and Reference Governance"
         path: volumes/volume-99-reference-library/chapters/09-standards-certifications-vendor-documentation-and-reference-governance.md
+      - id: 10
+        title: "Appendix — Cisco U. Learning Paths and Continuing Education Credits"
+        path: volumes/volume-99-reference-library/chapters/10-appendix-cisco-u-learning-paths-and-continuing-education-credits.md

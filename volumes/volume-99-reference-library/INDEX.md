@@ -10,6 +10,8 @@ topics.
 - **Automation model comparison (imperative vs. declarative, agent vs. agentless)** — [Chapter 08, Theory and Architecture / Implementation and Automation](chapters/08-automation-apis-data-formats-and-integration-reference.md)
 - **AWS Amazon Resource Name (ARN)** — [Chapter 03, Implementation and Automation](chapters/03-addressing-subnetting-naming-time-and-identity-reference.md)
 - **Baseline (configuration)** — [Chapter 04, Theory and Architecture](chapters/04-configuration-templates-baselines-and-change-records.md)
+- **CE (Continuing Education) credits, Cisco** — [Chapter 10](chapters/10-appendix-cisco-u-learning-paths-and-continuing-education-credits.md)
+- **Cisco U. Learning Paths (catalog, exams, free vs. subscription)** — [Chapter 10](chapters/10-appendix-cisco-u-learning-paths-and-continuing-education-credits.md)
 - **Bottom-up troubleshooting** — [Chapter 06, Theory and Architecture](chapters/06-troubleshooting-decision-aids-and-escalation.md)
 - **Certification blueprint cross-reference** — [Chapter 09, Implementation and Automation](chapters/09-standards-certifications-vendor-documentation-and-reference-governance.md)
 - **Change record template** — [Chapter 04, Implementation and Automation](chapters/04-configuration-templates-baselines-and-change-records.md)

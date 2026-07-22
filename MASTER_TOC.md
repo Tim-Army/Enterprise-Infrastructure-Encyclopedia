@@ -443,3 +443,4 @@ table of contents for that volume.
 7. Security, Hardening, Incident Response, and Risk Reference
 8. Automation, APIs, Data Formats, and Integration Reference
 9. Standards, Certifications, Vendor Documentation, and Reference Governance
+10. Appendix — Cisco U. Learning Paths and Continuing Education Credits

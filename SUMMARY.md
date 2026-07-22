@@ -319,3 +319,4 @@ Publishing navigation for the generated editions. Mirrors
   * [Security, Hardening, Incident Response, and Risk Reference](volumes/volume-99-reference-library/chapters/07-security-hardening-incident-response-and-risk-reference.md)
   * [Automation, APIs, Data Formats, and Integration Reference](volumes/volume-99-reference-library/chapters/08-automation-apis-data-formats-and-integration-reference.md)
   * [Standards, Certifications, Vendor Documentation, and Reference Governance](volumes/volume-99-reference-library/chapters/09-standards-certifications-vendor-documentation-and-reference-governance.md)
+  * [Appendix — Cisco U. Learning Paths and Continuing Education Credits](volumes/volume-99-reference-library/chapters/10-appendix-cisco-u-learning-paths-and-continuing-education-credits.md)
