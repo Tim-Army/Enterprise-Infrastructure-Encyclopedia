@@ -2,9 +2,12 @@
      edition. Populated at load time by scanning the document for volume
      headings (the level-1 headings whose text begins "Volume "), so it
      stays correct as volumes are added with no build-time list to maintain.
-     Included only in the series build; on any page with no volume headings
-     it hides itself. Progressive enhancement — the main table of contents
-     at the top of the page works without it. -->
+     Each link targets that volume's entry in the main table of contents at
+     the top of the page (Pandoc gives every TOC entry an id of the form
+     "toc-<heading-id>"), falling back to the body heading if that entry is
+     absent, so a link can never go dead. Included only in the series build;
+     on any page with no volume headings it hides itself. Progressive
+     enhancement — the main table of contents works without it. -->
 <aside id="volume-float" aria-label="Volume navigation">
   <div class="vf-top-row"><a href="#" class="vf-top">&uarr; Back to top</a></div>
   <p class="vf-title">Volumes</p>
@@ -63,7 +66,11 @@
       if (!h.id || text.indexOf('Volume ') !== 0) { return; }
       var li = document.createElement('li');
       var a = document.createElement('a');
-      a.href = '#' + h.id;
+      // Link to the volume's entry in the main table of contents; Pandoc
+      // ids each TOC entry "toc-<heading-id>". Fall back to the body
+      // heading if that entry is not present, so the link is never dead.
+      var tocId = 'toc-' + h.id;
+      a.href = '#' + (document.getElementById(tocId) ? tocId : h.id);
       a.textContent = text;
       li.appendChild(a);
       list.appendChild(li);
