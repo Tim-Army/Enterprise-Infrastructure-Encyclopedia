@@ -26,7 +26,8 @@
     right: 0.75rem;
     width: 14rem;
     max-height: calc(100vh - 6rem);
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     background: var(--eie-bg);
     color: var(--eie-fg);
     border: 1px solid var(--eie-rule);
@@ -65,6 +66,10 @@
     border-top: 0.34rem solid currentColor;
     transition: transform 0.15s ease;
   }
+  /* The header — the Volumes toggle and Back to top — stays frozen; only
+     the volume list below it scrolls when the panel hits its max height. */
+  #volume-float .vf-body { display: flex; flex-direction: column; min-height: 0; }
+  #volume-float .vf-body nav { overflow-y: auto; min-height: 0; }
   #volume-float .vf-top-row {
     margin-bottom: 0.45rem;
     padding-bottom: 0.45rem;
