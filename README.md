@@ -50,6 +50,7 @@ The series combines architecture and theory with implementation guidance, automa
 | XXVII | [Cisco Data Center](volumes/volume-27-cisco-data-center/README.md) | 9 |
 | XXVIII | [Cisco Collaboration](volumes/volume-28-cisco-collaboration/README.md) | 9 |
 | XXIX | [Cisco Service Provider](volumes/volume-29-cisco-service-provider/README.md) | 9 |
+| XXX | [Cisco CCDE Network Design](volumes/volume-30-cisco-ccde-network-design/README.md) | 9 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
 Technical review and lab-validation sign-off for all 249 chapters are

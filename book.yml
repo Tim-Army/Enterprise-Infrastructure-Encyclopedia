@@ -1010,6 +1010,40 @@ volumes:
       - id: 09
         title: "Automation, Assurance, and Certification Readiness"
         path: volumes/volume-29-cisco-service-provider/chapters/09-automation-assurance-and-certification-readiness.md
+  - id: volume-30
+    number: "XXX"
+    slug: volume-30-cisco-ccde-network-design
+    title: "Cisco CCDE Network Design"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "The CCDE and the Discipline of Network Design"
+        path: volumes/volume-30-cisco-ccde-network-design/chapters/01-the-ccde-and-the-discipline-of-network-design.md
+      - id: 02
+        title: "Business Strategy Design"
+        path: volumes/volume-30-cisco-ccde-network-design/chapters/02-business-strategy-design.md
+      - id: 03
+        title: "Enterprise Campus, WAN, and Edge Design"
+        path: volumes/volume-30-cisco-ccde-network-design/chapters/03-enterprise-campus-wan-and-edge-design.md
+      - id: 04
+        title: "Routing and Control Plane Design"
+        path: volumes/volume-30-cisco-ccde-network-design/chapters/04-routing-and-control-plane-design.md
+      - id: 05
+        title: "Data Plane, Management Plane, Automation, and Operational Design"
+        path: volumes/volume-30-cisco-ccde-network-design/chapters/05-data-plane-management-plane-automation-and-operational-design.md
+      - id: 06
+        title: "Service Design"
+        path: volumes/volume-30-cisco-ccde-network-design/chapters/06-service-design.md
+      - id: 07
+        title: "Security Design"
+        path: volumes/volume-30-cisco-ccde-network-design/chapters/07-security-design.md
+      - id: 08
+        title: "Designing for the Electives: AI, Large-Scale, Cloud, and Mobility"
+        path: volumes/volume-30-cisco-ccde-network-design/chapters/08-designing-for-the-electives-ai-large-scale-cloud-and-mobility.md
+      - id: 09
+        title: "The CCDE Practical: Scenario Method, Trade-offs, and Readiness"
+        path: volumes/volume-30-cisco-ccde-network-design/chapters/09-the-ccde-practical-scenario-method-trade-offs-and-readiness.md
   - id: volume-99
     number: "XCIX"
     slug: volume-99-reference-library

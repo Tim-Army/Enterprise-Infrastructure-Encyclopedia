@@ -39,9 +39,10 @@ does not by itself verify every technical claim in it.
 | XXVII — Cisco Data Center | 9 | Drafted |
 | XXVIII — Cisco Collaboration | 9 | Drafted |
 | XXIX — Cisco Service Provider | 9 | Drafted |
+| XXX — Cisco CCDE Network Design | 9 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 276 of 276 drafted (100%). Every volume has a
+**Total declared chapters:** 285 of 285 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

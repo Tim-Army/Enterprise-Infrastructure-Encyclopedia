@@ -26,6 +26,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXVII — Cisco Data Center | CCNP Data Center: DCCOR core (350-601) + concentrations DCID (300-610), DCIT (300-615), DCACI (300-620), DCAUTO (300-635, rebranding to DCNAUTO), DCAI (300-640); DCCOR also qualifies CCIE Data Center | Cisco Learning & Certifications |
 | XXVIII — Cisco Collaboration | CCNP Collaboration: CLCOR core (350-801) + concentrations CLICA (300-810), CLACCM (300-815), CLCEI (300-820), CLCCE (300-830), CLAUTO (300-835, EOL announced); CLCOR also qualifies CCIE Collaboration | Cisco Learning & Certifications |
 | XXIX — Cisco Service Provider | CCNP Service Provider: SPCOR core (350-501) + concentrations SPRI (300-510), SPVI (300-515), SPAUTO (300-535, EOL announced); SPCOR also qualifies CCIE Service Provider | Cisco Learning & Certifications |
+| XXX — Cisco CCDE Network Design | CCDE (expert-level design): Written (400-007) + Practical, v3.1 unified topics, with AI Infrastructure / Large Scale Networks / On-Prem and Cloud Services / Workforce Mobility electives | Cisco Learning & Certifications |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -36,15 +37,15 @@ Always confirm the current blueprint against the vendor's official page
 before using a chapter for exam preparation — blueprints change independently
 of this repository's release cycle.
 
-## Cisco tracks awaiting a volume
+## Cisco portfolio coverage
 
-Every CCNP professional track now has an owning volume. What remains
-unmapped is the design-expert path:
-
-- **CCDE** — the design-expert path; **not verified in this pass** —
-  confirm the current blueprint directly with Cisco before use.
-
-Creating a volume for it promotes it into the table above.
+The Cisco certification portfolio is now fully mapped. Owning volumes
+exist for every CCNP professional track — Enterprise (III), Security
+(XXV), Data Center (XXVII), Collaboration (XXVIII), and Service
+Provider (XXIX) — for the expert-level CCDE design path (XXX), and
+alignment sections cover the entry/associate CCST, Automation, and
+Cybersecurity tracks (Volumes II, IV, IX, X). No Cisco track is
+awaiting a volume.
 
 ## Currency
 
@@ -124,6 +125,19 @@ v1.1, and SPAUTO `300-535` v1.1. Each domain set sums to 100%.
 **SPAUTO's end-of-life is announced** under the Automation restructure
 — the volume records it and tells readers to confirm availability
 before scheduling.
+
+Volume XXX (Cisco CCDE Network Design) was created on **22 July 2026**,
+completing the Cisco portfolio. The CCDE was verified the same day
+against Cisco's Learning Network **CCDE v3.1 unified exam topics** page
+(the written and practical now share one topic set), clearing the
+"not verified" flag it had carried: the CCDE Written (400-007) is a
+2-hour, 90–110-question exam and the Practical is an 8-hour scenario
+exam (three Core Enterprise modules plus one elective — AI
+Infrastructure, Large Scale Networks, On-Prem and Cloud Services, or
+Workforce Mobility). The five unified design domains — Business
+Strategy 15%, Control/Data/Management Plane and Operational 25%,
+Network Design 30%, Service Design 15%, Security Design 15% — sum to
+100%. Version 3.1 adds AI/ML and generative-AI topics.
 
 Drift in this table is normal and has been frequent. Within a single year
 the Dell PowerEdge Operate exam was rebuilt and renumbered, AWS replaced

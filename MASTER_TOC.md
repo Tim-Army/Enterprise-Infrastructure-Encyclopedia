@@ -416,6 +416,20 @@ table of contents for that volume.
 8. Provider QoS, Multicast, and the Edge
 9. Automation, Assurance, and Certification Readiness
 
+## Volume XXX — Cisco CCDE Network Design
+
+[Volume README](volumes/volume-30-cisco-ccde-network-design/README.md) · [Index](volumes/volume-30-cisco-ccde-network-design/INDEX.md) · [Glossary](volumes/volume-30-cisco-ccde-network-design/GLOSSARY.md)
+
+1. The CCDE and the Discipline of Network Design
+2. Business Strategy Design
+3. Enterprise Campus, WAN, and Edge Design
+4. Routing and Control Plane Design
+5. Data Plane, Management Plane, Automation, and Operational Design
+6. Service Design
+7. Security Design
+8. Designing for the Electives: AI, Large-Scale, Cloud, and Mobility
+9. The CCDE Practical: Scenario Method, Trade-offs, and Readiness
+
 ## Volume XCIX — Reference Library
 
 [Volume README](volumes/volume-99-reference-library/README.md) · [Index](volumes/volume-99-reference-library/INDEX.md) · [Glossary](volumes/volume-99-reference-library/GLOSSARY.md)
