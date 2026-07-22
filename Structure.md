@@ -38,7 +38,7 @@ Enterprise-Infrastructure-Encyclopedia/
 ├── scripts/          Repository and publishing automation
 ├── templates/         Reusable content templates
 ├── tests/            Repository and content validation tests
-├── volumes/           All 26 volumes (see above)
+├── volumes/           All 27 volumes (see above)
 ├── INDEX.md           Master index across all volumes
 ├── GLOSSARY.md         Master glossary across all volumes
 ├── MASTER_TOC.md        Canonical series table of contents

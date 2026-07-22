@@ -1,8 +1,8 @@
-# 26-Volume Curriculum Roadmap
+# 27-Volume Curriculum Roadmap
 
 This roadmap is the authoritative plan for the Enterprise Infrastructure
 Encyclopedia: approved titles, stable slugs, scope, and chapter counts for
-all 26 volumes. Dependencies are noted where a volume assumes prior volumes
+all 27 volumes. Dependencies are noted where a volume assumes prior volumes
 as prerequisite reading.
 
 | # | Volume | Slug | Chapters | Primary Dependency |
@@ -32,7 +32,8 @@ as prerequisite reading.
 | 23 | XXIII — Dell iDRAC 9 and 10 Administration | `volume-23-dell-idrac-9-10-administration` | 9 | Volume IV |
 | 24 | XXIV — Dell VxRail Hyperconverged Infrastructure | `volume-24-dell-vxrail-hci` | 9 | Volume V |
 | 25 | XXV — Cisco Security | `volume-25-cisco-security` | 9 | Volumes III, X |
-| 26 | XCIX — Reference Library | `volume-99-reference-library` | 9 | Volumes I–XXV |
+| 26 | XXVI — Proxmox Virtualization Lab on Dell PowerEdge R640 | `volume-26-proxmox-lab-poweredge-r640` | 9 | Volumes XXII, XXIII |
+| 27 | XCIX — Reference Library | `volume-99-reference-library` | 9 | Volumes I–XXVI |
 
 ## Ownership and scope control
 

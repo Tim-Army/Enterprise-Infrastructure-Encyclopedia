@@ -59,7 +59,7 @@ required rigor, not a headcount threshold.
 
 ### The infrastructure domain taxonomy
 
-This encyclopedia organizes 26 volumes around a consistent taxonomy of
+This encyclopedia organizes 27 volumes around a consistent taxonomy of
 infrastructure domains. Understanding this taxonomy now — before the volumes
 that go deep on each domain — gives every later chapter a fixed point of
 reference.
@@ -555,7 +555,7 @@ negative test. Until then, the lab is unverified.
 
 Enterprise infrastructure is defined by scale, shared risk, regulatory
 obligation, and formal accountability rather than by size alone. This
-encyclopedia organizes its remaining 25 volumes around a consistent domain
+encyclopedia organizes its remaining 26 volumes around a consistent domain
 taxonomy — networking, systems administration, virtualization, storage,
 cloud, containers, automation, security, observability, and resilience —
 and every workload's consumption model (on-premises, colocation, private

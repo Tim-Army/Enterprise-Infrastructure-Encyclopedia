@@ -874,6 +874,40 @@ volumes:
       - id: 09
         title: "Designing Security Infrastructure, Automation, and Capstone"
         path: volumes/volume-25-cisco-security/chapters/09-designing-security-infrastructure-automation-and-capstone.md
+  - id: volume-26
+    number: "XXVI"
+    slug: volume-26-proxmox-lab-poweredge-r640
+    title: "Proxmox Virtualization Lab on Dell PowerEdge R640"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "iDRAC Out-of-Band Access and First Configuration"
+        path: volumes/volume-26-proxmox-lab-poweredge-r640/chapters/01-idrac-out-of-band-access-and-first-configuration.md
+      - id: 02
+        title: "Storage: The BOSS Boot Mirror and the river RAID 5 Array"
+        path: volumes/volume-26-proxmox-lab-poweredge-r640/chapters/02-storage-boss-boot-mirror-and-the-river-raid-5-array.md
+      - id: 03
+        title: "Installing Proxmox VE"
+        path: volumes/volume-26-proxmox-lab-poweredge-r640/chapters/03-installing-proxmox-ve.md
+      - id: 04
+        title: "The No-Subscription Repository, Updates, and Core Services"
+        path: volumes/volume-26-proxmox-lab-poweredge-r640/chapters/04-no-subscription-repository-updates-and-core-services.md
+      - id: 05
+        title: "Network Architecture: Management NIC, VLAN Trunk, and Bridges"
+        path: volumes/volume-26-proxmox-lab-poweredge-r640/chapters/05-network-architecture-management-nic-vlan-trunk-and-bridges.md
+      - id: 06
+        title: "Proxmox Storage: The river Datastore and ISO Repository"
+        path: volumes/volume-26-proxmox-lab-poweredge-r640/chapters/06-proxmox-storage-the-river-datastore-and-iso-repository.md
+      - id: 07
+        title: "Building the ISO Library"
+        path: volumes/volume-26-proxmox-lab-poweredge-r640/chapters/07-building-the-iso-library.md
+      - id: 08
+        title: "Deploying the Virtual Machines"
+        path: volumes/volume-26-proxmox-lab-poweredge-r640/chapters/08-deploying-the-virtual-machines.md
+      - id: 09
+        title: "Validation, Troubleshooting, and Operations"
+        path: volumes/volume-26-proxmox-lab-poweredge-r640/chapters/09-validation-troubleshooting-and-operations.md
   - id: volume-99
     number: "XCIX"
     slug: volume-99-reference-library

@@ -325,7 +325,7 @@ negative test. Until then, the lab is unverified.
 
 This closing chapter consolidated the standards bodies, certification
 blueprints, and vendor documentation portals that anchor every technical
-claim across all 26 volumes, and it defined the reference-governance
+claim across all 27 volumes, and it defined the reference-governance
 discipline — provenance, as-of dating, dual-trigger review — that keeps
 this reference volume from becoming exactly the kind of stale, drifted
 documentation the rest of the encyclopedia warns readers to avoid. With

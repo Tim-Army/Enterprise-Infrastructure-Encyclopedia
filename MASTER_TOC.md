@@ -360,6 +360,20 @@ table of contents for that volume.
 8. Zero-Trust Secure Cloud Access for Users and Endpoints
 9. Designing Security Infrastructure, Automation, and Capstone
 
+## Volume XXVI — Proxmox Virtualization Lab on Dell PowerEdge R640
+
+[Volume README](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) · [Index](volumes/volume-26-proxmox-lab-poweredge-r640/INDEX.md) · [Glossary](volumes/volume-26-proxmox-lab-poweredge-r640/GLOSSARY.md)
+
+1. iDRAC Out-of-Band Access and First Configuration
+2. Storage: The BOSS Boot Mirror and the river RAID 5 Array
+3. Installing Proxmox VE
+4. The No-Subscription Repository, Updates, and Core Services
+5. Network Architecture: Management NIC, VLAN Trunk, and Bridges
+6. Proxmox Storage: The river Datastore and ISO Repository
+7. Building the ISO Library
+8. Deploying the Virtual Machines
+9. Validation, Troubleshooting, and Operations
+
 ## Volume XCIX — Reference Library
 
 [Volume README](volumes/volume-99-reference-library/README.md) · [Index](volumes/volume-99-reference-library/INDEX.md) · [Glossary](volumes/volume-99-reference-library/GLOSSARY.md)

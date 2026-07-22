@@ -16,7 +16,7 @@ The series combines architecture and theory with implementation guidance, automa
 
 ## Curriculum
 
-26 volumes, 240 chapters. Each volume has a dedicated
+27 volumes, 249 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -46,9 +46,10 @@ The series combines architecture and theory with implementation guidance, automa
 | XXIII | [Dell iDRAC 9 and 10 Administration](volumes/volume-23-dell-idrac-9-10-administration/README.md) | 9 |
 | XXIV | [Dell VxRail Hyperconverged Infrastructure](volumes/volume-24-dell-vxrail-hci/README.md) | 9 |
 | XXV | [Cisco Security](volumes/volume-25-cisco-security/README.md) | 9 |
+| XXVI | [Proxmox Virtualization Lab on Dell PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) | 9 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
-Technical review and lab-validation sign-off for all 240 chapters are
+Technical review and lab-validation sign-off for all 249 chapters are
 tracked in [PROJECT_STATUS.md](PROJECT_STATUS.md). The
 [master index](INDEX.md) and [master glossary](GLOSSARY.md) cover all
 volumes.
@@ -80,7 +81,7 @@ Enterprise-Infrastructure-Encyclopedia/
 │   │   ├── INDEX.md
 │   │   ├── GLOSSARY.md
 │   │   └── chapters/
-│   └── ... (26 volumes total, see MASTER_TOC.md)
+│   └── ... (27 volumes total, see MASTER_TOC.md)
 ├── INDEX.md
 ├── GLOSSARY.md
 ├── MASTER_TOC.md

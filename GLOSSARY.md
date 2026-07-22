@@ -32,4 +32,5 @@ for current coverage.
 - [Volume XXIII — Dell iDRAC 9 and 10 Administration](volumes/volume-23-dell-idrac-9-10-administration/GLOSSARY.md)
 - [Volume XXIV — Dell VxRail Hyperconverged Infrastructure](volumes/volume-24-dell-vxrail-hci/GLOSSARY.md)
 - [Volume XXV — Cisco Security](volumes/volume-25-cisco-security/GLOSSARY.md)
+- [Volume XXVI — Proxmox Virtualization Lab on Dell PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/GLOSSARY.md)
 - [Volume XCIX — Reference Library](volumes/volume-99-reference-library/GLOSSARY.md)

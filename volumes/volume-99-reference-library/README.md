@@ -69,7 +69,7 @@ stand alone and can be consulted independently:
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this
   volume.
 - [Master index](../../INDEX.md) and [master glossary](../../GLOSSARY.md)
-  — series-wide versions covering all 26 volumes.
+  — series-wide versions covering all 27 volumes.
 
 ## Software and platform baseline
 

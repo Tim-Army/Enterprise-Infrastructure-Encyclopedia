@@ -32,4 +32,5 @@ full detail. Regenerated as each volume completes — see
 - [Volume XXIII — Dell iDRAC 9 and 10 Administration](volumes/volume-23-dell-idrac-9-10-administration/INDEX.md)
 - [Volume XXIV — Dell VxRail Hyperconverged Infrastructure](volumes/volume-24-dell-vxrail-hci/INDEX.md)
 - [Volume XXV — Cisco Security](volumes/volume-25-cisco-security/INDEX.md)
+- [Volume XXVI — Proxmox Virtualization Lab on Dell PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/INDEX.md)
 - [Volume XCIX — Reference Library](volumes/volume-99-reference-library/INDEX.md)
