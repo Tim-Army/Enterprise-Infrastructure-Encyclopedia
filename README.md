@@ -63,6 +63,26 @@ scope, dependencies, and ownership. [MASTER_TOC.md](MASTER_TOC.md) provides
 full series navigation, and [PROJECT_STATUS.md](PROJECT_STATUS.md) records
 current delivery progress.
 
+## Tracks
+
+A volume's number records the order it joined the series and never changes —
+it is a stable identifier, not a shelf position — so related volumes are not
+always adjacent. The reading paths below group them thematically. A volume
+can appear in more than one track, and each path lists its volumes in
+ascending order.
+
+| Track | Reading path |
+| --- | --- |
+| Core curriculum | Volumes [I](volumes/volume-01-enterprise-engineering-foundations/README.md)–[XIII](volumes/volume-13-integrated-enterprise-labs/README.md) in numbered order — foundations through integrated labs |
+| Cisco | [III Enterprise Networking](volumes/volume-03-cisco-enterprise-networking/README.md) → [XXV Security](volumes/volume-25-cisco-security/README.md) → [XXVII Data Center](volumes/volume-27-cisco-data-center/README.md) → [XXVIII Collaboration](volumes/volume-28-cisco-collaboration/README.md) → [XXIX Service Provider](volumes/volume-29-cisco-service-provider/README.md) → [XXX CCDE Network Design](volumes/volume-30-cisco-ccde-network-design/README.md) |
+| Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
+| Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
+| Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) |
+| Operating systems | [XIV Red Hat Enterprise Linux 10](volumes/volume-14-red-hat-enterprise-linux-10/README.md) → [XXI Ubuntu Server and Cloud 26.04 LTS](volumes/volume-21-ubuntu-server-cloud-26-04-lts/README.md) |
+| Virtualization | [V VMware](volumes/volume-05-vmware-virtualization/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
+| Cloud | [VII Cloud Infrastructure](volumes/volume-07-cloud-infrastructure/README.md) → [XVII AWS Architecture and Security](volumes/volume-17-aws-architecture-security/README.md) |
+| Reference | [XCIX Reference Library](volumes/volume-99-reference-library/README.md) — cross-volume reference material, always last |
+
 ## Volume-first layout
 
 ```text
