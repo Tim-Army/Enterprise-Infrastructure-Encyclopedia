@@ -126,6 +126,19 @@ rewrite_file() {
   printf '%s' "$dest"
 }
 
+# Like rewrite_file, but then demotes every heading one level (see
+# lib/demote_headings.py). Used for chapters in the concatenated editions so
+# each chapter's "# Chapter N" title nests under its volume's "# Volume N" in
+# the table of contents instead of sitting beside it. Standalone chapter
+# pages call rewrite_file directly and keep their H1 title.
+rewrite_and_demote() {
+  local rewritten demoted
+  rewritten="$(rewrite_file "$@")"
+  demoted="${rewritten}.demoted.md"
+  python3 "$repo_root/scripts/bash/lib/demote_headings.py" "$rewritten" > "$demoted"
+  printf '%s' "$demoted"
+}
+
 first_line_title() {
   head -1 "$1" | sed -E 's/^# (Chapter [0-9]+: )?//'
 }
@@ -246,9 +259,12 @@ build_volume_html() {
   while IFS= read -r f; do chapters+=("$f"); done < <(find "$volume_dir/chapters" -name "*.md" | sort)
   rewritten_chapters=()
   for ch in "${chapters[@]}"; do
-    rewritten_chapters+=("$(rewrite_file "$ch" html-flat "$volume_slug")")
+    rewritten_chapters+=("$(rewrite_and_demote "$ch" html-flat "$volume_slug")")
   done
   rewritten_title_page="$(volume_title_page_for "$title")"
+  # toc-depth 3: with chapters demoted, the volume is H1, chapters are H2, and
+  # chapter sections are H3 — depth 3 keeps the section detail visible while
+  # nesting chapters under their volume.
   pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}" \
     -f markdown-implicit_figures \
     --standalone --embed-resources \
@@ -257,7 +273,7 @@ build_volume_html() {
     --include-before-body=publishing/theme-toggle.html \
     --include-after-body="$(footer_for ../)" \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
-    --toc --toc-depth=2 \
+    --toc --toc-depth=3 \
     --metadata "title=$title" \
     --metadata "author=$author" \
     -o "output/html/$volume_slug/complete-volume.html"
@@ -275,10 +291,12 @@ build_series_html() {
   for volume_dir in volumes/*/; do
     rewritten_body+=("$(rewrite_file "${volume_dir}README.md" html-root)")
     for ch in "${volume_dir}"chapters/*.md; do
-      rewritten_body+=("$(rewrite_file "$ch" html-root)")
+      rewritten_body+=("$(rewrite_and_demote "$ch" html-root)")
     done
   done
   rewritten_title_page="$(title_page_for)"
+  # toc-depth 3: volumes stay H1, demoted chapters are H2, chapter sections
+  # H3 — so chapters nest under their volume while section detail remains.
   pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_body[@]}" \
     -f markdown-implicit_figures \
     --standalone --embed-resources \
@@ -287,7 +305,7 @@ build_series_html() {
     --include-before-body=publishing/theme-toggle.html \
     --include-after-body="$(footer_for '')" \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
-    --toc --toc-depth=2 \
+    --toc --toc-depth=3 \
     --metadata "title=$series_title — Complete Edition" \
     --metadata "author=$author" \
     -o "output/html/complete-encyclopedia.html"
@@ -302,7 +320,7 @@ build_series_epub() {
   for volume_dir in volumes/*/; do
     rewritten_body+=("$(rewrite_file "${volume_dir}README.md" epub-absolute)")
     for ch in "${volume_dir}"chapters/*.md; do
-      rewritten_body+=("$(rewrite_file "$ch" epub-absolute)")
+      rewritten_body+=("$(rewrite_and_demote "$ch" epub-absolute)")
     done
   done
   rewritten_colophon="$(rewrite_file "publishing/colophon.md" epub-absolute)"
