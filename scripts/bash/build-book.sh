@@ -94,7 +94,7 @@ title_page_updated="$(date +%Y-%m-%d)"
 # build timestamp, so revisions remain distinguishable.
 #
 # Do not regenerate this value.
-epub_identifier="https://github.com/derg20/Enterprise-Infrastructure-Encyclopedia"
+epub_identifier="https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia"
 
 link_tmp="$(mktemp -d)"
 trap 'rm -rf "$link_tmp"' EXIT

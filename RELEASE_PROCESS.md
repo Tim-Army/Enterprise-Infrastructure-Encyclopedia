@@ -23,7 +23,7 @@ to a GitHub release.
    complete-encyclopedia HTML and EPUB 3 editions and attaches them to the
    GitHub release automatically.
 6. Verify the attached artifacts and the published
-   [Pages portal](https://derg20.github.io/Enterprise-Infrastructure-Encyclopedia/)
+   [Pages portal](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/)
    before announcing the release.
 
 ## Versioning

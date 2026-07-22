@@ -2,9 +2,7 @@
 
 > A volume-first, documentation-as-code curriculum for designing, deploying, securing, automating, operating, and troubleshooting modern enterprise infrastructure.
 
-<a href="https://derg20.github.io/Enterprise-Infrastructure-Encyclopedia/" target="_blank" rel="noopener noreferrer">Read the HTML edition</a>
-
-Also mirrored at [github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia), with its own [HTML edition](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/).
+<a href="https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/" target="_blank" rel="noopener noreferrer">Read the HTML edition</a>
 
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)

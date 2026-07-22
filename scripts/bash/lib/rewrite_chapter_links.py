@@ -54,8 +54,8 @@ import os
 import re
 import sys
 
-PORTAL_BASE_URL = "https://derg20.github.io/Enterprise-Infrastructure-Encyclopedia"
-GITHUB_BLOB_BASE = "https://github.com/derg20/Enterprise-Infrastructure-Encyclopedia/blob/main"
+PORTAL_BASE_URL = "https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia"
+GITHUB_BLOB_BASE = "https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/blob/main"
 
 LINK_RE = re.compile(r"\]\(([^)\s]+\.(?:md|css|html))((?:#[^)]*)?)\)")
 CHAPTER_RE = re.compile(r"^volumes/([^/]+)/chapters/([^/]+)\.md$")
