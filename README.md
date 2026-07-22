@@ -4,19 +4,21 @@
 
 <a href="https://derg20.github.io/Enterprise-Infrastructure-Encyclopedia/" target="_blank" rel="noopener noreferrer">Read the HTML edition</a>
 
+Also mirrored at [github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia), with its own [HTML edition](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/).
+
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 24-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 33-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-31 volumes, 286 chapters. Each volume has a dedicated
+33 volumes, 291 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
