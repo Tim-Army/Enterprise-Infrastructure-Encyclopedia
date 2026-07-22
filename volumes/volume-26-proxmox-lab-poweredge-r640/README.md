@@ -257,11 +257,12 @@ from the IPv4 plan, and the IPv6 columns are left to be completed if and
 when IPv6 is added — which requires an assigned IPv6 prefix the build does
 not currently have.
 
-Note that IPv6 uses a **prefix length** (for example `/64`) rather than a
-dotted network mask; the *Network Mask* column below is retained for
-parity with Appendix A and would hold the prefix length once assigned.
+IPv6 uses a **prefix length** (for example `/64`) rather than the dotted
+network mask of IPv4, so the third column below is *Prefix Length* rather
+than *Network Mask*; it will hold a value such as `/64` once addressing is
+assigned.
 
-| Hostname | IPv6 Address | Network Mask | Gateway | VLAN ID |
+| Hostname | IPv6 Address | Prefix Length | Gateway | VLAN ID |
 | --- | --- | --- | --- | --- |
 | `idrac` | *not assigned* | *not assigned* | *not assigned* | untagged |
 | `pve` | *not assigned* | *not assigned* | *not assigned* | untagged |
