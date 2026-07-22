@@ -12,6 +12,7 @@ rewritten against a newer release, and record the date of the change.
 | VMware NSX | NSX 4.x | 2026-07 |
 | Cisco IOS XE | 17.x (Catalyst 9000 series) | 2026-07 |
 | Cisco Catalyst Center | Current SD-Access release | 2026-07 |
+| Cisco IOS XR (ASR 9000 / NCS) | 7.x | 2026-07 |
 | Cisco NX-OS (Nexus 9000) | 10.x | 2026-07 |
 | Cisco ACI | 6.x | 2026-07 |
 | Cisco UCS Manager / Intersight | 4.x / current SaaS | 2026-07 |

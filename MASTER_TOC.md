@@ -402,6 +402,20 @@ table of contents for that volume.
 8. Media Resources, Conferencing, and QoS
 9. Contact Center, Automation, and Certification Readiness
 
+## Volume XXIX — Cisco Service Provider
+
+[Volume README](volumes/volume-29-cisco-service-provider/README.md) · [Index](volumes/volume-29-cisco-service-provider/INDEX.md) · [Glossary](volumes/volume-29-cisco-service-provider/GLOSSARY.md)
+
+1. Service Provider Architecture and the IOS XR Operating Model
+2. Provider Core Routing: IS-IS and OSPF at Scale
+3. BGP for Service Providers: Design, Policy, and Scale
+4. MPLS and Segment Routing Transport
+5. Traffic Engineering and Fast Restoration
+6. L3VPN Services
+7. L2VPN and EVPN Services
+8. Provider QoS, Multicast, and the Edge
+9. Automation, Assurance, and Certification Readiness
+
 ## Volume XCIX — Reference Library
 
 [Volume README](volumes/volume-99-reference-library/README.md) · [Index](volumes/volume-99-reference-library/INDEX.md) · [Glossary](volumes/volume-99-reference-library/GLOSSARY.md)

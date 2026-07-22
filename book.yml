@@ -976,6 +976,40 @@ volumes:
       - id: 09
         title: "Contact Center, Automation, and Certification Readiness"
         path: volumes/volume-28-cisco-collaboration/chapters/09-contact-center-automation-and-certification-readiness.md
+  - id: volume-29
+    number: "XXIX"
+    slug: volume-29-cisco-service-provider
+    title: "Cisco Service Provider"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Service Provider Architecture and the IOS XR Operating Model"
+        path: volumes/volume-29-cisco-service-provider/chapters/01-service-provider-architecture-and-the-ios-xr-operating-model.md
+      - id: 02
+        title: "Provider Core Routing: IS-IS and OSPF at Scale"
+        path: volumes/volume-29-cisco-service-provider/chapters/02-provider-core-routing-is-is-and-ospf-at-scale.md
+      - id: 03
+        title: "BGP for Service Providers: Design, Policy, and Scale"
+        path: volumes/volume-29-cisco-service-provider/chapters/03-bgp-for-service-providers-design-policy-and-scale.md
+      - id: 04
+        title: "MPLS and Segment Routing Transport"
+        path: volumes/volume-29-cisco-service-provider/chapters/04-mpls-and-segment-routing-transport.md
+      - id: 05
+        title: "Traffic Engineering and Fast Restoration"
+        path: volumes/volume-29-cisco-service-provider/chapters/05-traffic-engineering-and-fast-restoration.md
+      - id: 06
+        title: "L3VPN Services"
+        path: volumes/volume-29-cisco-service-provider/chapters/06-l3vpn-services.md
+      - id: 07
+        title: "L2VPN and EVPN Services"
+        path: volumes/volume-29-cisco-service-provider/chapters/07-l2vpn-and-evpn-services.md
+      - id: 08
+        title: "Provider QoS, Multicast, and the Edge"
+        path: volumes/volume-29-cisco-service-provider/chapters/08-provider-qos-multicast-and-the-edge.md
+      - id: 09
+        title: "Automation, Assurance, and Certification Readiness"
+        path: volumes/volume-29-cisco-service-provider/chapters/09-automation-assurance-and-certification-readiness.md
   - id: volume-99
     number: "XCIX"
     slug: volume-99-reference-library
