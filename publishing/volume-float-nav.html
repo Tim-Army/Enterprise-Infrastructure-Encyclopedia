@@ -1,0 +1,74 @@
+<!-- Floating right-side volume navigator for the complete-encyclopedia
+     edition. Populated at load time by scanning the document for volume
+     headings (the level-1 headings whose text begins "Volume "), so it
+     stays correct as volumes are added with no build-time list to maintain.
+     Included only in the series build; on any page with no volume headings
+     it hides itself. Progressive enhancement — the main table of contents
+     at the top of the page works without it. -->
+<aside id="volume-float" aria-label="Volume navigation">
+  <div class="vf-top-row"><a href="#" class="vf-top">&uarr; Back to top</a></div>
+  <p class="vf-title">Volumes</p>
+  <nav aria-label="Volumes"><ul id="vf-list"></ul></nav>
+</aside>
+<style>
+  #volume-float {
+    position: fixed;
+    top: 4rem;
+    right: 0.75rem;
+    width: 14rem;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+    background: var(--eie-bg);
+    color: var(--eie-fg);
+    border: 1px solid var(--eie-rule);
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+    line-height: 1.35;
+    z-index: 9;
+  }
+  #volume-float .vf-top-row {
+    margin-bottom: 0.45rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--eie-rule);
+  }
+  #volume-float .vf-top { color: var(--eie-link); font-weight: 600; text-decoration: none; }
+  #volume-float .vf-top:hover { text-decoration: underline; }
+  #volume-float .vf-title {
+    margin: 0 0 0.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.72rem;
+    opacity: 0.75;
+  }
+  #volume-float ul { list-style: none; margin: 0; padding: 0; }
+  #volume-float li { margin: 0.2rem 0; }
+  #volume-float a { color: var(--eie-link); text-decoration: none; }
+  #volume-float a:hover { text-decoration: underline; }
+  /* Only render where the right margin beside the centered 52rem body is
+     genuinely wide enough for the 14rem panel; below ~1340px the panel
+     would overlap the text, so it is hidden and the top-of-page table of
+     contents serves navigation instead. */
+  @media (max-width: 1340px) { #volume-float { display: none; } }
+</style>
+<script>
+  (function () {
+    var list = document.getElementById('vf-list');
+    var floatEl = document.getElementById('volume-float');
+    if (!list || !floatEl) { return; }
+    var found = 0;
+    document.querySelectorAll('h1').forEach(function (h) {
+      var text = (h.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!h.id || text.indexOf('Volume ') !== 0) { return; }
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = text;
+      li.appendChild(a);
+      list.appendChild(li);
+      found++;
+    });
+    if (found === 0) { floatEl.style.display = 'none'; }
+  })();
+</script>

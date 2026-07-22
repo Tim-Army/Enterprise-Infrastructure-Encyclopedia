@@ -304,6 +304,7 @@ build_series_html() {
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
     --include-after-body="$(footer_for '')" \
+    --include-after-body=publishing/volume-float-nav.html \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=3 \
     --metadata "title=$series_title — Complete Edition" \
