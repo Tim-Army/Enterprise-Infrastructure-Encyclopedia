@@ -48,6 +48,7 @@ The series combines architecture and theory with implementation guidance, automa
 | XXV | [Cisco Security](volumes/volume-25-cisco-security/README.md) | 9 |
 | XXVI | [Proxmox Virtualization Lab on Dell PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) | 9 |
 | XXVII | [Cisco Data Center](volumes/volume-27-cisco-data-center/README.md) | 9 |
+| XXVIII | [Cisco Collaboration](volumes/volume-28-cisco-collaboration/README.md) | 9 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
 Technical review and lab-validation sign-off for all 249 chapters are

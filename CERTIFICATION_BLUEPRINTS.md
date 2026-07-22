@@ -24,6 +24,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXIV — Dell VxRail | VxRail Deploy v2 (D-VXR-DY-01), VxRail Operate v2 (D-VXR-OE-01) | Dell Technologies Proven Professional |
 | XXV — Cisco Security | CCNP Security: SCOR core (350-701) + concentrations SVPN (300-730), SCAZT (300-740), SISE (300-715), SDSI (300-745); SCOR also qualifies CCIE Security | Cisco Learning & Certifications |
 | XXVII — Cisco Data Center | CCNP Data Center: DCCOR core (350-601) + concentrations DCID (300-610), DCIT (300-615), DCACI (300-620), DCAUTO (300-635, rebranding to DCNAUTO), DCAI (300-640); DCCOR also qualifies CCIE Data Center | Cisco Learning & Certifications |
+| XXVIII — Cisco Collaboration | CCNP Collaboration: CLCOR core (350-801) + concentrations CLICA (300-810), CLACCM (300-815), CLCEI (300-820), CLCCE (300-830), CLAUTO (300-835, EOL announced); CLCOR also qualifies CCIE Collaboration | Cisco Learning & Certifications |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -36,20 +37,16 @@ of this repository's release cycle.
 
 ## Cisco tracks awaiting a volume
 
-Two Cisco professional tracks have no owning volume yet. Their core
-exams were verified against Cisco's exam-topics documents on 22 July
-2026 and are recorded here so the portfolio view stays complete:
+One Cisco professional track has no owning volume yet, plus the
+design-expert path. Verified against Cisco's exam-topics documents on
+22 July 2026 and recorded here so the portfolio view stays complete:
 
-- **CCNP/CCIE Collaboration** — CLCOR `350-801` v2.0 core (120 min),
-  plus one concentration exam; a new cloud specialist exam, CLCCE
-  `300-830` (Implementing Cisco Collaboration Cloud Customer
-  Experience), arrived 3 February 2026.
 - **CCNP/CCIE Service Provider** — SPCOR `350-501` v1.1 core (120 min),
   plus one concentration exam.
 - **CCDE** — the design-expert path; **not verified in this pass** —
   confirm the current blueprint directly with Cisco before use.
 
-Creating a volume for any of these promotes it into the table above.
+Creating a volume for either promotes it into the table above.
 
 ## Currency
 
@@ -107,6 +104,16 @@ plus DCCOR earns the certification). Each domain set sums to 100%.
 DCAUTO is being rebranded DCNAUTO under the CCNP Automation
 restructure with the code unchanged; confirm its Data Center
 concentration status at registration.
+
+Volume XXVIII (Cisco Collaboration) was created on **22 July 2026**,
+promoting the Collaboration track out of the awaiting list. All six
+exams were verified against their Cisco exam-topics documents the same
+day: CLCOR `350-801` v2.0 (120 min) and the 90-minute concentrations
+CLICA `300-810` v1.2, CLACCM `300-815` v1.2, CLCEI `300-820` v1.2,
+CLCCE `300-830` v1.0 (new, GA 3 February 2026), and CLAUTO `300-835`
+v1.1. Each domain set sums to 100%. **CLAUTO's end-of-life is
+announced** under the Automation restructure — the volume records it
+and tells readers to confirm availability before scheduling.
 
 Drift in this table is normal and has been frequent. Within a single year
 the Dell PowerEdge Operate exam was rebuilt and renumbered, AWS replaced

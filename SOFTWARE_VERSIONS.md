@@ -17,6 +17,9 @@ rewritten against a newer release, and record the date of the change.
 | Cisco UCS Manager / Intersight | 4.x / current SaaS | 2026-07 |
 | Cisco Secure Firewall (FTD/FMC) | 7.x | 2026-07 |
 | Cisco Identity Services Engine (ISE) | 3.x | 2026-07 |
+| Cisco Unified CM / IM&P / Unity Connection | 15.x | 2026-07 |
+| Cisco Expressway | Current release | 2026-07 |
+| Cisco Webex / Control Hub | Continuous cloud delivery | 2026-07 |
 | Kubernetes | 1.31.x | 2026-07 |
 | Terraform | 1.9.x | 2026-07 |
 | Ansible | core 2.17 / ansible 10.x | 2026-07 |

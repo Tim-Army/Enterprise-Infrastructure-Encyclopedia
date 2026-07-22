@@ -942,6 +942,40 @@ volumes:
       - id: 09
         title: "Design, Troubleshooting, and Certification Readiness"
         path: volumes/volume-27-cisco-data-center/chapters/09-design-troubleshooting-and-certification-readiness.md
+  - id: volume-28
+    number: "XXVIII"
+    slug: volume-28-cisco-collaboration
+    title: "Cisco Collaboration"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Collaboration Architecture and the CCNP Collaboration Track"
+        path: volumes/volume-28-cisco-collaboration/chapters/01-collaboration-architecture-and-the-ccnp-collaboration-track.md
+      - id: 02
+        title: "Signaling and Media: SIP, Codecs, and Endpoints"
+        path: volumes/volume-28-cisco-collaboration/chapters/02-signaling-and-media-sip-codecs-and-endpoints.md
+      - id: 03
+        title: "Unified CM On-Premises Call Control Foundations"
+        path: volumes/volume-28-cisco-collaboration/chapters/03-unified-cm-on-premises-call-control-foundations.md
+      - id: 04
+        title: "Dial Plans, Call Control Features, and Mobility"
+        path: volumes/volume-28-cisco-collaboration/chapters/04-dial-plans-call-control-features-and-mobility.md
+      - id: 05
+        title: "Voice Gateways and the Cisco Unified Border Element"
+        path: volumes/volume-28-cisco-collaboration/chapters/05-voice-gateways-and-the-cisco-unified-border-element.md
+      - id: 06
+        title: "Collaboration Applications: SSO, Messaging, and Voicemail"
+        path: volumes/volume-28-cisco-collaboration/chapters/06-collaboration-applications-sso-messaging-and-voicemail.md
+      - id: 07
+        title: "Cloud and Edge: Webex, Expressway, and Mobile and Remote Access"
+        path: volumes/volume-28-cisco-collaboration/chapters/07-cloud-and-edge-webex-expressway-and-mobile-and-remote-access.md
+      - id: 08
+        title: "Media Resources, Conferencing, and QoS"
+        path: volumes/volume-28-cisco-collaboration/chapters/08-media-resources-conferencing-and-qos.md
+      - id: 09
+        title: "Contact Center, Automation, and Certification Readiness"
+        path: volumes/volume-28-cisco-collaboration/chapters/09-contact-center-automation-and-certification-readiness.md
   - id: volume-99
     number: "XCIX"
     slug: volume-99-reference-library

@@ -388,6 +388,20 @@ table of contents for that volume.
 8. Data Center Security and Segmentation
 9. Design, Troubleshooting, and Certification Readiness
 
+## Volume XXVIII — Cisco Collaboration
+
+[Volume README](volumes/volume-28-cisco-collaboration/README.md) · [Index](volumes/volume-28-cisco-collaboration/INDEX.md) · [Glossary](volumes/volume-28-cisco-collaboration/GLOSSARY.md)
+
+1. Collaboration Architecture and the CCNP Collaboration Track
+2. Signaling and Media: SIP, Codecs, and Endpoints
+3. Unified CM On-Premises Call Control Foundations
+4. Dial Plans, Call Control Features, and Mobility
+5. Voice Gateways and the Cisco Unified Border Element
+6. Collaboration Applications: SSO, Messaging, and Voicemail
+7. Cloud and Edge: Webex, Expressway, and Mobile and Remote Access
+8. Media Resources, Conferencing, and QoS
+9. Contact Center, Automation, and Certification Readiness
+
 ## Volume XCIX — Reference Library
 
 [Volume README](volumes/volume-99-reference-library/README.md) · [Index](volumes/volume-99-reference-library/INDEX.md) · [Glossary](volumes/volume-99-reference-library/GLOSSARY.md)
