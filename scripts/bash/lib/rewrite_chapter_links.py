@@ -30,13 +30,13 @@ Usage:
           (a single chapter's own page, or that volume's combined page).
           Same-volume chapter links become a bare "NN-slug.html"; links
           to another volume's chapter become "../other-slug/NN-slug.html".
-          Volume README links become "../other-slug/complete-volume.html"
-          (or a same-volume "complete-volume.html" if self-referential).
+          Volume README links become "../other-slug/Enterprise-Infrastructure-Encyclopedia.html"
+          (or a same-volume "Enterprise-Infrastructure-Encyclopedia.html" if self-referential).
 
       html-root
           Rewrite for the complete-series document at output/html/. Every
           chapter link becomes "volume-slug/NN-slug.html"; volume README
-          links become "volume-slug/complete-volume.html".
+          links become "volume-slug/Enterprise-Infrastructure-Encyclopedia.html".
 
       epub-absolute
           Rewrite for any EPUB build. A relative path inside an EPUB
@@ -115,13 +115,13 @@ def rewrite(content: str, source_file: str, mode: str, current_volume: str) -> s
         if volume_target is not None:
             if mode == "html-flat":
                 if volume_target == current_volume:
-                    new_target = "complete-volume.html"
+                    new_target = "Enterprise-Infrastructure-Encyclopedia.html"
                 else:
-                    new_target = f"../{volume_target}/complete-volume.html"
+                    new_target = f"../{volume_target}/Enterprise-Infrastructure-Encyclopedia.html"
             elif mode == "html-root":
-                new_target = f"{volume_target}/complete-volume.html"
+                new_target = f"{volume_target}/Enterprise-Infrastructure-Encyclopedia.html"
             elif mode == "epub-absolute":
-                new_target = f"{PORTAL_BASE_URL}/html/{volume_target}/complete-volume.html"
+                new_target = f"{PORTAL_BASE_URL}/html/{volume_target}/Enterprise-Infrastructure-Encyclopedia.html"
             else:
                 raise ValueError(f"unknown mode: {mode}")
             return f"]({new_target}{fragment})"

@@ -105,7 +105,7 @@ for volume_dir in volumes/*/; do
     echo "<h1>$title</h1>"
     echo "<h2>Complete volume</h2>"
     echo "<ul>"
-    echo "<li><a href=\"complete-volume.html\">Read online (HTML)</a></li>"
+    echo "<li><a href=\"Enterprise-Infrastructure-Encyclopedia.html\">Read online (HTML)</a></li>"
     echo "<li><a href=\"../../epub/Enterprise-Infrastructure-Encyclopedia.epub\">Download the complete encyclopedia (EPUB)</a></li>"
     echo "</ul>"
     echo "<h2>Chapters</h2>"

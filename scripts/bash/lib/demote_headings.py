@@ -3,7 +3,7 @@
 H3, and so on, capped at H6 — writing the result to stdout.
 
 Used by build-book.sh when it concatenates chapters into the combined
-editions (complete-volume.html and the EPUB).
+editions (Enterprise-Infrastructure-Encyclopedia.html and the EPUB).
 Each chapter file's title is a level-1 heading, the same level as its
 volume README's "# Volume N" title, so in the concatenated table of contents
 a chapter renders as a *sibling* of its volume rather than nesting beneath

@@ -23,7 +23,7 @@
 # (volumes/*/README.md) are rewritten by
 # scripts/bash/lib/rewrite_chapter_links.py before each Pandoc invocation:
 # in HTML output they become relative links to that chapter's own .html
-# file (or that volume's complete-volume.html); in EPUB output (which
+# file (or that volume's Enterprise-Infrastructure-Encyclopedia.html); in EPUB output (which
 # cannot address a separate output/html/ file) they become absolute links
 # to the deployed Pages portal. Links to anything else (root docs,
 # volume/root INDEX, GLOSSARY) are left as-is, since those have no
@@ -245,7 +245,7 @@ build_chapter_html() {
     --metadata "author=$author" \
     -o "$outdir/$base.html"
   inject_toc_links "$outdir/$base.html" \
-    "Volume Table of Contents|complete-volume.html#TOC"
+    "Volume Table of Contents|Enterprise-Infrastructure-Encyclopedia.html#TOC"
 }
 
 build_volume_html() {
@@ -277,7 +277,7 @@ build_volume_html() {
     --toc --toc-depth=3 \
     --metadata "title=$title" \
     --metadata "author=$author" \
-    -o "output/html/$volume_slug/complete-volume.html"
+    -o "output/html/$volume_slug/Enterprise-Infrastructure-Encyclopedia.html"
 }
 
 build_series_epub() {
