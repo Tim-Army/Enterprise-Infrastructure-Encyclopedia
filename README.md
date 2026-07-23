@@ -10,13 +10,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 36-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 35-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-36 volumes, 321 chapters. Each volume has a dedicated
+35 volumes, 321 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -39,7 +39,7 @@ The series combines architecture and theory with implementation guidance, automa
 | XVI | [Palo Alto Networks Security](volumes/volume-16-palo-alto-networks-security/README.md) | 12 |
 | XVII | [AWS Architecture and Security](volumes/volume-17-aws-architecture-security/README.md) | 9 |
 | XVIII | [Gigamon Network Visibility](volumes/volume-18-gigamon-network-visibility/README.md) | 9 |
-| XIX | [Fortinet Network Security](volumes/volume-19-fortinet-network-security/README.md) | 9 |
+| XIX | [Fortinet NSE Certification Program](volumes/volume-19-fortinet-network-security/README.md) | 15 |
 | XX | [Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) | 9 |
 | XXI | [Ubuntu Server and Cloud 26.04 LTS](volumes/volume-21-ubuntu-server-cloud-26-04-lts/README.md) | 9 |
 | XXII | [Dell OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) | 9 |
@@ -53,7 +53,6 @@ The series combines architecture and theory with implementation guidance, automa
 | XXX | [Cisco CCDE Network Design](volumes/volume-30-cisco-ccde-network-design/README.md) | 9 |
 | XXXI | [Juniper Networks Certification Tracks](volumes/volume-31-juniper-networks-certifications/README.md) | 9 |
 | XXXII | [Dell Technologies Certification Tracks](volumes/volume-32-dell-technologies-certifications/README.md) | 9 |
-| XXXIII | [Fortinet NSE Program](volumes/volume-33-fortinet-nse-program/README.md) | 6 |
 | XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 6 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
@@ -83,7 +82,7 @@ ascending order.
 | Juniper | [XXXI Juniper Networks Certification Tracks](volumes/volume-31-juniper-networks-certifications/README.md) — all eight tracks, JNCIA-Junos through JNCIE, in one volume |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC Administration](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXVI R640 Proxmox Lab](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) → [XXXII Dell Technologies Certification Tracks](volumes/volume-32-dell-technologies-certifications/README.md) |
 | Palo Alto Networks | [XVI Palo Alto Networks Security](volumes/volume-16-palo-alto-networks-security/README.md) — all three tracks: Network Security, Security Operations (Cortex), and Cloud Security |
-| Fortinet | [XIX Fortinet Network Security](volumes/volume-19-fortinet-network-security/README.md) (NSE 1–4) → [XXXIII Fortinet NSE Program](volumes/volume-33-fortinet-nse-program/README.md) (NSE 5–8: Secure Networking, Security Operations, Cloud Security, SASE) |
+| Fortinet | [XIX Fortinet NSE Certification Program](volumes/volume-19-fortinet-network-security/README.md) — the whole NSE 1–8 program in one volume: Secure Networking, Security Operations, Cloud Security, and SASE |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) |

@@ -28,7 +28,7 @@ does not by itself verify every technical claim in it.
 | XVI — Palo Alto Networks Security | 12 | Drafted |
 | XVII — AWS Architecture and Security | 9 | Drafted |
 | XVIII — Gigamon Network Visibility | 9 | Drafted |
-| XIX — Fortinet Network Security | 9 | Drafted |
+| XIX — Fortinet NSE Certification Program | 15 | Drafted |
 | XX — Wireshark and Packet Analysis | 9 | Drafted |
 | XXI — Ubuntu Server and Cloud 26.04 LTS | 9 | Drafted |
 | XXII — Dell OpenManage Enterprise | 9 | Drafted |
@@ -42,7 +42,6 @@ does not by itself verify every technical claim in it.
 | XXX — Cisco CCDE Network Design | 9 | Drafted |
 | XXXI — Juniper Networks Certification Tracks | 9 | Drafted |
 | XXXII — Dell Technologies Certification Tracks | 9 | Drafted |
-| XXXIII — Fortinet NSE Program | 6 | Drafted |
 | XCVII — Master Appendices | 6 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |

@@ -274,3 +274,19 @@ identity and device posture continuously and grants access to individual
 applications through a broker (access proxy) rather than granting broad
 network reachability after a single point-in-time authentication, as
 traditional VPN does. Introduced in Chapter 06.
+
+**FortiLink** — The protocol and mode by which a FortiGate manages
+FortiSwitch and FortiAP as extensions of its own control plane.
+Introduced in Chapter 11.
+
+**FortiSASE** — Fortinet's cloud-delivered SASE service (SWG, ZTNA,
+CASB, firewall-as-a-service) for users off the branch. Introduced in
+Chapter 14.
+
+**NSE 8** — The expert tier: an NSE 8 Core practical plus one NSE 8
+Specialization practical (within one year of the core), valid two
+years. Introduced in Chapter 15.
+
+**Track** — One of the four NSE specializations — Secure Networking,
+Security Operations, Cloud Security, SASE — that determine which exam a
+given NSE level represents. Introduced in Chapter 10.

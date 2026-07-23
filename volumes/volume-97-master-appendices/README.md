@@ -25,7 +25,7 @@ one place instead of scattered through volume READMEs.
 | Juniper courses and certification alignment | [Volume XXXI](../volume-31-juniper-networks-certifications/README.md) | [03](chapters/03-appendix-juniper-courses-and-certification-alignment.md) |
 | Dell certifications and course access | [Volume XXXII](../volume-32-dell-technologies-certifications/README.md) | [04](chapters/04-appendix-dell-technologies-certifications-and-course-access.md) |
 | Palo Alto Networks certifications and course access | [Volume XVI](../volume-16-palo-alto-networks-security/README.md) | [05](chapters/05-appendix-palo-alto-networks-certifications-and-course-access.md) |
-| Fortinet NSE certifications and course access | [Volumes XIX, XXXIII](../volume-33-fortinet-nse-program/README.md) | [06](chapters/06-appendix-fortinet-nse-certifications-and-course-access.md) |
+| Fortinet NSE certifications and course access | [Volume XIX](../volume-19-fortinet-network-security/README.md) | [06](chapters/06-appendix-fortinet-nse-certifications-and-course-access.md) |
 
 ## Conventions
 

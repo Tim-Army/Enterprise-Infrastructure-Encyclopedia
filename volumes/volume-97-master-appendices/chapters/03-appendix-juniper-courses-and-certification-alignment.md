@@ -32,34 +32,39 @@ The portal shows prices at enrollment; course pages require login.
 
 ## All recommended courses by exam
 
-| Course | Helps with exam | Access |
-| --- | --- | --- |
-| [Networking Technology Foundations](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=769) | JNCIA-Junos JN0-106 | Free (Open Learning) |
-| [Introduction to the Junos OS](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=700) | JNCIA-Junos JN0-106 | Free (Open Learning) |
-| [Junos Intermediate Routing](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=2321) | JNCIS-ENT JN0-352; JNCIS-SP JN0-364 | Paid (ILT/on-demand) |
-| [Junos Enterprise Switching](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=3325) | JNCIS-ENT JN0-352 | Paid (ILT/on-demand) |
-| [Advanced Junos Enterprise Routing](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=4275) | JNCIP-ENT JN0-650 | Paid (ILT/on-demand) |
-| [Advanced Junos Enterprise Switching](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=4277) | JNCIP-ENT JN0-650 | Paid (ILT/on-demand) |
-| [JNCIE-ENT Certification Self-Study Bundle](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11142) | JNCIE-ENT JPR-946 | Paid (bundle) |
-| [Junos Service Provider Switching](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=2322) | JNCIS-SP JN0-364 | Paid (ILT/on-demand) |
-| [Junos MPLS Fundamentals](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=9670) | JNCIS-SP JN0-364 | Paid (ILT/on-demand) |
-| [Advanced Junos Service Provider Routing](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=4279) | JNCIP-SP JN0-664 | Paid (ILT/on-demand) |
-| [Junos Layer 2 VPNs](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=9743) | JNCIP-SP JN0-664 | Paid (ILT/on-demand) |
-| [Junos Layer 3 VPNs](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=9952) | JNCIP-SP JN0-664 | Paid (ILT/on-demand) |
-| [JNCIE-SP Certification Self-Study Bundle](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11094) | JNCIE-SP JPR-962 | Paid (bundle) |
-| [Introduction to Juniper Security](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11092) | JNCIA-SEC JN0-232 | Free (Open Learning) |
-| [Juniper Security](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=EDU-JUN-ILT-JSEC) | JNCIS-SEC JN0-336 | Paid (ILT/on-demand) |
-| [Advanced Juniper Security](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=4286) | JNCIP-SEC JN0-637 | Paid (ILT/on-demand) |
-| [JNCIE-SEC Certification Self-Study Bundle](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11065) | JNCIE-SEC JPR-935 | Paid (bundle) |
-| [Introduction to Juniper Data Center Networking](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=12898) | JNCIA-DC JN0-281 | Free (Open Learning) |
-| [Data Center Automation Using Juniper Apstra](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=12600) | JNCIS-DC JN0-481 | Paid (ILT/on-demand) |
-| [Data Center Fabric with EVPN and VXLAN](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=9685) | JNCIP-DC JN0-683 | Paid (ILT/on-demand) |
-| [JNCIE-DC Certification Self-Study Bundle](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11027) | JNCIE-DC JPR-981 | Paid (bundle) |
-| [Introduction to Junos Platform Automation and DevOps](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=10902) | JNCIA-DevOps JN0-224 | Free (Open Learning) |
-| [Juniper Platform Automation and NetDevOps](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=5186) | JNCIS-DevOps JN0-423 | Paid (ILT/on-demand) |
-| [Juniper Networks Cloud Fundamentals](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=10474) | JNCIA-Cloud JN0-214 | Free (Open Learning) |
-| [Introduction to Juniper Mist AI](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=13075) | JNCIA-MistAI JN0-253 | Free (Open Learning) |
-| [Deploying and Managing Juniper Wireless Networks with Mist AI](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11460) | JNCIS-MistAI-Wireless JN0-452 | Paid (ILT/on-demand) |
-| [Deploying and Managing Juniper Wired Networks for Campus and Branch with Mist AI](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=12970) | JNCIS-MistAI-Wired JN0-460 | Paid (ILT/on-demand) |
-| [Automating Juniper Mist AI Enterprise](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=13831) | JNCIP-MistAI JN0-750 | Paid (ILT/on-demand) |
-| [Juniper Networks Design Fundamentals](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=9145) | JNCIA-Design JN0-1103 | Free (Open Learning) |
+> **On the Exam end date column.** It records an exam's announced
+> retirement or end-of-life date where one is published; “—” means no
+> end date is currently announced. Retired exams that have already left
+> the catalog are not relisted here.
+
+|  Course | Helps with exam | Exam end date | Access  |
+|  --- | --- | --- | ---  |
+|  [Networking Technology Foundations](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=769) | JNCIA-Junos JN0-106 | — | Free (Open Learning)  |
+|  [Introduction to the Junos OS](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=700) | JNCIA-Junos JN0-106 | — | Free (Open Learning)  |
+|  [Junos Intermediate Routing](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=2321) | JNCIS-ENT JN0-352; JNCIS-SP JN0-364 | — | Paid (ILT/on-demand)  |
+|  [Junos Enterprise Switching](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=3325) | JNCIS-ENT JN0-352 | — | Paid (ILT/on-demand)  |
+|  [Advanced Junos Enterprise Routing](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=4275) | JNCIP-ENT JN0-650 | — | Paid (ILT/on-demand)  |
+|  [Advanced Junos Enterprise Switching](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=4277) | JNCIP-ENT JN0-650 | — | Paid (ILT/on-demand)  |
+|  [JNCIE-ENT Certification Self-Study Bundle](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11142) | JNCIE-ENT JPR-946 | — | Paid (bundle)  |
+|  [Junos Service Provider Switching](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=2322) | JNCIS-SP JN0-364 | — | Paid (ILT/on-demand)  |
+|  [Junos MPLS Fundamentals](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=9670) | JNCIS-SP JN0-364 | — | Paid (ILT/on-demand)  |
+|  [Advanced Junos Service Provider Routing](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=4279) | JNCIP-SP JN0-664 | — | Paid (ILT/on-demand)  |
+|  [Junos Layer 2 VPNs](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=9743) | JNCIP-SP JN0-664 | — | Paid (ILT/on-demand)  |
+|  [Junos Layer 3 VPNs](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=9952) | JNCIP-SP JN0-664 | — | Paid (ILT/on-demand)  |
+|  [JNCIE-SP Certification Self-Study Bundle](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11094) | JNCIE-SP JPR-962 | — | Paid (bundle)  |
+|  [Introduction to Juniper Security](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11092) | JNCIA-SEC JN0-232 | — | Free (Open Learning)  |
+|  [Juniper Security](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=EDU-JUN-ILT-JSEC) | JNCIS-SEC JN0-336 | — | Paid (ILT/on-demand)  |
+|  [Advanced Juniper Security](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=4286) | JNCIP-SEC JN0-637 | — | Paid (ILT/on-demand)  |
+|  [JNCIE-SEC Certification Self-Study Bundle](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11065) | JNCIE-SEC JPR-935 | — | Paid (bundle)  |
+|  [Introduction to Juniper Data Center Networking](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=12898) | JNCIA-DC JN0-281 | — | Free (Open Learning)  |
+|  [Data Center Automation Using Juniper Apstra](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=12600) | JNCIS-DC JN0-481 | — | Paid (ILT/on-demand)  |
+|  [Data Center Fabric with EVPN and VXLAN](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=9685) | JNCIP-DC JN0-683 | — | Paid (ILT/on-demand)  |
+|  [JNCIE-DC Certification Self-Study Bundle](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11027) | JNCIE-DC JPR-981 | — | Paid (bundle)  |
+|  [Introduction to Junos Platform Automation and DevOps](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=10902) | JNCIA-DevOps JN0-224 | — | Free (Open Learning)  |
+|  [Juniper Platform Automation and NetDevOps](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=5186) | JNCIS-DevOps JN0-423 | — | Paid (ILT/on-demand)  |
+|  [Juniper Networks Cloud Fundamentals](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=10474) | JNCIA-Cloud JN0-214 | — | Free (Open Learning)  |
+|  [Introduction to Juniper Mist AI](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=13075) | JNCIA-MistAI JN0-253 | — | Free (Open Learning)  |
+|  [Deploying and Managing Juniper Wireless Networks with Mist AI](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11460) | JNCIS-MistAI-Wireless JN0-452 | — | Paid (ILT/on-demand)  |
+|  [Deploying and Managing Juniper Wired Networks for Campus and Branch with Mist AI](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=12970) | JNCIS-MistAI-Wired JN0-460 | — | Paid (ILT/on-demand)  |
+|  [Automating Juniper Mist AI Enterprise](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=13831) | JNCIP-MistAI JN0-750 | — | Paid (ILT/on-demand)  |
+|  [Juniper Networks Design Fundamentals](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=9145) | JNCIA-Design JN0-1103 | — | Free (Open Learning)  |

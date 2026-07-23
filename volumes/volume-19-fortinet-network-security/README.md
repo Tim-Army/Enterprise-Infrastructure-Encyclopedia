@@ -1,9 +1,10 @@
-# Volume XIX — Fortinet Network Security
+# Volume XIX — Fortinet NSE Certification Program
 
-> Cybersecurity awareness, threat landscape and portfolio literacy,
-> Security Fabric architecture, and hands-on FortiOS administration —
-> from NSE 1 digital safety fundamentals through NSE 4 enterprise
-> FortiGate deployment.
+> The whole Fortinet NSE program in one volume: cybersecurity
+> fundamentals and hands-on FortiOS administration (NSE 1–4), then the
+> NSE 5–8 upper levels across all four tracks — Secure Networking,
+> Security Operations, Cloud Security, and SASE — through the NSE 8
+> expert practical.
 
 ## Overview
 
@@ -14,7 +15,7 @@ readers benefit from Volume II's networking foundations before starting
 the hands-on FortiOS chapters, consistent with the dependency recorded in
 [ROADMAP.md](../../ROADMAP.md).
 
-The volume is organized in two halves:
+The volume is organized in three parts:
 
 - **Chapters 01–03** cover NSE 1 through NSE 3: individual cybersecurity
   awareness and digital safety, the evolving threat landscape and the
@@ -30,6 +31,11 @@ The volume is organized in two halves:
   SD-WAN, central management, and automation; and a capstone chapter that
   assembles every subsystem into a complete, redundant enterprise
   reference architecture.
+- **Chapters 10–15** cover the restored NSE 5–8 program (Fortinet
+  retired the named FCF/FCA/FCP/FCSS/FCX certifications on 15 July 2026
+  and restored NSE 1–8 across four tracks): the Secure Networking upper
+  levels, the Security Operations, Cloud Security, and SASE tracks, and
+  the NSE 8 expert practical — completing every track from one volume.
 
 Every chapter follows the same structure — learning objectives, theory
 and architecture, design considerations, implementation and automation,
@@ -56,10 +62,16 @@ point for the next.
 7. [FortiGuard Security Profiles, SSL Inspection, and Threat Prevention](chapters/07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md) — antivirus, IPS, web filtering, and application control profiles; certificate vs. full SSL deep inspection; FortiSandbox integration.
 8. [SD-WAN, Operations, Central Management, Automation, and Troubleshooting](chapters/08-sd-wan-operations-central-management-automation-and-troubleshooting.md) — SD-WAN zones, members, and SLA-based rules; FortiManager/FortiAnalyzer central management; REST API, Ansible, and automation stitches.
 9. [NSE 4 FortiOS Administrator Training and Enterprise Capstone](chapters/09-nse-4-fortios-administrator-training-and-enterprise-capstone.md) — blueprint-to-chapter mapping, a full redundant reference architecture, configuration backup/restore, and a layered troubleshooting decision tree.
+10. [The Restored NSE Program and the Four Tracks](chapters/10-the-restored-nse-program-and-the-four-tracks.md) — the post-15-July-2026 NSE 1–8 structure, the four tracks, and how NSE 4 anchors them all.
+11. [Secure Networking Upper Levels — Switching, Wireless, and Management](chapters/11-secure-networking-upper-levels-switching-wireless-and-management.md) — FortiSwitch and Secure Wireless LAN (NSE 5), FortiManager/FortiAnalyzer/FortiNAC (NSE 6), and Enterprise Firewall (NSE 7).
+12. [Security Operations Track — FortiAnalyzer, SIEM, SOAR, and EDR](chapters/12-security-operations-track-fortianalyzer-siem-soar-and-edr.md) — the Fortinet SOC across FortiAnalyzer, FortiSIEM, FortiSOAR, FortiEDR, and FortiNDR, to the NSE 7 Analyst and Architect exams.
+13. [Cloud Security Track — FortiWeb, CNAPP, Mail, and Public Cloud](chapters/13-cloud-security-track-fortiweb-cnapp-mail-and-public-cloud.md) — FortiWeb/FortiADC/FortiAppSec (NSE 5), FortiCNAPP/FortiMail/AWS-Azure-GCP (NSE 6), and the Public Cloud Security Architect (NSE 7).
+14. [SASE Track — FortiSASE, SD-WAN, and the Secure Edge](chapters/14-sase-track-fortisase-sd-wan-and-the-secure-edge.md) — FortiSASE and Secure SD-WAN, ZTNA via FortiClient EMS, and the NSE 7 FortiSASE exams.
+15. [NSE 8 Expert Practical and Certification Operations](chapters/15-nse-8-expert-practical-and-certification-operations.md) — the two-module NSE 8 (Core + Specialization), fabric readiness, and portfolio/recertification operations.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all nine
+- [Index](INDEX.md) — alphabetized topical index across all fifteen
   chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this
   volume.
@@ -83,10 +95,11 @@ were replaced by named credentials — FCF, FCA, FCP, FCSS, and FCX — and
 then, **effective 15 July 2026, those five were retired and NSE levels
 returned**, in an expanded eight-level form.
 
-This volume's NSE naming is therefore current again, but for an accident
-of timing rather than because it was never revised. The structure it
-describes is now incomplete: the program runs to NSE 8 and branches at
-the upper levels.
+This volume's NSE naming is current, and — since consolidating the full
+program — its coverage is complete: Chapters 01–09 carry NSE 1–4, and
+Chapters 10–15 carry NSE 5–8 across all four tracks, verified against
+the Fortinet Training Institute on 22 July 2026. The exam tables for the
+upper levels are below.
 
 | Level | Structure after 15 July 2026 |
 | --- | --- |
@@ -109,6 +122,50 @@ expect third-party material — courses, practice exams, study guides — to
 lag the naming in both directions for some months. Material written
 against FCP is not wrong about the technology; it is wrong about the
 label.
+
+### The NSE 5–8 upper levels, by track
+
+Verified against the Fortinet Training Institute and the 2026
+program-change transition mapping on 22 July 2026. NSE 4 (Chapter 09)
+is the shared prerequisite; an exam may map to a level in more than one
+track. NSE 8 is a two-module practical (Core + one Specialization
+within a year, valid two years).
+
+#### Secure Networking (Chapter 11)
+
+| NSE level | Certification exams |
+| --- | --- |
+| **NSE 5** | FortiSwitch Administrator; Secure Wireless LAN Administrator |
+| **NSE 6** | FortiAnalyzer Administrator; FortiAuthenticator Administrator; FortiClient EMS Administrator; FortiManager Administrator; FortiNAC Administrator; FortiVoice Administrator; LAN Edge Architect; OT Security Architect; SD-WAN Architect; SD-WAN Enterprise Administrator; Secure Networking Support Engineer |
+| **NSE 7** | Enterprise Firewall Administrator |
+| **NSE 8** | Core practical + one Specialization practical (this track) |
+
+#### Security Operations (Chapter 12)
+
+| NSE level | Certification exams |
+| --- | --- |
+| **NSE 5** | FortiAnalyzer Analyst; FortiSandbox Administrator |
+| **NSE 6** | FortiEDR Administrator; FortiSIEM Analyst; FortiSOAR Administrator; FortiSOAR Analyst; FortiDeceptor Administrator; FortiNDR Analyst; FortiRecon Analyst |
+| **NSE 7** | Security Operations Analyst; Security Operations Architect |
+| **NSE 8** | Core practical + one Specialization practical (this track) |
+
+#### Cloud Security (Chapter 13)
+
+| NSE level | Certification exams |
+| --- | --- |
+| **NSE 5** | FortiADC Administrator; FortiAppSec Administrator; FortiWeb Administrator |
+| **NSE 6** | AWS Cloud Security Administrator; Azure Cloud Security Administrator; GCP Cloud Security Administrator; FortiMail Administrator; FortiMail Workspace Administrator; FortiCNAPP Analyst; FortiDDoS Administrator |
+| **NSE 7** | Public Cloud Security Architect |
+| **NSE 8** | Core practical + one Specialization practical (this track) |
+
+#### SASE (Chapter 14)
+
+| NSE level | Certification exams |
+| --- | --- |
+| **NSE 5** | FortiSASE and SD-WAN Core Administrator |
+| **NSE 6** | FortiClient EMS Administrator; FortiDLP Administrator; FortiEDR Administrator; SD-WAN Architect; SD-WAN Enterprise Administrator |
+| **NSE 7** | FortiSASE Administrator; FortiSASE Enterprise Administrator |
+| **NSE 8** | Core practical + one Specialization practical (this track) |
 
 ### The NSE 4 exam, and how Fortinet publishes weights
 

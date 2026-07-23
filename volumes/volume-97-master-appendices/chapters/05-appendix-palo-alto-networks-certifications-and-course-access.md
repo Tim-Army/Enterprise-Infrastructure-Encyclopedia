@@ -31,25 +31,30 @@ its recommended digital-learning path and its exam registration.
 
 ## All current certifications
 
-| Track | Certification | Official page | Training access |
-| --- | --- | --- | --- |
-| Cybersecurity Apprentice | Network Security | [Certification page](https://www.paloaltonetworks.com/services/education/panw-cybersecurity-apprentice) | Free digital learning; optional paid ILT |
-| Cybersecurity Practitioner | Network Security | [Certification page](https://www.paloaltonetworks.com/services/education/panw-cybersecurity-practitioner) | Free digital learning; optional paid ILT |
-| Network Security Analyst | Network Security | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-netsec-analyst) | Free digital learning; optional paid ILT |
-| Network Security Professional | Network Security | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-netsec-professional) | Free digital learning; optional paid ILT |
-| Network Security Architect | Network Security | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-netsec-architect) | Free digital learning; optional paid ILT |
-| Next-Generation Firewall Engineer | Network Security | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-ngfw-engineer) | Free digital learning; optional paid ILT |
-| SD-WAN Engineer | Network Security | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-sd-wan-engineer) | Free digital learning; optional paid ILT |
-| Security Service Edge (SSE) Engineer | Network Security | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-sse-engineer) | Free digital learning; optional paid ILT |
-| Security Operations Professional | Security Operations | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-secops-professional) | Free digital learning; optional paid ILT |
-| Security Operations Architect | Security Operations | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-secops-architect) | Free digital learning; optional paid ILT |
-| XSIAM Analyst | Security Operations | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-xsiam-analyst) | Free digital learning; optional paid ILT |
-| XSIAM Engineer | Security Operations | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-xsiam-engineer) | Free digital learning; optional paid ILT |
-| XDR Analyst | Security Operations | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-xdr-analyst) | Free digital learning; optional paid ILT |
-| XDR Engineer | Security Operations | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-xdr-engineer) | Free digital learning; optional paid ILT |
-| XSOAR Engineer | Security Operations | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-xsoar-engineer) | Free digital learning; optional paid ILT |
-| Cloud Security Professional | Cloud Security | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-cloudsec-professional) | Free digital learning; optional paid ILT |
-| Cloud Security Engineer | Cloud Security | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-cloudsec-engineer) | Free digital learning; optional paid ILT |
+> **On the Exam end date column.** It records an exam's announced
+> retirement or end-of-life date where one is published; “—” means no
+> end date is currently announced. Retired exams that have already left
+> the catalog are not relisted here.
+
+|  Track | Certification | Exam end date | Official page | Training access  |
+|  --- | --- | --- | --- | ---  |
+|  Cybersecurity Apprentice | Network Security | — | [Certification page](https://www.paloaltonetworks.com/services/education/panw-cybersecurity-apprentice) | Free digital learning; optional paid ILT  |
+|  Cybersecurity Practitioner | Network Security | — | [Certification page](https://www.paloaltonetworks.com/services/education/panw-cybersecurity-practitioner) | Free digital learning; optional paid ILT  |
+|  Network Security Analyst | Network Security | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-netsec-analyst) | Free digital learning; optional paid ILT  |
+|  Network Security Professional | Network Security | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-netsec-professional) | Free digital learning; optional paid ILT  |
+|  Network Security Architect | Network Security | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-netsec-architect) | Free digital learning; optional paid ILT  |
+|  Next-Generation Firewall Engineer | Network Security | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-ngfw-engineer) | Free digital learning; optional paid ILT  |
+|  SD-WAN Engineer | Network Security | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-sd-wan-engineer) | Free digital learning; optional paid ILT  |
+|  Security Service Edge (SSE) Engineer | Network Security | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-sse-engineer) | Free digital learning; optional paid ILT  |
+|  Security Operations Professional | Security Operations | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-secops-professional) | Free digital learning; optional paid ILT  |
+|  Security Operations Architect | Security Operations | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-secops-architect) | Free digital learning; optional paid ILT  |
+|  XSIAM Analyst | Security Operations | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-xsiam-analyst) | Free digital learning; optional paid ILT  |
+|  XSIAM Engineer | Security Operations | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-xsiam-engineer) | Free digital learning; optional paid ILT  |
+|  XDR Analyst | Security Operations | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-xdr-analyst) | Free digital learning; optional paid ILT  |
+|  XDR Engineer | Security Operations | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-xdr-engineer) | Free digital learning; optional paid ILT  |
+|  XSOAR Engineer | Security Operations | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-xsoar-engineer) | Free digital learning; optional paid ILT  |
+|  Cloud Security Professional | Cloud Security | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-cloudsec-professional) | Free digital learning; optional paid ILT  |
+|  Cloud Security Engineer | Cloud Security | — | [Certification page](https://www.paloaltonetworks.com/services/education/palo-alto-networks-cloudsec-engineer) | Free digital learning; optional paid ILT  |
 
 ## Track-to-volume map
 

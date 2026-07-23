@@ -278,6 +278,12 @@ table of contents for that volume.
 7. FortiGuard Security Profiles, SSL Inspection, and Threat Prevention
 8. SD-WAN, Operations, Central Management, Automation, and Troubleshooting
 9. NSE 4 FortiOS Administrator Training and Enterprise Capstone
+10. The Restored NSE Program and the Four Tracks
+11. Secure Networking Upper Levels — Switching, Wireless, and Management
+12. Security Operations Track — FortiAnalyzer, SIEM, SOAR, and EDR
+13. Cloud Security Track — FortiWeb, CNAPP, Mail, and Public Cloud
+14. SASE Track — FortiSASE, SD-WAN, and the Secure Edge
+15. NSE 8 Expert Practical and Certification Operations
 
 ## Volume XX — Wireshark and Packet Analysis
 
@@ -460,17 +466,6 @@ table of contents for that volume.
 7. Dell Networking — PowerSwitch, SONiC, and Design
 8. AI, Generative AI, and Data Science Certifications
 9. Security Certifications and Certification Operations
-
-## Volume XXXIII — Fortinet NSE Program
-
-[Volume README](volumes/volume-33-fortinet-nse-program/README.md) · [Index](volumes/volume-33-fortinet-nse-program/INDEX.md) · [Glossary](volumes/volume-33-fortinet-nse-program/GLOSSARY.md)
-
-1. The Restored NSE Program and the Four Tracks
-2. Secure Networking Upper Levels — Switching, Wireless, and Management
-3. Security Operations Track — FortiAnalyzer, SIEM, SOAR, and EDR
-4. Cloud Security Track — FortiWeb, CNAPP, Mail, and Public Cloud
-5. SASE Track — FortiSASE, SD-WAN, and the Secure Edge
-6. NSE 8 Expert Practical and Certification Operations
 
 ## Volume XCVII — Master Appendices
 
