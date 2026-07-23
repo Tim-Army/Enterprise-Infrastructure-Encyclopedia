@@ -64,3 +64,20 @@ jobs:
           name: Enterprise-Infrastructure-Encyclopedia ${{ github.ref_name }}
           files: |
             output/epub/Enterprise-Infrastructure-Encyclopedia-${{ github.ref_name }}.epub
+
+      - name: Prune old patch releases (keep the 3 most recent)
+        # Every build is a patch release, so patch tags (vX.Y.Z, Z>0)
+        # accumulate. Keep only the three most recent and delete the rest
+        # (release + tag). Milestone releases (vX.Y.0 — deliberate minor and
+        # major bumps, e.g. the first release v1.0.0) are never pruned.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          patches="$(gh release list --limit 200 --json tagName --jq '.[].tagName' \
+            | grep -E '^v[0-9]+\.[0-9]+\.[1-9][0-9]*$' | sort -Vr || true)"
+          echo "$patches" | tail -n +4 | while read -r tag; do
+            [ -z "$tag" ] && continue
+            echo "pruning old patch release $tag"
+            gh release delete "$tag" --yes --cleanup-tag
+          done

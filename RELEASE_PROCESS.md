@@ -48,3 +48,9 @@ and major bumps are made deliberately.
 - **Minor** — a new volume or chapter set is added.
 - **Patch** — any other content change; cut per build, tagged as part of
   shipping the offline archive.
+
+**Retention.** Patch releases accumulate quickly (one per build), so the
+release workflow keeps only the **three most recent patch releases** and
+deletes older ones (release and tag). Milestone releases (`vX.Y.0` — the
+first release and deliberate minor/major bumps) are never pruned. The
+offline archive in `zip/` follows the same three-most-recent rule.
