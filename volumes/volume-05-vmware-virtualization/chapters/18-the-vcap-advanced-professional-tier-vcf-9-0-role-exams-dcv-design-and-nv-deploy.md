@@ -76,7 +76,7 @@ certification pages state no new exam registrations will be available
 after that date (verified 23 July 2026). Treat them as closing, not as
 options to plan a multi-month study path around:
 
-- **VCAP-DCV Design (3V0-21.23) — retiring 31 July 2026.** Advanced
+- **VCAP-DCV Design (3V0-21.23) — retiring [31 July 2026](https://www.broadcom.com/support/education/vmware/certification/vcap-dcv-design).** Advanced
   vSphere 8 design. It historically was the most direct on-ramp to the
   Distinguished Expert defense (Chapter 19) because it exercises the same
   conceptual→logical→physical design discipline and the same
@@ -84,7 +84,7 @@ options to plan a multi-month study path around:
   its retirement, **the current design on-ramp is the VCF Architect role
   (3V0-12.26)** in the 9.0 series above — pursue that unless you can sit
   3V0-21.23 before the retirement date.
-- **VCAP-NV Deploy (3V0-41.22) — retiring 31 July 2026.** Advanced NSX-T
+- **VCAP-NV Deploy (3V0-41.22) — retiring [31 July 2026](https://www.broadcom.com/support/education/vmware/certification/vcap-nv-deploy).** Advanced NSX-T
   hands-on **deployment** — a live-build exam rather than a multiple-choice
   one. It pairs with [VCP-NV (Chapter 12)](12-vcp-network-virtualization-2v0-41-24-exam-preparation.md)
   and rewards the timed build-and-troubleshoot practice that chapter's lab

@@ -49,8 +49,9 @@ or a written exam.
 
 > **On the Exam end date column.** It records an exam's announced
 > retirement or end-of-life date where one is published; "—" means no
-> end date is currently announced. Retired exams that have already left
-> the catalog are not relisted here.
+> end date is currently announced. Each published date links to the
+> vendor announcement it was taken from. Retired exams that have already
+> left the catalog are not relisted here.
 
 | Certification | Exam code | Exam end date | Recommended training (access) |
 | --- | --- | --- | --- |
@@ -80,8 +81,8 @@ entry prerequisite for this tier.
 | [VCAP — VCF 9.0 Storage](https://www.broadcom.com/support/education/vmware/certification/storage-9.0) | 3V0-23.25 | — | Advanced VMware Cloud Foundation Storage (paid) |
 | [VCAP — VCF 9.0 VKS (Kubernetes)](https://www.broadcom.com/support/education/vmware/certification/VKS-9.0) | 3V0-24.25 | — | Advanced VMware Cloud Foundation VKS (paid) |
 | [VCAP — VCF 9.0 Networking](https://www.broadcom.com/support/education/vmware/certification/networking9.0) | 3V0-25.25 | — | Advanced VMware Cloud Foundation Networking (paid) |
-| [VCAP-DCV Design](https://www.broadcom.com/support/education/vmware/certification/vcap-dcv-design) | 3V0-21.23 | **31 July 2026** | vSphere design (paid); **retiring — no new registrations after 31 July 2026** |
-| [VCAP-NV Deploy](https://www.broadcom.com/support/education/vmware/certification/vcap-nv-deploy) | 3V0-41.22 | **31 July 2026** | Advanced Deploy VMware NSX-T Data Center 3.x (paid); **retiring — no new registrations after 31 July 2026** |
+| [VCAP-DCV Design](https://www.broadcom.com/support/education/vmware/certification/vcap-dcv-design) | 3V0-21.23 | [**31 July 2026**](https://www.broadcom.com/support/education/vmware/certification/vcap-dcv-design) | vSphere design (paid); **retiring — no new registrations after 31 July 2026** |
+| [VCAP-NV Deploy](https://www.broadcom.com/support/education/vmware/certification/vcap-nv-deploy) | 3V0-41.22 | [**31 July 2026**](https://www.broadcom.com/support/education/vmware/certification/vcap-nv-deploy) | Advanced Deploy VMware NSX-T Data Center 3.x (paid); **retiring — no new registrations after 31 July 2026** |
 
 ## The expert tier (Distinguished Expert / VCDX)
 

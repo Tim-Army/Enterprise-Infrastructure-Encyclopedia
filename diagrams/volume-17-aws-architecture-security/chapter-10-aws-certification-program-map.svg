@@ -1,0 +1,65 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 10: the complete AWS certification program as four levels — foundational, associate, professional, and specialty — with all twelve current exams and their codes</title>
+  <desc>
+    The AWS certification program is shown as four stacked levels. Foundational holds two exams needing no prior experience: Cloud Practitioner (CLF-C02) and AI Practitioner (AIF-C01). Associate holds five: Solutions Architect (SAA-C03), Developer (DVA-C02), CloudOps Engineer (SOA-C03, renamed from SysOps Administrator), Data Engineer (DEA-C01), and Machine Learning Engineer (MLA-C01, with MLA-C02 registration opening 1 September 2026). Professional holds three requiring roughly two years of AWS experience: Solutions Architect Professional (SAP-C02), DevOps Engineer Professional (DOP-C02), and the new Generative AI Developer Professional (AIP-C01). Specialty holds two: Advanced Networking (ANS-C01), which retires 25 August 2026, and Security (SCS-C03). No level is a formal prerequisite for another; the levels describe depth and assumed experience.
+  </desc>
+  <defs>
+    <marker id="arrow-up" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 10: The AWS Certification Program — Four Levels, Twelve Exams</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Levels describe depth and assumed experience, not prerequisites — no AWS certification formally requires another</text>
+
+  <rect x="40" y="70" width="880" height="96" rx="10" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="60" y="94" font-size="13.5" font-weight="700" fill="#1e3a8a">Foundational — no prior experience needed · 90 min / 65 questions</text>
+  <rect x="60" y="104" width="420" height="50" rx="7" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="270.0" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">AWS Certified Cloud Practitioner</text>
+  <text x="270.0" y="144" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">CLF-C02</text>
+  <rect x="496" y="104" width="404" height="50" rx="7" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="698.0" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">AWS Certified AI Practitioner</text>
+  <text x="698.0" y="144" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">AIF-C01</text>
+
+  <rect x="40" y="180" width="880" height="150" rx="10" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="60" y="204" font-size="13.5" font-weight="700" fill="#166534">Associate — cloud or IT experience recommended · 130 min / 65 questions</text>
+  <rect x="60" y="214" width="270" height="48" rx="7" fill="#ffffff" stroke="#166534" stroke-width="1.5"/>
+  <text x="195.0" y="234" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">Solutions Architect</text>
+  <text x="195.0" y="252" text-anchor="middle" font-size="11" font-weight="700" fill="#166534">SAA-C03</text>
+  <rect x="345" y="214" width="270" height="48" rx="7" fill="#ffffff" stroke="#166534" stroke-width="1.5"/>
+  <text x="480.0" y="234" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">Developer</text>
+  <text x="480.0" y="252" text-anchor="middle" font-size="11" font-weight="700" fill="#166534">DVA-C02</text>
+  <rect x="630" y="214" width="270" height="48" rx="7" fill="#ffffff" stroke="#166534" stroke-width="1.5"/>
+  <text x="765.0" y="230" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">CloudOps Engineer</text>
+  <text x="765.0" y="246" text-anchor="middle" font-size="9.5" fill="#4b5563">renamed from SysOps Administrator</text>
+  <text x="765.0" y="258" text-anchor="middle" font-size="11" font-weight="700" fill="#166534">SOA-C03</text>
+  <rect x="60" y="272" width="410" height="48" rx="7" fill="#ffffff" stroke="#166534" stroke-width="1.5"/>
+  <text x="265.0" y="292" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">Data Engineer</text>
+  <text x="265.0" y="310" text-anchor="middle" font-size="11" font-weight="700" fill="#166534">DEA-C01</text>
+  <rect x="490" y="272" width="410" height="48" rx="7" fill="#ffffff" stroke="#166534" stroke-width="1.5"/>
+  <text x="695.0" y="290" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">Machine Learning Engineer</text>
+  <text x="695.0" y="308" text-anchor="middle" font-size="11" font-weight="700" fill="#166534">MLA-C01 → MLA-C02 opens 1 Sep 2026</text>
+
+  <rect x="40" y="344" width="880" height="106" rx="10" fill="#f6f2fc" stroke="#7c3aed" stroke-width="2"/>
+  <text x="60" y="368" font-size="13.5" font-weight="700" fill="#6d28d9">Professional — 2+ years AWS experience · 180 min / 75 questions</text>
+  <rect x="60" y="378" width="270" height="56" rx="7" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="195.0" y="400" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">Solutions Architect</text>
+  <text x="195.0" y="420" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">SAP-C02</text>
+  <rect x="345" y="378" width="270" height="56" rx="7" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="480.0" y="400" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">DevOps Engineer</text>
+  <text x="480.0" y="420" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">DOP-C02</text>
+  <rect x="630" y="378" width="270" height="56" rx="7" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="765.0" y="396" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">Generative AI Developer</text>
+  <text x="765.0" y="412" text-anchor="middle" font-size="9.5" fill="#4b5563">newest professional exam</text>
+  <text x="765.0" y="428" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">AIP-C01</text>
+
+  <rect x="40" y="464" width="880" height="100" rx="10" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="60" y="488" font-size="13.5" font-weight="700" fill="#7c2d12">Specialty — deep expertise in one technology · 170 min / 65 questions</text>
+  <rect x="60" y="498" width="410" height="52" rx="7" fill="#fef2f2" stroke="#b91c1c" stroke-width="1.5"/>
+  <text x="265.0" y="518" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">Advanced Networking</text>
+  <text x="265.0" y="536" text-anchor="middle" font-size="11" font-weight="700" fill="#b91c1c">ANS-C01 — retires 25 August 2026</text>
+  <rect x="490" y="498" width="410" height="52" rx="7" fill="#ffffff" stroke="#b45309" stroke-width="1.5"/>
+  <text x="695.0" y="518" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">Security</text>
+  <text x="695.0" y="536" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">SCS-C03</text>
+
+  <text x="480.0" y="592" text-anchor="middle" font-size="11" fill="#6b7280">Every certification is valid three years; recertification resets the clock. Codes carry a version suffix (-C01, -C02, -C03) that increments as the blueprint is rebuilt.</text>
+  <line x1="30" y1="500" x2="30" y2="120" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-up)"/>
+</svg>

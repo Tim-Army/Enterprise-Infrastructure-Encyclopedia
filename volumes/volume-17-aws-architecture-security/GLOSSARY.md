@@ -249,3 +249,25 @@ DR Region, scaled up on failover. Introduced in Chapter 06.
 migration strategy classifications: Retire, Retain, Relocate, Rehost,
 Replatform, Repurchase, and Refactor/re-architect. Introduced in Chapter
 06.
+
+**AWS Skill Builder** — AWS's official digital training platform. Its free
+tier includes a structured exam-prep plan for every certification, and the
+exam-prep link on each certification page embeds that exam's current code,
+which makes it the reliable primary source for code verification.
+Introduced in Chapter 10.
+
+**CloudOps Engineer – Associate (SOA-C03)** — The AWS associate
+certification for deploying, managing, and operating workloads; the
+renamed **SysOps Administrator – Associate**. The role name changed, the
+`SOA` code prefix did not. Introduced in Chapter 11.
+
+**Exam code suffix (`-C0x`)** — The version component of an AWS exam code
+(`SAA-C03`, `DEA-C01`), incrementing when AWS rebuilds the blueprint. A
+study resource targeting an older suffix is a blueprint behind. Introduced
+in Chapter 10.
+
+**Specialty tier** — The AWS certification level for deep expertise in one
+technical domain. It has contracted from six certifications to two
+(Advanced Networking ANS-C01, retiring 25 August 2026, and Security
+SCS-C03) as AWS folded specialty subject matter into role-based exams.
+Introduced in Chapter 13.

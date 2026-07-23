@@ -26,7 +26,7 @@ does not by itself verify every technical claim in it.
 | XIV — Red Hat Enterprise Linux 10 | 9 | Drafted |
 | XV — Forescout Platform and Certifications | 9 | Drafted |
 | XVI — Palo Alto Networks Security | 12 | Drafted |
-| XVII — AWS Architecture and Security | 9 | Drafted |
+| XVII — AWS Architecture and Security | 13 | Drafted |
 | XVIII — Gigamon Network Visibility | 9 | Drafted |
 | XIX — Fortinet NSE Certification Program | 15 | Drafted |
 | XX — Wireshark and Packet Analysis | 9 | Drafted |
@@ -42,11 +42,11 @@ does not by itself verify every technical claim in it.
 | XXX — Cisco CCDE Network Design | 9 | Drafted |
 | XXXI — Juniper Networks Certification Tracks | 9 | Drafted |
 | XXXII — Dell Technologies Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 7 | Drafted |
+| XCVII — Master Appendices | 8 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 326 of 326 drafted (100%). Every volume has a
+**Total declared chapters:** 331 of 331 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

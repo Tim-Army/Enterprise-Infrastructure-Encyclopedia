@@ -254,6 +254,10 @@ table of contents for that volume.
 7. Observability, Automation, Performance, and Cost Governance
 8. Security Architecture, Detection, and Incident Response
 9. Solutions Architect and Security Training Capstone
+10. The AWS Certification Program — Structure, Foundational Tier, and Recertification
+11. The Associate Tier — Developer, CloudOps Engineer, Data Engineer, and Machine Learning Engineer
+12. The Professional Tier — Solutions Architect, DevOps Engineer, and Generative AI Developer
+13. Specialty Certifications, and Keeping the AWS Certification Program Current
 
 ## Volume XVIII — Gigamon Network Visibility
 
@@ -482,6 +486,7 @@ table of contents for that volume.
 5. Appendix — Palo Alto Networks Certifications and Course Access
 6. Appendix — Fortinet NSE Certifications and Course Access
 7. Appendix — VMware and Broadcom Certifications and Course Access
+8. Appendix — AWS Certifications and Course Access
 
 ## Volume XCVIII — Acronyms
 

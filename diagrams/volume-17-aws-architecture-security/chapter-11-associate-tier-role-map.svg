@@ -1,0 +1,78 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 11: the five associate-tier AWS certifications mapped to job roles and to the chapters of this volume that prepare each</title>
+  <desc>
+    Five associate certifications are shown as role columns above the volume chapters that prepare them. Solutions Architect Associate (SAA-C03) is already covered by Chapters 1 to 9 and anchors the tier. Developer Associate (DVA-C02) targets application builders and draws on the compute, containers, and serverless material in Chapter 4 plus observability in Chapter 7. CloudOps Engineer Associate (SOA-C03), renamed from SysOps Administrator, targets operators and draws on Chapters 6 and 7 for reliability, monitoring, and automation. Data Engineer Associate (DEA-C01) targets data pipeline builders and draws on the storage, database, and analytics material in Chapter 5. Machine Learning Engineer Associate (MLA-C01, updating to MLA-C02 with registration opening 1 September 2026) targets ML practitioners and reaches beyond this volume into SageMaker and MLOps. All five sit at the same tier; pick by the role you hold.
+  </desc>
+  <defs>
+    <marker id="arrow-down" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 11: The Associate Tier — Five Roles, One Level</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Same depth throughout — choose by the job you do, not by sequence. All are 130 minutes / 65 questions.</text>
+
+  <rect x="24" y="76" width="180" height="132" rx="9" fill="#eef2ff" stroke="#33415c" stroke-width="2"/>
+  <text x="114.0" y="102" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Solutions Architect</text>
+  <text x="114.0" y="122" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1d4ed8">SAA-C03</text>
+  <text x="114.0" y="146" text-anchor="middle" font-size="10" fill="#4b5563">designs cost- and</text>
+  <text x="114.0" y="162" text-anchor="middle" font-size="10" fill="#4b5563">performance-optimized</text>
+  <text x="114.0" y="178" text-anchor="middle" font-size="10" fill="#4b5563">solutions</text>
+  <text x="114.0" y="198" text-anchor="middle" font-size="10" font-weight="700" fill="#166534">already in Ch 1–9</text>
+
+  <rect x="214" y="76" width="180" height="132" rx="9" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="304.0" y="102" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Developer</text>
+  <text x="304.0" y="122" text-anchor="middle" font-size="11.5" font-weight="700" fill="#166534">DVA-C02</text>
+  <text x="304.0" y="146" text-anchor="middle" font-size="10" fill="#4b5563">builds, tests, deploys,</text>
+  <text x="304.0" y="162" text-anchor="middle" font-size="10" fill="#4b5563">and debugs cloud</text>
+  <text x="304.0" y="178" text-anchor="middle" font-size="10" fill="#4b5563">applications</text>
+  <text x="304.0" y="198" text-anchor="middle" font-size="10" font-weight="700" fill="#166534">Ch 4, 7</text>
+
+  <rect x="404" y="76" width="180" height="132" rx="9" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="494.0" y="98" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">CloudOps Engineer</text>
+  <text x="494.0" y="114" text-anchor="middle" font-size="9" fill="#b45309">was SysOps Administrator</text>
+  <text x="494.0" y="132" text-anchor="middle" font-size="11.5" font-weight="700" fill="#166534">SOA-C03</text>
+  <text x="494.0" y="154" text-anchor="middle" font-size="10" fill="#4b5563">deploys, manages, and</text>
+  <text x="494.0" y="170" text-anchor="middle" font-size="10" fill="#4b5563">operates workloads</text>
+  <text x="494.0" y="198" text-anchor="middle" font-size="10" font-weight="700" fill="#166534">Ch 6, 7</text>
+
+  <rect x="594" y="76" width="180" height="132" rx="9" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="684.0" y="102" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Data Engineer</text>
+  <text x="684.0" y="122" text-anchor="middle" font-size="11.5" font-weight="700" fill="#166534">DEA-C01</text>
+  <text x="684.0" y="146" text-anchor="middle" font-size="10" fill="#4b5563">data models, life</text>
+  <text x="684.0" y="162" text-anchor="middle" font-size="10" fill="#4b5563">cycles, and data</text>
+  <text x="684.0" y="178" text-anchor="middle" font-size="10" fill="#4b5563">quality</text>
+  <text x="684.0" y="198" text-anchor="middle" font-size="10" font-weight="700" fill="#166534">Ch 5</text>
+
+  <rect x="784" y="76" width="152" height="132" rx="9" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+  <text x="860.0" y="98" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">ML Engineer</text>
+  <text x="860.0" y="118" text-anchor="middle" font-size="11.5" font-weight="700" fill="#b45309">MLA-C01</text>
+  <text x="860.0" y="136" text-anchor="middle" font-size="9" fill="#7c2d12">MLA-C02 registration</text>
+  <text x="860.0" y="150" text-anchor="middle" font-size="9" fill="#7c2d12">opens 1 Sep 2026</text>
+  <text x="860.0" y="172" text-anchor="middle" font-size="10" fill="#4b5563">SageMaker, MLOps</text>
+  <text x="860.0" y="198" text-anchor="middle" font-size="10" font-weight="700" fill="#b45309">beyond this volume</text>
+
+  <line x1="114" y1="208" x2="114" y2="250" stroke="#166534" stroke-width="2" marker-end="url(#arrow-down)"/>
+  <line x1="304" y1="208" x2="304" y2="250" stroke="#166534" stroke-width="2" marker-end="url(#arrow-down)"/>
+  <line x1="494" y1="208" x2="494" y2="250" stroke="#166534" stroke-width="2" marker-end="url(#arrow-down)"/>
+  <line x1="684" y1="208" x2="684" y2="250" stroke="#166534" stroke-width="2" marker-end="url(#arrow-down)"/>
+  <line x1="860" y1="208" x2="860" y2="250" stroke="#b45309" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-down)"/>
+
+  <rect x="24" y="258" width="912" height="180" rx="10" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+  <text x="480.0" y="284" text-anchor="middle" font-size="13.5" font-weight="700" fill="#334155">What this volume already gives you</text>
+  <rect x="44" y="300" width="200" height="56" rx="7" fill="#ffffff" stroke="#334155" stroke-width="1.3"/>
+  <text x="144.0" y="322" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">Ch 4 — Compute</text>
+  <text x="144.0" y="340" text-anchor="middle" font-size="9.5" fill="#4b5563">EC2, ECS/EKS, Lambda</text>
+  <rect x="256" y="300" width="200" height="56" rx="7" fill="#ffffff" stroke="#334155" stroke-width="1.3"/>
+  <text x="356.0" y="322" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">Ch 5 — Data</text>
+  <text x="356.0" y="340" text-anchor="middle" font-size="9.5" fill="#4b5563">S3, RDS, Glue, Athena</text>
+  <rect x="468" y="300" width="200" height="56" rx="7" fill="#ffffff" stroke="#334155" stroke-width="1.3"/>
+  <text x="568.0" y="322" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">Ch 6 — Reliability</text>
+  <text x="568.0" y="340" text-anchor="middle" font-size="9.5" fill="#4b5563">DR, failover, migration</text>
+  <rect x="680" y="300" width="236" height="56" rx="7" fill="#ffffff" stroke="#334155" stroke-width="1.3"/>
+  <text x="798.0" y="322" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">Ch 7 — Operations</text>
+  <text x="798.0" y="340" text-anchor="middle" font-size="9.5" fill="#4b5563">CloudWatch, IaC, cost</text>
+  <text x="480.0" y="386" text-anchor="middle" font-size="11" fill="#4b5563">Each associate exam reuses these chapters at a different emphasis — the gap is emphasis and hands-on repetition,</text>
+  <text x="480.0" y="404" text-anchor="middle" font-size="11" fill="#4b5563">not a separate body of knowledge. ML Engineer is the exception: it reaches into SageMaker material this volume does not cover.</text>
+  <text x="480.0" y="424" text-anchor="middle" font-size="10.5" font-weight="700" fill="#166534">No associate exam requires another, and none requires a foundational certification first.</text>
+
+  <text x="480.0" y="480" text-anchor="middle" font-size="11" fill="#6b7280">Holding two associate certifications in adjacent roles is a modest increment; holding all five rarely pays for the time.</text>
+</svg>

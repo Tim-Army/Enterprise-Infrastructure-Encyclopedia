@@ -1,0 +1,48 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 12: the three professional-tier AWS certifications and the step up in scope, duration, and question style from the associate tier</title>
+  <desc>
+    A lower band shows the associate tier as the assumed starting point, with a note that no formal prerequisite exists but roughly two years of hands-on AWS experience is expected. Three professional certifications sit above it. Solutions Architect Professional (SAP-C02) tests multi-account, multi-Region architecture and migration at organizational scale, drawing on Chapters 2, 3, 6, and 7. DevOps Engineer Professional (DOP-C02) tests continuous delivery, automation, and operational resilience, drawing on Chapters 6 and 7. Generative AI Developer Professional (AIP-C01) is the newest professional exam and tests building and deploying production generative-AI solutions on services such as Amazon Bedrock; it reaches beyond this volume. All three run 180 minutes with 75 questions and are dominated by long, multi-paragraph scenario questions rather than recall.
+  </desc>
+  <defs>
+    <marker id="arrow-up2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 12: The Professional Tier — Scope, Not Just Difficulty</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">180 minutes / 75 questions, dominated by long scenario items — the jump is in breadth and reading load, not obscurity</text>
+
+  <rect x="40" y="86" width="880" height="150" rx="10" fill="#f6f2fc" stroke="#7c3aed" stroke-width="2"/>
+  <text x="60" y="110" font-size="13.5" font-weight="700" fill="#6d28d9">Professional certifications</text>
+  <rect x="60" y="122" width="272" height="100" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="196.0" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Solutions Architect</text>
+  <text x="196.0" y="164" text-anchor="middle" font-size="11.5" font-weight="700" fill="#6d28d9">SAP-C02</text>
+  <text x="196.0" y="186" text-anchor="middle" font-size="10" fill="#4b5563">multi-account, multi-Region</text>
+  <text x="196.0" y="202" text-anchor="middle" font-size="10" fill="#4b5563">architecture and migration</text>
+  <text x="196.0" y="216" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">Ch 2, 3, 6, 7</text>
+  <rect x="344" y="122" width="272" height="100" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="480.0" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">DevOps Engineer</text>
+  <text x="480.0" y="164" text-anchor="middle" font-size="11.5" font-weight="700" fill="#6d28d9">DOP-C02</text>
+  <text x="480.0" y="186" text-anchor="middle" font-size="10" fill="#4b5563">continuous delivery,</text>
+  <text x="480.0" y="202" text-anchor="middle" font-size="10" fill="#4b5563">automation, resilience</text>
+  <text x="480.0" y="216" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">Ch 6, 7</text>
+  <rect x="628" y="122" width="272" height="100" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/>
+  <text x="764.0" y="142" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Generative AI Developer</text>
+  <text x="764.0" y="158" text-anchor="middle" font-size="9" fill="#7c2d12">newest professional exam</text>
+  <text x="764.0" y="176" text-anchor="middle" font-size="11.5" font-weight="700" fill="#b45309">AIP-C01</text>
+  <text x="764.0" y="196" text-anchor="middle" font-size="10" fill="#4b5563">production GenAI on</text>
+  <text x="764.0" y="212" text-anchor="middle" font-size="10" fill="#4b5563">Amazon Bedrock</text>
+
+  <line x1="480" y1="280" x2="480" y2="240" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrow-up2)"/>
+  <text x="500" y="268" font-size="10.5" fill="#6d28d9">no formal prerequisite — but ~2 years hands-on AWS is assumed</text>
+
+  <rect x="40" y="288" width="880" height="86" rx="10" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="314" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">Associate tier — the practical starting point (Chapter 11)</text>
+  <text x="480.0" y="336" text-anchor="middle" font-size="10.5" fill="#4b5563">SAA-C03 · DVA-C02 · SOA-C03 · DEA-C01 · MLA-C01</text>
+  <text x="480.0" y="356" text-anchor="middle" font-size="10.5" fill="#4b5563">AWS removed the old associate-before-professional requirement years ago; the experience gap remains real regardless</text>
+
+  <rect x="40" y="396" width="880" height="130" rx="10" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+  <text x="480.0" y="420" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">What actually changes at this tier</text>
+  <text x="60" y="446" font-size="11" fill="#374151">• <tspan font-weight="700">Reading load.</tspan> Scenario stems run several paragraphs; time pressure comes from reading speed, not recall speed.</text>
+  <text x="60" y="468" font-size="11" fill="#374151">• <tspan font-weight="700">Trade-offs over facts.</tspan> Several answers work; the question is which best fits stated cost, RTO/RPO, and compliance constraints.</text>
+  <text x="60" y="490" font-size="11" fill="#374151">• <tspan font-weight="700">Breadth across services.</tspan> One question can span identity, networking, storage, and cost governance at once.</text>
+  <text x="60" y="512" font-size="11" fill="#374151">• <tspan font-weight="700">Organizational scale.</tspan> The unit of design is the organization and its accounts, not a single workload.</text>
+</svg>

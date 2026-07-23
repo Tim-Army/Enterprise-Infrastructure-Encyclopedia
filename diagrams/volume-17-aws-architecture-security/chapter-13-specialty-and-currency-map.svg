@@ -1,0 +1,65 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 13: the shrinking AWS specialty tier, the certifications already retired from it, and a four-step recurring currency check</title>
+  <desc>
+    The left half tracks the specialty tier, which has shrunk sharply. Two specialty certifications remain: Advanced Networking (ANS-C01), which retires 25 August 2026 — certifications already earned stay valid for their full three years, but no new ones are issued after that date — and Security (SCS-C03), which this volume already covers in Chapter 8. Below them, four specialty certifications have already left the catalog entirely: Machine Learning, Data Analytics, Database, and SAP on AWS; their subject matter moved into role-based associate and professional exams such as Machine Learning Engineer and Data Engineer. The right half is a four-step currency check that repeats on a cadence: re-list the levels and certifications from the AWS certification page, re-confirm each exam code from its own page, flag retirements and version bumps, then update this volume and its appendix. An arrow returns from step four to step one.
+  </desc>
+  <defs>
+    <marker id="arrow-t" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker>
+    <marker id="arrow-n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 13: The Shrinking Specialty Tier, and Keeping the Map Current</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">AWS has been folding specialty subject matter into role-based exams — which is exactly why this volume needs a recurring check</text>
+
+  <rect x="30" y="76" width="430" height="452" rx="10" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="245.0" y="102" text-anchor="middle" font-size="14" font-weight="700" fill="#7c2d12">Specialty tier — what is left</text>
+  <rect x="52" y="118" width="386" height="82" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="1.8"/>
+  <text x="245.0" y="142" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Advanced Networking — Specialty</text>
+  <text x="245.0" y="162" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">ANS-C01 · retires 25 August 2026</text>
+  <text x="245.0" y="182" text-anchor="middle" font-size="9.5" fill="#7f1d1d">certs already earned stay valid 3 years; no new ones issued after</text>
+  <rect x="52" y="212" width="386" height="72" rx="8" fill="#ffffff" stroke="#b45309" stroke-width="1.5"/>
+  <text x="245.0" y="236" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Security — Specialty</text>
+  <text x="245.0" y="256" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">SCS-C03</text>
+  <text x="245.0" y="274" text-anchor="middle" font-size="9.5" fill="#4b5563">already covered by Chapter 8 of this volume</text>
+
+  <text x="245.0" y="312" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7c2d12">Already gone from the catalog</text>
+  <rect x="52" y="324" width="186" height="44" rx="6" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="145.0" y="344" text-anchor="middle" font-size="11" font-weight="700" fill="#6b7280">Machine Learning</text>
+  <text x="145.0" y="360" text-anchor="middle" font-size="9" fill="#6b7280">→ ML Engineer (Associate)</text>
+  <rect x="252" y="324" width="186" height="44" rx="6" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="345.0" y="344" text-anchor="middle" font-size="11" font-weight="700" fill="#6b7280">Data Analytics</text>
+  <text x="345.0" y="360" text-anchor="middle" font-size="9" fill="#6b7280">→ Data Engineer (Associate)</text>
+  <rect x="52" y="378" width="186" height="44" rx="6" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="145.0" y="398" text-anchor="middle" font-size="11" font-weight="700" fill="#6b7280">Database</text>
+  <text x="145.0" y="414" text-anchor="middle" font-size="9" fill="#6b7280">→ folded into role exams</text>
+  <rect x="252" y="378" width="186" height="44" rx="6" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.2"/>
+  <text x="345.0" y="398" text-anchor="middle" font-size="11" font-weight="700" fill="#6b7280">SAP on AWS</text>
+  <text x="345.0" y="414" text-anchor="middle" font-size="9" fill="#6b7280">→ withdrawn</text>
+  <text x="245.0" y="452" text-anchor="middle" font-size="10.5" fill="#7c2d12">The tier peaked at six; it is down to two, one of which is closing.</text>
+  <text x="245.0" y="472" text-anchor="middle" font-size="10.5" fill="#7c2d12">Treat any specialty study plan as perishable.</text>
+  <text x="245.0" y="502" text-anchor="middle" font-size="10" fill="#6b7280">Retirement removes the exam, not the credential you already hold.</text>
+
+  <rect x="480" y="76" width="450" height="452" rx="10" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+  <text x="705.0" y="102" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">Four-step currency check (on a cadence)</text>
+  <rect x="502" y="120" width="406" height="78" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+  <text x="518" y="146" font-size="12" font-weight="700" fill="#111827">1. Re-list levels &amp; certifications</text>
+  <text x="518" y="166" font-size="10" fill="#4b5563">from aws.amazon.com/certification — the landing</text>
+  <text x="518" y="182" font-size="10" fill="#4b5563">page carries retirement notices in the cert name</text>
+  <rect x="502" y="208" width="406" height="78" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+  <text x="518" y="234" font-size="12" font-weight="700" fill="#111827">2. Re-confirm every exam code</text>
+  <text x="518" y="254" font-size="10" fill="#4b5563">from each certification's own page — the Skill</text>
+  <text x="518" y="270" font-size="10" fill="#4b5563">Builder exam-prep link embeds the current code</text>
+  <rect x="502" y="296" width="406" height="78" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+  <text x="518" y="322" font-size="12" font-weight="700" fill="#111827">3. Flag retirements &amp; version bumps</text>
+  <text x="518" y="342" font-size="10" fill="#4b5563">note end dates and -C0x increments; distinguish a</text>
+  <text x="518" y="358" font-size="10" fill="#4b5563">language-version retirement from an exam retirement</text>
+  <rect x="502" y="384" width="406" height="78" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="1.5"/>
+  <text x="518" y="410" font-size="12" font-weight="700" fill="#14532d">4. Update this volume + appendix</text>
+  <text x="518" y="430" font-size="10" fill="#4b5563">codes, tables, study plans, and the Master</text>
+  <text x="518" y="446" font-size="10" fill="#4b5563">Appendices AWS course catalog</text>
+  <line x1="705" y1="198" x2="705" y2="208" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow-t)"/>
+  <line x1="705" y1="286" x2="705" y2="296" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow-t)"/>
+  <line x1="705" y1="374" x2="705" y2="384" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow-t)"/>
+  <path d="M 908 420 C 936 420 936 156 908 156" fill="none" stroke="#6b7280" stroke-width="1.75" stroke-dasharray="4 3" marker-end="url(#arrow-n)"/>
+  <text x="705.0" y="492" text-anchor="middle" font-size="10" fill="#6b7280">Same cadence as the encyclopedia's other cert-currency checks</text>
+</svg>

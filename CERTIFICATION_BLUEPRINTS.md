@@ -15,7 +15,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XIV — Red Hat Enterprise Linux 10 | RHCSA (EX200) | Red Hat Training and Certification |
 | XV — Forescout Platform | FSCA, FSCP, FSCE, FSCA: OT/ICS, FSCE: OT/ICS | Forescout Technologies |
 | XVI — Palo Alto Networks Security | Palo Alto Networks role-based program, all three tracks. Network Security: Cybersecurity Apprentice, Cybersecurity Practitioner, Network Security Analyst/Professional/Architect, Next-Generation Firewall Engineer, SD-WAN Engineer, Security Service Edge Engineer. Security Operations (Cortex): Security Operations Professional, Security Operations Architect, XSIAM Analyst, XSIAM Engineer, XDR Analyst, XDR Engineer, XSOAR Engineer. Cloud Security: Cloud Security Professional, Cloud Security Engineer | Palo Alto Networks Education |
-| XVII — AWS Architecture and Security | AWS Certified Solutions Architect – Associate (SAA-C03), AWS Certified Security – Specialty (SCS-C03) | AWS Training and Certification |
+| XVII — AWS Architecture and Security | The whole AWS program in one volume. Foundational: Cloud Practitioner (CLF-C02), AI Practitioner (AIF-C01). Associate: Solutions Architect (SAA-C03), Developer (DVA-C02), CloudOps Engineer (SOA-C03, renamed from SysOps Administrator), Data Engineer (DEA-C01), Machine Learning Engineer (MLA-C01; MLA-C02 registration opens 1 September 2026). Professional: Solutions Architect (SAP-C02), DevOps Engineer (DOP-C02), Generative AI Developer (AIP-C01). Specialty: Advanced Networking (ANS-C01, retires 25 August 2026), Security (SCS-C03) | AWS Training and Certification |
 | XVIII — Gigamon Network Visibility | Gigamon Certified Professional (GCP) | Gigamon Education Services |
 | XIX — Fortinet NSE Certification Program | The full restored NSE 1–8 program in one volume. NSE 1–4: fundamentals through FortiGate/FortiOS Administrator. NSE 5–8 across four tracks — Secure Networking (FortiSwitch/Wireless/FortiManager/FortiNAC/Enterprise Firewall), Security Operations (FortiAnalyzer/FortiSIEM/FortiSOAR/FortiEDR/FortiNDR + NSE 7 Analyst/Architect), Cloud Security (FortiWeb/ADC/CNAPP/Mail/AWS-Azure-GCP + NSE 7 Public Cloud Architect), SASE (FortiSASE/SD-WAN/FortiClient EMS/FortiDLP + NSE 7); NSE 8 Core+Specialization practical. The named FCF/FCA/FCP/FCSS/FCX certifications were retired 15 July 2026 and NSE 1–8 restored | Fortinet Training Institute |
 | XX — Wireshark and Packet Analysis | WCA-101 | Wireshark Certified Analyst Program |
@@ -240,3 +240,29 @@ specialist-skills. This is the fastest-churning program on the shelf
 VVF/VCF; VCF 9.0 introduced the entire 3V0 role series); Chapter 20
 codifies a four-step, primary-source currency check and this volume
 defers to each exam's own Broadcom page as the objectives authority.
+
+Volume XVII (AWS Architecture and Security) was extended on **23 July
+2026** from the two certifications it already mapped to the whole AWS
+program (new Chapters 10-13). Every code was harvested the same day from
+AWS's own certification pages — read from the **AWS Skill Builder
+exam-prep link** each page carries, because AWS no longer prints exam
+codes in page body text. The program is organized in four levels
+(foundational, associate, professional, specialty) and **no certification
+is a prerequisite for another**; the `-C0x` suffix is the blueprint
+version. Findings worth recording: **SysOps Administrator - Associate is
+now CloudOps Engineer - Associate** (role renamed, `SOA` prefix kept, now
+SOA-C03); **Generative AI Developer - Professional (AIP-C01)** is a new
+professional certification; **Advanced Networking - Specialty (ANS-C01)
+retires 25 August 2026** (existing credentials stay valid three years, no
+new ones issued after); and **Machine Learning Engineer - Associate is
+mid-transition**, MLA-C01 now with MLA-C02 registration opening
+1 September 2026 (beta ME1-C02). The specialty tier has contracted from
+six certifications to two - Machine Learning, Data Analytics, Database,
+and SAP on AWS all left the catalog, their subject matter folded into
+role-based exams such as Data Engineer and Machine Learning Engineer.
+One trap caught during verification and worth restating: the Cloud
+Practitioner page's retirement notice applies to its **Indonesian
+language version**, not to CLF-C02 - read which noun a notice attaches
+to before recording a retirement. Chapter 13 codifies the four-step
+currency check and defers to each exam's own AWS page as the objectives
+authority.

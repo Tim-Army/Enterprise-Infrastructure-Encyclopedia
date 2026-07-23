@@ -593,7 +593,7 @@ volumes:
     number: "XVII"
     slug: volume-17-aws-architecture-security
     title: "AWS Architecture and Security"
-    chapter_count: 9
+    chapter_count: 13
     build_eligible: true
     chapters:
       - id: 01
@@ -623,6 +623,18 @@ volumes:
       - id: 09
         title: "Solutions Architect and Security Training Capstone"
         path: volumes/volume-17-aws-architecture-security/chapters/09-solutions-architect-and-security-training-capstone.md
+      - id: 10
+        title: "The AWS Certification Program — Structure, Foundational Tier, and Recertification"
+        path: volumes/volume-17-aws-architecture-security/chapters/10-the-aws-certification-program-structure-foundational-tier-and-recertification.md
+      - id: 11
+        title: "The Associate Tier — Developer, CloudOps Engineer, Data Engineer, and Machine Learning Engineer"
+        path: volumes/volume-17-aws-architecture-security/chapters/11-the-associate-tier-developer-cloudops-data-engineer-and-machine-learning-engineer.md
+      - id: 12
+        title: "The Professional Tier — Solutions Architect, DevOps Engineer, and Generative AI Developer"
+        path: volumes/volume-17-aws-architecture-security/chapters/12-the-professional-tier-solutions-architect-devops-engineer-and-generative-ai-developer.md
+      - id: 13
+        title: "Specialty Certifications, and Keeping the AWS Certification Program Current"
+        path: volumes/volume-17-aws-architecture-security/chapters/13-specialty-certifications-and-keeping-the-aws-certification-program-current.md
   - id: volume-18
     number: "XVIII"
     slug: volume-18-gigamon-network-visibility
@@ -1155,7 +1167,7 @@ volumes:
     number: "XCVII"
     slug: volume-97-master-appendices
     title: "Master Appendices"
-    chapter_count: 7
+    chapter_count: 8
     build_eligible: true
     chapters:
       - id: 01
@@ -1179,6 +1191,9 @@ volumes:
       - id: 07
         title: "Appendix — VMware and Broadcom Certifications and Course Access"
         path: volumes/volume-97-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md
+      - id: 08
+        title: "Appendix — AWS Certifications and Course Access"
+        path: volumes/volume-97-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md
   - id: volume-98
     number: "XCVIII"
     slug: volume-98-acronyms

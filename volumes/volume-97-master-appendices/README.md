@@ -15,6 +15,7 @@ one place instead of scattered through volume READMEs.
 5. [Appendix — Palo Alto Networks Certifications and Course Access](chapters/05-appendix-palo-alto-networks-certifications-and-course-access.md) — the 17 role-based Palo Alto Networks certifications with official pages and the Beacon free / ILT paid access model; snapshot dated 22 July 2026.
 6. [Appendix — Fortinet NSE Certifications and Course Access](chapters/06-appendix-fortinet-nse-certifications-and-course-access.md) — the restored NSE 1–8 program by track and level with the free-self-paced / paid-ILT access model; snapshot dated 22 July 2026.
 7. [Appendix — VMware and Broadcom Certifications and Course Access](chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) — the whole Broadcom/VMware program by tier (VCP, VCAP, Distinguished Expert, Telco Cloud) with exam codes, exam end dates, and the Learning@Broadcom paid-ILT / free Hands-on Labs access model; snapshot dated 23 July 2026.
+8. [Appendix — AWS Certifications and Course Access](chapters/08-appendix-aws-certifications-and-course-access.md) — all twelve current AWS certifications by level with exam codes, exam end dates, and the free Skill Builder exam-prep / paid classroom access model; snapshot dated 23 July 2026.
 
 ## Appendix catalog
 
@@ -28,6 +29,7 @@ one place instead of scattered through volume READMEs.
 | Palo Alto Networks certifications and course access | [Volume XVI](../volume-16-palo-alto-networks-security/README.md) | [05](chapters/05-appendix-palo-alto-networks-certifications-and-course-access.md) |
 | Fortinet NSE certifications and course access | [Volume XIX](../volume-19-fortinet-network-security/README.md) | [06](chapters/06-appendix-fortinet-nse-certifications-and-course-access.md) |
 | VMware and Broadcom certifications and course access | [Volume V](../volume-05-vmware-virtualization/README.md) | [07](chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) |
+| AWS certifications and course access | [Volume XVII](../volume-17-aws-architecture-security/README.md) | [08](chapters/08-appendix-aws-certifications-and-course-access.md) |
 
 ## Conventions
 
