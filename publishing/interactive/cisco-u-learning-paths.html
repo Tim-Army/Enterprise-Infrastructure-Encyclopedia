@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cisco U. Learning Paths — CE Credits & Access</title>
+<style>
+  :root{
+    --bg:#f6f8fa; --panel:#ffffff; --ink:#152230; --muted:#5b6b7a;
+    --line:#e2e8ee; --line-strong:#cdd8e2;
+    --accent:#0b7a86; --accent-ink:#075a63;
+    --free:#2f855a; --free-bg:#e8f4ec;
+    --sub:#9a6a12; --sub-bg:#f6efdf;
+    --ce:#0b4f86; --ce-bg:#e6eef7;
+    --shadow:0 1px 2px rgba(21,34,48,.06),0 6px 18px rgba(21,34,48,.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0e161e; --panel:#152230; --ink:#e7eef4; --muted:#95a7b6;
+      --line:#24333f; --line-strong:#32444f;
+      --accent:#3cc6d4; --accent-ink:#7fe0ea;
+      --free:#5bc98b; --free-bg:#123023;
+      --sub:#e0b25a; --sub-bg:#33280f;
+      --ce:#8ec2f0; --ce-bg:#12293f;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.28);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#f6f8fa; --panel:#ffffff; --ink:#152230; --muted:#5b6b7a;
+    --line:#e2e8ee; --line-strong:#cdd8e2;
+    --accent:#0b7a86; --accent-ink:#075a63;
+    --free:#2f855a; --free-bg:#e8f4ec; --sub:#9a6a12; --sub-bg:#f6efdf;
+    --ce:#0b4f86; --ce-bg:#e6eef7;
+    --shadow:0 1px 2px rgba(21,34,48,.06),0 6px 18px rgba(21,34,48,.05);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0e161e; --panel:#152230; --ink:#e7eef4; --muted:#95a7b6;
+    --line:#24333f; --line-strong:#32444f;
+    --accent:#3cc6d4; --accent-ink:#7fe0ea;
+    --free:#5bc98b; --free-bg:#123023; --sub:#e0b25a; --sub-bg:#33280f;
+    --ce:#8ec2f0; --ce-bg:#12293f;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.28);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:40px 24px 72px}
+  header.hd{display:flex;flex-direction:column;gap:6px;margin-bottom:26px}
+  .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink);font-weight:700}
+  h1{font-size:clamp(26px,4vw,38px);line-height:1.1;margin:2px 0 0;font-weight:800;letter-spacing:-.02em;text-wrap:balance}
+  .sub{color:var(--muted);font-size:15px;max-width:65ch}
+  .sub a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+  .sub a:hover{border-bottom-color:var(--accent)}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0 26px}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+  .stat .n{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .stat .l{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .stat.free .n{color:var(--free)} .stat.sub .n{color:var(--sub)} .stat.ce .n{color:var(--ce)}
+
+  .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px}
+  .search{flex:1 1 240px;position:relative;min-width:220px}
+  .search input{
+    width:100%;padding:10px 12px 10px 34px;border:1px solid var(--line-strong);border-radius:10px;
+    background:var(--panel);color:var(--ink);font-size:14px;box-shadow:var(--shadow)
+  }
+  .search input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+  .search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--muted)}
+  .seg{display:inline-flex;background:var(--panel);border:1px solid var(--line-strong);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+  .seg button{
+    border:0;background:transparent;color:var(--muted);font:inherit;font-size:13px;font-weight:600;
+    padding:9px 13px;cursor:pointer;border-right:1px solid var(--line)
+  }
+  .seg button:last-child{border-right:0}
+  .seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+  :root[data-theme="dark"] .seg button[aria-pressed="true"],
+  @media (prefers-color-scheme: dark){.seg button[aria-pressed="true"]{color:#06181c}}
+  .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+  .count{font-size:13px;color:var(--muted);margin:0 0 8px 2px;font-variant-numeric:tabular-nums}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+  thead th{
+    text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+    font-weight:700;padding:12px 16px;border-bottom:1px solid var(--line-strong);white-space:nowrap;position:sticky;top:0;background:var(--panel);z-index:1
+  }
+  thead th.sortable{cursor:pointer;user-select:none}
+  thead th.sortable:hover{color:var(--ink)}
+  thead th .arrow{opacity:.4;font-size:10px;margin-left:3px}
+  thead th[aria-sort="ascending"] .arrow,thead th[aria-sort="descending"] .arrow{opacity:1;color:var(--accent)}
+  th.num,td.num{text-align:right}
+  tbody td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
+  td.name a{color:var(--ink);text-decoration:none;font-weight:600}
+  td.name a:hover{color:var(--accent);text-decoration:underline}
+  td.ce{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;color:var(--muted)}
+  td.ce .badge{display:inline-block;min-width:30px;text-align:center;padding:2px 8px;border-radius:999px;background:var(--ce-bg);color:var(--ce);font-weight:700}
+  td.ce .zero{color:var(--muted);opacity:.6}
+  td.exam{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:12.5px;white-space:nowrap}
+  td.exam .exam-code{color:var(--accent-ink);font-weight:700}
+  td.exam .cert{color:var(--muted);font-family:system-ui,-apple-system,sans-serif}
+  td.exam .zero{color:var(--muted);opacity:.5}
+  .chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .chip.free{background:var(--free-bg);color:var(--free)}
+  .chip.sub{background:var(--sub-bg);color:var(--sub)}
+  .chip .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+  .empty{padding:40px 16px;text-align:center;color:var(--muted)}
+  footer.ft{margin-top:22px;font-size:12.5px;color:var(--muted);line-height:1.7;max-width:72ch}
+  footer.ft strong{color:var(--ink)}
+  .theme-toggle{position:fixed;top:14px;right:14px;background:var(--panel);border:1px solid var(--line-strong);color:var(--muted);
+    border-radius:9px;padding:7px 11px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;box-shadow:var(--shadow)}
+  .theme-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeBtn" type="button" aria-label="Toggle light and dark theme">◐ Theme</button>
+
+<div class="wrap">
+  <header class="hd">
+    <span class="eyebrow">Cisco U. · Learning Paths catalog</span>
+    <h1>Every Cisco U. Learning Path, with CE credits &amp; access</h1>
+    <p class="sub">All <strong>215</strong> Learning Paths in the public
+      <a href="https://u.cisco.com/paths" target="_blank" rel="noopener">Cisco&nbsp;U.</a> catalog. Continuing Education
+      (CE) credits count toward Cisco recertification; <em>Free</em> paths open with a no-cost Cisco&nbsp;U. account,
+      while <em>Subscription</em> paths need a paid Cisco&nbsp;U. plan. The <strong>Exam / cert</strong> column shows the exam a path prepares you for, where Cisco’s catalog says so. Search, sort, or filter below — each title links to its path.</p>
+  </header>
+
+  <section class="stats" aria-label="Summary">
+    <div class="stat"><div class="n" id="s-total">215</div><div class="l">Learning Paths</div></div>
+    <div class="stat ce"><div class="n" id="s-ce">108</div><div class="l">Carry CE credits</div></div>
+    <div class="stat free"><div class="n" id="s-free">22</div><div class="l">Free (open access)</div></div>
+    <div class="stat sub"><div class="n" id="s-sub">193</div><div class="l">Need a subscription</div></div>
+  </section>
+
+  <div class="controls">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Search 215 paths…" aria-label="Search paths by name">
+    </div>
+    <div class="seg" role="group" aria-label="Filter by access and CE">
+      <button data-filter="all" aria-pressed="true">All</button>
+      <button data-filter="ce" aria-pressed="false">Has CE</button>
+      <button data-filter="exam" aria-pressed="false">Has exam</button>
+      <button data-filter="free" aria-pressed="false">Free</button>
+      <button data-filter="sub" aria-pressed="false">Subscription</button>
+    </div>
+    <div class="seg" role="group" aria-label="Sort">
+      <button data-sort="name" aria-pressed="true">A–Z</button>
+      <button data-sort="ce" aria-pressed="false">CE high→low</button>
+    </div>
+  </div>
+
+  <p class="count" id="count"></p>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="sortable" data-col="name" aria-sort="ascending" scope="col">Learning Path <span class="arrow">▲</span></th>
+          <th class="sortable num" data-col="ce" aria-sort="none" scope="col">CE credits <span class="arrow">▲▼</span></th>
+          <th class="sortable" data-col="exam" aria-sort="none" scope="col">Exam / cert <span class="arrow">▲▼</span></th>
+          <th scope="col">Access</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty" id="empty" hidden>No paths match your search.</div>
+  </div>
+
+  <footer class="ft">
+    <strong>Source &amp; method.</strong> Pulled from the Cisco U. public catalog API
+    (<code>api-learning.cisco.com · search-type-unauth</code>, type = path) on <strong>22 July 2026</strong>.
+    <strong>CE credits</strong> is each path's <code>number_of_credits</code>; 0 means the path is not CE-eligible
+    (typically no-lab / “lite” content). <strong>Access</strong> reflects <code>lock_content</code> — <em>Free</em> paths
+    are open with a free Cisco U. account, <em>Subscription</em> paths require a paid plan; individual paths are not sold
+    à la carte here. <strong>Exam / cert</strong> is the exam (code + acronym) or certification a path prepares you for.
+    Most values come from Cisco’s catalog tagging; five courses it left untagged or stale-tagged were filled from
+    verified current sources — <strong>350-101 WLCOR</strong> (wireless core), <strong>300-110 WLSD</strong> and
+    <strong>300-120 WLSI</strong> (wireless design and implementation), <strong>300-620 DCACI</strong> (ACI), and
+    <strong>300-710 SNCF</strong> (advanced firewall). Cisco split wireless into its own <strong>CCNP Wireless</strong>
+    track on 19 March 2026: WLCOR replaced ENCOR as its core, and WLSD/WLSI are the realigned successors of the retired
+    300-425 ENWLSD and 300-430 ENWLSI, which the two “Enterprise Wireless” paths were built for. “—” means no current
+    exam maps; the Collaboration Applications/Conferencing courses are left blank because their concentration exams
+    (e.g., CLICA 300-810) are retiring in 2026. Some tracks (AWS, Azure, Microsoft, Kubernetes, and other non-Cisco content) are hosted on Cisco U.
+    and carry 0 CE credits. Catalog contents, credit values, and pricing change often — verify on the path page and submit
+    credits at <code>ce.cisco.com</code> before relying on a number.
+  </footer>
+</div>
+
+<script>
+  // [title, url-slug, CE credits, free(1)/subscription(0)] — Cisco U. catalog, 22 Jul 2026
+  const RAW=[
+["Fundamentals of Cisco Firewall Threat Defense and Intrusion Prevention","fundamentals-cisco-firewall-threat-defense-intrusion-prevention-131",40,0,"300-710 SNCF"],
+["Implementing Cisco Collaboration Conferencing","implementing-cisco-collaboration-conferencing-130",40,0,""],
+["Troubleshooting Cisco Application Centric Infrastructure","troubleshooting-cisco-application-centric-infrastructure-176",20,0,""],
+["Securing Cisco Networks with Snort Rule Writing Best Practices","securing-cisco-networks-with-snort-rule-writing-best-practices-135",24,0,""],
+["Implementing and Operating Cisco Collaboration Core Technologies","implementing-operating-cisco-collaboration-core-technologies-133",64,0,"350-801 CLCOR"],
+["Advanced Techniques for Cisco Firewall Threat Defense and Intrusion Prevention","advanced-techniques-cisco-firewall-threat-defense-intrusion-prevention-221",40,0,"300-710 SNCF"],
+["Cisco NSO Administration and DevOps","cisco-nso-administration-devops-229",32,0,""],
+["Cisco Optical Technology Foundations","cisco-optical-technology-foundations-228",0,0,""],
+["Implementing Cisco Quality of Service","implementing-cisco-quality-service-180",40,0,""],
+["Cisco 8000 Series Routers Essentials","cisco-8000-series-routers-essentials-145",40,0,""],
+["Implementing Cisco NX-OS Switches and Fabrics in the Data Center","implementing-cisco-nxos-switches-fabrics-data-center-214",40,0,""],
+["Introducing Cisco Ultra-Reliable Wireless Backhaul Online Configurator, PTP, and PMP Network Topologies","introducing-cisco-ultrareliable-wireless-backhaul-online-configurator-ptp-pmp-network-topologies-220",0,0,""],
+["Performing Cybersecurity Using Cisco Security Technologies","performing-cyberops-using-cisco-security-technologies-105",40,0,"350-201 CBRCOR"],
+["Introducing Automation for Cisco Solutions","introducing-automation-cisco-solutions-22",16,0,""],
+["Implementing Cisco Converged SDN Transport Solutions","implementing-cisco-converged-sdn-transport-solutions-143",32,0,""],
+["Cisco NSO Advanced for Python Programmers","cisco-nso-advanced-python-programmers-141",50,0,""],
+["Implementing and Operating Cisco Data Center Core Technologies","implementing-operating-cisco-data-center-core-technologies-127",64,0,"350-601 DCCOR"],
+["Implementing Cisco Multicast","implementing-cisco-multicast-119",40,0,""],
+["Understanding Cisco Service Provider Network Foundations","understanding-cisco-service-provider-network-foundations-25",30,0,""],
+["Designing Cisco Enterprise Networks","designing-cisco-enterprise-networks-139",40,0,"300-420 ENSLD"],
+["Implementing the Cisco NCS 540 Series Routers","implementing-cisco-ncs-540-series-routers-144",40,0,""],
+["Implementing and Troubleshooting Networks Using Cisco ThousandEyes","implementing-troubleshooting-networks-using-cisco-thousandeyes-104",24,0,""],
+["Understanding Cisco Cybersecurity Operations Fundamentals","understanding-cisco-cybersecurity-operations-fundamentals-32",30,0,"200-201 CCNACBR"],
+["Understanding Cisco Hybrid Cloud Fundamentals","understanding-cisco-hybrid-cloud-fundamentals-4",28,0,""],
+["Implementing Cisco MPLS","implementing-cisco-mpls-108",40,0,""],
+["Configuring BGP on Cisco Routers","configuring-bgp-on-cisco-routers-106",40,0,""],
+["Cisco SD-WAN Operation and Deployment","cisco-sdwan-operation-deployment-17",12,0,""],
+["IPv6 Fundamentals, Design, and Deployment","ipv6-fundamentals-design-deployment-202",40,0,""],
+["Securing the Web with Cisco Web Security Appliance","securing-web-with-cisco-web-security-appliance-112",16,0,"300-725 SWSA"],
+["Cisco Service Provider 5G Technologies Foundations","cisco-service-provider-5g-technologies-foundations-113",24,0,""],
+["Cisco Application Centric Infrastructure Operations and Troubleshooting","cisco-application-centric-infrastructure-operations-troubleshooting-174",24,0,""],
+["Implementing Cisco Application Centric Infrastructure","implementing-cisco-application-centric-infrastructure-129",40,0,"300-620 DCACI"],
+["Implementing Cisco Collaboration Applications","implementing-cisco-collaboration-applications-125",40,0,"CCNP Collaboration"],
+["Conducting Forensic Analysis and Incident Response Using Cisco Technologies for CyberOps","conducting-forensic-analysis-incident-response-using-cisco-technologies-cyberops-110",40,0,"300-215 CBRFIR"],
+["Cisco Aggregation Services Router 9000 Series Essentials","cisco-aggregation-services-router-9000-series-essentials-121",32,0,""],
+["Network Convergence System 5500 Series Router","network-convergence-system-5500-series-router-122",12,0,""],
+["Implementing Secure Solutions with Virtual Private Networks","implementing-secure-solutions-with-virtual-private-networks-30",40,0,"300-730 SVPN"],
+["Implementing Cisco Enterprise Advanced Routing and Services","implementing-cisco-enterprise-advanced-routing-services-9",40,0,"300-410 ENARSI"],
+["Securing Email with Cisco Email Security Appliance","securing-email-with-cisco-email-security-appliance-118",24,0,"300-720 SESA"],
+["Implementing Cisco Collaboration Cloud and Edge Solutions","implementing-cisco-collaboration-cloud-edge-solutions-124",40,0,"300-820 CLHCT"],
+["Implementing and Operating Cisco Service Provider Network Core Technologies","implementing-operating-cisco-service-provider-network-core-technologies-15",64,0,"350-501 SPCOR"],
+["Implementing Segment Routing on Cisco IOS XR","implementing-segment-routing-on-cisco-ios-xr-114",32,0,""],
+["Implementing Cisco Service Provider VPN Services","implementing-cisco-service-provider-vpn-services-26",40,0,"300-515 SPVI"],
+["Implementing Cisco SD-WAN Security and Cloud Solutions","implementing-cisco-sdwan-security-cloud-solutions-18",24,0,""],
+["Troubleshooting Cisco Data Center Infrastructure","troubleshooting-cisco-data-center-infrastructure-115",50,0,"300-615 DCIT"],
+["Implementing and Configuring Cisco Identity Services Engine","implementing-configuring-cisco-identity-services-engine-11",40,0,"300-715 SISE"],
+["Implementing Cisco Catalyst 9000 Series Switches","implementing-cisco-catalyst-9000-series-switches-12",18,0,""],
+["Designing Cisco Enterprise Wireless Networks","designing-cisco-enterprise-wireless-networks-212",40,0,"300-110 WLSD"],
+["Engineering Cisco Meraki Solutions","engineering-cisco-meraki-solutions-111",24,0,""],
+["Designing and Implementing Enterprise Network Assurance","designing-implementing-enterprise-network-assurance-226",32,0,"300-445 ENNA"],
+["Designing and Implementing Secure Cloud Connectivity","designing-and-implementing-secure-cloud-connectivity-195",32,0,"300-440 ENCC"],
+["Cisco Common Service Platform Collector Fundamentals","cisco-common-service-platform-collector-fundamentals-137",0,0,""],
+["Designing and Implementing Secure Cloud Access for Users and Endpoints","designing-implementing-secure-cloud-access-users-endpoints-203",40,0,"300-740 SCAZT"],
+["Understanding Cisco Wireless Foundations","understanding-cisco-wireless-foundations-13",30,0,""],
+["Cisco Data Center Nexus Dashboard Essentials","cisco-data-center-nexus-dashboard-essentials-206",26,0,""],
+["Implementing Cisco Enterprise Wireless Networks","implementing-cisco-enterprise-wireless-networks-201",40,0,"300-120 WLSI"],
+["Leveraging Cisco IOS XR VPN Services","leveraging-cisco-ios-xr-vpn-services-189",24,0,""],
+["Implementing Cisco Catalyst SD-WAN Solutions","implementing-cisco-catalyst-sdwan-solutions-142",32,0,"300-415 ENSDWI"],
+["NSO Essentials for Programmers and Network Architects","nso-essentials-programmers-network-architects-138",40,0,""],
+["Implementing Cisco Ultra-Reliable Wireless Backhaul Solutions for Fixed and Mobile Infrastructure","implementing-cisco-ultrareliable-wireless-backhaul-solutions-fixed-mobile-infrastructure-219",0,0,""],
+["Cisco IOS XR Software Essentials","cisco-ios-xr-software-essentials-188",24,0,""],
+["Implementing and Operating Cisco Enterprise Network Core Technologies","implementing-operating-cisco-enterprise-network-core-technologies-170",64,0,"350-401 ENCOR"],
+["Using Duo to Support Secure Access Service Edge","using-duo-support-secure-access-service-edge-191",0,0,""],
+["Implementing Cisco Advanced Call Control and Mobility Services","implementing-cisco-advanced-call-control-mobility-services-218",40,0,"300-815 CLACC"],
+["Cisco Optical Technology Intermediate","cisco-optical-technology-intermediate-169",24,0,""],
+["Programming for Network Engineers","programming-network-engineers-7",24,0,""],
+["Implementing Cisco Application Centric Infrastructure–Advanced","implementing-cisco-application-centric-infrastructureadvanced-128",40,0,""],
+["Automating Networks Using Cisco Platforms","developing-applications-automating-workflows-using-cisco-platforms-10",48,0,"200-901 CCNAAUTO"],
+["Understanding Cisco Network Automation Essentials","understanding-cisco-network-automation-essentials-3",16,1,""],
+["Introduction to Network Simulations with Cisco Modeling Labs","introduction-network-simulations-with-cisco-modeling-labs-243",6,1,""],
+["CCSI Fundamentals","ccsi-fundamentals-265",0,1,""],
+["Application Performance Monitoring Essentials for Cisco AppDynamics","application-performance-monitoring-essentials-cisco-appdynamics-204",0,1,""],
+["Network Fundamentals for Network Adjacent Engineers","network-fundamentals-network-adjacent-engineers-173",0,1,""],
+["AWS Certified Solutions Architect Associate 2022 (SAA-C03)","aws-certified-solutions-architect-associate-2022-saac03-149",0,0,""],
+["Microsoft Certified: Azure DevOps Engineer Expert","microsoft-certified-azure-devops-engineer-expert-155",0,0,""],
+["Agile for Decision Makers and Leaders","agile-decision-makers-leaders-165",0,0,""],
+["AWS SysOps Certified Administrator Associate (SOA-C02)","aws-sysops-certified-administrator-associate-soac02-166",0,0,""],
+["Prompt Engineering with Generative AI Tools","prompt-engineering-with-generative-ai-tools-237",0,0,""],
+["Certified Associate in Project Management (CAPM)","certified-associate-project-management-capm-196",0,0,""],
+["Data Visualization","data-visualization-197",0,0,""],
+["Practical ChatGPT: Prompt Engineering and Ethical Implications","practical-chatgpt-prompt-engineering-ethical-implications-154",0,0,""],
+["Network Security Specialist to CloudOps Security Architect","network-security-specialist-cloudops-security-architect-187",0,0,""],
+["CloudOps – Build, Secure and Manage Cloud Services","cloudops-build-secure-manage-cloud-services-159",0,0,""],
+["Leveraging Generative AI APIs","leveraging-generative-ai-apis-236",0,0,""],
+["AWS Certified DevOps Engineer Professional (DOP-C01)","aws-certified-devops-engineer-professional-dopc01-160",0,0,""],
+["Ansible – Basics and Practical Uses","ansible-basics-practical-uses-161",0,0,""],
+["Security Analyst to Security Architect","security-analyst-security-architect-185",0,0,""],
+["PowerShell","powershell-186",0,0,""],
+["Building a SecOps Toolbox","building-secops-toolbox-184",0,0,""],
+["Google Certified Associate Cloud Engineer","google-certified-associate-cloud-engineer-147",0,0,""],
+["Microsoft Certified Azure Fundamentals 2022 (AZ-900)","microsoft-certified-azure-fundamentals-2022-az900-151",0,0,""],
+["Microsoft Certified Azure Administrator Associate (AZ-104)","microsoft-certified-azure-administrator-associate-az104-152",0,0,""],
+["Inspiring Engagement and Resilience","inspiring-engagement-resilience-150",0,0,""],
+["Terraform – Introduction and Configuration","terraform-introduction-configuration-156",0,0,""],
+["Microsoft Certified: Azure Network Engineer Associate","microsoft-certified-azure-network-engineer-associate-167",0,0,""],
+["Microsoft Certified: Azure AI Fundamentals","microsoft-certified-azure-ai-fundamentals-168",0,0,""],
+["Splunk Fundamentals to CloudOps Analytics","splunk-fundamentals-cloudops-analytics-181",0,0,""],
+["OS Exploits","os-exploits-182",0,0,""],
+["Core DevOps Skills","core-devops-skills-183",0,0,""],
+["Foundations of Generative AI","foundations-generative-ai-157",0,0,""],
+["Certified Cloud Security Professional (CCSP 2022)","certified-cloud-security-professional-ccsp-2022-158",0,0,""],
+["Generative AI Solutions with Azure OpenAI - Associate","generative-ai-solutions-with-azure-openai-associate-162",0,0,""],
+["AWS Certified Solutions Architect Professional 2022","aws-certified-solutions-architect-professional-2022-164",0,0,""],
+["Tableau","tableau-199",0,0,""],
+["AWS Certified Cloud Practitioner 2023 CLF-C02","aws-certified-cloud-practitioner-2023-clfc02-216",0,0,""],
+["5G Technologies and Practices","5g-technologies-practices-103",0,0,""],
+["Docker Foundations","docker-foundations-99",0,0,""],
+["Kubernetes Foundations","kubernetes-foundations-49",0,0,""],
+["AI Simulators - Building Business and Troubleshooting Skills","ai-simulators-building-it-business-troubleshooting-skills-244",0,0,""],
+["Enterprise Developer to DevOps Engineer","enterprise-developer-devops-engineer-38",0,0,""],
+["Performance Engineering Journey","performance-engineering-journey-90",0,0,""],
+["Automate your workflow with GitHub Actions","automate-your-workflow-with-github-actions-101",0,0,""],
+["Agile for Software Development","agile-software-development-94",0,0,""],
+["Google Cloud","google-cloud-47",0,0,""],
+["Microsoft Azure Fundamentals: Describe Azure architecture and services","microsoft-azure-fundamentals-describe-azure-architecture-services-57",0,0,""],
+["Manage resources in Azure","manage-resources-azure-64",0,0,""],
+["Building Advanced Kubernetes Skills","building-advanced-kubernetes-skills-43",0,0,""],
+["Develop and deploy applications on Kubernetes","develop-deploy-applications-on-kubernetes-81",0,0,""],
+["Manage identity and access in Azure Active Directory","manage-identity-access-azure-active-directory-60",0,0,""],
+["Cloud Computing for Decision Makers and Leaders","cloud-computing-decision-makers-leaders-91",0,0,""],
+["Architect modern applications in Azure","architect-modern-applications-azure-75",0,0,""],
+["Software Product Management Proficiency","software-product-management-proficiency-89",0,0,""],
+["Architect network infrastructure in Azure","architect-network-infrastructure-azure-70",0,0,""],
+["Migrate application workloads and data to Azure","migrate-application-workloads-data-azure-78",0,0,""],
+["Load Balancing Multi and Hybrid Cloud Solutions","load-balancing-multi-hybrid-cloud-solutions-46",0,0,""],
+["Prerequisites for Azure administrators","prerequisites-azure-administrators-62",0,0,""],
+["Introduction to Kubernetes on Azure","introduction-kubernetes-on-azure-73",0,0,""],
+["Administer containers in Azure","administer-containers-azure-68",0,0,""],
+["Microsoft Azure Fundamentals: Describe core Azure concepts","microsoft-azure-fundamentals-describe-core-azure-concepts-55",0,0,""],
+["Python Novice to Pythonista","python-novice-pythonista-45",0,0,""],
+["Understand data science for machine learning","understand-data-science-machine-learning-67",0,0,""],
+["Microsoft Azure Fundamentals: Describe cloud concepts","microsoft-azure-fundamentals-describe-cloud-concepts-53",0,0,""],
+["Microsoft Azure Fundamentals: Describe Azure management and governance","microsoft-azure-fundamentals-describe-azure-management-governance-54",0,0,""],
+["Automate administrative tasks by using PowerShell","automate-administrative-tasks-by-using-powershell-52",0,0,""],
+["Security Essentials for Decision-makers and Leaders","security-essentials-decisionmakers-leaders-93",0,0,""],
+["Collaborate with others with Markdown and GitHub Pages","collaborate-with-others-with-markdown-github-pages-50",0,0,""],
+["Deploy applications with Azure DevOps","deploy-applications-with-azure-devops-77",0,0,""],
+["Describe the basic concepts of cybersecurity","describe-basic-concepts-cybersecurity-61",0,0,""],
+["Data for Decision-makers and Leaders","data-decisionmakers-leaders-92",0,0,""],
+["Introduction to version control with Git","introduction-version-control-with-git-72",0,0,""],
+["Understand data concepts","understand-data-concepts-79",0,0,""],
+["Manage security operations in Azure","manage-security-operations-azure-65",0,0,""],
+["DevOps Engineer to Cloud Architect","devops-engineer-cloud-architect-44",0,0,""],
+["Building Advanced Docker Skills","building-advanced-docker-skills-42",0,0,""],
+["Secure your cloud data","secure-your-cloud-data-74",0,0,""],
+["Develop a security and compliance plan","develop-security-compliance-plan-100",0,0,""],
+["Go Programming Essentials","go-programming-essentials-40",0,0,""],
+["Cisco Intersight Essentials","cisco-intersight-essentials-207",18,0,""],
+["Introduction to Cisco Unified Contact Center Enterprise","introduction-cisco-unified-contact-center-enterprise-208",0,0,""],
+["Administering Cisco Modeling Labs","administering-cisco-modeling-labs-240",5,1,""],
+["Cisco for SMB: Secure Your Assets","cisco-smb-secure-your-assets-238",0,0,""],
+["Introduction to Neural Networks Bootcamp","introduction-neural-networks-bootcamp-249",0,0,""],
+["Cisco ThousandEyes Essentials","cisco-thousandeyes-essentials-20465",0,1,""],
+["AI Solutions on Cisco Infrastructure Essentials","ai-solutions-on-cisco-infrastructure-essentials-288",34,0,"Cisco Certified Design Expert"],
+["Conducting Threat Hunting and Defending using Cisco Technologies for Cybersecurity","conducting-threat-hunting-defending-using-cisco-technologies-cyberops-262",40,0,"300-220 CBRTHD"],
+["Intermediate Python for Network Engineers","intermediate-python-network-engineers-20739",29,0,""],
+["Automating Cisco Data Center Networking Solutions","automating-cisco-data-center-networking-solutions-20875",43,0,"300-635 DCNAUTO"],
+["Implementing and Operating Cisco Security Core Technologies","implementing-operating-cisco-security-core-technologies-269",64,0,"350-701 SCOR"],
+["Implementing Cisco Service Provider Advanced Routing Solutions","implementing-cisco-service-provider-advanced-routing-solutions-20637",37,0,"300-510 SPRI"],
+["Automate AI Solutions on Cisco Infrastructure","automate-ai-solutions-on-cisco-infrastructure-20464",8,0,""],
+["Evolution of Cisco Network Operating Systems","evolution-cisco-network-operating-systems-20396",0,1,""],
+["Cisco Nexus Dashboard Advanced","cisco-nexus-dashboard-advanced-254",24,0,""],
+["Advanced Automation with Cisco Modeling Labs","advanced-automation-with-cisco-modeling-labs-241",8,1,""],
+["Implementing and Configuring Cisco Identity Services Engine","implementing-configuring-cisco-identity-services-engine-21111",32,0,"300-715 SISE"],
+["Splunk AppDynamics for Hybrid Application Monitoring","splunk-appdynamics-hybrid-application-monitoring-286",32,0,""],
+["Troubleshooting Cisco Enterprise Networking Solutions","troubleshooting-cisco-enterprise-networking-solutions-20672",16,0,""],
+["Introduction to GitHub Copilot","introduction-github-copilot-20604",0,0,""],
+["Securing Industrial IoT Networks with Cisco Technologies","securing-industrial-iot-networks-with-cisco-technologies-21211",0,1,""],
+["Implementing and Administering Cisco Solutions","implementing-administering-cisco-solutions-248",30,0,"200-301 CCNA"],
+["Cisco Catalyst SD-WAN Operation and Deployment","cisco-catalyst-sdwan-operation-deployment-21178",14,0,""],
+["Operate and Troubleshoot AI Solutions on Cisco Infrastructure","operate-troubleshoot-ai-solutions-on-cisco-infrastructure-20773",4,0,""],
+["Cisco Splunk for AI Operations","cisco-splunk-ai-operations-21011",6,0,""],
+["Supporting Cisco Devices for Field Technicians","supporting-cisco-devices-field-technicians-290",0,0,""],
+["Cisco Catalyst Center Foundations","cisco-catalyst-center-foundations-10291",44,0,""],
+["Introduction to 802.1X Operations for Cisco Security Professionals","introduction-8021x-operations-cisco-security-professionals-20909",12,0,""],
+["Cisco Energy Networking Systems and Panduit Fault Managed Power","cisco-energy-networking-systems-panduit-fault-managed-power-21345",0,1,""],
+["Designing Cisco Security Infrastructure","designing-cisco-security-infrastructure-20534",41,1,"300-745 SDSI"],
+["Cisco Provider Connectivity Assurance - Introduction","cisco-provider-connectivity-assurance-introduction-20536",0,1,""],
+["Designing Cisco UCS X-Series for AI","designing-cisco-ucs-xseries-ai-20842",9,0,""],
+["Understanding Cisco Ultra-Reliable Wireless Backhaul Foundation","understanding-cisco-ultrareliable-wireless-backhaul-foundation-223",0,1,""],
+["Securing Cisco Networks with Open Source Snort","securing-cisco-networks-with-open-source-snort-289",20,0,""],
+["Designing and Implementing Cisco Service Provider Cloud Network Infrastructure","designing-implementing-cisco-service-provider-cloud-network-infrastructure-235",40,0,"300-540 SPCNI"],
+["The Essentials of Webex Calling","the-essentials-webex-calling-273",18,0,""],
+["Convolutional Neural Networks","convolutional-neural-networks-250",0,0,""],
+["Understanding Cisco Collaboration Foundations","understanding-cisco-collaboration-foundations-20638",21,0,""],
+["Cisco AI Business Practitioner","cisco-ai-business-practitioner-20706",8,1,""],
+["Cisco DoD Comply-to-Connect","cisco-dod-complytoconnect-263",32,0,"CCNP Security"],
+["Understanding and Deploying Cisco Routed Optical Networking","understanding-deploying-cisco-routed-optical-networking-10325",3,0,""],
+["Understanding AI and LLMs as a Network Engineer","understanding-ai-llms-as-network-engineer-10324",0,1,"CCNA"],
+["Enhancing Cisco Security Solutions with Splunk","enhancing-cisco-security-solutions-with-data-analytics-10327",32,0,""],
+["OpenAI Prompt Engineering Practice","openai-prompt-engineering-practice-20398",0,0,""],
+["Cisco Provider Connectivity Assurance - Analytics","cisco-provider-connectivity-assurance-analytics-20569",0,1,""],
+["Cisco AI Technical Practitioner","cisco-ai-technical-practitioner-20806",8,0,"810-110 AITECH"],
+["Implementing and Operating Cisco Collaboration Core Technologies","implementing-operating-cisco-collaboration-core-technologies-20977",76,0,"350-801 CLCOR"],
+["Automating and Programming Cisco Enterprise Solutions","automating-programming-cisco-enterprise-solutions-20943",34,0,"300-435 ENAUTO"],
+["Managing Cisco Network Operating Systems","managing-cisco-network-operating-systems-20363",37,0,""],
+["Cisco Provider Connectivity Assurance - Sensor Control","cisco-provider-connectivity-assurance-sensor-control-20570",0,1,""],
+["Troubleshooting Cisco Enterprise Networking Solutions","troubleshooting-cisco-enterprise-networking-solutions-287",30,0,""],
+["Cisco Provider Connectivity Assurance - Orchestrator","cisco-provider-connectivity-assurance-orchestrator-20571",0,1,""],
+["Introduction to Quantum Computing","introduction-quantum-computing-10328",0,0,""],
+["Cisco Silicon One for AI Networking","cisco-silicon-one-ai-networking-21045",2,0,""],
+["Operational Technology (OT) and IoT Security","operational-technology-ot-iot-security-20498",0,0,""],
+["AI Agent Fundamentals","ai-agent-fundamentals-21543",0,1,""],
+["Cisco Provider Connectivity Assurance - Performance Elements","cisco-provider-connectivity-assurance-performance-elements-20772",0,1,""],
+["Using Linux","using-linux-20362",0,0,""],
+["Cisco AI Technical Practitioner Advanced","cisco-ai-technical-practitioner-advanced-21310",0,0,""],
+["Designing Cisco Data Center Infrastructure","designing-cisco-data-center-infrastructure-20978",35,0,"300-610 DCID"],
+["Understanding Cisco Cybersecurity Operations Fundamentals","understanding-cisco-cybersecurity-operations-fundamentals-21477",28,0,"200-201 CCNACBR"],
+["Transforming to a Cisco Intent-Based Network","transforming-cisco-intentbased-network-21444",31,0,""],
+["Implementing Cisco Collaboration Hybrid and Cloud Technologies","implementing-cisco-collaboration-hybrid-cloud-technologies-21378",0,0,"300-820 CLHCT"],
+["CCNA Learning Preview","ccna-learning-preview-21312",0,1,"CCNA"],
+["Designing, Deploying and Managing Network Automation Systems","design-deploy-manage-network-automation-systems-20876",32,0,"350-901 AUTOCOR"],
+["Implementing and Operating Cisco Wireless Core Technologies","implementing-operating-cisco-wireless-core-technologies-20976",32,0,"350-101 WLCOR"],
+["Cisco Duo Identity and Access Management","cisco-duo-identity-access-management-21277",17,0,""],
+["Understanding Cisco Data Center Foundations","understanding-cisco-data-center-foundations-20705",25,0,""]
+  ];
+  const DATA=RAW.map(r=>({name:r[0],url:"https://u.cisco.com/paths/"+r[1],ce:r[2],free:r[3]===1,exam:r[4]||""}));
+
+  const rowsEl=document.getElementById('rows');
+  const countEl=document.getElementById('count');
+  const emptyEl=document.getElementById('empty');
+  const qEl=document.getElementById('q');
+  let filter='all', sortKey='name', sortDir=1; // name asc default
+
+  function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+  function apply(){
+    const q=qEl.value.trim().toLowerCase();
+    let list=DATA.filter(d=>{
+      if(filter==='ce'&&d.ce<=0)return false;
+      if(filter==='exam'&&!/\d{3}-\d{3}/.test(d.exam||''))return false;
+      if(filter==='free'&&!d.free)return false;
+      if(filter==='sub'&&d.free)return false;
+      if(q&&d.name.toLowerCase().indexOf(q)<0)return false;
+      return true;
+    });
+    list.sort((a,b)=>{
+      if(sortKey==='ce'){ if(b.ce!==a.ce) return (b.ce-a.ce)*sortDir; return a.name.localeCompare(b.name); }
+      if(sortKey==='exam'){ var ea=a.exam||'~~~', eb=b.exam||'~~~'; if(ea!==eb) return ea.localeCompare(eb)*sortDir; return a.name.localeCompare(b.name); }
+      return a.name.localeCompare(b.name)*sortDir;
+    });
+    rowsEl.innerHTML=list.map(d=>{
+      const ce=d.ce>0?`<span class="badge">${d.ce}</span>`:`<span class="zero">—</span>`;
+      const chip=d.free?`<span class="chip free"><span class="dot"></span>Free</span>`:`<span class="chip sub"><span class="dot"></span>Subscription</span>`;
+      const exq=d.exam?(/\d{3}-\d{3}/.test(d.exam)?`<span class="exam-code">${esc(d.exam)}</span>`:`<span class="cert">${esc(d.exam)}</span>`):`<span class="zero">—</span>`;
+      return `<tr><td class="name"><a href="${d.url}" target="_blank" rel="noopener">${esc(d.name)}</a></td><td class="ce num">${ce}</td><td class="exam">${exq}</td><td>${chip}</td></tr>`;
+    }).join('');
+    emptyEl.hidden=list.length>0;
+    countEl.textContent=`Showing ${list.length} of ${DATA.length} paths`;
+  }
+
+  // filter segment
+  document.querySelectorAll('.seg [data-filter]').forEach(b=>b.addEventListener('click',()=>{
+    filter=b.dataset.filter;
+    document.querySelectorAll('.seg [data-filter]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    apply();
+  }));
+  // sort segment
+  document.querySelectorAll('.seg [data-sort]').forEach(b=>b.addEventListener('click',()=>{
+    sortKey=b.dataset.sort; sortDir=1;
+    document.querySelectorAll('.seg [data-sort]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    syncHeader(); apply();
+  }));
+  // header sort
+  document.querySelectorAll('th.sortable').forEach(th=>th.addEventListener('click',()=>{
+    const col=th.dataset.col;
+    if(sortKey===col){ sortDir*=-1; } else { sortKey=col; sortDir=col==='ce'?1:1; }
+    document.querySelectorAll('.seg [data-sort]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.sort===sortKey));
+    syncHeader(); apply();
+  }));
+  function syncHeader(){
+    document.querySelectorAll('th.sortable').forEach(th=>{
+      if(th.dataset.col===sortKey){ th.setAttribute('aria-sort', sortDir>0?'ascending':'descending'); }
+      else th.setAttribute('aria-sort','none');
+    });
+  }
+  qEl.addEventListener('input',apply);
+
+  // theme toggle
+  const tb=document.getElementById('themeBtn');
+  tb.addEventListener('click',()=>{
+    const cur=document.documentElement.getAttribute('data-theme');
+    const next=cur==='dark'?'light':cur==='light'?'dark':(matchMedia('(prefers-color-scheme: dark)').matches?'light':'dark');
+    document.documentElement.setAttribute('data-theme',next);
+  });
+
+  syncHeader(); apply();
+</script>
+</body>
+</html>

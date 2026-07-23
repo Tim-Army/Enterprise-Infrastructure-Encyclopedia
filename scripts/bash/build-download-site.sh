@@ -30,6 +30,13 @@ cp publishing/web.css "$output/web.css"
 cp -R output/html "$output/html"
 cp -R output/epub "$output/epub"
 
+# Self-contained interactive companion pages (searchable/sortable catalogs
+# and the like). These are hand-authored, fully offline HTML — served as-is
+# alongside the Pandoc output and linked from the portal and their volume.
+if [[ -d publishing/interactive ]]; then
+  cp -R publishing/interactive "$output/interactive"
+fi
+
 page_head() {
   # $1 = <title> text
   # $2 = relative prefix from this page back to the site root, e.g. "../../"
@@ -71,6 +78,12 @@ volume_title() {
   echo "<li><a href=\"html/complete-encyclopedia.html\">Read online (HTML)</a></li>"
   echo "<li><a href=\"epub/Enterprise-Infrastructure-Encyclopedia.epub\">Download (EPUB)</a></li>"
   echo "</ul>"
+  if [[ -f "$output/interactive/cisco-u-learning-paths.html" ]]; then
+    echo "<h2>Interactive companions</h2>"
+    echo "<ul>"
+    echo "<li><a href=\"interactive/cisco-u-learning-paths.html\">Cisco U. Learning Paths &mdash; searchable CE-credit &amp; access catalog</a> (companion to <a href=\"html/volume-97-master-appendices/01-appendix-cisco-u-learning-paths-and-continuing-education-credits.html\">Master Appendices, Chapter 01</a>)</li>"
+    echo "</ul>"
+  fi
   echo "<h2>Volumes</h2>"
   echo "<ul>"
   for volume_dir in volumes/*/; do

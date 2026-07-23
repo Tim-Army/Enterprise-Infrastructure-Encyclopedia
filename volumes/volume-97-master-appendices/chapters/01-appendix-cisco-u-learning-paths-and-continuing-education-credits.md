@@ -13,6 +13,13 @@ for** (where one maps), its CE-credit value, and whether it is **Free**
 193 require a subscription. Some tracks hosted on Cisco U. cover non-Cisco technologies
 (AWS, Azure, Microsoft, Kubernetes, and others) and carry no CE credits or exam.
 
+An interactive version of this same catalog — search by name, filter by CE
+credits, exam, or access, and sort by name or CE value — is published on the
+encyclopedia's web portal at
+[Cisco U. Learning Paths — interactive catalog](../../interactive/cisco-u-learning-paths.html).
+It is built from the same 22 July 2026 snapshot as the table below and is
+fully self-contained (it works offline from the downloadable archive too).
+
 > **On the Exam / cert column.** Most values come from Cisco U.'s own catalog
 > tagging. Five courses the catalog left untagged or stale-tagged are filled from
 > verified current sources: **350-101 WLCOR** (wireless core), **300-110 WLSD** and
