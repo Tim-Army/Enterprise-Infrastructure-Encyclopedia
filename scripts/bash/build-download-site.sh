@@ -74,8 +74,8 @@ volume_title() {
   echo "<h1>Enterprise Infrastructure Encyclopedia</h1>"
   echo "<p>A volume-first, documentation-as-code curriculum for enterprise infrastructure.</p>"
   echo "<h2>Complete edition</h2>"
+  echo "<p>The whole encyclopedia in one file is published as an EPUB. Read online by volume or chapter below.</p>"
   echo "<ul>"
-  echo "<li><a href=\"html/complete-encyclopedia.html\">Read online (HTML)</a></li>"
   echo "<li><a href=\"epub/Enterprise-Infrastructure-Encyclopedia.epub\">Download (EPUB)</a></li>"
   echo "</ul>"
   if [[ -f "$output/interactive/cisco-u-learning-paths.html" ]]; then

@@ -8,15 +8,16 @@
 #   build-book.sh --format all|html|epub
 #                  [--volume <volume-slug>] [--chapter <path/to/chapter.md>]
 #
-# With no --volume/--chapter, builds every chapter, every volume (combined),
-# and the complete-series edition. --volume scopes to one volume (its
-# chapters plus the combined volume edition). --chapter builds only that
-# one chapter.
+# With no --volume/--chapter, builds every chapter and every volume
+# (combined), plus the complete-encyclopedia EPUB. --volume scopes to one
+# volume (its chapters plus the combined volume edition). --chapter builds
+# only that one chapter.
 #
-# HTML is produced per chapter, per volume and for the complete series.
-# EPUB is produced only as a single
-# Enterprise-Infrastructure-Encyclopedia.epub: the whole work is one book,
-# so --volume/--chapter scoping affects HTML alone.
+# HTML is produced per chapter and per volume. EPUB is produced only as a
+# single Enterprise-Infrastructure-Encyclopedia.epub: the whole work is one
+# book, so --volume/--chapter scoping affects HTML alone. (The single-page
+# complete-encyclopedia HTML edition was retired; the EPUB is the one-file
+# edition.)
 #
 # Links to other chapters (volumes/*/chapters/*.md) and to volume READMEs
 # (volumes/*/README.md) are rewritten by
@@ -146,12 +147,13 @@ first_line_title() {
 # Renders the footer shared by every generated page and prints its path.
 #
 # $1 is the relative prefix that reaches output/html/ from the page being
-# built ("" for the series edition, "../" for anything inside a volume
-# directory).
+# built ("../" for pages inside a volume directory). The "Volume contents"
+# link points at the page's sibling index.html — the volume's chapter list
+# on the portal — so it needs no prefix; the argument is kept for callers.
 footer_for() {
   local prefix="$1" dest links
   dest="$link_tmp/footer.html"
-  links="<li><a href=\"${prefix}complete-encyclopedia.html#TOC\">Contents</a></li>"
+  links="<li><a href=\"index.html\">Volume contents</a></li>"
   links+="<li><a href=\"#\">Back to top</a></li>"
   {
     printf '<nav id="page-nav" aria-label="Page navigation"><ul>%s</ul></nav>\n' "$links"
@@ -163,8 +165,8 @@ footer_for() {
 # Renders publishing/title-page.md and prints the path to the rendered copy.
 #
 # This is the cover page of the encyclopedia as a whole, so it is built into
-# the complete-encyclopedia editions only. Chapters do not carry a copy of
-# any title page; they link up to this one and to their volume's instead.
+# the complete-encyclopedia EPUB only. Per-chapter and per-volume HTML pages
+# do not carry a copy of any title page.
 title_page_for() {
   local dest="$link_tmp/title-page.md"
   python3 "$repo_root/scripts/bash/lib/render_template.py" \
@@ -244,7 +246,6 @@ build_chapter_html() {
     --metadata "author=$author" \
     -o "$outdir/$base.html"
   inject_toc_links "$outdir/$base.html" \
-    "Encyclopedia Table of Contents|../complete-encyclopedia.html#TOC" \
     "Volume Table of Contents|complete-volume.html#TOC"
 }
 
@@ -278,40 +279,6 @@ build_volume_html() {
     --metadata "title=$title" \
     --metadata "author=$author" \
     -o "output/html/$volume_slug/complete-volume.html"
-  inject_toc_links "output/html/$volume_slug/complete-volume.html" \
-    "Encyclopedia Table of Contents|../complete-encyclopedia.html#TOC"
-}
-
-build_series_html() {
-  local volume_dir ch rewritten_readme rewritten_body rewritten_title_page
-  rewritten_readme="$(rewrite_file "README.md" html-root)"
-  # Walk volume by volume so each volume's README is emitted ahead of its own
-  # chapters. Collecting chapters alone (the previous "*/chapters/*.md" find)
-  # left all 24 volumes out of the table of contents entirely.
-  rewritten_body=()
-  for volume_dir in volumes/*/; do
-    rewritten_body+=("$(rewrite_file "${volume_dir}README.md" html-root)")
-    for ch in "${volume_dir}"chapters/*.md; do
-      rewritten_body+=("$(rewrite_and_demote "$ch" html-root)")
-    done
-  done
-  rewritten_title_page="$(title_page_for)"
-  # toc-depth 3: volumes stay H1, demoted chapters are H2, chapter sections
-  # H3 — so chapters nest under their volume while section detail remains.
-  pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_body[@]}" \
-    -f markdown-implicit_figures \
-    --standalone --embed-resources \
-    --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_body[@]}")" \
-    --css=publishing/web.css \
-    --include-before-body=publishing/theme-toggle.html \
-    --include-after-body="$(footer_for '')" \
-    --include-after-body=publishing/volume-float-nav.html \
-    --include-after-body=publishing/toc-freeze.html \
-    --lua-filter=scripts/pandoc/open-links-new-tab.lua \
-    --toc --toc-depth=3 \
-    --metadata "title=$series_title — Complete Edition" \
-    --metadata "author=$author" \
-    -o "output/html/complete-encyclopedia.html"
 }
 
 build_series_epub() {
@@ -376,7 +343,6 @@ else
     [[ "$want_html" -eq 1 ]] && build_volume_html "$volume_dir"
     echo "build-book.sh: built $volume_slug"
   done
-  [[ "$want_html" -eq 1 ]] && build_series_html
   [[ "$want_epub" -eq 1 ]] && build_series_epub
 fi
 

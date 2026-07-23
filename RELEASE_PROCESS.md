@@ -1,7 +1,9 @@
 # Release Process
 
-Version tags matching `v*` publish verified complete-encyclopedia artifacts
-to a GitHub release.
+Version tags matching `v*` publish the verified complete-encyclopedia EPUB
+to a GitHub release. (The single-page complete-encyclopedia HTML edition was
+retired; the portal serves per-volume and per-chapter HTML, and the EPUB is
+the one-file edition.)
 
 ## Steps
 
@@ -20,7 +22,7 @@ to a GitHub release.
    ```
 
 5. The [release workflow](.github/workflows/release.yml) builds the
-   complete-encyclopedia HTML and EPUB 3 editions and attaches them to the
+   complete-encyclopedia EPUB 3 edition and attaches it to the
    GitHub release automatically.
 6. Verify the attached artifacts and the published
    [Pages portal](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/)

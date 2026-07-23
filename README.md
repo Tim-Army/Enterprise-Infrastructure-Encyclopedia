@@ -263,9 +263,9 @@ scripts/bash/check-external-links.sh
 
 GitHub Actions runs repository structure, editorial, Markdown, spelling,
 internal-link, and external-link checks on `main`. The Pages workflow
-publishes an accessible portal with online reading and EPUB download for the
-complete encyclopedia, every volume, and every chapter. Version tags matching
-`v*` publish the complete-encyclopedia HTML and EPUB to a GitHub release under
+publishes an accessible portal with per-volume and per-chapter online reading
+and a complete-encyclopedia EPUB download. Version tags matching
+`v*` publish the complete-encyclopedia EPUB to a GitHub release under
 the [release process](RELEASE_PROCESS.md).
 
 ## Encyclopedia operating instructions
