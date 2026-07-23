@@ -9,7 +9,7 @@ the one-file edition.)
 <tag>` and the EPUB is attached as
 `Enterprise-Infrastructure-Encyclopedia-<tag>.epub`, so the release name and
 its asset both lead with the project name and carry the version — matching
-the offline website archives (`Enterprise-Infrastructure-Encyclopedia-website-vNNNN.zip`)
+the offline archive (`Enterprise-Infrastructure-Encyclopedia-v<tag>.zip`)
 and the EPUB filename convention.
 
 ## Steps
@@ -37,9 +37,14 @@ and the EPUB filename convention.
 
 ## Versioning
 
-Use semantic versioning against the curriculum, not the tooling:
+Use semantic versioning against the curriculum, not the tooling. **Every
+build is a release:** each content change to the published site bumps the
+**patch** and is tagged, so a matching GitHub release and offline archive
+(`Enterprise-Infrastructure-Encyclopedia-v<tag>.zip`) always exist. Minor
+and major bumps are made deliberately.
 
 - **Major** — a volume's scope or structure changes in a way that breaks
   existing chapter links.
 - **Minor** — a new volume or chapter set is added.
-- **Patch** — content corrections within existing chapters.
+- **Patch** — any other content change; cut per build, tagged as part of
+  shipping the offline archive.
