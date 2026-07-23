@@ -65,11 +65,12 @@ jobs:
           files: |
             output/epub/Enterprise-Infrastructure-Encyclopedia-${{ github.ref_name }}.epub
 
-      - name: Prune old patch releases (keep the 3 most recent)
+      - name: Prune old releases (keep 3, milestones excluded)
         # Every build is a patch release, so patch tags (vX.Y.Z, Z>0)
         # accumulate. Keep only the three most recent and delete the rest
         # (release + tag). Milestone releases (vX.Y.0 — deliberate minor and
-        # major bumps, e.g. the first release v1.0.0) are never pruned.
+        # major bumps, e.g. the first release v1.0.0) are excluded from
+        # pruning and are not counted toward the three.
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -81,3 +82,12 @@ jobs:
             echo "pruning old patch release $tag"
             gh release delete "$tag" --yes --cleanup-tag
           done
+
+          # Milestones are excluded from pruning, so they accumulate without
+          # bound. Revisit the retention policy once there are ten of them.
+          milestones="$(gh release list --limit 200 --json tagName --jq '.[].tagName' \
+            | grep -cE '^v[0-9]+\.[0-9]+\.0$' || true)"
+          echo "milestone releases retained: ${milestones:-0}"
+          if [ "${milestones:-0}" -ge 10 ]; then
+            echo "::notice::${milestones} milestone releases retained — revisit the release-retention policy (see RELEASE_PROCESS.md)."
+          fi

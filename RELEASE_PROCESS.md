@@ -50,7 +50,14 @@ and major bumps are made deliberately.
   shipping the offline archive.
 
 **Retention.** Patch releases accumulate quickly (one per build), so the
-release workflow keeps only the **three most recent patch releases** and
-deletes older ones (release and tag). Milestone releases (`vX.Y.0` — the
-first release and deliberate minor/major bumps) are never pruned. The
-offline archive in `zip/` follows the same three-most-recent rule.
+release workflow keeps **three releases total, milestones excluded** — the
+three most recent `vX.Y.Z` (Z>0) releases survive and older ones are deleted
+(release and tag). Milestone releases (`vX.Y.0` — the first release and
+deliberate minor/major bumps) are excluded from pruning and do not count
+toward the three. The offline archive in `zip/` follows the same
+three-most-recent rule.
+
+Because milestones are never pruned, they grow without bound. **Revisit this
+retention policy once there are ten milestone releases** — the release
+workflow prints the current milestone count on every run and raises a notice
+at ten.
