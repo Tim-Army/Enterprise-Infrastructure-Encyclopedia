@@ -12,3 +12,4 @@ also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **VLAN assignments (R640 Proxmox lab)** — [Chapter 02](chapters/02-appendix-proxmox-lab-ipv4-and-ipv6-address-tables.md)
 - **Juniper courses (catalog, exams, free vs. paid)** — [Chapter 03](chapters/03-appendix-juniper-courses-and-certification-alignment.md)
 - **Open Learning (Juniper free training)** — [Chapter 03](chapters/03-appendix-juniper-courses-and-certification-alignment.md)
+- **Dell certifications (catalog, exam codes, access model)** — [Chapter 04](chapters/04-appendix-dell-technologies-certifications-and-course-access.md)

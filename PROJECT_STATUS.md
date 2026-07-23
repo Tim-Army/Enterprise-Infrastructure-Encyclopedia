@@ -41,11 +41,12 @@ does not by itself verify every technical claim in it.
 | XXIX — Cisco Service Provider | 9 | Drafted |
 | XXX — Cisco CCDE Network Design | 9 | Drafted |
 | XXXI — Juniper Networks Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 3 | Drafted |
+| XXXII — Dell Technologies Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 4 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 301 of 301 drafted (100%). Every volume has a
+**Total declared chapters:** 311 of 311 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

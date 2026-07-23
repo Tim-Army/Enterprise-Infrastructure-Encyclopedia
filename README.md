@@ -10,13 +10,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 34-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 35-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-34 volumes, 301 chapters. Each volume has a dedicated
+35 volumes, 311 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -52,7 +52,8 @@ The series combines architecture and theory with implementation guidance, automa
 | XXIX | [Cisco Service Provider](volumes/volume-29-cisco-service-provider/README.md) | 9 |
 | XXX | [Cisco CCDE Network Design](volumes/volume-30-cisco-ccde-network-design/README.md) | 9 |
 | XXXI | [Juniper Networks Certification Tracks](volumes/volume-31-juniper-networks-certifications/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 3 |
+| XXXII | [Dell Technologies Certification Tracks](volumes/volume-32-dell-technologies-certifications/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 4 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 

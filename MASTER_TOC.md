@@ -444,6 +444,20 @@ table of contents for that volume.
 8. Network Design and the JNCIA-Design
 9. JNCIE Lab Readiness and Certification Operations
 
+## Volume XXXII — Dell Technologies Certification Tracks
+
+[Volume README](volumes/volume-32-dell-technologies-certifications/README.md) · [Index](volumes/volume-32-dell-technologies-certifications/INDEX.md) · [Glossary](volumes/volume-32-dell-technologies-certifications/GLOSSARY.md)
+
+1. The Proven Professional Program and Storage Foundations
+2. PowerEdge Servers — from Foundations to XE
+3. Midrange Storage — PowerStore, Unity, and PowerVault
+4. High-End and Scale-Out Storage — PowerMax, PowerScale, and ECS
+5. Software-Defined, HCI, and Cloud Platforms — PowerFlex, VxRail, and APEX
+6. Data Protection and Cyber Resilience — PowerProtect and Friends
+7. Dell Networking — PowerSwitch, SONiC, and Design
+8. AI, Generative AI, and Data Science Certifications
+9. Security Certifications and Certification Operations
+
 ## Volume XCVII — Master Appendices
 
 [Volume README](volumes/volume-97-master-appendices/README.md) · [Index](volumes/volume-97-master-appendices/INDEX.md) · [Glossary](volumes/volume-97-master-appendices/GLOSSARY.md)
@@ -451,6 +465,7 @@ table of contents for that volume.
 1. Appendix — Cisco U. Learning Paths and Continuing Education Credits
 2. Appendix — Proxmox Lab IPv4 and IPv6 Address Tables
 3. Appendix — Juniper Courses and Certification Alignment
+4. Appendix — Dell Technologies Certifications and Course Access
 
 ## Volume XCVIII — Acronyms
 

@@ -1078,11 +1078,45 @@ volumes:
       - id: 09
         title: "JNCIE Lab Readiness and Certification Operations"
         path: volumes/volume-31-juniper-networks-certifications/chapters/09-jncie-lab-readiness-and-certification-operations.md
+  - id: volume-32
+    number: "XXXII"
+    slug: volume-32-dell-technologies-certifications
+    title: "Dell Technologies Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "The Proven Professional Program and Storage Foundations"
+        path: volumes/volume-32-dell-technologies-certifications/chapters/01-the-proven-professional-program-and-storage-foundations.md
+      - id: 02
+        title: "PowerEdge Servers — from Foundations to XE"
+        path: volumes/volume-32-dell-technologies-certifications/chapters/02-poweredge-servers-from-foundations-to-xe.md
+      - id: 03
+        title: "Midrange Storage — PowerStore, Unity, and PowerVault"
+        path: volumes/volume-32-dell-technologies-certifications/chapters/03-midrange-storage-powerstore-unity-and-powervault.md
+      - id: 04
+        title: "High-End and Scale-Out Storage — PowerMax, PowerScale, and ECS"
+        path: volumes/volume-32-dell-technologies-certifications/chapters/04-high-end-and-scale-out-storage-powermax-powerscale-and-ecs.md
+      - id: 05
+        title: "Software-Defined, HCI, and Cloud Platforms — PowerFlex, VxRail, and APEX"
+        path: volumes/volume-32-dell-technologies-certifications/chapters/05-software-defined-hci-and-cloud-platforms-powerflex-vxrail-and-apex.md
+      - id: 06
+        title: "Data Protection and Cyber Resilience — PowerProtect and Friends"
+        path: volumes/volume-32-dell-technologies-certifications/chapters/06-data-protection-and-cyber-resilience-powerprotect-and-friends.md
+      - id: 07
+        title: "Dell Networking — PowerSwitch, SONiC, and Design"
+        path: volumes/volume-32-dell-technologies-certifications/chapters/07-dell-networking-powerswitch-sonic-and-design.md
+      - id: 08
+        title: "AI, Generative AI, and Data Science Certifications"
+        path: volumes/volume-32-dell-technologies-certifications/chapters/08-ai-generative-ai-and-data-science-certifications.md
+      - id: 09
+        title: "Security Certifications and Certification Operations"
+        path: volumes/volume-32-dell-technologies-certifications/chapters/09-security-certifications-and-certification-operations.md
   - id: volume-97
     number: "XCVII"
     slug: volume-97-master-appendices
     title: "Master Appendices"
-    chapter_count: 3
+    chapter_count: 4
     build_eligible: true
     chapters:
       - id: 01
@@ -1094,6 +1128,9 @@ volumes:
       - id: 03
         title: "Appendix — Juniper Courses and Certification Alignment"
         path: volumes/volume-97-master-appendices/chapters/03-appendix-juniper-courses-and-certification-alignment.md
+      - id: 04
+        title: "Appendix — Dell Technologies Certifications and Course Access"
+        path: volumes/volume-97-master-appendices/chapters/04-appendix-dell-technologies-certifications-and-course-access.md
   - id: volume-98
     number: "XCVIII"
     slug: volume-98-acronyms

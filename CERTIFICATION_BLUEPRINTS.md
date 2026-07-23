@@ -26,6 +26,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXVII — Cisco Data Center | CCNP Data Center: DCCOR core (350-601) + concentrations DCID (300-610), DCIT (300-615), DCACI (300-620), DCNAUTO (300-635 v2.0, formerly DCAUTO), DCAI (300-640); DCCOR also qualifies CCIE Data Center | Cisco Learning & Certifications |
 | XXVIII — Cisco Collaboration | CCNP Collaboration: CLCOR core (350-801 v2.0) + concentrations CLACC (300-815 v2.0, formerly CLACCM), CLHCT (300-820 v2.0, formerly CLCEI), CLCCE (300-830); CLICA (300-810) and CLAUTO (300-835) retired February 2026; CLCOR also qualifies CCIE Collaboration | Cisco Learning & Certifications |
 | XXIX — Cisco Service Provider | CCNP Service Provider: SPCOR core (350-501) + concentrations SPRI (300-510), SPVI (300-515), SPCNI (300-540); SPAUTO (300-535) retired 2026; SPCOR also qualifies CCIE Service Provider | Cisco Learning & Certifications |
+| XXXII — Dell Technologies Certification Tracks | Dell Proven Professional, all portfolios: 77 current D-code exams (PowerEdge, PowerStore/Unity/PowerVault, PowerMax/PowerScale/ECS, PowerFlex/VxRail/APEX, PowerProtect/Cyber Recovery, PowerSwitch/SONiC, AI/GenAI/Data Science, Security, Client) — full grouped table in the volume README | Dell Learning certification catalog |
 | XXXI — Juniper Networks Certification Tracks | Juniper, all 8 tracks: JNCIA-Junos JN0-106; ENT JN0-352/JN0-650/JPR-946; SP JN0-364/JN0-664/JPR-962; SEC JN0-232/JN0-336/JN0-637/JPR-935; DC JN0-281/JN0-481/JN0-683/JPR-981; DevOps JN0-224/JN0-423; Cloud JN0-214; Mist AI JN0-253/JN0-452/JN0-460/JN0-750; Design JN0-1103 | Juniper certification pages |
 | XXX — Cisco CCDE Network Design | CCDE (expert-level design): Written (400-007) + Practical, v3.1 unified topics, with AI Infrastructure / Large Scale Networks / On-Prem and Cloud Services / Workforce Mobility electives | Cisco Learning & Certifications |
 
@@ -182,3 +183,13 @@ JNCIS-SP JN0-364 is written to Junos OS 25.2, JNCIS-SEC JN0-336 and
 JNCIS-DevOps JN0-423 to 24.4; JNCIS-ENT is an accepted alternative
 prerequisite for JNCIP-DC. Domain lists live on each exam's Juniper
 page, which this volume treats as the authority.
+
+Volume XXXII (Dell Technologies Certification Tracks) was created on
+**22 July 2026**. All **77 current exams** were harvested the same day
+from Dell Learning's own certification pages (server-rendered card
+data on the certification-overview and certification-and-badges
+pages) and are recorded, grouped by portfolio, in the volume README.
+The program's series churn (-23 → -01 → -A-00) is the fastest on this
+shelf; the volume's Chapter 09 codifies a four-step pre-booking
+currency check, and every exam's description document on Dell
+Learning remains the objectives authority this volume defers to.
