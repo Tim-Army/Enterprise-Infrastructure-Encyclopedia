@@ -146,12 +146,11 @@ first_line_title() {
 
 # Renders the footer shared by every generated page and prints its path.
 #
-# $1 is the relative prefix that reaches output/html/ from the page being
-# built ("../" for pages inside a volume directory). The "Volume contents"
-# link points at the page's sibling index.html — the volume's chapter list
-# on the portal — so it needs no prefix; the argument is kept for callers.
+# The "Volume contents" link points at the page's sibling index.html — the
+# volume's chapter list on the portal — so the footer is identical for every
+# page and takes no arguments.
 footer_for() {
-  local prefix="$1" dest links
+  local dest links
   dest="$link_tmp/footer.html"
   links="<li><a href=\"index.html\">Volume contents</a></li>"
   links+="<li><a href=\"#\">Back to top</a></li>"
@@ -239,7 +238,7 @@ build_chapter_html() {
     --resource-path="$(resource_path_for "$rewritten")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
-    --include-after-body="$(footer_for ../)" \
+    --include-after-body="$(footer_for)" \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=2 \
     --metadata "title=$title" \
@@ -272,7 +271,7 @@ build_volume_html() {
     --resource-path="$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")" \
     --css=publishing/web.css \
     --include-before-body=publishing/theme-toggle.html \
-    --include-after-body="$(footer_for ../)" \
+    --include-after-body="$(footer_for)" \
     --include-after-body=publishing/toc-freeze.html \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=3 \
