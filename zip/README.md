@@ -10,10 +10,11 @@ Extract it and open `index.html` in a browser. Each archive expands into a
 single directory named for its version:
 
 ```text
-Enterprise-Infrastructure-Encyclopedia-website-vN/
-├── index.html   Portal: links to every volume, the complete edition, and the EPUB
+Enterprise-Infrastructure-Encyclopedia-v1.0.0/
+├── index.html    Portal: links to every volume and the EPUB
 ├── web.css
-├── html/         Per-chapter, per-volume, and complete-series editions
+├── html/         Per-chapter and per-volume editions
+├── interactive/  Self-contained interactive companions
 └── epub/         The complete edition as EPUB 3
 ```
 
@@ -24,8 +25,14 @@ which simply does not resolve when offline.
 
 ## Versioning and retention
 
-Archives are numbered sequentially (`v1`, `v2`, …). Only the three most
-recent are kept here; older ones are deleted when a new archive is added.
+Archives are named for the release version they belong to, matching the
+GitHub release and its EPUB asset — the archive
+`Enterprise-Infrastructure-Encyclopedia-v1.0.0.zip` sits alongside the
+release `Enterprise-Infrastructure-Encyclopedia-v1.0.0.epub`. The archive
+tracks `main`: between releases, content changes overwrite the current
+version's archive in place, and it is re-minted under the new version when
+the next release is tagged. Only the current release's archive is kept
+here; the previous one is removed when a new version is minted.
 
 Note that pruning this directory bounds the working tree, not the
 repository history — every archive committed remains in the history of
@@ -35,8 +42,13 @@ every clone.
 
 Every archive this directory has held, with the local time of the commit
 that created it and, once pruned under the retention rule above, the commit
-that removed it. The three still present are marked *current*. Each file is
-named `Enterprise-Infrastructure-Encyclopedia-website-v0000.zip (four-digit, zero-padded)`.
+that removed it. The one still present is marked *current*.
+
+**Naming changed at v1.0.0.** Archives through v0082 used a four-digit
+per-build counter (`Enterprise-Infrastructure-Encyclopedia-website-vNNNN.zip`).
+From the first release, archives are named for the release version
+(`Enterprise-Infrastructure-Encyclopedia-v1.0.0.zip`); the historical
+counter rows below are kept for the record.
 
 | Version | Created | Deleted |
 | --- | --- | --- |
@@ -119,9 +131,10 @@ named `Enterprise-Infrastructure-Encyclopedia-website-v0000.zip (four-digit, zer
 | v0077 | 2026-07-22 23:20 | 2026-07-23 06:14 |
 | v0078 | 2026-07-23 05:06 | 2026-07-23 07:03 |
 | v0079 | 2026-07-23 05:45 | 2026-07-23 07:20 |
-| v0080 | 2026-07-23 06:14 | *current* |
-| v0081 | 2026-07-23 07:03 | *current* |
-| v0082 | 2026-07-23 07:20 | *current* |
+| v0080 | 2026-07-23 06:14 | 2026-07-23 07:47 |
+| v0081 | 2026-07-23 07:03 | 2026-07-23 07:47 |
+| v0082 | 2026-07-23 07:20 | 2026-07-23 07:47 |
+| v1.0.0 | 2026-07-23 07:47 | *current* |
 
 ## Rebuilding
 
