@@ -53,6 +53,9 @@ test, and cleanup instructions.
 7. [Firewall Operations, Troubleshooting, Upgrades, and Automation](chapters/07-firewall-operations-troubleshooting-upgrades-and-automation.md) — HA-aware upgrade sequencing, the troubleshooting toolkit, and XML API/REST API/Terraform/Ansible automation.
 8. [Role-Based Certification Portfolio and Enterprise Capstone](chapters/08-role-based-certification-portfolio-and-enterprise-capstone.md) — the four-level Network Security track, blueprint domains and weights, study sequencing and plans, and an integrated multi-firewall capstone build.
 9. [Cloud Security Professional and the Cortex Cloud Platform](chapters/09-cortex-cloud-security-professional.md) — CNAPP architecture (CSPM, CWPP, CIEM, IaC/API security), agentless and agent-based workload visibility, and Checkov-based shift-left scanning.
+10. [The Cortex Platform and the Security Operations Track](chapters/10-cortex-platform-and-the-security-operations-track.md) — Cortex XSIAM/XDR/XSOAR/Xpanse and the role-based Security Operations track (Security Operations Professional and Architect; the analyst/engineer split).
+11. [Cortex XSIAM and XDR — Analyst and Engineer](chapters/11-cortex-xsiam-and-xdr-analyst-and-engineer.md) — causality-based investigation for analysts, data-source onboarding and detection engineering for engineers, and XQL across both.
+12. [XSOAR Automation and the Cloud Security Engineer](chapters/12-xsoar-automation-and-cloud-security-engineer.md) — XSOAR playbooks and the automation-trust ladder in the SOC, and the Cloud Security Engineer certification closing the Cloud Security track.
 
 ## Volume resources
 
@@ -68,8 +71,13 @@ paths recorded in
 Cybersecurity Apprentice, Cybersecurity Practitioner, the role-based
 Network Security track (Network Security Professional, Network Security
 Analyst, Next-Generation Firewall Engineer, SD-WAN Engineer, Security
-Service Edge Engineer, and Network Security Architect), and Cortex Cloud
-Security Professional. The product-centric exams this volume originally
+Service Edge Engineer, and Network Security Architect), the **Security
+Operations track** (Security Operations Professional, Security Operations
+Architect, and the role-based Cortex certifications — XSIAM Analyst and
+Engineer, XDR Analyst and Engineer, XSOAR Engineer), and the **Cloud
+Security track** (Cloud Security Professional and Cloud Security
+Engineer). All three tracks were verified against Palo Alto Networks'
+certification pages on 22 July 2026. The product-centric exams this volume originally
 tracked — PCNSA and PCNSE — were retired during 2025; see
 [Chapter 08](chapters/08-role-based-certification-portfolio-and-enterprise-capstone.md)
 for where that material now maps. Chapters

@@ -16,7 +16,7 @@ The series combines architecture and theory with implementation guidance, automa
 
 ## Curriculum
 
-35 volumes, 311 chapters. Each volume has a dedicated
+35 volumes, 315 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -36,7 +36,7 @@ The series combines architecture and theory with implementation guidance, automa
 | XIII | [Integrated Enterprise Labs](volumes/volume-13-integrated-enterprise-labs/README.md) | 9 |
 | XIV | [Red Hat Enterprise Linux 10](volumes/volume-14-red-hat-enterprise-linux-10/README.md) | 9 |
 | XV | [Forescout Platform and Certifications](volumes/volume-15-forescout-platform-certifications/README.md) | 9 |
-| XVI | [Palo Alto Networks Security](volumes/volume-16-palo-alto-networks-security/README.md) | 9 |
+| XVI | [Palo Alto Networks Security](volumes/volume-16-palo-alto-networks-security/README.md) | 12 |
 | XVII | [AWS Architecture and Security](volumes/volume-17-aws-architecture-security/README.md) | 9 |
 | XVIII | [Gigamon Network Visibility](volumes/volume-18-gigamon-network-visibility/README.md) | 9 |
 | XIX | [Fortinet Network Security](volumes/volume-19-fortinet-network-security/README.md) | 9 |
@@ -53,7 +53,7 @@ The series combines architecture and theory with implementation guidance, automa
 | XXX | [Cisco CCDE Network Design](volumes/volume-30-cisco-ccde-network-design/README.md) | 9 |
 | XXXI | [Juniper Networks Certification Tracks](volumes/volume-31-juniper-networks-certifications/README.md) | 9 |
 | XXXII | [Dell Technologies Certification Tracks](volumes/volume-32-dell-technologies-certifications/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 4 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 5 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 

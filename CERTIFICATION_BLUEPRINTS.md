@@ -14,7 +14,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | X — Enterprise Cybersecurity | CCST Cybersecurity (100-160), CCNA Cybersecurity (200-201), CCNP Cybersecurity: CBRCOR core (350-201) + CBRFIR (300-215) — rebranded from CyberOps on 3 February 2026 | Cisco Learning & Certifications |
 | XIV — Red Hat Enterprise Linux 10 | RHCSA (EX200) | Red Hat Training and Certification |
 | XV — Forescout Platform | FSCA, FSCP, FSCE, FSCA: OT/ICS, FSCE: OT/ICS | Forescout Technologies |
-| XVI — Palo Alto Networks Security | Cybersecurity Apprentice, Cybersecurity Practitioner, Network Security Professional, Network Security Analyst, Next-Generation Firewall Engineer, SD-WAN Engineer, Security Service Edge Engineer, Network Security Architect, Cloud Security Professional (secures the Cortex Cloud platform) | Palo Alto Networks Education |
+| XVI — Palo Alto Networks Security | Palo Alto Networks role-based program, all three tracks. Network Security: Cybersecurity Apprentice, Cybersecurity Practitioner, Network Security Analyst/Professional/Architect, Next-Generation Firewall Engineer, SD-WAN Engineer, Security Service Edge Engineer. Security Operations (Cortex): Security Operations Professional, Security Operations Architect, XSIAM Analyst, XSIAM Engineer, XDR Analyst, XDR Engineer, XSOAR Engineer. Cloud Security: Cloud Security Professional, Cloud Security Engineer | Palo Alto Networks Education |
 | XVII — AWS Architecture and Security | AWS Certified Solutions Architect – Associate (SAA-C03), AWS Certified Security – Specialty (SCS-C03) | AWS Training and Certification |
 | XVIII — Gigamon Network Visibility | Gigamon Certified Professional (GCP) | Gigamon Education Services |
 | XIX — Fortinet Network Security | NSE 1–4 of the NSE 1–8 program; NSE 4 — FortiOS 7.6 Administrator (FCF/FCA/FCP/FCSS/FCX retired 15 July 2026) | Fortinet Training Institute |
@@ -193,3 +193,14 @@ The program's series churn (-23 → -01 → -A-00) is the fastest on this
 shelf; the volume's Chapter 09 codifies a four-step pre-booking
 currency check, and every exam's description document on Dell
 Learning remains the objectives authority this volume defers to.
+
+Volume XVI (Palo Alto Networks Security) was extended on **22 July
+2026** with the Security Operations (Cortex) and Cloud Security tracks
+(new Chapters 10-12), completing all three of Palo Alto Networks'
+role-based tracks in one volume. The seventeen current certifications
+were verified the same day against Palo Alto Networks' certification
+pages; the program is role-based and named (no exam codes — PCNSE,
+PCNSA, and PCDRA were retired into these roles during 2025). The XDR
+Analyst/Engineer pair launched 29 April 2025 and Security Operations
+Professional on 30 May 2025. Objectives live on each certification's
+page, which the volume treats as the authority.

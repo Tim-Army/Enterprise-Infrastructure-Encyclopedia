@@ -13,3 +13,4 @@ also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **Juniper courses (catalog, exams, free vs. paid)** — [Chapter 03](chapters/03-appendix-juniper-courses-and-certification-alignment.md)
 - **Open Learning (Juniper free training)** — [Chapter 03](chapters/03-appendix-juniper-courses-and-certification-alignment.md)
 - **Dell certifications (catalog, exam codes, access model)** — [Chapter 04](chapters/04-appendix-dell-technologies-certifications-and-course-access.md)
+- **Palo Alto Networks certifications (catalog, tracks, Beacon access)** — [Chapter 05](chapters/05-appendix-palo-alto-networks-certifications-and-course-access.md)

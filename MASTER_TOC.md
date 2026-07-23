@@ -233,6 +233,9 @@ table of contents for that volume.
 7. Firewall Operations, Troubleshooting, Upgrades, and Automation
 8. Role-Based Certification Portfolio and Enterprise Capstone
 9. Cloud Security Professional and the Cortex Cloud Platform
+10. The Cortex Platform and the Security Operations Track
+11. Cortex XSIAM and XDR — Analyst and Engineer
+12. XSOAR Automation and the Cloud Security Engineer
 
 ## Volume XVII — AWS Architecture and Security
 
@@ -466,6 +469,7 @@ table of contents for that volume.
 2. Appendix — Proxmox Lab IPv4 and IPv6 Address Tables
 3. Appendix — Juniper Courses and Certification Alignment
 4. Appendix — Dell Technologies Certifications and Course Access
+5. Appendix — Palo Alto Networks Certifications and Course Access
 
 ## Volume XCVIII — Acronyms
 

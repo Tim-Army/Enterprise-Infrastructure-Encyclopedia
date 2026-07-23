@@ -538,7 +538,7 @@ volumes:
     number: "XVI"
     slug: volume-16-palo-alto-networks-security
     title: "Palo Alto Networks Security"
-    chapter_count: 9
+    chapter_count: 12
     build_eligible: true
     chapters:
       - id: 01
@@ -568,6 +568,15 @@ volumes:
       - id: 09
         title: "Cloud Security Professional and the Cortex Cloud Platform"
         path: volumes/volume-16-palo-alto-networks-security/chapters/09-cortex-cloud-security-professional.md
+      - id: 10
+        title: "The Cortex Platform and the Security Operations Track"
+        path: volumes/volume-16-palo-alto-networks-security/chapters/10-cortex-platform-and-the-security-operations-track.md
+      - id: 11
+        title: "Cortex XSIAM and XDR — Analyst and Engineer"
+        path: volumes/volume-16-palo-alto-networks-security/chapters/11-cortex-xsiam-and-xdr-analyst-and-engineer.md
+      - id: 12
+        title: "XSOAR Automation and the Cloud Security Engineer"
+        path: volumes/volume-16-palo-alto-networks-security/chapters/12-xsoar-automation-and-cloud-security-engineer.md
   - id: volume-17
     number: "XVII"
     slug: volume-17-aws-architecture-security
@@ -1116,7 +1125,7 @@ volumes:
     number: "XCVII"
     slug: volume-97-master-appendices
     title: "Master Appendices"
-    chapter_count: 4
+    chapter_count: 5
     build_eligible: true
     chapters:
       - id: 01
@@ -1131,6 +1140,9 @@ volumes:
       - id: 04
         title: "Appendix — Dell Technologies Certifications and Course Access"
         path: volumes/volume-97-master-appendices/chapters/04-appendix-dell-technologies-certifications-and-course-access.md
+      - id: 05
+        title: "Appendix — Palo Alto Networks Certifications and Course Access"
+        path: volumes/volume-97-master-appendices/chapters/05-appendix-palo-alto-networks-certifications-and-course-access.md
   - id: volume-98
     number: "XCVIII"
     slug: volume-98-acronyms
