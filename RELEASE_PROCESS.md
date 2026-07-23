@@ -5,6 +5,13 @@ to a GitHub release. (The single-page complete-encyclopedia HTML edition was
 retired; the portal serves per-volume and per-chapter HTML, and the EPUB is
 the one-file edition.)
 
+**Naming.** The release is titled `Enterprise-Infrastructure-Encyclopedia
+<tag>` and the EPUB is attached as
+`Enterprise-Infrastructure-Encyclopedia-<tag>.epub`, so the release name and
+its asset both lead with the project name and carry the version — matching
+the offline website archives (`Enterprise-Infrastructure-Encyclopedia-website-vNNNN.zip`)
+and the EPUB filename convention.
+
 ## Steps
 
 1. Confirm every volume in [book.yml](book.yml) is `build_eligible: true`

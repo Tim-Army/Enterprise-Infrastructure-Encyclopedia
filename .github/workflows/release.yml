@@ -49,8 +49,18 @@ jobs:
       - name: Build complete-encyclopedia EPUB artifact
         run: scripts/bash/build-book.sh --format epub
 
+      - name: Name the EPUB for this release
+        # Carry the project name and version in the asset filename, so a
+        # downloaded release EPUB is self-identifying like the offline
+        # website archives (Enterprise-Infrastructure-Encyclopedia-website-vNNNN.zip).
+        run: |
+          set -euo pipefail
+          cp "output/epub/Enterprise-Infrastructure-Encyclopedia.epub" \
+             "output/epub/Enterprise-Infrastructure-Encyclopedia-${GITHUB_REF_NAME}.epub"
+
       - name: Publish release
         uses: softprops/action-gh-release@v3
         with:
+          name: Enterprise-Infrastructure-Encyclopedia ${{ github.ref_name }}
           files: |
-            output/epub/Enterprise-Infrastructure-Encyclopedia.epub
+            output/epub/Enterprise-Infrastructure-Encyclopedia-${{ github.ref_name }}.epub
