@@ -13,6 +13,7 @@ one place instead of scattered through volume READMEs.
 3. [Appendix — Juniper Courses and Certification Alignment](chapters/03-appendix-juniper-courses-and-certification-alignment.md) — every official Juniper course with the exam it prepares for and whether it is free; snapshot dated 22 July 2026.
 4. [Appendix — Dell Technologies Certifications and Course Access](chapters/04-appendix-dell-technologies-certifications-and-course-access.md) — all 77 current Dell exams with official pages and the program's training-access model; snapshot dated 22 July 2026.
 5. [Appendix — Palo Alto Networks Certifications and Course Access](chapters/05-appendix-palo-alto-networks-certifications-and-course-access.md) — the 17 role-based Palo Alto Networks certifications with official pages and the Beacon free / ILT paid access model; snapshot dated 22 July 2026.
+6. [Appendix — Fortinet NSE Certifications and Course Access](chapters/06-appendix-fortinet-nse-certifications-and-course-access.md) — the restored NSE 1–8 program by track and level with the free-self-paced / paid-ILT access model; snapshot dated 22 July 2026.
 
 ## Appendix catalog
 
@@ -24,6 +25,7 @@ one place instead of scattered through volume READMEs.
 | Juniper courses and certification alignment | [Volume XXXI](../volume-31-juniper-networks-certifications/README.md) | [03](chapters/03-appendix-juniper-courses-and-certification-alignment.md) |
 | Dell certifications and course access | [Volume XXXII](../volume-32-dell-technologies-certifications/README.md) | [04](chapters/04-appendix-dell-technologies-certifications-and-course-access.md) |
 | Palo Alto Networks certifications and course access | [Volume XVI](../volume-16-palo-alto-networks-security/README.md) | [05](chapters/05-appendix-palo-alto-networks-certifications-and-course-access.md) |
+| Fortinet NSE certifications and course access | [Volumes XIX, XXXIII](../volume-33-fortinet-nse-program/README.md) | [06](chapters/06-appendix-fortinet-nse-certifications-and-course-access.md) |
 
 ## Conventions
 

@@ -14,3 +14,4 @@ also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **Open Learning (Juniper free training)** — [Chapter 03](chapters/03-appendix-juniper-courses-and-certification-alignment.md)
 - **Dell certifications (catalog, exam codes, access model)** — [Chapter 04](chapters/04-appendix-dell-technologies-certifications-and-course-access.md)
 - **Palo Alto Networks certifications (catalog, tracks, Beacon access)** — [Chapter 05](chapters/05-appendix-palo-alto-networks-certifications-and-course-access.md)
+- **Fortinet NSE certifications (tracks, levels, free/paid access)** — [Chapter 06](chapters/06-appendix-fortinet-nse-certifications-and-course-access.md)

@@ -17,7 +17,8 @@ vendor source; it does not reproduce proprietary assessment content.
 | XVI — Palo Alto Networks Security | Palo Alto Networks role-based program, all three tracks. Network Security: Cybersecurity Apprentice, Cybersecurity Practitioner, Network Security Analyst/Professional/Architect, Next-Generation Firewall Engineer, SD-WAN Engineer, Security Service Edge Engineer. Security Operations (Cortex): Security Operations Professional, Security Operations Architect, XSIAM Analyst, XSIAM Engineer, XDR Analyst, XDR Engineer, XSOAR Engineer. Cloud Security: Cloud Security Professional, Cloud Security Engineer | Palo Alto Networks Education |
 | XVII — AWS Architecture and Security | AWS Certified Solutions Architect – Associate (SAA-C03), AWS Certified Security – Specialty (SCS-C03) | AWS Training and Certification |
 | XVIII — Gigamon Network Visibility | Gigamon Certified Professional (GCP) | Gigamon Education Services |
-| XIX — Fortinet Network Security | NSE 1–4 of the NSE 1–8 program; NSE 4 — FortiOS 7.6 Administrator (FCF/FCA/FCP/FCSS/FCX retired 15 July 2026) | Fortinet Training Institute |
+| XIX — Fortinet Network Security | NSE 1–4 of the restored NSE 1–8 program (Secure Networking foundation); NSE 4 — FortiGate/FortiOS Administrator. The named FCF/FCA/FCP/FCSS/FCX certifications were retired 15 July 2026 and NSE 1–8 restored | Fortinet Training Institute |
+| XXXIII — Fortinet NSE Program | NSE 5–8 across all four tracks — Secure Networking (FortiSwitch/Wireless/FortiManager/FortiNAC/Enterprise Firewall), Security Operations (FortiAnalyzer/FortiSIEM/FortiSOAR/FortiEDR/FortiNDR + NSE 7 Analyst/Architect), Cloud Security (FortiWeb/ADC/CNAPP/Mail/AWS-Azure-GCP + NSE 7 Public Cloud Architect), SASE (FortiSASE/SD-WAN/FortiClient EMS/FortiDLP + NSE 7); NSE 8 Core+Specialization practical. Full tables in the volume README | Fortinet Training Institute |
 | XX — Wireshark and Packet Analysis | WCA-101 | Wireshark Certified Analyst Program |
 | XXI — Ubuntu Server and Cloud | Canonical Academy SysAdmin qualification (four exams) | Canonical Academy |
 | XXII / XXIII — Dell OpenManage / iDRAC | PowerEdge Foundations v2 (D-PE-FN-01), PowerEdge Operate v2 (D-PE-OE-01; supersedes the retired D-PE-OE-23) | Dell Technologies Proven Professional |
@@ -204,3 +205,15 @@ PCNSA, and PCDRA were retired into these roles during 2025). The XDR
 Analyst/Engineer pair launched 29 April 2025 and Security Operations
 Professional on 30 May 2025. Objectives live on each certification's
 page, which the volume treats as the authority.
+
+Volume XXXIII (Fortinet NSE Program) was created on **22 July 2026**,
+extending the shelf's Fortinet coverage above the NSE 1-4 foundation in
+Volume XIX to the full NSE 5-8 program across all four tracks. Fortinet
+restored the NSE 1-8 numbered progression on 15 July 2026, retiring the
+named FCF/FCA/FCP/FCSS/FCX certifications (verified against Fortinet
+Training Institute and the official transition-mapping FAQ, 22 July
+2026). Every certification, its NSE level, and its track were taken
+from Fortinet's published transition table; NSE 8 is a two-module
+practical (Core + Specialization within one year, two-year validity).
+The legacy FCX practical (NSE8_870) had its final sitting 15 March
+2026. Objectives live on each exam's Fortinet Training Institute page.

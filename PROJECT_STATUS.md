@@ -42,11 +42,12 @@ does not by itself verify every technical claim in it.
 | XXX — Cisco CCDE Network Design | 9 | Drafted |
 | XXXI — Juniper Networks Certification Tracks | 9 | Drafted |
 | XXXII — Dell Technologies Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 5 | Drafted |
+| XXXIII — Fortinet NSE Program | 6 | Drafted |
+| XCVII — Master Appendices | 6 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 315 of 315 drafted (100%). Every volume has a
+**Total declared chapters:** 321 of 321 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

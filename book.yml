@@ -1121,11 +1121,36 @@ volumes:
       - id: 09
         title: "Security Certifications and Certification Operations"
         path: volumes/volume-32-dell-technologies-certifications/chapters/09-security-certifications-and-certification-operations.md
+  - id: volume-33
+    number: "XXXIII"
+    slug: volume-33-fortinet-nse-program
+    title: "Fortinet NSE Program"
+    chapter_count: 6
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "The Restored NSE Program and the Four Tracks"
+        path: volumes/volume-33-fortinet-nse-program/chapters/01-the-restored-nse-program-and-the-four-tracks.md
+      - id: 02
+        title: "Secure Networking Upper Levels — Switching, Wireless, and Management"
+        path: volumes/volume-33-fortinet-nse-program/chapters/02-secure-networking-upper-levels-switching-wireless-and-management.md
+      - id: 03
+        title: "Security Operations Track — FortiAnalyzer, SIEM, SOAR, and EDR"
+        path: volumes/volume-33-fortinet-nse-program/chapters/03-security-operations-track-fortianalyzer-siem-soar-and-edr.md
+      - id: 04
+        title: "Cloud Security Track — FortiWeb, CNAPP, Mail, and Public Cloud"
+        path: volumes/volume-33-fortinet-nse-program/chapters/04-cloud-security-track-fortiweb-cnapp-mail-and-public-cloud.md
+      - id: 05
+        title: "SASE Track — FortiSASE, SD-WAN, and the Secure Edge"
+        path: volumes/volume-33-fortinet-nse-program/chapters/05-sase-track-fortisase-sd-wan-and-the-secure-edge.md
+      - id: 06
+        title: "NSE 8 Expert Practical and Certification Operations"
+        path: volumes/volume-33-fortinet-nse-program/chapters/06-nse-8-expert-practical-and-certification-operations.md
   - id: volume-97
     number: "XCVII"
     slug: volume-97-master-appendices
     title: "Master Appendices"
-    chapter_count: 5
+    chapter_count: 6
     build_eligible: true
     chapters:
       - id: 01
@@ -1143,6 +1168,9 @@ volumes:
       - id: 05
         title: "Appendix — Palo Alto Networks Certifications and Course Access"
         path: volumes/volume-97-master-appendices/chapters/05-appendix-palo-alto-networks-certifications-and-course-access.md
+      - id: 06
+        title: "Appendix — Fortinet NSE Certifications and Course Access"
+        path: volumes/volume-97-master-appendices/chapters/06-appendix-fortinet-nse-certifications-and-course-access.md
   - id: volume-98
     number: "XCVIII"
     slug: volume-98-acronyms

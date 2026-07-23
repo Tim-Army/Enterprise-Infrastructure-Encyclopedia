@@ -461,6 +461,17 @@ table of contents for that volume.
 8. AI, Generative AI, and Data Science Certifications
 9. Security Certifications and Certification Operations
 
+## Volume XXXIII — Fortinet NSE Program
+
+[Volume README](volumes/volume-33-fortinet-nse-program/README.md) · [Index](volumes/volume-33-fortinet-nse-program/INDEX.md) · [Glossary](volumes/volume-33-fortinet-nse-program/GLOSSARY.md)
+
+1. The Restored NSE Program and the Four Tracks
+2. Secure Networking Upper Levels — Switching, Wireless, and Management
+3. Security Operations Track — FortiAnalyzer, SIEM, SOAR, and EDR
+4. Cloud Security Track — FortiWeb, CNAPP, Mail, and Public Cloud
+5. SASE Track — FortiSASE, SD-WAN, and the Secure Edge
+6. NSE 8 Expert Practical and Certification Operations
+
 ## Volume XCVII — Master Appendices
 
 [Volume README](volumes/volume-97-master-appendices/README.md) · [Index](volumes/volume-97-master-appendices/INDEX.md) · [Glossary](volumes/volume-97-master-appendices/GLOSSARY.md)
@@ -470,6 +481,7 @@ table of contents for that volume.
 3. Appendix — Juniper Courses and Certification Alignment
 4. Appendix — Dell Technologies Certifications and Course Access
 5. Appendix — Palo Alto Networks Certifications and Course Access
+6. Appendix — Fortinet NSE Certifications and Course Access
 
 ## Volume XCVIII — Acronyms
 
