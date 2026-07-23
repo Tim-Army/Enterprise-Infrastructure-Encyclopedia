@@ -19,7 +19,7 @@ then organizes the whole volume as study and review material for the five
 VMware Certified Professional (VCP) exams that map to this content under
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md).
 
-The volume is organized in four parts:
+The volume is organized in five parts:
 
 - **Chapters 01–04** establish the architectural foundation and core
   administration skills: virtualization theory and vSphere product
@@ -38,6 +38,13 @@ The volume is organized in four parts:
   VCP-VVF Administrator, and VCP-VVF Support certification blueprints,
   organized as self-assessment study material rather than reproductions
   of proprietary exam content.
+- **Chapters 17–20** extend that coverage across the rest of the
+  Broadcom certification program: the remaining professional-tier exams
+  (VCP-DCV, VCP-VCF Architect, VCP-AVI, VCP-PCS), the advanced VCAP tier
+  (the eight-exam VCF 9.0 role series plus VCAP-DCV Design and VCAP-NV
+  Deploy), the Distinguished Expert (VCDX) design-defense discipline, and
+  the Telco Cloud specialist exams — closing with a recurring
+  currency-check discipline for keeping the whole program map accurate.
 
 Every chapter follows the same structure — learning objectives, theory
 and architecture, design considerations, implementation and automation,
@@ -67,10 +74,14 @@ test, and cleanup instructions.
 14. [VCP VMware Cloud Foundation Administrator 2V0-17.25 Exam Preparation](chapters/14-vcp-vmware-cloud-foundation-administrator-2v0-17-25-exam-preparation.md) — administrator-role study material covering workload domain deployment, Cloud Builder versus SDDC Manager scope, fleet RBAC, licensing, and certificate lifecycle.
 15. [VCP VMware vSphere Foundation Administrator 2V0-16.25 Exam Preparation](chapters/15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md) — administrator-role study material mapped directly to Chapters 1–9's standalone vSphere/vSAN content.
 16. [VCP VMware vSphere Foundation Support 2V0-18.25 Exam Preparation](chapters/16-vcp-vmware-vsphere-foundation-support-2v0-18-25-exam-preparation.md) — support-role troubleshooting study material scoped to VVF's compute, storage, networking, and licensing failure domains.
+17. [Completing the VCP Tier — Data Center Virtualization, VCF Architect, Avi, and Private Cloud Security](chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md) — the four remaining professional-tier exams: VCP-DCV (2V0-21.23), VCP-VCF Architect (2V0-13.25), and the 6V0 specialist VCPs VCP-AVI (6V0-22.25) and VCP-PCS (6V0-21.25).
+18. [The VCAP Advanced Professional Tier — VCF 9.0 Role Exams, DCV Design, and NV Deploy](chapters/18-the-vcap-advanced-professional-tier-vcf-9-0-role-exams-dcv-design-and-nv-deploy.md) — the advanced tier: the eight-exam VCF 9.0 role series (3V0-11.26 through 3V0-25.25) plus VCAP-DCV Design (3V0-21.23) and VCAP-NV Deploy (3V0-41.22), prepared by format (Design vs Deploy).
+19. [VCDX — The Distinguished Expert Design-Defense Discipline](chapters/19-vcdx-the-distinguished-expert-design-defense-discipline.md) — the apex credential as a peer-juried design defense rather than a written exam: authoring, submitting, and defending a production-grade design with full requirement/constraint/assumption/risk traceability.
+20. [VMware Telco Cloud, and Keeping the Certification Program Current](chapters/20-vmware-telco-cloud-and-keeping-the-certification-program-current.md) — the Telco Cloud specialist skills exams (5V0-36.22, 5V0-37.22, 5V0-44.21) and a four-step, primary-source currency check that keeps this volume, the appendix, and the blueprint accurate as the program churns.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all sixteen
+- [Index](INDEX.md) — alphabetized topical index across all twenty
   chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this
   volume.
@@ -89,6 +100,15 @@ licensed courseware. Always confirm current blueprint domains, exam
 length, and registration requirements against Broadcom's official exam
 guides before scheduling, since blueprints are revised independently of
 this repository's release cycle.
+
+Chapters 17 through 20 extend this alignment across the rest of the
+Broadcom certification program — the remaining professional exams, the
+advanced VCAP tier, the Distinguished Expert design defense, and the
+Telco Cloud specialist exams — and are summarized under
+[Beyond the five: the wider certification program](#beyond-the-five-the-wider-certification-program)
+below. Every exam code in those chapters was verified against Broadcom's
+own certification pages; the same "confirm before scheduling" caution
+applies.
 
 ### The exams
 
@@ -404,6 +424,55 @@ Troubleshooting [V8]* (16 hours) for Chapter 06, *vSphere: Troubleshooting
 [V8]* for Chapters 07 and 09, and *VMware Data Center Virtualization: Core
 Technical Skills* (32 hours) as an on-ramp for readers new to the
 platform.
+
+### Beyond the five: the wider certification program
+
+The five VCP exams above are not the whole Broadcom certification program,
+and Chapters 17–20 map the rest of it. All codes below were verified
+against Broadcom's own certification pages; confirm currency before
+scheduling, as this program churns faster than most.
+
+**The rest of the professional (VCP) tier — [Chapter 17](chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md).**
+Four more professional-level exams sit alongside the five above:
+
+| Exam | Code | Note |
+| --- | --- | --- |
+| VCP-DCV — Data Center Virtualization | 2V0-21.23 | vSphere 8 generation; the classic flagship VCP |
+| VCP-VCF Architect | 2V0-13.25 | design-role VCP; the on-ramp to VCAP Architect and VCDX |
+| VCP-AVI — Avi Load Balancer Administrator | 6V0-22.25 | 6V0 specialist code; application delivery |
+| VCP-PCS — Private Cloud Security Administrator | 6V0-21.25 | 6V0 specialist code; builds on Chapter 08 |
+
+**The advanced (VCAP) tier — [Chapter 18](chapters/18-the-vcap-advanced-professional-tier-vcf-9-0-role-exams-dcv-design-and-nv-deploy.md).**
+A current VCP is the entry gate. The VCF 9.0 role series is eight exams on
+one 3V0 generation, joined by two carried-over VCAP exams:
+
+| Exam | Code | Format |
+| --- | --- | --- |
+| VCF Administrator | 3V0-11.26 | written |
+| VCF Architect | 3V0-12.26 | design |
+| VCF Support | 3V0-13.26 | written |
+| VCF Automation | 3V0-21.25 | written |
+| VCF Operations | 3V0-22.25 | written |
+| VCF Storage | 3V0-23.25 | written |
+| VCF VKS (Kubernetes) | 3V0-24.25 | written |
+| VCF Networking | 3V0-25.25 | written |
+| VCAP-DCV Design | 3V0-21.23 | design — **retiring 31 July 2026** |
+| VCAP-NV Deploy | 3V0-41.22 | deploy (live build) — **retiring 31 July 2026** |
+
+**The Distinguished Expert (VCDX) — [Chapter 19](chapters/19-vcdx-the-distinguished-expert-design-defense-discipline.md).**
+The apex credential, earned not by an exam but by authoring a
+production-grade design and defending it live before a peer panel. There
+is no written exam code; the design-oriented exams in Chapters 17–18 are
+the intended on-ramps.
+
+**Telco Cloud specialist skills — [Chapter 20](chapters/20-vmware-telco-cloud-and-keeping-the-certification-program-current.md).**
+A service-provider NFV specialization on the older 5V0 generation —
+Platform (5V0-36.22), NFV (5V0-37.22), and Automation (5V0-44.21) — off
+the mainstream path. Chapter 20 also defines the four-step, primary-source
+currency check that keeps this whole map, the
+[course-catalog appendix](../volume-97-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md),
+and [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md)
+accurate over time.
 
 ## Software and platform baseline
 

@@ -9,7 +9,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | II — Network Engineering Foundations | CCST Networking (100-150) | Cisco Learning & Certifications |
 | III — Cisco Enterprise Networking | CCNA, CCNP Enterprise (ENCOR/ENARSI), CCNP Wireless: WLCOR core (350-101) + WLSD (300-110) or WLSI (300-120); WLCOR also qualifies CCIE Wireless | Cisco Learning & Certifications |
 | IV — Enterprise Systems Administration | CCST IT Support (100-140) | Cisco Learning & Certifications |
-| V — VMware Virtualization | VCP-NV (2V0-41.24), VCP-VCF Support (2V0-15.25), VCP-VCF Administrator (2V0-17.25), VCP-VVF Administrator (2V0-16.25), VCP-VVF Support (2V0-18.25) | Broadcom/VMware Learning |
+| V — VMware Virtualization | The Broadcom/VMware program end to end. VCP: NV (2V0-41.24), VCF Support (2V0-15.25), VCF Administrator (2V0-17.25), VCF Architect (2V0-13.25), VVF Administrator (2V0-16.25), VVF Support (2V0-18.25), DCV (2V0-21.23), plus 6V0 specialists AVI (6V0-22.25) and PCS (6V0-21.25). VCAP: VCF 9.0 role series (Administrator 3V0-11.26, Architect 3V0-12.26, Support 3V0-13.26, Automation 3V0-21.25, Operations 3V0-22.25, Storage 3V0-23.25, VKS 3V0-24.25, Networking 3V0-25.25), plus DCV Design (3V0-21.23) and NV Deploy (3V0-41.22). Distinguished Expert (VCDX, no written code). Telco Cloud: Platform 5V0-36.22, NFV 5V0-37.22, Automation 5V0-44.21 | Broadcom/VMware Learning |
 | IX — Infrastructure Automation | CCNA Automation (200-901), CCNP Automation: core (350-901) + one concentration, CCIE Automation — rebranded from DevNet on 3 February 2026 | Cisco Learning & Certifications |
 | X — Enterprise Cybersecurity | CCST Cybersecurity (100-160), CCNA Cybersecurity (200-201), CCNP Cybersecurity: CBRCOR core (350-201) + CBRFIR (300-215) — rebranded from CyberOps on 3 February 2026 | Cisco Learning & Certifications |
 | XIV — Red Hat Enterprise Linux 10 | RHCSA (EX200) | Red Hat Training and Certification |
@@ -217,3 +217,26 @@ from Fortinet's published transition table; NSE 8 is a two-module
 practical (Core + Specialization within one year, two-year validity).
 The legacy FCX practical (NSE8_870) had its final sitting 15 March
 2026. Objectives live on each exam's Fortinet Training Institute page.
+
+Volume V (VMware Virtualization) was extended on **23 July 2026** from
+the five VCP exams it already mapped to the whole Broadcom/VMware
+certification program (new Chapters 17-20). Every exam code was
+harvested the same day from Broadcom's own certification pages — read
+from the `getjson` education-program API endpoint each page injects,
+since the raw HTML omits the code. Added: the rest of the professional
+tier (VCP-DCV 2V0-21.23 on the older vSphere 8 generation, VCP-VCF
+Architect 2V0-13.25, and the 6V0 specialists VCP-AVI 6V0-22.25 and
+VCP-PCS 6V0-21.25); the advanced VCAP tier (the eight-exam VCF 9.0 role
+series 3V0-11.26/12.26/13.26/21.25/22.25/23.25/24.25/25.25, plus the
+carried-over VCAP-DCV Design 3V0-21.23 and VCAP-NV Deploy 3V0-41.22, both
+of which Broadcom's pages state are **retiring 31 July 2026** — no new
+registrations after that date, captured in the appendix's Exam end date
+column); the Distinguished Expert (formerly VCDX — a peer-juried design defense
+with no written code); and the Telco Cloud specialist skills exams
+(5V0-36.22, 5V0-37.22, 5V0-44.21). The code prefixes are meaningful —
+2V0 professional, 6V0 specialist-professional, 3V0 advanced, 5V0
+specialist-skills. This is the fastest-churning program on the shelf
+(the Broadcom acquisition renamed VCDX and restructured VCP around
+VVF/VCF; VCF 9.0 introduced the entire 3V0 role series); Chapter 20
+codifies a four-step, primary-source currency check and this volume
+defers to each exam's own Broadcom page as the objectives authority.

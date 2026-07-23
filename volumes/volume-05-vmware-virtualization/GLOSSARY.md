@@ -25,6 +25,12 @@ PXE-boot directly into a vSphere Lifecycle Manager desired-state image
 supplied by vCenter Server, rather than installing to local disk in the
 stateless case. Introduced in Chapter 02.
 
+**Avi Load Balancer** — VMware's software-defined, scale-out application
+delivery controller (formerly Avi Networks / NSX Advanced Load Balancer),
+providing load balancing, WAF, and GSLB under centralized policy. The
+subject of the VCP-AVI specialist exam (6V0-22.25). Introduced in
+Chapter 17.
+
 **BGP (Border Gateway Protocol)** — The dynamic routing protocol an NSX
 Tier-0 gateway uses to peer with upstream physical routers and exchange
 routes. Introduced in Chapter 11.
@@ -55,6 +61,12 @@ per-workload firewall, evaluated using ordered policy sections and
 dynamic group membership rather than only static IP-based rules.
 Introduced in Chapter 08 and extended with full rule construction in
 Chapter 11.
+
+**Distinguished Expert (VMware Certified; formerly VCDX)** — The apex of
+the VMware certification hierarchy, earned by authoring a production-grade
+architecture design and defending it live before a panel of existing
+holders rather than by passing a written exam. There is no exam code.
+Introduced in Chapter 19.
 
 **DRS (Distributed Resource Scheduler)** — The vSphere cluster service
 that balances VM placement across hosts based on resource demand,
@@ -148,6 +160,12 @@ in Chapter 11.
 governing bandwidth allocation (shares, reservations, limits) across
 traffic types sharing physical uplinks. Introduced in Chapter 04.
 
+**NFV (Network Functions Virtualization)** — The service-provider
+practice of running virtualized network functions (a 4G/5G core, RAN
+workloads) on a telco-grade platform built from vSphere and NSX; the
+subject of the VMware Telco Cloud specialist exams. Introduced in
+Chapter 20.
+
 **NSX Group** — A dynamically populated object (by VM tag, segment
 membership, or other criteria) used as the source, destination, or
 Applied To scope of a Distributed Firewall rule. Introduced in Chapter 11.
@@ -160,6 +178,11 @@ Central Control Plane role. Introduced in Chapter 10.
 managing block storage I/O path selection and failover, delegating
 array-specific behavior to SATP and path selection to PSP. Introduced in
 Chapter 06.
+
+**Private Cloud Security (VCP-PCS)** — The VMware private-cloud security
+discipline — vDefend Distributed Firewall and Advanced Threat Prevention,
+micro-segmentation, and platform hardening — assessed by the VCP-PCS
+specialist exam (6V0-21.25). Introduced in Chapter 17.
 
 **Private VLAN (PVLAN)** — A VLAN subdivision using promiscuous,
 isolated, and community port types to prevent lateral communication
@@ -213,6 +236,11 @@ distributed vSwitch (VDS). Introduced in Chapter 04.
 state, and (for ESXi) an optional core dump, generated for offline
 analysis or support case submission. Introduced in Chapter 09.
 
+**Telco Cloud** — VMware's service-provider product family for running
+virtualized network functions (NFV) at telco scale, covered by the 5V0
+Telco Cloud specialist skills exams (Platform 5V0-36.22, NFV 5V0-37.22,
+Automation 5V0-44.21). Introduced in Chapter 20.
+
 **TEP (Tunnel Endpoint)** — The IP address a prepared NSX transport node
 uses as the source or destination of Geneve-encapsulated overlay traffic
 to other transport nodes. Introduced in Chapter 10.
@@ -250,6 +278,15 @@ configuration, patching, and backup/restore. Introduced in Chapter 03.
 **VASA (vSphere APIs for Storage Awareness)** — The API framework through
 which a storage array or vSAN reports its capabilities to vCenter Server,
 feeding Storage Policy-Based Management. Introduced in Chapter 06.
+
+**VCAP (VMware Certified Advanced Professional)** — The advanced
+certification tier between VCP and Distinguished Expert, gated by a
+current VCP, spanning the eight-exam VCF 9.0 role series (3V0 generation)
+plus carried-over Design and Deploy exams. Introduced in Chapter 18.
+
+**VCDX (VMware Certified Design Expert)** — The former name of the
+Distinguished Expert credential; a peer-juried design defense with no
+written exam code. Introduced in Chapter 19.
 
 **VCHA (vCenter High Availability)** — A three-node (active/passive/
 witness) architecture providing automated failover for the vCenter

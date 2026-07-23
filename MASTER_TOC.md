@@ -79,6 +79,10 @@ table of contents for that volume.
 14. VCP VMware Cloud Foundation Administrator 2V0-17.25 Exam Preparation
 15. VCP VMware vSphere Foundation Administrator 2V0-16.25 Exam Preparation
 16. VCP VMware vSphere Foundation Support 2V0-18.25 Exam Preparation
+17. Completing the VCP Tier — Data Center Virtualization, VCF Architect, Avi, and Private Cloud Security
+18. The VCAP Advanced Professional Tier — VCF 9.0 Role Exams, DCV Design, and NV Deploy
+19. VCDX — The Distinguished Expert Design-Defense Discipline
+20. VMware Telco Cloud, and Keeping the Certification Program Current
 
 ## Volume VI — Enterprise Storage and Data Protection
 
@@ -477,6 +481,7 @@ table of contents for that volume.
 4. Appendix — Dell Technologies Certifications and Course Access
 5. Appendix — Palo Alto Networks Certifications and Course Access
 6. Appendix — Fortinet NSE Certifications and Course Access
+7. Appendix — VMware and Broadcom Certifications and Course Access
 
 ## Volume XCVIII — Acronyms
 

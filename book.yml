@@ -143,7 +143,7 @@ volumes:
     number: "V"
     slug: volume-05-vmware-virtualization
     title: "VMware Virtualization"
-    chapter_count: 16
+    chapter_count: 20
     build_eligible: true
     chapters:
       - id: 01
@@ -194,6 +194,18 @@ volumes:
       - id: 16
         title: "VCP VMware vSphere Foundation Support 2V0-18.25 Exam Preparation"
         path: volumes/volume-05-vmware-virtualization/chapters/16-vcp-vmware-vsphere-foundation-support-2v0-18-25-exam-preparation.md
+      - id: 17
+        title: "Completing the VCP Tier — Data Center Virtualization, VCF Architect, Avi, and Private Cloud Security"
+        path: volumes/volume-05-vmware-virtualization/chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md
+      - id: 18
+        title: "The VCAP Advanced Professional Tier — VCF 9.0 Role Exams, DCV Design, and NV Deploy"
+        path: volumes/volume-05-vmware-virtualization/chapters/18-the-vcap-advanced-professional-tier-vcf-9-0-role-exams-dcv-design-and-nv-deploy.md
+      - id: 19
+        title: "VCDX — The Distinguished Expert Design-Defense Discipline"
+        path: volumes/volume-05-vmware-virtualization/chapters/19-vcdx-the-distinguished-expert-design-defense-discipline.md
+      - id: 20
+        title: "VMware Telco Cloud, and Keeping the Certification Program Current"
+        path: volumes/volume-05-vmware-virtualization/chapters/20-vmware-telco-cloud-and-keeping-the-certification-program-current.md
   - id: volume-06
     number: "VI"
     slug: volume-06-enterprise-storage-data-protection
@@ -1143,7 +1155,7 @@ volumes:
     number: "XCVII"
     slug: volume-97-master-appendices
     title: "Master Appendices"
-    chapter_count: 6
+    chapter_count: 7
     build_eligible: true
     chapters:
       - id: 01
@@ -1164,6 +1176,9 @@ volumes:
       - id: 06
         title: "Appendix — Fortinet NSE Certifications and Course Access"
         path: volumes/volume-97-master-appendices/chapters/06-appendix-fortinet-nse-certifications-and-course-access.md
+      - id: 07
+        title: "Appendix — VMware and Broadcom Certifications and Course Access"
+        path: volumes/volume-97-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md
   - id: volume-98
     number: "XCVIII"
     slug: volume-98-acronyms

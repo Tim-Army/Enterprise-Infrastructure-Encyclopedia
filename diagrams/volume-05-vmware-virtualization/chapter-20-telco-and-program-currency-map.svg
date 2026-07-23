@@ -1,0 +1,55 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 20: the VMware Telco Cloud specialist skills exams alongside a four-step recurring currency check for the whole VMware certification program</title>
+  <desc>
+    The chapter has two halves. On the left, the three Telco Cloud specialist skills exams on the older 5V0 generation: Telco Cloud Platform Specialist (5V0-36.22), Telco Cloud NFV Specialist (5V0-37.22), and Telco Cloud Automation Specialist (5V0-44.21). These sit outside the mainstream vSphere and VCF paths and target service-provider network-functions virtualization. On the right, a four-step currency check that runs on a cadence because the program churns: step one re-lists the tiers and tracks from Broadcom's certification pages; step two re-confirms every exam code against its own exam page; step three flags any retirements or new generations; step four updates this volume and its appendix. An arrow returns from step four to step one, showing the check repeats.
+  </desc>
+  <defs>
+    <marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 20: Telco Cloud, and Keeping the Program Current</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A niche specialist track, plus the recurring check that keeps the whole VMware certification map honest</text>
+
+  <rect x="30" y="80" width="410" height="440" rx="10" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/>
+  <text x="235.0" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#0f766e">Telco Cloud specialist skills (5V0)</text>
+  <text x="235.0" y="128" text-anchor="middle" font-size="10.5" fill="#4b5563">Service-provider NFV — outside the vSphere/VCF paths</text>
+  <rect x="55" y="150" width="360" height="100" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="1.5"/>
+  <text x="235.0" y="182" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Telco Cloud Platform Specialist</text>
+  <text x="235.0" y="204" text-anchor="middle" font-size="12" font-weight="700" fill="#0f766e">5V0-36.22</text>
+  <text x="235.0" y="228" text-anchor="middle" font-size="10" fill="#4b5563">CaaS/telco platform on vSphere + NSX</text>
+  <rect x="55" y="266" width="360" height="100" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="1.5"/>
+  <text x="235.0" y="298" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Telco Cloud NFV Specialist</text>
+  <text x="235.0" y="320" text-anchor="middle" font-size="12" font-weight="700" fill="#0f766e">5V0-37.22</text>
+  <text x="235.0" y="344" text-anchor="middle" font-size="10" fill="#4b5563">network-functions virtualization infrastructure</text>
+  <rect x="55" y="382" width="360" height="100" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="1.5"/>
+  <text x="235.0" y="414" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Telco Cloud Automation Specialist</text>
+  <text x="235.0" y="436" text-anchor="middle" font-size="12" font-weight="700" fill="#0f766e">5V0-44.21</text>
+  <text x="235.0" y="460" text-anchor="middle" font-size="10" fill="#4b5563">TCA orchestration of network functions</text>
+  <text x="235.0" y="502" text-anchor="middle" font-size="10" fill="#6b7280">Older generation — confirm availability before planning</text>
+
+  <rect x="470" y="80" width="460" height="440" rx="10" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+  <text x="700.0" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">Four-step currency check (on a cadence)</text>
+  <text x="700.0" y="128" text-anchor="middle" font-size="10.5" fill="#4b5563">The program churns — re-verify rather than trust this volume</text>
+  <rect x="495" y="148" width="410" height="72" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+  <text x="512" y="176" font-size="12" font-weight="700" fill="#111827">1. Re-list tiers &amp; tracks</text>
+  <text x="512" y="196" font-size="10" fill="#4b5563">from Broadcom's certification landing pages</text>
+  <text x="512" y="212" font-size="10" fill="#4b5563">(VCP, VCAP, Distinguished Expert, specialist)</text>
+  <rect x="495" y="232" width="410" height="72" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+  <text x="512" y="260" font-size="12" font-weight="700" fill="#111827">2. Re-confirm every exam code</text>
+  <text x="512" y="280" font-size="10" fill="#4b5563">against each exam's own page — never a</text>
+  <text x="512" y="296" font-size="10" fill="#4b5563">third-party summary (they drift and mislead)</text>
+  <rect x="495" y="316" width="410" height="72" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+  <text x="512" y="344" font-size="12" font-weight="700" fill="#111827">3. Flag retirements &amp; new generations</text>
+  <text x="512" y="364" font-size="10" fill="#4b5563">note end-of-life dates for the appendix's</text>
+  <text x="512" y="380" font-size="10" fill="#4b5563">Exam end date column</text>
+  <rect x="495" y="400" width="410" height="72" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="1.5"/>
+  <text x="512" y="428" font-size="12" font-weight="700" fill="#14532d">4. Update this volume + appendix</text>
+  <text x="512" y="448" font-size="10" fill="#4b5563">codes, tables, study plans, and the</text>
+  <text x="512" y="464" font-size="10" fill="#4b5563">Master Appendices course catalog</text>
+  <line x1="700" y1="220" x2="700" y2="232" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow-teal)"/>
+  <line x1="700" y1="304" x2="700" y2="316" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow-teal)"/>
+  <line x1="700" y1="388" x2="700" y2="400" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow-teal)"/>
+  <path d="M 905 436 C 935 436 935 184 905 184" fill="none" stroke="#6b7280" stroke-width="1.75" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="700.0" y="502" text-anchor="middle" font-size="10" fill="#6b7280">Repeat on the same cadence as the encyclopedia's other cert-currency checks</text>
+</svg>

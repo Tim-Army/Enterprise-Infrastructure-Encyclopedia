@@ -1,0 +1,61 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 19: the VMware Certified Distinguished Expert design-and-defense path, from prerequisite certifications through design submission, panel defense, and result</title>
+  <desc>
+    The Distinguished Expert (formerly VCDX) path is a design defense, not a written exam. It runs left to right. Entry requires the prerequisite advanced certifications from Chapter 18. The candidate then authors a complete, production-grade architecture design document for a real or realistic customer scenario, including the conceptual, logical, and physical design plus the supporting risk, requirement, constraint, and assumption analysis. The design is submitted for review; if accepted, the candidate defends it live before a panel of existing Distinguished Experts across three parts — a design-presentation defense, a design scenario, and a troubleshooting scenario — reasoning aloud under questioning. The panel scores the defense; a pass confers the credential, and either result feeds back into stronger design practice. There is no written exam code.
+  </desc>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d4ed8"/></marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-loop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 19: The Distinguished Expert Design-and-Defense Path</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A juried defense of a production-grade design — no written exam code, formerly known as VCDX</text>
+
+  <rect x="30" y="120" width="170" height="150" rx="9" fill="#eef2ff" stroke="#33415c" stroke-width="2"/>
+  <text x="115.0" y="150" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">1. Prerequisites</text>
+  <text x="115.0" y="174" text-anchor="middle" font-size="10.5" fill="#374151">Advanced-tier</text>
+  <text x="115.0" y="190" text-anchor="middle" font-size="10.5" fill="#374151">certifications</text>
+  <text x="115.0" y="206" text-anchor="middle" font-size="10.5" fill="#374151">(Chapter 18)</text>
+  <text x="115.0" y="234" text-anchor="middle" font-size="10" fill="#4b5563">confirm the current</text>
+  <text x="115.0" y="250" text-anchor="middle" font-size="10" fill="#4b5563">list on Broadcom</text>
+
+  <rect x="230" y="120" width="190" height="150" rx="9" fill="#f6f2fc" stroke="#7c3aed" stroke-width="2"/>
+  <text x="325.0" y="150" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">2. Author design</text>
+  <text x="325.0" y="174" text-anchor="middle" font-size="10.5" fill="#374151">Conceptual → logical</text>
+  <text x="325.0" y="190" text-anchor="middle" font-size="10.5" fill="#374151">→ physical design</text>
+  <text x="325.0" y="214" text-anchor="middle" font-size="10" fill="#4b5563">requirements,</text>
+  <text x="325.0" y="230" text-anchor="middle" font-size="10" fill="#4b5563">constraints, risks,</text>
+  <text x="325.0" y="246" text-anchor="middle" font-size="10" fill="#4b5563">assumptions</text>
+
+  <rect x="450" y="120" width="170" height="150" rx="9" fill="#f6f2fc" stroke="#7c3aed" stroke-width="2"/>
+  <text x="535.0" y="150" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">3. Submit</text>
+  <text x="535.0" y="174" text-anchor="middle" font-size="10.5" fill="#374151">Peer / program</text>
+  <text x="535.0" y="190" text-anchor="middle" font-size="10.5" fill="#374151">review of the</text>
+  <text x="535.0" y="206" text-anchor="middle" font-size="10.5" fill="#374151">document</text>
+  <text x="535.0" y="234" text-anchor="middle" font-size="10" fill="#4b5563">accepted designs</text>
+  <text x="535.0" y="250" text-anchor="middle" font-size="10" fill="#4b5563">advance to defense</text>
+
+  <rect x="650" y="120" width="280" height="150" rx="9" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="790.0" y="150" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7c2d12">4. Live panel defense</text>
+  <text x="790.0" y="176" text-anchor="middle" font-size="10.5" fill="#7c2d12">Three parts, reasoned aloud:</text>
+  <text x="790.0" y="196" text-anchor="middle" font-size="10.5" fill="#374151">• design presentation + defense</text>
+  <text x="790.0" y="214" text-anchor="middle" font-size="10.5" fill="#374151">• design scenario</text>
+  <text x="790.0" y="232" text-anchor="middle" font-size="10.5" fill="#374151">• troubleshooting scenario</text>
+  <text x="790.0" y="256" text-anchor="middle" font-size="10" fill="#4b5563">before a panel of Distinguished Experts</text>
+
+  <line x1="200" y1="195" x2="230" y2="195" stroke="#1d4ed8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="420" y1="195" x2="450" y2="195" stroke="#1d4ed8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="620" y1="195" x2="650" y2="195" stroke="#1d4ed8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <rect x="300" y="340" width="360" height="80" rx="9" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="372" text-anchor="middle" font-size="12.5" font-weight="700" fill="#14532d">5. Panel scores the defense</text>
+  <text x="480.0" y="394" text-anchor="middle" font-size="10.5" fill="#374151">A pass confers the Distinguished Expert credential</text>
+  <line x1="790" y1="270" x2="640" y2="352" stroke="#166534" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <rect x="300" y="450" width="360" height="70" rx="9" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="480" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7c2d12">Either result strengthens design practice</text>
+  <text x="480.0" y="500" text-anchor="middle" font-size="10" fill="#4b5563">Feedback returns to authoring — most candidates iterate before passing</text>
+  <line x1="360" y1="420" x2="360" y2="450" stroke="#b45309" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-loop)"/>
+  <line x1="300" y1="485" x2="150" y2="270" stroke="#b45309" stroke-width="1.75" stroke-dasharray="4 3" marker-end="url(#arrow-loop)"/>
+</svg>
