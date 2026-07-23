@@ -7,6 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
+![Release](https://img.shields.io/badge/release-v1.0.0-blue)
+
+**v1.0.0 — first public release.** 35 volumes, 326 chapters, now published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.0.0).
 
 ## Overview
 
