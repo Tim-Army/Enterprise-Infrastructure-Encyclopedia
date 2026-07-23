@@ -22,6 +22,14 @@ Thank you for improving the Enterprise Infrastructure Encyclopedia.
   content change.
 - Run `scripts/bash/validate.sh` before committing.
 
+## Adding a vendor certification program
+
+Adding or extending a vendor's certification coverage follows a defined
+pipeline — primary-source verification, content, integration, validate and
+build, ship, deploy verification, and currency rotation. See
+[VENDOR_CERTIFICATION_PIPELINE.md](VENDOR_CERTIFICATION_PIPELINE.md) for
+the steps, the exact build commands, and the verification traps.
+
 ## Scope boundaries
 
 - Do not commit real or production credentials, license keys, personal

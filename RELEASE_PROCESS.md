@@ -12,6 +12,10 @@ its asset both lead with the project name and carry the version — matching
 the offline archive (`Enterprise-Infrastructure-Encyclopedia-v<tag>.zip`)
 and the EPUB filename convention.
 
+Adding a vendor certification program has its own end-to-end process,
+which ends in the release steps below — see
+[VENDOR_CERTIFICATION_PIPELINE.md](VENDOR_CERTIFICATION_PIPELINE.md).
+
 ## Steps
 
 1. Confirm every volume in [book.yml](book.yml) is `build_eligible: true`

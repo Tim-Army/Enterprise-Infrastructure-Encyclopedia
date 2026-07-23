@@ -993,6 +993,7 @@
     "mklabel",
     "mkpart",
     "mkpasswd",
+    "mktemp",
     "MLAG",
     "Modbus",
     "monitorable",

@@ -170,6 +170,10 @@ chapter advances to publication.
 - [CERTIFICATION_BLUEPRINTS.md](CERTIFICATION_BLUEPRINTS.md) maps every volume
   to relevant current vendor certifications, training paths, and controlling
   sources without reproducing proprietary assessment content.
+- [VENDOR_CERTIFICATION_PIPELINE.md](VENDOR_CERTIFICATION_PIPELINE.md) is the
+  end-to-end process for adding a vendor's certification program — the seven
+  steps, the build and ship commands, deploy verification, and the
+  primary-source traps that have caused real errors.
 - Each volume README is the authoritative table of contents for that volume.
 - Each completed volume has its own index and glossary; the repository root has
   series-wide master versions.
