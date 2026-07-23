@@ -10,7 +10,7 @@ Extract it and open `index.html` in a browser. Each archive expands into a
 single directory named for its version:
 
 ```text
-Enterprise-Infrastructure-Encyclopedia-v1.0.0/
+Enterprise-Infrastructure-Encyclopedia-v1.0.0-0083/
 ├── index.html    Portal: links to every volume and the EPUB
 ├── web.css
 ├── html/         Per-chapter and per-volume editions
@@ -25,14 +25,18 @@ which simply does not resolve when offline.
 
 ## Versioning and retention
 
-Archives are named for the release version they belong to, matching the
-GitHub release and its EPUB asset — the archive
-`Enterprise-Infrastructure-Encyclopedia-v1.0.0.zip` sits alongside the
-release `Enterprise-Infrastructure-Encyclopedia-v1.0.0.epub`. The archive
-tracks `main`: between releases, content changes overwrite the current
-version's archive in place, and it is re-minted under the new version when
-the next release is tagged. Only the current release's archive is kept
-here; the previous one is removed when a new version is minted.
+Each archive is named `Enterprise-Infrastructure-Encyclopedia-v<release>-<build>.zip`:
+the **release version** (matching the GitHub release and its EPUB asset,
+e.g. `v1.0.0`) plus a four-digit, zero-padded **build counter** that
+increments with every archive (`0083`, `0084`, …). So
+`Enterprise-Infrastructure-Encyclopedia-v1.0.0-0083.zip` sits alongside the
+release `Enterprise-Infrastructure-Encyclopedia-v1.0.0.epub`, and its
+internal top-level folder matches the filename.
+
+Archives track `main`: each content change mints a new build, and the
+release portion updates when a new version is tagged. **Only the three most
+recent builds are kept here**; older ones are deleted when a new build is
+added, giving a short rolling history of recent states.
 
 Note that pruning this directory bounds the working tree, not the
 repository history — every archive committed remains in the history of
@@ -42,13 +46,14 @@ every clone.
 
 Every archive this directory has held, with the local time of the commit
 that created it and, once pruned under the retention rule above, the commit
-that removed it. The one still present is marked *current*.
+that removed it. The builds still present are marked *current*.
 
-**Naming changed at v1.0.0.** Archives through v0082 used a four-digit
+**Naming changed at v1.0.0.** Archives through v0082 used a bare four-digit
 per-build counter (`Enterprise-Infrastructure-Encyclopedia-website-vNNNN.zip`).
-From the first release, archives are named for the release version
-(`Enterprise-Infrastructure-Encyclopedia-v1.0.0.zip`); the historical
-counter rows below are kept for the record.
+From v1.0.0 the release version is prepended and the `website` token dropped
+(`Enterprise-Infrastructure-Encyclopedia-v1.0.0-0083.zip`), but the
+four-digit build counter continues unbroken from 0082. The historical rows
+below are kept for the record.
 
 | Version | Created | Deleted |
 | --- | --- | --- |
@@ -134,7 +139,8 @@ counter rows below are kept for the record.
 | v0080 | 2026-07-23 06:14 | 2026-07-23 07:47 |
 | v0081 | 2026-07-23 07:03 | 2026-07-23 07:47 |
 | v0082 | 2026-07-23 07:20 | 2026-07-23 07:47 |
-| v1.0.0 | 2026-07-23 07:47 | *current* |
+| v1.0.0 | 2026-07-23 07:47 | 2026-07-23 08:01 |
+| v1.0.0-0083 | 2026-07-23 08:01 | *current* |
 
 ## Rebuilding
 
