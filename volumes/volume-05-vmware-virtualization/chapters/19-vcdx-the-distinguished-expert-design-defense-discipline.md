@@ -314,6 +314,41 @@ submission — without attempting a full submission.
    the foundation of a future full submission; there is no infrastructure
    to tear down.
 
+## Design Exercise
+
+VCDX is a **design-defense** credential — there is no exam code and no
+configuration component, so this chapter's coverage is entirely a design
+exercise (the Hands-On Lab above is its authoring half; this is the defense
+half). The discipline is identical to the VCAP-DCV Design and VCF Architect
+exercises in [Chapters 17](17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md)
+and [18](18-the-vcap-advanced-professional-tier-vcf-9-0-role-exams-dcv-design-and-nv-deploy.md),
+raised to submission standard.
+
+**Scenario.** Take one subsystem design you authored in the Chapter 18 or 17
+exercise (for example, the vSAN storage or the availability design) to a
+mock defense panel.
+
+**Defend, out loud and without notes:**
+
+1. **Traceability challenge** — for any physical decision the panel names,
+   trace it up through the logical and conceptual layers to the specific
+   requirement it satisfies. A decision that cannot be traced is scope.
+2. **Alternative challenge** — for each key decision, state the alternative
+   you rejected and the measurable reason. "It's best practice" is not a
+   defense; the requirement and the trade-off are.
+3. **Failure challenge** — the panel injects a failure ("this host dies
+   mid-upgrade"); walk the design's response and show the requirement
+   (RTO/RPO) is still met.
+4. **Constraint challenge** — the panel tightens a constraint (budget, time,
+   a compliance rule); state which decision changes and what new risk it
+   introduces.
+
+**Success looks like:** every answer returns to a stated requirement and a
+recorded decision, no claim rests on unstated assumption, and each rejected
+alternative is named with its reason — the standard a VCDX panel applies.
+This is the terminal design discipline the whole certification ladder builds
+toward.
+
 ## Lab Verification
 
 Complete this sign-off once the design fragment is fully traceable and has

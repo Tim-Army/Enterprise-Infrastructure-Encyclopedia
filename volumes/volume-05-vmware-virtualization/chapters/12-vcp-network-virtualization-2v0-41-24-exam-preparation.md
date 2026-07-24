@@ -257,6 +257,336 @@ reproductions of any Broadcom exam item)*
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **every testable
+objective in the VCP-NV (2V0-41.24) exam guide** — Section 4
+Deploy/Configure/Operate (4.1–4.13) and Section 5 Troubleshoot (5.1–5.3).
+Each is mapped in the volume README's coverage table and ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 12.1–12.16**
+
+- An NSX 4.x deployment reachable at `$NSX` (NSX Manager), a vCenter with a
+  prepared cluster, and an API token or basic auth in `$H` (an
+  `Authorization` header). Labs use the **NSX Policy API**
+  (`/policy/api/v1/...`) via `curl`/`Invoke-RestMethod`, the declarative
+  surface the exam and Chapters 10–11 use.
+- **Cost:** none beyond lab hardware; every lab deletes what it creates.
+
+### Lab 12.1 — Prepare an NSX infrastructure for deployment (Objective 4.1)
+
+**Objective:** Confirm transport nodes and a transport zone — the fabric
+segments ride on.
+
+```bash
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/sites/default/enforcement-points/default/transport-zones" \
+  | jq -r '.results[] | "\(.display_name)\t\(.tz_type)"'
+curl -sk -H "$H" "$NSX/api/v1/transport-nodes" | jq '.result_count'
+```
+
+**Expected result:** at least one OVERLAY and one VLAN transport zone, and a
+nonzero transport-node count — the prepared fabric.
+
+**Negative test:** create a segment referencing an unprepared host; it has
+no realized state on that host, proving preparation is a prerequisite.
+
+**Cleanup:** none (read-only).
+
+### Lab 12.2 — Configure segments (Objective 4.2)
+
+**Objective:** Create an overlay segment declaratively.
+
+```bash
+curl -sk -X PATCH -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/policy/api/v1/infra/segments/web-seg" \
+  -d '{"display_name":"web-seg","transport_zone_path":"/infra/sites/default/enforcement-points/default/transport-zones/overlay-tz","subnets":[{"gateway_address":"10.10.10.1/24"}]}'
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/segments/web-seg" | jq -r '.display_name, .subnets[0].gateway_address'
+```
+
+**Expected result:** `web-seg` with gateway `10.10.10.1/24` — an L2 overlay
+segment ready for workloads.
+
+**Negative test:** PATCH a segment onto a VLAN transport zone with an
+overlay-only gateway config; realization fails, showing segment type must
+match the transport zone.
+
+**Cleanup:** `curl -sk -X DELETE -H "$H" "$NSX/policy/api/v1/infra/segments/web-seg"`.
+
+### Lab 12.3 — Deploy and configure NSX Edge nodes (Objective 4.3)
+
+**Objective:** Verify Edge nodes and their Edge cluster membership.
+
+```bash
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/sites/default/enforcement-points/default/edge-clusters" \
+  | jq -r '.results[] | .display_name'
+curl -sk -H "$H" "$NSX/api/v1/transport-nodes?node_types=EdgeNode" \
+  | jq -r '.results[] | "\(.display_name)\t\(.node_deployment_info.deployment_config.form_factor)"'
+```
+
+**Expected result:** an Edge cluster and its member Edge nodes with form
+factor (MEDIUM/LARGE) — the nodes that host Tier-0/Tier-1 services.
+
+**Negative test:** place a Tier-0 SR on an empty Edge cluster; the gateway
+has no realized services — Edge nodes must exist first.
+
+**Cleanup:** none (read-only).
+
+### Lab 12.4 — Configure the Tier-1 gateway (Objective 4.4)
+
+**Objective:** Create a Tier-1 gateway and attach the segment.
+
+```bash
+curl -sk -X PATCH -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/policy/api/v1/infra/tier-1s/t1-web" \
+  -d '{"display_name":"t1-web","route_advertisement_types":["TIER1_CONNECTED"]}'
+curl -sk -X PATCH -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/policy/api/v1/infra/segments/web-seg" \
+  -d '{"connectivity_path":"/infra/tier-1s/t1-web"}'
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/tier-1s/t1-web" | jq -r '.route_advertisement_types[]'
+```
+
+**Expected result:** a Tier-1 advertising `TIER1_CONNECTED` with the segment
+attached — north-south routing for the segment's subnet begins here.
+
+**Negative test:** attach the segment to a Tier-1 with no linked Tier-0; the
+route never reaches the physical fabric, proving the Tier-1→Tier-0 link is
+required.
+
+**Cleanup:** delete the Tier-1 after detaching the segment.
+
+### Lab 12.5 — Create and configure a Tier-0 gateway with OSPF (Objective 4.5)
+
+**Objective:** Enable OSPF on a Tier-0 and read the adjacency.
+
+```bash
+curl -sk -X PATCH -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/policy/api/v1/infra/tier-0s/t0/ospf" -d '{"enabled":true}'
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/tier-0s/t0/locale-services/default/ospf/neighbors/status" \
+  | jq -r '.results[] | "\(.neighbor_address)\t\(.state)"'
+```
+
+**Expected result:** an OSPF neighbor in `FULL` state — the Tier-0 is
+exchanging routes with the physical router.
+
+**Negative test:** mismatch the OSPF area between Tier-0 and the physical
+peer; the adjacency stalls in `EXSTART`/`INIT`, the classic area-mismatch
+symptom.
+
+**Cleanup:** disable OSPF on the Tier-0.
+
+### Lab 12.6 — Configure the Tier-0 gateway with BGP (Objective 4.6)
+
+**Objective:** Establish a BGP neighbor and confirm the session.
+
+```bash
+curl -sk -X PATCH -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/policy/api/v1/infra/tier-0s/t0/locale-services/default/bgp/neighbors/peer1" \
+  -d '{"neighbor_address":"192.168.100.1","remote_as_num":"65001"}'
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/tier-0s/t0/locale-services/default/bgp/neighbors/peer1/status" \
+  | jq -r '.results[].connection_state'
+```
+
+**Expected result:** connection state `ESTABLISHED` — the Tier-0 peers with
+AS 65001 and can exchange prefixes.
+
+**Negative test:** set the wrong `remote_as_num`; the session flaps in
+`CONNECT`/`ACTIVE` — the AS mismatch BGP refuses to establish over.
+
+**Cleanup:** delete the BGP neighbor.
+
+### Lab 12.7 — Configure VRF Lite (Objective 4.7)
+
+**Objective:** Create a VRF on the Tier-0 for tenant route isolation.
+
+```bash
+curl -sk -X PATCH -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/policy/api/v1/infra/tier-0s/t0-vrf-a" \
+  -d '{"display_name":"t0-vrf-a","vrf_config":{"tier0_path":"/infra/tier-0s/t0"}}'
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/tier-0s/t0-vrf-a" | jq -r '.vrf_config.tier0_path'
+```
+
+**Expected result:** a VRF Tier-0 parented to `t0` — tenant traffic uses a
+separate routing table over shared Edge infrastructure.
+
+**Negative test:** advertise overlapping tenant prefixes without VRF
+separation; routes collide — the isolation VRF Lite provides.
+
+**Cleanup:** delete the VRF Tier-0.
+
+### Lab 12.8 — Configure Network Address Translation (Objective 4.8)
+
+**Objective:** Add a SNAT rule so a private subnet egresses on one IP.
+
+```bash
+curl -sk -X PATCH -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/policy/api/v1/infra/tier-1s/t1-web/nat/USER/nat-rules/snat-web" \
+  -d '{"action":"SNAT","source_network":"10.10.10.0/24","translated_network":"203.0.113.10"}'
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/tier-1s/t1-web/nat/USER/nat-rules/snat-web" | jq -r '.action, .translated_network'
+```
+
+**Expected result:** a SNAT rule translating `10.10.10.0/24` to
+`203.0.113.10` — private hosts share one routable source address.
+
+**Negative test:** create the SNAT on a Tier-1 whose `10.10.10.0/24` is also
+advertised to the Tier-0; asymmetric routing breaks return traffic — why
+NAT and route advertisement must be coordinated.
+
+**Cleanup:** delete the NAT rule.
+
+### Lab 12.9 — Deploy Virtual Private Networks (Objective 4.9)
+
+**Objective:** Read IPSec VPN session status on the Tier-0.
+
+```bash
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/tier-0s/t0/locale-services/default/ipsec-vpn-services" \
+  | jq -r '.results[].display_name'
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/tier-0s/t0/locale-services/default/ipsec-vpn-services/svc/sessions" \
+  | jq -r '.results[] | "\(.display_name)\t\(.enabled)"'
+```
+
+**Expected result:** the VPN service and its sessions — encrypted
+connectivity to a remote site over the Tier-0.
+
+**Negative test:** a session with mismatched pre-shared keys stays down; the
+tunnel status never reaches `UP`, the PSK-mismatch symptom.
+
+**Cleanup:** disable/delete the lab VPN session.
+
+### Lab 12.10 — Manage users and roles (Objective 4.10)
+
+**Objective:** Assign an NSX RBAC role binding and read it back.
+
+```bash
+curl -sk -X POST -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/policy/api/v1/aaa/role-bindings" \
+  -d '{"name":"net-eng","type":"remote_group","identity_source_type":"LDAP","roles_for_paths":[{"path":"/","roles":[{"role":"network_engineer"}]}]}'
+curl -sk -H "$H" "$NSX/policy/api/v1/aaa/role-bindings" | jq -r '.results[] | "\(.name)\t\(.roles_for_paths[0].roles[0].role)"'
+```
+
+**Expected result:** the group bound to `network_engineer` — scoped NSX
+administration.
+
+**Negative test:** a `network_engineer` principal attempts to edit
+enforcement points/system settings; denied — the role lacks that scope.
+
+**Cleanup:** delete the role binding.
+
+### Lab 12.11 — Perform operations tasks (Objective 4.11)
+
+**Objective:** Configure remote syslog and confirm a backup is current.
+
+```bash
+curl -sk -X PUT -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/api/v1/node/services/syslog/exporters/lab" \
+  -d '{"exporter_name":"lab","level":"INFO","server":"10.0.0.50","port":514,"protocol":"UDP"}'
+curl -sk -H "$H" "$NSX/api/v1/cluster/backups/status" | jq -r '.cluster_backup_statuses[0].success'
+```
+
+**Expected result:** a syslog exporter to `10.0.0.50:514` and a most-recent
+backup `success: true` — the operational hygiene the exam expects.
+
+**Negative test:** a backup target with bad SFTP credentials reports
+`success: false`; an unverified backup is not a backup.
+
+**Cleanup:** delete the syslog exporter.
+
+### Lab 12.12 — Monitor a VMware NSX implementation (Objective 4.12)
+
+**Objective:** Read open NSX alarms to run the fabric by exception.
+
+```bash
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/alarms?status=OPEN" \
+  | jq -r '.results[] | "\(.feature_name)\t\(.severity)"' | sort | uniq -c
+```
+
+**Expected result:** open alarms grouped by feature and severity — the
+monitoring signal for control-plane, edge, and DFW health.
+
+**Negative test:** rely on segment reachability alone while a `CRITICAL`
+edge-tunnel alarm is open; the overlay is degraded though pings still pass —
+why alarms, not spot checks, drive monitoring.
+
+**Cleanup:** none (read-only).
+
+### Lab 12.13 — Use NSX Intelligence (Objective 4.13)
+
+**Objective:** Pull a micro-segmentation recommendation from NSX
+Intelligence.
+
+```bash
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/recommendations" \
+  | jq -r '.results[] | "\(.display_name)\t\(.status)"'
+```
+
+**Expected result:** recommendation entities with status — Intelligence
+observes real flows and proposes DFW rules from them.
+
+**Negative test:** author DFW rules by guesswork instead; either over-blocking
+or leaving gaps that Intelligence's flow-based recommendation would have
+caught.
+
+**Cleanup:** none (read-only).
+
+### Lab 12.14 — Use log files to troubleshoot (Objective 5.1)
+
+**Objective:** Search NSX Manager logs for a realization failure.
+
+```bash
+# on NSX Manager over SSH
+grep -iE 'error|realization' /var/log/policy/policy.log | tail -15
+```
+
+**Expected result:** log lines naming the entity that failed to realize —
+the authoritative record of why an intended config did not take effect.
+
+**Negative test:** a config that shows "in progress" indefinitely with no
+error log is usually a downstream (transport-node) issue, not a policy
+error — absence of policy errors redirects the search.
+
+**Cleanup:** none (read-only).
+
+### Lab 12.15 — Identify tools available for troubleshooting (Objective 5.2)
+
+**Objective:** Run Traceflow to trace a packet through the overlay.
+
+```bash
+curl -sk -X POST -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/api/v1/traceflow" \
+  -d '{"lport_id":"<src-logical-port>","packet":{"frame_size":128,"ip_header":{"src_ip":"10.10.10.5","dst_ip":"10.10.20.5"}}}' \
+  | jq -r '.id'
+# then GET /api/v1/traceflow/<id>/observations
+```
+
+**Expected result:** a Traceflow ID whose observations show each hop
+(segment, DFW, Tier-1, Tier-0) with `DELIVERED` or a `DROPPED` verdict at the
+exact component — the definitive path diagnostic.
+
+**Negative test:** guess the fault from pings alone; Traceflow instead names
+the DFW rule or routing hop that dropped the packet.
+
+**Cleanup:** none (diagnostic; observations expire).
+
+### Lab 12.16 — Troubleshoot common NSX issues (Objective 5.3)
+
+**Objective:** Diagnose a broken DFW rule by reading its realized state and
+hit count.
+
+```bash
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/domains/default/security-policies/app-policy/rules" \
+  | jq -r '.results[] | "\(.display_name)\t\(.action)\t\(.sequence_number)"'
+curl -sk -H "$H" "$NSX/api/v1/firewall/sections/<id>/rules/<rule-id>/stats" | jq -r '.hit_count'
+```
+
+**Expected result:** the rule order/action and a hit count; a rule with zero
+hits that should be matching means an earlier rule shadows it — the ordering
+bug DFW troubleshooting hunts.
+
+**Negative test:** add an explicit allow *below* a broad deny; its zero hit
+count proves it is unreachable — rule order, not rule content, is the fault.
+
+**Cleanup:** none (read-only).
+
+### Lab 12.17 — Comprehensive NSX build-and-troubleshoot (integrative)
+
 **Objective:** Complete a timed, comprehensive NSX build-and-troubleshoot
 exercise spanning installation through logical networking and security,
 as a realistic self-assessment for exam readiness.

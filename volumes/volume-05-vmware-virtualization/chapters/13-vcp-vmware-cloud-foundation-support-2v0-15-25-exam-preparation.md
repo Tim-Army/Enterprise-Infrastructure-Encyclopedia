@@ -288,6 +288,209 @@ reproductions of any Broadcom exam item)*
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **every objective
+harvested from the VCP-VCF Support (2V0-15.25) exam guide** — all sit in
+Section 5, Troubleshoot, spanning the VCF fleet. Each lab reproduces a fault
+and diagnoses it, is mapped in the volume README's coverage table, and ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 13.1–13.10**
+
+- A VCF 9.x fleet (or vSphere + vSAN + NSX lab) with SDDC Manager / VCF
+  Operations and NSX Manager reachable, SSH to ESXi for `esxcli`, PowerCLI
+  connected, and a bearer token in `$token` for VCF/NSX API calls.
+- **Cost:** none beyond lab hardware; each lab restores what it changes.
+
+### Lab 13.1 — Troubleshoot the VCF deployment (Objective 5.1)
+
+**Objective:** Diagnose a bring-up failure from Cloud Builder / SDDC Manager
+validation.
+
+```bash
+curl -sk -H "Authorization: Bearer $token" \
+  "https://sddc-manager.lab/v1/system/prechecks" | jq -r '.status'
+grep -iE 'ERROR|FAILED' /var/log/vmware/vcf/domainmanager/*.log | tail -15
+```
+
+**Expected result:** the last precheck `status` and any domain-manager
+errors — the authoritative record of why bring-up or a domain task stopped.
+
+**Negative test:** a "stuck" task with a green precheck and no domain-manager
+error usually lives in a component (vCenter/NSX) below SDDC Manager; the
+clean SDDC log redirects the search.
+
+**Cleanup:** none (read-only).
+
+### Lab 13.2 — Troubleshoot VCF workload domains (Objective 5.3)
+
+**Objective:** Read workload-domain and cluster health across the fleet.
+
+```bash
+curl -sk -H "Authorization: Bearer $token" "https://sddc-manager.lab/v1/domains" \
+  | jq -r '.elements[] | "\(.name)\t\(.status)"'
+```
+
+**Expected result:** each domain's status (`ACTIVE` / `ERROR`); a domain in
+`ERROR` names the failed workload domain to drill into.
+
+**Negative test:** a domain reporting `ACTIVE` while one member host is
+disconnected still degrades capacity — cross-check host state, not just
+domain status.
+
+**Cleanup:** none (read-only).
+
+### Lab 13.3 — Troubleshoot the VCF Operations fleet (Objective 5.4)
+
+**Objective:** Confirm the Operations fleet's collectors are healthy.
+
+```bash
+curl -sk -H "Authorization: vRealizeOpsToken $opsToken" -H 'Accept: application/json' \
+  "https://vcf-ops.lab/suite-api/api/collectors" \
+  | jq -r '.collector[] | "\(.name)\t\(.state)"'
+```
+
+**Expected result:** each collector `RUNNING`; a `DOWN` collector explains a
+fleet-wide gap in metrics and alerting.
+
+**Negative test:** dashboards render but a collector is `DOWN` — stale data
+displayed as current, the trap a collector-state check catches.
+
+**Cleanup:** none (read-only).
+
+### Lab 13.4 — Troubleshoot license management (Objective 5.5)
+
+**Objective:** Find a fleet license nearing capacity or expiry.
+
+```powershell
+Get-View LicenseManager | Select -ExpandProperty Licenses |
+  Select Name, EditionKey, @{N='Used';E={$_.Used}}, @{N='Total';E={$_.Total}}
+```
+
+**Expected result:** license usage across the fleet; `Used` approaching
+`Total`, or an eval edition, is the finding before a feature is disabled.
+
+**Negative test:** an expired NSX license silently blocks new segment
+realization while vSphere keeps running — a partial outage a fleet license
+audit surfaces early.
+
+**Cleanup:** none (read-only).
+
+### Lab 13.5 — Troubleshoot VCF compute (Objective 5.6)
+
+**Objective:** Locate a compute contention hotspot across domains.
+
+```powershell
+Get-Cluster | ForEach-Object {
+  $s = $_ | Get-Stat -Stat cpu.usage.average -Realtime -MaxSamples 1 -ErrorAction SilentlyContinue
+  [pscustomobject]@{ Cluster=$_.Name; CpuPct=[math]::Round(($s.Value|Measure-Object -Average).Average,1) }
+} | Sort-Object CpuPct -Descending
+```
+
+**Expected result:** clusters ranked by CPU usage — the hottest cluster is
+where compute troubleshooting starts.
+
+**Negative test:** low cluster-average CPU can still hide one host at 100%;
+average masks per-host contention, so drill to host stats.
+
+**Cleanup:** none (read-only).
+
+### Lab 13.6 — Troubleshoot VCF storage (Objective 5.7)
+
+**Objective:** Check vSAN health across the fleet's clusters.
+
+```bash
+esxcli vsan health cluster list 2>/dev/null | head -20
+esxcli vsan cluster get | grep -iE 'Health|Members'
+```
+
+**Expected result:** vSAN health checks with pass/warn/fail, and cluster
+membership — a failed check (e.g. disk balance, network) names the storage
+fault.
+
+**Negative test:** a datastore that is full is not a vSAN *health* failure;
+health can be green while capacity is the real problem — different fix.
+
+**Cleanup:** none (read-only).
+
+### Lab 13.7 — Troubleshoot networking (Objective 5.8)
+
+**Objective:** Trace an overlay reachability fault to a transport-node
+tunnel.
+
+```bash
+curl -sk -H "Authorization: Bearer $token" \
+  "https://nsx.lab/api/v1/transport-nodes/status" \
+  | jq -r '.results[] | "\(.node_id)\t\(.status)"' | grep -iv up
+```
+
+**Expected result:** any transport node whose tunnel status is not `UP` —
+the overlay break localized to a specific host or Edge.
+
+**Negative test:** VMs on the same host communicate fine while cross-host
+overlay fails; same-host success hides the tunnel fault a status check
+exposes.
+
+**Cleanup:** none (read-only).
+
+### Lab 13.8 — Troubleshoot VCF Operations (Objective 5.9)
+
+**Objective:** Read active fleet alerts by criticality.
+
+```bash
+curl -sk -H "Authorization: vRealizeOpsToken $opsToken" -H 'Accept: application/json' \
+  "https://vcf-ops.lab/suite-api/api/alerts?activeOnly=true" \
+  | jq -r '.alerts[] | .alertLevel' | sort | uniq -c
+```
+
+**Expected result:** active alerts counted by level — `CRITICAL` counts are
+the queue a support engineer works first.
+
+**Negative test:** clearing symptoms without reading the alert's root-cause
+recommendation lets it re-fire; the alert detail, not just its presence, is
+the fix.
+
+**Cleanup:** none (read-only).
+
+### Lab 13.9 — Troubleshoot VCF identity (Objective 5.10)
+
+**Objective:** Diagnose a broken identity source / SSO login.
+
+```powershell
+Get-IdentitySource | Select Name, Type, @{N='Domain';E={$_.Domain}}
+# confirm the vCenter can reach the identity provider
+Test-NetConnection -ComputerName ad.lab.example -Port 636
+```
+
+**Expected result:** the configured identity sources and a successful LDAPS
+(636) reachability test — a failed connection explains SSO login failures.
+
+**Negative test:** correct identity-source config but a blocked 636 port
+still fails every login; reachability, not configuration, is the fault.
+
+**Cleanup:** none (read-only).
+
+### Lab 13.10 — Troubleshoot workload mobility (Objective 5.11)
+
+**Objective:** Diagnose why a cross-domain vMotion is refused.
+
+```powershell
+$vm = Get-VM lab-mobile
+Get-Cluster | Select Name, EVCMode
+Move-VM -VM $vm -Destination (Get-VMHost | Select -Last 1) -WhatIf
+```
+
+**Expected result:** the target cluster's EVC mode and a `-WhatIf`
+validation; an EVC or network-backing mismatch is reported before the move
+is attempted.
+
+**Negative test:** a VM attached to a segment that does not exist on the
+destination host cannot migrate; the missing port group, not CPU, blocks
+mobility.
+
+**Cleanup:** none (`-WhatIf` performs no migration).
+
+### Lab 13.11 — Layered VCF-support diagnostic workflow (integrative)
+
 **Objective:** Practice a layered, VCF-support-style diagnostic workflow
 across networking, storage, and identity failure domains using this
 volume's ESXi, vCenter Server, and NSX foundations, including deliberately

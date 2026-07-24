@@ -279,6 +279,143 @@ reproductions of any Broadcom exam item)*
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **every testable
+objective harvested from the VCP-VCF Administrator (2V0-17.25) exam guide** —
+Section 2 fundamentals and Section 4 deploy/manage/operate. Each is mapped
+in the volume README's coverage table and ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 14.1–14.6**
+
+- A VMware Cloud Foundation 9.x fleet (or a vSphere+vSAN lab standing in for
+  a workload domain) with vCenter and SDDC Manager / VCF Operations
+  reachable, PowerCLI connected as an administrator. VCF-specific steps use
+  the VCF API where PowerCLI has no cmdlet.
+- **Cost:** none beyond lab hardware; every lab cleans up after itself.
+
+### Lab 14.1 — Private Cloud Vision (Objective 2.1)
+
+**Objective:** Read the fleet's workload-domain layout — the unit of private
+cloud VCF manages.
+
+```powershell
+# via VCF API (SDDC Manager) — token first, then domains
+$dom = Invoke-RestMethod -Uri "https://sddc-manager.lab/v1/domains" `
+  -Headers @{Authorization="Bearer $token"} -SkipCertificateCheck
+$dom.elements | Select name, type, @{N='Clusters';E={$_.clusters.Count}}
+```
+
+**Expected result:** a management domain plus any VI workload domains, each
+with its cluster count — the private-cloud building blocks VCF provisions as
+a unit.
+
+**Negative test:** query a workload domain ID that does not exist; the API
+returns `404`, confirming domains are discrete managed objects, not tags.
+
+**Cleanup:** none (read-only).
+
+### Lab 14.2 — VMware Compute Fundamentals (Objective 2.2)
+
+**Objective:** Inspect a workload-domain cluster's compute and its EVC mode.
+
+```powershell
+Get-Cluster | Select Name, @{N='Hosts';E={($_|Get-VMHost).Count}},
+  HAEnabled, DrsEnabled, EVCMode
+```
+
+**Expected result:** each cluster's host count with HA/DRS state and EVC
+mode — the compute foundation a VCF domain stands on.
+
+**Negative test:** add a host with an older CPU to a cluster whose EVC mode
+is a newer baseline; admission is refused — EVC enforces vMotion
+compatibility across the domain.
+
+**Cleanup:** none (read-only).
+
+### Lab 14.3 — VMware Network Fundamentals (Objective 2.4)
+
+**Objective:** Confirm the distributed switch VCF requires for domain
+networking.
+
+```powershell
+Get-VDSwitch | Select Name, Version,
+  @{N='Uplinks';E={$_.NumUplinkPorts}}, @{N='Hosts';E={($_|Get-VMHost).Count}}
+Get-VDSwitch | Get-VDPortgroup | Select Name, VlanConfiguration -First 8
+```
+
+**Expected result:** a vSphere Distributed Switch spanning the domain's
+hosts with its port groups and VLANs — VCF standardizes on the VDS, not
+per-host standard switches.
+
+**Negative test:** attach a host to the domain with only a standard switch;
+VCF domain networking validation flags it — the VDS is mandatory.
+
+**Cleanup:** none (read-only).
+
+### Lab 14.4 — VCF: Deploy and Configure (Objective 4.1)
+
+**Objective:** Validate a workload-domain add-cluster spec before committing
+it.
+
+```powershell
+$spec = Get-Content ./cluster-spec.json -Raw
+Invoke-RestMethod -Uri "https://sddc-manager.lab/v1/clusters/validations" `
+  -Method Post -Body $spec -ContentType application/json `
+  -Headers @{Authorization="Bearer $token"} -SkipCertificateCheck |
+  Select resultStatus
+```
+
+**Expected result:** `resultStatus: SUCCEEDED` — the declarative cluster
+spec passed validation and is safe to deploy.
+
+**Negative test:** submit a spec whose hosts are not commissioned/available;
+validation returns `FAILED` with the offending host — VCF validates before
+provisioning, not after.
+
+**Cleanup:** none (validation only; no cluster created).
+
+### Lab 14.5 — VCF: Manage (Objective 4.2)
+
+**Objective:** Apply fleet-level RBAC and read the assigned role.
+
+```powershell
+New-VIPermission -Entity (Get-Folder -Name Datacenters) `
+  -Principal 'lab\vcf-admins' -Role (Get-VIRole -Name Admin) -Propagate:$true
+Get-VIPermission | Where-Object {$_.Principal -match 'vcf-admins'} |
+  Select Principal, Role, @{N='Entity';E={$_.Entity.Name}}
+```
+
+**Expected result:** the group granted the fleet-wide Admin role — VCF
+administration delegated consistently across every domain.
+
+**Negative test:** a viewer-role principal attempts to start a domain
+workflow; the API returns `403`, proving role scoping is enforced fleet-wide.
+
+**Cleanup:** `Get-VIPermission | Where-Object {$_.Principal -match 'vcf-admins'} | Remove-VIPermission -Confirm:$false`.
+
+### Lab 14.6 — VCF: Operations (Objective 4.3)
+
+**Objective:** Read active alerts from VCF Operations to run the fleet by
+signal, not by guesswork.
+
+```powershell
+Invoke-RestMethod -Uri "https://vcf-ops.lab/suite-api/api/alerts?activeOnly=true" `
+  -Headers @{Authorization="vRealizeOpsToken $opsToken"; Accept='application/json'} `
+  -SkipCertificateCheck |
+  Select -ExpandProperty alerts | Group-Object criticality | Select Name, Count
+```
+
+**Expected result:** active alerts grouped by criticality — the operational
+health view VCF Operations centralizes across the fleet.
+
+**Negative test:** operate from per-vCenter alarms alone; a fleet-wide
+capacity trend spanning domains is missed — the cross-domain view VCF
+Operations exists to provide.
+
+**Cleanup:** none (read-only).
+
+### Lab 14.7 — Core administrator workflow (integrative)
+
 **Objective:** Practice the core administrator workflow — host
 commissioning prerequisites, workload domain-equivalent cluster creation,
 RBAC layering, and certificate-store inspection — culminating in an

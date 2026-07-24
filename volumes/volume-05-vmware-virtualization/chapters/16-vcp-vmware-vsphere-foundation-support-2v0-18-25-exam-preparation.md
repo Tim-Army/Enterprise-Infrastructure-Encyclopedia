@@ -271,6 +271,195 @@ reproductions of any Broadcom exam item)*
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **every objective in
+the VCP-VVF Support (2V0-18.25) exam guide** — all nine sit in Section 5,
+Troubleshoot and Optimize (5.1–5.9). Each lab reproduces a failure and
+diagnoses it, is mapped in the volume README's coverage table, and ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 16.1–16.9**
+
+- A VVF 9.x lab (vSphere + vSAN, no NSX): vCenter, 2+ ESXi hosts, SSH
+  enabled for `esxcli`, PowerCLI connected as an administrator.
+- **Cost:** none beyond lab hardware; each lab restores what it changes.
+
+### Lab 16.1 — Troubleshoot the VVF deployment (Objective 5.1)
+
+**Objective:** Diagnose a failed host add from the deployment/install logs.
+
+```bash
+# on the ESXi host over SSH
+esxcli system version get
+grep -iE 'error|failed' /var/log/vmkernel.log | tail -20
+```
+
+**Expected result:** the build number and any recent errors — the first
+evidence a support engineer reads when a host will not join.
+
+**Negative test:** an install that appears "stuck" with no vmkernel errors
+points elsewhere (vCenter side); absence of host-side errors is itself a
+diagnostic that redirects the search.
+
+**Cleanup:** none (read-only log inspection).
+
+### Lab 16.2 — Troubleshoot a VVF upgrade (Objective 5.2)
+
+**Objective:** Read remediation status when a Lifecycle Manager upgrade
+stalls.
+
+```powershell
+Get-VMHost | Get-VMHostPatch -ErrorAction SilentlyContinue | Select VMHost, Id
+Get-Cluster | Get-VMHost | Select Name, Version, Build, ConnectionState
+```
+
+**Expected result:** per-host version/build and connection state — hosts
+still on the old build reveal exactly where the upgrade stopped.
+
+**Negative test:** a host in `Maintenance`/`Disconnected` state silently
+blocks cluster remediation; spotting that state is what unblocks the
+upgrade.
+
+**Cleanup:** none (read-only).
+
+### Lab 16.3 — Troubleshoot a VVF cluster (Objective 5.3)
+
+**Objective:** Diagnose why HA is not protecting a cluster.
+
+```powershell
+$c = Get-Cluster | Select -First 1
+$c | Select Name, HAEnabled, @{N='AdmissionControl';E={$_.HAAdmissionControlEnabled}}
+$c | Get-VMHost | Select Name, @{N='HAState';E={($_ | Get-View).Runtime.DasHostState.State}}
+```
+
+**Expected result:** each host's HA agent state (`connectedToMaster` /
+`election`); a host stuck in `uninitialized` or `networkIsolated` is the
+fault.
+
+**Negative test:** disable the management network redundancy and observe a
+host go `networkPartitionedFromMaster` — the split-brain condition HA
+heartbeat datastores exist to resolve.
+
+**Cleanup:** restore management network redundancy.
+
+### Lab 16.4 — Troubleshoot license management (Objective 5.4)
+
+**Objective:** Find an expired or mis-assigned license before it disables
+features.
+
+```powershell
+Get-VMHost | Select Name, LicenseKey,
+  @{N='Product';E={($_ | Get-View).Config.Product.LicenseProductName}}
+Get-View LicenseManager | Select -ExpandProperty Licenses |
+  Select Name, @{N='Used';E={$_.Used}}, @{N='Total';E={$_.Total}}
+```
+
+**Expected result:** license usage vs capacity; an evaluation or over-
+committed license is visible as `Used ≥ Total` or an eval key.
+
+**Negative test:** let a host's evaluation license lapse; vMotion and other
+licensed features stop working — the outage a licensing audit prevents.
+
+**Cleanup:** none (read-only).
+
+### Lab 16.5 — Troubleshoot compute (Objective 5.5)
+
+**Objective:** Isolate CPU contention with live host statistics.
+
+```bash
+# on the ESXi host: read CPU ready time via esxtop batch mode
+esxtop -b -n 1 | awk -F, 'NR==1{for(i=1;i<=NF;i++) if($i ~ /%RDY/) c=i} NR>1{print $1","$c}' | head
+```
+
+**Expected result:** per-world `%RDY` (CPU ready) values; sustained `%RDY`
+above ~10% per vCPU indicates the VM is waiting for physical CPU —
+contention, not a guest problem.
+
+**Negative test:** high in-guest CPU with low `%RDY` means the VM is *using*
+CPU it was given, not being starved — the distinction that redirects the
+fix from the host to the app.
+
+**Cleanup:** none (read-only).
+
+### Lab 16.6 — Troubleshoot storage (Objective 5.6)
+
+**Objective:** Detect an all-paths-down / permanent-device-loss condition.
+
+```bash
+esxcli storage core device list | grep -iE 'Display Name|Status'
+grep -iE 'APD|PDL|lost access' /var/log/vmkernel.log | tail -10
+```
+
+**Expected result:** device operational status and any APD/PDL log entries —
+`off` status or `lost access to volume` pinpoints the failed datastore path.
+
+**Negative test:** a datastore that is merely full (not path-down) shows
+`on` device status with no APD entries; conflating "full" with "unreachable"
+sends the fix in the wrong direction.
+
+**Cleanup:** none (read-only).
+
+### Lab 16.7 — Troubleshoot networks (Objective 5.7)
+
+**Objective:** Trace a lost VMkernel/uplink to an L2 fault.
+
+```bash
+esxcli network nic list                       # uplink link state / speed
+esxcli network ip interface ipv4 get          # vmknic addresses
+vmkping -I vmk0 <gateway>                      # management reachability
+```
+
+**Expected result:** uplinks `Up` at expected speed, vmknics addressed, and
+a successful `vmkping` — a failure at any step localizes the break (NIC,
+VLAN, or gateway).
+
+**Negative test:** `vmkping` fails while the uplink shows `Up`; the link is
+physically fine but the VLAN/port-group tag is wrong — an L2, not L1, fault.
+
+**Cleanup:** none (read-only).
+
+### Lab 16.8 — Troubleshoot VCF Operations (Objective 5.8)
+
+**Objective:** Confirm VCF Operations is collecting from the vCenter adapter.
+
+```powershell
+Invoke-RestMethod -Uri "https://vcf-ops.lab/suite-api/api/adapters" `
+  -Headers @{Authorization="vRealizeOpsToken $opsToken"; Accept='application/json'} `
+  -SkipCertificateCheck | Select -ExpandProperty adapterInstancesInfoDto |
+  Select @{N='Name';E={$_.resourceKey.name}}, @{N='State';E={$_.collectorState}}
+```
+
+**Expected result:** the vCenter adapter in `COLLECTING` state; any adapter
+`DOWN` explains missing metrics and dashboards.
+
+**Negative test:** an adapter with bad credentials shows `DATA_RECEIVING`
+false / `DOWN` — the "no data" symptom traced to authentication, not to the
+metric pipeline.
+
+**Cleanup:** none (read-only).
+
+### Lab 16.9 — Troubleshoot VCF Operations Orchestrator (Objective 5.9)
+
+**Objective:** Diagnose a failed automation workflow from its run log.
+
+```powershell
+Invoke-RestMethod -Uri "https://vcf-orch.lab/vco/api/workflows?conditions=name~deploy" `
+  -Headers @{Authorization="Bearer $orchToken"; Accept='application/json'} `
+  -SkipCertificateCheck | Select -ExpandProperty link
+# then read the latest execution's state and error
+```
+
+**Expected result:** the workflow's latest execution state (`failed`) and
+the failing task's error — the orchestrator surfaces exactly which scripted
+step broke.
+
+**Negative test:** a workflow stuck in `waiting` (not `failed`) is blocked on
+an unanswered user interaction, a different fix than a code error — the
+state tells you which.
+
+**Cleanup:** none (read-only).
+
+### Lab 16.10 — Layered support-engineer diagnostic workflow (integrative)
+
 **Objective:** Practice a layered, support-engineer-style diagnostic
 workflow across compute, storage, and networking failure domains within
 a VVF-scoped (vSphere + vSAN, no NSX) lab environment, including a

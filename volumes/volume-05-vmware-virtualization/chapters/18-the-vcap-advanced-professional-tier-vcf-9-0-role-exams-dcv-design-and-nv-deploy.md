@@ -265,6 +265,491 @@ reproductions of any Broadcom exam item)*
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **every objective in
+the two format-defined VCAP exam guides** — VCAP-NV Deploy (3V0-41.22, ten
+hands-on objectives) and VCAP-DCV Design (3V0-21.23, fourteen design
+objectives). Following the house rule for design exams, the Design
+objectives get **command-driven design walkthroughs** here — each reads the
+real evidence a design decision rests on and records the decision and the
+rejected alternative — *and* a reasoning-only **Design Exercise** section
+below. The eight VCF 9.0 role exams (3V0-11.26 … 3V0-25.25) have no
+published objective guide at press time; Lab 18.25 covers them against
+Broadcom's standardized Deploy/Configure/Operate section. All labs are
+mapped in the volume README's coverage table and end
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 18.1–18.24**
+
+- For the Deploy labs: an NSX 4.x lab reachable at `$NSX` with an
+  `Authorization` header in `$H` (as in Chapter 12). For the Design
+  walkthroughs: read access to a reference VCF/vSphere environment and a
+  requirements document to reason from.
+- **Cost:** none beyond lab hardware; Deploy labs delete what they create,
+  Design walkthroughs are read-only.
+
+**VCAP-NV Deploy (3V0-41.22) — Labs 18.1–18.10**
+
+### Lab 18.1 — Prepare NSX infrastructure (Objective 4.1)
+
+**Objective:** Prepare a cluster as transport nodes with a transport-node
+profile.
+
+```bash
+curl -sk -H "$H" "$NSX/api/v1/transport-node-collections" \
+  | jq -r '.results[] | "\(.display_name)\t\(.state)"'
+curl -sk -H "$H" "$NSX/api/v1/transport-nodes?node_types=HostNode" \
+  | jq -r '.results[] | "\(.display_name)\t\(.node_deployment_info.os_type)"'
+```
+
+**Expected result:** a transport-node collection in `SUCCESS` and host
+transport nodes listed — the prepared fabric an advanced deploy starts from.
+
+**Negative test:** apply a transport-node profile referencing a missing
+uplink profile; preparation fails on that host — profile dependencies are
+validated.
+
+**Cleanup:** none (read-only inspection of an existing prep).
+
+### Lab 18.2 — Create and manage virtual networks (Objective 4.2)
+
+**Objective:** Build a multi-segment overlay topology and confirm
+realization.
+
+```bash
+for s in app db; do
+  curl -sk -X PATCH -H "$H" -H 'Content-Type: application/json' \
+    "$NSX/policy/api/v1/infra/segments/$s-seg" \
+    -d "{\"display_name\":\"$s-seg\",\"connectivity_path\":\"/infra/tier-1s/t1-app\",\"subnets\":[{\"gateway_address\":\"10.20.${s/app/1}.1/24\"}]}"
+done
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/realized-state/status?intent_path=/infra/tier-1s/t1-app" | jq -r '.publish_status'
+```
+
+**Expected result:** both segments realized (`publish_status: REALIZED`) on
+the Tier-1 — a working multi-tier virtual network.
+
+**Negative test:** overlapping subnets on two segments of the same Tier-1
+are rejected at realization — the overlap constraint.
+
+**Cleanup:** delete the two segments.
+
+### Lab 18.3 — Deploy and manage network services (Objective 4.3)
+
+**Objective:** Deploy a Tier-1 load balancer virtual server.
+
+```bash
+curl -sk -X PATCH -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/policy/api/v1/infra/lb-services/lb-app" -d '{"connectivity_path":"/infra/tier-1s/t1-app","size":"SMALL"}'
+curl -sk -X PATCH -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/policy/api/v1/infra/lb-virtual-servers/vs-web" \
+  -d '{"ip_address":"10.20.1.100","ports":["443"],"application_profile_path":"/infra/lb-app-profiles/default-https-lb-app-profile","lb_service_path":"/infra/lb-services/lb-app"}'
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/lb-virtual-servers/vs-web" | jq -r '.ip_address'
+```
+
+**Expected result:** an LB service and a virtual server on `10.20.1.100:443`
+— an L4/L7 network service delivered by NSX.
+
+**Negative test:** attach a virtual server to an LB service on an
+undersized/empty Edge cluster; it never reaches `UP` — Edge capacity gates
+LB deployment.
+
+**Cleanup:** delete the virtual server and LB service.
+
+### Lab 18.4 — Secure a virtual data center (Objective 4.4)
+
+**Objective:** Build a distributed-firewall micro-segmentation policy with a
+default deny.
+
+```bash
+curl -sk -X PATCH -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/policy/api/v1/infra/domains/default/security-policies/app-dfw" \
+  -d '{"category":"Application","rules":[{"id":"web-to-app","display_name":"web-to-app","source_groups":["/infra/domains/default/groups/web"],"destination_groups":["/infra/domains/default/groups/app"],"services":["/infra/services/HTTPS"],"action":"ALLOW"},{"id":"deny","display_name":"deny","action":"DROP"}]}'
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/domains/default/security-policies/app-dfw/rules" | jq -r '.results[] | "\(.display_name)\t\(.action)"'
+```
+
+**Expected result:** an allow for web→app on HTTPS followed by an explicit
+deny — a zero-trust micro-segment.
+
+**Negative test:** place the deny *above* the allow; legitimate web→app
+traffic is dropped — DFW evaluates top-down, so order is the control.
+
+**Cleanup:** delete the security policy.
+
+### Lab 18.5 — Deploy central authentication (Objective 4.6)
+
+**Objective:** Integrate an external identity source (Workspace ONE
+Access/VIDM) for NSX auth.
+
+```bash
+curl -sk -H "$H" "$NSX/policy/api/v1/aaa/vidm" | jq -r '.vidm_enable, .host_name'
+```
+
+**Expected result:** `vidm_enable: true` with the configured host — NSX
+delegates authentication to central SSO.
+
+**Negative test:** a VIDM host with an untrusted certificate fails
+integration; NSX rejects the OAuth handshake — the thumbprint must be
+trusted.
+
+**Cleanup:** none (read-only; do not disable a shared VIDM in a lab).
+
+### Lab 18.6 — Configure Enhanced Data Path (Objective 5.1)
+
+**Objective:** Confirm a segment/host is using the Enhanced Data Path
+(N-VDSe) mode for NFV performance.
+
+```bash
+curl -sk -H "$H" "$NSX/api/v1/transport-nodes/<tn-id>" \
+  | jq -r '.host_switch_spec.host_switches[] | "\(.host_switch_name)\t\(.host_switch_mode)"'
+```
+
+**Expected result:** a host switch reporting `ENS`/`ENS_INTERRUPT` mode —
+the enhanced data path for high-throughput, latency-sensitive workloads.
+
+**Negative test:** run a DPDK-dependent workload on a `STANDARD` host switch;
+throughput falls short — the workload requires the enhanced data path mode.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.7 — Configure Quality of Service (Objective 5.2)
+
+**Objective:** Apply a QoS (traffic-shaping) profile to a segment.
+
+```bash
+curl -sk -X PATCH -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/policy/api/v1/infra/qos-profiles/qos-gold" \
+  -d '{"shaper_configurations":[{"resource_type":"IngressRateShaper","enabled":true,"peak_bandwidth":200,"average_bandwidth":100,"burst_size":102400}]}'
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/qos-profiles/qos-gold" | jq -r '.shaper_configurations[0].average_bandwidth'
+```
+
+**Expected result:** a QoS profile capping average ingress at 100 Mbps —
+per-segment bandwidth control.
+
+**Negative test:** a noisy segment with no QoS profile starves its
+neighbors on a shared uplink; the profile is what bounds it.
+
+**Cleanup:** delete the QoS profile.
+
+### Lab 18.8 — Perform advanced troubleshooting (Objective 6.1)
+
+**Objective:** Capture live packet flow with a port-connection / packet
+capture between two ports.
+
+```bash
+curl -sk -X POST -H "$H" -H 'Content-Type: application/json' \
+  "$NSX/api/v1/tools/tracepacket" \
+  -d '{"source":{"lport_id":"<src>"},"destination":{"lport_id":"<dst>"},"payload":{"resource_type":"FieldsPayload","frame_size":128}}' | jq -r '.id'
+```
+
+**Expected result:** a trace whose observations pinpoint the exact
+component (segment, DFW, gateway) that forwarded or dropped the packet —
+advanced fault isolation.
+
+**Negative test:** guessing from interface counters alone cannot say *which*
+DFW rule dropped a flow; the trace names it.
+
+**Cleanup:** none (diagnostic).
+
+### Lab 18.9 — Perform operational management (Objective 7.1)
+
+**Objective:** Take and verify an NSX Manager configuration backup.
+
+```bash
+curl -sk -X POST -H "$H" "$NSX/api/v1/cluster/backups?action=backup_to_remote"
+curl -sk -H "$H" "$NSX/api/v1/cluster/backups/status" | jq -r '.cluster_backup_statuses[0] | "\(.success)\t\(.end_time)"'
+```
+
+**Expected result:** a backup with `success: true` and a fresh timestamp —
+the operational safety net for the control plane.
+
+**Negative test:** a backup to an unreachable SFTP target returns
+`success: false`; operational management means verifying, not assuming, the
+backup.
+
+**Cleanup:** none.
+
+### Lab 18.10 — Use API and CLI to manage a deployment (Objective 7.2)
+
+**Objective:** Read realized state via the API to script an audit.
+
+```bash
+curl -sk -H "$H" "$NSX/policy/api/v1/infra/realized-state/realized-entities?intent_path=/infra/segments/app-seg" \
+  | jq -r '.results[] | "\(.entity_type)\t\(.state)"'
+```
+
+**Expected result:** each realized entity for the segment and its state —
+the API surface that makes NSX auditable and automatable at scale.
+
+**Negative test:** an intent whose realized entities show `ERROR` while the
+intent object looks fine confirms realization, not intent, is where a
+silent failure hides.
+
+**Cleanup:** none (read-only).
+
+**VCAP-DCV Design (3V0-21.23) — Labs 18.11–18.24 (command-driven design walkthroughs)**
+
+### Lab 18.11 — Differentiate conceptual, logical, and physical design (Objective 1.2)
+
+**Objective:** Read one running design at all three layers to tell them
+apart in practice.
+
+```powershell
+Get-Cluster | Select Name, HAEnabled, DrsEnabled          # logical: what capability
+Get-VMHost | Select Name, Model, ProcessorType, NumCpu    # physical: what hardware
+```
+
+**Decision to record:** the conceptual requirement ("tolerate one host
+failure") → logical choice (HA + N+1) → physical instantiation (host count
+and model). Note where a physical constraint forces a logical change.
+
+**Negative test:** conflating logical and physical — sizing "4 hosts" before
+the requirement is known — produces a design that cannot be justified from
+objectives.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.12 — Describe VMware Cloud Foundation architecture (Objective 2.1)
+
+**Objective:** Read the actual VCF topology a design will extend.
+
+```bash
+curl -sk -H "Authorization: Bearer $token" "https://sddc-manager.lab/v1/domains" \
+  | jq -r '.elements[] | "\(.name)\t\(.type)\t\(.clusters | length) clusters"'
+```
+
+**Decision to record:** whether the design adds a VI workload domain or
+extends the management domain, and why — the VCF architectural boundary the
+design must respect.
+
+**Negative test:** designing workloads onto the management domain violates
+VCF separation of concerns — the architecture constrains the design.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.13 — Describe VMware Validated Solutions architecture (Objective 2.2)
+
+**Objective:** Compare the environment against a Validated Solution's
+prescribed component set.
+
+```bash
+curl -sk -H "Authorization: Bearer $token" "https://sddc-manager.lab/v1/vrslcm" \
+  | jq -r '.status'   # lifecycle-managed solution components
+```
+
+**Decision to record:** which Validated Solution the design follows and any
+justified deviation — VVS gives a proven baseline; deviations must be
+argued, not accidental.
+
+**Negative test:** a bespoke architecture that ignores the relevant
+Validated Solution carries risk the VVS already retired.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.14 — Gather and analyze requirements (Objective 3.1)
+
+**Objective:** Turn stated objectives into classified requirements,
+constraints, assumptions, and risks (RCAR).
+
+```powershell
+# inventory the current state the requirements will be measured against
+Get-VMHost | Measure-Object -Property NumCpu,MemoryTotalGB -Sum |
+  Select Property, Sum
+Get-VM | Measure-Object | Select @{N='VMs';E={$_.Count}}
+```
+
+**Decision to record:** each business objective tagged R/C/A/R with a
+measurable acceptance test. **Negative test:** an unmeasurable requirement
+("must be fast") cannot be designed to or validated — rewrite it as a number
+(p95 latency) before proceeding.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.15 — Create a conceptual model (Objective 3.2)
+
+**Objective:** Express the solution as capabilities, independent of product.
+
+```powershell
+Get-Cluster | Select Name, @{N='Capability';E={'compute-availability'}}
+```
+
+**Decision to record:** the conceptual entities (availability, security,
+management) and their relationships — no product names yet. **Negative
+test:** naming "vSAN" in the conceptual model prematurely binds a physical
+choice a requirement might not support.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.16 — Create a logical design (Objective 3.3)
+
+**Objective:** Map capabilities to logical constructs (clusters, resource
+pools, networks) with justification.
+
+```powershell
+Get-Cluster | Select Name, HAEnabled, DrsEnabled,
+  @{N='FailuresToTolerate';E={($_ | Get-VsanClusterConfiguration).GuestTrimUnmap}} 2>$null
+```
+
+**Decision to record:** the logical cluster/network layout and the
+requirement each element satisfies. **Negative test:** a logical element
+with no traceable requirement is scope creep — remove or justify it.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.17 — Create a physical design (Objective 3.4)
+
+**Objective:** Specify concrete hardware/config that realizes the logical
+design.
+
+```powershell
+Get-VMHost | Select Name, Model, NumCpu,
+  @{N='RAM_GB';E={[math]::Round($_.MemoryTotalGB)}}, @{N='NICs';E={($_|Get-VMHostNetworkAdapter -Physical).Count}}
+```
+
+**Decision to record:** exact host count/model, NIC layout, and datastore
+sizing, each traced to a logical requirement. **Negative test:** a physical
+spec that cannot meet the logical N+1 (e.g. 2 hosts for a 3-host quorum) is
+an invalid design.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.18 — Design for manageability: capacity planning (Objective 3.5)
+
+**Objective:** Read current utilization to size headroom.
+
+```powershell
+Get-Cluster | Get-Stat -Stat cpu.usage.average,mem.usage.average -Realtime -MaxSamples 1 |
+  Group-Object MetricId | Select Name, @{N='AvgPct';E={[math]::Round(($_.Group.Value|Measure-Object -Average).Average,1)}}
+```
+
+**Decision to record:** the target utilization ceiling (e.g. 70%) and the
+capacity buffer it implies. **Negative test:** designing to 100% utilization
+leaves no room for failover or growth — a capacity design must reserve
+headroom.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.19 — Design for manageability: scalability (Objective 3.6)
+
+**Objective:** Confirm the design's scale-out unit and its limits.
+
+```powershell
+Get-Cluster | Select Name, @{N='Hosts';E={($_|Get-VMHost).Count}}, @{N='MaxHosts';E={64}}
+```
+
+**Decision to record:** the scale-out increment (add-host vs add-cluster)
+and the config maximum it approaches. **Negative test:** a design that
+scales only by resizing hosts (scale-up) hits a hard ceiling a scale-out
+unit avoids.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.20 — Design for manageability: lifecycle (Objective 3.7)
+
+**Objective:** Read the lifecycle-management baseline the design must
+sustain.
+
+```powershell
+Get-Cluster | Select Name, @{N='Image';E={($_ | Get-LcmClusterImage).Version}} 2>$null
+```
+
+**Decision to record:** how the design is patched/upgraded (vLCM image vs
+baseline) and the maintenance-window impact. **Negative test:** a design with
+no rollback path for firmware/driver updates risks an unrecoverable upgrade.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.21 — Design for availability (Objective 3.8)
+
+**Objective:** Verify the availability mechanisms satisfy the RTO.
+
+```powershell
+Get-Cluster | Select Name, HAEnabled,
+  @{N='AdmissionControl';E={$_.HAAdmissionControlEnabled}}, @{N='FailoverLevel';E={$_.HAFailoverLevel}}
+```
+
+**Decision to record:** the failures-to-tolerate and admission-control
+policy that meet the stated RTO. **Negative test:** HA enabled but admission
+control disabled means a failover may find no capacity — availability on
+paper only.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.22 — Design for performance (Objective 3.9)
+
+**Objective:** Baseline latency against the performance requirement.
+
+```powershell
+Get-Stat -Entity (Get-Cluster) -Stat 'disk.maxTotalLatency.latest' -Realtime -MaxSamples 5 |
+  Measure-Object Value -Maximum | Select @{N='MaxLatency_ms';E={$_.Maximum}}
+```
+
+**Decision to record:** the observed vs required latency and the design lever
+(all-flash, storage policy, DRS) chosen to close any gap. **Negative test:**
+designing for average latency ignores a p99 that violates the SLA.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.23 — Design for security (Objective 3.10)
+
+**Objective:** Read the current security posture the design must maintain or
+raise.
+
+```powershell
+Get-VMHost | Select Name,
+  @{N='LockdownMode';E={($_ | Get-View).Config.LockdownMode}},
+  @{N='ExecInstalledOnly';E={($_ | Get-AdvancedSetting -Name VMkernel.Boot.execInstalledOnly).Value}}
+```
+
+**Decision to record:** the lockdown mode and secure-boot/execInstalledOnly
+choices, traced to the security requirement. **Negative test:** a design that
+leaves lockdown `disabled` on hosts handling regulated data fails its own
+security objective.
+
+**Cleanup:** none (read-only).
+
+### Lab 18.24 — Design for recoverability (Objective 3.11)
+
+**Objective:** Confirm the backup/replication design meets the RPO.
+
+```powershell
+Get-Cluster | Get-VM | Get-Snapshot | Select VM, Created, SizeGB |
+  Sort-Object Created -Descending | Select -First 5
+```
+
+**Decision to record:** the backup frequency/replication interval that
+satisfies the RPO, and the restore-test cadence. **Negative test:** relying
+on snapshots as "backup" — they share the datastore's fate — fails
+recoverability; the design needs off-array copies.
+
+**Cleanup:** remove any lab snapshots created.
+
+### Lab 18.25 — VCF 9.0 role-exam readiness (3V0-11.26 … 3V0-25.25)
+
+**Objective:** Because the eight VCF 9.0 role exams publish no detailed
+objective guide yet, exercise each role against Broadcom's standardized
+**Deploy/Configure/Operate** section using the matching product surface —
+Administrator/Operations (SDDC Manager + VCF Operations APIs, Chapter 14),
+Architect (design chain, Labs 18.11–18.24), Networking (NSX, Chapter 12),
+Storage (vSAN, Chapter 6), Support (Chapters 13/16), Automation (VCF
+Operations Orchestrator, Lab 16.9), and VKS (vSphere Kubernetes Service).
+
+```bash
+# example — VKS/Supervisor readiness: confirm the Supervisor cluster is running
+curl -sk -H "Authorization: Bearer $token" "https://vcenter.lab/api/vcenter/namespace-management/clusters" \
+  | jq -r '.[] | "\(.cluster)\t\(.config_status)\t\(.kubernetes_status)"'
+```
+
+**Expected result:** for VKS, a Supervisor cluster `RUNNING`/`READY`; for
+each other role, the Deploy/Configure/Operate lab already cited returns its
+healthy baseline — a per-role readiness signal.
+
+**Negative test:** treating a role exam as covered by the VCP of the same
+product understates the advanced tier's depth; re-check against the live
+guide once Broadcom publishes it ([[encyclopedia-cert-currency-check-cadence]]).
+
+**Cleanup:** none (read-only).
+
+### Lab 18.26 — Two-format readiness artifact (integrative)
+
 **Objective:** Produce, without booking any exam, one concrete readiness
 artifact for each of the two advanced-exam formats — a timed Deploy log and
 a defended Design chain — so you can judge which format you are closer to
@@ -312,6 +797,44 @@ ready for.
 5. **Cleanup:** tear down the NSX build to its clean baseline and archive
    (do not discard) the design artifact — it is the seed of a Distinguished
    Expert design document.
+
+## Design Exercise
+
+VCAP-DCV Design (3V0-21.23) is a **design** exam: it rewards reasoning from
+requirements to a defensible architecture, not configuration recall. The
+command-driven walkthroughs above (Labs 18.11–18.24) exercise the evidence
+each decision rests on; this exercise is the reasoning half — no lab
+environment required, only a requirements set and justification.
+
+**Scenario.** A regulated customer needs a VCF 9.0 private cloud for 400
+VMs with these stated objectives: tolerate one host failure with no service
+loss (RTO 0 for HA-restartable workloads), keep management and workload
+domains separated, encrypt data at rest, sustain p99 storage latency under
+5 ms, and recover any workload to within 15 minutes of failure (RPO 15m).
+Budget caps the design at eight hosts total.
+
+**Produce, defending each choice against a rejected alternative:**
+
+1. **Requirements table** — classify each objective above as a requirement,
+   constraint, assumption, or risk (RCAR), and give each a measurable
+   acceptance test.
+2. **Conceptual model** — the capabilities (availability, security,
+   manageability, recoverability) with no product names.
+3. **Logical design** — domain topology, cluster count and roles,
+   failures-to-tolerate, network and storage-policy design; trace each
+   element to a requirement.
+4. **Physical design** — host count/model split across management and
+   workload domains within the eight-host cap, NIC and datastore layout,
+   encryption mechanism (vSAN data-at-rest vs VM encryption).
+5. **Justification and risk** — for at least three decisions, state the
+   alternative you rejected and why. Identify the requirement the eight-host
+   constraint puts most at risk, and the design compromise you make.
+
+**Success looks like:** every physical choice is traceable up through the
+logical and conceptual layers to a stated objective, and no requirement is
+left unaddressed or silently violated by the budget constraint — the
+qualifying-standard a Design exam applies. This artifact is also the seed
+of the VCDX design document ([Chapter 19](19-vcdx-the-distinguished-expert-design-defense-discipline.md)).
 
 ## Lab Verification
 

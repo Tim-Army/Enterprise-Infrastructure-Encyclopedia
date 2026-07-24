@@ -255,6 +255,189 @@ reproductions of any Broadcom exam item)*
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **every testable
+objective in the VCP-VVF Administrator (2V0-16.25) exam guide** — Section 2
+(fundamentals, 2.1–2.4) and Section 4 (deploy/manage/operate/automate,
+4.1–4.4); Sections 1, 3, and 5 carry no testable objectives. Each lab is
+mapped in the volume README's coverage table and ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 15.1–15.8**
+
+- A vSphere Foundation 9.x lab: a vCenter Server managing at least one
+  ESXi 9.x host (nested ESXi is fine), with a datastore and 16+ GB free.
+- PowerCLI connected as an administrator
+  (`Connect-VIServer -Server vcenter01.lab.example`); a few labs also use
+  `esxcli` over SSH to a host.
+- **Cost:** none beyond lab hardware/time; every lab cleans up after itself.
+
+### Lab 15.1 — Virtualization Fundamentals (Objective 2.1)
+
+**Objective:** Show the hypervisor abstraction — physical host resources
+presented to VMs — directly from the host.
+
+```powershell
+Get-VMHost | Select-Object Name,
+  @{N='pCPU';E={$_.NumCpu}}, @{N='pRAM_GB';E={[math]::Round($_.MemoryTotalGB)}}
+Get-VMHost | Get-VM | Measure-Object -Property NumCpu -Sum |
+  Select-Object @{N='Allocated_vCPU';E={$_.Sum}}
+```
+
+**Expected result:** the host's physical CPU/RAM, and a summed vCPU count
+that can **exceed** physical cores — the over-commitment that defines
+virtualization.
+
+**Negative test:** power on VMs whose summed memory *reservations* exceed
+host RAM; the last `Start-VM` fails with an insufficient-resources error —
+over-commitment applies to unreserved capacity only.
+
+**Cleanup:** none (read-only inspection).
+
+### Lab 15.2 — VMware Compute Fundamentals (Objective 2.2)
+
+**Objective:** Create a VM and bound its compute with a resource pool.
+
+```powershell
+$rp = New-ResourcePool -Name vvf-rp -Location (Get-Cluster | Select -First 1) `
+  -CpuLimitMhz 2000 -MemLimitGB 4
+New-VM -Name vvf-c1 -ResourcePool $rp -NumCpu 2 -MemoryGB 2 `
+  -Datastore (Get-Datastore | Select -First 1) -DiskGB 8
+Get-ResourcePool vvf-rp | Select Name,CpuLimitMhz,MemLimitGB
+```
+
+**Expected result:** a resource pool capping CPU at 2000 MHz / 4 GB and a VM
+placed inside it — compute delivered within an enforced boundary.
+
+**Negative test:** raise the VM's CPU reservation above the pool's limit;
+power-on is admission-denied, proving the pool ceiling is enforced.
+
+**Cleanup:** `Remove-VM vvf-c1 -DeletePermanently -Confirm:$false; Remove-ResourcePool vvf-rp -Confirm:$false`.
+
+### Lab 15.3 — VMware Storage Fundamentals (Objective 2.3)
+
+**Objective:** Present and inspect a VMFS datastore.
+
+```powershell
+$h = Get-VMHost | Select -First 1
+$h | Get-Datastore | Select Name,Type,
+  @{N='FreeGB';E={[math]::Round($_.FreeSpaceGB)}}, @{N='CapGB';E={[math]::Round($_.CapacityGB)}}
+$h | Get-ScsiLun -LunType disk | Select CanonicalName,CapacityGB
+```
+
+**Expected result:** the datastores (VMFS/vSAN/NFS) with free vs total
+capacity, and the backing SCSI LUNs — the storage abstraction beneath VM
+disks.
+
+**Negative test:** create a thick-provisioned VMDK larger than datastore
+free space; creation fails, while a thin disk of the same logical size
+succeeds — the provisioning model matters.
+
+**Cleanup:** delete any test VMDK created.
+
+### Lab 15.4 — VMware Network Fundamentals (Objective 2.4)
+
+**Objective:** Create a port group on a standard switch and confirm VM
+reachability to it.
+
+```powershell
+$h = Get-VMHost | Select -First 1
+$vs = $h | Get-VirtualSwitch -Standard | Select -First 1
+New-VirtualPortGroup -VirtualSwitch $vs -Name vvf-pg -VLanId 100
+$h | Get-VirtualPortGroup -Name vvf-pg | Select Name,VLanId,VirtualSwitchName
+```
+
+**Expected result:** a port group `vvf-pg` on VLAN 100 — the VM network
+attachment point.
+
+**Negative test:** attach a VM to `vvf-pg` (VLAN 100) while the physical
+uplink trunks only VLAN 1; the VM has a link but no L2 reachability —
+the VLAN mismatch a fundamentals question tests.
+
+**Cleanup:** `Remove-VirtualPortGroup -VirtualPortGroup (Get-VirtualPortGroup -Name vvf-pg) -Confirm:$false`.
+
+### Lab 15.5 — VVF: Deploy and Configure (Objective 4.1)
+
+**Objective:** Verify a host's post-deployment configuration baseline (NTP,
+services, hostname) — the state a VVF deployment must reach.
+
+```powershell
+$h = Get-VMHost | Select -First 1
+$h | Get-VMHostNtpServer
+$h | Get-VMHostService | Where-Object {$_.Key -in 'ntpd','TSM-SSH'} |
+  Select Key,Running,Policy
+```
+
+**Expected result:** configured NTP servers and the running/policy state of
+core services — the configuration checklist a new host must satisfy.
+
+**Negative test:** an ESXi host with no NTP server drifts; vCenter raises a
+time-synchronization alarm and certificate operations may fail — why NTP is
+a deploy-time requirement.
+
+**Cleanup:** none (inspection; revert any service change made).
+
+### Lab 15.6 — VVF: Manage (Objective 4.2)
+
+**Objective:** Delegate administration with role-based access control.
+
+```powershell
+New-VIPermission -Entity (Get-Datacenter | Select -First 1) `
+  -Principal 'lab\vvf-operators' -Role (Get-VIRole -Name 'VirtualMachinePowerUser') `
+  -Propagate:$true
+Get-VIPermission -Entity (Get-Datacenter | Select -First 1) |
+  Where-Object {$_.Principal -match 'vvf-operators'} | Select Principal,Role,Propagate
+```
+
+**Expected result:** the group granted `VirtualMachinePowerUser` on the
+datacenter, propagating to children — least-privilege delegation.
+
+**Negative test:** a member of that group attempts to delete a host; the
+action is denied (the role lacks host privileges), proving RBAC scoping.
+
+**Cleanup:** `Get-VIPermission -Entity (Get-Datacenter | Select -First 1) | Where-Object {$_.Principal -match 'vvf-operators'} | Remove-VIPermission -Confirm:$false`.
+
+### Lab 15.7 — VVF: Operate (Objective 4.3)
+
+**Objective:** Perform a live migration (vMotion) and confirm zero downtime.
+
+```powershell
+$vm = Get-VM | Where-Object {$_.PowerState -eq 'PoweredOn'} | Select -First 1
+$dest = Get-VMHost | Where-Object {$_.Name -ne $vm.VMHost.Name} | Select -First 1
+Move-VM -VM $vm -Destination $dest
+Get-VM $vm.Name | Select Name, @{N='Host';E={$_.VMHost.Name}}, PowerState
+```
+
+**Expected result:** the VM now runs on the destination host, still
+`PoweredOn` — a running workload relocated with no guest interruption.
+
+**Negative test:** attempt vMotion between hosts with incompatible CPU
+generations and EVC disabled; it fails a compatibility check — the
+constraint EVC exists to remove.
+
+**Cleanup:** none (the VM remains running; migrate back if desired).
+
+### Lab 15.8 — VVF: Consume and Automate (Objective 4.4)
+
+**Objective:** Automate a repeatable operation with PowerCLI and tags.
+
+```powershell
+New-TagCategory -Name vvf-env -Cardinality Single -EntityType VirtualMachine
+New-Tag -Name prod -Category vvf-env
+Get-VM | Select -First 3 | New-TagAssignment -Tag (Get-Tag -Name prod)
+Get-VM -Tag prod | Measure-Object | Select @{N='TaggedVMs';E={$_.Count}}
+```
+
+**Expected result:** three VMs tagged `prod` and a count returned — metadata
+that drives automated, policy-based operations instead of manual selection.
+
+**Negative test:** assign a second `vvf-env` tag to a VM; because the
+category is `Single` cardinality, it is rejected — the guardrail that keeps
+automation deterministic.
+
+**Cleanup:** `Get-Tag -Category vvf-env | Remove-Tag -Confirm:$false; Remove-TagCategory vvf-env -Confirm:$false`.
+
+### Lab 15.9 — Combined administrator-exam self-assessment (integrative)
+
 **Objective:** Execute a combined, timed build-and-troubleshoot exercise
 spanning ESXi/vCenter deployment, networking, vSAN, HA/DRS, and esxtop-
 based performance troubleshooting — the full deploy/configure/operate and

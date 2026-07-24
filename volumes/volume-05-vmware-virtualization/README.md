@@ -474,6 +474,366 @@ currency check that keeps this whole map, the
 and [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md)
 accurate over time.
 
+## Topic-level lab coverage
+
+Every testable objective in all **fourteen** VMware/Broadcom exam guides
+that publish one is covered by a hands-on **walkthrough** lab in this
+volume — **243 topic-level labs** in all, plus one integrative lab per
+exam chapter. Objectives were harvested from the authoritative Broadcom
+exam guides (`docs.broadcom.com`) on 24 July 2026. Labs use PowerCLI,
+`esxcli`, and the NSX / VCF / TCA / vCloud Director REST APIs; each is a
+full walkthrough (command, expected result, a negative test, and cleanup)
+and carries `**Lab verified by:** *pending*` until a human runs it.
+
+Two credentials carry no per-objective labs by design: **VCDX**
+(Chapter 19) is a design-defense credential with no exam and is covered by
+a Design Exercise; the **eight VCF 9.0 role exams** (3V0-11.26 …
+3V0-25.25) publish no objective guide yet and are covered against
+Broadcom's standardized Deploy/Configure/Operate section (Lab 18.25). The
+design exams — VCAP-DCV Design, VCP-VCF Architect — additionally carry a
+reasoning-only Design Exercise alongside their command-driven walkthroughs.
+
+### VCP-NV (2V0-41.24) — 16 objectives
+
+Labs in [Chapter 12](chapters/12-vcp-network-virtualization-2v0-41-24-exam-preparation.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 4.1 Prepare an NSX infrastructure for deployment | Lab 12.1 |
+| 4.2 Configure segments | Lab 12.2 |
+| 4.3 Deploy and configure NSX Edge Nodes | Lab 12.3 |
+| 4.4 Configure the Tier-1 gateway | Lab 12.4 |
+| 4.5 Create and configure a Tier-0 gateway with OSPF | Lab 12.5 |
+| 4.6 Configure the Tier-0 gateway with BGP | Lab 12.6 |
+| 4.7 Configure VRF Lite | Lab 12.7 |
+| 4.8 Configure Network Address Translation (NAT) | Lab 12.8 |
+| 4.9 Deploy Virtual Private Networks | Lab 12.9 |
+| 4.10 Manage users and roles | Lab 12.10 |
+| 4.11 Perform operations tasks in a VMware NSX environment (syslog, backup/restore etc.) | Lab 12.11 |
+| 4.12 Monitor a VMware NSX implementation | Lab 12.12 |
+| 4.13 Use NSX Intelligence | Lab 12.13 |
+| 5.1 Use log files to troubleshoot issues | Lab 12.14 |
+| 5.2 Identify Tools Available for Troubleshooting Issues | Lab 12.15 |
+| 5.3 Troubleshoot Common NSX Issues | Lab 12.16 |
+
+### VCP-VCF Support (2V0-15.25) — 10 objectives
+
+Labs in [Chapter 13](chapters/13-vcp-vmware-cloud-foundation-support-2v0-15-25-exam-preparation.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 5.1 Troubleshooting the Deployment of VMware Cloud Foundation (VCF) - VCF Fleet | Lab 13.1 |
+| 5.3 Troubleshooting a VMware Cloud Foundation Fleet - VCF Workload Domains | Lab 13.2 |
+| 5.4 Troubleshooting a VMware Cloud Foundation Fleet - VCF Operations Fleet Management | Lab 13.3 |
+| 5.5 Troubleshooting a VMware Cloud Foundation Fleet - License Management | Lab 13.4 |
+| 5.6 Troubleshooting a VMware Cloud Foundation Fleet - VCF Compute | Lab 13.5 |
+| 5.7 Troubleshooting a VMware Cloud Foundation Fleet - VCF Storage | Lab 13.6 |
+| 5.8 Troubleshooting a VMware Cloud Foundation Fleet - Networking | Lab 13.7 |
+| 5.9 Troubleshooting a VMware Cloud Foundation Fleet - VCF Operations | Lab 13.8 |
+| 5.10 Given a scenario, troubleshoot issues with VMware Cloud Foundation Identity Broker | Lab 13.9 |
+| 5.11 Troubleshooting VMware Cloud Foundation - Workload Mobility | Lab 13.10 |
+
+### VCP-VCF Administrator (2V0-17.25) — 6 objectives
+
+Labs in [Chapter 14](chapters/14-vcp-vmware-cloud-foundation-administrator-2v0-17-25-exam-preparation.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 2.1 Private Cloud Vision | Lab 14.1 |
+| 2.2 VMware Compute Fundamentals | Lab 14.2 |
+| 2.4 VMware Network Fundamentals | Lab 14.3 |
+| 4.1 VCF: Deploy and Configure | Lab 14.4 |
+| 4.2 VCF: Manage | Lab 14.5 |
+| 4.3 VCF: Operations | Lab 14.6 |
+
+### VCP-VVF Administrator (2V0-16.25) — 8 objectives
+
+Labs in [Chapter 15](chapters/15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 2.1 Virtualization Fundamentals | Lab 15.1 |
+| 2.2 VMware Compute Fundamentals | Lab 15.2 |
+| 2.3 VMware Storage Fundamentals | Lab 15.3 |
+| 2.4 VMware Network Fundamentals | Lab 15.4 |
+| 4.1 VVF: Deploy and Configure (ready to write) | Lab 15.5 |
+| 4.2 VVF: Manage | Lab 15.6 |
+| 4.3 VVF: Operate | Lab 15.7 |
+| 4.4 VVF: Consume and Automate | Lab 15.8 |
+
+### VCP-VVF Support (2V0-18.25) — 9 objectives
+
+Labs in [Chapter 16](chapters/16-vcp-vmware-vsphere-foundation-support-2v0-18-25-exam-preparation.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 5.1 Troubleshooting the Deployment of VMware vSphere Foundation (VVF) Solution | Lab 16.1 |
+| 5.2 Troubleshooting the Deployment of VMware vSphere Foundation (VVF) - VVF Upgrade | Lab 16.2 |
+| 5.3 Troubleshooting a VMware vSphere Foundation (VVF) - Clusters | Lab 16.3 |
+| 5.4 Troubleshooting a VMware vSphere Foundation (VVF) Deployment - License Management | Lab 16.4 |
+| 5.5 Troubleshooting a VMware vSphere Foundation (VVF) Deployment - Compute | Lab 16.5 |
+| 5.6 Troubleshooting a VMware vSphere Foundation (VVF) Deployment - Storage | Lab 16.6 |
+| 5.7 Troubleshooting a VMware vSphere Foundation (VVF) Deployment - Networks | Lab 16.7 |
+| 5.8 Troubleshooting a VMware vSphere Foundation (VVF) - VCF Operations | Lab 16.8 |
+| 5.9 Troubleshooting a VMware vSphere Foundation (VVF) - VCF Operations Orchestrator | Lab 16.9 |
+
+### VCP-DCV (2V0-21.23) — 32 objectives
+
+Labs in [Chapter 17](chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 1.1 Identify the pre-requisites and components for a VMware vSphere 8.x implementation | Lab 17.1 |
+| 1.2 Describe the components and topology of a VMware vCenter architecture | Lab 17.2 |
+| 1.6 Describe VMware vSphere Lifecycle Manager concepts | Lab 17.3 |
+| 1.12 Identify use cases for VMware Tools | Lab 17.4 |
+| 2.1 Describe the role of VMware vSphere in the Software-Defined Data Center | Lab 17.5 |
+| 2.3 Identify use cases for VMware vCenter Converter | Lab 17.6 |
+| 4.3 Configure Virtual Standard Switch (VSS) advanced virtual networking options | Lab 17.7 |
+| 4.5 Deploy and configure VMware vCenter Server Appliance (VCSA) | Lab 17.8 |
+| 4.7 Deploy and configure VMware vCenter High Availability | Lab 17.9 |
+| 4.11 Configure VMware vCenter file-based backup | Lab 17.10 |
+| 4.12 Configure vSphere Trust Authority | Lab 17.11 |
+| 4.14 Configure vSphere Lifecycle Manager | Lab 17.12 |
+| 4.15 Configure different network stacks | Lab 17.13 |
+| 4.16 Configure host profiles | Lab 17.14 |
+| 5.2 Monitor resources of a VMware vCenter Server Appliance (VCSA) and vSphere 8.x environment | Lab 17.15 |
+| 5.3 Identify and use resource monitoring tools | Lab 17.16 |
+| 5.4 Configure Network I/O Control (NIOC) | Lab 17.17 |
+| 5.5 Configure Storage I/O Control (SIOC) | Lab 17.18 |
+| 5.6 Configure a virtual machine port group to be offloaded to a data processing unit (DPU) | Lab 17.19 |
+| 5.7 Explain the performance impact of maintaining virtual machine snapshots | Lab 17.20 |
+| 5.8 Use Update Planner to identify opportunities to update VMware vCenter | Lab 17.21 |
+| 5.10 Use performance charts to monitor performance | Lab 17.22 |
+| 5.11 Perform proactive management with VMware Skyline | Lab 17.23 |
+| 5.12 Use VMware vCenter management interface to update VMware vCenter | Lab 17.24 |
+| 6.1 Identify use cases for enabling vSphere Cluster Services (vCLS) retreat mode | Lab 17.25 |
+| 6.3 Generate a log bundle | Lab 17.26 |
+| 7.1 Create and manage virtual machine snapshots | Lab 17.27 |
+| 7.5 Create DRS affinity and anti-affinity rules for common use cases | Lab 17.28 |
+| 7.7 Configure role-based access control | Lab 17.29 |
+| 7.8 Manage host profiles | Lab 17.30 |
+| 7.10 Use predefined alarms in VMware vCenter | Lab 17.31 |
+| 7.11 Create custom alarms | Lab 17.32 |
+
+### VCP-VCF Architect (2V0-13.25) — 8 objectives
+
+Labs in [Chapter 17](chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 1.1 Differentiate between business and technical requirements | Lab 17.33 |
+| 1.2 Differentiate between a Conceptual Model, logical design and physical design | Lab 17.34 |
+| 1.3 Differentiate between requirements, assumptions, constraints and risks | Lab 17.35 |
+| 1.5 Develop and document a risk mitigation strategy | Lab 17.36 |
+| 1.6 Document design decisions | Lab 17.37 |
+| 1.7 Develop a design validation strategy | Lab 17.38 |
+| 3.1 Gather and analyze business objectives and requirements | Lab 17.39 |
+| 3.2 Given a set of business objectives, create a conceptual model | Lab 17.40 |
+
+### VCP-AVI (6V0-22.25) — 21 objectives
+
+Labs in [Chapter 17](chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 1.2 Identify what it means to have a distributed data plane | Lab 17.41 |
+| 1.3 Identify the tasks performed by the Service Engine in an AVI architecture | Lab 17.42 |
+| 1.4 Identify the characteristics of L4 from a load balancing perspective | Lab 17.43 |
+| 1.5 Identify the characteristics of L7 from a load balancing perspective | Lab 17.44 |
+| 1.7 Identify the characteristics of HA including Active Active/N+M and Active Standby | Lab 17.45 |
+| 1.8 Identify the characteristics of Service Engine Groups | Lab 17.46 |
+| 1.9 Identify the use case for elastic scale out | Lab 17.47 |
+| 1.10 Identify the interaction of objects including virtual service, pool, and virtual IP | Lab 17.48 |
+| 1.11 Identify the features inside an application profile | Lab 17.49 |
+| 1.12 Identify the functions of policy engine | Lab 17.50 |
+| 1.13 Identify how certificate management is conducted | Lab 17.51 |
+| 1.14 Identify the steps to turn on and off a WAF | Lab 17.52 |
+| 1.15 Identify the capacity impact of turning WAF on and off | Lab 17.53 |
+| 5.1 Identify the capacity limitation of the service engine and the service engine group | Lab 17.54 |
+| 5.2 Identify the impact of elastic scale out | Lab 17.55 |
+| 5.3 Identify the performance limitations of real-time analytics and logs | Lab 17.56 |
+| 6.1 Identify the meaning of significant and non-significant logging | Lab 17.57 |
+| 6.3 Identify how to enable real-time analytics | Lab 17.58 |
+| 6.4 Given a scenario about real-time analytics, identify where the problem exists | Lab 17.59 |
+| 6.5 Given a scenario and a health score, interpret the score and what can affect the score | Lab 17.60 |
+| 6.6 Identify how the logs will change when WAF is enabled | Lab 17.61 |
+
+### VCP-PCS (6V0-21.25) — 11 objectives
+
+Labs in [Chapter 17](chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 1 Private Cloud Data Center Security | Lab 17.62 |
+| 2 VMware vDefend Firewall Architecture | Lab 17.63 |
+| 3 VMware vDefend Firewall Management | Lab 17.64 |
+| 6 Planning Application Segmentation with | Lab 17.65 |
+| 9 Gateway Firewall | Lab 17.66 |
+| 10 Security Automation | Lab 17.67 |
+| 11 Security Operations | Lab 17.68 |
+| 12 Role-Based Access Control | Lab 17.69 |
+| 13 Troubleshooting | Lab 17.70 |
+| 14 Advanced Threat Prevention | Lab 17.71 |
+| 16 Malware Prevention Detection | Lab 17.72 |
+
+### VCAP-NV Deploy (3V0-41.22) — 10 objectives
+
+Labs in [Chapter 18](chapters/18-the-vcap-advanced-professional-tier-vcf-9-0-role-exams-dcv-design-and-nv-deploy.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 4.1 Prepare VMware NSX-T Data Center Infrastructure | Lab 18.1 |
+| 4.2 Create and Manage VMware NSX-T Data Center Virtual Networks | Lab 18.2 |
+| 4.3 Deploy and Manage VMware NSX-T Data Center Network Services | Lab 18.3 |
+| 4.4 Secure a virtual data center with VMware NSX-T Data Center | Lab 18.4 |
+| 4.6 Deploy and Manage Central Authentication (Workspace ONE access) | Lab 18.5 |
+| 5.1 Configure and Manage Enhanced Data Path (N-VDSe) | Lab 18.6 |
+| 5.2 Configure and Manage Quality of Service (QoS) settings | Lab 18.7 |
+| 6.1 Perform Advanced VMware NSX-T Data Center Troubleshooting | Lab 18.8 |
+| 7.1 Perform Operational Management of a VMware NSX-T Data Center Implementation | Lab 18.9 |
+| 7.2 Utilize API and CLI to manage a VMware NSX-T Data Center Deployment | Lab 18.10 |
+
+### VCAP-DCV Design (3V0-21.23) — 14 objectives
+
+Labs in [Chapter 18](chapters/18-the-vcap-advanced-professional-tier-vcf-9-0-role-exams-dcv-design-and-nv-deploy.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 1.2 Differentiate conceptual, logical, and physical design | Lab 18.11 |
+| 2.1 Describe VMware Cloud Foundation architecture | Lab 18.12 |
+| 2.2 Describe VMware Validated Solutions architecture | Lab 18.13 |
+| 3.1 Gather and analyze business objectives and requirements | Lab 18.14 |
+| 3.2 Create a conceptual model | Lab 18.15 |
+| 3.3 Create a logical design | Lab 18.16 |
+| 3.4 Create a physical design | Lab 18.17 |
+| 3.5 Design for manageability: capacity planning | Lab 18.18 |
+| 3.6 Design for manageability: scalability | Lab 18.19 |
+| 3.7 Design for manageability: lifecycle management | Lab 18.20 |
+| 3.8 Design for availability | Lab 18.21 |
+| 3.9 Design for performance | Lab 18.22 |
+| 3.10 Design for security | Lab 18.23 |
+| 3.11 Design for recoverability | Lab 18.24 |
+
+### Telco Cloud Automation (5V0-44.21) — 42 objectives
+
+Labs in [Chapter 20](chapters/20-vmware-telco-cloud-and-keeping-the-certification-program-current.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 1.1 Identify the role of TCA within the NFV architecture | Lab 20.1 |
+| 1.2 Identify the role of OVF within a network function | Lab 20.2 |
+| 1.3 Identify the role of Helm chart with a CNF | Lab 20.3 |
+| 1.4 Identify the characteristics of Life Cycle Management events | Lab 20.4 |
+| 1.5 Identify the characteristics of self-healing | Lab 20.5 |
+| 2.1 Identify the characteristics of the distributed architecture of VMware TCA | Lab 20.6 |
+| 2.2 Identify why a VMware TCP control plane element is required | Lab 20.7 |
+| 2.4 Identify the steps needed to integrate a VIM infrastructure | Lab 20.8 |
+| 2.5 Identify how to integrate vRO with virtual infrastructures | Lab 20.9 |
+| 2.6 Identify how tags are used in VMware Telco Cloud Automation | Lab 20.10 |
+| 3.1 Identify how to verify the appropriate URL for connecting to a VIM | Lab 20.11 |
+| 3.2 Identify the steps to configure a compute profile for a given VIM | Lab 20.12 |
+| 4.1 Identify business benefits of automated CaaS deployment | Lab 20.13 |
+| 4.2 Identify the differences between Kubernetes and VMware Tanzu Kubernetes Grid architectures | Lab 20.14 |
+| 4.3 Identify the differences between the TKG cluster types | Lab 20.15 |
+| 4.4 Identify the steps to deploy a Management cluster | Lab 20.16 |
+| 4.5 Identify the steps to deploy a Workload cluster | Lab 20.17 |
+| 4.6 Identify the steps to scale a node pool | Lab 20.18 |
+| 4.7 Identify the prerequisites to deploy CaaS with no internet connectivity | Lab 20.19 |
+| 5.1 Identify the steps to integrate Harbor with TCA | Lab 20.20 |
+| 6.1 Identify the business benefit of infrastructure automation | Lab 20.21 |
+| 6.2 Identify the characteristics of infrastructure automation versioning | Lab 20.22 |
+| 7.1 Identify the differences between the roles of network services and network functions | Lab 20.23 |
+| 7.2 Identify the differences between a CNF and VNF | Lab 20.24 |
+| 7.3 Identify the characteristics of NFD and NSD | Lab 20.25 |
+| 7.4 Given a descriptor, identify the attribute | Lab 20.26 |
+| 7.5 Identify the steps to onboard a network function | Lab 20.27 |
+| 7.6 Identify the prerequisites for onboarding a network service | Lab 20.28 |
+| 7.7 Identify the role of late binding | Lab 20.29 |
+| 7.9 Identify the steps to instantiate a VNF network function | Lab 20.30 |
+| 7.11 Identify the characteristics of the network function inventory | Lab 20.31 |
+| 8.1 Identify the role of a VMware vCenter Server® system in credential management | Lab 20.32 |
+| 8.2 Identify the steps in creating a role within TCA | Lab 20.33 |
+| 8.3 Identify the steps in creating a permission within TCA | Lab 20.34 |
+| 8.4 Identify the steps to modify a permission to include tag-based filtering within TCA | Lab 20.35 |
+| 9.1 Identify the steps required after upgrading VMware Telco Cloud Automation | Lab 20.36 |
+| 9.2 Identify the key life cycle management events for a VNF | Lab 20.37 |
+| 9.3 Identify the key life cycle management events for a CNF | Lab 20.38 |
+| 9.4 Identify the key life cycle management events for a NS | Lab 20.39 |
+| 9.5 Identify the differences between performing a CNF update and a VNF update | Lab 20.40 |
+| 9.6 Identify the characteristics of performing healing on a network function | Lab 20.41 |
+| 10.4 Given a system problem, identify the log that should be viewed to troubleshoot the problem | Lab 20.42 |
+
+### Telco Cloud NFV (5V0-37.22) — 31 objectives
+
+Labs in [Chapter 20](chapters/20-vmware-telco-cloud-and-keeping-the-certification-program-current.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 1.1 Identify the key functions of Telco Cloud | Lab 20.43 |
+| 1.2 Identify the components of the VMware Telco Cloud Infrastructure architecture | Lab 20.44 |
+| 1.3 Identify valid VMware Telco Cloud Infrastructure deployment options | Lab 20.45 |
+| 1.4 Identify the function of components of the VMware Cloud Director architecture | Lab 20.46 |
+| 2.2 Identify the key VMware components that are part of VMware Cloud Director | Lab 20.47 |
+| 3.1 Identify characteristics of physical and virtual infrastructures | Lab 20.48 |
+| 3.2 Identify the advantages and components of the NFV infrastructure (NFVI) | Lab 20.49 |
+| 3.3 Identify the function of network virtualization in the NFVI | Lab 20.50 |
+| 3.4 Identify requirements of NFVI on VMware Cloud Director | Lab 20.51 |
+| 3.5 Identify key networking use cases | Lab 20.52 |
+| 3.6 Identify the storage options of VMware Cloud Director | Lab 20.53 |
+| 4.2 Identify the function of resource pools | Lab 20.54 |
+| 4.3 Identify the functional characteristics of vSAN storage polices | Lab 20.55 |
+| 4.4 Identify how compute resources are provided to VMware Cloud Director | Lab 20.56 |
+| 4.5 Identify how storage resources are provided to VMware Cloud Director | Lab 20.57 |
+| 4.6 Identify characteristics of VMware Cloud Director organizations | Lab 20.58 |
+| 4.7 Identify characteristics of VMware Cloud Director organization VDC | Lab 20.59 |
+| 4.8 Identify characteristics of organization VDC allocation models | Lab 20.60 |
+| 4.9 Identify characteristics of types of resources that can be allocated | Lab 20.61 |
+| 4.11 Identify the process of adding and modifying elements in the catalog | Lab 20.62 |
+| 4.12 Identify the characteristics of vApps | Lab 20.63 |
+| 4.14 Identify key networking use cases in VMware Cloud Director | Lab 20.64 |
+| 4.17 Identify characteristics of the architecture of VMware NSX-T Data Center | Lab 20.65 |
+| 4.18 Identify the function of VMware Cloud Director supported features of NSX-T Data Center | Lab 20.66 |
+| 4.19 Identify the benefits and challenges of networking between VDCs | Lab 20.67 |
+| 5.1 Identify the function of key resources that need to be managed with VMware Cloud Director | Lab 20.68 |
+| 5.2 Identify the characteristics of features of vRealize Operations Manager | Lab 20.69 |
+| 5.3 Identify the purpose of the vRealize Operations Tenant App for VMware Cloud Director | Lab 20.70 |
+| 5.4 Identify the steps to monitor VMware Cloud Director environments with vRealize Log Insight | Lab 20.71 |
+| 6.3 Identify the use of logs in VMware Cloud Director | Lab 20.72 |
+| 7.1 Identify the characteristics of role-based access | Lab 20.73 |
+
+### Telco Cloud Platform (5V0-36.22) — 25 objectives
+
+Labs in [Chapter 20](chapters/20-vmware-telco-cloud-and-keeping-the-certification-program-current.md#hands-on-lab).
+
+| Objective | Lab |
+| --- | --- |
+| 1.1 Identify the characteristics of the architecture of VMware Telco Cloud Platform | Lab 20.74 |
+| 1.2 Identify the characteristics of the VMware Telco Cloud Automation architecture | Lab 20.75 |
+| 1.3 Identify the characteristics of VMware Telco Cloud Automation deployment options | Lab 20.76 |
+| 1.4 Identify the characteristics of the vSphere architecture | Lab 20.77 |
+| 2.1 Identify the key VMware components that are part of vSphere | Lab 20.78 |
+| 2.2 Identify the characteristics of the networking options of vSphere | Lab 20.79 |
+| 2.3 Identify the characteristics of the storage options of vSphere | Lab 20.80 |
+| 2.4 Identify the role of containers in VMware Telco Cloud Platform | Lab 20.81 |
+| 2.5 Identify the characteristics of the Kubernetes architecture | Lab 20.82 |
+| 2.6 Identify the role of nodes and clusters | Lab 20.83 |
+| 2.7 Identify the supporting components of Kubernetes | Lab 20.84 |
+| 2.8 Identify the characteristics of the architecture of Tanzu Kubernetes Grid | Lab 20.85 |
+| 2.9 Identify the characteristics of the types of network functions | Lab 20.86 |
+| 2.11 Identify the key vSphere operations for VNFs | Lab 20.87 |
+| 2.12 Identify the special requirements of containers for network functions | Lab 20.88 |
+| 2.13 Identify the type of descriptors for containers | Lab 20.89 |
+| 2.14 Identify the role of Harbor | Lab 20.90 |
+| 4.1 Identify the requirements for infrastructure | Lab 20.91 |
+| 4.2 Identify the process of deploying VMs | Lab 20.92 |
+| 4.3 Identify VM onboarding requirements | Lab 20.93 |
+| 4.4 Identify the CNF requirements for onboarding | Lab 20.94 |
+| 5.1 Identify the characteristics of the key concepts like late binding | Lab 20.95 |
+| 6.4 Identify how to use logs in VMware Telco Cloud Platform | Lab 20.96 |
+| 6.5 Identify the functionality of the CLI tools that can be used for troubleshooting | Lab 20.97 |
+| 7.1 Identify characteristics of the VNF life cycle management | Lab 20.98 |
+
 ## Software and platform baseline
 
 Chapters in this volume reference the dated baseline recorded in
