@@ -167,17 +167,144 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Using the UCS Platform Emulator (and the Intersight free tier where
-available): build the full composition — pools with fabric-encoded
-naming, SAN-boot policy, user-ack maintenance policy, vNIC/vHBA
-templates with jumbo MTU on storage vNICs, a service profile template
-— and associate two profiles to emulated blades. Demonstrate
-statelessness: disassociate a profile and re-associate it to a
-different blade, capturing identical identities before and after.
-Then break association deliberately with a conflicting host firmware
-package and read the FSM failure; repair it. Claim the emulator into
-Intersight (where licensing permits) and pull the same inventory via
-the API.
+This chapter carries a topic-level walkthrough lab for **every objective in
+Domain 2 (Compute) of the DCCOR 350-601 v1.2 exam guide** — rack and blade
+UCS, UCS-X in Intersight Managed Mode, firmware, backup, and monitoring —
+mapped in the volume README's coverage tables. Labs use the UCS Manager CLI
+(`connect nxos`/scope) and the Intersight REST API. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 4.1–4.6** — a UCS domain managed by UCS
+Manager reachable at `$UCSM` (or a UCS-X domain claimed to Intersight), an
+Intersight API key pair in `$IK`/`$IS`, and a management station with the
+Intersight CLI or `curl`. **Cost:** none beyond lab resources.
+
+### Lab 4.1 — Implement UCS rack servers (Objective 2.1)
+
+**Objective:** Read a rack server's inventory and its service-profile binding.
+
+```text
+scope server 1
+show inventory
+show assoc
+```
+
+**Expected result:** the rack server's CPU/DIMM/adapter inventory and its
+associated service profile — the profile is what makes the hardware
+stateless and reproducible.
+
+**Negative test:** attempt to change a MAC on the server directly; UCS blocks
+it — identity comes from the service profile, not the hardware.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.2 — Implement UCS blade chassis (Objective 2.2)
+
+**Objective:** Verify chassis and fabric-extender discovery.
+
+```text
+scope chassis 1
+show inventory expand
+connect nxos a
+show fex
+```
+
+**Expected result:** the chassis with its blades and IO modules, and the FEX
+list from the fabric interconnect — the chassis presents blades to the FIs
+through the IOMs.
+
+**Negative test:** with only one link from an IOM to its FI, the discovery
+policy (if set to 2/4/8-link) marks the chassis under-provisioned — link
+count must meet the policy.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.3 — Explain UCS-X in Intersight Managed Mode (Objective 2.3)
+
+**Objective:** Read a UCS-X domain and a server profile from Intersight.
+
+```bash
+curl -s --cert-type PEM \
+  -H "X-Starship-Api-Key: $IK" \
+  "https://intersight.com/api/v1/compute/PhysicalSummaries?\$select=Name,ManagementMode,Model" \
+  | jq -r '.Results[] | "\(.Name) \(.ManagementMode) \(.Model)"'
+```
+
+**Expected result:** UCS-X servers with `ManagementMode: Intersight` — IMM
+moves policy from on-prem UCS Manager to the Intersight SaaS control plane.
+
+**Negative test:** query a domain still in UCSM-managed mode; `ManagementMode`
+reads `UCSM`, and Intersight server-profile operations are unavailable — the
+mode gates which control plane owns the domain.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.4 — Describe firmware updates and their impacts (Objective 2.4)
+
+**Objective:** Read the firmware host-pack and bundle version before an update.
+
+```text
+scope org
+scope fw-host-pack default
+show version
+scope firmware
+show package
+```
+
+**Expected result:** the host firmware package version pinned to profiles and
+the available bundles — updating the host pack triggers a server reboot, so
+its impact is a maintenance-window event.
+
+**Negative test:** stage a host-pack change on an associated profile without a
+maintenance policy set to `user-ack`; UCS would reboot immediately — the
+negative shows why a maintenance policy gates disruptive firmware.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.5 — Implement compute configuration management: backup and restore (Objective 2.5)
+
+**Objective:** Trigger a full-state and an all-configuration backup.
+
+```text
+scope system
+create backup scp 10.0.0.50 /backups/ucs-fullstate.tar.gz enabled full-state
+set user backupadmin
+set remote-file /backups/ucs-fullstate.tar.gz
+commit-buffer
+show backup detail
+```
+
+**Expected result:** the backup job completing with a timestamp —
+`full-state` is a binary snapshot for disaster recovery; `all-configuration`
+is an importable XML for cloning a domain.
+
+**Negative test:** attempt a full-state *import* onto a running FI; UCS
+refuses — full-state restore requires an FI in a clean/erased state.
+
+**Cleanup:** `delete backup ...` for the test job.
+
+### Lab 4.6 — Implement infrastructure monitoring with SPAN and Intersight (Objective 2.6)
+
+**Objective:** Configure a UCS traffic-monitoring session and read health from
+Intersight.
+
+```text
+scope eth-traffic-mon
+scope fabric a
+create eth-mon-session SPAN1
+create dest-interface 1 25
+commit-buffer
+show eth-mon-session
+```
+
+**Expected result:** the monitoring session mirroring server traffic to a
+destination uplink — UCS's SPAN equivalent — plus, from Intersight,
+`compute/PhysicalSummaries` health showing each server `Healthy`.
+
+**Negative test:** target a SPAN destination that is a live server uplink; UCS
+rejects it — the destination must be a dedicated monitoring port.
+
+**Cleanup:** `delete eth-mon-session SPAN1 ; commit-buffer`.
 
 ## Lab Verification
 

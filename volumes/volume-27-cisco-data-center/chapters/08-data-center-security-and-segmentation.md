@@ -176,15 +176,90 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Harden the volume's running estate: render the NX-OS baseline via the
-Chapter 06 role onto all fabric nodes (idempotent, assert-checked);
-configure TACACS+ (or the lab's AAA stand-in) with a tested
-break-glass; enable BPDU Guard/storm control on host ports and
-demonstrate a violation event; in the ACI sandbox, create a uSeg EPG
-that captures a workload by attribute and prove policy followed it;
-and produce the prove-the-negative artifact set — cross-VRF route
-absence, contract drop counters, and a management-plane scan from
-workload space showing nothing listening.
+This chapter carries a topic-level walkthrough lab for **every objective in
+Domain 5 (Security) of the DCCOR 350-601 v1.2 exam guide** — network, compute,
+and storage security — mapped in the volume README's coverage tables. Labs use
+the NX-OS, UCS, and MDS CLIs. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
+
+**Shared prerequisites for Labs 8.1–8.3** — the fabric from earlier chapters
+(Nexus leaves, a UCS domain, an MDS/FC fabric), management reachability, and
+admin credentials. **Cost:** none beyond lab resources.
+
+### Lab 8.1 — Apply network security (Objective 5.1)
+
+**Objective:** Enforce a control-plane and data-plane guard on a Nexus leaf —
+CoPP and a port ACL — and confirm the fabric-facing hardening.
+
+```text
+show policy-map interface control-plane | include "class-map|dropped"
+show access-lists summary
+config t
+ ip access-list HOST-IN
+  10 permit ip 10.20.1.0/24 any
+  20 deny ip any any log
+ interface ethernet 1/10
+  ip port access-group HOST-IN in
+end
+show ip access-lists HOST-IN
+```
+
+**Expected result:** CoPP classes protecting the supervisor with drop counters
+under attack, and the port ACL permitting only the host subnet — the two layers
+that protect the control plane and segment the data plane on a leaf.
+
+**Negative test:** source traffic from outside `10.20.1.0/24`; ACL entry 20
+drops and logs it — the default-deny is what makes the ACL a control, not a
+comment.
+
+**Cleanup:** remove `HOST-IN` from the interface and delete the ACL.
+
+### Lab 8.2 — Apply compute security (Objective 5.2)
+
+**Objective:** Harden the UCS management plane — RBAC, secure protocols, and
+KVM/IPMI restrictions.
+
+```text
+scope security
+ show authentication
+ show role
+scope system
+ scope services
+  show telnet   ! should be disabled
+  show ssh-server
+```
+
+**Expected result:** authentication bound to a AAA/LDAP realm, roles scoped to
+least privilege, Telnet disabled, and SSH enabled — the UCS management-plane
+hardening that protects service-profile and firmware operations.
+
+**Negative test:** enable Telnet (`scope services ; enable telnet`); management
+credentials now traverse in clear text — the negative shows why only SSH/HTTPS
+belong on the management plane. Disable it again immediately.
+
+**Cleanup:** confirm Telnet remains disabled; revert any test change.
+
+### Lab 8.3 — Apply storage security (Objective 5.3)
+
+**Objective:** Verify SAN access controls — single-initiator zoning, port
+security, and (optionally) FC-SP authentication.
+
+```text
+show zoneset active vsan 100 | include "zone name|pwwn"
+show port-security status vsan 100
+show fcsp interface fc1/1 2>/dev/null || show fcsp database
+```
+
+**Expected result:** single-initiator zones (one host pWWN per zone), port
+security binding devices to ports, and FC-SP/DHCHAP authenticating the ISL or
+host — the layered SAN access model (zoning + port security + authentication).
+
+**Negative test:** add a second initiator to an existing zone; hosts can now
+see each other's targets — the multi-initiator zone is the classic storage
+security anti-pattern this objective tests.
+
+**Cleanup:** restore single-initiator zoning; remove any test port-security
+entries.
 
 ## Lab Verification
 

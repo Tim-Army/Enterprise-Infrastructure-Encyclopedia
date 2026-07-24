@@ -172,16 +172,421 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-On the DevNet always-on APIC sandbox (or ACI Simulator): build
-TENANT-A with VRF, two BDs with gateways, WEB and APP EPGs, and a
-contract permitting only TCP/8080 WEB→APP. Verify with the EP tracker
-and the leaf zoning-rule table that the contract rendered. Add an
-L3Out simulation (static route external EPG) and attach a contract to
-expose WEB externally. Then reproduce the two classic faults: delete
-the contract and capture the drop plus the zoning-rule change; remove
-the EPG's domain association and capture the fault the APIC raises.
-Export the tenant configuration as JSON — it becomes Chapter 06's
-automation input.
+This chapter carries a topic-level walkthrough lab for **every objective in
+the DCACI 300-620 v1.2 exam guide** — all six domains, from fabric
+infrastructure through ACI Anywhere — mapped in the volume README's coverage
+tables. Labs use the APIC CLI (`moquery`), the APIC REST API (`icurl` on the
+controller, `curl` remotely), and the object model. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 3.1–3.21** — an ACI fabric with at least one
+APIC reachable at `$APIC`, two leaves and one spine discovered, an API token
+in `$TOK` (from `aaaLogin`), and a VMM domain (vCenter) for the integration
+labs. `icurl` runs on the APIC; remote calls use `curl -k`. **Cost:** none
+beyond lab resources.
+
+### Lab 3.1 — Describe ACI architecture (Objective 1.1)
+
+**Objective:** Read the fabric's node inventory (spines, leaves, APICs).
+
+```text
+moquery -c fabricNode | egrep 'name|role|model' | head
+```
+
+**Expected result:** each node with `role` of `spine`, `leaf`, or
+`controller` — the Clos fabric where policy lives on the APIC cluster and is
+rendered into leaf/spine hardware.
+
+**Negative test:** `moquery -c fabricNode -f 'fabric.Node.role=="border"'`
+returns nothing — roles are a closed set; there is no "border" node role in
+ACI (border leaves are ordinary leaves with an L3Out).
+
+**Cleanup:** none (read-only).
+
+### Lab 3.2 — Describe the ACI Object Model (Objective 1.2)
+
+**Objective:** Walk the Management Information Tree (MIT) from a tenant down.
+
+```text
+moquery -c fvTenant -f 'fv.Tenant.name=="PROD"'
+moquery -c fvAEPg | grep dn | head
+```
+
+**Expected result:** the tenant object and the distinguished names (`dn`) of
+its EPGs, e.g. `uni/tn-PROD/ap-APP/epg-WEB` — every ACI object has a unique
+`dn` locating it in the tree.
+
+**Negative test:** query a class name with a typo (an extra letter); the APIC
+returns an error, not an empty set — the class must exist in the model.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.3 — Utilize faults, events, audit log, and health score (Objective 1.3)
+
+**Objective:** Read active faults and the fabric health score.
+
+```text
+moquery -c faultInst -f 'fault.Inst.severity=="critical"' | grep -E 'descr|dn' | head
+moquery -c fabricHealthTotal
+```
+
+**Expected result:** any critical faults with their `dn` and description, and
+the overall health score (0–100) — ACI's built-in operational telemetry, no
+external NMS required.
+
+**Negative test:** disable an interface bound to an EPG; within seconds a
+fault appears and the affected object's health score drops — faults are
+event-driven, not polled.
+
+**Cleanup:** re-enable the interface; confirm the fault clears and health
+recovers.
+
+### Lab 3.4 — Describe ACI fabric discovery (Objective 1.4)
+
+**Objective:** Confirm nodes were discovered and registered via LLDP/DHCP.
+
+```text
+moquery -c dhcpClient | egrep 'name|nodeRole|state' | head
+moquery -c fabricNode -f 'fabric.Node.fabricSt=="active"' | grep -c dn
+```
+
+**Expected result:** discovered nodes in `state: assigned` with a fabric
+membership, and the count of `active` nodes — the APIC discovers the fabric
+through LLDP neighbors and infra-VLAN DHCP.
+
+**Negative test:** a node cabled but not registered shows `state: unsupported`
+or missing from `fabricNode` until you accept it — discovery proposes,
+the admin registers.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.5 — Implement ACI policies (Objective 1.5)
+
+**Objective:** Create a tenant with an application profile via REST.
+
+```text
+icurl -k -X POST 'https://localhost/api/mo/uni.json' -d '
+{"fvTenant":{"attributes":{"name":"LAB"},"children":[
+ {"fvAp":{"attributes":{"name":"APP"}}}]}}'
+moquery -c fvAp -f 'fv.Ap.name=="APP"'
+```
+
+**Expected result:** the POST returns `imdata: []` (success) and the app
+profile is queryable under `uni/tn-LAB/ap-APP` — policy created declaratively.
+
+**Negative test:** POST the same tenant with an illegal name (spaces); the
+APIC rejects it with a naming-policy error — the model enforces object naming.
+
+**Cleanup:** `icurl -k -X POST 'https://localhost/api/mo/uni/tn-LAB.json' -d
+'{"fvTenant":{"attributes":{"name":"LAB","status":"deleted"}}}'`.
+
+### Lab 3.6 — Implement ACI logical constructs (Objective 1.6)
+
+**Objective:** Build the EPG → BD → VRF chain a workload needs.
+
+```text
+icurl -k -X POST 'https://localhost/api/mo/uni/tn-LAB.json' -d '
+{"fvTenant":{"attributes":{"name":"LAB"},"children":[
+ {"fvCtx":{"attributes":{"name":"VRF1"}}},
+ {"fvBD":{"attributes":{"name":"BD1"},"children":[
+   {"fvRsCtx":{"attributes":{"tnFvCtxName":"VRF1"}}}]}},
+ {"fvAp":{"attributes":{"name":"APP"},"children":[
+   {"fvAEPg":{"attributes":{"name":"WEB"},"children":[
+     {"fvRsBd":{"attributes":{"tnFvBDName":"BD1"}}}]}}]}}]}}'
+moquery -c fvRsBd -f 'fv.RsBd.tnFvBDName=="BD1"'
+```
+
+**Expected result:** the EPG `WEB` bound to `BD1`, which is bound to `VRF1` —
+the endpoint/bridge-domain/context hierarchy that replaces VLAN/SVI/VRF.
+
+**Negative test:** create an EPG whose `fvRsBd` names a nonexistent BD; a
+fault (`resolvable`) appears until the BD exists — ACI relationships are
+validated.
+
+**Cleanup:** delete tenant `LAB` as in Lab 3.5.
+
+### Lab 3.7 — Describe endpoint learning (Objective 2.1)
+
+**Objective:** Read a learned endpoint's MAC/IP and its location.
+
+```text
+moquery -c fvCEp | egrep 'mac|ip|dn' | head
+moquery -c fvRsCEpToPathEp | grep tDn | head
+```
+
+**Expected result:** endpoints (`fvCEp`) with MAC, IP, and the path
+(leaf/port) where they were learned — the COOP database the spines maintain.
+
+**Negative test:** move a host to another leaf and re-query; the path updates
+and the stale entry ages out — endpoint moves are learned, not flooded.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.8 — Implement bridge domain settings (Objective 2.2)
+
+**Objective:** Tune a BD's unicast routing and flooding behavior.
+
+```text
+icurl -k -X POST 'https://localhost/api/mo/uni/tn-LAB/BD-BD1.json' -d '
+{"fvBD":{"attributes":{"name":"BD1","unicastRoute":"yes",
+ "arpFlood":"no","unkMacUcastAct":"proxy"}}}'
+moquery -c fvBD -f 'fv.BD.name=="BD1"' | egrep 'arpFlood|unkMacUcastAct|unicastRoute'
+```
+
+**Expected result:** `unicastRoute: yes`, `arpFlood: no`, and
+`unkMacUcastAct: proxy` — the spine-proxy hardware forwarding that avoids
+flooding unknown unicast.
+
+**Negative test:** set `unkMacUcastAct: flood` with a silent host; traffic
+floods the BD instead of using the proxy — the setting directly changes
+forwarding.
+
+**Cleanup:** restore defaults or delete tenant `LAB`.
+
+### Lab 3.9 — Implement Layer 2 connectivity (Objective 3.1)
+
+**Objective:** Bind an EPG to a leaf port (static path) for L2.
+
+```text
+icurl -k -X POST 'https://localhost/api/mo/uni/tn-LAB/ap-APP/epg-WEB.json' -d '
+{"fvRsPathAtt":{"attributes":{"tDn":"topology/pod-1/paths-101/pathep-[eth1/5]",
+ "encap":"vlan-100","mode":"regular"}}}'
+moquery -c fvRsPathAtt -f 'fv.RsPathAtt.encap=="vlan-100"'
+```
+
+**Expected result:** the static binding mapping VLAN 100 on leaf 101 eth1/5
+into EPG `WEB` — the point where a physical port joins the policy fabric.
+
+**Negative test:** bind the same encap to a second EPG on the same port
+without a valid VLAN pool; the APIC raises an encap-overlap fault.
+
+**Cleanup:** delete the `fvRsPathAtt`, or delete tenant `LAB`.
+
+### Lab 3.10 — Implement Layer 3 Out (Objective 3.2)
+
+**Objective:** Read an L3Out and its external EPG (routed edge).
+
+```text
+moquery -c l3extOut | grep dn | head
+moquery -c l3extInstP | egrep 'name|dn' | head
+moquery -c l3extSubnet | grep ip | head
+```
+
+**Expected result:** the L3Out, its external EPG (`l3extInstP`), and the
+external subnets classified into it — how ACI advertises and classifies
+outside routes (transit routing and VRF route leaking excluded per the
+blueprint).
+
+**Negative test:** an external subnet with no scope flag matches nothing;
+traffic is not classified into the external EPG until `import-security` (or
+the appropriate scope) is set.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.11 — Implement virtual networking integration (Objective 4.1)
+
+**Objective:** Confirm the VMM domain pushed a port group to vCenter.
+
+```text
+moquery -c vmmDomP | grep name
+moquery -c compVm | egrep 'name|state' | head
+```
+
+**Expected result:** the VMM domain and the discovered VMs — ACI created a
+distributed port group in vCenter for each EPG associated with the domain.
+
+**Negative test:** associate an EPG to the VMM domain but leave the VM's vNIC
+on the old port group; the endpoint never appears in `fvCEp` — attachment
+requires the vNIC on the ACI-created port group.
+
+**Cleanup:** remove the test EPG-to-VMM association.
+
+### Lab 3.12 — Describe resolution and deployment immediacy in VMM (Objective 4.2)
+
+**Objective:** Read the immediacy settings that control policy push timing.
+
+```text
+moquery -c fvRsDomAtt | egrep 'resImedcy|instrImedcy|tDn' | head
+```
+
+**Expected result:** `resImedcy` (pre-provision / immediate / on-demand) and
+`instrImedcy` — resolution immediacy decides when policy is downloaded to the
+leaf; deployment immediacy decides when it is programmed into hardware.
+
+**Negative test:** with `on-demand` resolution and no attached endpoint, the
+VLAN is not programmed on the leaf; `show vlan extended` on the leaf omits it
+until a VM attaches — immediacy is why.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.13 — Implement a service graph (Objective 4.3)
+
+**Objective:** Read a deployed service graph (firewall insertion).
+
+```text
+moquery -c vnsAbsGraph | grep name
+moquery -c vnsGraphInst | egrep 'name|configSt' | head
+```
+
+**Expected result:** the abstract graph and its rendered instance in
+`configSt: applied` — a firewall or load balancer inserted between EPGs by
+policy, not by cabling.
+
+**Negative test:** apply a contract with a graph whose device cluster is
+down; the graph instance shows `configSt: failed` with a fault — insertion
+depends on a healthy service device.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.14 — Implement out-of-band and in-band management (Objective 5.1)
+
+**Objective:** Read the OOB and in-band management EPGs and node addresses.
+
+```text
+moquery -c mgmtRsOoBStNode | grep addr | head
+moquery -c mgmtInB
+```
+
+**Expected result:** each node's OOB address (via `mgmt` tenant's OOB EPG) and
+the in-band EPG if configured — the two management planes ACI separates.
+
+**Negative test:** remove an OOB contract; management reachability to that
+node over OOB stops while the fabric data plane is unaffected — the planes are
+independent.
+
+**Cleanup:** restore the OOB contract.
+
+### Lab 3.15 — Utilize traditional and AI-assisted monitoring tools (Objective 5.2)
+
+**Objective:** Export fabric telemetry to Nexus Dashboard Insights.
+
+```text
+moquery -c telemetryFtriggerConfig 2>/dev/null | head
+curl -sk -b cookie.txt "https://$ND/sedgeapi/v1/cisco-nir/api/api/telemetry/v2/anomalies/summary" | jq '.totalItemsCount'
+```
+
+**Expected result:** the anomaly count from Nexus Dashboard Insights — the
+AI-assisted layer that flags fabric anomalies traditional faults miss.
+
+**Negative test:** query before onboarding the fabric to Insights; the API
+returns no data — AI assistance requires the fabric be onboarded and
+streaming.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.16 — Implement configuration backup (Objective 5.3)
+
+**Objective:** Take a config snapshot and confirm it can be exported.
+
+```text
+icurl -k -X POST 'https://localhost/api/mo/uni/fabric.json' -d '
+{"configExportP":{"attributes":{"name":"snap-lab","adminSt":"triggered",
+ "format":"json","snapshot":"yes"}}}'
+moquery -c configSnapshot | grep fileName | tail -3
+```
+
+**Expected result:** a new snapshot with a timestamped filename — the
+point-in-time backup you can roll back to or export off-box.
+
+**Negative test:** trigger an export to a remote path with wrong credentials;
+`moquery -c configJob` shows the job `failed` — verify the remote location
+before relying on off-box backups.
+
+**Cleanup:** delete the snapshot via its `configSnapshot` object.
+
+### Lab 3.17 — Implement AAA and RBAC (Objective 5.4)
+
+**Objective:** Create a security domain and a restricted local user.
+
+```text
+icurl -k -X POST 'https://localhost/api/mo/uni/userext.json' -d '
+{"aaaUser":{"attributes":{"name":"neteng","pwd":"C1sco12345!"},"children":[
+ {"aaaUserDomain":{"attributes":{"name":"LAB-DOM"},"children":[
+   {"aaaUserRole":{"attributes":{"name":"tenant-admin","privType":"writePriv"}}}]}}]}}'
+moquery -c aaaUser -f 'aaa.User.name=="neteng"'
+```
+
+**Expected result:** the user scoped to `LAB-DOM` with `tenant-admin` write
+privileges — RBAC confines the user to objects tagged with that security
+domain.
+
+**Negative test:** log in as `neteng` and query a tenant outside `LAB-DOM`;
+the APIC returns no objects — the domain boundary is enforced.
+
+**Cleanup:** delete the `aaaUser`.
+
+### Lab 3.18 — Configure an upgrade (Objective 5.5)
+
+**Objective:** Read the firmware/maintenance policy that stages an upgrade.
+
+```text
+moquery -c firmwareFwP
+moquery -c maintMaintP | egrep 'name|adminSt'
+moquery -c maintUpgJob | egrep 'desiredVersion|upgradeStatus' | head
+```
+
+**Expected result:** the target firmware version and maintenance group state —
+ACI upgrades by group with a scheduler, keeping the fabric forwarding through
+a rolling upgrade.
+
+**Negative test:** put every leaf in one maintenance group; a simultaneous
+upgrade risks a forwarding outage — the negative shows why groups exist.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.19 — Describe Multi-Pod (Objective 6.1)
+
+**Objective:** Read the pods and the inter-pod network (IPN) peering.
+
+```text
+moquery -c fabricPod | grep dn
+moquery -c fvPodConnP 2>/dev/null | head
+```
+
+**Expected result:** more than one `fabricPod` and the pod-connection profile
+— Multi-Pod is one APIC cluster across pods joined by an IPN, a single
+availability zone.
+
+**Negative test:** a single-pod fabric returns exactly one `fabricPod`; the
+Multi-Pod constructs are absent — the topology dictates the objects.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.20 — Describe Multi-Site (Objective 6.2)
+
+**Objective:** Read the site registration in Nexus Dashboard Orchestrator.
+
+```text
+curl -sk -b cookie.txt "https://$ND/mso/api/v1/sites" | jq -r '.sites[] | "\(.name) \(.status)"'
+```
+
+**Expected result:** each ACI site registered to the Orchestrator — Multi-Site
+is separate APIC clusters (separate availability zones) with policy stitched
+by NDO, unlike Multi-Pod's single cluster.
+
+**Negative test:** query before adding a site; the `sites` array is empty —
+NDO orchestrates only registered sites.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.21 — Describe Remote Leaf (Objective 6.3)
+
+**Objective:** Read a remote-leaf's association to its pod over the WAN.
+
+```text
+moquery -c fabricNode -f 'fabric.Node.role=="remote-leaf-wan" or fabric.Node.nodeType=="remote-leaf-wan"' 2>/dev/null
+moquery -c tunnelIf | grep -i dci | head
+```
+
+**Expected result:** the remote leaf attached to a main pod's spines across a
+routed WAN — extending the fabric to a satellite location without a local
+spine.
+
+**Negative test:** a remote leaf whose IPN/underlay to the spines is down
+falls out of the fabric; `fabricNode` shows it inactive — remote leaves depend
+on the WAN underlay.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

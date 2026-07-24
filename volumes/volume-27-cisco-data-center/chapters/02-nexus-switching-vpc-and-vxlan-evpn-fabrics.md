@@ -198,15 +198,244 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-On the Chapter 01 fabric: build the vPC domain (peer link, keepalive in
-VRF management, a downstream vPC to a test host), then the full EVPN
-overlay above — two L2VNIs and the TENANT-A L3VNI with anycast gateway
-on all leaves. Prove: MAC routes present as Type-2 on a remote leaf,
-NVE peers discovered on all four, end-to-end routed ping between
-segments on different leaves. Then break it twice: remove
-`send-community extended` from one spine session and capture the NVE
-peer loss; set one underlay link to MTU 1500 and demonstrate the
-intermittent-loss signature. Repair both.
+This chapter carries a topic-level walkthrough lab for **every objective in
+Domain 1 (Network) of the DCCOR 350-601 v1.2 exam guide** — all eleven
+objectives, from routing and switching through overlay, packet flow, and
+Nexus Dashboard assurance — mapped in the volume README's coverage tables.
+Labs use the NX-OS CLI on a Nexus 9000 fabric. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 2.1–2.11** — the Chapter 01 spine-leaf fabric
+(two spines, four leaves) running NX-OS 10.x, a vPC leaf pair, an OSPF
+underlay, and iBGP EVPN with the spines as route reflectors. A management
+station can reach a Nexus Dashboard cluster at `$ND`. **Cost:** none beyond
+lab resources.
+
+### Lab 2.1 — Apply routing protocols (Objective 1.1)
+
+**Objective:** Verify the OSPF underlay that carries VTEP reachability.
+
+```text
+show ip ospf neighbors
+show ip route 10.0.0.4
+```
+
+**Expected result:** every spine-leaf adjacency in `FULL` state, and the
+remote leaf's loopback (the VTEP source) learned via OSPF — the underlay is
+what the overlay rides on.
+
+**Negative test:** shut one underlay link (`interface eth1/1 ; shutdown`);
+the neighbor drops to `DOWN` and the route reconverges via ECMP — confirming
+the second path, not a black hole.
+
+**Cleanup:** `no shutdown` the link; confirm the adjacency returns to `FULL`.
+
+### Lab 2.2 — Apply switching protocols such as RSTP+, LACP, and vPC (Objective 1.2)
+
+**Objective:** Validate the vPC domain and its member port channel.
+
+```text
+show vpc brief
+show port-channel summary
+show spanning-tree vlan 2001
+```
+
+**Expected result:** `peer status: peer adjacency formed ok`, the vPC role,
+zero consistency mismatches, and the member port channel `(SU)`; RSTP shows
+the vPC pair as a single logical bridge.
+
+**Negative test:** set a mismatched MTU on one peer's vPC VLAN; `show vpc
+brief` reports a **Type-2 consistency** warning and suspends the VLAN on the
+secondary — the protection working as designed.
+
+**Cleanup:** restore the MTU; confirm `show vpc consistency-parameters vlans`
+is clean.
+
+### Lab 2.3 — Apply overlay protocols such as VXLAN EVPN (Objective 1.3)
+
+**Objective:** Prove the EVPN control plane learns hosts before flooding.
+
+```text
+show nve peers
+show bgp l2vpn evpn summary
+show l2route evpn mac all
+```
+
+**Expected result:** NVE peers for every remote VTEP, EVPN neighbors
+`Established`, and MAC addresses learned as Type-2 routes — control-plane
+learning, not flood-and-learn.
+
+**Negative test:** remove `send-community extended` from one spine session;
+`show nve peers` loses the peer because Type-3 routes carry their VTEP
+information in extended communities.
+
+**Cleanup:** restore `send-community extended`; confirm NVE peers return.
+
+### Lab 2.4 — Apply ACI concepts (Objective 1.4)
+
+**Objective:** Contrast the NX-OS fabric with the ACI object model by reading
+an APIC's tenant tree (the same fabric, controller-driven).
+
+```text
+icurl -k 'https://apic/api/class/fvTenant.json?rsp-subtree=children' | python3 -m json.tool | head
+```
+
+**Expected result:** tenants returned as managed objects (`fvTenant`) with
+child EPGs and bridge domains — ACI models intent as a policy tree, where
+NX-OS models it as per-device CLI.
+
+**Negative test:** query a class that does not exist (`fvNope`); the APIC
+returns an empty `imdata` array — the object model is closed, unlike free-form
+CLI.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.5 — Analyze packet flow: unicast, multicast, broadcast (Objective 1.5)
+
+**Objective:** Trace how the fabric forwards each traffic class.
+
+```text
+show forwarding route 10.20.1.50 vrf TENANT-A
+show ip mroute 239.1.1.1
+show mac address-table dynamic vlan 2001
+```
+
+**Expected result:** unicast resolved to an NVE next-hop, multicast showing
+the (S,G) with an outgoing interface list, and broadcast/BUM handled by
+ingress replication or the underlay multicast group — the three flows take
+distinct paths.
+
+**Negative test:** ping a host in a VLAN with no anycast gateway configured on
+the local leaf; the flow black-holes — proving first-hop routing depends on
+the distributed gateway.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.6 — Describe cloud service and deployment models per NIST 800-145 (Objective 1.6)
+
+**Objective:** Classify the data center's Intersight/Nexus Dashboard
+consumption against the NIST model.
+
+```text
+show system resources
+curl -s -H "Authorization: Bearer $INTERSIGHT" https://intersight.com/api/v1/aaa/Sessions | jq '.Results | length'
+```
+
+**Expected result:** the on-prem fabric is **private-cloud IaaS**, while
+Intersight is a **public-cloud SaaS** control plane — a hybrid model in NIST
+800-145 terms (on-demand self-service, broad network access, resource
+pooling, elasticity, measured service).
+
+**Negative test:** an air-gapped fabric with no Intersight reachability is
+pure private cloud; the SaaS call times out — the classification changes with
+connectivity.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.7 — Describe software updates and their impacts (Objective 1.7)
+
+**Objective:** Run an NX-OS upgrade impact check before committing.
+
+```text
+show install all impact nxos bootflash:nxos64-cs.10.4.3.bin
+```
+
+**Expected result:** a per-module report showing whether the upgrade is
+**disruptive or non-disruptive** (ISSU) and which modules reset — the impact
+analysis you run before any maintenance window.
+
+**Negative test:** attempt ISSU with a single supervisor or an incompatible
+EPLD; the impact check flags it as **disruptive**, not hitless.
+
+**Cleanup:** none (impact check does not modify the system).
+
+### Lab 2.8 — Implement network configuration management (Objective 1.8)
+
+**Objective:** Checkpoint and roll back configuration on NX-OS.
+
+```text
+checkpoint pre-change
+configure terminal ; interface Vlan2001 ; shutdown ; end
+show diff rollback-patch checkpoint pre-change running-config
+rollback running-config checkpoint pre-change
+```
+
+**Expected result:** the checkpoint captures the running config, the diff
+shows the single `shutdown` you introduced, and rollback reverts it — NX-OS
+configuration management without external tooling.
+
+**Negative test:** roll back to a checkpoint taken before a `feature` was
+enabled while that feature is in use; NX-OS reports dependency errors rather
+than silently breaking — verify with `show rollback log`.
+
+**Cleanup:** `clear checkpoint database` to remove the test checkpoint.
+
+### Lab 2.9 — Implement infrastructure monitoring with NetFlow, SPAN, and Nexus Dashboard (Objective 1.9)
+
+**Objective:** Configure a SPAN session and confirm flow export.
+
+```text
+monitor session 1
+  source interface Ethernet1/10 both
+  destination interface Ethernet1/48
+  no shut
+show monitor session 1
+show flow exporter EXPORTER-1
+```
+
+**Expected result:** the SPAN session `up` with source and destination bound,
+and the NetFlow exporter reporting sent packets — the traffic-visibility
+plumbing Nexus Dashboard Insights consumes.
+
+**Negative test:** point the SPAN destination at a port that is also a vPC
+member; NX-OS rejects it — SPAN destinations must be dedicated.
+
+**Cleanup:** `no monitor session 1`.
+
+### Lab 2.10 — Explain network assurance such as streaming telemetry (Objective 1.10)
+
+**Objective:** Enable model-driven telemetry and confirm the subscription.
+
+```text
+feature telemetry
+telemetry
+  destination-group 1
+    ip address 10.0.0.200 port 57000 protocol gRPC encoding GPB
+  sensor-group 1
+    data-source DME
+    path sys/intf depth 0
+  subscription 1
+    dst-grp 1
+    snsr-grp 1 sample-interval 30000
+show telemetry control database subscriptions
+```
+
+**Expected result:** the subscription in `show telemetry control database`
+with a valid destination and a 30-second cadence — push-based assurance,
+versus SNMP polling.
+
+**Negative test:** point the destination at an unreachable collector; the
+subscription shows a connection failure in `show telemetry transport` —
+telemetry is only as good as the receiver.
+
+**Cleanup:** `no feature telemetry`.
+
+### Lab 2.11 — Describe the capabilities and features of Nexus Dashboard (Objective 1.11)
+
+**Objective:** Read the fabric's onboarding state in Nexus Dashboard.
+
+```text
+curl -sk -b cookie.txt "https://$ND/api/v1/infra/fabrics" | jq -r '.items[] | "\(.spec.name) \(.status.health)"'
+```
+
+**Expected result:** each onboarded fabric with a health score — Nexus
+Dashboard unifies Insights (assurance), Orchestrator (multi-fabric policy),
+and Fabric Controller (NDFC provisioning) over the fabrics it manages.
+
+**Negative test:** query before onboarding any fabric; the `items` array is
+empty — Nexus Dashboard assures only what it manages.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

@@ -178,15 +178,492 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-In the emulator/simulator environment (MDS features in CML where
-image access permits, otherwise the documented UCS emulator SAN):
-build VSAN 10 as Fabric A — NPIV core, device aliases, smart zoning,
-activated zoneset — and connect Chapter 04's SAN-boot vHBA WWPNs
-through it. Prove each ladder stage with its show command, captured.
-Break it twice: deactivate the zoneset and capture the host's view;
-misspell a device alias in a new zone and find it with the fabric's
-own tools. Repair both, then export the zoning configuration for
-Chapter 06's automation.
+This chapter carries a topic-level walkthrough lab for **every objective in
+Domain 3 (Storage Network) of DCCOR 350-601 v1.2 and every objective of the
+DCSAN 300-625 v1.0 exam guide** — Fibre Channel, FCoE, VSANs, zoning, IVR,
+DCNM, and MDS troubleshooting — mapped in the volume README's coverage
+tables. Labs use the MDS/Nexus NX-OS storage CLI and DCNM/NDFC. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 5.1–5.22** — an MDS 9000 (or Nexus with the
+FC/FCoE feature set) fabric with at least two switches, initiators and targets
+logged in, DCNM/NDFC reachable at `$DCNM`, and console access for the
+boot/upgrade labs. **Cost:** none beyond lab resources.
+
+### Lab 5.1 — Implement Fibre Channel (DCCOR Objective 3.1)
+
+**Objective:** Bring up an FC interface and confirm the port and fabric login.
+
+```text
+config t
+ feature fcoe
+ interface fc1/1
+  no shutdown
+end
+show interface fc1/1 brief
+show flogi database
+```
+
+**Expected result:** `fc1/1` in `up` with a port mode (F/E/NP) and the
+attached device's FCID and pWWN in the FLOGI database — the fabric login that
+admits a device.
+
+**Negative test:** connect an initiator to a port whose VSAN differs from the
+target's; FLOGI succeeds but the device cannot reach the target — VSAN
+membership isolates the fabric.
+
+**Cleanup:** `interface fc1/1 ; shutdown` if the port was brought up for the
+lab.
+
+### Lab 5.2 — Describe network storage systems: NFS and iSCSI (DCCOR Objective 3.2)
+
+**Objective:** Contrast file (NFS) and block-over-IP (iSCSI) reachability from
+a host.
+
+```bash
+showmount -e 10.0.0.60            # NFS exports
+iscsiadm -m discovery -t st -p 10.0.0.61:3260   # iSCSI targets
+```
+
+**Expected result:** the NFS exports list and the iSCSI target IQNs — NFS is
+file storage over TCP/2049; iSCSI is block storage over TCP/3260, the
+IP-fabric alternatives to Fibre Channel.
+
+**Negative test:** discover iSCSI against a portal with no target LUN mapped
+to the initiator's IQN; discovery returns the target but `login` yields no
+LUNs — access requires initiator-group mapping on the array.
+
+**Cleanup:** `iscsiadm -m node -u` to log out any test session.
+
+### Lab 5.3 — Describe software updates and their impacts: disruptive/nondisruptive and EPLD (DCCOR Objective 3.3)
+
+**Objective:** Run an MDS upgrade impact check including EPLD.
+
+```text
+show install all impact kickstart bootflash:m9000-nxos.9.4.bin system bootflash:m9000-nxos.9.4.bin
+show install all impact epld bootflash:m9000-epld.9.4.img
+```
+
+**Expected result:** a per-module report marking the NX-OS upgrade
+`non-disruptive` (ISSU) where supported, and the EPLD update as **disruptive**
+— EPLD (hardware programmable logic) updates require a module reload.
+
+**Negative test:** attempt ISSU during an active zone-set change or with a
+single supervisor; the impact check reports it as disruptive.
+
+**Cleanup:** none (impact check is read-only).
+
+### Lab 5.4 — Implement infrastructure monitoring with SPAN and Nexus Dashboard (DCCOR Objective 3.4)
+
+**Objective:** Configure an FC SPAN (SD port) session.
+
+```text
+config t
+ interface fc1/12
+  switchport mode SD
+ monitor session 1
+  source interface fc1/1 rx
+  destination interface fc1/12
+  no shut
+end
+show monitor session 1
+```
+
+**Expected result:** the SPAN session mirroring FC traffic to the SD port — FC
+analysis feeds analyzers and Nexus Dashboard/SAN Insights for congestion
+visibility.
+
+**Negative test:** set the destination to a normal F port instead of `SD`;
+NX-OS rejects it — FC SPAN destinations must be SD mode.
+
+**Cleanup:** `no monitor session 1` and revert `fc1/12` mode.
+
+### Lab 5.5 — Describe installation and initial setup: NX-OS, DCNM, POAP (DCSAN Objective 1.1)
+
+**Objective:** Read the MDS initial-setup state and POAP status.
+
+```text
+show version | include "system:|kickstart:"
+show boot
+show run | include "boot "
+```
+
+**Expected result:** the running kickstart/system images and boot variables —
+the initial setup (`setup` script or POAP zero-touch) writes these; DCNM can
+push them at scale.
+
+**Negative test:** clear the boot variables and reload; the switch drops to
+the `loader>` prompt — boot variables are what make the switch bootable
+unattended.
+
+**Cleanup:** none (read-only; do not clear boot variables in production).
+
+### Lab 5.6 — Describe secure boot (DCSAN Objective 1.2)
+
+**Objective:** Confirm image integrity / secure-boot state.
+
+```text
+show system secure-boot 2>/dev/null || show version | include "Secure"
+show file bootflash:m9000-nxos.9.4.bin sha256sum
+```
+
+**Expected result:** secure-boot enabled (anchored in hardware) or the image's
+SHA-256 matching Cisco's published hash — the chain that prevents booting a
+tampered image.
+
+**Negative test:** compute the hash of a truncated/altered image; it will not
+match Cisco's published value — integrity verification catches tampering.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.7 — Implement Fibre Channel port channels (DCSAN Objective 2.1)
+
+**Objective:** Bundle ISLs into an FC port channel.
+
+```text
+config t
+ interface port-channel 10
+  channel mode active
+ interface fc1/1-2
+  channel-group 10 force
+  no shutdown
+end
+show port-channel database interface port-channel 10
+```
+
+**Expected result:** port-channel 10 up with both members — an aggregated ISL
+that load-balances FC exchanges and survives a single link loss.
+
+**Negative test:** add a member with a mismatched speed or VSAN allowed list;
+it is suspended, not added — port-channel members must be compatible.
+
+**Cleanup:** `no interface port-channel 10`.
+
+### Lab 5.8 — Implement Fibre Channel protocol services: Name Service and CFS (DCSAN Objective 2.2)
+
+**Objective:** Query the fabric name server and confirm CFS distribution.
+
+```text
+show fcns database
+show cfs status
+show cfs merge status name IVR
+```
+
+**Expected result:** every logged-in device registered in the name server
+(FCID, pWWN, FC4 type) and CFS `Distribution: Enabled` — CFS synchronizes
+zoning/IVR config fabric-wide.
+
+**Negative test:** disable CFS distribution for zoning and edit a zone; the
+change stays local and a later merge conflicts — CFS is what keeps the fabric
+consistent.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.9 — Implement FCoE: FIP, PFC, ETS, DCBX/LLDP (DCSAN Objective 2.3)
+
+**Objective:** Verify the lossless-Ethernet plumbing FCoE requires.
+
+```text
+show interface ethernet 1/1 priority-flow-control
+show system qos | include "network-qos"
+show fcoe database
+show lldp dcbx interface ethernet 1/1
+```
+
+**Expected result:** PFC enabled on the FCoE priority, ETS bandwidth
+allocation, DCBX converged with the CNA, and FCoE sessions in the database —
+the four pieces that make Ethernet lossless enough to carry FC.
+
+**Negative test:** disable PFC on the FCoE class; FCoE logins drop under
+congestion — without lossless behavior, FC-over-Ethernet fails.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.10 — Implement VSANs (DCSAN Objective 2.4)
+
+**Objective:** Create a VSAN and assign a member interface.
+
+```text
+config t
+ vsan database
+  vsan 100 name PROD-SAN
+  vsan 100 interface fc1/1
+end
+show vsan
+show vsan membership
+```
+
+**Expected result:** VSAN 100 active with `fc1/1` a member — VSANs partition
+one physical SAN into isolated virtual fabrics, each with its own services.
+
+**Negative test:** move an interface to a suspended VSAN; the port goes
+`isolated` — membership in an inactive VSAN drops the port.
+
+**Cleanup:** `vsan database ; no vsan 100`.
+
+### Lab 5.11 — Implement NPV and NPIV (DCSAN Objective 2.5)
+
+**Objective:** Read NPV mode on an edge switch and NPIV on the core.
+
+```text
+show npv status
+show npv flogi-table
+show feature | include npiv
+```
+
+**Expected result:** the edge switch in NPV mode proxying host FLOGIs upstream
+(`show npv flogi-table`) and NPIV enabled on the core F port — NPV avoids
+consuming domain IDs; NPIV lets multiple logins share a port.
+
+**Negative test:** connect an NPV edge to a core with NPIV disabled; host
+logins fail — the core must accept multiple logins on the proxied port.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.12 — Implement device aliases and zoning (DCSAN Objective 2.6)
+
+**Objective:** Create a device alias and a single-initiator zone, then
+activate.
+
+```text
+config t
+ device-alias database
+  device-alias name HOST1 pwwn 10:00:00:00:c9:aa:bb:cc
+  device-alias name ARRAY1 pwwn 50:06:01:60:aa:bb:cc:dd
+ device-alias commit
+ zone name HOST1-ARRAY1 vsan 100
+  member device-alias HOST1
+  member device-alias ARRAY1
+ zoneset name ZS-PROD vsan 100
+  member HOST1-ARRAY1
+ zoneset activate name ZS-PROD vsan 100
+end
+show zoneset active vsan 100
+```
+
+**Expected result:** the active zoneset with the single-initiator zone and an
+asterisk on logged-in members — access control by pWWN, the SAN's segmentation.
+
+**Negative test:** activate a zoneset with two initiators in one zone; it works
+but is a design fault (cross-talk risk) — single-initiator zoning is the
+best-practice the negative highlights.
+
+**Cleanup:** deactivate the test zoneset and remove the zone/aliases.
+
+### Lab 5.13 — Configure inter-VSAN routing (DCSAN Objective 2.7)
+
+**Objective:** Build an IVR zone to share a target across two VSANs.
+
+```text
+config t
+ ivr nat
+ ivr vsan-topology auto
+ ivr zone name IVR-HOST-ARRAY
+  member pwwn 10:00:00:00:c9:aa:bb:cc vsan 100
+  member pwwn 50:06:01:60:aa:bb:cc:dd vsan 200
+ ivr zoneset name IVR-ZS
+  member IVR-HOST-ARRAY
+ ivr zoneset activate name IVR-ZS
+end
+show ivr zoneset active
+show ivr fcdomain database
+```
+
+**Expected result:** the active IVR zoneset and the IVR domain database — IVR
+with NAT lets a host in VSAN 100 reach a target in VSAN 200 without merging the
+fabrics.
+
+**Negative test:** enable IVR without NAT across overlapping domain IDs; IVR
+reports a domain conflict — NAT (or unique domains) is required.
+
+**Cleanup:** deactivate `IVR-ZS` and remove the IVR configuration.
+
+### Lab 5.14 — Implement VSAN extensions (DCSAN Objective 2.8)
+
+**Objective:** Read an FCIP tunnel that extends a VSAN over IP.
+
+```text
+show interface fcip 1
+show fcip summary
+show interface fcip 1 counters brief
+```
+
+**Expected result:** the FCIP tunnel `up` carrying an FC VSAN over an IP WAN —
+the extension used for remote replication between data centers.
+
+**Negative test:** an FCIP tunnel with mismatched MTU or high WAN latency and
+no FC write-acceleration shows degraded throughput — distance and tuning
+matter for VSAN extension.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.15 — Configure DCNM: SAN client, licensing, Device Manager (DCSAN Objective 3.1)
+
+**Objective:** Confirm the switch is managed by DCNM/NDFC and licensed.
+
+```bash
+curl -sk -H "Authorization: $DCNM_TOK" "https://$DCNM/rest/control/fabrics" | jq -r '.[].fabricName'
+```
+
+```text
+show license usage
+```
+
+**Expected result:** the SAN fabric listed in DCNM/NDFC and the switch's
+license usage — DCNM SAN client and Device Manager are the GUI/analytics layer;
+licensing gates the advanced features.
+
+**Negative test:** query DCNM for a fabric the switch was never added to; it is
+absent — DCNM manages only discovered fabrics.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.16 — Configure RBAC (DCSAN Objective 3.2)
+
+**Objective:** Create a role limited to a VSAN and a network-operator user.
+
+```text
+config t
+ role name san-oper
+  rule 1 permit show
+  vsan policy deny
+   permit vsan 100
+ username sanuser password C1sco123! role san-oper
+end
+show role name san-oper
+```
+
+**Expected result:** the role permitting read-only access scoped to VSAN 100 —
+RBAC confines operators to specific VSANs and command sets.
+
+**Negative test:** log in as `sanuser` and attempt a `config` command; it is
+denied — the role permits only `show`.
+
+**Cleanup:** `no username sanuser ; no role name san-oper`.
+
+### Lab 5.17 — Configure Fibre Channel fabric security (DCSAN Objective 3.3)
+
+**Objective:** Enable port security / FC-SP DHCHAP on an interface.
+
+```text
+config t
+ feature fabric-binding
+ fabric-binding database vsan 100
+  swwn 20:00:00:0d:ec:aa:bb:cc domain 10
+ fabric-binding activate vsan 100
+end
+show fabric-binding status
+show port-security database vsan 100
+```
+
+**Expected result:** fabric binding active, permitting only the listed switch
+WWN/domain to join VSAN 100 — preventing a rogue switch from merging into the
+fabric.
+
+**Negative test:** connect an unlisted switch; its ISL is isolated and a
+fabric-binding violation is logged — the binding enforces membership.
+
+**Cleanup:** `fabric-binding deactivate vsan 100 ; no feature fabric-binding`.
+
+### Lab 5.18 — Describe slow-drain analysis (DCSAN Objective 3.4)
+
+**Objective:** Read the counters that reveal a slow-drain device.
+
+```text
+show interface fc1/1 counters | include "credit|discard|timeout"
+show process creditmon credit-loss-events
+show system internal snmp credit-not-available
+```
+
+**Expected result:** `credit unavailable`/`txwait` and B2B credit-loss events
+— a slow-drain host holds credits and back-pressures the fabric; these
+counters localize it.
+
+**Negative test:** a healthy port shows zero txwait and no credit loss; the
+contrast is how you distinguish a slow drainer from a busy-but-healthy port.
+
+**Cleanup:** `clear counters interface fc1/1` after recording.
+
+### Lab 5.19 — Implement SAN telemetry streaming (DCSAN Objective 3.5)
+
+**Objective:** Enable SAN Analytics/telemetry on an interface.
+
+```text
+config t
+ feature analytics
+ interface fc1/1
+  analytics type fc-scsi
+end
+show analytics query "select all from fc-scsi.port"
+```
+
+**Expected result:** per-flow SCSI metrics (IOPS, ECT/DAL latency) streamed
+from the ASIC — SAN Analytics feeds Nexus Dashboard SAN Insights for
+flow-level visibility.
+
+**Negative test:** query analytics on an interface where the feature is not
+applied; the result is empty — telemetry streams only from instrumented ports.
+
+**Cleanup:** `interface fc1/1 ; no analytics type fc-scsi ; no feature
+analytics`.
+
+### Lab 5.20 — Troubleshoot Fibre Channel domains and duplicate domain ID (DCSAN Objective 4.1)
+
+**Objective:** Read the FC domain manager and detect a domain-ID conflict.
+
+```text
+show fcdomain domain-list vsan 100
+show fcdomain vsan 100
+```
+
+**Expected result:** the principal switch and each switch's domain ID; a
+healthy fabric has unique IDs — a duplicate causes a VSAN to segment.
+
+**Negative test:** statically assign a domain ID already in use and reinitialize the
+fabric; `show fcdomain` reports the VSAN `isolated` due to the conflict — the
+symptom of duplicate domains.
+
+**Cleanup:** restore the domain ID to `auto` / a unique value and reinitialize.
+
+### Lab 5.21 — Troubleshoot zoning and zone merge failure (DCSAN Objective 4.2)
+
+**Objective:** Diagnose an ISL isolated by a zone-merge conflict.
+
+```text
+show zone status vsan 100
+show interface fc1/1 | include "isolated|down"
+show zone analysis active vsan 100
+```
+
+**Expected result:** a `merge` failure reason and the isolated ISL — two
+switches with conflicting zone definitions for the same zone name refuse to
+merge, isolating the link.
+
+**Negative test:** two fabrics with identical, non-conflicting zonesets merge
+cleanly — the contrast confirms the failure is a *conflict*, not merely
+different content.
+
+**Cleanup:** reconcile the zonesets (import/overwrite) and re-enable the ISL.
+
+### Lab 5.22 — Troubleshoot boot and upgrade issues (DCSAN Objective 4.3)
+
+**Objective:** Recover boot variables and read upgrade history.
+
+```text
+show boot
+dir bootflash: | include nxos
+show install all status
+```
+
+**Expected result:** the boot images present on bootflash and the last install
+status — a failed upgrade or a missing image is why a switch lands in
+`loader>`.
+
+**Negative test:** point `boot system` at an image not on bootflash and reload;
+the switch fails to boot — the boot variable must reference a present, valid
+image.
+
+**Cleanup:** set boot variables to the correct present images and save.
 
 ## Lab Verification
 
