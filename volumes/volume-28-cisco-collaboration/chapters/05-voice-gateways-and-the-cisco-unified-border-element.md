@@ -188,18 +188,217 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Insert CUBE between the Chapter 03 estate and a simulated ITSP (a
-second CML router running as a SIP peer): build the configuration
-above — explicit inbound peers, voice-class codec and SIP profiles,
-egress translation. Prove end-to-end PSTN-style calls both
-directions with `show call active` evidence naming the matched peers
-per leg. Break and evidence three faults: remove the inbound peer
-(observe peer-0 behavior and its personality defaults), induce a
-codec mismatch on the provider leg only, and change the ITSP's
-expected From-domain (fix with a SIP profile edit, not a CUCM
-change). If TDM hardware or emulation exists, bring up one FXS port
-and read one `debug isdn q931` disconnect cause from a reference
-capture.
+This chapter carries a topic-level walkthrough lab for **Domain 4 (Voice
+Gateways and Session Border Controllers) of CLCOR 350-801 v2.0 and Domains 1
+(Signaling and Media Protocols) and 2 (SBC and Voice Gateway Technologies) of
+CLACC 300-815 v2.0** — mapped in the volume README's coverage tables. Labs use
+the IOS XE voice CLI on a CUBE / voice gateway. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 5.1–5.10** — an IOS XE CUBE with SIP trunks to
+UCM and an ITSP, a voice gateway with PSTN connectivity, SRST/UCME configured
+for a branch, and console/SSH access. **Cost:** none beyond lab resources.
+
+### Lab 5.1 — Configure voice gateway and SBC elements (CLCOR Objective 4.1)
+
+**Objective:** Bring up a CUBE SIP trunk and confirm dial-peer routing.
+
+```text
+show dial-peer voice summary
+show sip-ua status
+show voip rtp connections
+```
+
+**Expected result:** inbound/outbound VoIP dial peers in `up` with matching
+codecs and a live RTP session on a test call — CUBE is a back-to-back user agent
+terminating and re-originating SIP between UCM and the ITSP.
+
+**Negative test:** an outbound dial peer whose `session target` is unreachable
+leaves the call at no-answer; `show dial-peer voice <tag>` shows it selected but
+the target down — reachability, not matching, is the fault.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.2 — Troubleshoot IOS XE dial plans (CLCOR Objective 4.2)
+
+**Objective:** Diagnose dial-peer matching, translation rules, and SIP profiles.
+
+```text
+show dialplan number 14085550123          ! which outbound dial peer matches
+test voice translation-rule 10 +14085550123
+show voice class sip-profiles 100
+```
+
+**Expected result:** the matched dial peer, the translation-rule result, and the
+SIP profile — IOS XE selects the longest/highest-preference matching dial peer;
+translation rules rewrite digits; SIP profiles rewrite headers/SDP. The three
+tools expose exactly what each did.
+
+**Negative test:** a translation rule that rewrites the called number *after*
+dial-peer matching surprises you; order matters — `test voice translation-rule`
+proves the rewrite independent of matching.
+
+**Cleanup:** none (read-only test commands).
+
+### Lab 5.3 — Describe IOS XE media resources (CLCOR Objective 4.3)
+
+**Objective:** Read the gateway's DSP/media resources (transcoding, conferencing).
+
+```text
+show voice dsp group all
+show sccp connections
+show dspfarm profile 1
+```
+
+**Expected result:** DSP farm profiles and active sessions — an IOS XE gateway
+provides transcoding, MTP, and conference bridges via DSP resources registered to
+UCM over SCCP; the DSP group shows capacity and use.
+
+**Negative test:** a transcoding call with no free DSP credits fails with no
+common codec; `show voice dsp group all` shows the farm exhausted — capacity, not
+config, is the limit.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.4 — Troubleshoot advanced elements of a SIP conversation (CLACC Objective 1.1)
+
+**Objective:** Read an advanced SIP exchange (REFER, UPDATE, re-INVITE).
+
+```text
+debug ccsip messages
+show voip trace all      ! IOS XE VoIP Trace (structured per-call)
+```
+
+**Expected result:** the REFER (transfer), UPDATE/re-INVITE (media change), and
+their responses — advanced call flows use these methods; a failed transfer or
+hold traces to a rejected REFER/re-INVITE, visible in VoIP Trace without raw
+debugs.
+
+**Negative test:** a transfer failing because the far end rejects REFER (no
+`202`) needs SIP-REFER-to-reINVITE consumption on CUBE — the method-level reject
+is the clue.
+
+**Cleanup:** `no debug ccsip messages`.
+
+### Lab 5.5 — Describe media optimization and NAT traversal (CLACC Objective 1.2)
+
+**Objective:** Read media-flow-around/through and ICE/STUN/TURN behavior.
+
+```text
+show voip rtp connections            ! flow-around vs flow-through
+show run | section media
+show ip nat translations | include 3478|udp   ! STUN/TURN 3478
+```
+
+**Expected result:** whether media flows through CUBE (anchored) or around it,
+and any STUN/TURN (port 3478) for ICE — media optimization keeps RTP off the SBC
+when possible; ICE with STUN/TURN traverses NAT for endpoints behind firewalls.
+
+**Negative test:** force media flow-around across a NAT boundary with no ICE;
+one-way or no audio results — NAT traversal (ICE/TURN) is required when
+endpoints are not directly routable.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.6 — Troubleshoot mid-call signaling (CLACC Objective 1.3)
+
+**Objective:** Diagnose a mid-call failure (hold/resume/transfer/codec change).
+
+```text
+show voip trace all | include REINVITE|UPDATE|BYE
+debug voip ccapi inout
+```
+
+**Expected result:** the mid-call re-INVITE/UPDATE and any error — mid-call
+signaling problems (hold music absent, transfer dropped, codec renegotiation
+failing) trace to a rejected re-INVITE or a delayed-offer/early-offer mismatch.
+
+**Negative test:** a delayed-offer trunk to an early-offer-only peer fails media
+renegotiation on hold/resume — the offer model mismatch is the mid-call cause.
+
+**Cleanup:** `no debug voip ccapi inout`.
+
+### Lab 5.7 — Configure Cisco UCME and SIP SRST (CLACC Objective 2.1)
+
+**Objective:** Configure branch survivability and confirm phone fallback.
+
+```text
+show voice register global
+show voice register pool all
+show call-manager-fallback     ! or 'show voice register' for SIP SRST
+```
+
+**Expected result:** the SRST/UCME registrar with registered branch phones —
+during a WAN outage, phones re-register to the local gateway (SIP SRST) or run
+standalone UCME, preserving local and PSTN calling.
+
+**Negative test:** an SRST config with a `max-dn`/`max-pool` lower than the phone
+count leaves some phones unregistered in fallback — size SRST to the branch.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.8 — Troubleshoot CUBE dial plan with VoIP Trace (CLACC Objective 2.2)
+
+**Objective:** Use VoIP Trace and `show call active` to find a CUBE dial-plan
+fault.
+
+```text
+show voip trace cover-buffers
+show call active voice compact
+show dial-peer voice summary | include DOWN
+```
+
+**Expected result:** the per-call VoIP Trace record and the dial peers involved
+— a call failing on CUBE traces to no matching outbound dial peer, a codec/DTMF
+mismatch, or a down `session target`; VoIP Trace ties the SIP legs together.
+
+**Negative test:** a call matching a catch-all outbound dial peer instead of the
+intended one shows the wrong `session target` in the trace — dial-peer
+preference/specificity is the cause.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.9 — Troubleshoot CUBE advanced dial-peer features (CLACC Objective 2.3)
+
+**Objective:** Diagnose dial-peer groups, DPG, and server groups.
+
+```text
+show voice class dpg 1
+show voice class server-group 1
+show dial-peer voice <tag> | include huntstop|preference|dpg
+```
+
+**Expected result:** the dial-peer group / server group and hunting behavior —
+advanced routing uses DPGs (route an inbound peer to a group of outbound peers)
+and server groups (multiple targets with failover); huntstop/preference control
+the order.
+
+**Negative test:** a DPG whose members all point to a down server group drops
+the call despite matching — failover needs at least one reachable target in the
+group.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.10 — Configure advanced SIP interoperability with CUBE (CLACC Objective 2.4)
+
+**Objective:** Apply SIP profiles/normalization on CUBE for a third-party trunk.
+
+```text
+show voice class sip-profiles 200
+show run | section voice class sip-copylist
+show sip-ua calls    ! confirm calls traverse after normalization
+```
+
+**Expected result:** the SIP profile rewriting requests/responses and any
+header copy-list — advanced interoperability on CUBE adapts headers (PAI,
+Diversion, unsupported params) and SDP to a provider's dialect so calls
+complete.
+
+**Negative test:** an ITSP requiring a specific `From`/PAI format that CUBE does
+not send returns `403`/`4xx`; the SIP profile that rewrites it is the fix — the
+raw trunk without it fails.
+
+**Cleanup:** unbind the test SIP profile.
 
 ## Lab Verification
 

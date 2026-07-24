@@ -190,18 +190,109 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Provision the media pool: software CFB/MTP at HQ, IOS DSP
-conference profile at the branch, MOH sources (unicast HQ,
-multicast to the branch), MRG/MRGL assignments per the design
-above. Prove locality: a branch ad hoc conference draws the branch
-DSP (dspfarm evidence), then kill the profile and show fallback to
-HQ with the WAN cost visible in counters. Build the WAN-EDGE policy
-on the lab WAN link sized to the Chapter 03 locations number; place
-marked calls and capture DSCP at both edges; then overdrive the
-link with iperf and show the priority queue protecting EF while
-default weeps. Export CMRs for the test calls and annotate loss/
-jitter/concealment. Break one thing subtly — re-mark EF to CS0 at
-the access switch — and find it by walking DSCP hop by hop.
+This chapter carries a topic-level walkthrough lab for **every objective in
+Domain 6 (Media and QoS) of the CLCOR 350-801 v2.0 exam guide** — mapped in the
+volume README's coverage tables. Labs use the IOS XE QoS CLI and endpoint/RTMT
+media statistics. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
+
+**Shared prerequisites for Labs 8.1–8.4** — an IOS XE campus switch/router
+carrying voice and video, registered endpoints, and RTMT or endpoint call
+statistics for media metrics. **Cost:** none beyond lab resources.
+
+### Lab 8.1 — Troubleshoot media quality issues (Objective 6.1)
+
+**Objective:** Diagnose one-way audio, choppy audio, or video artifacts.
+
+```text
+show voip rtp connections
+! On the endpoint / RTMT: read jitter, packet loss, and latency for the stream
+show policy-map interface GigabitEthernet1/0/1 | include drops
+```
+
+**Expected result:** the RTP stream stats and interface drops — **one-way audio**
+is usually NAT/firewall or an ACL on one media direction; **choppy audio** is
+packet loss/jitter (often a QoS or congestion problem); **video artifacts** are
+loss on the higher-bandwidth video stream. The RTP metrics plus queue drops
+localize the cause.
+
+**Negative test:** treat choppy audio as a codec problem when the interface shows
+output drops on the priority queue — the congestion/QoS drop, not the codec, is
+the cause.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.2 — Describe QoS for signaling and media over wired and wireless (Objective 6.2)
+
+**Objective:** Read the DSCP markings for signaling and media across media types.
+
+```text
+show policy-map interface | include dscp|Class-map
+! Voice media EF (46), video AF41 (34), call signaling CS3 (24)
+show wlan | include QoS      ! wireless: WMM / platinum profile for voice
+```
+
+**Expected result:** media marked **EF**, video **AF41**, signaling **CS3** — QoS
+protects real-time media end to end; on wired links via DSCP/queuing, on wireless
+via WMM/QoS profiles (platinum for voice), because Wi-Fi contention adds jitter a
+wired LAN does not.
+
+**Negative test:** voice marked EF on the wire but the WLAN mapping drops it to
+best-effort over the air; audio degrades only on Wi-Fi — the wireless QoS mapping
+must preserve the marking.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.3 — Describe QoS trust boundaries and LAN classification (Objective 6.3)
+
+**Objective:** Read the trust boundary at the access edge.
+
+```text
+show mls qos interface GigabitEthernet1/0/1     ! or 'show policy-map interface' on IOS XE
+show run interface GigabitEthernet1/0/1 | include trust|service-policy
+```
+
+**Expected result:** the access port trusting the phone's markings (or
+re-marking) — the **trust boundary** should sit as close to the endpoint as
+possible: trust a Cisco phone's DSCP (extended via CDP/LLDP-MED), but do not trust
+an unmanaged PC, re-marking its traffic so it cannot steal the priority queue.
+
+**Negative test:** trusting DSCP on a port with a PC behind the phone lets the PC
+mark its traffic EF and starve real voice — the trust boundary must classify the
+PC's traffic down.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.4 — Configure LLQ (Objective 6.4)
+
+**Objective:** Build a Low Latency Queuing policy for voice/video and apply it.
+
+```text
+class-map match-any VOICE
+  match dscp ef
+class-map match-any VIDEO
+  match dscp af41
+policy-map WAN-EDGE
+  class VOICE
+    priority percent 10
+  class VIDEO
+    bandwidth percent 20
+  class class-default
+    fair-queue
+interface GigabitEthernet0/0/0
+  service-policy output WAN-EDGE
+show policy-map interface GigabitEthernet0/0/0
+```
+
+**Expected result:** the priority (LLQ) queue servicing voice with a policer and
+a bandwidth guarantee for video — LLQ gives real-time media a strict-priority
+queue (bounded latency) while the policer prevents it from starving other classes.
+
+**Negative test:** a `priority` queue with no policer under overload can starve
+data classes; conversely too small a `priority percent` drops voice under load —
+size the priority queue to the real voice bandwidth.
+
+**Cleanup:** remove the `service-policy` and the class/policy-maps.
 
 ## Lab Verification
 

@@ -186,16 +186,158 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-On the Chapter 01 estate: activate services deliberately (document
-which node runs what); build the dependency chain (groups, region
-matrix by site-class, locations with honest bandwidth, device
-pools); integrate LDAP sync + authentication against the lab
-directory; re-home Chapter 02's endpoints into proper pools with TLS
-security profiles; and build the OPTIONS-pinged trunk to Unity
-Connection. Prove: registration walkover by rebooting the primary
-subscriber mid-call (call survives, re-registration follows the
-group), CAC denial by setting a location to one call's bandwidth and
-placing two, and an AXL addPhone that registers a third endpoint.
+This chapter carries a topic-level walkthrough lab for **every objective in
+Domain 3 (On-Premises Call Control) of the CLCOR 350-801 v2.0 exam guide** —
+mapped in the volume README's coverage tables. Labs use the Unified CM
+administration/CLI, the Dialed Number Analyzer, and the AXL/USM API. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 3.1–3.7** — a Unified CM cluster at `$CUCM` with
+a working dial plan (partitions, CSS, route patterns), an LDAP directory for
+sync, a Unity Connection server, and AXL enabled with an application user in
+`$AXL`. **Cost:** none beyond lab resources.
+
+### Lab 3.1 — Describe the call routing process in Cisco UCM (Objective 3.1)
+
+**Objective:** Trace digit analysis for a dialed number end to end.
+
+```text
+! Cisco Unified CM Dialed Number Analyzer (DNA): analyze a called number
+admin:run sql select rp.name as pattern, p.name as partition from routepattern rp \
+  inner join numplan np on rp.fknumplan=np.pkid inner join routepartition p on np.fkroutepartition=p.pkid
+```
+
+**Expected result:** the matching route pattern and its partition — UCM routing
+is closest-match digit analysis scoped by the calling device's **CSS** against
+**partitions**; DNA shows the exact pattern selected and the resulting route
+list/gateway.
+
+**Negative test:** a device whose CSS omits the pattern's partition cannot reach
+it even though the pattern exists — reachability is CSS∩partition, not the
+pattern alone.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.2 — Implement toll fraud prevention in Cisco UCM (Objective 3.2)
+
+**Objective:** Verify the controls that block unauthorized external calling.
+
+```text
+admin:run sql select name,tkservice from service where name like '%Transfer%'
+! Check: block off-net to off-net transfer, FAC/CMC, time-of-day, partition scoping
+admin:run sql select name from routepartition
+```
+
+**Expected result:** the toll-fraud controls in force — blocking off-net-to-
+off-net transfers/conferences, Forced Authorization Codes on toll patterns,
+time-of-day routing, and partition/CSS scoping so only authorized devices reach
+toll patterns.
+
+**Negative test:** leave "Block OffNet to OffNet Transfer" at the permissive
+default; an external caller can transfer to another external number, the classic
+toll-fraud vector — the control is what closes it.
+
+**Cleanup:** revert any test service-parameter change.
+
+### Lab 3.3 — Configure globalized call routing in Cisco UCM (Objective 3.3)
+
+**Objective:** Confirm E.164 normalization to and from a global dial plan.
+
+```text
+admin:run sql select dnorpattern,e164mask from device where e164mask is not null limit 5
+! Verify: called-party transforms to +E.164, calling-party globalization, localization at egress
+```
+
+**Expected result:** DID-to-+E.164 masks and transformation patterns —
+globalized routing stores and routes numbers as `+E.164` internally and
+localizes only at the gateway egress, so a multi-site dial plan scales without
+overlapping patterns.
+
+**Negative test:** mix localized (non-+E.164) and globalized patterns in one
+cluster; inbound caller-ID and callback break — globalization must be consistent
+end to end.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.4 — Troubleshoot dial-plan issues with monitoring tools (Objective 3.4)
+
+**Objective:** Use DNA and traces to find a misrouted call.
+
+```text
+! Dialed Number Analyzer: run the failing dialed string from the source device
+admin:file tail activelog /cm/trace/ccm/sdi/  ! digit analysis in SDL/SDI trace
+```
+
+**Expected result:** the digit-analysis result showing the pattern matched (or
+"no match") — a call routed to the wrong gateway traces to an unexpected
+closest-match pattern or a CSS scoping the wrong partition; DNA makes the match
+explicit.
+
+**Negative test:** blame the gateway for a call that DNA shows matching a more
+specific wrong pattern — the dial plan, not the gateway, selected the route.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.5 — Describe Cisco USM APIs (Objective 3.5)
+
+**Objective:** Query UCM through the AXL (USM) SOAP API.
+
+```bash
+curl -sk -u $AXL_USER:$AXL_PW -H 'Content-Type: text/xml' \
+  -H 'SOAPAction: CUCM:DB ver=14.0 getUser' https://$CUCM:8443/axl/ \
+  -d '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.cisco.com/AXL/API/14.0"><soapenv:Body><ns:listPhone><searchCriteria><name>SEP%</name></searchCriteria><returnedTags><name/><description/></returnedTags></ns:listPhone></soapenv:Body></soapenv:Envelope>' | xmllint --format - | head
+```
+
+**Expected result:** the phones returned as XML — AXL is UCM's provisioning SOAP
+API (the "USM"/administrative XML layer) that automates moves/adds/changes and
+config queries programmatically.
+
+**Negative test:** call AXL with an app user lacking the "Standard AXL API
+Access" role; UCM returns `403` — AXL access is role-gated.
+
+**Cleanup:** none (read-only `list` call).
+
+### Lab 3.6 — Configure Cisco Unity Connection (Objective 3.6)
+
+**Objective:** Verify a Unity Connection voicemail user and UCM integration.
+
+```text
+! On Unity Connection CLI:
+run cuc dbquery unitydirdb select alias,dtmfaccessid from vw_mailbox limit 5
+show cuc jetty status
+! Confirm the SIP/SCCP voicemail port group and MWI to UCM
+```
+
+**Expected result:** mailbox users with their extensions and the messaging
+ports — Unity Connection provides voicemail; UCM integrates via a SIP trunk (or
+ports) with a voicemail pilot, profile, and MWI on/off.
+
+**Negative test:** a mailbox with no UCM voicemail-profile association gets no
+MWI and calls do not forward to voicemail — the UCM-side integration objects are
+required, not just the mailbox.
+
+**Cleanup:** remove the test mailbox if one was created.
+
+### Lab 3.7 — Configure on-premises user management (Objective 3.7)
+
+**Objective:** Confirm LDAP directory sync and end-user provisioning.
+
+```text
+admin:run sql select name,scheduleunit,nextexectime from directorypluginconfig
+admin:run sql select count(*) from enduser where fkdirectorypluginconfig is not null
+utils ldap status 2>/dev/null || show packages active | grep -i dirsync
+```
+
+**Expected result:** the LDAP sync agreement, its schedule, and the count of
+synced users — on-prem user management imports users from LDAP (read-only) and
+optionally authenticates against LDAP, with feature/line association done in
+UCM.
+
+**Negative test:** a user synced from LDAP cannot have their core fields edited
+in UCM (they are LDAP-owned); editing must happen in the directory — the sync
+model dictates the source of truth.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

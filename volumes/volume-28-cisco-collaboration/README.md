@@ -148,6 +148,155 @@ at registration.
 | 4.0 Collaboration Endpoints | 20% | 09 |
 | 5.0 Meetings | 20% | 09 |
 
+### Topic-level lab coverage
+
+Every exam topic across **all current Cisco Collaboration certifications** — the
+CLCOR core, the CLACC/CLHCT/CLCCE concentrations, and CCIE Collaboration — is
+covered by a hands-on **walkthrough** lab; the retired **CLICA 300-810** and
+**CLAUTO 300-835** blueprints are covered as well (kept for the record, and the
+subjects of Chapters 06 and 09). Topics were harvested from Cisco's official
+exam-topics PDFs (`learningcontent.cisco.com`) in July 2026 — CLCOR/CLACC/CLHCT
+v2.0, CLCCE v1.0, CLICA v1.2, CLAUTO v1.1. Labs use the Unified CM CLI/AXL, IOS
+XE (CUBE/voice), Expressway, Webex Control Hub and REST APIs, Webex Contact
+Center, and device xAPI; each carries `**Lab verified by:** *pending*` until a
+human runs it. **141 numbered labs** in total.
+
+**350-801 CLCOR v2.0** maps by domain: Domain 1 (Infrastructure and Design) and
+Domain 2 (Protocols and Endpoints) → Chapter 02 Labs 2.1–2.8; Domain 3
+(On-Premises Call Control) → Chapter 03 Labs 3.1–3.7; Domain 4 (Voice Gateways
+and SBC) → Chapter 05 Labs 5.1–5.3; Domain 5 (Cloud and Hybrid Services) →
+Chapter 07 Labs 7.1–7.10; Domain 6 (Media and QoS) → Chapter 08 Labs 8.1–8.4.
+
+**300-815 CLACC v2.0** maps by domain: Domains 1 (Signaling and Media) and 2
+(SBC and Voice Gateway) → Chapter 05 Labs 5.4–5.10; Domain 3 (Advanced Call
+Control) and Domain 4 (Supplemental Features and Security) → Chapter 04 Labs
+4.1–4.7; Domain 5 (Remote Connectivity and B2B) → Chapter 07 Labs 7.35–7.41.
+
+The remaining concentrations map one lab per exam topic:
+
+**300-820 CLHCT v2.0 → Chapter 07**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Configure SSO | Lab 7.11 |
+| 1.2 Configure directory synchronization | Lab 7.12 |
+| 1.3 Configure hybrid calendar service using cloud mail services | Lab 7.13 |
+| 1.4 Configure local gateways | Lab 7.14 |
+| 1.5 Configure site survivability | Lab 7.15 |
+| 1.6 Configure Control Hub calling features such as hot desking or auto … | Lab 7.16 |
+| 2.1 Troubleshoot cloud user management | Lab 7.17 |
+| 2.2 Diagnose network issues such as bandwidth and QoS when using Webex Suite … | Lab 7.18 |
+| 3.1 Troubleshoot Webex Calling | Lab 7.19 |
+| 3.2 Troubleshoot call routing in Webex Calling | Lab 7.20 |
+| 3.3 Troubleshoot cloud meetings | Lab 7.21 |
+| 3.4 Troubleshoot cloud messages | Lab 7.22 |
+| 3.5 Troubleshoot endpoint registration to the cloud | Lab 7.23 |
+| 4.1 Describe the administration functions in Webex | Lab 7.24 |
+| 4.2 Describe AI features in cloud collaboration solutions | Lab 7.25 |
+| 4.3 Describe the Control Hub migration tool options from on-premises to cloud | Lab 7.26 |
+| 5.1 Configure hybrid and migration from on-premises to cloud | Lab 7.27 |
+| 5.2 Configure advance dial plans | Lab 7.28 |
+| 6.1 Implement security such as administration, endpoints, meetings, and … | Lab 7.29 |
+| 6.2 Describe the Webex cloud security realm architecture | Lab 7.30 |
+| 6.3 Configure hybrid data security deployment model | Lab 7.31 |
+| 7.1 Describe App Hub, Developer Portal, and Room OS Portal | Lab 7.32 |
+| 7.2 Describe macros on devices | Lab 7.33 |
+| 7.3 Construct Webex Messaging, Meeting, Calling, People, and Events APIs | Lab 7.34 |
+
+**300-830 CLCCE v1.0 → Chapter 09**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Describe Webex Contact Center telephony architecture options | Lab 9.1 |
+| 1.2 Configure Webex Contact Center telephony integration via: | Lab 9.2 |
+| 1.3 Configure inbound and outdial telephony options for Webex Contact Center … | Lab 9.3 |
+| 1.4 Configure components to route voice calls within Webex Contact Center | Lab 9.4 |
+| 1.5 Troubleshoot voice channels | Lab 9.5 |
+| 2.1 Describe network requirements for Webex Contact Center | Lab 9.6 |
+| 2.2 Configure Webex Contact Center users | Lab 9.7 |
+| 2.3 Configure the desktop experience such as desktop layouts and desktop … | Lab 9.8 |
+| 2.4 Configure recording | Lab 9.9 |
+| 2.5 Configure visualizations and dashboards for reports | Lab 9.10 |
+| 3.1 Configure components to route digital contacts within Webex Contact Center | Lab 9.11 |
+| 3.2 Troubleshoot digital channels such as chat, email, SMS, and social | Lab 9.12 |
+| 4.1 Configure advanced voice flow design features such as call back, HTTP … | Lab 9.13 |
+| 4.2 Configure advanced digital flow design features such as HTTP request, … | Lab 9.14 |
+| 4.3 Describe prebuilt and custom connectors | Lab 9.15 |
+| 4.4 Describe Webex Contact Center APIs | Lab 9.16 |
+| 4.5 Describe AI assistant features such as summarization, topic analytics, … | Lab 9.17 |
+| 4.6 Describe Webex AI agent | Lab 9.18 |
+
+**300-810 CLICA v1.2 (retired) → Chapter 06**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Describe these types of SSO as they relate to Collaboration | Lab 6.1 |
+| 1.2 Describe the SAML SSO login process flow in the context of Cisco … | Lab 6.2 |
+| 1.3 Describe these components of SAML 2.0 and later | Lab 6.3 |
+| 1.4 Describe SAML SSO configuration | Lab 6.4 |
+| 1.5 Describe OAuth 2.0 | Lab 6.5 |
+| 2.1 Configure Cisco Unified IM and Presence on-premises | Lab 6.6 |
+| 2.2 Troubleshoot Cisco Unified IM and Presence on-premises | Lab 6.7 |
+| 3.1 Configure these in Cisco Unity Connection | Lab 6.8 |
+| 3.2 Troubleshoot these in Cisco Unity Connection | Lab 6.9 |
+| 3.3 Implement toll fraud prevention | Lab 6.10 |
+| 3.4 Troubleshoot Cisco Unity Connection integration options with Cisco UCM | Lab 6.11 |
+| 3.5 Describe digital networking in multicluster deployments in Cisco Unity … | Lab 6.12 |
+| 4.1 Configure DNS for service discovery | Lab 6.13 |
+| 4.2 Troubleshoot service discovery | Lab 6.14 |
+| 4.3 Troubleshoot Cisco Jabber and Webex App phone control | Lab 6.15 |
+| 4.4 Troubleshoot Cisco Jabber and Webex App voicemail integration | Lab 6.16 |
+| 4.5 Troubleshoot certificate validation | Lab 6.17 |
+| 4.6 Describe the Cisco Unified Attendant Console Advanced integration | Lab 6.18 |
+| 4.7 Troubleshoot Webex App functions | Lab 6.19 |
+
+**300-835 CLAUTO v1.1 (retired) → Chapter 09**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Utilize common version control operations with Git (add, clone, push, … | Lab 9.19 |
+| 1.2 Describe characteristics of API styles (REST, RPC, and SOAP) | Lab 9.20 |
+| 1.3 Describe the challenges encountered and patterns used when consuming APIs … | Lab 9.21 |
+| 1.4 Interpret Python scripts containing data types, functions, classes, … | Lab 9.22 |
+| 1.5 Describe the benefits of Python virtual environments | Lab 9.23 |
+| 1.6 Identify the roles of load balancer, firewall, DNS, and reverse proxy in … | Lab 9.24 |
+| 2.1 Construct API calls to automate Cisco UCM user/phone moves, adds, … | Lab 9.25 |
+| 2.2 Construct API calls to automate Cisco UCM dial plan and cluster config … | Lab 9.26 |
+| 2.3 Describe the capabilities and use of the Cisco UCM CTI APIs TAPI/JTAPI | Lab 9.27 |
+| 2.4 Describe the capabilities and use of the Cisco UCM Serviceability Perfmon … | Lab 9.28 |
+| 2.5 Describe the capabilities and use of the IP Phone Services API | Lab 9.29 |
+| 2.6 Describe the capabilities of Finesse REST APIs and Gadgets | Lab 9.30 |
+| 3.1 Describe Webex REST API capabilities, use, application architectures, … | Lab 9.31 |
+| 3.2 Implement administrative operations on Webex organizations, users, … | Lab 9.32 |
+| 3.3 Construct a Python script to automate creation of Webex spaces and … | Lab 9.33 |
+| 3.4 Construct a Python script to implement notification | Lab 9.34 |
+| 3.5 Construct API calls to implement interactive bots (including buttons and … | Lab 9.35 |
+| 3.6 Describe Webex bots, embedded apps, guest issuer apps, and integrations | Lab 9.36 |
+| 3.7 Create a web application embedding Webex and messaging using Webex Widgets | Lab 9.37 |
+| 3.8 Describe the capabilities and use for the various Webex Teams SDKs | Lab 9.38 |
+| 4.1 Construct API calls to automate Cisco collaboration room devices direct … | Lab 9.39 |
+| 4.2 Construct a script to monitor Cisco collaboration room device events … | Lab 9.40 |
+| 4.3 Describe the capabilities, use, creation, and deployment of custom … | Lab 9.41 |
+| 4.4 Describe the capabilities, use, creation, and deployment of Cisco … | Lab 9.42 |
+| 5.1 Describe Webex Meetings REST API capabilities and use to manage meetings … | Lab 9.43 |
+| 5.2 Construct REST API calls to implement meetings management for Webex … | Lab 9.44 |
+| 5.3 Construct REST API calls to configure Cisco Meeting Server | Lab 9.45 |
+
+### CCIE Collaboration coverage
+
+The CCIE Collaboration **qualifying exam is 350-801 CLCOR**, covered above. The
+8-hour hands-on lab applies the same technologies at expert depth; its focus
+areas map to this volume:
+
+| CCIE Collaboration focus area | Chapters / labs |
+| --- | --- |
+| Infrastructure, protocols, and endpoints | Chapters 02, 08 |
+| On-premises call control and dial plans | Chapters 03, 04 |
+| Voice gateways and CUBE (SBC) | Chapter 05 |
+| Collaboration applications (IM&P, Unity, SSO) | Chapter 06 |
+| Cloud, hybrid, Expressway, and MRA/B2B | Chapter 07 |
+| Contact center and automation/programmability | Chapter 09 |
+
 ### Study plan
 
 **CLCOR — eight to ten weeks** at 8–10 hours per week, assuming the

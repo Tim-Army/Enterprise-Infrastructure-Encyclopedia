@@ -182,18 +182,160 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Build the globalized plan above on the Chapter 03 estate: canonical
-DNs, translation patterns for habits, class-of-service CSS matrix
-(document the paper matrix first), PSTN patterns to a stub route
-list. Prove with DNA and test calls: internal habit-dialing lands
-canonically; a restricted phone is denied international by CSS (DNA
-evidence captured); forwarding to voicemail works from both internal
-and simulated-PSTN callers. Add the helpdesk hunt with
-longest-idle, directed park with reversion, and SNR for one user
-with tuned timers (demonstrate desk/mobile race won correctly).
-Finally, take the branch to SRST: fail the WAN, show registration to
-the router, a surviving site-internal call, and the documented
-feature reduction; restore and confirm re-registration.
+This chapter carries a topic-level walkthrough lab for **Domain 3 (Advanced
+Call Control) and Domain 4 (Supplemental Features and Security) of the CLACC
+300-815 v2.0 exam guide** — mapped in the volume README's coverage tables. Labs
+use the Unified CM administration/CLI and traces. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 4.1–4.7** — a Unified CM cluster at `$CUCM` with
+SIP trunks, a second cluster for ILS, a recording server, and Extension Mobility
+and device mobility configured for test users. **Cost:** none beyond lab
+resources.
+
+### Lab 4.1 — Configure advanced SIP interoperability with Cisco UCM (CLACC Objective 3.1)
+
+**Objective:** Apply a SIP normalization/transparency profile to a trunk.
+
+```text
+admin:run sql select name from sipnormalizationscript
+admin:run sql select d.name, s.name as script from device d \
+  inner join sipnormalizationscript s on d.fksipnormalizationscript=s.pkid where d.tkclass=1
+```
+
+**Expected result:** the SIP normalization LUA scripts and the trunks they bind
+to — advanced interoperability adapts headers/SDP between UCM and a
+provider/third-party PBX (e.g., adjusting Diversion, PAI, or unsupported
+methods) without changing core call control.
+
+**Negative test:** interconnect a third-party PBX with no normalization; a
+malformed or unsupported header drops the call — the script is what reconciles
+the dialects.
+
+**Cleanup:** unbind the test script from the trunk.
+
+### Lab 4.2 — Describe call recording options (CLACC Objective 3.2)
+
+**Objective:** Read the recording configuration (network-based vs built-in
+bridge).
+
+```text
+admin:run sql select name,description from recordingprofile
+admin:run sql select name from device where fkrecordingprofile is not null limit 5
+```
+
+**Expected result:** the recording profiles and recorded lines — UCM supports
+**built-in-bridge** (phone forks media) and **network-based/gateway** recording,
+with a recording profile, a recorder SIP trunk/route, and a recording-enabled
+line.
+
+**Negative test:** enable a recording profile on the line but leave the phone's
+built-in bridge off; no media is forked — both the line profile and the BiB (or
+gateway) must be enabled.
+
+**Cleanup:** disable recording on the test line.
+
+### Lab 4.3 — Troubleshoot globalized call routing elements (CLACC Objective 3.3)
+
+**Objective:** Diagnose a globalization/localization failure across a trunk.
+
+```text
+! Use DNA for the failing number; inspect calling/called transforms
+admin:run sql select name,dnorpattern from device where dnorpattern like '\+%' escape '\' limit 5
+```
+
+**Expected result:** the +E.164 patterns and where a transform is missing — a
+callback that fails or shows the wrong caller-ID traces to a missing
+calling-party globalization on ingress or a missing localization on egress.
+
+**Negative test:** an inbound PSTN call arriving as national format with no
+"incoming called/calling party settings" prefixing `+`; callback from the log
+fails — the ingress globalization transform is the fix.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.4 — Describe certificate management in Cisco UCM (CLACC Objective 4.1)
+
+**Objective:** Read the certificate trust model and expiry.
+
+```text
+admin:show cert list own
+admin:show cert list trust
+admin:run sql select subjectname,timetolive from certificate
+```
+
+**Expected result:** the own certs (CallManager, Tomcat, CAPF) and trust store
+with validity — UCM security rests on these: CallManager for secure SIP/SRTP,
+Tomcat for HTTPS/AXL, CAPF for LSC issuance to phones; expiry breaks the
+dependent service.
+
+**Negative test:** an expired CAPF cert blocks new LSC issuance so secure phones
+cannot enroll, while already-enrolled phones keep working — the partial symptom
+points to CAPF specifically.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.5 — Configure supplementary functions (CLACC Objective 4.2)
+
+**Objective:** Configure and verify a supplementary service (e.g., Call Park /
+Pickup / hunt).
+
+```text
+admin:run sql select parknumber,parkfkroutepartition from callpark limit 5
+admin:run sql select name,tkdistributealgorithm from linegroup limit 5
+```
+
+**Expected result:** the call-park slots and hunt/line-group config —
+supplementary features (park, pickup, hunt pilots, shared lines, BLF) extend
+basic calling; each has its own numbers/partitions and must be reachable by the
+user's CSS.
+
+**Negative test:** a call-park range whose partition is outside the user's CSS
+is unusable — supplementary features obey the same partition/CSS reachability as
+routing.
+
+**Cleanup:** remove the test park slot / line group.
+
+### Lab 4.6 — Troubleshoot Cisco UCM Mobility (CLACC Objective 4.3)
+
+**Objective:** Diagnose Extension Mobility or Single Number Reach failure.
+
+```text
+admin:show risdb query phone | include Extension
+admin:file tail activelog /cm/trace/ccm/sdi/  ! EM login / SNR (Mobile Connect) events
+admin:run sql select name,fkremotedestinationprofile from remotedestination limit 5
+```
+
+**Expected result:** the EM login state or the Remote Destination (Single Number
+Reach) config — EM failures trace to the EM service, device profile, or CSS;
+SNR/Mobile Connect failures trace to the remote destination, ring schedule, or
+CSS reaching the PSTN.
+
+**Negative test:** an EM user profile whose CSS lacks the PSTN partition can log
+in but cannot dial out — the device-profile CSS, not the login, is the fault.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.7 — Configure ILS, URI synchronization, and GDPR (CLACC Objective 4.4)
+
+**Objective:** Verify Intercluster Lookup Service and URI/number replication.
+
+```text
+admin:run sql select clusterid,role,synctime from ilsclusterpeer 2>/dev/null || \
+  run sql select name,description from ilsconfig
+admin:run sql select count(*) from globaldialplanreplication
+```
+
+**Expected result:** the ILS peering (hub/spoke) and learned global dial-plan
+records — ILS advertises directory URIs and +E.164 numbers between clusters
+(GDPR = Global Dial Plan Replication), enabling URI dialing and intercluster
+routing without static patterns.
+
+**Negative test:** two clusters with no ILS peering cannot resolve each other's
+URIs; URI dialing fails intercluster — ILS/GDPR is the replication that makes it
+work.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

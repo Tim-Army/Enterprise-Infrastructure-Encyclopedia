@@ -167,15 +167,181 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Register two endpoints (one hardware or emulated phone, one Webex
-App/Jabber) to the Chapter 01 estate. Capture and fully annotate one
-call: every SIP message labeled with its transaction and dialog role,
-the SDP offer/answer table (codecs offered/selected, addresses,
-DTMF), and the RTP stream statistics. Then break it three ways and
-capture each signature: remove the common codec from one endpoint's
-region (expect 488), block RTP one direction with an ACL (one-way
-audio with perfect signaling), and mismatch DTMF relay on one leg
-(call fine, digits dead). Restore all three.
+This chapter carries a topic-level walkthrough lab for **Domains 1
+(Infrastructure and Design) and 2 (Protocols and Endpoints) of the CLCOR
+350-801 v2.0 exam guide** — mapped in the volume README's coverage tables. Labs
+use the Unified CM CLI (`admin:` shell), the Real-Time Monitoring Tool (RTMT)
+counters, and SIP/registration troubleshooting. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 2.1–2.8** — a Unified CM cluster (publisher +
+subscriber) reachable at `$CUCM`, a CUBE (IOS XE) SBC, registered SIP endpoints
+and a soft client, and a management station with SSH and the AXL toolkit.
+**Cost:** none beyond lab resources.
+
+### Lab 2.1 — Describe on-premises, hybrid, and cloud design elements (Objective 1.1)
+
+**Objective:** Read the deployment model a cluster participates in.
+
+```text
+admin:show network cluster
+admin:run sql select name,description from processnode
+utils service list | grep -i "Cisco CallManager"
+```
+
+**Expected result:** the cluster nodes and running call-control service — an
+**on-premises** design runs call control locally; **hybrid** adds Webex services
+(directory/calendar/calling) via Expressway connectors; **cloud** moves call
+control to Webex Calling. The node list plus enabled services locates the model.
+
+**Negative test:** assume "hybrid" from the presence of Expressway alone;
+Expressway also serves pure on-prem MRA — the enabled Webex connectors, not the
+edge box, define hybrid.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.2 — Describe the purpose of edge devices (Objective 1.2)
+
+**Objective:** Identify each edge device and the boundary it serves.
+
+```text
+show running-config | section voice service voip     ! on CUBE
+admin:show network eth0 detail                         ! CUCM side
+```
+
+**Expected result:** CUBE terminating SIP trunks at the PSTN/ITSP edge, and
+(where present) Expressway-C/E at the internet edge for MRA/B2B — edge devices
+demarcate trust, normalize SIP, and traverse NAT/firewalls so internal call
+control never faces the outside directly.
+
+**Negative test:** point an ITSP trunk straight at UCM with no CUBE; UCM is
+exposed to external SIP and cannot normalize provider quirks — the edge device
+exists precisely to prevent that.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.3 — Describe the cluster upgrade process for Communications Manager (Objective 1.3)
+
+**Objective:** Read the active/inactive partition state that drives an upgrade.
+
+```text
+admin:show version active
+admin:show version inactive
+admin:utils system upgrade status
+```
+
+**Expected result:** the active and inactive versions — UCM upgrades install to
+the **inactive partition**, then a switch-version reboots into it, so a rollback
+is a switch back; the status command shows an in-progress upgrade's stage.
+
+**Negative test:** attempt a switch-version with no image on the inactive
+partition; UCM refuses — the upgrade must complete to the inactive side first.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.4 — Troubleshoot security components (Objective 1.4)
+
+**Objective:** Diagnose a mixed-mode/CTL or certificate problem.
+
+```text
+admin:show ctl
+admin:utils ctl show
+admin:show cert list own
+admin:show cert list trust
+```
+
+**Expected result:** the CTL file (mixed-mode) and the cluster's own/trust
+certificates with expiry — expired or missing certs break TLS SIP, secure
+registration, and phone config download; the CTL governs mixed-mode trust.
+
+**Negative test:** an expired CallManager cert leaves TLS phones unregistered
+while non-secure phones work — the split symptom points straight at the cert,
+not the network.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.5 — Troubleshoot network components (Objective 1.5)
+
+**Objective:** Diagnose a network-layer problem affecting collaboration.
+
+```text
+admin:utils network ping <gateway>
+admin:utils network traceroute <subscriber>
+admin:show network dns
+admin:utils ntp status
+```
+
+**Expected result:** reachability, DNS resolution, and NTP sync — collaboration
+depends on all three: DNS for service discovery, NTP for cert validity and CDR
+timestamps, and low-loss paths for media; the four checks localize the layer.
+
+**Negative test:** NTP out of sync silently breaks certificate validation and
+database replication across the cluster — a "network" fault that looks like a
+security or DB fault until you check the clock.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.6 — Deploy endpoints and soft clients (Objective 2.1)
+
+**Objective:** Add a phone and confirm it registers (on-prem and cloud).
+
+```text
+admin:run sql select d.name,d.description,tm.name as model from device d \
+  inner join typemodel tm on d.tkmodel=tm.enum where d.name like 'SEP%'
+admin:show risdb query phone
+```
+
+**Expected result:** the provisioned device and its registration status from the
+RIS database — a deployed endpoint appears `Registered` to a specific node;
+soft clients (Webex App/Jabber) register the same way through service discovery.
+
+**Negative test:** deploy a phone without associating it to a user/line; it
+registers but cannot place calls — provisioning is device **plus** line/user
+association.
+
+**Cleanup:** remove the test device if one was added.
+
+### Lab 2.7 — Troubleshoot elements of a SIP conversation (Objective 2.2)
+
+**Objective:** Read a SIP dialog to find where a call fails.
+
+```text
+admin:file get activelog /cm/trace/ccm/sdi/  ! or use RTMT SDL/SDI trace
+! On CUBE:
+debug ccsip messages
+show voip rtp connections
+```
+
+**Expected result:** the INVITE/100/180/200/ACK exchange — a call failing at a
+specific SIP response localizes it: `404` is dial-plan/routing, `403` is
+policy/CAC, `488` is codec/SDP mismatch, no `180` is a downstream reachability
+problem.
+
+**Negative test:** chase the endpoint for a `488 Not Acceptable Here`; the SDP
+offer/answer shows a codec mismatch — the SIP body, not the phone, is the cause.
+
+**Cleanup:** `no debug ccsip messages` on CUBE.
+
+### Lab 2.8 — Troubleshoot endpoint registration on UCM and CUBE (Objective 2.3)
+
+**Objective:** Diagnose an endpoint that will not register.
+
+```text
+admin:show risdb query phone | include Unregistered
+! On CUBE (SIP SRST / registrar):
+show sip-ua status registrar
+show voice register statistics
+```
+
+**Expected result:** the unregistered endpoint and the registrar's view — UCM
+registration failures trace to device pool/TFTP/cert; CUBE/SRST registration
+failures trace to `voice register` config or reachability during a WAN outage.
+
+**Negative test:** a phone stuck at "Registering" with a valid config is usually
+a TFTP (option 150) or cert-trust problem, not call control — check TFTP reach
+before UCM config.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 
