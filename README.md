@@ -11,6 +11,12 @@
 
 **v1.0.0 — first public release.** 35 volumes, 326 chapters, now published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.0.0).
 
+## Disclaimer
+
+1. This Encyclopedia was created by Claude AI, from human input commands.
+   All content will be tech-reviewed by a competent human in due time and
+   annotated to inform the reader.
+
 ## Overview
 
 The Enterprise Infrastructure Encyclopedia is a 37-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
