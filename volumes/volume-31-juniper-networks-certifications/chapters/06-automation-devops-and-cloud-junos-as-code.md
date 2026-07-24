@@ -130,13 +130,192 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Against the Chapter 05 fabric (or two vJunos boxes): enable NETCONF;
-inventory in YAML; Jinja2 template rendering per-device BGP config;
-Ansible playbook pushing with commit-confirmed; JSNAPy pre/post
-asserting BGP Established and interface error deltas of zero; a gnmic
-subscription streaming one interface's counters during a traffic test.
-Break the push once — bad template variable — and show the pipeline
-failing safely with the device untouched after the confirm window.
+This chapter carries a topic-level walkthrough lab for **every exam objective of
+the JNCIS-DevOps (JN0-423) exam** (written to Junos OS 24.4), plus the foundational
+NETCONF/PyEZ, REST, and cloud/SDN skills of the JNCIA-DevOps (JN0-224) and
+JNCIA-Cloud (JN0-214) associate exams — mapped in the volume README's coverage
+tables. Labs use the Junos CLI, Python (PyEZ), Ansible, and gNMI/NETCONF. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 6.1–6.8** — a Junos device with NETCONF and gRPC
+enabled, a workstation with Python 3, `junos-eznc` (PyEZ), Ansible with the
+`juniper.device` collection, `pyang`, and a telemetry collector. **Cost:** none
+beyond lab resources.
+
+### Lab 6.1 — Platform Automation Overview (Objective: Platform Automation Overview)
+
+**Objective:** Identify the Junos automation entry points (mgd, JET, Terraform).
+
+```text
+show configuration system services | match "netconf|rest|ssh"
+show system schema module juniper-command 2>/dev/null | match module
+```
+
+```bash
+terraform providers 2>/dev/null | grep -i junos || echo "junos-terraform / Juniper.Device provider"
+```
+
+**Expected result:** the enabled management services — Junos automation runs through
+the **management process (mgd)** for config (NETCONF/RESTCONF/CLI over the candidate
+DB), the **Juniper Extension Toolkit (JET)** service process for on-box apps, and
+declarative tooling like **Terraform**; each is an entry point for a different style.
+
+**Negative test:** automate against a device with all management services disabled;
+every off-box tool fails to connect — a management service (NETCONF/REST/gRPC) must
+be on.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.2 — gRPC and gNMI (Objective: gRPC)
+
+**Objective:** Use gNMI/gRPC for config and streaming telemetry.
+
+```bash
+gnmic -a $JUNOS:32767 -u admin -p $PW --insecure get --path "/interfaces/interface[name=ge-0/0/0]/state/counters"
+gnmic -a $JUNOS:32767 -u admin -p $PW --insecure subscribe --path "/interfaces/interface/state/counters" --stream-mode sample --sample-interval 10s
+```
+
+**Expected result:** the interface counters via gNMI GET and a streaming
+subscription — **gRPC** (with protobuf) carries **gNMI** for OpenConfig-modeled
+config/telemetry; sensor paths stream to a collector (the TIG stack — Telegraf/
+InfluxDB/Grafana), pushing state rather than polling.
+
+**Negative test:** subscribe to an OpenConfig path the device does not model; the
+subscription returns nothing — the sensor path must exist in a supported model.
+
+**Cleanup:** stop the subscription.
+
+### Lab 6.3 — Ansible (Objective: Ansible)
+
+**Objective:** Configure Junos with Ansible and validate with JSNAPy.
+
+```bash
+cat > pb.yml <<'YML'
+- hosts: junos
+  connection: local
+  gather_facts: no
+  tasks:
+    - juniper.device.config:
+        load: set
+        lines: ["set system host-name AUTO-R1"]
+        commit: true
+YML
+ansible-playbook -i inv pb.yml | grep -E 'changed|ok='
+```
+
+**Expected result:** the play applying and committing the change idempotently —
+**Ansible** automates Junos via the `juniper.device` collection: playbooks load
+config (with Jinja2 templates and Vault for secrets) and **JSNAPy** snapshots and
+diffs operational state to validate a change did only what was intended.
+
+**Negative test:** re-run the same play; `changed=0` — idempotence means no redundant
+change, and JSNAPy would flag any unexpected state delta.
+
+**Cleanup:** revert the host-name via a follow-up play or `rollback`.
+
+### Lab 6.4 — Junos Automation Scripts (Objective: Junos Automation Scripts)
+
+**Objective:** Read on-box automation scripts (commit/op/event/SNMP).
+
+```text
+show configuration system scripts
+show system scripts op 2>/dev/null
+show system commit
+```
+
+**Expected result:** the configured scripts and commit history — on-box scripts
+extend Junos: **commit scripts** enforce/adjust config at commit, **op scripts** add
+custom operational commands, **event scripts** react to syslog events, and **SNMP
+scripts** serve custom OIDs — all running in the RE (SLAX/Python).
+
+**Negative test:** a commit script that raises an error aborts the commit — commit
+scripts can enforce policy by failing non-compliant candidate configs.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.5 — YANG (Objective: YANG)
+
+**Objective:** Read a Junos/OpenConfig YANG model tree.
+
+```bash
+pyang -f tree junos-conf-interfaces.yang 2>/dev/null | head -20 || \
+  echo "Junos ships native + OpenConfig YANG; load OpenConfig with 'set system services ...'"
+```
+
+**Expected result:** the model tree (containers/lists/leaves) — Junos config and
+state are described by **YANG** (native `junos-conf-*` models and **OpenConfig**);
+every NETCONF/RESTCONF/gNMI operation manipulates YANG-modeled data, and pyang
+renders the schema for building payloads.
+
+**Negative test:** send config for an OpenConfig path without loading the OpenConfig
+package/translation; the device rejects it — the model must be supported/loaded.
+
+**Cleanup:** none.
+
+### Lab 6.6 — NETCONF and PyEZ (Foundational: JNCIA-DevOps)
+
+**Objective:** Connect with PyEZ and read/change config over NETCONF.
+
+```bash
+python3 - <<'PY'
+from jnpr.junos import Device
+from jnpr.junos.utils.config import Config
+with Device(host="JUNOS", user="admin", passwd="PW") as dev:
+    print("model:", dev.facts["model"], "version:", dev.facts["version"])
+    with Config(dev, mode="exclusive") as cu:
+        cu.load("set system host-name PYEZ-R1", format="set")
+        print(cu.diff())
+        cu.rollback()   # discard for the lab
+PY
+```
+
+**Expected result:** the device facts and a candidate diff (then rolled back) —
+**PyEZ** (`junos-eznc`) is Juniper's Python NETCONF library: it gathers facts, loads
+and commits config (with locking and diff), and runs RPCs, the foundation of
+off-box Junos automation.
+
+**Negative test:** load malformed `set` syntax; PyEZ raises a `ConfigLoadError` with
+the parse error — structured errors, not silent failure.
+
+**Cleanup:** the script rolls back; no change persists.
+
+### Lab 6.7 — REST API (Foundational: JNCIA-DevOps)
+
+**Objective:** Call the Junos REST API to run an RPC.
+
+```bash
+curl -sk -u admin:$PW "https://$JUNOS:3443/rpc/get-software-information" -H 'Accept: application/json' | jq '.' | head
+```
+
+**Expected result:** the software information as JSON — the Junos **REST API** (once
+`set system services rest` is enabled) exposes every operational RPC and config over
+HTTP(S), returning XML or JSON, so simple HTTP clients automate Junos without a
+NETCONF library.
+
+**Negative test:** call the REST API without `set system services rest http/https`;
+the connection is refused — the REST service must be enabled and (best practice)
+TLS-secured.
+
+**Cleanup:** none (read-only RPC).
+
+### Lab 6.8 — Cloud and SDN Foundations (Foundational: JNCIA-Cloud)
+
+**Objective:** Identify SDN/NFV/cloud constructs (containers, overlay, CN2).
+
+```bash
+kubectl get pods -n contrail 2>/dev/null | head || kubectl get pods -A | head
+kubectl get virtualnetworks -A 2>/dev/null | head
+```
+
+**Expected result:** the SDN controller/CNI pods and virtual networks — the cloud
+track covers **SDN** (a controller programming the fabric — Juniper CN2/Contrail),
+**NFV** (network functions as software), and **cloud-native** networking (Kubernetes
+CNI, overlay virtual networks), the substrate DevOps automation targets.
+
+**Negative test:** expect pod-to-pod policy without a CNI that enforces it; a default
+CNI may allow all — the SDN/CNI provides the segmentation the cloud design needs.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

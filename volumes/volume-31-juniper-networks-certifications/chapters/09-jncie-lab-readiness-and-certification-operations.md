@@ -123,12 +123,134 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Run one full six-hour mock on your strongest track's topology (ENT or
-DC from this volume's labs, SEC on vSRX, SP on the Chapter 03 core):
-a partner or script seeds five faults and adds three build tasks; you
-work the clock with the verification battery, journal every miss, and
-grade by service outcomes. Produce the readiness verdict: book, or
-schedule the next mock.
+This chapter carries **integrative, timed-build walkthrough labs** that rehearse
+the four JNCIE practical tracks — the expert-level application of the specialist
+skills from Chapters 02–05 — plus the certification-operations knowledge that
+frames exam day. The JNCIE **written qualifier is the track's JNCIP**; these labs
+are for the six-hour hands-on lab. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
+
+**Shared prerequisites for Labs 9.1–9.5** — a multi-device Junos topology (vMX/
+vSRX/vQFX or hardware) sufficient to build each track's scenario, a stopwatch, and
+the discipline to build against the clock and then verify. **Cost:** none beyond
+lab resources.
+
+### Lab 9.1 — JNCIE-ENT integrative build (Enterprise expert readiness)
+
+**Objective:** Build and verify a full enterprise topology against the clock.
+
+```text
+show ospf neighbor
+show isis adjacency
+show bgp summary
+show spanning-tree bridge
+show vrrp
+```
+
+**Expected result:** OSPF/IS-IS/BGP all converged, a loop-free switched core, and
+VRRP redundancy — the JNCIE-ENT lab tests building multi-protocol routing (OSPF +
+IS-IS + BGP with redistribution and policy), switching (VLANs, RSTP/MSTP, LAG), and
+HA (Virtual Chassis, VRRP, GRES/NSR) **quickly and correctly**, then fixing broken
+scenarios.
+
+**Negative test:** a redistribution between IGPs without tag-based loop prevention
+introduces a routing loop under the time pressure — the policy discipline from
+Chapter 02 is what prevents the classic JNCIE mistake.
+
+**Cleanup:** roll back to the pre-lab configuration group/snapshot.
+
+### Lab 9.2 — JNCIE-SP integrative build (Service Provider expert readiness)
+
+**Objective:** Build and verify an MPLS core with L3VPN/L2VPN services.
+
+```text
+show mpls lsp
+show ldp session
+show route table bgp.l3vpn.0
+show l2vpn connections 2>/dev/null
+show route table inet6.0
+```
+
+**Expected result:** RSVP/LDP LSPs up, VPNv4 (bgp.l3vpn.0) routes, an L2VPN
+connection, and IPv6 — the JNCIE-SP lab tests a full provider build: IS-IS/OSPF
+core, MPLS (RSVP-TE, LDP, segment routing), **L3VPN** and **L2VPN/EVPN** services,
+CoS, and multicast, at expert speed.
+
+**Negative test:** a VPN with correct RTs but a broken core LSP has no PE-PE
+transport; the service fails despite correct VRF config — verify the underlay LSP
+first, the SP troubleshooting discipline.
+
+**Cleanup:** roll back to the pre-lab snapshot.
+
+### Lab 9.3 — JNCIE-SEC integrative build (Security expert readiness)
+
+**Objective:** Build a chassis cluster with policy, NAT, and IPsec.
+
+```text
+show chassis cluster status
+show security policies hit-count
+show security nat source rule all
+show security ike security-associations
+show security ipsec security-associations
+```
+
+**Expected result:** a healthy cluster, hit-counted policies, working NAT, and IPsec
+SAs — the JNCIE-SEC lab tests building an SRX estate: **chassis cluster** HA, zone-
+based **security policies**, **NAT** (source/destination/static), **IPsec VPNs**,
+IDP/UTM/ATP, and identity-aware policy, then troubleshooting under time.
+
+**Negative test:** a security policy that permits traffic but a source-NAT rule that
+does not match leaves return traffic unroutable — policy and NAT must both be
+correct for the flow to complete.
+
+**Cleanup:** roll back to the pre-lab snapshot.
+
+### Lab 9.4 — JNCIE-DC integrative build (Data Center expert readiness)
+
+**Objective:** Build an EVPN-VXLAN fabric and verify overlay reachability.
+
+```text
+show bgp summary
+show evpn database
+show ethernet-switching vxlan-tunnel-end-point remote
+show route table bgp.evpn.0
+ping <remote-host-in-tenant>
+```
+
+**Expected result:** the underlay converged, EVPN Type-2/5 routes present, remote
+VTEPs discovered, and end-to-end tenant reachability — the JNCIE-DC lab tests
+building a spine-leaf **IP fabric** with **EVPN-VXLAN** (ERB), multitenancy (VRFs/
+virtual networks), DCI, and (increasingly) **Apstra** intent-based operation.
+
+**Negative test:** inconsistent VNI-to-VLAN mapping on one leaf silently drops
+that segment's traffic — the fabric-wide consistency check is the JNCIE-DC
+discipline.
+
+**Cleanup:** roll back to the pre-lab snapshot.
+
+### Lab 9.5 — Cross-track troubleshooting and certification operations
+
+**Objective:** Diagnose a mixed fault fast, and confirm exam-operations readiness.
+
+```text
+show system commit
+show configuration | compare rollback 1
+show log messages | last 40
+request system snapshot 2>/dev/null
+```
+
+**Expected result:** the commit history, a rollback diff, recent logs, and a saved
+snapshot — expert readiness is as much **operations** as configuration: use
+`rollback`/`compare`, commit confirmed, `traceoptions`, and snapshots to work
+safely and fast; and know the certification operations (JNCIP written qualifier,
+six-hour lab format, delivery, recertification every three years, JPR code changes)
+that frame exam day.
+
+**Negative test:** make a risky change without `commit confirmed`; a mistake that
+cuts your management session is unrecoverable without console — `commit confirmed`
+auto-rolls-back and is the expert's safety net under time.
+
+**Cleanup:** `rollback 0` and restore the baseline snapshot.
 
 ## Lab Verification
 

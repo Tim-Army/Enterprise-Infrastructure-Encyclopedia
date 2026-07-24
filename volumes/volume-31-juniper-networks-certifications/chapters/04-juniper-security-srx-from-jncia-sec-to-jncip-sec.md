@@ -129,13 +129,169 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-vSRX pair plus a vJunos switch: three zones (TRUST, DMZ, UNTRUST),
-policies with a logged final deny, interface source NAT outbound, and
-destination NAT publishing one DMZ service; a route-based IPsec tunnel
-to a second vSRX with OSPF over st0. Lock yourself out once by
-omitting host-inbound SSH — recover via console and codify the lesson
-— then break phase 2 with a proposal mismatch and prove the signature
-before repairing.
+This chapter carries a topic-level walkthrough lab for **every exam objective of
+the JNCIS-SEC (JN0-336) exam** — the Security specialist (SRX, written to Junos OS
+24.4) — mapped in the volume README's coverage tables. Labs use the Junos CLI on
+SRX Series firewalls. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
+
+**Shared prerequisites for Labs 4.1–4.7** — two SRX firewalls (for the cluster
+lab), configured security zones and policies, a peer for IPsec, and an ATP Cloud /
+Security Director realm for those labs. **Cost:** none beyond lab resources.
+
+### Lab 4.1 — Intrusion Detection and Prevention (Objective: IDP)
+
+**Objective:** Apply an IDP policy and confirm inspection.
+
+```text
+configure
+set security idp idp-policy LAB-IDP rulebase-ips rule r1 match application default
+set security idp idp-policy LAB-IDP rulebase-ips rule r1 then action drop-packet
+set security policies from-zone trust to-zone untrust policy P1 then permit application-services idp-policy LAB-IDP
+commit and-quit
+show security idp status
+show security idp attack table
+```
+
+**Expected result:** the IDP engine running and attack counters — SRX **IDP**
+inspects permitted traffic against a signature database, matching an IPS rulebase
+and taking action (drop/close); the database must be downloaded and the policy
+attached to a security policy.
+
+**Negative test:** attach an IDP policy without downloading the signature database;
+`show security idp status` shows no policy loaded — the attack database is required.
+
+**Cleanup:** `configure; delete security idp; delete security policies from-zone
+trust to-zone untrust policy P1 then permit application-services; commit`.
+
+### Lab 4.2 — IPsec VPN (Objective: IPsec VPN)
+
+**Objective:** Build a route-based site-to-site IPsec VPN and verify.
+
+```text
+configure
+set security ike proposal P1 authentication-method pre-shared-keys dh-group group14 encryption-algorithm aes-256-cbc
+set security ike policy POL proposals P1
+set security ike gateway GW ike-policy POL address 198.51.100.2 external-interface ge-0/0/0.0
+set security ipsec vpn VPN bind-interface st0.0
+set security ipsec vpn VPN ike gateway GW
+commit and-quit
+show security ike security-associations
+show security ipsec security-associations
+```
+
+**Expected result:** the IKE (phase 1) and IPsec (phase 2) SAs up — a route-based
+IPsec VPN establishes IKE, negotiates IPsec SAs, and binds to a secure tunnel
+interface (`st0`); traffic routed into `st0` is encrypted, and Juniper Secure Connect
+extends this to remote clients.
+
+**Negative test:** mismatched phase-1 proposals (DH group/encryption) between peers
+leave IKE in negotiation; `show security ike security-associations` shows no SA —
+proposals must match.
+
+**Cleanup:** `configure; delete security ike; delete security ipsec; commit`.
+
+### Lab 4.3 — Juniper ATP Cloud (Objective: Juniper Advanced Threat Prevention Cloud)
+
+**Objective:** Enroll the SRX and verify the ATP Cloud security feeds.
+
+```text
+show services advanced-anti-malware status
+show services advanced-anti-malware policy
+show security dynamic-address category-name CC 2>/dev/null | match "address|feed"
+```
+
+**Expected result:** the SRX enrolled with ATP Cloud and its feeds — **ATP Cloud**
+sends suspicious files to a cloud sandbox and feeds the SRX C&C/infected-host/
+GeoIP/custom feeds for blocking, with Encrypted Traffic Insights, DNS/IoT security,
+and adaptive threat profiling.
+
+**Negative test:** a policy referencing ATP Cloud while the SRX is not enrolled
+(no realm) does nothing; `show services advanced-anti-malware status` shows not
+connected — enrollment to the cloud realm is required.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.4 — High Availability Clustering (Objective: HA Clustering)
+
+**Objective:** Verify an SRX chassis cluster's redundancy state.
+
+```text
+show chassis cluster status
+show chassis cluster interfaces
+show chassis cluster statistics
+```
+
+**Expected result:** the redundancy groups with a primary/secondary node and the
+fabric/control links — an SRX **chassis cluster** joins two nodes into one logical
+firewall: RG0 (control plane) and RG1+ (data plane) fail over independently, with
+RTO state (sessions) synchronized over the fabric link so failover is stateful.
+
+**Negative test:** a cluster whose control or fabric link is down splits (both nodes
+primary), risking a session-table conflict — the control and fabric links are
+essential to the cluster.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.5 — Identity-Aware Security Policies (Objective: Identity-Aware Security Policies)
+
+**Objective:** Verify user-identity-based policy via JIMS.
+
+```text
+show services user-identification active-directory-access active-directory-authentication-table all
+show security match-policies from-zone trust to-zone untrust source-ip 10.10.10.50 destination-ip 8.8.8.8 protocol tcp source-port 1024 destination-port 443
+```
+
+**Expected result:** the user-to-IP mappings and the matched identity-aware policy —
+**JIMS** (Juniper Identity Management Service) feeds the SRX user/group-to-IP
+mappings from AD, so security policies match on **user identity** (source-identity)
+rather than just IP.
+
+**Negative test:** a policy matching a user whose IP-to-user mapping JIMS has not
+learned falls through to the non-identity policy — the mapping must exist for
+identity matching.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.6 — SSL Proxy (Objective: SSL Proxy)
+
+**Objective:** Verify SSL forward-proxy decryption for inspection.
+
+```text
+show services ssl proxy statistics
+show services ssl proxy counters
+show security policies detail | match "ssl-proxy"
+```
+
+**Expected result:** the SSL proxy session counters — **SSL forward proxy** lets the
+SRX decrypt outbound TLS (using a CA the clients trust) so IDP/content security can
+inspect the plaintext, then re-encrypts; server protection decrypts inbound TLS to a
+protected server.
+
+**Negative test:** clients that do not trust the proxy CA get certificate warnings on
+every HTTPS site — the proxy CA must be distributed to clients for forward proxy to
+work cleanly.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.7 — Security Director (Objective: Security Director)
+
+**Objective:** Read the SRX's management by Junos Space Security Director.
+
+```text
+show system services outbound-ssh
+show configuration system services netconf
+```
+
+**Expected result:** the management channel to Space — **Security Director**
+(Junos Space) centrally manages SRX policy: it onboards devices (via NETCONF/
+outbound-SSH), authors and pushes security policies, NAT, and VPNs at scale, and
+reports on them, so many firewalls share one policy source of truth.
+
+**Negative test:** an SRX with no NETCONF/outbound-SSH to Space cannot be managed by
+Security Director; policy pushes fail — the management channel is the prerequisite.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

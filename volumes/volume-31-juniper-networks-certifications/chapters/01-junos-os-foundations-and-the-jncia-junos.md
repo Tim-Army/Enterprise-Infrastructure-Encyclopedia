@@ -128,13 +128,180 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Build a two-device topology (vJunos-switch pair or a vLabs sandbox):
-hostname, management addressing, and NETCONF on both; an
-interconnecting /30 with reachability proven by ping; a static default
-route with a next-hop and a `show route` verification; break the link
-address, prove the failure signature in `show interfaces terse` and the
-log, then `rollback 1` and re-verify. Finish by exporting the
-configuration as set commands and archiving it off-box.
+This chapter carries a topic-level walkthrough lab for **every exam objective of
+the JNCIA-Junos (JN0-106) exam** — the associate baseline for the Enterprise and
+Service Provider tracks — mapped in the volume README's coverage tables. Labs use
+the Junos CLI (operational and configuration modes). Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 1.1–1.7** — a Junos device (vMX/vSRX/vJunos or
+hardware) running Junos OS 21.2+, console/SSH access, and a peer device for
+routing. **Cost:** none beyond lab resources.
+
+### Lab 1.1 — Networking Fundamentals (Objective: Networking Fundamentals)
+
+**Objective:** Verify Layer 2/Layer 3 addressing and longest-match forwarding.
+
+```text
+show interfaces terse
+show arp
+show route 10.0.0.0/8
+```
+
+**Expected result:** interface IP/MAC bindings, the ARP (L2↔L3 resolution) table,
+and the longest-match route for the destination — the fundamentals: L2 addressing
+(MAC/ARP), L3 addressing (IP/subnet), and longest-prefix-match routing that Junos
+applies to forward.
+
+**Negative test:** look up a host in a subnet the device has no route to;
+`show route` returns no match and traffic is dropped — longest-match needs a
+covering route (or a default).
+
+**Cleanup:** none (read-only).
+
+### Lab 1.2 — Junos OS Fundamentals (Objective: Junos OS Fundamentals)
+
+**Objective:** Read the control/forwarding-plane split (RE vs PFE).
+
+```text
+show chassis routing-engine | match "Model|Load"
+show pfe statistics traffic | match "packets"
+show system processes summary | match rpd
+```
+
+**Expected result:** the Routing Engine (control plane, runs `rpd`) and PFE
+(forwarding plane) statistics — Junos separates the **Routing Engine** (protocols,
+config, management) from the **Packet Forwarding Engine** (hardware forwarding);
+transit traffic stays in the PFE, exception/host traffic punts to the RE.
+
+**Negative test:** expect protocol computation on the PFE; it runs on the RE
+(`rpd`) — conflating the planes misplaces where a CPU spike or a protocol fault
+originates.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.3 — User Interfaces (Objective: User Interfaces)
+
+**Objective:** Exercise candidate vs active configuration and the CLI modes.
+
+```text
+configure
+set system host-name LAB-R1
+show | compare
+commit check
+rollback 0
+exit
+```
+
+**Expected result:** `show | compare` shows the candidate change (`+ host-name
+LAB-R1`), `commit check` validates it, and `rollback 0` discards it — Junos edits a
+**candidate** config that only becomes **active** on `commit`, with `compare`,
+`commit check`, and `rollback` as the safety net.
+
+**Negative test:** make a change and `exit` configuration mode without committing;
+`show configuration` (operational) shows the change absent — uncommitted candidate
+edits do not take effect.
+
+**Cleanup:** `rollback 0` (already done) leaves the candidate clean.
+
+### Lab 1.4 — Configuration Basics (Objective: Configuration Basics)
+
+**Objective:** Apply core initial configuration (user, interface, NTP, syslog).
+
+```text
+configure
+set system login user neteng class read-only authentication plain-text-password
+set interfaces ge-0/0/0 unit 0 family inet address 10.0.0.1/30
+set system ntp server 10.0.0.200
+set system syslog host 10.0.0.201 any info
+show | compare
+commit and-quit
+```
+
+**Expected result:** the candidate diff showing the user, interface address, NTP,
+and syslog, then a successful commit — configuration basics: users/login classes,
+interface addressing, and system services (NTP, syslog), optionally reused via
+**configuration groups**.
+
+**Negative test:** commit an interface address overlapping another interface's
+subnet; Junos rejects the commit with a conflict — commit-time validation catches
+overlaps.
+
+**Cleanup:** `configure; delete system login user neteng; commit`.
+
+### Lab 1.5 — Operational Monitoring and Maintenance (Objective: Operational Monitoring and Maintenance)
+
+**Objective:** Monitor interfaces and reachability; read software version.
+
+```text
+show interfaces ge-0/0/0 extensive | match "error|drops|rate"
+monitor interface traffic
+ping 10.0.0.2 count 3
+traceroute 10.0.0.2
+show version
+```
+
+**Expected result:** interface counters/errors, live traffic, reachability, and the
+Junos version — the operational toolset for monitoring (show/monitor, interface
+stats) and maintenance (ping/traceroute, version for upgrades, root-password
+recovery).
+
+**Negative test:** `ping` a host across a downed interface; it fails with no
+response while `show interfaces` shows the link `down` — the interface state
+explains the reachability failure.
+
+**Cleanup:** none (read-only; press `q` to exit monitor).
+
+### Lab 1.6 — Routing Fundamentals (Objective: Routing Fundamentals)
+
+**Objective:** Read the routing vs forwarding table and add a static route.
+
+```text
+show route protocol static
+configure
+set routing-options static route 192.0.2.0/24 next-hop 10.0.0.2
+commit and-quit
+show route 192.0.2.0/24
+show route forwarding-table destination 192.0.2.1
+```
+
+**Expected result:** the static route in the RIB (`show route`) and its resolved
+entry in the FIB (`show route forwarding-table`) — Junos builds the **routing
+table** (RIB, all candidate routes with preferences) and installs the best into the
+**forwarding table** (FIB) the PFE uses.
+
+**Negative test:** add a static route whose next-hop is unreachable; it stays
+`hidden` in the RIB and never enters the FIB — the next-hop must resolve.
+
+**Cleanup:** `configure; delete routing-options static route 192.0.2.0/24; commit`.
+
+### Lab 1.7 — Routing Policy and Firewall Filters (Objective: Routing Policy and Firewall Filters)
+
+**Objective:** Apply a routing policy and a firewall filter, and verify effect.
+
+```text
+configure
+set policy-options policy-statement REJECT-RFC1918 term t1 from route-filter 10.0.0.0/8 orlonger
+set policy-options policy-statement REJECT-RFC1918 term t1 then reject
+set firewall family inet filter PROTECT term t1 from source-address 0.0.0.0/0
+set firewall family inet filter PROTECT term t1 then count blocked discard
+show | compare
+commit and-quit
+show firewall filter PROTECT
+```
+
+**Expected result:** the policy and filter in the candidate diff, then the filter's
+counters — routing **policy** controls which routes are imported/exported (match
+terms → accept/reject), while **firewall filters** control which packets are
+permitted (match → count/accept/discard), each evaluated top-down with a default at
+the end.
+
+**Negative test:** a policy with a term that never matches falls through to the
+default policy (e.g., accept for BGP) — the default action applies when no term
+matches, so an incomplete policy can leak routes.
+
+**Cleanup:** `configure; delete policy-options policy-statement REJECT-RFC1918;
+delete firewall family inet filter PROTECT; commit`.
 
 ## Lab Verification
 

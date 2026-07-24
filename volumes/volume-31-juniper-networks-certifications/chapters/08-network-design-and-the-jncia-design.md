@@ -118,15 +118,55 @@ Knowledge checks:
    customer's team has never run BGP. What does the design method say
    happens next?
 
-## Hands-On Lab
+## Design Exercise
 
-Produce a complete design package for a 3-site enterprise (HQ campus,
-data center, branch) using this volume's portfolio: numbered
-requirements (invent a realistic brief), HLD with failure domains and
-capacity math, LLD tables for addressing and VLAN/VNI plans, a 4-phase
-migration plan with rollback gates, and a test plan tracing every
-requirement. Peer-review it against the validation walkthroughs above
-and revise once.
+**JNCIA-Design (JN0-1103)** is a design associate exam: it tests reasoning from
+requirements to a Juniper network design across campus, WAN, and data center,
+rather than device configuration. This chapter's deliverable is a Design Exercise
+covering JNCIA-Design's six objective domains; no configuration lab is required.
+
+**Scenario.** Design the Juniper network for a mid-size enterprise: a headquarters
+campus (wired + wireless for 3,000 users), 40 branches, two data centers
+(active/active), an SD-WAN between sites, and a security mandate (zero-trust,
+regulated data). Requirements: high resiliency with no single point of failure;
+consistent security from campus to data center; centralized management and
+automation; and a design that scales to double the branch count.
+
+**Produce, defending each choice against a rejected alternative:**
+
+1. **Customer network design requirements (Domain 1)** — classify each requirement
+   using Juniper's life-cycle service approach, set proposal boundaries, note
+   greenfield vs brownfield constraints, plan capacity, and map each requirement to
+   the Juniper products/solutions (MX/ACX routing, EX/QFX switching, SRX security,
+   Mist WLAN, Apstra/SDN, Mist/Junos Space management) that satisfy it.
+2. **Securing the network (Domain 2)** — the security design: general principles,
+   securing the data center (fabric segmentation, SRX), securing the campus/WAN,
+   **zero-trust** (identity-aware policy, NAC via Mist Access Assurance), and
+   **SASE** for remote users.
+3. **Network management and reliability (Domain 3)** — the resiliency design (link/
+   device redundancy, **ESI-LAG** multihoming, SRX chassis cluster, Virtual
+   Chassis, campus best practices), the automation strategy (Junos XML/REST/JET,
+   on-box vs off-box), and the management strategy (out-of-band management,
+   config backups, remote console).
+4. **Campus and branch LAN design (Domain 4)** — the wired design (modular,
+   subnet/VLAN plan, access control, **EVPN-VXLAN** campus fabric, oversubscription)
+   and the wireless design (WLAN phases, business/technical/RF requirements, AP
+   coverage and co-channel contention, RF modeling, real-time location).
+5. **Campus and branch WAN design (Domain 5)** — the WAN connectivity and HA
+   (active/active vs active/passive), WAN VPN design, and the **SD-WAN** design
+   (devices, assurance model, intersite connectivity).
+6. **Data center network design (Domain 6)** — the DC design (traffic patterns,
+   fabric architecture, environmental) and the **IP fabric** design (spine-leaf
+   placement, underlay/overlay, routing-protocol selection, best practices,
+   scaling), justified against alternatives (e.g., IP fabric vs traditional
+   three-tier).
+
+**Success looks like:** every design choice traces to a requirement, each
+resiliency and security claim names the failure or exposure it addresses, the
+campus/WAN/DC designs interoperate under one management and automation strategy,
+and each decision names the rejected option and its trade-off — the design
+standard JNCIA-Design applies, and the basis of the higher Juniper design
+certifications.
 
 ## Lab Verification
 

@@ -121,12 +121,158 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Five vJunos-switch instances: two spines, three leaves. eBGP underlay
-(unique ASN per switch), multihop eBGP EVPN overlay, two tenant VLANs
-with anycast IRBs in ERB, one server dual-homed via ESI-LAG. Prove
-same-VLAN and inter-VLAN flows across leaves; then induce an
-asymmetric-MTU failure on one spine link and a withdrawn loopback
-export on one leaf, capturing both distinct signatures before repair.
+This chapter carries a topic-level walkthrough lab for **every exam objective of
+the JNCIS-DC (JN0-481) exam** — the Data Center specialist (EVPN-VXLAN and Juniper
+Apstra) — mapped in the volume README's coverage tables. Labs use the Junos CLI on
+QFX switches and the Apstra server/API. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 5.1–5.7** — a QFX spine-leaf fabric running EVPN-
+VXLAN, and a Juniper Apstra server managing (a subset of) the fabric with device
+agents installed. **Cost:** none beyond lab resources.
+
+### Lab 5.1 — Data Center Architectures: IP Fabric and EVPN-VXLAN (Objective: Data Center Architectures)
+
+**Objective:** Verify the IP fabric underlay and the EVPN-VXLAN overlay.
+
+```text
+show bgp summary
+show evpn database
+show ethernet-switching vxlan-tunnel-end-point remote
+show route table bgp.evpn.0 | match "2:|5:"
+```
+
+**Expected result:** the underlay BGP (or IGP) ECMP paths, the EVPN MAC/IP database,
+and remote VTEPs — a DC **IP fabric** is a routed spine-leaf with ECMP; **EVPN**
+(BGP control plane) advertises MAC/IP (Type-2) and IP prefixes (Type-5) over
+**VXLAN** (VNI-to-VLAN mapping, VTEP encapsulation), with ERB placing the L3 gateway
+on the leaves.
+
+**Negative test:** a leaf whose VNI-to-VLAN mapping differs from its peers cannot
+bridge that segment; the endpoints do not learn each other — the VNI mapping must be
+consistent fabric-wide.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.2 — Juniper Apstra Architecture (Objective: Juniper Apstra Architecture)
+
+**Objective:** Read the Apstra server, agents, and RBAC.
+
+```bash
+curl -sk -u admin:$PW "https://$APSTRA/api/systems" | jq -r '.items[]? | "\(.id) \(.status.agent_state)"' | head
+curl -sk -u admin:$PW "https://$APSTRA/api/user/roles" 2>/dev/null | jq '.items | length'
+```
+
+**Expected result:** the managed systems with agent state and the RBAC roles —
+**Apstra** is an intent-based DC controller: the **server** holds the single source
+of truth (a graph), **device agents** on each switch apply and telemeter config, and
+RBAC/event-log/syslog govern and record operations.
+
+**Negative test:** a switch whose Apstra agent is disconnected shows `agent_state`
+not connected; Apstra cannot deploy or telemeter it — the agent link is the control
+path.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.3 — Apstra Design Phase (Objective: Apstra Design Phase)
+
+**Objective:** Read the design-phase objects (logical devices, rack types, templates).
+
+```bash
+curl -sk -u admin:$PW "https://$APSTRA/api/design/logical-devices" | jq -r '.items[]?.display_name' | head
+curl -sk -u admin:$PW "https://$APSTRA/api/design/rack-types" | jq -r '.items[]?.display_name' | head
+curl -sk -u admin:$PW "https://$APSTRA/api/design/templates" | jq -r '.items[]?.display_name' | head
+```
+
+**Expected result:** the logical devices, rack types, and templates — the Apstra
+**design phase** builds reusable abstractions: **logical devices** (port roles/
+speeds), **interface maps** (logical→physical via device profiles), **rack types**,
+and **templates** (the fabric blueprint's shape and spine capacity), independent of
+specific hardware.
+
+**Negative test:** a rack type referencing a logical device with no matching
+interface map/device profile cannot be built — the design abstractions must resolve
+to real hardware.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.4 — Apstra Build and Deploy Phases (Objective: Apstra Build and Deploy Phases)
+
+**Objective:** Read a blueprint's device assignment and deploy mode.
+
+```bash
+BP=$(curl -sk -u admin:$PW "https://$APSTRA/api/blueprints" | jq -r '.items[0].id')
+curl -sk -u admin:$PW "https://$APSTRA/api/blueprints/$BP/nodes?node_type=system" | jq -r '.nodes[]? | "\(.label) \(.deploy_mode)"' | head
+```
+
+**Expected result:** the fabric nodes with their deploy mode (deploy/ready/drain/
+undeploy) — the **build/deploy phase** instantiates a blueprint from a template,
+assigns real devices (agents, system IDs), maps cabling, and pushes config; deploy
+mode controls whether a device is actively configured or drained.
+
+**Negative test:** a node left in `ready` (not `deploy`) mode is modeled but not
+configured on the device — the deploy mode gates whether intent reaches the switch.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.5 — Blueprint Operations (Objective: Blueprint Operations)
+
+**Objective:** Read staged vs active state and anomalies.
+
+```bash
+curl -sk -u admin:$PW "https://$APSTRA/api/blueprints/$BP/anomalies" | jq '.items | length'
+curl -sk -u admin:$PW "https://$APSTRA/api/blueprints/$BP/diff-status" 2>/dev/null | jq '.'
+```
+
+**Expected result:** the anomaly count and the staged-vs-active diff — Apstra
+blueprint operations separate **staged** (uncommitted intent) from **active**
+(deployed), surface **service/probe anomalies**, and support **Time Voyager**
+(revision rollback), configlets/property-sets, and adding racks/generic systems,
+all with root-cause analysis.
+
+**Negative test:** commit staged changes with unresolved build errors; Apstra blocks
+the commit — intent must be consistent before it deploys.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.6 — Data Center Multitenancy (Objective: Data Center Multitenancy)
+
+**Objective:** Read routing zones (VRFs) and virtual networks for tenants.
+
+```bash
+curl -sk -u admin:$PW "https://$APSTRA/api/blueprints/$BP/security-zones" | jq -r '.items[]? | .label' | head
+curl -sk -u admin:$PW "https://$APSTRA/api/blueprints/$BP/virtual-networks" | jq -r '.virtual_networks[]? | "\(.label) vni=\(.vn_id)"' | head
+```
+
+**Expected result:** the routing zones (VRFs) and virtual networks — Apstra
+multitenancy uses **routing zones** (VRFs) and **virtual networks** (L2/L3 segments)
+bound by **connectivity templates**, with per-tenant routing policy, security
+policy, and Data Center Interconnect, isolating tenants over the shared fabric.
+
+**Negative test:** two tenants sharing a routing zone can route between each other —
+each tenant needs its own routing zone (VRF) for isolation.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.7 — Intent-Based Analytics (Objective: Intent-Based Analytics)
+
+**Objective:** Read an IBA probe and query the graph.
+
+```bash
+curl -sk -u admin:$PW "https://$APSTRA/api/blueprints/$BP/probes" | jq -r '.items[]?.label' | head
+curl -sk -u admin:$PW -X POST "https://$APSTRA/api/blueprints/$BP/qe" -H 'Content-Type: application/json' \
+  -d '{"query":"node(\"system\", name=\"system\").out(\"hosted_interfaces\")"}' | jq '.count'
+```
+
+**Expected result:** the IBA probes and a graph-query result — **Intent-Based
+Analytics** continuously validates the fabric against intent: **probes** compute
+metrics (e.g., traffic imbalance, missing BGP sessions) and raise anomalies, and the
+**graph explorer/queries** let you ask the live model questions.
+
+**Negative test:** a probe whose expected state does not match reality raises an
+anomaly — IBA flags the deviation, which is the point of intent-based operation.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

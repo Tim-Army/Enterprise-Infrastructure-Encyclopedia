@@ -119,12 +119,238 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Three vJunos switches: two access, one collapsed core. VLANs 10/20
-with IRBs and DHCP relay on the core; RSTP with edge protection at
-access; OSPF area 0 between core loopbacks and a simulated WAN
-router; eBGP at the edge exporting only the campus aggregate. Induce a
-failure — unplug an access uplink and a bad export policy that leaks a
-/24 — and capture both signatures before repairing them.
+This chapter carries a topic-level walkthrough lab for **every exam objective of
+the JNCIS-ENT (JN0-352) exam** — the Enterprise Routing and Switching specialist —
+mapped in the volume README's coverage tables. Labs use the Junos CLI on EX/QFX
+switches and MX/SRX routers. Each ends **`**Lab verified by:** *pending*`** until a
+human runs it.
+
+**Shared prerequisites for Labs 2.1–2.9** — a Junos switch and two routers running
+Junos OS, trunk/access ports, and OSPF/IS-IS/BGP reachability between the routers.
+**Cost:** none beyond lab resources.
+
+### Lab 2.1 — Layer 2 Switching and VLANs (Objective: Layer 2 Switching and VLANs)
+
+**Objective:** Configure VLANs, trunking, and inter-VLAN routing (IRB).
+
+```text
+configure
+set vlans SALES vlan-id 10 l3-interface irb.10
+set interfaces ge-0/0/1 unit 0 family ethernet-switching interface-mode access vlan members SALES
+set interfaces ge-0/0/0 unit 0 family ethernet-switching interface-mode trunk vlan members [ SALES VOICE ]
+set interfaces irb unit 10 family inet address 10.10.10.1/24
+commit and-quit
+show ethernet-switching table
+show vlans
+```
+
+**Expected result:** the MAC table by VLAN and the VLAN-to-interface bindings —
+Junos bridges within a VLAN, tags on trunks (802.1Q), and routes between VLANs via
+an **IRB** (Integrated Routing and Bridging) interface, the L3 gateway for the VLAN.
+
+**Negative test:** put an access port in a VLAN with no IRB and expect inter-VLAN
+routing; frames bridge within the VLAN but cannot reach other VLANs — the IRB is the
+routed gateway.
+
+**Cleanup:** `configure; delete vlans SALES; delete interfaces irb unit 10; commit`.
+
+### Lab 2.2 — Spanning Tree (Objective: Spanning Tree)
+
+**Objective:** Enable RSTP and read port roles/states.
+
+```text
+configure
+set protocols rstp interface ge-0/0/0
+set protocols rstp interface ge-0/0/1
+commit and-quit
+show spanning-tree bridge
+show spanning-tree interface
+```
+
+**Expected result:** the bridge ID/root and each port's role (root/designated/alt)
+and state (forwarding/discarding) — RSTP prevents L2 loops by electing a root bridge
+and blocking redundant paths, converging faster than legacy STP via proposal/
+agreement.
+
+**Negative test:** a link with a lower path cost unexpectedly becomes root port;
+adjusting `cost`/`priority` changes the topology — port role follows cost/priority,
+not cabling.
+
+**Cleanup:** `configure; delete protocols rstp; commit`.
+
+### Lab 2.3 — Layer 2 Security (Objective: Layer 2 Security)
+
+**Objective:** Apply BPDU/root protection, storm control, and a Layer 2 filter.
+
+```text
+configure
+set protocols rstp bpdu-block-on-edge
+set switch-options interface ge-0/0/1 no-mac-learn 2>/dev/null
+set forwarding-options storm-control-profiles SC all bandwidth-level 1000
+set interfaces ge-0/0/1 unit 0 family ethernet-switching storm-control SC
+commit and-quit
+show ethernet-switching interface ge-0/0/1
+```
+
+**Expected result:** the port with storm-control and edge BPDU blocking — Layer 2
+security hardens the access edge: **BPDU/root/loop protection** (keep the topology
+stable against rogue switches), **port security** (MAC limiting, DHCP snooping, DAI,
+IP source guard), **MACsec**, and **storm control**.
+
+**Negative test:** a host port receiving BPDUs with `bpdu-block-on-edge` is disabled
+(BPDU-inconsistent) — the protection blocks a switch plugged into an access port.
+
+**Cleanup:** `configure; delete forwarding-options storm-control-profiles;
+delete protocols rstp bpdu-block-on-edge; commit`.
+
+### Lab 2.4 — Protocol-Independent Routing (Objective: Protocol-Independent Routing)
+
+**Objective:** Configure static/aggregate routes and per-flow load balancing.
+
+```text
+configure
+set routing-options aggregate route 172.16.0.0/16
+set policy-options policy-statement ECMP then load-balance per-packet
+set routing-options forwarding-table export ECMP
+commit and-quit
+show route 172.16.0.0/16
+show route forwarding-table destination 172.16.0.0
+```
+
+**Expected result:** the aggregate route and per-flow load-balancing in the FIB —
+protocol-independent components (static, aggregate, generated routes, RIB groups,
+load balancing, filter-based forwarding) shape forwarding regardless of the routing
+protocol; the `per-packet` policy enables ECMP in the FIB (Junos hashes per flow).
+
+**Negative test:** an aggregate route with no contributing (more-specific) route is
+not active; Junos suppresses it until a contributor exists — aggregates need a
+contributing route.
+
+**Cleanup:** `configure; delete routing-options aggregate; delete routing-options
+forwarding-table export; commit`.
+
+### Lab 2.5 — OSPF (Objective: OSPF)
+
+**Objective:** Bring up OSPF and read the LSDB and adjacencies.
+
+```text
+configure
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set protocols ospf area 0.0.0.0 interface lo0.0 passive
+commit and-quit
+show ospf neighbor
+show ospf database
+show route protocol ospf
+```
+
+**Expected result:** OSPF neighbors in `Full`, the link-state database, and learned
+routes — OSPF floods LSAs within an area to build a common LSDB, elects DR/BDR on
+broadcast links, and computes SPF; Junos shows neighbor state, LSDB, and results.
+
+**Negative test:** an MTU or area-ID mismatch leaves the neighbor stuck in
+`ExStart`/`Init`; `show ospf neighbor` reveals the non-Full state — parameters must
+match.
+
+**Cleanup:** `configure; delete protocols ospf; commit`.
+
+### Lab 2.6 — IS-IS (Objective: IS-IS)
+
+**Objective:** Bring up IS-IS and read levels/adjacencies.
+
+```text
+configure
+set interfaces lo0 unit 0 family iso address 49.0001.0100.0000.0001.00
+set protocols isis interface ge-0/0/0.0
+set protocols isis interface lo0.0 passive
+commit and-quit
+show isis adjacency
+show isis database
+show route protocol isis
+```
+
+**Expected result:** IS-IS adjacencies (L1/L2), the LSP database, and learned routes
+— IS-IS runs on CLNS with a NET address, forms L1 (intra-area) and L2 (inter-area)
+adjacencies, and floods LSPs; Junos requires the `iso` family and a NET on lo0.
+
+**Negative test:** omit the `iso` family/NET on lo0; IS-IS never forms an adjacency —
+the NET address is mandatory.
+
+**Cleanup:** `configure; delete protocols isis; delete interfaces lo0 unit 0 family
+iso; commit`.
+
+### Lab 2.7 — BGP (Objective: BGP)
+
+**Objective:** Establish EBGP/IBGP and read path selection.
+
+```text
+configure
+set protocols bgp group EXT type external peer-as 65002 neighbor 10.0.0.2
+set routing-options autonomous-system 65001
+commit and-quit
+show bgp summary
+show route receive-protocol bgp 10.0.0.2
+show route 203.0.113.0/24 detail
+```
+
+**Expected result:** the BGP session `Established`, received routes, and the best-
+path attributes — BGP exchanges NLRI with path attributes and selects best by the
+ordered algorithm (local-pref, AS-path, origin, MED, …); IBGP vs EBGP differ in
+next-hop and loop-prevention rules.
+
+**Negative test:** an IBGP peer with no `next-hop self` or IGP route to the next-hop
+leaves routes hidden — IBGP next-hop reachability must be resolved.
+
+**Cleanup:** `configure; delete protocols bgp; commit`.
+
+### Lab 2.8 — IP Tunnels (Objective: IP Tunnels)
+
+**Objective:** Build a GRE tunnel and verify it carries traffic.
+
+```text
+configure
+set interfaces gr-0/0/0 unit 0 tunnel source 10.0.0.1 destination 10.0.0.2
+set interfaces gr-0/0/0 unit 0 family inet address 172.31.0.1/30
+commit and-quit
+show interfaces gr-0/0/0
+ping 172.31.0.2
+```
+
+**Expected result:** the GRE interface `up` and a successful ping across it — IP
+tunnels (GRE, IP-IP) encapsulate traffic to connect networks across an intermediate
+IP network; the tunnel needs a routable source/destination and a tunnel PIC/service.
+
+**Negative test:** a GRE tunnel whose destination is unreachable in the underlay
+stays down; `show interfaces gr-0/0/0` shows no session — the underlay path to the
+tunnel endpoint is required.
+
+**Cleanup:** `configure; delete interfaces gr-0/0/0; commit`.
+
+### Lab 2.9 — High Availability (Objective: High Availability)
+
+**Objective:** Configure a LAG and VRRP, and verify redundancy.
+
+```text
+configure
+set interfaces ae0 aggregated-ether-options lacp active
+set interfaces ge-0/0/2 ether-options 802.3ad ae0
+set interfaces ge-0/0/3 ether-options 802.3ad ae0
+set interfaces irb unit 10 family inet address 10.10.10.2/24 vrrp-group 1 virtual-address 10.10.10.1
+set interfaces irb unit 10 family inet address 10.10.10.2/24 vrrp-group 1 priority 200
+commit and-quit
+show lacp interfaces ae0
+show vrrp
+```
+
+**Expected result:** the LAG with LACP up and VRRP with a master/backup — HA in Junos
+spans link (LAG/RTG), device (Virtual Chassis), control-plane (GRES, NSR, NSB,
+graceful restart), and gateway (VRRP) redundancy, plus BFD for fast detection and
+ISSU for hitless upgrades.
+
+**Negative test:** a VRRP group with mismatched virtual-address or authentication
+between routers elects two masters (both active) — the group parameters must match.
+
+**Cleanup:** `configure; delete interfaces ae0; delete interfaces irb unit 10 family
+inet address 10.10.10.2/24 vrrp-group 1; commit`.
 
 ## Lab Verification
 

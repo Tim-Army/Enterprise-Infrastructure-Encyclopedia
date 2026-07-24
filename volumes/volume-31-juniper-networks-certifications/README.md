@@ -79,6 +79,125 @@ that page is the authority this volume defers to.
 | Mist AI | 07 (with 02 for wired foundations) |
 | Design | 08 (drawing on all) |
 
+## Topic-level lab coverage
+
+Every exam objective of the **associate and specialist written exams** across all
+Juniper tracks documented in this volume is covered by a hands-on Junos **walkthrough**
+lab; the **JNCIA-Design** track is covered by the Chapter 08 Design Exercise, and the
+**JNCIE** practical tracks by the Chapter 09 integrative timed-build labs. Objectives
+were harvested from Juniper's official per-exam pages on
+`juniper.net/us/en/training/certification` on 24 July 2026. Labs use the Junos CLI
+(operational and configuration modes), SRX security, EVPN-VXLAN and Apstra, Junos
+automation (PyEZ, Ansible, NETCONF/gNMI, YANG), and the Juniper Mist cloud/API.
+Each carries `**Lab verified by:** *pending*` until a human runs it. **60 numbered
+labs** plus a Design Exercise, one lab per exam objective:
+
+**JNCIA-Junos JN0-106 → Chapter 01**
+
+| Exam objective | Lab |
+| --- | --- |
+| Networking Fundamentals | Lab 1.1 |
+| Junos OS Fundamentals | Lab 1.2 |
+| User Interfaces | Lab 1.3 |
+| Configuration Basics | Lab 1.4 |
+| Operational Monitoring and Maintenance | Lab 1.5 |
+| Routing Fundamentals | Lab 1.6 |
+| Routing Policy and Firewall Filters | Lab 1.7 |
+
+**JNCIS-ENT JN0-352 → Chapter 02**
+
+| Exam objective | Lab |
+| --- | --- |
+| Layer 2 Switching and VLANs | Lab 2.1 |
+| Spanning Tree | Lab 2.2 |
+| Layer 2 Security | Lab 2.3 |
+| Protocol-Independent Routing | Lab 2.4 |
+| OSPF | Lab 2.5 |
+| IS-IS | Lab 2.6 |
+| BGP | Lab 2.7 |
+| IP Tunnels | Lab 2.8 |
+| High Availability | Lab 2.9 |
+
+**JNCIS-SP JN0-364 → Chapter 03**
+
+| Exam objective | Lab |
+| --- | --- |
+| Protocol-Independent Routing | Lab 3.1 |
+| OSPF | Lab 3.2 |
+| IS-IS | Lab 3.3 |
+| BGP | Lab 3.4 |
+| Layer 2 Bridging or VLANs | Lab 3.5 |
+| Spanning-Tree Protocols | Lab 3.6 |
+| MPLS | Lab 3.7 |
+| IPv6 | Lab 3.8 |
+| Tunnels | Lab 3.9 |
+| High Availability | Lab 3.10 |
+
+**JNCIS-SEC JN0-336 → Chapter 04**
+
+| Exam objective | Lab |
+| --- | --- |
+| IDP | Lab 4.1 |
+| IPsec VPN | Lab 4.2 |
+| Juniper Advanced Threat Prevention Cloud | Lab 4.3 |
+| HA Clustering | Lab 4.4 |
+| Identity-Aware Security Policies | Lab 4.5 |
+| SSL Proxy | Lab 4.6 |
+| Security Director | Lab 4.7 |
+
+**JNCIS-DC JN0-481 → Chapter 05**
+
+| Exam objective | Lab |
+| --- | --- |
+| Data Center Architectures | Lab 5.1 |
+| Juniper Apstra Architecture | Lab 5.2 |
+| Apstra Design Phase | Lab 5.3 |
+| Apstra Build and Deploy Phases | Lab 5.4 |
+| Blueprint Operations | Lab 5.5 |
+| Data Center Multitenancy | Lab 5.6 |
+| Intent-Based Analytics | Lab 5.7 |
+
+**JNCIS-DevOps JN0-423 (+ JNCIA-DevOps/Cloud) → Chapter 06**
+
+| Exam objective | Lab |
+| --- | --- |
+| Platform Automation Overview | Lab 6.1 |
+| gRPC | Lab 6.2 |
+| Ansible | Lab 6.3 |
+| Junos Automation Scripts | Lab 6.4 |
+| YANG | Lab 6.5 |
+| foundational — JNCIA-DevOps | Lab 6.6 |
+| foundational — JNCIA-DevOps | Lab 6.7 |
+| foundational — JNCIA-Cloud | Lab 6.8 |
+
+**JNCIA-MistAI JN0-253 → Chapter 07**
+
+| Exam objective | Lab |
+| --- | --- |
+| Juniper Mist Cloud Fundamentals | Lab 7.1 |
+| Juniper Mist Configuration Basics | Lab 7.2 |
+| Juniper Mist Network Operations and Management | Lab 7.3 |
+| Juniper Mist Monitoring and Analytics | Lab 7.4 |
+| Marvis Virtual Network Assistant AI | Lab 7.5 |
+| Location-based Services | Lab 7.6 |
+| Juniper Mist Cloud Operations | Lab 7.7 |
+
+**JNCIE lab readiness (integrative) → Chapter 09**
+
+| Exam objective | Lab |
+| --- | --- |
+| Enterprise expert readiness | Lab 9.1 |
+| Service Provider expert readiness | Lab 9.2 |
+| Security expert readiness | Lab 9.3 |
+| Data Center expert readiness | Lab 9.4 |
+
+**Higher and adjacent exams.** The **professional** exams (JNCIP-ENT/SP/SEC/DC) and
+the **expert** JNCIE practicals build on these specialist objectives at greater depth
+and integration; their readiness is covered by the Chapter 09 integrative builds. The
+**JNCIP-MistAI** and **JNCIS-MistAI-Wired/Wireless** deepen Chapter 07's Mist
+objectives. The **JNCIA-Junos** baseline (Chapter 01) is the shared prerequisite for
+the Enterprise and Service Provider tracks.
+
 ## Study plans
 
 **JNCIA-Junos — three weeks** at 8–10 hours per week: Chapter 01 with
