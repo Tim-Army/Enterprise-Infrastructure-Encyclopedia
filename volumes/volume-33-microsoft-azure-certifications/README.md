@@ -110,6 +110,131 @@ retiring, two are already retired, and four are new — one on an entirely
 new code family. Chapters 05 and 06 cover this directly, and Chapter 09's
 currency check exists because of it.
 
+### Lab coverage — AZ-104 (Azure Administrator)
+
+Labs are mapped to the certification's published **"Skills measured"**
+outline (harvested from Microsoft Learn's study guide), domain by domain
+at Microsoft's own weights. Every domain has walkthrough labs in
+[Chapter 03](chapters/03-azure-administrator-az-104.md).
+
+| Skills-measured domain (weight) | Labs |
+| --- | --- |
+| Manage Azure identities and governance (20–25%) | 3.1–3.6 |
+| Implement and manage storage (15–20%) | 3.7–3.10 |
+| Deploy and manage Azure compute resources (20–25%) | 3.11–3.15 |
+| Implement and manage virtual networking (15–20%) | 3.16–3.19 |
+| Monitor and maintain Azure resources (10–15%) | 3.20–3.22 |
+
+Lab 3.23 is the negative test (Policy denies a privileged principal) and
+3.24 is cleanup. Every lab is a **walkthrough**: the runnable `az` command
+plus the expected result.
+
+**All certifications in this volume now carry topic-level walkthrough
+labs**, mapped to each exam's published "Skills measured" outline (Chapters
+02–08). The design exam AZ-305 additionally carries a `## Design Exercise`
+section. Chapter 01 (program planning) and Chapter 09 (currency check) keep
+process labs, since their subject is the program itself.
+
+### Lab coverage — AZ-305 (Solutions Architect)
+
+Mapped to the AZ-305 "Skills measured" outline at Microsoft's weights.
+AZ-305 is a design exam, so labs read the evidence a design rests on and
+record the decision with its rejected alternative. Labs are in
+[Chapter 08](chapters/08-the-expert-tier-az-305-and-az-400.md).
+
+| Skills-measured domain (weight) | Labs |
+| --- | --- |
+| Design identity, governance, and monitoring (25–30%) | 8.1–8.4 |
+| Design data storage solutions (20–25%) | 8.5–8.8 |
+| Design business continuity solutions (15–20%) | 8.9–8.10 |
+| Design infrastructure solutions (30–35%) | 8.11–8.17 |
+
+Lab 8.18 is the negative test (a compliance guardrail enforces) and 8.19
+is cleanup. Lab 8.14 also exercises the AZ-400 automated-deployment
+surface.
+
+### Lab coverage — Fundamentals
+
+Mapped to the "Skills measured" domains of AZ-900, AI-901, and DP-900.
+Labs are in [Chapter 02](chapters/02-fundamentals-az-900-ai-901-and-dp-900.md).
+
+| Certification / domain | Labs |
+| --- | --- |
+| AZ-900 cloud concepts / architecture / governance | 2.1–2.3 |
+| AI-901 AI workloads, ML, vision, NLP and generative AI | 2.4–2.7 |
+| DP-900 core data, relational, non-relational, analytics | 2.8–2.11 |
+
+Lab 2.12 is the negative test.
+
+### Lab coverage — AZ-700 (Network Engineer)
+
+Mapped to the AZ-700 "Skills measured" outline at Microsoft's weights.
+Labs are in [Chapter 04](chapters/04-azure-network-engineer-az-700.md).
+
+| Skills-measured domain (weight) | Labs |
+| --- | --- |
+| Core networking infrastructure (25–30%) | 4.1–4.3 |
+| Connectivity services (20–25%) | 4.4–4.5 |
+| Private access to Azure services (10–15%) | 4.6–4.7 |
+| Network security services (15–20%) | 4.8–4.9 |
+| Application delivery services (15–20%) | 4.10–4.12 |
+
+Lab 4.13 is the negative test (peering non-transitivity) and 4.14 is cleanup.
+
+### Lab coverage — The Retiring Associate Tier (AZ-204, AZ-500)
+
+Mapped to both exam guides' domains. Both retire in 2026, but the subject
+matter is current — the labs are professional development past the
+credential dates. Labs are in
+[Chapter 05](chapters/05-the-retiring-associate-tier-az-204-and-az-500.md).
+
+| Certification / domain | Labs |
+| --- | --- |
+| AZ-500 identity and access | 5.1–5.2 |
+| AZ-500 secure networking | 5.3 |
+| AZ-500 secure compute/storage/databases | 5.4–5.5 |
+| AZ-500 Defender for Cloud and Sentinel | 5.6–5.7 |
+| AZ-204 develop compute solutions | 5.8–5.9 |
+| AZ-204 develop for storage | 5.10 |
+| AZ-204 implement security | 5.11 |
+| AZ-204 connect to and consume services | 5.12 |
+| AZ-204 monitor and troubleshoot | 5.13 |
+
+Lab 5.14 is the negative test (Key Vault management vs. data-plane) and 5.15 is cleanup.
+
+### Lab coverage — The AI-Centric Associate Tier (AI-103, AI-200, AB-620)
+
+These certifications are new and their published skills outlines are still
+thin, so labs cover the stated scope (Azure AI surface, Microsoft Foundry,
+agent building) against what is verifiable today — **re-check each exam
+guide**. Labs are in
+[Chapter 06](chapters/06-the-ai-centric-associate-tier-ai-103-ai-200-and-ab-620.md).
+
+| Scope | Labs |
+| --- | --- |
+| Azure AI service surface (AI-103 / AI-200) | 6.1–6.3 |
+| Microsoft Foundry and model deployment (AI-103) | 6.4–6.5 |
+| Agent building (AB-620) | 6.6 |
+| Responsible AI / content safety (all) | 6.7 |
+
+Lab 6.8 is the negative test (endpoint auth) and 6.9 is cleanup.
+
+### Lab coverage — Data on Azure (DP-300, DP-420, DP-750)
+
+DP-300 and DP-420 mapped domain by domain; DP-750 (new) at section level.
+Labs are in [Chapter 07](chapters/07-data-on-azure-dp-300-dp-420-and-dp-750.md).
+
+| Certification / domain | Labs |
+| --- | --- |
+| DP-300 plan/implement data platform | 7.1–7.2 |
+| DP-300 secure environment | 7.3–7.4 |
+| DP-300 monitor and optimize | 7.5–7.6 |
+| DP-300 automation | 7.7 |
+| DP-420 Cosmos DB (models, distribution, optimize, maintain) | 7.8–7.12 |
+| DP-750 Databricks lakehouse | 7.13–7.14 |
+
+Lab 7.15 is the negative test (firewall vs. database) and 7.16 is cleanup.
+
 ### Training access
 
 Microsoft Learn provides **free training paths for every certification in

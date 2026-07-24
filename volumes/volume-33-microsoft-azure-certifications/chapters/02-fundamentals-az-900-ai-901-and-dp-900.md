@@ -186,62 +186,150 @@ reproductions of any Microsoft exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Establish the platform scaffolding the whole volume assumes,
-and confirm for yourself which AI fundamentals exam is current.
+These labs cover the "Skills measured" domains for all three fundamentals
+certifications: **AZ-900** (cloud concepts; architecture and services;
+management and governance), **AI-901** (AI, ML, computer vision, NLP, and
+generative AI on Azure), and **DP-900** (core data concepts; relational;
+non-relational; analytics). Fundamentals are knowledge credentials, so
+these read the platform facts each exam asks about rather than building
+production systems — each remains a walkthrough with the command and the
+expected result. Mapping is in the
+[volume README](../README.md#lab-coverage--fundamentals).
 
-**Cost note:** Every command here is a read or a free-tier resource
-group operation. No billable resources are created.
+**Cost note:** every command here is a read or an availability check.
+Nothing billable is created.
 
 **Prerequisites**
 
-- The sandbox subscription and budget alert from Chapter 01.
-- Azure CLI installed and authenticated (`az login`).
+```bash
+az account show --query "{sub:name, id:id, tenant:tenantId}" -o table
+```
 
-**Steps**
+**Expected result:** your subscription and tenant — the scaffolding all
+three exams assume.
 
-1. **Confirm the live AI exam (5 minutes).** Run the AI-900 page query
-   from the Implementation section.
+### Lab 2.1 — Describe cloud concepts *(AZ-900, 25–30%)*
 
-   **Expected result:** the sentence naming AI-901 as the replacement.
+```bash
+az account list-locations --query "[?metadata.regionType=='Physical'].{region:name, geo:metadata.geographyGroup}" -o table | head -8
+```
 
-2. **Read your subscription shape (10 minutes).** Run `az account show`
-   and `az account list-locations`, and identify two regions you would use
-   for a resilient deployment.
+**Expected result:** physical regions grouped by geography. Regions,
+geographies, and availability zones are the resilience primitives cloud
+concepts covers; naming a region pair for a workload is the skill.
 
-   **Expected result:** a named region pair and a stated reason.
+### Lab 2.2 — Describe Azure architecture and services *(AZ-900, 35–40%)*
 
-3. **Create and inspect a resource group (10 minutes).**
+```bash
+az provider list --query "[?registrationState=='Registered'].namespace" -o tsv | head -10
+```
 
-   ```bash
-   az group create --name rg-fundamentals-lab --location eastus
-   ```
+**Expected result:** registered resource providers (Compute, Network,
+Storage, …) — the service surface. AZ-900 is knowing these exist and what
+each does, not operating them.
 
-   **Expected result:** the group exists and appears in `az group list`.
+### Lab 2.3 — Describe Azure management and governance *(AZ-900, 30–35%)*
 
-4. **Explain the boundary (10 minutes).** In writing, state what the
-   resource group is *for* in lifecycle terms, and what a management group
-   would add above it.
+```bash
+az group list --query "[].{name:name, location:location}" -o table
+az consumption budget list --query "[].name" -o tsv 2>/dev/null || echo "no budgets (or billing-scope perms needed)"
+```
 
-   **Expected result:** a correct distinction, unaided.
+**Expected result:** resource groups, and any budgets. Cost management,
+resource groups, RBAC, and Policy are the governance tools AZ-900 names.
 
-5. **Negative test (5 minutes).** Attempt to delete a resource group that
-   does not exist:
+### Lab 2.4 — AI workloads and considerations *(AI-901, 15–20%)*
 
-   ```bash
-   az group delete --name rg-does-not-exist --yes
-   ```
+```bash
+az cognitiveservices account list-kinds -o tsv | tr '\t' '\n' | head -12
+```
 
-   **Expected result:** a clear error rather than a silent success —
-   confirming you can distinguish a real failure from a no-op, which
-   matters in every later chapter's cleanup step.
+**Expected result:** the Cognitive Services / Azure AI kinds (Vision,
+Language, Speech, OpenAI, …). Recognizing which AI workload maps to which
+service is the section-1 skill; responsible-AI considerations pair with it.
 
-6. **Cleanup:**
+### Lab 2.5 — Machine learning fundamentals on Azure *(AI-901, 15–20%)*
 
-   ```bash
-   az group delete --name rg-fundamentals-lab --yes --no-wait
-   ```
+```bash
+az provider show --namespace Microsoft.MachineLearningServices --query "registrationState" -o tsv 2>/dev/null || echo "register to use Azure ML"
+```
 
-   Confirm with `az group list` that it is gone.
+**Expected result:** `Registered` or the note. Azure Machine Learning is
+the platform; the fundamentals point is distinguishing regression /
+classification / clustering, not building a model.
+
+### Lab 2.6 — Computer vision workloads *(AI-901, 15–20%)*
+
+```bash
+az cognitiveservices account list-skus --kind ComputerVision --location eastus \
+  --query "[].name" -o tsv 2>/dev/null | head -3 || echo "Computer Vision SKUs (F0 free, S1 standard)"
+```
+
+**Expected result:** Vision SKUs including a free `F0` tier. Image
+classification, object detection, OCR, and face are the vision capabilities
+the section lists.
+
+### Lab 2.7 — Natural language and generative AI workloads *(AI-901, 20–25%)*
+
+```bash
+az cognitiveservices account list-kinds -o tsv | tr '\t' '\n' | grep -iE "openai|language" || echo "OpenAI + Language kinds"
+```
+
+**Expected result:** `OpenAI` and `Language` among the kinds. Generative AI
+on Azure (the highest-weighted AI-901 section) is delivered through Azure
+OpenAI; know its use cases and the responsible-AI guardrails.
+
+### Lab 2.8 — Core data concepts *(DP-900, 25–30%)*
+
+```bash
+az sql server list --query "[].name" -o tsv 2>/dev/null | head -3
+echo "Data roles: administrator | engineer | analyst; workloads: transactional (OLTP) vs analytical (OLAP)"
+```
+
+**Expected result:** any SQL servers, plus the concept summary.
+Structured / semi-structured / unstructured and OLTP vs OLAP are the
+core-concepts vocabulary DP-900 tests.
+
+### Lab 2.9 — Relational data on Azure *(DP-900, 20–25%)*
+
+```bash
+az sql db list-editions --location eastus --query "[].name" -o tsv | sort -u | head -6
+```
+
+**Expected result:** service tiers (Basic, Standard, GeneralPurpose,
+Hyperscale, …). Azure SQL Database, Managed Instance, and SQL on a VM are
+the relational options; the tier is the sizing decision.
+
+### Lab 2.10 — Non-relational data on Azure *(DP-900, 15–20%)*
+
+```bash
+az cosmosdb list-capabilities -o tsv 2>/dev/null | head -5 || echo "Cosmos DB APIs: NoSQL, MongoDB, Cassandra, Gremlin, Table"
+```
+
+**Expected result:** Cosmos DB capabilities/APIs. Cosmos DB (document,
+key-value, graph) and Table/Blob storage are the non-relational options —
+choose by access pattern.
+
+### Lab 2.11 — Analytics workload on Azure *(DP-900, 25–30%)*
+
+```bash
+az provider show --namespace Microsoft.Synapse --query "registrationState" -o tsv 2>/dev/null || echo "register Microsoft.Synapse"
+```
+
+**Expected result:** `Registered` or the note. Azure Synapse, Data
+Factory, and Microsoft Fabric are the analytics surface; the modern data
+warehouse pattern (ingest → store → prep → serve) is the examinable shape.
+
+### Lab 2.12 — Negative test: recognize a disabled capability
+
+```bash
+az cognitiveservices account list --resource-group rg-does-not-exist 2>&1 | head -2
+```
+
+**Expected result:** an error naming the missing resource group — not an
+empty list. Telling "not enabled / not present" from "nothing there" is
+the foundational reading skill all three exams reward. Nothing to clean up;
+no resources were created.
 
 ## Lab Verification
 

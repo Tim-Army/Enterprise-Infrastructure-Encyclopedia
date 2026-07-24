@@ -202,6 +202,57 @@ reproductions of any Google exam item)*
 5. A Project Owner cannot create a VM with an external IP. What happened,
    and how would you confirm it?
 
+## Design Exercise
+
+Professional Cloud Architect is built on **published case studies**, so
+this paper exercise precedes the command-driven walkthroughs below. Work it
+from requirements to a defensible design with no console — turning stated
+constraints into decisions you can defend is the skill the case-study
+questions test.
+
+**Scenario.** A media company runs a customer-facing web platform and an
+analytics pipeline. Requirements, as a case study would state them:
+
+1. Serve users in North America and Europe with **low latency**, from a
+   single global entry point.
+2. Survive the loss of an entire region with **no more than 5 minutes of
+   data loss** for transactional data.
+3. A **central network team** owns all connectivity; application teams
+   deploy workloads but must not alter networking.
+4. Analytics data **must not be exportable outside the organization**, even
+   by an authorized analyst.
+5. Cost must be **the lowest that meets the above** — no over-provisioning.
+
+**Produce, for each, the decision and the constraint that forced it:**
+
+| Design area | Decision | Forced by requirement | Rejected alternative (and why) |
+| --- | --- | --- | --- |
+| Global entry / load balancing | | | |
+| Transactional data + RPO | | | |
+| Network ownership separation | | | |
+| Data-exfiltration control | | | |
+| Compute | | | |
+
+**A defensible answer** names: a **global external HTTP(S) load balancer**
+(one anycast IP fronting multi-region backends) over a per-region DNS
+scheme; **Spanner** (multi-region, strong consistency, ≤5-minute RPO) where
+the transactional requirement needs all three properties, over a
+regional Cloud SQL that fails requirement 2; **Shared VPC** with a host
+project the network team owns and service projects for the app teams,
+satisfying requirement 3; **VPC Service Controls** as the only mechanism
+that stops exfiltration by an authorized identity (requirement 4 — IAM and
+org policy do not satisfy it); and Cloud Run or GKE for compute by
+statefulness. Every cell must trace to a quoted requirement.
+
+**Then defend it.** Have a colleague — or a recorded self-review — ask "why
+not the cheaper option?" for each row (why Spanner over Cloud SQL, why VPC
+Service Controls over IAM). Any decision you cannot justify unaided is a
+gap to close. This spoken defense is the same readiness signal the AWS
+professional tier and the VMware VCDX defense reward
+([Volume XVII](../../volume-17-aws-architecture-security/README.md),
+Chapter 12; [Volume V](../../volume-05-vmware-virtualization/README.md),
+Chapter 19).
+
 ## Hands-On Lab
 
 These labs cover **every topic in the Professional Cloud Architect exam

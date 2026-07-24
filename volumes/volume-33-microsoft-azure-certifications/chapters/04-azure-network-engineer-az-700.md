@@ -213,62 +213,230 @@ reproductions of any Microsoft exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Build a hub-and-spoke topology and prove for yourself that
-peering is not transitive — then observe how effective routes describe it.
+These labs cover the **AZ-700 "Skills measured" outline** (Network
+Engineer), domain by domain at Microsoft's weights. Each is a walkthrough:
+run the `az network` command and compare against the stated result.
+Mapping is in the
+[volume README](../README.md#lab-coverage--az-700-network-engineer).
 
-**Cost note:** Virtual networks and peerings are free; no gateway or
-appliance is provisioned. Step 5 removes everything.
+**Cost note:** VNets, subnets, peerings, NSGs, and route tables are free.
+A Standard load balancer and a private DNS zone are negligible. A VPN
+gateway is the one costly resource — Lab 4.9 provisions the gateway object
+but you can read the expected result and skip it. Lab 4.16 deletes the
+resource group.
 
 **Prerequisites**
 
-- The sandbox subscription and budget alert from Chapter 01.
-- Azure CLI authenticated.
+```bash
+az group create --name rg-az700-lab --location eastus
+az configure --defaults group=rg-az700-lab location=eastus
+```
 
-**Steps**
+**Expected result:** `"provisioningState": "Succeeded"`.
 
-1. **Build the topology (15 minutes).** Create the hub and two spokes and
-   peer each spoke to the hub, using the Implementation commands. Do not
-   peer the spokes to each other.
+### Domain 1 — Design and implement core networking infrastructure (25–30%)
 
-   **Expected result:** four peerings, all reporting `Connected`:
+### Lab 4.1 — Create and configure virtual networks and subnets *(topic 1)*
 
-   ```bash
-   az network vnet peering list -g rg-az700-lab --vnet-name vnet-hub \
-     -o table --query '[].{name:name, state:peeringState}'
-   ```
+```bash
+az network vnet create --name vnet-hub --address-prefix 10.0.0.0/16 \
+  --subnet-name snet-shared --subnet-prefix 10.0.1.0/24
+az network vnet subnet create --vnet-name vnet-hub --name GatewaySubnet \
+  --address-prefix 10.0.255.0/27
+az network vnet subnet list --vnet-name vnet-hub \
+  --query "[].{name:name, prefix:addressPrefix}" -o table
+```
 
-2. **Predict, then verify (10 minutes).** Write down whether spoke1 can
-   reach spoke2 and why, *before* checking.
+**Expected result:** `snet-shared` and `GatewaySubnet`. The
+`GatewaySubnet` name is mandatory and reserved — a VPN/ExpressRoute gateway
+will not deploy without it.
 
-   **Expected result:** a written prediction to test.
+### Lab 4.2 — Configure virtual network peering *(topic 1)*
 
-3. **Negative test — prove non-transitivity (15 minutes).** Inspect the
-   effective routes available in spoke1 and confirm there is no route to
-   spoke2's address space through the hub:
+```bash
+az network vnet create --name vnet-spoke --address-prefix 10.1.0.0/16 \
+  --subnet-name snet-app --subnet-prefix 10.1.1.0/24
+az network vnet peering create --name hub-to-spoke --vnet-name vnet-hub \
+  --remote-vnet vnet-spoke --allow-vnet-access
+az network vnet peering create --name spoke-to-hub --vnet-name vnet-spoke \
+  --remote-vnet vnet-hub --allow-vnet-access
+az network vnet peering show --name hub-to-spoke --vnet-name vnet-hub \
+  --query "peeringState" -o tsv
+```
 
-   ```bash
-   az network vnet peering list -g rg-az700-lab --vnet-name vnet-spoke1 \
-     -o table --query '[].{remote:remoteVirtualNetwork.id, state:peeringState}'
-   ```
+**Expected result:** `Connected`. Peering must be created from **both**
+sides and is **not transitive** — two spokes peered to a hub cannot reach
+each other without a gateway or route.
 
-   **Expected result:** spoke1 peers only with the hub. There is no path
-   to 10.2.0.0/16 — peering did not become transitive through the hub.
+### Lab 4.3 — Configure public IPs and user-defined routes *(topic 1)*
 
-4. **Design the fix (10 minutes).** In writing, state the two ways to make
-   spoke-to-spoke traffic work, and the cost of each.
+```bash
+az network route-table create --name rt-spoke
+az network route-table route create --route-table-name rt-spoke --name to-nva \
+  --address-prefix 0.0.0.0/0 --next-hop-type VirtualAppliance --next-hop-ip-address 10.0.1.4
+az network route-table route list --route-table-name rt-spoke \
+  --query "[].{name:name, prefix:addressPrefix, hop:nextHopType}" -o table
+```
 
-   **Expected result:** direct spoke peering (simple, but grows
-   quadratically) or a hub appliance plus UDRs (scales, but adds a
-   component and route management) — with Virtual WAN named as the managed
-   alternative.
+**Expected result:** a `0.0.0.0/0` route to a VirtualAppliance. A UDR
+overrides system routes — this is how spoke egress is forced through a
+firewall in the hub.
 
-5. **Cleanup:**
+### Domain 2 — Design, implement, and manage connectivity services (20–25%)
 
-   ```bash
-   az group delete --name rg-az700-lab --yes --no-wait
-   ```
+### Lab 4.4 — Create a Cloud Router equivalent (VPN gateway prerequisites)
 
-   Confirm the group is gone and no gateway was left running.
+```bash
+az network public-ip create --name pip-vpngw --sku Standard --allocation-method Static
+az network public-ip show --name pip-vpngw --query "{name:name, sku:sku.name, ip:ipAddress}" -o table
+```
+
+**Expected result:** a Standard static public IP. HA VPN gateways require
+a Standard public IP; this is the prerequisite the gateway consumes.
+
+### Lab 4.5 — Site-to-Site VPN gateway *(topic 2)*
+
+```bash
+az network vnet-gateway create --name vgw-az700 --vnet vnet-hub \
+  --public-ip-addresses pip-vpngw --gateway-type Vpn --vpn-type RouteBased \
+  --sku VpnGw1 --no-wait
+az network vnet-gateway show --name vgw-az700 --query "provisioningState" -o tsv 2>/dev/null || echo "Provisioning (takes ~30 min)"
+```
+
+**Expected result:** `Updating`/`Succeeded` (creation is slow). Route-based
+VPN is the type that supports coexistence and multiple tunnels — the
+examinable default. ExpressRoute is the private-circuit alternative.
+
+### Domain 3 — Design and implement private access to Azure services (10–15%)
+
+### Lab 4.6 — Service endpoints vs private endpoints *(topic 3)*
+
+```bash
+SA="stpriv700$RANDOM"
+az storage account create --name "$SA" --sku Standard_LRS --kind StorageV2
+az network vnet subnet update --vnet-name vnet-spoke --name snet-app \
+  --service-endpoints Microsoft.Storage
+az network vnet subnet show --vnet-name vnet-spoke --name snet-app \
+  --query "serviceEndpoints[].service" -o tsv
+```
+
+**Expected result:** `Microsoft.Storage`. A service endpoint extends the
+subnet identity to the service (traffic still hits a public endpoint); a
+**Private Endpoint** places a private IP in the subnet and removes the
+public path — the stronger control, exercised next.
+
+### Lab 4.7 — Private endpoint for a PaaS service *(topic 3)*
+
+```bash
+az network private-endpoint create --name pe-storage --vnet-name vnet-spoke \
+  --subnet snet-app --private-connection-resource-id \
+  "$(az storage account show --name "$SA" --query id -o tsv)" \
+  --group-id blob --connection-name pe-conn
+az network private-endpoint show --name pe-storage \
+  --query "{name:name, ip:customDnsConfigs[0].ipAddresses[0]}" -o table
+```
+
+**Expected result:** a private endpoint with an IP from the subnet range.
+Now the storage account is reachable over private space and can be cut off
+from the internet — the answer to "must not be publicly reachable."
+
+### Domain 4 — Design and implement network security (15–20%)
+
+### Lab 4.8 — Network security groups and application security groups *(topic 4)*
+
+```bash
+az network nsg create --name nsg-app
+az network nsg rule create --nsg-name nsg-app --name deny-inbound-internet \
+  --priority 200 --access Deny --direction Inbound --source-address-prefixes Internet \
+  --destination-port-ranges '*' --protocol '*'
+az network nsg rule list --nsg-name nsg-app \
+  --query "[].{name:name, access:access, src:sourceAddressPrefix}" -o table
+```
+
+**Expected result:** an explicit `Deny` from `Internet`. NSGs are
+stateful, priority-ordered, with an implied allow-VNet / deny-Internet
+baseline; explicit rules make intent auditable.
+
+### Lab 4.9 — Azure Firewall and Bastion (secure access) *(topic 4)*
+
+```bash
+az network vnet subnet create --vnet-name vnet-hub --name AzureFirewallSubnet \
+  --address-prefix 10.0.2.0/26
+az network vnet subnet list --vnet-name vnet-hub --query "[].name" -o tsv | grep Firewall
+```
+
+**Expected result:** `AzureFirewallSubnet` (another reserved, mandatory
+name). Azure Firewall centralizes egress control in the hub; Bastion
+(`AzureBastionSubnet`) gives RDP/SSH without public IPs on VMs.
+
+### Domain 5 — Design and implement application delivery services (15–20%)
+
+### Lab 4.10 — Load balancer and its tiers *(topic 5)*
+
+```bash
+az network lb create --name lb-az700 --sku Standard \
+  --frontend-ip-name fe --backend-pool-name be
+az network lb show --name lb-az700 --query "{name:name, sku:sku.name}" -o table
+echo "Delivery: Load Balancer (L4 regional) | App Gateway (L7+WAF regional) | Front Door (L7 global) | Traffic Manager (DNS global)"
+```
+
+**Expected result:** `lb-az700 Standard`, plus the selection table. Choose
+by layer (transport vs application) and scope (regional vs global) — the
+recurring AZ-700 decision.
+
+### Lab 4.11 — Azure DNS and name resolution *(topic 5)*
+
+```bash
+az network private-dns zone create --name privatelink.blob.core.windows.net
+az network private-dns link vnet create --zone-name privatelink.blob.core.windows.net \
+  --name link-spoke --virtual-network vnet-spoke --registration-enabled false
+az network private-dns zone show --name privatelink.blob.core.windows.net \
+  --query "{zone:name, links:numberOfVirtualNetworkLinks}" -o table
+```
+
+**Expected result:** the private DNS zone linked to the spoke. This
+`privatelink` zone is what makes the Lab 4.7 private endpoint resolvable by
+name — private endpoints and private DNS are examined together.
+
+### Lab 4.12 — Troubleshoot connectivity *(topic 1/5)*
+
+```bash
+az network watcher configure --locations eastus --enabled true 2>/dev/null || true
+az network watcher list --query "[].{name:name, location:location}" -o table | head -3
+```
+
+**Expected result:** Network Watcher enabled in the region. Connection
+Troubleshoot and IP Flow Verify identify whether an NSG rule, a route, or
+the destination dropped a flow — the three causes a failed ping cannot
+distinguish.
+
+### Lab 4.13 — Negative test: prove peering is not transitive
+
+```bash
+az network vnet create --name vnet-spoke2 --address-prefix 10.2.0.0/16 \
+  --subnet-name snet-b --subnet-prefix 10.2.1.0/24
+az network vnet peering create --name hub-to-spoke2 --vnet-name vnet-hub \
+  --remote-vnet vnet-spoke2 --allow-vnet-access
+az network vnet peering create --name spoke2-to-hub --vnet-name vnet-spoke2 \
+  --remote-vnet vnet-hub --allow-vnet-access
+az network vnet peering list --vnet-name vnet-spoke \
+  --query "[].remoteVirtualNetwork.id" -o tsv | grep -c spoke2
+```
+
+**Expected result:** `0` — spoke1 peers only with the hub, **not** with
+spoke2, even though both peer the hub. Peering is not transitive; reaching
+spoke2 from spoke1 needs a gateway/route or direct peering. That is the
+fact all Azure topology design turns on.
+
+### Lab 4.14 — Cleanup
+
+```bash
+az group delete --name rg-az700-lab --yes --no-wait
+az group exists --name rg-az700-lab
+```
+
+**Expected result:** `false` shortly after — VNets, gateway, endpoints,
+NSGs, DNS zone, and load balancer removed together.
 
 ## Lab Verification
 

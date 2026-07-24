@@ -196,74 +196,332 @@ reproductions of any Microsoft exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Build the core administrator objects, then prove that Azure
-Policy denies a non-compliant resource even for a principal with full
-rights — the distinction at the heart of AZ-104.
+These labs cover the **AZ-104 "Skills measured" outline**, domain by
+domain, at its published weights. Each is a walkthrough: run the `az` CLI
+command and compare against the stated result. Mapping is in the
+[volume README](../README.md#lab-coverage--az-104-azure-administrator).
 
-**Cost note:** The storage account and virtual network are negligible but
-not free. Step 6 deletes the whole resource group, which removes
-everything.
+**Cost note:** a storage account, a small VM, a VNet, and a Recovery
+Services vault are minimal but **not free**. Lab 3.24 deletes the whole
+resource group, which removes everything. Set a budget alert (Chapter 01)
+first.
 
 **Prerequisites**
 
-- The sandbox subscription and budget alert from Chapter 01.
-- Azure CLI authenticated, with rights to assign policy at resource-group
-  scope.
+```bash
+az group create --name rg-az104-lab --location eastus
+az configure --defaults group=rg-az104-lab location=eastus
+```
 
-**Steps**
+**Expected result:** JSON with `"provisioningState": "Succeeded"`.
 
-1. **Build (15 minutes).** Create the resource group, a storage account,
-   and the virtual network from the Implementation section.
+### Domain 1 — Manage Azure identities and governance (20–25%)
 
-   **Expected result:** all three exist; `az storage account list` shows
-   the SKU you chose.
+### Lab 3.1 — Manage Entra users and groups
 
-2. **Assign policy (10 minutes).** Assign the built-in policy denying
-   public blob access at resource-group scope.
+```bash
+az ad group create --display-name grp-az104 --mail-nickname grp-az104
+az ad group show --group grp-az104 --query '{name:displayName, id:id}' -o table
+```
 
-   **Expected result:** the assignment appears in
-   `az policy assignment list --scope <rg-id>`.
+**Expected result:** the group with an object ID. (Requires directory
+rights; if denied, record that as the finding — user/group management is a
+directory permission, not a subscription one.)
 
-3. **Negative test (15 minutes).** As a principal with Owner or
-   Contributor rights, attempt to create a storage account that violates
-   the policy — for example with public blob access enabled:
+### Lab 3.2 — Manage access to Azure resources with built-in roles
 
-   ```bash
-   az storage account create --name stbadpolicy$RANDOM \
-     --resource-group rg-az104-lab --sku Standard_LRS --kind StorageV2 \
-     --allow-blob-public-access true
-   ```
+```bash
+SCOPE=$(az group show --name rg-az104-lab --query id -o tsv)
+az role assignment create --assignee-object-id "$(az ad group show --group grp-az104 --query id -o tsv)" \
+  --assignee-principal-type Group --role "Reader" --scope "$SCOPE"
+az role assignment list --scope "$SCOPE" --query "[?roleDefinitionName=='Reader'].principalName" -o tsv
+```
 
-   **Expected result:** the request is **denied**, and the error names the
-   policy definition. If it succeeds, the policy is not assigned at the
-   scope you think it is — diagnose that before continuing.
+**Expected result:** the assignment appears. Reader is a built-in role —
+prefer built-in over custom, and assign to the group, not a user.
 
-4. **Distinguish the failure (10 minutes).** Compare the policy denial's
-   error text against an RBAC denial (attempt an action outside your role
-   at a scope you do not hold).
+### Lab 3.3 — Interpret access assignments
 
-   **Expected result:** you can state, from the error alone, which
-   mechanism blocked you.
+```bash
+az role assignment list --scope "$SCOPE" --include-inherited \
+  --query '[].{principal:principalName, role:roleDefinitionName, scope:scope}' -o table
+```
 
-5. **Check effective access (5 minutes).**
+**Expected result:** a table including assignments inherited from the
+subscription — the "interpret" skill is reading effective access, not just
+what was set here.
 
-   ```bash
-   az role assignment list --all \
-     --query '[].{principal:principalName, role:roleDefinitionName, scope:scope}' -o table
-   ```
+### Lab 3.4 — Implement and manage Azure Policy
 
-   **Expected result:** an accurate picture of inherited assignments, not
-   just those made at this resource group.
+```bash
+az policy assignment create --name deny-public-blob \
+  --policy "4fa4b6c0-31ca-4c0d-b10d-24b96f62a751" --scope "$SCOPE"
+az policy assignment list --scope "$SCOPE" --query "[].displayName" -o tsv
+```
 
-6. **Cleanup:**
+**Expected result:** the assignment listed. This built-in policy denies
+public blob access — Policy governs *what may exist*, independent of RBAC.
 
-   ```bash
-   az policy assignment delete --name deny-public-blob \
-     --scope "$(az group show --name rg-az104-lab --query id -o tsv)"
-   az group delete --name rg-az104-lab --yes --no-wait
-   ```
+### Lab 3.5 — Configure resource locks, groups, and management groups
 
-   Confirm the group is gone and the budget shows no unexpected spend.
+```bash
+az lock create --name lock-az104 --lock-type CanNotDelete \
+  --resource-group rg-az104-lab
+az lock list --resource-group rg-az104-lab --query "[].{name:name, level:level}" -o table
+```
+
+**Expected result:** a `CanNotDelete` lock. It binds even Owners — the
+point of a lock. (Removed in cleanup before the group can be deleted.)
+
+### Lab 3.6 — Manage costs with budgets and Advisor
+
+```bash
+az consumption budget list --query "[].{name:name, amount:amount}" -o table 2>/dev/null \
+  || echo "budgets require billing-scope permissions"
+az advisor recommendation list --query "[?category=='Cost'].shortDescription.solution" -o tsv 2>/dev/null | head -3
+```
+
+**Expected result:** budgets (from Chapter 01) and any Advisor cost
+recommendations, or the permissions note — cost management is a governance
+skill.
+
+### Domain 2 — Implement and manage storage (15–20%)
+
+### Lab 3.7 — Create and configure a storage account with redundancy
+
+```bash
+SA="staz104$RANDOM"
+az storage account create --name "$SA" --sku Standard_LRS --kind StorageV2 \
+  --min-tls-version TLS1_2 --allow-blob-public-access false
+az storage account show --name "$SA" \
+  --query '{sku:sku.name, tls:minimumTlsVersion, public:allowBlobPublicAccess}' -o table
+```
+
+**Expected result:** `Standard_LRS TLS1_2 False`. LRS survives a disk;
+choose GRS when a stated requirement is region survival.
+
+### Lab 3.8 — Configure storage firewalls and access
+
+```bash
+az storage account update --name "$SA" --default-action Deny
+az storage account show --name "$SA" --query "networkRuleSet.defaultAction" -o tsv
+```
+
+**Expected result:** `Deny`. Default-deny plus explicit allow rules is the
+examinable posture for storage network access.
+
+### Lab 3.9 — SAS tokens and access keys
+
+```bash
+EXPIRY=$(date -u -v+1H '+%Y-%m-%dT%H:%MZ' 2>/dev/null || date -u -d '+1 hour' '+%Y-%m-%dT%H:%MZ')
+az storage account generate-sas --account-name "$SA" --services b --resource-types sco \
+  --permissions r --expiry "$EXPIRY" --https-only -o tsv | head -c 40; echo "..."
+```
+
+**Expected result:** a SAS string (`sv=...&ss=b&...`). A short-lived,
+read-only, HTTPS-only SAS is least privilege for delegated access — prefer
+it over sharing account keys.
+
+### Lab 3.10 — Azure Files and Blob: shares, containers, tiers, lifecycle
+
+```bash
+KEY=$(az storage account keys list --account-name "$SA" --query "[0].value" -o tsv)
+az storage container create --name lab --account-name "$SA" --account-key "$KEY"
+az storage container show --name lab --account-name "$SA" --account-key "$KEY" \
+  --query "name" -o tsv
+```
+
+**Expected result:** `lab`. Then confirm blob versioning is a toggle:
+
+```bash
+az storage account blob-service-properties update --account-name "$SA" \
+  --enable-versioning true
+az storage account blob-service-properties show --account-name "$SA" \
+  --query "isVersioningEnabled" -o tsv
+```
+
+**Expected result:** `true` — versioning protects against overwrite and is
+distinct from soft delete.
+
+### Domain 3 — Deploy and manage Azure compute resources (20–25%)
+
+### Lab 3.11 — Interpret and deploy an ARM/Bicep template
+
+```bash
+cat > /tmp/sa.bicep <<'BICEP'
+param location string = resourceGroup().location
+resource sa 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+  name: 'stbicep${uniqueString(resourceGroup().id)}'
+  location: location
+  sku: { name: 'Standard_LRS' }
+  kind: 'StorageV2'
+}
+BICEP
+az deployment group what-if --resource-group rg-az104-lab --template-file /tmp/sa.bicep | tail -4
+```
+
+**Expected result:** `+ create` for one storage account. `what-if`
+previews the change without applying it — the habit AZ-104 rewards.
+
+### Lab 3.12 — Create and configure a virtual machine
+
+```bash
+az vm create --name vm-az104 --image Ubuntu2204 --size Standard_B1s \
+  --admin-username azlab --generate-ssh-keys --public-ip-address ""
+az vm show --name vm-az104 --show-details \
+  --query '{size:hardwareProfile.vmSize, state:powerState, pip:publicIps}' -o table
+```
+
+**Expected result:** `Standard_B1s VM running` with an empty public IP —
+no public exposure by default.
+
+### Lab 3.13 — Manage VM disks and sizes
+
+```bash
+az vm disk attach --vm-name vm-az104 --name disk-az104 --new --size-gb 8
+az vm show --name vm-az104 --query "storageProfile.dataDisks[].{name:name, gb:diskSizeGb}" -o table
+```
+
+**Expected result:** an 8 GB data disk. Resizing and attaching disks is
+routine VM management; disks bill even when the VM is stopped.
+
+### Lab 3.14 — Scale sets, App Service, and containers
+
+```bash
+az appservice plan create --name plan-az104 --sku B1 --is-linux
+az webapp create --name webaz104$RANDOM --plan plan-az104 --runtime "NODE:20-lts"
+az webapp list --query "[].{name:name, state:state}" -o table
+```
+
+**Expected result:** a web app in `Running`. App Service is the PaaS
+compute option; scaling is a plan setting, exercised next.
+
+### Lab 3.15 — Configure scaling for an App Service plan
+
+```bash
+az appservice plan update --name plan-az104 --number-of-workers 2
+az appservice plan show --name plan-az104 --query "sku.capacity" -o tsv
+```
+
+**Expected result:** `2`. Manual scale-out is a capacity change on the
+plan, not the app.
+
+### Domain 4 — Implement and manage virtual networking (15–20%)
+
+### Lab 3.16 — Create virtual networks, subnets, and peering
+
+```bash
+az network vnet create --name vnet-a --address-prefix 10.10.0.0/16 \
+  --subnet-name snet-a --subnet-prefix 10.10.1.0/24
+az network vnet create --name vnet-b --address-prefix 10.20.0.0/16 \
+  --subnet-name snet-b --subnet-prefix 10.20.1.0/24
+az network vnet peering create --name a-to-b --vnet-name vnet-a \
+  --remote-vnet vnet-b --allow-vnet-access
+az network vnet peering show --name a-to-b --vnet-name vnet-a --query "peeringState" -o tsv
+```
+
+**Expected result:** `Connected`. Peering is per-direction and **not
+transitive** — the fact all Azure topology design turns on.
+
+### Lab 3.17 — NSGs and application security groups
+
+```bash
+az network nsg create --name nsg-az104
+az network nsg rule create --nsg-name nsg-az104 --name deny-rdp \
+  --priority 300 --access Deny --protocol Tcp --destination-port-ranges 3389 \
+  --direction Inbound
+az network nsg rule list --nsg-name nsg-az104 --query "[].{name:name, access:access, port:destinationPortRange}" -o table
+```
+
+**Expected result:** an explicit `Deny` on 3389. NSGs are stateful and
+priority-ordered; explicit rules make intent readable.
+
+### Lab 3.18 — UDRs, service endpoints, and private endpoints
+
+```bash
+az network route-table create --name rt-az104
+az network route-table route create --route-table-name rt-az104 --name to-nva \
+  --address-prefix 0.0.0.0/0 --next-hop-type VirtualAppliance --next-hop-ip-address 10.10.1.4
+az network route-table route list --route-table-name rt-az104 \
+  --query "[].{name:name, prefix:addressPrefix, hop:nextHopType}" -o table
+```
+
+**Expected result:** a `0.0.0.0/0` route to a VirtualAppliance — a
+user-defined route overriding the default, the way traffic is forced
+through a firewall.
+
+### Lab 3.19 — Azure DNS and load balancing
+
+```bash
+az network lb create --name lb-az104 --sku Standard \
+  --frontend-ip-name fe --backend-pool-name be
+az network lb show --name lb-az104 --query "{name:name, sku:sku.name}" -o table
+```
+
+**Expected result:** `lb-az104 Standard`. A Standard load balancer is
+regional layer-4; DNS (Azure DNS zones) and load balancing are the
+name-resolution-and-distribution skills of this domain.
+
+### Domain 5 — Monitor and maintain Azure resources (10–15%)
+
+### Lab 3.20 — Interpret metrics and configure log settings
+
+```bash
+az monitor metrics list --resource "$(az vm show --name vm-az104 --query id -o tsv)" \
+  --metric "Percentage CPU" --interval PT1M \
+  --query "value[0].timeseries[0].data[-1].{time:timeStamp, cpu:average}" -o table
+```
+
+**Expected result:** a recent CPU data point. Azure Monitor metrics are
+the raw material; reading them is the examinable skill.
+
+### Lab 3.21 — Alert rules and action groups
+
+```bash
+az monitor action-group create --name ag-az104 --short-name azlab
+az monitor metrics alert create --name cpu-high --scopes "$(az vm show --name vm-az104 --query id -o tsv)" \
+  --condition "avg Percentage CPU > 80" --action ag-az104 \
+  --description "lab CPU alert"
+az monitor metrics alert list --query "[].{name:name, enabled:enabled}" -o table
+```
+
+**Expected result:** an enabled alert. An alert wired to an action group
+is the monitoring-to-notification path.
+
+### Lab 3.22 — Backup and recovery
+
+```bash
+az backup vault create --name rsv-az104 --location eastus
+az backup vault show --name rsv-az104 --query "{name:name, state:properties.provisioningState}" -o table
+```
+
+**Expected result:** the Recovery Services vault `Succeeded`. A vault plus
+a backup policy is the recovery skill; Site Recovery covers replication.
+
+### Lab 3.23 — Negative test: prove Policy denies a privileged principal
+
+```bash
+az storage account create --name stbad$RANDOM --sku Standard_LRS --kind StorageV2 \
+  --allow-blob-public-access true 2>&1 | tail -3
+```
+
+**Expected result:** the create **fails**, the error naming
+`RequestDisallowedByPolicy` and the `deny-public-blob` assignment from
+Lab 3.4 — even though you have Contributor/Owner rights. That is the
+RBAC-versus-Policy distinction proven: Policy blocks what RBAC would
+permit.
+
+### Lab 3.24 — Cleanup
+
+```bash
+az lock delete --name lock-az104 --resource-group rg-az104-lab
+az group delete --name rg-az104-lab --yes --no-wait
+az group exists --name rg-az104-lab
+```
+
+**Expected result:** `false` shortly after (deletion is async). The lock
+must be removed first, or the group delete is itself denied — a final
+reminder of what a lock does.
 
 ## Lab Verification
 

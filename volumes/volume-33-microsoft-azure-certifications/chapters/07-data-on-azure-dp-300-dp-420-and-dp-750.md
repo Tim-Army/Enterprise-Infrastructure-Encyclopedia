@@ -213,62 +213,232 @@ reproductions of any Microsoft exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Provision both a relational and a non-relational data
-service, then demonstrate that partition-key choice — not service choice —
-governs Cosmos DB behavior.
+These labs cover the exam-guide domains for the data track: **DP-300**
+(Azure Database Administrator) and **DP-420** (Cosmos DB Developer) domain
+by domain, and the newer **DP-750** (Databricks Data Engineer) at section
+level. Each is a walkthrough with the runnable command and the expected
+result. Mapping is in the
+[volume README](../README.md#lab-coverage--data-on-azure).
 
-**Cost note:** Azure SQL and Cosmos DB both bill while provisioned. Use the
-smallest tiers, and complete step 6 in the same session. Provisioned
-throughput is charged even when idle.
+**Cost note:** an Azure SQL Database (Basic tier) and a Cosmos DB
+serverless account are the billable items — both minimal. Lab 7.16 deletes
+everything.
 
 **Prerequisites**
 
-- The sandbox subscription and budget alert from Chapter 01.
-- Azure CLI authenticated.
+```bash
+az group create --name rg-data-lab --location eastus
+az configure --defaults group=rg-data-lab location=eastus
+```
 
-**Steps**
+**Expected result:** `"provisioningState": "Succeeded"`.
 
-1. **Provision (20 minutes).** Create the resource group, a SQL server and
-   database at the smallest tier, and a Cosmos DB account.
+### DP-300 Domain 1 — Plan and implement data platform resources (15–20%)
 
-   **Expected result:** both exist; `az sql db list` reports the tier
-   actually provisioned.
+### Lab 7.1 — Deploy an Azure SQL Database and choose a tier
 
-2. **Create a well-partitioned container (10 minutes).** Create the
-   `orders` container with `/customerId` as the partition key.
+```bash
+PW="$(openssl rand -base64 18)Aa1!"
+az sql server create --name sqlsrv-dp300-$RANDOM --admin-user dbadmin --admin-password "$PW"
+SRV=$(az sql server list --query "[0].name" -o tsv)
+az sql db create --server "$SRV" --name db-dp300 --edition Basic
+az sql db show --server "$SRV" --name db-dp300 --query "{name:name, tier:currentServiceObjectiveName, status:status}" -o table
+```
 
-   **Expected result:** the container exists with the stated key.
+**Expected result:** `db-dp300 Basic Online`. Basic is chosen for a lab;
+GeneralPurpose/BusinessCritical/Hyperscale are selected by a stated
+performance and HA requirement.
 
-3. **Create a badly partitioned container (10 minutes).** Create a second
-   container using a low-cardinality key — for example `/country` — with
-   the same throughput.
+### Lab 7.2 — Configure a deployment and evaluate service tiers
 
-   **Expected result:** both containers exist and look identical in the
-   portal, which is the point: the difference is invisible until load.
+```bash
+az sql db list-editions --location eastus \
+  --query "[?name=='BusinessCritical'].supportedServiceLevelObjectives[0].name" -o tsv | head -1
+```
 
-4. **Negative test (15 minutes).** Reason through, in writing, what
-   happens to each container as one country or one customer dominates
-   traffic. Then confirm your reasoning against the request-unit and
-   partition metrics Azure exposes for the account.
+**Expected result:** a BusinessCritical SLO name. BusinessCritical adds
+local SSD and built-in HA (always-on) — the tier for low-latency,
+high-availability OLTP.
 
-   **Expected result:** a correct account of hot-partition behavior — the
-   low-cardinality key concentrates load on one physical partition and
-   throttles while the account as a whole appears under-utilized.
+### DP-300 Domain 2 — Implement a secure environment (20–25%)
 
-5. **Verify consistency (5 minutes).** Read the account's consistency
-   level with the command above and state what staleness it permits.
+### Lab 7.3 — Configure the server firewall and authentication
 
-   **Expected result:** the level named and its guarantee stated in your
-   own words.
+```bash
+az sql server firewall-rule create --server "$SRV" --name allow-azure \
+  --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
+az sql server firewall-rule list --server "$SRV" --query "[].name" -o tsv
+```
 
-6. **Cleanup:**
+**Expected result:** `allow-azure` (0.0.0.0 = allow Azure services). Then
+prefer Microsoft Entra authentication over SQL logins:
 
-   ```bash
-   az group delete --name rg-dp300-lab --yes --no-wait
-   ```
+```bash
+az sql server ad-admin list --server "$SRV" --query "[].login" -o tsv || echo "no Entra admin set"
+```
 
-   Confirm the group is gone and check the budget — provisioned throughput
-   is the item to watch.
+**Expected result:** the Entra admin, or the note — Entra auth with
+conditional access is the recommended posture.
+
+### Lab 7.4 — Configure encryption and auditing
+
+```bash
+az sql db tde show --server "$SRV" --database db-dp300 --query "state" -o tsv
+```
+
+**Expected result:** `Enabled` — Transparent Data Encryption is on by
+default. Auditing and Microsoft Defender for SQL are the detective
+controls this domain adds.
+
+### DP-300 Domain 3 — Monitor, configure, and optimize (20–25%)
+
+### Lab 7.5 — Monitor database resources
+
+```bash
+az monitor metrics list --resource "$(az sql db show --server "$SRV" --name db-dp300 --query id -o tsv)" \
+  --metric "dtu_consumption_percent" --query "value[0].timeseries[0].data[-1]" -o json 2>/dev/null | head -5 \
+  || echo "metrics populate after activity"
+```
+
+**Expected result:** a DTU-consumption data point (or the note on a fresh
+DB). DTU/vCore consumption is the signal for right-sizing — the
+optimization skill.
+
+### Lab 7.6 — Interpret performance and optimize
+
+```bash
+az sql db show --server "$SRV" --name db-dp300 \
+  --query "{maxSize:maxSizeBytes, zoneRedundant:zoneRedundant}" -o table
+```
+
+**Expected result:** the size and zone-redundancy setting. Optimization is
+reading these against the workload — an over-provisioned tier is a cost
+finding, an under-provisioned one a throttling finding.
+
+### DP-300 Domain 4 — Automation of tasks (15–20%)
+
+### Lab 7.7 — Automate with elastic pools / policies
+
+```bash
+az sql elastic-pool create --server "$SRV" --name pool-dp300 --edition Basic 2>&1 | tail -2
+az sql elastic-pool list --server "$SRV" --query "[].name" -o tsv
+```
+
+**Expected result:** `pool-dp300`. Elastic pools share capacity across
+databases — the automation-and-cost lever for many small databases.
+
+### DP-420 — Cosmos DB (data models 35–40%, optimize 15–20%, maintain 25–30%)
+
+### Lab 7.8 — Create a Cosmos DB account and database *(integrate)*
+
+```bash
+COS="cosmos-dp420-$RANDOM"
+az cosmosdb create --name "$COS" --kind GlobalDocumentDB --enable-free-tier false \
+  --capabilities EnableServerless
+az cosmosdb sql database create --account-name "$COS" --name appdb
+az cosmosdb show --name "$COS" --query "{name:name, consistency:consistencyPolicy.defaultConsistencyLevel}" -o table
+```
+
+**Expected result:** the account with its default consistency level
+(`Session`). Serverless suits spiky/dev workloads; provisioned throughput
+suits steady load.
+
+### Lab 7.9 — Design and implement a data model with a partition key *(data models, 35–40%)*
+
+```bash
+az cosmosdb sql container create --account-name "$COS" --database-name appdb \
+  --name orders --partition-key-path "/customerId"
+az cosmosdb sql container show --account-name "$COS" --database-name appdb \
+  --name orders --query "resource.partitionKey.paths[0]" -o tsv
+```
+
+**Expected result:** `/customerId`. Partition-key choice is the single
+dominant DP-420 decision — it governs performance and cost and cannot be
+changed without moving data.
+
+### Lab 7.10 — Data distribution and consistency *(distribution 5–10%)*
+
+```bash
+az cosmosdb show --name "$COS" \
+  --query "{consistency:consistencyPolicy.defaultConsistencyLevel, maxLagSec:consistencyPolicy.maxIntervalInSeconds}" -o table
+```
+
+**Expected result:** the consistency level and any bounded-staleness lag.
+The five levels trade latency/availability against staleness; global
+distribution adds regions with per-region write options.
+
+### Lab 7.11 — Optimize a Cosmos DB solution *(optimize 15–20%)*
+
+```bash
+az cosmosdb sql container show --account-name "$COS" --database-name appdb \
+  --name orders --query "resource.indexingPolicy.indexingMode" -o tsv
+```
+
+**Expected result:** `consistent`. Indexing policy and request-unit (RU)
+provisioning are the optimization levers — a cross-partition query burns
+RUs disproportionately, which is the signal a partition key is wrong.
+
+### Lab 7.12 — Maintain a Cosmos DB solution *(maintain 25–30%)*
+
+```bash
+az cosmosdb sql container update --account-name "$COS" --database-name appdb \
+  --name orders --ttl 2592000
+az cosmosdb sql container show --account-name "$COS" --database-name appdb \
+  --name orders --query "resource.defaultTtl" -o tsv
+```
+
+**Expected result:** `2592000` (30 days). TTL, backup policy, and RU
+scaling are the maintenance tasks; backup/restore is the durability
+guarantee.
+
+### DP-750 — Databricks Data Engineer (section level)
+
+### Lab 7.13 — Databricks workspace and the lakehouse pattern
+
+```bash
+az provider show --namespace Microsoft.Databricks --query "registrationState" -o tsv 2>/dev/null \
+  || echo "register Microsoft.Databricks"
+```
+
+**Expected result:** `Registered` or the note. DP-750 covers building
+pipelines and the lakehouse (bronze/silver/gold) on Azure Databricks;
+confirm the current guide, as this certification is new.
+
+### Lab 7.14 — Storage foundation for the lakehouse
+
+```bash
+SA="stlake$RANDOM"
+az storage account create --name "$SA" --sku Standard_LRS --kind StorageV2 \
+  --enable-hierarchical-namespace true
+az storage account show --name "$SA" --query "isHnsEnabled" -o tsv
+```
+
+**Expected result:** `true` — ADLS Gen2 (hierarchical namespace) is the
+lakehouse storage layer Databricks reads and writes.
+
+### Lab 7.15 — Negative test: prove TDE is enforced / firewall blocks
+
+```bash
+az sql db show --server "$SRV" --name db-dp300 --query "{tde:earliestRestoreDate}" -o tsv >/dev/null
+az sql server firewall-rule delete --server "$SRV" --name allow-azure
+az sql db show --server "$SRV" --name db-dp300 --query "status" -o tsv
+```
+
+**Expected result:** the DB is still `Online`, but with the firewall rule
+gone, a client connection from Azure services is now refused at the network
+layer — proving the firewall, not the database, controls reachability.
+(Re-add the rule if you want to connect.)
+
+### Lab 7.16 — Cleanup
+
+```bash
+az group delete --name rg-data-lab --yes --no-wait
+az group exists --name rg-data-lab
+```
+
+**Expected result:** `false` shortly after — the SQL server, Cosmos
+account, and storage accounts removed together. Cosmos provisioned
+throughput and SQL databases bill continuously, so confirm deletion.
 
 ## Lab Verification
 

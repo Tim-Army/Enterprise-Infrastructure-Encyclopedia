@@ -209,53 +209,142 @@ reproductions of any Microsoft exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Establish, from primary sources only, which of the three new
-certifications fits your work — and confirm the two retirements yourself.
+These labs cover the AI-centric associate tier: **AI-103** (Azure AI Apps
+and Agents Developer — Python and Microsoft Foundry), **AI-200** (Azure AI
+Cloud Developer — back-end AI services and lifecycle), and **AB-620** (AI
+Agent Builder). These certifications are **new** (Chapter 06 body), so
+their published skills outlines are still thin — these labs exercise the
+stated scope (the Azure AI service surface, Foundry, and agent building)
+against what is verifiable today. **Re-check each exam guide before relying
+on this**, and treat generative-AI content as the fastest-moving in the
+program. Mapping is in the
+[volume README](../README.md#lab-coverage--the-ai-centric-associate-tier).
 
-**Cost note:** Free. No Azure resources are created.
+**Cost note:** these labs are availability checks and one small Azure AI
+resource. Azure OpenAI / AI inference bills per token — Lab 6.9 deletes
+the resource group. Do not leave a deployed model endpoint running.
 
 **Prerequisites**
 
-- Web access to Microsoft Learn.
-- An honest description of what you build day to day.
+```bash
+az group create --name rg-ai-lab --location eastus
+az configure --defaults group=rg-ai-lab location=eastus
+```
 
-**Steps**
+**Expected result:** `"provisioningState": "Succeeded"`.
 
-1. **Confirm the three codes (10 minutes).** Run the lineup query.
+### Lab 6.1 — Locate the Azure AI service surface *(AI-103 / AI-200 foundations)*
 
-   **Expected result:** AI-103, AI-200, and AB-620 read from Microsoft's
-   pages.
+```bash
+az cognitiveservices account list-kinds -o tsv | tr '\t' '\n' | grep -iE "AIServices|OpenAI"
+```
 
-2. **Confirm the two retirements (5 minutes).** Run the retirement query.
+**Expected result:** `AIServices` and `OpenAI` among the kinds. The
+multi-service `AIServices` resource is the modern single endpoint for
+Vision, Language, Speech, and OpenAI — the surface both developer
+certifications build on.
 
-   **Expected result:** both AI-102 and DP-100 reported as retired.
+### Lab 6.2 — Create a multi-service Azure AI resource *(AI-200 back-end)*
 
-3. **Read the descriptions (15 minutes).** Open each of the three
-   certification pages and note, for each, the primary deliverable it
-   describes and any named language or platform.
+```bash
+AI="ai-svc-$RANDOM"
+az cognitiveservices account create --name "$AI" --kind AIServices --sku S0 \
+  --custom-domain "$AI" --yes
+az cognitiveservices account show --name "$AI" \
+  --query "{name:name, endpoint:properties.endpoint, kind:kind}" -o table
+```
 
-   **Expected result:** Python and Microsoft Foundry captured for AI-103;
-   back-end services, scale, and lifecycle for AI-200; agents for AB-620.
+**Expected result:** the resource with an `https://...cognitiveservices.azure.com/`
+endpoint. A custom domain is required for token-based (Entra) auth — the
+recommended pattern over keys.
 
-4. **Choose (10 minutes).** Write one sentence naming which certification
-   fits your work and why, or state that none does.
+### Lab 6.3 — Authenticate to AI services without keys *(AI-200 security)*
 
-   **Expected result:** a defensible choice — including "none," which is a
-   legitimate outcome for infrastructure-focused readers.
+```bash
+az cognitiveservices account keys list --name "$AI" --query "key1" -o tsv | head -c 8; echo "... (key exists)"
+echo "Prefer: managed identity + 'Cognitive Services User' role over these keys"
+```
 
-5. **Check training availability (10 minutes).** Run the training query for
-   your chosen certification.
+**Expected result:** a key prefix, plus the guidance. AI-200 rewards
+identity-based access to model endpoints over distributed keys — the same
+credential-hygiene rule as the rest of Azure.
 
-   **Expected result:** either a learning path to start from, or the
-   finding that training is still thin — which is itself a scheduling
-   input.
+### Lab 6.4 — Microsoft Foundry: the app and agent platform *(AI-103)*
 
-6. **Negative test (10 minutes).** Search a third-party site for "Azure AI
-   Engineer certification" and check what it recommends.
+```bash
+az extension add --name ml 2>/dev/null; az extension show --name ml --query "version" -o tsv 2>/dev/null \
+  || echo "Azure AI Foundry / ML tooling — install the 'ml' CLI extension"
+az provider show --namespace Microsoft.MachineLearningServices --query "registrationState" -o tsv
+```
 
-   **Expected result:** most still promote AI-102, a retired
-   certification — the concrete demonstration of why steps 1 and 2 use
-   Microsoft's pages.
+**Expected result:** the `ml` extension version and a `Registered`
+provider. AI-103 names **Microsoft Foundry** and **Python** explicitly —
+Foundry hubs/projects are where apps and agents are built, and the SDK is
+Python.
+
+### Lab 6.5 — Deploy a model (the serving surface) *(AI-103 / AB-620)*
+
+```bash
+az cognitiveservices account deployment list --name "$AI" \
+  --query "[].{name:name, model:properties.model.name}" -o table 2>/dev/null \
+  || echo "no deployments yet — a deployment is a served model version"
+```
+
+**Expected result:** an empty list on a fresh resource. The examinable
+point: a **model** and a **deployment** are distinct — you deploy a model
+version to get a callable endpoint, and an agent calls that endpoint.
+
+### Lab 6.6 — Agent building concepts *(AB-620)*
+
+```text
+# An agent = a model deployment + tools (function calling) + grounding +
+# an orchestration loop. The AB-620 skill is composing these safely:
+#   - tools the agent may call (each scoped to least privilege)
+#   - grounding sources so answers are sourced, not invented
+#   - guardrails (content filters, output validation)
+Record, for a simple "order status" agent: which tool it calls, what
+grounds its answer, and what it is NOT allowed to do.
+```
+
+**Expected result:** a written agent spec naming a tool, a grounding
+source, and an explicit prohibition. Agents *act*, so scoping the tool's
+identity to least privilege is the security core AB-620 tests.
+
+### Lab 6.7 — Responsible AI and content safety *(all three, cross-topic)*
+
+```bash
+az cognitiveservices account list-kinds -o tsv | tr '\t' '\n' | grep -i "ContentSafety" \
+  || echo "Azure AI Content Safety — moderation for prompts and responses"
+```
+
+**Expected result:** `ContentSafety` (or the note). Content filtering,
+grounding, and evaluation are examinable and operationally real —
+responsible AI is a build requirement, not a checkbox.
+
+### Lab 6.8 — Negative test: prove endpoint access needs a role/key
+
+```bash
+ENDPOINT=$(az cognitiveservices account show --name "$AI" --query "properties.endpoint" -o tsv)
+curl -s -o /dev/null -w "%{http_code}\n" "${ENDPOINT}language/:analyze-text?api-version=2023-04-01" \
+  -H "Content-Type: application/json" -d '{"kind":"LanguageDetection","analysisInput":{"documents":[{"id":"1","text":"hello"}]}}'
+```
+
+**Expected result:** `401` — the call is **rejected** without an
+authentication header, even though the endpoint URL is public. That
+401-without-credentials is the proof that the AI endpoint is secured by
+identity, not obscurity — the AI-200 security lesson. Add the key or a
+bearer token and the same call returns `200`.
+
+### Lab 6.9 — Cleanup
+
+```bash
+az group delete --name rg-ai-lab --yes --no-wait
+az group exists --name rg-ai-lab
+```
+
+**Expected result:** `false` shortly after — the AI resource and any
+model deployments removed together. Token-billed inference stops only when
+the deployment is gone, so confirm deletion.
 
 ## Lab Verification
 

@@ -222,54 +222,228 @@ reproductions of any Microsoft exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Make a defensible, dated decision about both retiring
-certifications rather than drifting into or away from them — and verify
-every input to that decision from primary sources.
+These labs cover the exam-guide domains for both retiring associate
+certifications: **AZ-500** (Security Engineer) domain by domain, and
+**AZ-204** (Developer) at domain level. Both retire in 2026
+([above](#the-two-closing-certifications)); the *subject matter* remains
+current, so these labs are worth doing as professional development even
+after the credentials close. Each is a walkthrough with the runnable
+command and expected result. Mapping is in the
+[volume README](../README.md#lab-coverage--the-retiring-associate-tier).
 
-**Cost note:** Entirely free. No Azure resources are created.
+**Cost note:** a Key Vault, a storage account, and a Function App
+(consumption plan) are the billable items — all minimal. Lab 5.15 deletes
+the resource group.
 
 **Prerequisites**
 
-- Web access to Microsoft Learn.
-- Your own certification record, if you hold any Azure credentials.
+```bash
+az group create --name rg-retire-lab --location eastus
+az configure --defaults group=rg-retire-lab location=eastus
+```
 
-**Steps**
+**Expected result:** `"provisioningState": "Succeeded"`.
 
-1. **Confirm both dates (10 minutes).** Run the retirement-date query from
-   the Implementation section.
+### AZ-500 Domain 1 — Secure identity and access (15–20%)
 
-   **Expected result:** 31 July 2026 for AZ-204 and 31 August 2026 for
-   AZ-500, read from Microsoft's own pages — not from this chapter.
+### Lab 5.1 — Managed identity over stored credentials
 
-2. **Do the arithmetic (10 minutes).** For each, write your earliest
-   realistic test date given current preparation, and compare it to the
-   retirement date.
+```bash
+az identity create --name id-retire
+az identity show --name id-retire --query "{name:name, clientId:clientId, principalId:principalId}" -o table
+```
 
-   **Expected result:** an explicit go/no-go per certification, with the
-   date gap stated.
+**Expected result:** a user-assigned managed identity with a principal ID.
+Managed identities remove stored secrets — the AZ-500 identity default,
+and the answer to "how does this app authenticate without a key?"
 
-3. **Apply the renewal clause (10 minutes).** For any go decision, write
-   what happens at the first annual renewal after the retirement date.
+### Lab 5.2 — Conditional access and RBAC posture
 
-   **Expected result:** the recognition that the credential lapses
-   permanently, and a statement of why it is still worth it — or a
-   reversal to no-go.
+```bash
+az role assignment list --assignee "$(az identity show --name id-retire --query principalId -o tsv)" \
+  --all --query "[].roleDefinitionName" -o tsv || echo "no roles yet — least privilege by default"
+```
 
-4. **Find the durable alternative (15 minutes).** Run the SC-family query
-   and identify which certification best covers your actual role.
+**Expected result:** an empty set — a new identity holds nothing until
+granted. Least privilege starts from zero, and conditional access gates
+the human side.
 
-   **Expected result:** a named alternative with a one-sentence
-   justification.
+### AZ-500 Domain 2 — Secure networking (20–25%)
 
-5. **Negative test (10 minutes).** Search a third-party certification
-   listing for AZ-204 or AZ-500 and check whether it shows the retirement.
+### Lab 5.3 — NSGs, Azure Firewall, and private access
 
-   **Expected result:** most will not — demonstrating why step 1 uses
-   Microsoft's pages and why a study plan built on aggregator data would
-   have walked into a closing exam.
+```bash
+az network nsg create --name nsg-retire
+az network nsg rule create --nsg-name nsg-retire --name deny-inbound \
+  --priority 200 --access Deny --direction Inbound --source-address-prefixes Internet \
+  --destination-port-ranges '*' --protocol '*'
+az network nsg rule show --nsg-name nsg-retire --name deny-inbound --query "access" -o tsv
+```
 
-6. **Record the decision.** Write the outcome, dated, with the primary
-   sources you used. There is nothing to clean up.
+**Expected result:** `Deny`. Network security is layered — NSG at the
+subnet/NIC, Azure Firewall at the hub, private endpoints to remove public
+exposure.
+
+### AZ-500 Domain 3 — Secure compute, storage, and databases (20–25%)
+
+### Lab 5.4 — Key Vault for secrets, keys, and certificates
+
+```bash
+KV="kv-retire-$RANDOM"
+az keyvault create --name "$KV" --enable-rbac-authorization true
+az keyvault secret set --vault-name "$KV" --name db-conn --value "Server=..." 2>&1 | tail -1 || \
+  echo "grant yourself Key Vault Secrets Officer, then retry"
+az keyvault show --name "$KV" --query "{name:name, rbac:properties.enableRbacAuthorization, softDelete:properties.enableSoftDelete}" -o table
+```
+
+**Expected result:** the vault with `rbac: True` and `softDelete: True`.
+RBAC-authorized Key Vault with soft delete is the secure baseline; secrets
+never live in code.
+
+### Lab 5.5 — Storage encryption and secure access
+
+```bash
+SA="stsec$RANDOM"
+az storage account create --name "$SA" --sku Standard_LRS --kind StorageV2 \
+  --min-tls-version TLS1_2 --allow-blob-public-access false --https-only true
+az storage account show --name "$SA" \
+  --query "{tls:minimumTlsVersion, public:allowBlobPublicAccess, https:enableHttpsTrafficOnly}" -o table
+```
+
+**Expected result:** `TLS1_2 False True`. Encryption at rest is automatic;
+the securable knobs are TLS floor, public-access denial, and HTTPS-only.
+
+### AZ-500 Domain 4 — Secure using Defender for Cloud and Sentinel (30–35%)
+
+### Lab 5.6 — Microsoft Defender for Cloud posture
+
+```bash
+az security pricing list --query "value[?pricingTier=='Standard'].name" -o tsv 2>/dev/null | head -5 \
+  || echo "Defender plans configurable per resource type"
+az security secure-score-controls list --query "value[0].displayName" -o tsv 2>/dev/null \
+  || echo "secure score aggregates posture recommendations"
+```
+
+**Expected result:** enabled Defender plans (or the notes). Defender for
+Cloud provides secure score and workload protection; this domain is the
+highest weighted for a reason — it is the operational security surface.
+
+### Lab 5.7 — Microsoft Sentinel (SIEM)
+
+```bash
+az monitor log-analytics workspace create --workspace-name law-sentinel
+az monitor log-analytics workspace show --workspace-name law-sentinel --query "name" -o tsv
+```
+
+**Expected result:** the workspace `law-sentinel`. Sentinel is built on a
+Log Analytics workspace; detection rules and playbooks (SOAR) sit on top —
+the detection-and-response half of the domain.
+
+### AZ-204 Domain 1 — Develop Azure compute solutions (25–30%)
+
+### Lab 5.8 — Deploy a Function App
+
+```bash
+az storage account create --name stfunc$RANDOM --sku Standard_LRS
+STF=$(az storage account list --query "[?starts_with(name,'stfunc')].name | [0]" -o tsv)
+az functionapp create --name fn-retire-$RANDOM --storage-account "$STF" \
+  --consumption-plan-location eastus --runtime node --functions-version 4
+az functionapp list --query "[].{name:name, state:state}" -o table
+```
+
+**Expected result:** a Function App in `Running`. Functions (event-driven,
+consumption-billed) and App Service / container apps are the AZ-204 compute
+options.
+
+### Lab 5.9 — App configuration and deployment slots
+
+```bash
+APP=$(az functionapp list --query "[0].name" -o tsv)
+az functionapp config appsettings set --name "$APP" --settings "FEATURE_FLAG=on" >/dev/null
+az functionapp config appsettings list --name "$APP" --query "[?name=='FEATURE_FLAG'].value" -o tsv
+```
+
+**Expected result:** `on`. App settings and deployment slots are the
+configuration and safe-release mechanisms developers own.
+
+### AZ-204 Domain 2 — Develop for Azure storage (15–20%)
+
+### Lab 5.10 — Blob storage operations
+
+```bash
+KEY=$(az storage account keys list --account-name "$STF" --query "[0].value" -o tsv)
+az storage container create --name app-data --account-name "$STF" --account-key "$KEY"
+az storage container list --account-name "$STF" --account-key "$KEY" --query "[].name" -o tsv
+```
+
+**Expected result:** `app-data`. Blob and Cosmos DB access from code
+(SDKs, connection via managed identity) is the storage-development skill.
+
+### AZ-204 Domain 3 — Implement Azure security (15–20%)
+
+### Lab 5.11 — Authenticate with managed identity, read from Key Vault
+
+```bash
+az role assignment create --assignee "$(az identity show --name id-retire --query principalId -o tsv)" \
+  --role "Key Vault Secrets User" --scope "$(az keyvault show --name "$KV" --query id -o tsv)"
+az role assignment list --scope "$(az keyvault show --name "$KV" --query id -o tsv)" \
+  --query "[?roleDefinitionName=='Key Vault Secrets User'].principalId" -o tsv
+```
+
+**Expected result:** the identity's principal ID. The developer pattern:
+app uses its managed identity to read a Key Vault secret — no credential in
+code.
+
+### AZ-204 Domain 4 — Connect to and consume services (20–25%)
+
+### Lab 5.12 — Service Bus / Event Grid messaging
+
+```bash
+az provider show --namespace Microsoft.ServiceBus --query "registrationState" -o tsv
+az provider show --namespace Microsoft.EventGrid --query "registrationState" -o tsv
+```
+
+**Expected result:** both `Registered`. Service Bus (queues/topics), Event
+Grid (events), and Event Hubs (streams) are the integration surface —
+choose by message pattern.
+
+### AZ-204 Domain 5 — Monitor and troubleshoot (5–10%)
+
+### Lab 5.13 — Application Insights instrumentation
+
+```bash
+az monitor app-insights component create --app ai-retire --location eastus \
+  --application-type web 2>&1 | tail -2 || echo "register Microsoft.Insights"
+az monitor app-insights component show --app ai-retire \
+  --query "{name:name, key:instrumentationKey}" -o table 2>/dev/null | head -3
+```
+
+**Expected result:** an Application Insights component (or the register
+note). Instrumentation is a development-time decision — observability
+designed in, not bolted on.
+
+### Lab 5.14 — Negative test: prove Key Vault RBAC denies without a role
+
+```bash
+az keyvault secret show --vault-name "$KV" --name db-conn \
+  --query "value" -o tsv 2>&1 | tail -2
+```
+
+**Expected result:** if you have not granted yourself a Key Vault data
+role, this **fails** with a `Forbidden`/`does not have secrets get`
+error — even as subscription Owner, because RBAC-authorized Key Vault
+requires a *data-plane* role, not just management rights. That management
+vs. data-plane split is the security lesson.
+
+### Lab 5.15 — Cleanup
+
+```bash
+az group delete --name rg-retire-lab --yes --no-wait
+az group exists --name rg-retire-lab
+```
+
+**Expected result:** `false` shortly after — the identity, Key Vault,
+storage, Function App, workspace, and Insights removed together.
 
 ## Lab Verification
 
