@@ -13,13 +13,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 36-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 37-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-36 volumes, 341 chapters. Each volume has a dedicated
+37 volumes, 351 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -57,7 +57,8 @@ The series combines architecture and theory with implementation guidance, automa
 | XXXI | [Juniper Networks Certification Tracks](volumes/volume-31-juniper-networks-certifications/README.md) | 9 |
 | XXXII | [Dell Technologies Certification Tracks](volumes/volume-32-dell-technologies-certifications/README.md) | 9 |
 | XXXIII | [Microsoft Azure Certification Tracks](volumes/volume-33-microsoft-azure-certifications/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 9 |
+| XXXIV | [Google Cloud Certification Tracks](volumes/volume-34-google-cloud-certifications/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 10 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
@@ -90,6 +91,7 @@ ascending order.
 | VMware | [V VMware Virtualization](volumes/volume-05-vmware-virtualization/README.md) — the full Broadcom certification program in one volume: VCP, VCAP, Distinguished Expert (VCDX), and Telco Cloud, across vSphere, VCF, NSX, Avi, and Private Cloud Security |
 | AWS | [XVII AWS Architecture and Security](volumes/volume-17-aws-architecture-security/README.md) — the whole AWS certification program in one volume: foundational, associate, professional, and specialty across all twelve current exams |
 | Microsoft Azure | [XXXIII Microsoft Azure Certification Tracks](volumes/volume-33-microsoft-azure-certifications/README.md) — the whole Azure certification program in one volume: fundamentals, the role-based associate tier, expert, and specialty |
+| Google Cloud | [XXXIV Google Cloud Certification Tracks](volumes/volume-34-google-cloud-certifications/README.md) — the whole Google Cloud certification program in one volume: foundational, associate, and professional |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) |

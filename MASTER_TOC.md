@@ -489,6 +489,20 @@ table of contents for that volume.
 8. The Expert Tier — AZ-305 and AZ-400
 9. Specialty Certifications and Certification Operations
 
+## Volume XXXIV — Google Cloud Certification Tracks
+
+[Volume README](volumes/volume-34-google-cloud-certifications/README.md) · [Index](volumes/volume-34-google-cloud-certifications/INDEX.md) · [Glossary](volumes/volume-34-google-cloud-certifications/GLOSSARY.md)
+
+1. The Google Cloud Certification Program — Levels and Validity
+2. Foundational — Cloud Digital Leader and Generative AI Leader
+3. Associate Cloud Engineer
+4. Associate Google Workspace Administrator and Data Practitioner
+5. Professional Cloud Architect
+6. Infrastructure Professionals — Network Engineer, DevOps Engineer, and Developer
+7. Security Professionals — Cloud Security Engineer and Security Operations Engineer
+8. Data and ML Professionals — Data Engineer, Database Engineer, and Machine Learning Engineer
+9. Certification Operations and Keeping the Program Current
+
 ## Volume XCVII — Master Appendices
 
 [Volume README](volumes/volume-97-master-appendices/README.md) · [Index](volumes/volume-97-master-appendices/INDEX.md) · [Glossary](volumes/volume-97-master-appendices/GLOSSARY.md)
@@ -502,6 +516,7 @@ table of contents for that volume.
 7. Appendix — VMware and Broadcom Certifications and Course Access
 8. Appendix — AWS Certifications and Course Access
 9. Appendix — Microsoft Azure Certifications and Course Access
+10. Appendix — Google Cloud Certifications and Course Access
 
 ## Volume XCVIII — Acronyms
 

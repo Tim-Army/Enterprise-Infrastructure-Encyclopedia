@@ -43,11 +43,12 @@ does not by itself verify every technical claim in it.
 | XXXI — Juniper Networks Certification Tracks | 9 | Drafted |
 | XXXII — Dell Technologies Certification Tracks | 9 | Drafted |
 | XXXIII — Microsoft Azure Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 9 | Drafted |
+| XXXIV — Google Cloud Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 10 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 341 of 341 drafted (100%). Every volume has a
+**Total declared chapters:** 351 of 351 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

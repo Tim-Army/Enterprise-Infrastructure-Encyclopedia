@@ -29,6 +29,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXXII — Dell Technologies Certification Tracks | Dell Proven Professional, all portfolios: 77 current D-code exams (PowerEdge, PowerStore/Unity/PowerVault, PowerMax/PowerScale/ECS, PowerFlex/VxRail/APEX, PowerProtect/Cyber Recovery, PowerSwitch/SONiC, AI/GenAI/Data Science, Security, Client) — full grouped table in the volume README | Dell Learning certification catalog |
 | XXXI — Juniper Networks Certification Tracks | Juniper, all 8 tracks: JNCIA-Junos JN0-106; ENT JN0-352/JN0-650/JPR-946; SP JN0-364/JN0-664/JPR-962; SEC JN0-232/JN0-336/JN0-637/JPR-935; DC JN0-281/JN0-481/JN0-683/JPR-981; DevOps JN0-224/JN0-423; Cloud JN0-214; Mist AI JN0-253/JN0-452/JN0-460/JN0-750; Design JN0-1103 | Juniper certification pages |
 | XXXIII — Microsoft Azure Certification Tracks | The whole Microsoft Azure program in one volume. Fundamentals (non-expiring): Azure Fundamentals (AZ-900), AI Fundamentals (AI-901, replaced AI-900 retired 30 Jun 2026), Data Fundamentals (DP-900). Associate: Administrator (AZ-104), Network Engineer (AZ-700), Database Administrator (DP-300), AI Apps and Agents Developer (AI-103), AI Cloud Developer (AI-200), AI Agent Builder (AB-620), Databricks Data Engineer (DP-750); Developer (AZ-204) retires 31 Jul 2026 and Security Engineer (AZ-500) retires 31 Aug 2026; AI Engineer (AI-102) and Data Scientist (DP-100) retired. Expert: Solutions Architect (AZ-305), DevOps Engineer (AZ-400). Specialty: Virtual Desktop (AZ-140), Cosmos DB Developer (DP-420), SAP Workloads (AZ-120); IoT Developer (AZ-220), Support Engineer (AZ-720), Stack Hub Operator (AZ-600) retired | Microsoft Learn |
+| XXXIV — Google Cloud Certification Tracks | The whole Google Cloud program in one volume — **named credentials with no exam codes**. Foundational (90 min, $99, 3 yr): Cloud Digital Leader, Generative AI Leader. Associate (2 hr, $125, 3 yr): Cloud Engineer, Google Workspace Administrator, Data Practitioner. Professional (2 hr, $200, 2 yr): Cloud Architect, Cloud Database Engineer, Cloud Developer, Data Engineer, Cloud DevOps Engineer, Cloud Security Engineer, Cloud Network Engineer, Machine Learning Engineer, Security Operations Engineer. No prerequisites at any level; recertification is a full paid retake | Google Cloud certification pages |
 | XXX — Cisco CCDE Network Design | CCDE (expert-level design): Written (400-007) + Practical, v3.1 unified topics, with AI Infrastructure / Large Scale Networks / On-Prem and Cloud Services / Workforce Mobility electives | Cisco Learning & Certifications |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
@@ -295,3 +296,35 @@ tier has closed, matching the pattern AWS's specialty tier shows. DP-100's
 retirement leaves data science proper uncertified in the Azure line.
 Chapter 09 codifies the four-step currency check and the volume defers to
 each certification's Microsoft Learn page as the objectives authority.
+
+Volume XXXIV (Google Cloud Certification Tracks) was created on **23 July
+2026**, completing this encyclopedia's coverage of the three major public
+clouds alongside Volume XVII (AWS) and Volume XXXIII (Azure). Google Cloud
+had no volume; Volume VII (Cloud Infrastructure) is deliberately
+vendor-neutral. Fourteen certifications across three levels were verified
+the same day against Google Cloud's own certification pages.
+
+The structural facts that distinguish this program are worth recording.
+**Google Cloud publishes no exam codes** — certifications are named
+credentials, so unlike AWS's `-C0x` suffix or Azure's renumbering there is
+**no version signal** when an exam is re-scoped, renamed, or moved between
+levels; currency is checked by presence at the expected level, the exam
+guide's section list, and program notices. **Professional certifications
+expire in two years while foundational and associate last three**, and
+recertification is a **full paid retake** with no free renewal assessment,
+which makes a professional credential roughly $100/year to hold against
+$42 for an associate. **No certification is a prerequisite for another**
+at any level. Professional Cloud Architect is the only exam in this
+encyclopedia built on **case studies published in advance**.
+
+Newer certifications captured at verification, absent from older program
+maps: **Generative AI Leader** (foundational), **Data Practitioner**
+(associate), and **Security Operations Engineer** (professional). **Google
+Workspace Administrator sits at associate level** and covers the
+collaboration suite rather than Google Cloud Platform — exactly the kind of
+re-leveling the missing exam codes make invisible. Google's certification
+page also carries a program-wide notice that exams are being updated for
+**Google Cloud Next '26**, naming the **Gemini Enterprise Agent Platform**
+and **Google Cloud's data and analytics stack**: a content refresh with no
+identifier change, which is why Chapter 09 codifies a currency check built
+on exam-guide diffs rather than code comparison.

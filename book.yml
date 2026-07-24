@@ -1197,11 +1197,45 @@ volumes:
       - id: 09
         title: "Specialty Certifications and Certification Operations"
         path: volumes/volume-33-microsoft-azure-certifications/chapters/09-specialty-certifications-and-certification-operations.md
+  - id: volume-34
+    number: "XXXIV"
+    slug: volume-34-google-cloud-certifications
+    title: "Google Cloud Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "The Google Cloud Certification Program — Levels and Validity"
+        path: volumes/volume-34-google-cloud-certifications/chapters/01-the-google-cloud-certification-program-levels-and-validity.md
+      - id: 02
+        title: "Foundational — Cloud Digital Leader and Generative AI Leader"
+        path: volumes/volume-34-google-cloud-certifications/chapters/02-foundational-cloud-digital-leader-and-generative-ai-leader.md
+      - id: 03
+        title: "Associate Cloud Engineer"
+        path: volumes/volume-34-google-cloud-certifications/chapters/03-associate-cloud-engineer.md
+      - id: 04
+        title: "Associate Google Workspace Administrator and Data Practitioner"
+        path: volumes/volume-34-google-cloud-certifications/chapters/04-associate-workspace-administrator-and-data-practitioner.md
+      - id: 05
+        title: "Professional Cloud Architect"
+        path: volumes/volume-34-google-cloud-certifications/chapters/05-professional-cloud-architect.md
+      - id: 06
+        title: "Infrastructure Professionals — Network Engineer, DevOps Engineer, and Developer"
+        path: volumes/volume-34-google-cloud-certifications/chapters/06-infrastructure-professionals-network-engineer-devops-engineer-and-developer.md
+      - id: 07
+        title: "Security Professionals — Cloud Security Engineer and Security Operations Engineer"
+        path: volumes/volume-34-google-cloud-certifications/chapters/07-security-professionals-cloud-security-engineer-and-security-operations-engineer.md
+      - id: 08
+        title: "Data and ML Professionals — Data Engineer, Database Engineer, and Machine Learning Engineer"
+        path: volumes/volume-34-google-cloud-certifications/chapters/08-data-and-ml-professionals-data-engineer-database-engineer-and-machine-learning-engineer.md
+      - id: 09
+        title: "Certification Operations and Keeping the Program Current"
+        path: volumes/volume-34-google-cloud-certifications/chapters/09-certification-operations-and-keeping-the-program-current.md
   - id: volume-97
     number: "XCVII"
     slug: volume-97-master-appendices
     title: "Master Appendices"
-    chapter_count: 9
+    chapter_count: 10
     build_eligible: true
     chapters:
       - id: 01
@@ -1231,6 +1265,9 @@ volumes:
       - id: 09
         title: "Appendix — Microsoft Azure Certifications and Course Access"
         path: volumes/volume-97-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md
+      - id: 10
+        title: "Appendix — Google Cloud Certifications and Course Access"
+        path: volumes/volume-97-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md
   - id: volume-98
     number: "XCVIII"
     slug: volume-98-acronyms
