@@ -176,17 +176,211 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-On the Chapter 02 IGP: build iBGP with a route reflector and PE
-clients (loopback-sourced, `vpnv4` family carried for later), and one
-eBGP "customer" with inbound/outbound RPL policy and maximum-prefix.
-Prove: iBGP sessions Established over loopbacks, the eBGP customer's
-routes arriving with the local-pref and community your policy set
-(evidence from `show bgp <prefix>`), and outbound advertisements
-filtered to policy. Break and diagnose three things: remove
-`update-source Loopback0` on one iBGP session (watch it fail and fix
-by the evidence), make one RR client set inconsistent (reproduce the
-missing-routes symptom), and trip maximum-prefix by announcing beyond
-the limit. Restore all.
+This chapter carries a topic-level walkthrough lab for **the BGP and routing-
+policy objectives of SPCOR 350-501 v1.1 (Domain 2) and Domains 1 and 3 of SPRI
+300-510 v1.1** — mapped in the volume README's coverage tables. Labs use the IOS
+XR CLI and Route Policy Language (RPL). Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 3.1–3.10** — an IOS XR network with IBGP (route
+reflectors) and EBGP to a peer/customer, dual-stack address families, and RPL
+policies applied to sessions. **Cost:** none beyond lab resources.
+
+### Lab 3.1 — Describe the BGP path selection algorithm (SPCOR Objective 2.3)
+
+**Objective:** Read why one path won over another.
+
+```text
+show bgp ipv4 unicast <prefix>
+show bgp ipv4 unicast <prefix> bestpath-compare
+```
+
+**Expected result:** the best path with its attributes — BGP selects on the
+ordered list (weight, local-pref, locally originated, AS-path length, origin,
+MED, eBGP over iBGP, IGP metric to next-hop, oldest, router-id); the bestpath
+output names the deciding step.
+
+**Negative test:** expect the shortest AS-path to win when a higher local-pref is
+set upstream; local-pref outranks AS-path — the order of the algorithm decides.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.2 — Implement BGP for IPv4 and IPv6, IBGP and EBGP (SPCOR Objective 2.4)
+
+**Objective:** Bring up IBGP (RR) and EBGP sessions across address families.
+
+```text
+show bgp all all summary
+show bgp ipv6 unicast summary
+show bgp sessions
+```
+
+**Expected result:** IBGP and EBGP neighbors `Established` across IPv4/IPv6 —
+SP BGP uses route reflectors for IBGP scale and EBGP to customers/peers, with
+next-hop-self or IGP-carried next-hops and consistent address-family activation.
+
+**Negative test:** an IBGP session up but no routes learned usually means the RR
+lacks `route-reflector-client` on the neighbor — the reflector must mark clients.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.3 — Implement routing policy language and route maps (SPCOR Objective 2.5)
+
+**Objective:** Apply an RPL policy and confirm its effect.
+
+```text
+show rpl route-policy SET-LP detail
+show bgp ipv4 unicast neighbors <peer> routes | head
+```
+
+**Expected result:** the RPL policy and the attribute it sets/filters — IOS XR
+uses **Route Policy Language** (structured `if/then`, sets, prefix-sets,
+community-sets) applied inbound/outbound per neighbor, replacing IOS route-maps
+with a composable language.
+
+**Negative test:** apply an RPL policy that references an undefined prefix-set; the
+commit fails — RPL requires its referenced sets to exist, catching errors at
+commit.
+
+**Cleanup:** remove the test policy from the neighbor.
+
+### Lab 3.4 — Troubleshoot routing protocols (SPCOR Objective 2.6)
+
+**Objective:** Diagnose a route not installed or a session down.
+
+```text
+show bgp ipv4 unicast <prefix> detail
+show route ipv4 <prefix>
+show bgp neighbor <peer> | include "state|last reset"
+```
+
+**Expected result:** the route state and the RIB decision — a BGP route present
+but not in the RIB traces to next-hop unreachability or a lower-priority protocol;
+a session flapping traces to the last-reset reason (hold timer, notification).
+
+**Negative test:** blame policy for a route that is simply not selected because
+its BGP next-hop is unreachable in the IGP — fix the next-hop reachability first.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.5 — Describe BGP scalability and performance (SPRI Objective 1.4)
+
+**Objective:** Read the scaling features on a large BGP node.
+
+```text
+show bgp process performance-statistics | head
+show bgp summary | include "memory|prefixes"
+show bgp update-group
+```
+
+**Expected result:** update-group batching and prefix/memory scale — BGP scales
+via **route reflection** (no full mesh), **update groups** (shared outbound
+policy = one update built for many peers), and features like **BGP PIC**/
+**add-path** and selective RIB download; the statistics show the efficiency.
+
+**Negative test:** give each peer a unique outbound policy and update groups
+fragment, raising CPU on updates — shared policy keeps peers in one update group.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.6 — Troubleshoot BGP (SPRI Objective 1.5)
+
+**Objective:** Diagnose a stuck or missing BGP advertisement.
+
+```text
+show bgp ipv4 unicast neighbors <peer> advertised-routes | head
+show bgp ipv4 unicast neighbors <peer> received routes 2>/dev/null | head
+show bgp ipv4 unicast <prefix> detail | include "not advertised|suppressed"
+```
+
+**Expected result:** what is advertised vs received and any suppression — a prefix
+not reaching a peer traces to an outbound policy deny, next-hop/validity, or
+aggregation suppression; the advertised/received views localize the direction.
+
+**Negative test:** expect a route to propagate through an RR to a non-client peer;
+by IBGP rules a route learned from a client is reflected, but the topology and
+client marking matter — check the RR client relationships.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.7 — Compare routing policy language and route maps (SPRI Objective 3.1)
+
+**Objective:** Contrast RPL structure with legacy route-map logic.
+
+```text
+show rpl route-policy <name>
+show rpl prefix-set <name>
+show rpl community-set <name>
+```
+
+**Expected result:** the modular RPL objects — RPL composes reusable **sets**
+(prefix/community/as-path) and **policies** with parameters and boolean logic,
+where IOS route-maps are sequential numbered clauses; RPL is more powerful and
+testable but a different mental model.
+
+**Negative test:** port a route-map's implicit "permit remaining" assumption to
+RPL; RPL's default is `drop` if no `pass` is hit — the end-of-policy behavior
+differs and must be explicit.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.8 — Describe conditional matching (SPRI Objective 3.2)
+
+**Objective:** Read a policy's conditional match constructs.
+
+```text
+show rpl route-policy MATCH-DEMO detail
+```
+
+**Expected result:** the `if` conditions (prefix-set, community, as-path,
+med, tag) and their actions — conditional matching selects routes by attribute
+and applies sets/pass/drop; nested `if/elseif/else` and `and/or` give fine-grained
+control.
+
+**Negative test:** a condition using an `exact` prefix-set match where a
+`longer`/`orlonger` was intended silently matches nothing — the match modifier
+changes the result set.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.9 — Troubleshoot route manipulation for IGPs (SPRI Objective 3.3)
+
+**Objective:** Diagnose IGP redistribution/filtering gone wrong.
+
+```text
+show route ipv4 <prefix> detail | include "redist|tag|metric"
+show rpl route-policy IGP-REDIST detail
+show isis | include redistribution 2>/dev/null
+```
+
+**Expected result:** the redistributed route's tag/metric and the controlling
+policy — IGP route manipulation (redistribution, summarization, tagging) gone
+wrong shows as missing routes, wrong metrics, or loops; the tag/policy localize
+it.
+
+**Negative test:** redistribute between two IGPs without tag-based loop prevention;
+routes loop back and cause instability — tags/route-policy must break the loop.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.10 — Troubleshoot route manipulation for BGP (SPRI Objective 3.4)
+
+**Objective:** Diagnose a BGP attribute manipulation not taking effect.
+
+```text
+show bgp ipv4 unicast <prefix> detail | include "local pref|metric|community|as-path"
+show rpl route-policy BGP-INOUT detail
+```
+
+**Expected result:** the applied attributes vs the policy intent — a local-pref or
+community not applied traces to the policy attached to the wrong direction/neighbor,
+an ordering issue, or a missing `pass`; the route detail vs the policy reveals it.
+
+**Negative test:** set local-pref in an *outbound* policy to an EBGP peer expecting
+it to influence the peer; local-pref is non-transitive (IBGP only) — it does not
+cross the EBGP boundary.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

@@ -166,16 +166,134 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-On the Chapter 01 core: bring up IS-IS L2-only with wide metrics,
-passive loopbacks, keychain authentication, and meaningful per-link
-metrics. Verify full adjacencies, a consistent database, and loopback
-reachability across the core. Then induce and diagnose three faults:
-set one link's MTU low and observe the adjacency failure signature;
-change one interface to a different level and observe no adjacency;
-set `set-overload-bit on-startup` and reload a P router, showing it is
-avoided for transit until it clears. Tune SPF timers and confirm
-faster reconvergence on a link flap (measure it). Export the config;
-Chapter 04 enables SR on this exact IS-IS instance.
+This chapter carries a topic-level walkthrough lab for **the IS-IS/OSPF
+objectives of SPCOR 350-501 v1.1 (Domain 2) and Domain 1 (Unicast Routing) of
+SPRI 300-510 v1.1** covering the IGP — mapped in the volume README's coverage
+tables. Labs use the IOS XR CLI on a provider core. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 2.1–2.6** — an IOS XR core of at least three
+routers with loopbacks, dual-stack (IPv4/IPv6) addressing, and the ability to
+form IS-IS and OSPF adjacencies. **Cost:** none beyond lab resources.
+
+### Lab 2.1 — Implement IS-IS for IPv4 and IPv6 (SPCOR Objective 2.1)
+
+**Objective:** Bring up a dual-stack IS-IS core and verify adjacencies.
+
+```text
+show isis neighbors
+show isis interface brief
+show route ipv6 unicast isis
+```
+
+**Expected result:** IS-IS neighbors `Up` on the core links and IPv6 routes
+learned — IS-IS (single-topology or multi-topology) is the SP core IGP of choice:
+it runs directly on CLNS, scales flat with levels, and carries IPv4 and IPv6 in
+one process.
+
+**Negative test:** mismatch the IS-IS network type (point-to-point vs broadcast)
+on two ends; the adjacency stalls — the interface circuit type must match.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.2 — Implement OSPF v2 and v3 (SPCOR Objective 2.2)
+
+**Objective:** Bring up OSPFv2 (IPv4) and OSPFv3 (IPv6) and verify.
+
+```text
+show ospf neighbor
+show ospfv3 neighbor
+show route ipv4 ospf
+```
+
+**Expected result:** OSPFv2 and OSPFv3 neighbors `FULL` and routes installed —
+OSPF is the alternative SP IGP; v2 carries IPv4, v3 carries IPv6 (and can carry
+both with address families), area design bounding LSA flooding.
+
+**Negative test:** an OSPF area/type mismatch or MTU mismatch leaves neighbors in
+`EXSTART`; `show ospf neighbor` shows the stuck state — MTU and area must match.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.3 — Compare OSPF and IS-IS (SPRI Objective 1.1)
+
+**Objective:** Read the design attributes that differentiate the two IGPs.
+
+```text
+show isis database | utility head -20
+show ospf database database-summary
+```
+
+**Expected result:** the IS-IS LSP database vs OSPF LSDB — IS-IS scales the SP
+core well (fewer LSP types, runs on CLNS not IP so it is harder to attack, easy
+multi-topology), while OSPF's area/LSA model is familiar and granular; SP cores
+often favor IS-IS for its simplicity and scale.
+
+**Negative test:** assume area design is identical; OSPF areas require an ABR and
+area 0 backbone, IS-IS uses flat levels (L1/L2) — the topology constraints differ.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.4 — Troubleshoot OSPF multiarea operations (SPRI Objective 1.2)
+
+**Objective:** Diagnose an inter-area route not appearing.
+
+```text
+show ospf neighbor
+show ospf border-routers
+show route ipv4 ospf | include "IA"
+```
+
+**Expected result:** the ABR and inter-area (IA) routes — a missing inter-area
+route traces to an ABR not generating the Type-3 summary, an area misconfiguration,
+or a discontiguous area 0; the border-routers and IA routes localize it.
+
+**Negative test:** blame the remote area for a route absent because the local ABR
+lost its area-0 adjacency — without a backbone connection the ABR cannot inject
+inter-area routes.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.5 — Troubleshoot IS-IS multilevel operations (SPRI Objective 1.3)
+
+**Objective:** Diagnose an L1/L2 route leaking/attachment issue.
+
+```text
+show isis topology level-1
+show isis topology level-2
+show route ipv4 isis | include "i L1|i L2|ia"
+```
+
+**Expected result:** the L1 and L2 topologies and the attached-bit behavior — an
+L1-only router reaches other areas via the nearest L1/L2 router's default (attached
+bit); a missing inter-area route traces to route leaking (L2→L1) not configured, or
+the attached bit absent.
+
+**Negative test:** expect an L1 router to have specific inter-area routes without
+route-leak; it only gets a default via the attached bit — enable L2→L1 leaking for
+specifics.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.6 — Describe IPv6 tunneling mechanisms (SPRI Objective 1.6)
+
+**Objective:** Read an IPv6-over-IPv4 (or 6PE/6VPE) transition mechanism.
+
+```text
+show tunnel 2>/dev/null | head
+show bgp ipv6 unicast labels | head        ! 6PE labels
+show cef ipv6 <prefix>
+```
+
+**Expected result:** the tunnel or 6PE label path — IPv6 transition over an IPv4
+core uses tunneling (6in4, GRE), or MPLS-based **6PE**/**6VPE** that label-switches
+IPv6 across an IPv4/MPLS core without dual-stacking every P router.
+
+**Negative test:** expect native IPv6 forwarding across an IPv4-only MPLS core;
+without 6PE the IPv6 packets have no transport — the tunneling/6PE mechanism is
+required.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

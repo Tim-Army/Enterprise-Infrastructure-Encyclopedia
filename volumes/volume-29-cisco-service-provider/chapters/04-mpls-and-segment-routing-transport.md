@@ -162,17 +162,115 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-On the Chapter 02/03 core: first bring up **LDP** and prove label
-switching to every loopback (LFIB + `traceroute mpls`), reading the
-bindings — the incumbent baseline. Then migrate to **SR-MPLS**:
-consistent SRGB, prefix-SIDs on loopbacks, `segment-routing mpls`
-in IS-IS; verify prefix-SID labels are consistent everywhere and the
-LSPs still prove end to end; then remove LDP and confirm services'
-transport survives on SR alone. Break and diagnose: set an
-inconsistent SRGB on one node (find the label inconsistency), and
-remove a prefix-SID from one loopback (reproduce the ping-works-
-service-fails split). Restore. Export — Chapters 05–08 build on this
-SR transport.
+This chapter carries a topic-level walkthrough lab for **the MPLS and Segment
+Routing objectives of SPCOR 350-501 v1.1 (Domain 3) and Domain 4 of SPRI 300-510
+v1.1** — mapped in the volume README's coverage tables. Labs use the IOS XR CLI.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 4.1–4.5** — an IOS XR core with an IGP,
+label-switching enabled (LDP and/or Segment Routing), and SRv6 support on the
+platform for the SRv6 lab. **Cost:** none beyond lab resources.
+
+### Lab 4.1 — Implement MPLS (SPCOR Objective 3.1)
+
+**Objective:** Verify label distribution and an LSP end to end.
+
+```text
+show mpls interfaces
+show mpls ldp neighbor brief
+show mpls forwarding
+```
+
+**Expected result:** LDP neighbors up and label bindings in the forwarding table —
+MPLS builds LSPs by distributing labels (LDP, or SR without a separate protocol);
+`show mpls forwarding` shows the local→outgoing label swap that switches packets.
+
+**Negative test:** an interface carrying IGP but not enabled for MPLS/LDP breaks
+the LSP; `show mpls interfaces` omits it — every core link on the path must be
+label-enabled.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.2 — Describe segment routing (SPCOR Objective 3.3)
+
+**Objective:** Read the SR prefix/adjacency SIDs distributed by the IGP.
+
+```text
+show isis segment-routing label table
+show segment-routing local-block
+show mpls forwarding labels <prefix-SID>
+```
+
+**Expected result:** prefix-SIDs (global, from the SRGB) and adjacency-SIDs
+(local) — Segment Routing sources the path in the packet as a label stack, so no
+LDP/RSVP state is held in the core; the IGP advertises SIDs and each node label-
+switches by SID.
+
+**Negative test:** mismatched SRGB ranges between nodes cause label confusion; SR
+requires a consistent global block — the local-block/SRGB must align network-wide.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.3 — Troubleshoot MPLS (SPRI Objective 4.1)
+
+**Objective:** Diagnose a broken LSP / label path.
+
+```text
+show mpls forwarding prefix <prefix>
+traceroute mpls ipv4 <prefix>/32
+show mpls ldp bindings <prefix> 2>/dev/null
+```
+
+**Expected result:** the label path and where it breaks — an MPLS forwarding
+failure shows as a missing label binding (LDP not converged), an IGP/label
+mismatch, or a broken LSP mid-path; `traceroute mpls` (LSP ping/traceroute)
+localizes the hop.
+
+**Negative test:** blame the egress PE for a VPN outage that is really a core LSP
+break — the PE-PE LSP must be intact for any label VPN service to work.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.4 — Implement segment routing (SPRI Objective 4.2)
+
+**Objective:** Enable SR-MPLS on the IGP and verify SID assignment.
+
+```text
+show isis segment-routing label table
+show route ipv4 <loopback> detail | include "SR|label"
+show cef <loopback>
+```
+
+**Expected result:** the prefix-SID assigned to each loopback and installed in
+CEF — implementing SR means enabling `segment-routing mpls` under the IGP,
+assigning prefix-SIDs to loopbacks, and confirming label-switched reachability
+without LDP.
+
+**Negative test:** enable SR on some nodes but not all; SR/LDP interworking (a
+mapping server or ti-lfa) is needed across the boundary — a partial SR domain
+without interworking breaks label continuity.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.5 — Implement Segment Routing v6 / SRv6 (SPRI Objective 4.4)
+
+**Objective:** Verify SRv6 locators and SIDs on an IPv6 data plane.
+
+```text
+show segment-routing srv6 locator
+show segment-routing srv6 sid
+show route ipv6 <locator>
+```
+
+**Expected result:** the SRv6 locator and its SIDs (End, End.X, End.DT4/DT6) —
+SRv6 encodes segments as IPv6 addresses (locators + function), so the IPv6 data
+plane itself carries source routing and service functions, no MPLS labels needed.
+
+**Negative test:** expect SRv6 forwarding on a platform without SRv6 data-plane
+support; the SIDs do not install in hardware — SRv6 needs platform/ASIC support,
+unlike SR-MPLS on legacy label hardware.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

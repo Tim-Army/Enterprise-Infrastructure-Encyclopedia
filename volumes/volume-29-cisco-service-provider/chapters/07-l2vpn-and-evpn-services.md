@@ -166,18 +166,201 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-On the Chapter 04–06 estate: build an **EVPN-VPWS** point-to-point
-service between two PEs and prove transparent frame transport with the
-PW label stack visible. Build an **EVPN multipoint** (E-LAN) across
-three PEs and prove control-plane MAC learning (`show l2route evpn
-mac` — MACs learned via BGP Type-2, not flooded). Dual-home one CE to
-two PEs with a consistent ESI and demonstrate **all-active**
-forwarding plus fast convergence on uplink failure (Type-1
-withdrawal). Break and diagnose: mismatch the ESI between the two PEs
-(reproduce the duplicate-frame/DF symptom), and set one AC's MTU low
-(reproduce large-frame loss). Restore. For contrast, bring up one
-legacy T-LDP pseudowire and read its state, noting the data-plane
-learning difference.
+This chapter carries a topic-level walkthrough lab for **the L2VPN objective of
+SPCOR 350-501 v1.1, Domains 1 and 2 of SPVI 300-515 v1.1, and Domain 2 (Cloud
+Interconnect) of SPCNI 300-540 v1.0** — mapped in the volume README's coverage
+tables. Labs use the IOS XR CLI. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
+
+**Shared prerequisites for Labs 7.1–7.9** — an IOS XR core with L2VPN/EVPN
+enabled, two PEs bridging a customer L2 service, an EVPN control plane over
+BGP, and a DCI path for the cloud-interconnect labs. **Cost:** none beyond lab
+resources.
+
+### Lab 7.1 — Configure L2VPN and Carrier Ethernet (SPCOR Objective 4.2)
+
+**Objective:** Bring up a point-to-point L2VPN (VPWS xconnect) and verify.
+
+```text
+show l2vpn xconnect
+show l2vpn xconnect detail | include "state|PW|MTU"
+show l2vpn forwarding interface <ac> detail 2>/dev/null | head
+```
+
+**Expected result:** the xconnect `UP` with its pseudowire — Carrier Ethernet
+delivers E-Line (VPWS point-to-point), E-LAN (VPLS/EVPN multipoint), and E-Tree
+services; a VPWS stitches an attachment circuit to a pseudowire across the MPLS/SR
+core.
+
+**Negative test:** an xconnect with mismatched MTU or pseudowire-class between PEs
+stays down; `show l2vpn xconnect detail` flags the mismatch — the AC/PW parameters
+must agree.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.2 — Describe the Layer 2 service architecture (SPVI Objective 1.3)
+
+**Objective:** Read the bridge-domain / EVI service constructs.
+
+```text
+show l2vpn bridge-domain summary
+show l2vpn bridge-domain bd-name CUST-A detail | include "AC|PW|EVI|MAC"
+```
+
+**Expected result:** the bridge domain with its ACs, PWs/EVIs, and MAC table —
+the L2 service architecture binds attachment circuits and pseudowires/EVPN
+instances into a bridge domain (E-LAN) or xconnect (E-Line), with MAC learning
+(data-plane for VPLS, control-plane for EVPN).
+
+**Negative test:** expect MAC scale from a flood-and-learn VPLS bridge domain
+equal to EVPN; VPLS floods unknown unicast and learns in the data plane, capping
+scale — EVPN's control-plane learning scales further.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.3 — Troubleshoot L2VPN services (SPVI Objective 2.1)
+
+**Objective:** Diagnose a down pseudowire or missing MAC.
+
+```text
+show l2vpn xconnect detail | include "state|PW.*down"
+show l2vpn forwarding bridge-domain mac-address location 0/RP0/CPU0 2>/dev/null | head
+show mpls forwarding prefix <remote-PE>/32
+```
+
+**Expected result:** the PW state and MAC table — an L2VPN failure traces to the
+AC (down interface/EFP), the PW (label/LSP or class mismatch), or the core LSP;
+missing MACs point to a learning/flooding or split-horizon issue.
+
+**Negative test:** blame the customer for absent MACs when the PE-PE LSP is down —
+no transport means no PW, so no L2 service; verify the underlay first (as in Lab
+6.4).
+
+**Cleanup:** none (read-only).
+
+### Lab 7.4 — Describe EVPN concepts (SPVI Objective 2.2)
+
+**Objective:** Read the EVPN route types on a PE.
+
+```text
+show bgp l2vpn evpn summary
+show bgp l2vpn evpn route-type 2 | head        ! MAC/IP
+show bgp l2vpn evpn route-type 3 | head        ! inclusive multicast
+```
+
+**Expected result:** EVPN routes — Type-1 (Ethernet Auto-Discovery, multihoming),
+Type-2 (MAC/IP advertisement), Type-3 (inclusive multicast for BUM), Type-4
+(Ethernet Segment/DF), Type-5 (IP prefix) — EVPN uses BGP as a unified L2/L3
+control plane with multihoming and MAC mobility.
+
+**Negative test:** expect L2 reachability with EVPN peers up but no Type-3 routes;
+without inclusive-multicast routes BUM traffic has no path — Type-3 must be present
+for flooding.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.5 — Implement Ethernet OAM (SPVI Objective 2.3)
+
+**Objective:** Verify E-OAM (CFM/link OAM) on a service.
+
+```text
+show ethernet cfm peer meps
+show ethernet cfm local meps detail | include "MEP|CCM|status"
+show ethernet oam summary 2>/dev/null
+```
+
+**Expected result:** CFM peer MEPs up and CCMs exchanged — Ethernet OAM provides
+service (CFM: continuity check, loopback, linktrace across the service) and link
+(802.3ah) fault management, so the SP can detect and localize L2 service faults
+end to end.
+
+**Negative test:** CFM MEPs at mismatched maintenance levels or domains do not see
+each other; continuity check fails though the service forwards — the MD level/MA
+must match.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.6 — Implement EVPN (SPVI Objective 2.4)
+
+**Objective:** Bring up an EVPN ELAN and verify control-plane MAC learning.
+
+```text
+show evpn evi detail
+show l2route evpn mac all 2>/dev/null | head
+show bgp l2vpn evpn route-type 2 | include <customer-mac>
+```
+
+**Expected result:** the EVI with MACs learned as Type-2 routes — EVPN implements
+the L2 service with BGP advertising MAC/IP (Type-2), so remote MACs are learned
+via the control plane (not flooding), with aliasing and mass-withdrawal for
+multihoming.
+
+**Negative test:** a MAC learned locally but not advertised (Type-2 missing) is
+unreachable remotely; check the EVI's BGP export — control-plane advertisement is
+what makes EVPN scale.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.7 — Describe carrier-neutral facilities (SPCNI Objective 2.1)
+
+**Objective:** Read the peering/interconnect at a carrier-neutral facility.
+
+```text
+show bgp ipv4 unicast summary | include <ixp-peer>
+show bgp ipv4 unicast neighbors <ixp-peer> | include "state|Description"
+```
+
+**Expected result:** the peering sessions at the exchange — a **carrier-neutral
+facility** (colocation/IXP) is where many networks interconnect; the SP peers over
+a shared fabric (public peering at a route server, or private cross-connects) to
+exchange traffic without a transit provider.
+
+**Negative test:** rely solely on a route-server (public) peering for critical
+traffic; a private interconnect (PNI) gives dedicated capacity and better control
+— the facility offers both, chosen by traffic volume.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.8 — Evaluate WAN infrastructure connectivity (SPCNI Objective 2.2)
+
+**Objective:** Read the WAN uplinks and their capacity/redundancy.
+
+```text
+show interface | include "line protocol|rate"
+show bundle | include "Active|bandwidth"
+show bgp ipv4 unicast summary | include <transit-peer>
+```
+
+**Expected result:** the WAN links, bundles, and transit sessions — evaluating WAN
+connectivity for cloud interconnect weighs capacity (bundled uplinks), redundancy
+(diverse paths/providers), and the connection type (dedicated, IP transit, cloud
+on-ramp) against cost and SLA.
+
+**Negative test:** a single high-bandwidth uplink with no diverse second path is a
+single point of failure regardless of speed — redundancy, not just capacity, is
+the WAN requirement.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.9 — Troubleshoot DCI solutions (SPCNI Objective 2.3)
+
+**Objective:** Diagnose a Data Center Interconnect (EVPN/L2 stretch) fault.
+
+```text
+show evpn evi detail | include "EVI|multicast"
+show bgp l2vpn evpn route-type 3
+show l2vpn bridge-domain bd-name DCI-A detail | include "PW|EVI|state"
+```
+
+**Expected result:** the DCI EVPN/bridge-domain state — DCI stretches L2/L3 between
+data centers (EVPN over MPLS/SR or VXLAN); a fault traces to the EVPN control plane
+(missing Type-2/3), the transport LSP, or a mismatched EVI/VNI between sites.
+
+**Negative test:** stretch L2 across sites without storm control / BUM optimization
+and a broadcast storm in one DC crosses the DCI to the other — DCI needs
+BUM/storm controls, unlike an intra-DC fabric.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

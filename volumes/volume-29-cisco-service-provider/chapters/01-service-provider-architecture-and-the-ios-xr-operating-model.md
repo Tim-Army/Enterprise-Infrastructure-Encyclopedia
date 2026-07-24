@@ -178,14 +178,176 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Build the volume's core in CML: two P routers, two PEs, CE stubs, all
-IOS XRv 9000, loopbacks and point-to-point links addressed, MTU set
-for later MPLS. Practice the operating model deliberately: make a
-change with `commit confirmed`, let it roll back by not confirming,
-and read the commit history; make a real change, label the commit,
-then `rollback` it and back. Enable NETCONF/gRPC. Export the topology;
-every later chapter reuses it. Capture `show configuration commit
-list` showing your deliberate commit/rollback sequence.
+This chapter carries a topic-level walkthrough lab for **the architecture
+objectives of SPCOR 350-501 v1.1 (Domain 1) and the Virtualized Architecture
+domain of SPCNI 300-540 v1.0** — mapped in the volume README's coverage tables.
+Labs use the IOS XR CLI (`RP/0/RP0/CPU0:router#`) and NFV/orchestration tooling.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 1.1–1.8** — an IOS XR router (physical or
+XRd/IOS XRv), an NFV infrastructure (NFVI) host with a VNF, and a management
+station with SSH. **Cost:** none beyond lab resources.
+
+### Lab 1.1 — Describe service provider architectures (SPCOR Objective 1.1)
+
+**Objective:** Read a router's role in the SP layered architecture.
+
+```text
+show running-config | include hostname
+show isis neighbors summary
+show bgp all all summary | include Neighbor|memory
+```
+
+**Expected result:** the node's IGP/BGP posture revealing its role — SP networks
+layer into **access**, **aggregation/edge (PE)**, and **core (P)**; a P router
+runs the IGP and LDP/SR with no VPN/customer state, while a PE holds VRFs and BGP
+customer routes. The neighbor counts locate the role.
+
+**Negative test:** assume a router is a P node because it runs the core IGP; if
+`show vrf all` lists customer VRFs it is a PE — the presence of customer state,
+not the IGP, defines the role.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.2 — Describe Cisco network software architecture (SPCOR Objective 1.2)
+
+**Objective:** Read IOS XR's process/software model.
+
+```text
+show version | include "IOS XR|cisco"
+show processes | include "Running|Restart"
+show install active summary
+```
+
+**Expected result:** the IOS XR version, running processes, and active packages —
+IOS XR is a microkernel, modular OS: each protocol is a restartable process, with
+software delivered as packages (RPMs/SMUs) and configuration applied by
+**two-stage commit**, unlike IOS's monolithic model.
+
+**Negative test:** edit config and exit without `commit`; the change does not
+take effect — IOS XR's candidate/commit model requires an explicit commit, a key
+difference from IOS.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.3 — Describe service provider virtualization (SPCOR Objective 1.3)
+
+**Objective:** Read platform virtualization (LC/RP, or a virtual router).
+
+```text
+show platform
+show virtual-machine 2>/dev/null || show version | include "XRv|XRd|virtual"
+admin show environment 2>/dev/null | include "Location|Slot"
+```
+
+**Expected result:** the physical or virtual platform makeup — SP virtualization
+spans hardware (line cards, route processors, fabric) and network functions run as
+software (XRv/XRd, NFV VNFs), so a "router" may be a VM or container in an NFVI.
+
+**Negative test:** treat a virtual XRd router as having hardware forwarding ASICs;
+its data plane is software (or vendor NIC offload) with different scale limits —
+the platform type sets the performance envelope.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.4 — Describe IaaS constraints (SPCNI Objective 1.1)
+
+**Objective:** Read the VLAN/segmentation scale of the virtualized fabric.
+
+```text
+show l2vpn bridge-domain summary
+show evpn summary
+show interface | utility egrep "encapsulation dot1q" | wc -l
+```
+
+**Expected result:** the L2 segment/bridge-domain count against the platform limit
+— classic 802.1Q VLANs cap at 4094, an IaaS scale constraint; SP/DC fabrics use
+VXLAN/EVPN or QinQ to segment beyond that for multi-tenant IaaS.
+
+**Negative test:** plan an IaaS tenant model on plain VLANs beyond 4094 segments;
+it cannot scale — the VLAN ceiling is the constraint that drives VXLAN/EVPN.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.5 — Determine the cloud service model (SPCNI Objective 1.2)
+
+**Objective:** Classify a workload against IaaS/PaaS/SaaS/FaaS.
+
+```bash
+kubectl get pods -A 2>/dev/null | head        # PaaS/containers
+virsh list --all 2>/dev/null | head            # IaaS/VMs
+```
+
+**Expected result:** VMs (IaaS — customer manages the OS) vs pods (PaaS/containers
+— platform manages the runtime) — the model determines who owns which layer:
+**IaaS** (compute/network/storage), **PaaS** (runtime), **SaaS** (application),
+**FaaS** (function/event); an SP hosting VNFs is consuming IaaS.
+
+**Negative test:** manage OS patching on a SaaS offering; you cannot — the model
+dictates the boundary of control, and misjudging it breaks the operational plan.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.6 — Describe container orchestration and virtual machines (SPCNI Objective 1.3)
+
+**Objective:** Contrast a VM and a container running network functions.
+
+```bash
+virsh dominfo vnf-router 2>/dev/null | head
+kubectl describe pod cnf-router 2>/dev/null | head
+```
+
+**Expected result:** the VM's fixed vCPU/RAM vs the container's shared-kernel,
+orchestrated lifecycle — VMs (hypervisor, full OS) give strong isolation;
+containers (shared kernel, Kubernetes-orchestrated) give density and fast
+scaling; SP CNFs increasingly run as containers under Kubernetes.
+
+**Negative test:** expect kernel-level isolation from containers as from VMs;
+containers share the host kernel — the isolation model differs and affects
+security posture.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.7 — Implement virtualization functions (SPCNI Objective 1.4)
+
+**Objective:** Bring up a VNF and verify its virtual interfaces.
+
+```bash
+virsh start vnf-router && virsh domiflist vnf-router
+ip link show | grep -E "vnet|tap"
+```
+
+**Expected result:** the VNF running with its vNICs mapped to host tap/SR-IOV
+interfaces — implementing virtualization functions means instantiating a VNF and
+wiring its virtual interfaces to the NFVI data path (OVS-DPDK, SR-IOV) for line-
+rate forwarding.
+
+**Negative test:** attach a VNF vNIC to a paravirtual (virtio) path expecting
+line rate; without SR-IOV/DPDK the throughput is far lower — the data-path choice
+sets performance.
+
+**Cleanup:** `virsh shutdown vnf-router`.
+
+### Lab 1.8 — Deploy NFV using automation and orchestration (SPCNI Objective 1.5)
+
+**Objective:** Deploy a VNF/network service via an orchestrator.
+
+```bash
+# ETSI MANO / Cisco ESC / NSO deploys the VNF from a descriptor
+osm ns-list 2>/dev/null | head || echo "orchestrator: NSO/ESC/OSM instantiates the VNFD/NSD"
+kubectl get networkservices -A 2>/dev/null | head
+```
+
+**Expected result:** the network service instantiated from its descriptor — NFV
+deployment is automated: an orchestrator (Cisco ESC/NSO, ETSI MANO/OSM) reads a
+VNF/NS descriptor and instantiates, configures, and monitors the functions,
+replacing manual VM builds.
+
+**Negative test:** instantiate a VNFD whose image/flavor is unavailable on the
+VIM; the orchestrator fails the deployment at the resource-allocation step —
+descriptors must match VIM capacity.
+
+**Cleanup:** terminate the test network service.
 
 ## Lab Verification
 
