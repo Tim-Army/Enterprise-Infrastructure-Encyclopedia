@@ -59,7 +59,14 @@ this pipeline.
 
    **Labs must cover every topic on every blueprint.** Coverage is
    measured against each certification's published exam guide, topic by
-   topic — *not* against the chapter count. The template's single
+   topic — *not* against the chapter count. Where a vendor publishes an
+   exam **guide** with sections and topics rather than a formal weighted
+   blueprint, **that guide's topic list is the blueprint** and is treated
+   identically — so vendors with no exam codes or no published domain
+   weights (Google Cloud, Palo Alto Networks) are covered on the same
+   terms. Harvest the topic list from the vendor's page rather than
+   recalling it; it is cert data and falls under the same primary-source
+   rule as exam codes. The template's single
    `## Hands-On Lab` section is a floor, not a target: where one lab
    cannot carry a chapter's topics, add further labs under that heading
    (`### Lab 2 — …`) or split the chapter. More chapters is acceptable;
