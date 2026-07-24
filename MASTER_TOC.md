@@ -475,6 +475,20 @@ table of contents for that volume.
 8. AI, Generative AI, and Data Science Certifications
 9. Security Certifications and Certification Operations
 
+## Volume XXXIII — Microsoft Azure Certification Tracks
+
+[Volume README](volumes/volume-33-microsoft-azure-certifications/README.md) · [Index](volumes/volume-33-microsoft-azure-certifications/INDEX.md) · [Glossary](volumes/volume-33-microsoft-azure-certifications/GLOSSARY.md)
+
+1. The Azure Certification Program — Levels, Codes, and Renewal
+2. Fundamentals — AZ-900, AI-901, and DP-900
+3. Azure Administrator — AZ-104
+4. Azure Network Engineer — AZ-700
+5. The Retiring Associate Tier — AZ-204 and AZ-500
+6. The AI-Centric Associate Tier — AI-103, AI-200, and AB-620
+7. Data on Azure — DP-300, DP-420, and DP-750
+8. The Expert Tier — AZ-305 and AZ-400
+9. Specialty Certifications and Certification Operations
+
 ## Volume XCVII — Master Appendices
 
 [Volume README](volumes/volume-97-master-appendices/README.md) · [Index](volumes/volume-97-master-appendices/INDEX.md) · [Glossary](volumes/volume-97-master-appendices/GLOSSARY.md)
@@ -487,6 +501,7 @@ table of contents for that volume.
 6. Appendix — Fortinet NSE Certifications and Course Access
 7. Appendix — VMware and Broadcom Certifications and Course Access
 8. Appendix — AWS Certifications and Course Access
+9. Appendix — Microsoft Azure Certifications and Course Access
 
 ## Volume XCVIII — Acronyms
 

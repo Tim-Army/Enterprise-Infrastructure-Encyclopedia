@@ -1163,11 +1163,45 @@ volumes:
       - id: 09
         title: "Security Certifications and Certification Operations"
         path: volumes/volume-32-dell-technologies-certifications/chapters/09-security-certifications-and-certification-operations.md
+  - id: volume-33
+    number: "XXXIII"
+    slug: volume-33-microsoft-azure-certifications
+    title: "Microsoft Azure Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "The Azure Certification Program — Levels, Codes, and Renewal"
+        path: volumes/volume-33-microsoft-azure-certifications/chapters/01-the-azure-certification-program-levels-codes-and-renewal.md
+      - id: 02
+        title: "Fundamentals — AZ-900, AI-901, and DP-900"
+        path: volumes/volume-33-microsoft-azure-certifications/chapters/02-fundamentals-az-900-ai-901-and-dp-900.md
+      - id: 03
+        title: "Azure Administrator — AZ-104"
+        path: volumes/volume-33-microsoft-azure-certifications/chapters/03-azure-administrator-az-104.md
+      - id: 04
+        title: "Azure Network Engineer — AZ-700"
+        path: volumes/volume-33-microsoft-azure-certifications/chapters/04-azure-network-engineer-az-700.md
+      - id: 05
+        title: "The Retiring Associate Tier — AZ-204 and AZ-500"
+        path: volumes/volume-33-microsoft-azure-certifications/chapters/05-the-retiring-associate-tier-az-204-and-az-500.md
+      - id: 06
+        title: "The AI-Centric Associate Tier — AI-103, AI-200, and AB-620"
+        path: volumes/volume-33-microsoft-azure-certifications/chapters/06-the-ai-centric-associate-tier-ai-103-ai-200-and-ab-620.md
+      - id: 07
+        title: "Data on Azure — DP-300, DP-420, and DP-750"
+        path: volumes/volume-33-microsoft-azure-certifications/chapters/07-data-on-azure-dp-300-dp-420-and-dp-750.md
+      - id: 08
+        title: "The Expert Tier — AZ-305 and AZ-400"
+        path: volumes/volume-33-microsoft-azure-certifications/chapters/08-the-expert-tier-az-305-and-az-400.md
+      - id: 09
+        title: "Specialty Certifications and Certification Operations"
+        path: volumes/volume-33-microsoft-azure-certifications/chapters/09-specialty-certifications-and-certification-operations.md
   - id: volume-97
     number: "XCVII"
     slug: volume-97-master-appendices
     title: "Master Appendices"
-    chapter_count: 8
+    chapter_count: 9
     build_eligible: true
     chapters:
       - id: 01
@@ -1194,6 +1228,9 @@ volumes:
       - id: 08
         title: "Appendix — AWS Certifications and Course Access"
         path: volumes/volume-97-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md
+      - id: 09
+        title: "Appendix — Microsoft Azure Certifications and Course Access"
+        path: volumes/volume-97-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md
   - id: volume-98
     number: "XCVIII"
     slug: volume-98-acronyms

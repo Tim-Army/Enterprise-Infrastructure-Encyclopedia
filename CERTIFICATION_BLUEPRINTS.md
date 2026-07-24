@@ -28,6 +28,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXIX — Cisco Service Provider | CCNP Service Provider: SPCOR core (350-501) + concentrations SPRI (300-510), SPVI (300-515), SPCNI (300-540); SPAUTO (300-535) retired 2026; SPCOR also qualifies CCIE Service Provider | Cisco Learning & Certifications |
 | XXXII — Dell Technologies Certification Tracks | Dell Proven Professional, all portfolios: 77 current D-code exams (PowerEdge, PowerStore/Unity/PowerVault, PowerMax/PowerScale/ECS, PowerFlex/VxRail/APEX, PowerProtect/Cyber Recovery, PowerSwitch/SONiC, AI/GenAI/Data Science, Security, Client) — full grouped table in the volume README | Dell Learning certification catalog |
 | XXXI — Juniper Networks Certification Tracks | Juniper, all 8 tracks: JNCIA-Junos JN0-106; ENT JN0-352/JN0-650/JPR-946; SP JN0-364/JN0-664/JPR-962; SEC JN0-232/JN0-336/JN0-637/JPR-935; DC JN0-281/JN0-481/JN0-683/JPR-981; DevOps JN0-224/JN0-423; Cloud JN0-214; Mist AI JN0-253/JN0-452/JN0-460/JN0-750; Design JN0-1103 | Juniper certification pages |
+| XXXIII — Microsoft Azure Certification Tracks | The whole Microsoft Azure program in one volume. Fundamentals (non-expiring): Azure Fundamentals (AZ-900), AI Fundamentals (AI-901, replaced AI-900 retired 30 Jun 2026), Data Fundamentals (DP-900). Associate: Administrator (AZ-104), Network Engineer (AZ-700), Database Administrator (DP-300), AI Apps and Agents Developer (AI-103), AI Cloud Developer (AI-200), AI Agent Builder (AB-620), Databricks Data Engineer (DP-750); Developer (AZ-204) retires 31 Jul 2026 and Security Engineer (AZ-500) retires 31 Aug 2026; AI Engineer (AI-102) and Data Scientist (DP-100) retired. Expert: Solutions Architect (AZ-305), DevOps Engineer (AZ-400). Specialty: Virtual Desktop (AZ-140), Cosmos DB Developer (DP-420), SAP Workloads (AZ-120); IoT Developer (AZ-220), Support Engineer (AZ-720), Stack Hub Operator (AZ-600) retired | Microsoft Learn |
 | XXX — Cisco CCDE Network Design | CCDE (expert-level design): Written (400-007) + Practical, v3.1 unified topics, with AI Infrastructure / Large Scale Networks / On-Prem and Cloud Services / Workforce Mobility electives | Cisco Learning & Certifications |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
@@ -266,3 +267,31 @@ language version**, not to CLF-C02 - read which noun a notice attaches
 to before recording a retirement. Chapter 13 codifies the four-step
 currency check and defers to each exam's own AWS page as the objectives
 authority.
+
+Volume XXXIII (Microsoft Azure Certification Tracks) was created on
+**23 July 2026**, giving Azure its own volume — the program had no
+coverage beyond incidental mentions, and Volume VII (Cloud
+Infrastructure) is deliberately vendor-neutral. Every code was harvested
+the same day from Microsoft Learn: the public **catalog API**
+(`/api/catalog/?type=certifications`) for the lineup, and each
+certification's own page for its exam code and status, since the codes
+appear in the page rather than in the catalog's exam field. This is the
+fastest-reorganizing program on the shelf, and the harvest caught a great
+deal in flight. **Renumbering:** AI-900 retired 30 June 2026 and was
+replaced by **AI-901**. **Retiring with dates:** Azure Developer
+**AZ-204 on 31 July 2026** and Azure Security Engineer **AZ-500 on
+31 August 2026** — and because Azure role-based certifications renew
+annually, these notices cover the **renewal assessments** too, so a held
+credential lapses at its next renewal with no path forward, which is a
+stronger consequence than a typical exam retirement. **Already retired:**
+AI Engineer (AI-102), Data Scientist (DP-100), IoT Developer (AZ-220),
+Support Engineer for Connectivity (AZ-720), Stack Hub Operator (AZ-600).
+**New:** an AI-centric associate tier — AI Apps and Agents Developer
+(**AI-103**, explicitly Python and Microsoft Foundry), AI Cloud Developer
+(**AI-200**), and AI Agent Builder (**AB-620**, on an entirely new `AB`
+code family) — plus Databricks Data Engineer (**DP-750**). **Updated:**
+AZ-305 on 17 April 2026 and AZ-400 on 27 June 2026. Half the specialty
+tier has closed, matching the pattern AWS's specialty tier shows. DP-100's
+retirement leaves data science proper uncertified in the Azure line.
+Chapter 09 codifies the four-step currency check and the volume defers to
+each certification's Microsoft Learn page as the objectives authority.

@@ -17,3 +17,4 @@ also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **Fortinet NSE certifications (tracks, levels, free/paid access)** — [Chapter 06](chapters/06-appendix-fortinet-nse-certifications-and-course-access.md)
 - **VMware/Broadcom certifications (tiers, exam codes, exam end dates, access)** — [Chapter 07](chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md)
 - **AWS certifications (levels, exam codes, exam end dates, Skill Builder access)** — [Chapter 08](chapters/08-appendix-aws-certifications-and-course-access.md)
+- **Microsoft Azure certifications (levels, exam codes, exam end dates, Microsoft Learn access)** — [Chapter 09](chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)

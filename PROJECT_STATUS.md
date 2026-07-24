@@ -42,11 +42,12 @@ does not by itself verify every technical claim in it.
 | XXX — Cisco CCDE Network Design | 9 | Drafted |
 | XXXI — Juniper Networks Certification Tracks | 9 | Drafted |
 | XXXII — Dell Technologies Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 8 | Drafted |
+| XXXIII — Microsoft Azure Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 9 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 331 of 331 drafted (100%). Every volume has a
+**Total declared chapters:** 341 of 341 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

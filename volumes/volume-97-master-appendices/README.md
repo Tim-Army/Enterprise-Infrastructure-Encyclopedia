@@ -16,6 +16,7 @@ one place instead of scattered through volume READMEs.
 6. [Appendix — Fortinet NSE Certifications and Course Access](chapters/06-appendix-fortinet-nse-certifications-and-course-access.md) — the restored NSE 1–8 program by track and level with the free-self-paced / paid-ILT access model; snapshot dated 22 July 2026.
 7. [Appendix — VMware and Broadcom Certifications and Course Access](chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) — the whole Broadcom/VMware program by tier (VCP, VCAP, Distinguished Expert, Telco Cloud) with exam codes, exam end dates, and the Learning@Broadcom paid-ILT / free Hands-on Labs access model; snapshot dated 23 July 2026.
 8. [Appendix — AWS Certifications and Course Access](chapters/08-appendix-aws-certifications-and-course-access.md) — all twelve current AWS certifications by level with exam codes, exam end dates, and the free Skill Builder exam-prep / paid classroom access model; snapshot dated 23 July 2026.
+9. [Appendix — Microsoft Azure Certifications and Course Access](chapters/09-appendix-microsoft-azure-certifications-and-course-access.md) — every current Azure certification by level with exam codes, exam end dates, the retired list, and the free Microsoft Learn training / annual free renewal model; snapshot dated 23 July 2026.
 
 ## Appendix catalog
 
@@ -30,6 +31,7 @@ one place instead of scattered through volume READMEs.
 | Fortinet NSE certifications and course access | [Volume XIX](../volume-19-fortinet-network-security/README.md) | [06](chapters/06-appendix-fortinet-nse-certifications-and-course-access.md) |
 | VMware and Broadcom certifications and course access | [Volume V](../volume-05-vmware-virtualization/README.md) | [07](chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) |
 | AWS certifications and course access | [Volume XVII](../volume-17-aws-architecture-security/README.md) | [08](chapters/08-appendix-aws-certifications-and-course-access.md) |
+| Microsoft Azure certifications and course access | [Volume XXXIII](../volume-33-microsoft-azure-certifications/README.md) | [09](chapters/09-appendix-microsoft-azure-certifications-and-course-access.md) |
 
 ## Conventions
 
