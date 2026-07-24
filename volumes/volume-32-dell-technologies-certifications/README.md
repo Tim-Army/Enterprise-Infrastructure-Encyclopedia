@@ -168,6 +168,33 @@ document on Dell Learning, which this volume treats as the authority.
 8. [AI, Generative AI, and Data Science Certifications](chapters/08-ai-generative-ai-and-data-science-certifications.md)
 9. [Security Certifications and Certification Operations](chapters/09-security-certifications-and-certification-operations.md)
 
+## Topic-level lab coverage
+
+Every one of the **77 current Dell Technologies certification exams** listed above
+is represented by hands-on walkthrough labs in its chapter. Because the program spans
+77 exams across many products, the labs are anchored to each chapter's **foundational
+certification and its primary products' operate/deploy tasks** — the shared knowledge
+the whole track's exams draw on — rather than one lab per objective of all 77 exams.
+Objectives are drawn from Dell Learning's published exam topic areas (each exam's
+Description document on Dell Learning is the authority for objectives and weights).
+Labs use the Dell product CLIs and APIs — storage arrays, iDRAC `racadm`, Solutions
+Enabler, PowerScale `isi`, PowerProtect/Data Domain, OS10/SONiC, and the AI/data
+toolchain; each carries `**Lab verified by:** *pending*` until a human runs it.
+**78 numbered labs** in total (including a Zero Trust Design Exercise), mapped by
+chapter:
+
+| Chapter | Focus | Certifications covered | Labs |
+| --- | --- | --- | --- |
+| 01 | Storage foundations | Information Storage & Management Foundations (D-ISM-FN-01) | Labs 1.1–1.10 |
+| 02 | PowerEdge servers | D-PE-FN-01, D-PE-OE-01, D-PEMX-DY-23, D-PEXE-IN-A-01, D-PEXE-OE-00 | Labs 2.1–2.9 |
+| 03 | Midrange storage | PowerStore (D-PST-*), Unity (D-UN-*), PowerVault ME5 (D-PV-DY-A-00) | Labs 3.1–3.9 |
+| 04 | High-end & scale-out | PowerMax (D-PVM-*/D-PM-*), PowerScale (D-PSC-*), ECS (D-ECS-*), XtremIO (D-XTR-*), VPLEX/Metro Node (D-VPX-*/D-MN-OE-23), SRM (D-SRM-A-01), DLm (D-DLM-A-01) | Labs 4.1–4.10 |
+| 05 | SDS / HCI / cloud | Cloud Foundations/Design (D-CIS-FN-01, D-CI-DS-23, D-CS-DS-23), PowerFlex (D-PWF-*), VxRail (D-VXR-*), VxBlock (D-VXB-DY-A-24), APEX/Azure (D-AX-*, D-AXAZL-A-00, D-ISAZ-A-01) | Labs 5.1–5.9 |
+| 06 | Data protection | DP Foundations/Design (D-DP-FN-01, D-DP-DS-01), Data Domain (D-PDD-*), Data Manager (D-PDM-*), DP/DPS appliances (D-PDPS-A-01, D-DPS-A-01), Cyber Recovery (D-PCR-DY-01), Avamar (D-AV-*), NetWorker (D-NWR-DY-01), RecoverPoint (D-RP-*, D-RPVM-A-01) | Labs 6.1–6.10 |
+| 07 | Networking | Networking Foundations/Design (D-NWG-FN-23, D-NWG-DS-00), PowerSwitch DC/Campus (D-PDC-DY-23, D-PCM-DY-23), SONiC (D-SNC-DY-00) | Labs 7.1–7.7 |
+| 08 | AI / GenAI / Data Science | D-GAI-F-01, D-PEN-F-A-00, D-AAI-FN-A-00, D-AIS-F-A-00, D-DS-FN-23, D-DS-OP-23, D-AA-OP-23 | Labs 8.1–8.7 |
+| 09 | Security & client systems | Security Foundations (D-SF-A-01), NIST CSF v2.0 (D-CSF-SC-01), Zero Trust Design (D-ZT-DS-23), AI Security (D-AIS-F-A-00), Client Systems (D-CLS-ST-A-00, D-CLS-DY-A-00) | Labs 9.1–9.7 (9.3 Design Exercise) |
+
 ## Study plans
 
 **Foundations first** (two to three weeks each): D-ISM-FN-01 or the

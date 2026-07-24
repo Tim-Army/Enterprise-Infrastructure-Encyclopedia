@@ -108,12 +108,220 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-With DDVE (Data Domain Virtual Edition) on the Volume XXVI lab where
-entitled: build an MTree, Boost unit, and replication pair; lock a
-copy; protect two lab VMs with a Data Manager policy; run one
-restore and one vault-style rehearsal narrative (isolated copy,
-verified recovery). Otherwise: the full runbook with exact commands
-and expected outputs against the guides.
+This chapter carries a topic-level walkthrough lab spanning the **data protection and
+cyber-resilience exams — Foundations and Design (D-DP-FN-01, D-DP-DS-01), PowerProtect
+Data Domain (D-PDD-*), Data Manager (D-PDM-*), DP/DPS appliances (D-PDPS-A-01,
+D-DPS-A-01), Cyber Recovery (D-PCR-DY-01), Avamar (D-AV-*), NetWorker (D-NWR-DY-01),
+and RecoverPoint (D-RP-*, D-RPVM-A-01)** — mapped in the volume README's coverage
+tables. Labs use the Data Domain, PowerProtect, Cyber Recovery, and Avamar CLIs. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 6.1–6.10** — a PowerProtect Data Domain, a
+PowerProtect Data Manager, a Cyber Recovery vault, and Avamar/NetWorker/RecoverPoint
+management access. **Cost:** none beyond lab resources.
+
+### Lab 6.1 — Data protection foundations (Data Protection Foundations)
+
+**Objective:** Identify the protection methods and their RPO/RTO.
+
+```text
+show filesys space
+show replication status
+```
+
+**Expected result:** the protected capacity and replication posture — data protection
+combines **backup/archive** (point-in-time copies with retention), **replication**
+(remote copies for DR), **snapshots** (fast local recovery), and **cyber recovery**
+(isolated immutable copies), each with a different RPO/RTO and threat model.
+
+**Negative test:** rely on backups alone against ransomware that also encrypts the
+backup catalog/repository; an **isolated, immutable** copy (Cyber Recovery) is what
+survives — RPO/RTO planning must include the cyber threat.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.2 — Data Domain MTree and filesystem (PowerProtect Data Domain Deploy)
+
+**Objective:** Create an MTree and read dedup on Data Domain.
+
+```text
+mtree create /data/col1/lab-mtree
+mtree list
+filesys show compression /data/col1/lab-mtree
+```
+
+**Expected result:** the MTree and its dedup/compression ratio — **PowerProtect Data
+Domain** is the protection-storage target: **MTrees** are managed namespaces (per
+app/tenant), and inline variable-length **deduplication** stores only unique segments,
+yielding large effective:used ratios and efficient replication.
+
+**Negative test:** target a Data Domain with backups of pre-encrypted data; the dedup
+ratio collapses — client-side encryption before the DD defeats dedup (use DD-side
+encryption instead).
+
+**Cleanup:** `mtree delete /data/col1/lab-mtree`.
+
+### Lab 6.3 — DD Boost (PowerProtect Data Domain Operate)
+
+**Objective:** Verify DD Boost storage units and distributed dedup.
+
+```text
+ddboost enable
+ddboost storage-unit create LAB-SU
+ddboost storage-unit show
+ddboost show stats
+```
+
+**Expected result:** the Boost storage unit and stats — **DD Boost** moves part of the
+dedup to the backup client/server so only unique segments cross the network, cutting
+backup bandwidth and time; storage units are the Boost-accessed containers.
+
+**Negative test:** send backups over generic CIFS/NFS instead of Boost; the full data
+crosses the network (no distributed dedup) — Boost is what reduces the transfer.
+
+**Cleanup:** `ddboost storage-unit delete LAB-SU`.
+
+### Lab 6.4 — Data Domain replication (PowerProtect Data Domain Operate)
+
+**Objective:** Configure and read MTree replication to a remote DD.
+
+```text
+replication add source mtree://ddsrc/data/col1/lab-mtree destination mtree://dddst/data/col1/lab-mtree
+replication status
+replication show performance
+```
+
+**Expected result:** the replication context and lag — Data Domain replicates
+**deduplicated** data (MTree, collection, or managed-file), so only unique segments
+traverse the WAN, making offsite DR copies bandwidth-efficient with a small RPO.
+
+**Negative test:** expect full-bandwidth transfer sizing for DD replication; because it
+sends only unique post-dedup segments, sizing on logical data over-provisions the link
+— size on the daily unique change rate.
+
+**Cleanup:** `replication break destination mtree://dddst/data/col1/lab-mtree`.
+
+### Lab 6.5 — PowerProtect Data Manager protection policy (Data Manager Deploy)
+
+**Objective:** Read a PPDM protection policy and its assets.
+
+```bash
+curl -sk -H "Authorization: Bearer $PPDM" "https://$PPDM_HOST/api/v2/protection-policies" | jq -r '.content[]? | "\(.name) \(.assetType)"'
+curl -sk -H "Authorization: Bearer $PPDM" "https://$PPDM_HOST/api/v2/protection-jobs?filter=result.status eq \"FAILED\"" 2>/dev/null | jq '.page.totalElements'
+```
+
+**Expected result:** the protection policies and any failed jobs — **PowerProtect Data
+Manager** is the software-defined data-protection control plane: it discovers assets
+(VMs, DBs, K8s, file systems), applies **protection policies** (backup to Data Domain,
+replication, cloud tiering), and reports compliance centrally.
+
+**Negative test:** a policy with no schedule/SLA protects nothing; assets stay
+unprotected until a policy with a schedule covers them — discovery plus an active
+policy is required.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.6 — PowerProtect appliances: DP/DPS series (PowerProtect DP Series Appliances)
+
+**Objective:** Read an integrated PowerProtect appliance's components.
+
+```bash
+curl -sk -H "Authorization: Bearer $PPDM" "https://$PPDM_HOST/api/v2/appliances" 2>/dev/null | jq -r '.content[]? | "\(.name) \(.model) \(.status)"'
+```
+
+**Expected result:** the integrated appliance (protection software + Data Domain) —
+the **PowerProtect DP series** (formerly IDPA) are integrated appliances bundling the
+protection software, search, and Data Domain storage in one system for turnkey backup,
+while **DPS** (Data Protection Suite) is the software portfolio.
+
+**Negative test:** expect to scale the appliance's protection software separately from
+its storage; the integrated appliance scales as a unit — that integration is its
+value versus build-your-own.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.7 — PowerProtect Cyber Recovery vault (Cyber Recovery Deploy)
+
+**Objective:** Read the Cyber Recovery vault and its air-gap sync.
+
+```bash
+curl -sk -H "Authorization: Bearer $CR" "https://$CR_HOST/irapi/policies" 2>/dev/null | jq -r '.[]? | "\(.name) \(.action)"'
+curl -sk -H "Authorization: Bearer $CR" "https://$CR_HOST/irapi/copies" 2>/dev/null | jq '. | length'
+```
+
+**Expected result:** the CR policies and immutable copies — **PowerProtect Cyber
+Recovery** maintains an isolated vault: an **operational air gap** opens only to
+replicate, then closes; copies are made **immutable (Retention Lock)** and analyzed by
+**CyberSense** for tampering, so a clean recovery point survives ransomware.
+
+**Negative test:** leave the air-gap link permanently open (always-on replication);
+malware can reach the vault — the scheduled, normally-closed air gap is the protection.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.8 — Avamar backup (Avamar Deploy)
+
+**Objective:** Read Avamar clients, datasets, and backup status.
+
+```text
+mccli client show
+mccli backup show --recursive=true | head
+avmaint config --ava | grep -i capacity
+```
+
+**Expected result:** the Avamar clients and recent backups — **Avamar** does
+client-side (source) deduplication: only unique segments leave the client, making it
+efficient for remote offices, VMs, and file systems, storing to its own grid or to
+Data Domain.
+
+**Negative test:** back up dense change-rate databases with Avamar source dedup and CPU
+on the client spikes; for high-change DBs, DD Boost/PPDM (server-side) may fit better —
+match the dedup model to the workload.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.9 — NetWorker (NetWorker Deploy)
+
+**Objective:** Read NetWorker clients, pools, and a backup group.
+
+```text
+nsradmin -p nsrd -i /dev/null <<'EOF'
+show name; type
+print type: NSR client
+EOF
+nsrpolicy list
+```
+
+**Expected result:** the NetWorker clients and policies — **NetWorker** is the
+enterprise backup application: it protects heterogeneous clients (OS, DB, VM, NAS via
+NDMP) to Data Domain or tape, organized by data-protection policies/workflows and
+media pools, at large scale.
+
+**Negative test:** a client not in any protection group/policy is never backed up —
+NetWorker protects only what a policy/workflow includes.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.10 — RecoverPoint continuous data protection (RecoverPoint Deploy)
+
+**Objective:** Read a RecoverPoint consistency group and journal.
+
+```text
+get_group_state
+get_consistency_group_settings
+get_system_status
+```
+
+**Expected result:** the consistency group replicating with a journal — **RecoverPoint**
+(and **RecoverPoint for VMs**) provides **continuous data protection**: every write is
+journaled, so you can recover to any point in time (not just scheduled snapshots),
+with local and remote (sync/async) replication for granular, near-zero-RPO recovery.
+
+**Negative test:** size the journal too small for the retention/change rate; the
+protection window shrinks and old points age out — the journal must fit the desired
+rewind window.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

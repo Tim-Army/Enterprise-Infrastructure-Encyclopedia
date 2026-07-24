@@ -111,12 +111,178 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Where OS10/SONiC virtual images are entitled (both exist for labs):
-build a two-leaf/one-spine mini-fabric on the Volume XXVI host — VLT
-pair with a dual-homed test VM, then the same dual-homing as EVPN
-ESI on SONiC; induce a peer-link failure and a config_db typo,
-capturing both signatures. Otherwise: full runbooks for both builds
-with expected outputs.
+This chapter carries a topic-level walkthrough lab spanning the **Dell Networking
+exams — Foundations (D-NWG-FN-23), Design (D-NWG-DS-00), PowerSwitch Data Center and
+Campus Deploy (D-PDC-DY-23, D-PCM-DY-23), and SONiC Deploy (D-SNC-DY-00)** — mapped in
+the volume README's coverage tables. Labs use the Dell **OS10** CLI and SONiC. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 7.1–7.7** — two Dell PowerSwitch (S/Z-series)
+switches running OS10, an OS10 or SONiC data-center fabric, and console/SSH access.
+**Cost:** none beyond lab resources.
+
+### Lab 7.1 — Networking foundations and OS10 (Networking Foundations)
+
+**Objective:** Read the OS10 system and its Linux-based architecture.
+
+```text
+show version
+show system
+show interface status | head
+```
+
+**Expected result:** the OS10 version and interfaces — **Dell OS10** is a modular,
+Linux-based (unmodified Debian) NOS on PowerSwitch hardware, with a standard CLI plus
+programmability (the underlying Linux, plus REST/gNMI), the disaggregated foundation of
+Dell networking.
+
+**Negative test:** expect a monolithic proprietary OS; OS10 exposes the Linux
+substrate (you can `sudo` to a shell) — the disaggregated model is a key foundations
+concept.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.2 — Layer 2 and VLANs (PowerSwitch Data Center Deploy)
+
+**Objective:** Configure a VLAN and a trunk on OS10.
+
+```text
+configure terminal
+interface vlan 10
+ description SERVERS
+ no shutdown
+interface ethernet 1/1/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10
+ no shutdown
+end
+show vlan
+show interface ethernet 1/1/1 switchport
+```
+
+**Expected result:** VLAN 10 and the trunk carrying it — OS10 L2 bridges within VLANs
+and tags on trunks (802.1Q), the access/aggregation foundation before the routed
+overlay; the CLI mirrors industry-standard syntax.
+
+**Negative test:** a trunk not allowing VLAN 10 drops that VLAN's frames even though
+the link is up — the allowed-VLAN list gates trunk traffic.
+
+**Cleanup:** `configure terminal; no interface vlan 10; commit`.
+
+### Lab 7.3 — Layer 3 routing (PowerSwitch Data Center Deploy)
+
+**Objective:** Configure OSPF (or BGP) and verify adjacency.
+
+```text
+configure terminal
+router ospf 1
+ router-id 10.0.0.1
+interface ethernet 1/1/2
+ no switchport
+ ip address 10.0.0.1/30
+ ip ospf 1 area 0
+end
+show ip ospf neighbor
+show ip route ospf
+```
+
+**Expected result:** the OSPF neighbor `Full` and learned routes — OS10 routes with
+OSPF, BGP, and static; a data-center leaf-spine underlay typically runs eBGP or OSPF
+for ECMP reachability between VTEP loopbacks.
+
+**Negative test:** an OSPF area/MTU mismatch stalls the adjacency below `Full` —
+`show ip ospf neighbor` reveals the stuck state.
+
+**Cleanup:** `configure terminal; no router ospf 1; commit`.
+
+### Lab 7.4 — VLT multi-chassis link aggregation (PowerSwitch Data Center Deploy)
+
+**Objective:** Configure and verify a VLT domain.
+
+```text
+configure terminal
+vlt-domain 1
+ backup destination 10.0.0.2
+ discovery-interface ethernet 1/1/29-1/1/30
+end
+show vlt 1
+show vlt 1 vlt-port-detail
+```
+
+**Expected result:** the VLT domain up with both peers and the VLTi — **VLT** (Virtual
+Link Trunking) lets two OS10 switches present one logical LAG to downstream devices
+(active/active, no spanning-tree blocking), the standard data-center redundancy at the
+access/aggregation tier.
+
+**Negative test:** a VLT with mismatched VLANs or a down VLTi causes inconsistency; the
+peers cannot forward as one logical switch — the VLTi and consistent config are
+required.
+
+**Cleanup:** `configure terminal; no vlt-domain 1; commit`.
+
+### Lab 7.5 — EVPN-VXLAN fabric (PowerSwitch Data Center Deploy)
+
+**Objective:** Verify an EVPN-VXLAN overlay on the OS10 fabric.
+
+```text
+show nve vxlan-vni
+show bgp evpn summary
+show evpn mac-ip
+```
+
+**Expected result:** the VNIs, EVPN BGP peers, and MAC/IP routes — OS10 builds
+spine-leaf **EVPN-VXLAN** fabrics (BGP control plane, VXLAN data plane) for scalable
+multi-tenant data centers; **SmartFabric Services** can automate the fabric build and
+lifecycle.
+
+**Negative test:** inconsistent VNI-to-VLAN mapping on one leaf silently drops that
+segment; the endpoints do not learn each other — the mapping must be fabric-consistent.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.6 — Campus deployment (PowerSwitch Campus Deploy)
+
+**Objective:** Verify campus features (PoE, QoS, access).
+
+```text
+show power-management-mode
+show interface ethernet 1/1/1 poe
+show qos maps type dscp-color
+```
+
+**Expected result:** PoE budget/allocation and QoS maps — campus PowerSwitch
+deployment focuses on the wired access edge: **PoE** for phones/APs, **QoS** for
+voice/video, VLAN/access control, and multi-gig uplinks, managed at scale (SmartFabric/
+OME).
+
+**Negative test:** connect more PoE devices than the switch's power budget allows;
+lower-priority ports are denied power — the PoE budget/priority governs allocation.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.7 — SONiC deployment (SONiC Deploy)
+
+**Objective:** Read Dell Enterprise SONiC state via its CLI/config DB.
+
+```text
+show version
+show interfaces status | head
+show ip bgp summary
+```
+
+```bash
+sonic-cfggen -d -v "DEVICE_METADATA.localhost.hwsku" 2>/dev/null
+```
+
+**Expected result:** the SONiC version, interfaces, and BGP — **SONiC** (Software for
+Open Networking in the Cloud) is the community/open NOS Dell offers as **Enterprise
+SONiC** on PowerSwitch: a Redis **config DB**-driven, containerized NOS for
+hyperscale-style disaggregated data-center fabrics.
+
+**Negative test:** expect the OS10 CLI syntax on SONiC; SONiC has its own CLI and a
+config-DB model — the two NOS options on the same hardware differ operationally.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

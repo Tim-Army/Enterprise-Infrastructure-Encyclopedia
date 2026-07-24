@@ -114,13 +114,196 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-VxRail: run the network-prerequisite validation as a paper drill
-against a stated site plan (VLANs, DNS records, NTP, vCenter
-placement), then the LCM upgrade narrative with prechecks and
-rollback gates. PowerFlex: on three Volume XXVI VMs, install the
-community/virtual edition where entitled (else full runbook): MDM
-cluster, one PD/SP, a mapped volume, one SDS kill with rebuild
-observed.
+This chapter carries a topic-level walkthrough lab spanning the **software-defined,
+HCI, and cloud exams — Cloud Infrastructure/Services Foundations and Design
+(D-CIS-FN-01, D-CI-DS-23, D-CS-DS-23), PowerFlex (D-PWF-*), VxRail (D-VXR-*),
+VxBlock (D-VXB-DY-A-24), and APEX/Azure (D-AX-*, D-AXAZL-A-00, D-ISAZ-A-01)** —
+mapped in the volume README's coverage tables. Labs use the PowerFlex `scli`, the
+VxRail Manager API, and cloud-platform tooling. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 5.1–5.9** — a PowerFlex cluster (MDM/SDS/SDC), a
+VxRail cluster with VxRail Manager and vCenter, and access to an APEX Cloud Platform.
+**Cost:** none beyond lab resources.
+
+### Lab 5.1 — PowerFlex provisioning (PowerFlex Operate)
+
+**Objective:** Create a PowerFlex volume and map it to an SDC.
+
+```text
+scli --login --username admin --password $PW
+scli --query_all
+scli --add_volume --protection_domain_name PD1 --storage_pool_name SP1 --size_gb 100 --volume_name LAB-VOL
+scli --map_volume_to_sdc --volume_name LAB-VOL --sdc_ip 10.0.0.71
+```
+
+**Expected result:** the volume created in the storage pool and mapped to the SDC —
+**PowerFlex** is software-defined block storage: **SDS** nodes pool local drives,
+**SDC** clients consume volumes, and the **MDM** cluster coordinates; it scales
+linearly and can run two-layer (separate) or HCI (collapsed) topologies.
+
+**Negative test:** map a volume to an SDC whose driver is not installed/registered;
+the host has no block device — the SDC must be a registered PowerFlex client.
+
+**Cleanup:** `scli --unmap_volume_from_sdc ...` then `scli --remove_volume
+--volume_name LAB-VOL`.
+
+### Lab 5.2 — PowerFlex protection domains and fault sets (PowerFlex Implementation)
+
+**Objective:** Read protection domains, storage pools, and fault sets.
+
+```text
+scli --query_properties --object_type PROTECTION_DOMAIN --all_objects
+scli --query_fault_sets --protection_domain_name PD1
+scli --query_storage_pool --protection_domain_name PD1 --storage_pool_name SP1
+```
+
+**Expected result:** the protection domain, its fault sets, and pool rebuild/rebalance
+state — a **protection domain** bounds a failure/rebuild domain; **fault sets** group
+SDS that share failure risk (a rack/PSU) so PowerFlex's mesh mirroring never places
+both copies in one fault set.
+
+**Negative test:** place all SDS in one fault set; a rack failure can take both mirror
+copies — fault sets must reflect real independent failure domains.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.3 — VxRail deployment (VxRail Deploy)
+
+**Objective:** Read the VxRail cluster and its build state via the API.
+
+```bash
+curl -sk -u admin:$PW "https://$VXRM/rest/vxm/v1/system" | jq '{version, health, installed_time}'
+curl -sk -u admin:$PW "https://$VXRM/rest/vxm/v1/hosts" | jq -r '.[]? | "\(.serial_number) \(.health)"' | head
+```
+
+**Expected result:** the VxRail system version/health and its nodes — **VxRail** is
+the jointly-engineered Dell/VMware HCI appliance: **VxRail Manager** automates the
+first-run build (vSAN, vCenter, networking) and node add, so a cluster deploys as one
+integrated system.
+
+**Negative test:** add a node whose firmware/model is not on the VxRail compatible
+baseline; VxRail Manager blocks the expansion — the node must match the cluster's
+validated version.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.4 — VxRail lifecycle management (VxRail Operate)
+
+**Objective:** Read the VxRail LCM (Continuously Validated State) status.
+
+```bash
+curl -sk -u admin:$PW "https://$VXRM/rest/vxm/v1/lcm/upgrade/status" 2>/dev/null | jq '.'
+curl -sk -u admin:$PW "https://$VXRM/rest/vxm/v1/system/available-bundles" 2>/dev/null | jq -r '.[]?.version' | head
+```
+
+**Expected result:** the LCM status and available update bundles — VxRail's value is
+**lifecycle management**: a single **Continuously Validated State** bundle updates
+firmware, ESXi, vSAN, and VxRail Manager together as a tested unit, avoiding the
+interop matrix guesswork of build-your-own.
+
+**Negative test:** patch ESXi manually outside VxRail LCM; the cluster drifts from its
+validated state and future LCM updates flag it — VxRail must be updated through its
+LCM.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.5 — VxBlock converged infrastructure (VxBlock Deploy)
+
+**Objective:** Read the VxBlock's converged components and RCM.
+
+```text
+show version
+show inventory
+```
+
+**Expected result:** the compute (PowerEdge/UCS), network (MDS/Nexus), and storage
+(PowerMax/PowerStore) components — **VxBlock** is converged (not hyperconverged)
+infrastructure: pre-engineered, factory-integrated compute + network + SAN storage,
+lifecycle-managed as one system against a **Release Certification Matrix (RCM)**.
+
+**Negative test:** update a component off the RCM; the system falls out of its
+certified/supported state — VxBlock changes follow the RCM.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.6 — APEX Cloud Platform for Microsoft Azure (APEX Azure Implementation)
+
+**Objective:** Read the APEX Cloud Platform for Azure (Azure Local) deployment.
+
+```bash
+az stack-hci cluster show --name LAB-CLUSTER --resource-group RG 2>/dev/null | jq '{status, reportedProperties}' 2>/dev/null
+```
+
+**Expected result:** the Azure Local (Azure Stack HCI) cluster registered to Azure —
+**APEX Cloud Platform for Microsoft Azure** is a turnkey Dell system running Azure
+Local: Azure Arc-enabled, managed from the Azure portal, with Dell's integrated
+lifecycle for the hardware/software stack.
+
+**Negative test:** a cluster not registered/Arc-connected to Azure cannot be managed
+from the portal — Azure registration is required for the cloud-managed model.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.7 — APEX Cloud Platform for Red Hat OpenShift (APEX OpenShift Implementation)
+
+**Objective:** Read the OpenShift cluster on the APEX platform.
+
+```bash
+oc get nodes -o wide | head
+oc get clusterversion
+```
+
+**Expected result:** the OpenShift nodes and cluster version — **APEX Cloud Platform
+for Red Hat OpenShift** is a Dell-integrated bare-metal OpenShift system with
+automated lifecycle for the hardware and the OpenShift stack, for containerized/
+cloud-native workloads on-prem.
+
+**Negative test:** expect Dell integrated lifecycle on a self-installed OpenShift on
+generic hardware; the APEX automation and validated stack are what the platform adds
+— it is more than OpenShift-on-servers.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.8 — Cloud Infrastructure and Services foundations (Cloud Foundations)
+
+**Objective:** Identify the cloud service and deployment models in use.
+
+```bash
+kubectl get pods -A 2>/dev/null | head
+virsh list --all 2>/dev/null | head
+```
+
+**Expected result:** the VMs (IaaS) and containers (PaaS) underpinning services —
+**Cloud Infrastructure and Services** foundations cover the service models (IaaS/PaaS/
+SaaS), deployment models (private/public/hybrid), and the enabling technologies
+(virtualization, SDN/SDS, orchestration, service management) that Dell's cloud
+platforms deliver.
+
+**Negative test:** classify a managed SaaS as IaaS and plan to patch its OS; you
+cannot — the service model sets the boundary of control, a core foundations concept.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.9 — Integrated System for Microsoft Azure Stack Hub (Azure Stack Hub)
+
+**Objective:** Read the Azure Stack Hub integrated system's status.
+
+```bash
+az stack-hci -h >/dev/null 2>&1; echo "Azure Stack Hub: hybrid Azure services on-prem"
+curl -sk -u admin:$PW "https://$ASH/metadata/endpoints?api-version=2015-01-01" 2>/dev/null | jq '.' | head
+```
+
+**Expected result:** the Azure Stack Hub endpoints — the **Dell Integrated System for
+Microsoft Azure Stack Hub** runs a consistent subset of Azure services in the customer
+data center (disconnected or connected), Dell-integrated and lifecycle-managed, for
+sovereign/edge/regulated Azure workloads.
+
+**Negative test:** expect the full public-Azure service catalog on Azure Stack Hub;
+only the supported on-prem subset is available — the hybrid model is consistent but
+not identical to public Azure.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 
