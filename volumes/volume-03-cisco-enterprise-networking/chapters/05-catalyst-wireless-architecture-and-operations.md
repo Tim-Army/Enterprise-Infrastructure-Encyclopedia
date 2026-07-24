@@ -359,6 +359,629 @@ WLC-01# show ap rf-profile summary
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the wireless exam
+topics that map here — the **CCNA Domain 2/5 wireless items** and **all of
+ENWLSI (300-430 Wireless Implementation)** — mapped in the volume README's
+coverage tables; the design exam **ENWLSD (300-425)** is covered by the
+Design Exercise below. Each lab is a Catalyst 9800 (IOS XE) walkthrough and
+ends **`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 5.1–5.35** — a Catalyst 9800/9800-CL WLC, a
+joined AP, an ISE/RADIUS server and CMX/Cisco Spaces where noted, privileged
+EXEC access. **Cost:** none beyond lab resources; each lab removes its
+config.
+
+### Lab 5.1 — Describe wireless principles (CCNA 1.11)
+
+**Objective:** Read the RF/channel plan the AP advertises.
+
+```text
+WLC# show ap dot11 5ghz summary
+WLC# show ap dot11 24ghz summary
+```
+
+**Expected result:** per-AP channel, channel width, and tx power — the RF
+fundamentals (channels, non-overlapping 2.4 GHz, DFS on 5 GHz).
+
+**Negative test:** two nearby APs on the same 2.4 GHz channel co-channel
+interfere; the principle is why RRM assigns non-overlapping channels.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.2 — Describe wireless architectures and AP modes (CCNA 2.6)
+
+**Objective:** Read AP mode (local, FlexConnect, monitor, sniffer).
+
+```text
+WLC# show ap summary
+WLC# show ap name AP1 config general | include AP Mode
+```
+
+**Expected result:** each AP's mode — local (centrally switched via the WLC)
+vs FlexConnect (locally switched at the branch), the two dominant models.
+
+**Negative test:** expecting local-mode APs to keep serving clients if the
+WLC/WAN is down; they cannot — that is FlexConnect's job.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.3 — Describe WLAN physical connections (CCNA 2.7)
+
+**Objective:** Confirm the AP's uplink and PoE.
+
+```text
+WLC# show ap name AP1 config general | include Ethernet|POE
+WLC# show wireless stats ap join summary
+```
+
+**Expected result:** the AP's switchport, PoE draw, and a successful CAPWAP
+join — the physical connection between AP, switch, and WLC.
+
+**Negative test:** an AP on a switchport delivering insufficient PoE runs in
+reduced mode (radios disabled); check the power budget.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.4 — Interpret the wireless LAN GUI configuration (CCNA 2.9)
+
+**Objective:** Read a WLAN/policy profile the GUI builds.
+
+```text
+WLC# show wlan summary
+WLC# show wlan id 1
+```
+
+**Expected result:** the WLAN's SSID, security, and policy-profile binding —
+the config the Web UI's WLAN wizard produces.
+
+**Negative test:** a WLAN with no policy profile mapped to a policy tag never
+broadcasts; the 9800's tag model requires the binding.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.5 — Describe wireless security protocols (CCNA 5.9)
+
+**Objective:** Read the WLAN's Layer 2 security (WPA2/WPA3).
+
+```text
+WLC# show wlan id 1 | include Security|WPA|AKM
+```
+
+**Expected result:** the security type (WPA2-Enterprise, WPA3-SAE) and AKM —
+the protocol protecting the air.
+
+**Negative test:** an open or WEP WLAN is trivially intercepted; WPA2/WPA3 is
+the baseline.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.6 — Configure a WLAN with WPA2 PSK (CCNA 5.10)
+
+**Objective:** Build a PSK WLAN on the 9800.
+
+```text
+WLC(config)# wlan LAB-PSK 2 LAB-PSK
+WLC(config-wlan)# security wpa psk set-key ascii 0 <passphrase>
+WLC(config-wlan)# no shutdown
+WLC# show wlan name LAB-PSK
+```
+
+**Expected result:** the WLAN active with WPA2-PSK; a client with the
+passphrase associates.
+
+**Negative test:** a PSK under 8 characters is rejected; WPA2-PSK enforces a
+minimum key length.
+
+**Cleanup:** `no wlan LAB-PSK`.
+
+### Lab 5.7 — Deploy FlexConnect switching and operating modes (ENWLSI 1.1)
+
+**Objective:** Put an AP in FlexConnect with local switching.
+
+```text
+WLC(config)# ap name AP1 mode flexconnect
+WLC(config)# wireless profile flex FLEX-BR
+WLC# show ap name AP1 config general | include AP Mode|Switching
+```
+
+**Expected result:** AP1 in FlexConnect mode with local switching — branch
+traffic stays local instead of tunneling to the WLC.
+
+**Negative test:** a locally switched WLAN with no local VLAN mapping drops
+client traffic; the flex profile must map the SSID to a branch VLAN.
+
+**Cleanup:** `ap name AP1 mode local`.
+
+### Lab 5.8 — Deploy FlexConnect capabilities (ENWLSI 1.2)
+
+**Objective:** Enable local authentication for WAN-down survivability.
+
+```text
+WLC(config)# wireless profile flex FLEX-BR
+WLC(config-wireless-flex-profile)# local-auth ap-auth
+WLC# show wireless profile flex detailed FLEX-BR
+```
+
+**Expected result:** FlexConnect local auth configured — clients keep
+authenticating at the branch if the WLC/WAN is unreachable.
+
+**Negative test:** central auth only; a WAN outage blocks all new
+associations at the branch — local auth is the survivability feature.
+
+**Cleanup:** remove local-auth from the flex profile.
+
+### Lab 5.9 — Implement OfficeExtend (ENWLSI 1.3)
+
+**Objective:** Configure an OEAP for a teleworker.
+
+```text
+WLC(config)# ap name AP-OE mode flexconnect
+WLC(config)# ap name AP-OE flexconnect office-extend
+WLC# show ap name AP-OE config general | include Office
+```
+
+**Expected result:** the AP in OfficeExtend mode — a DTLS-secured CAPWAP
+tunnel from the home to the WLC, delivering corporate SSIDs remotely.
+
+**Negative test:** an OEAP without the split-tunnel/local-split ACL sends all
+home traffic over the tunnel; scope the split.
+
+**Cleanup:** remove office-extend from the AP.
+
+### Lab 5.10 — Implement wired-to-wireless QoS (ENWLSI 2.1)
+
+**Objective:** Map wired DSCP to wireless UP end to end.
+
+```text
+WLC(config)# wireless profile policy POL-VOICE
+WLC(config-wireless-policy)# service-policy input platinum-up
+WLC# show wireless profile policy detailed POL-VOICE | include QoS
+```
+
+**Expected result:** a QoS policy mapping DSCP to 802.11 user priority —
+voice keeps its marking across the wired/wireless boundary.
+
+**Negative test:** trusting client-marked UP without a trust boundary lets a
+client mark bulk as voice; mark/trust at the WLC.
+
+**Cleanup:** remove the service-policy.
+
+### Lab 5.11 — Implement QoS for wireless clients (ENWLSI 2.2)
+
+**Objective:** Apply per-client rate limiting.
+
+```text
+WLC(config-wireless-policy)# service-policy client input rate-limit-5m
+WLC# show wireless client mac-address <mac> detail | include Rate|QoS
+```
+
+**Expected result:** per-client bandwidth limits applied — fair-use control
+on the WLAN.
+
+**Negative test:** no per-client limit lets one client saturate the AP;
+rate-limiting bounds it.
+
+**Cleanup:** remove the client service-policy.
+
+### Lab 5.12 — Implement AVC and Fastlane (ENWLSI 2.3)
+
+**Objective:** Enable Application Visibility and Control on the policy
+profile.
+
+```text
+WLC(config-wireless-policy)# ip flow monitor wireless-avc input
+WLC# show avc wlan LAB-PSK application
+```
+
+**Expected result:** per-application flow visibility on the WLAN, and (with
+Fastlane) Apple devices auto-marking priority apps — application-aware
+wireless QoS.
+
+**Negative test:** AVC without NBAR protocol packs cannot classify newer
+apps; keep the protocol pack current.
+
+**Cleanup:** remove the flow monitor from the policy profile.
+
+### Lab 5.13 — Implement multicast components (ENWLSI 3.1)
+
+**Objective:** Enable multicast on the WLC.
+
+```text
+WLC(config)# wireless multicast
+WLC(config)# ap capwap multicast 239.10.10.10
+WLC# show wireless multicast
+```
+
+**Expected result:** multicast enabled with a CAPWAP multicast group —
+efficient AP delivery of multicast streams.
+
+**Negative test:** unicast multicast delivery replicates a stream per client
+and overloads the WLC; multicast-multicast mode scales it.
+
+**Cleanup:** `no wireless multicast`.
+
+### Lab 5.14 — Describe multicast's effect on wireless (ENWLSI 3.2)
+
+**Objective:** Read the multicast data rate on the air.
+
+```text
+WLC# show ap dot11 5ghz network | include Multicast|Mandatory
+```
+
+**Expected result:** the mandatory/multicast data rate — multicast is sent at
+the lowest mandatory rate, consuming disproportionate airtime.
+
+**Negative test:** a low mandatory rate (e.g. 6 Mbps) makes multicast crush
+airtime; raise the basic rate to speed multicast (at coverage cost).
+
+**Cleanup:** none (read-only).
+
+### Lab 5.15 — Implement multicast on a WLAN (ENWLSI 3.3)
+
+**Objective:** Enable multicast for a specific WLAN/policy.
+
+```text
+WLC(config-wireless-policy)# multicast
+WLC# show wireless profile policy detailed POL-VOICE | include Multicast
+```
+
+**Expected result:** multicast enabled on the policy profile — the WLAN can
+carry multicast streams to clients.
+
+**Negative test:** multicast enabled globally but not on the policy profile
+still blocks it on that WLAN; both scopes matter.
+
+**Cleanup:** `no multicast` on the policy profile.
+
+### Lab 5.16 — Implement mDNS (ENWLSI 3.4)
+
+**Objective:** Configure an mDNS (Bonjour) service policy.
+
+```text
+WLC(config)# mdns-sd gateway
+WLC(config)# mdns-sd-flex-profile MDNS-FLEX
+WLC# show mdns-sd summary
+```
+
+**Expected result:** the mDNS gateway bridging Bonjour services across VLANs
+— AirPrint/Chromecast discovery without flooding mDNS everywhere.
+
+**Negative test:** mDNS flooded across all VLANs (no gateway) is both a
+scaling and a security problem; the gateway scopes it.
+
+**Cleanup:** `no mdns-sd gateway`.
+
+### Lab 5.17 — Implement Multicast Direct (ENWLSI 3.5)
+
+**Objective:** Enable Multicast Direct (media stream) for a WLAN.
+
+```text
+WLC(config)# wireless media-stream multicast-direct
+WLC(config-wireless-policy)# media-stream multicast-direct
+WLC# show wireless media-stream group summary
+```
+
+**Expected result:** Multicast Direct converts multicast to unicast at the AP
+for reliable video — better reliability for streaming.
+
+**Negative test:** enabling Multicast Direct without admission control can
+exhaust AP resources under many streams; pair with call admission control.
+
+**Cleanup:** disable media-stream on the policy and globally.
+
+### Lab 5.18 — Deploy CMX and Cisco Spaces (ENWLSI 4.1)
+
+**Objective:** Confirm the WLC's connection to CMX/Cisco Spaces.
+
+```text
+WLC# show nmsp status
+WLC# show wireless client summary | include Location
+```
+
+**Expected result:** an NMSP connection to CMX/Spaces `Active` — the WLC
+streaming client location/analytics data to the location engine.
+
+**Negative test:** NMSP down means no location data reaches CMX/Spaces;
+maps/analytics go stale.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.19 — Implement location services (ENWLSI 4.2)
+
+**Objective:** Read the WLC's location/RSSI reporting for a client.
+
+```text
+WLC# show wireless client mac-address <mac> detail | include RSSI|AP Name
+```
+
+**Expected result:** per-client RSSI from multiple APs — the multilateration
+input CMX/Spaces uses to place a client on a map.
+
+**Negative test:** a client heard by only one AP cannot be triangulated;
+location needs 3+ APs above the RSSI cutoff.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.20 — Implement CMX/Cisco Spaces components (ENWLSI 5.1)
+
+**Objective:** Read the location hierarchy (campus/building/floor) synced to
+the WLC.
+
+```text
+WLC# show wireless location summary
+```
+
+**Expected result:** the location configuration tying APs to a map hierarchy
+— the components that make location analytics meaningful.
+
+**Negative test:** APs not placed on a floor map produce location data with
+no spatial context; the map hierarchy is required.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.21 — Implement location-aware guest services (ENWLSI 5.2)
+
+**Objective:** Confirm a custom guest portal / captive-portal redirect.
+
+```text
+WLC# show wlan id 3 | include Web Auth|Portal
+WLC# show parameter-map type webauth summary
+```
+
+**Expected result:** a guest WLAN redirecting to a custom portal (with
+location-based content via Spaces) — revenue-generating, location-aware guest
+onboarding.
+
+**Negative test:** a webauth parameter-map pointing at an unreachable portal
+leaves guests stuck at redirect; verify the portal URL.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.22 — Troubleshoot location accuracy with Hyperlocation (ENWLSI 5.3)
+
+**Objective:** Read Hyperlocation (AoA) status where deployed.
+
+```text
+WLC# show ap name AP1 config general | include Hyperlocation|Antenna
+```
+
+**Expected result:** Hyperlocation antenna module status — angle-of-arrival
+tightens accuracy to ~1 m versus RSSI's several meters.
+
+**Negative test:** expecting 1 m accuracy from RSSI multilateration alone;
+Hyperlocation hardware is required for that precision.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.23 — Troubleshoot CMX high availability (ENWLSI 5.4)
+
+**Objective:** Read the CMX/Spaces connector HA/state from the WLC.
+
+```text
+WLC# show nmsp subscription summary
+```
+
+**Expected result:** the NMSP subscriptions/services active — a primary/
+secondary CMX ensures analytics continuity on failover.
+
+**Negative test:** a single CMX node is a single point of failure for
+location; HA pairs the engines.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.24 — Implement wIPS using Cisco DNA Center (ENWLSI 5.5)
+
+**Objective:** Read the wireless-threat/rogue posture.
+
+```text
+WLC# show wireless wps rogue ap summary
+WLC# show wireless wps rogue client summary
+```
+
+**Expected result:** detected rogue APs/clients and wIPS signatures — the
+adaptive wireless IPS surface (managed via Catalyst Center).
+
+**Negative test:** wIPS in detect-only mode alerts but does not contain; rogue
+containment must be explicitly enabled.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.25 — Configure client profiling on WLC and ISE (ENWLSI 6.1)
+
+**Objective:** Enable device profiling for policy decisions.
+
+```text
+WLC(config-wireless-policy)# dhcp-tlv-caching
+WLC(config-wireless-policy)# http-tlv-caching
+WLC# show wireless client mac-address <mac> detail | include Device Type
+```
+
+**Expected result:** the WLC caching DHCP/HTTP attributes and reporting a
+device type to ISE — profiling that drives differentiated policy.
+
+**Negative test:** without TLV caching, ISE cannot profile the endpoint and
+falls back to a generic policy.
+
+**Cleanup:** remove the TLV-caching options.
+
+### Lab 5.26 — Implement BYOD and guest (ENWLSI 6.2)
+
+**Objective:** Confirm the dual-SSID BYOD onboarding flow.
+
+```text
+WLC# show wlan summary | include BYOD|Guest|Provision
+WLC# show wireless client summary | include Provision
+```
+
+**Expected result:** an onboarding (provisioning) SSID and a secured SSID —
+the BYOD flow that moves a device from open onboarding to certificate-based
+access.
+
+**Negative test:** a single open SSID with no onboarding grants full access to
+unmanaged devices; BYOD separates provisioning from production access.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.27 — Implement 802.1X and AAA across architectures (ENWLSI 6.3)
+
+**Objective:** Bind a WLAN to a RADIUS server for 802.1X.
+
+```text
+WLC(config)# wlan CORP 1 CORP
+WLC(config-wlan)# security dot1x authentication-list ISE-AUTH
+WLC# show wlan name CORP | include 802.1X|AAA
+```
+
+**Expected result:** the WLAN using 802.1X against the ISE auth list —
+enterprise authentication on local, FlexConnect, and fabric architectures.
+
+**Negative test:** a FlexConnect AP with central auth loses 802.1X on a WAN
+outage unless local EAP is configured; architecture changes the auth path.
+
+**Cleanup:** `no wlan CORP`.
+
+### Lab 5.28 — Implement Identity-Based Networking (ENWLSI 6.4)
+
+**Objective:** Apply a per-user policy (VLAN/ACL) from RADIUS.
+
+```text
+WLC# show wireless client mac-address <mac> detail | include VLAN|ACL|SGT
+```
+
+**Expected result:** RADIUS-assigned VLAN/ACL/SGT applied per client —
+identity, not SSID, drives the access policy.
+
+**Negative test:** a static WLAN-to-VLAN mapping ignores identity; IBNS lets
+one SSID serve many policies by user.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.29 — Utilize reports on Prime/Catalyst Center (ENWLSI 7.1)
+
+**Objective:** Read a wireless report source.
+
+```text
+WLC# show wireless stats client detail
+WLC# show wireless summary
+```
+
+**Expected result:** client/AP/WLAN counts and stats — the data Prime
+Infrastructure / Catalyst Center reports aggregate.
+
+**Negative test:** reading a single WLC misses a multi-controller estate;
+Prime/Catalyst Center aggregate across controllers.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.30 — Manage alarms and rogues (ENWLSI 7.2)
+
+**Objective:** Triage rogue and interference alarms.
+
+```text
+WLC# show wireless wps rogue ap summary
+WLC# show logging | include ROGUE|WIPS
+```
+
+**Expected result:** classified rogues (friendly/malicious/unclassified) and
+alarm history — the queue a wireless operator works.
+
+**Negative test:** auto-containing an unclassified rogue that is a neighbor's
+legitimate AP is a legal/operational risk; classify before containing.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.31 — Manage RF interferers (ENWLSI 7.3)
+
+**Objective:** Read CleanAir/spectrum interference.
+
+```text
+WLC# show ap dot11 5ghz cleanair air-quality summary
+WLC# show ap dot11 5ghz cleanair device type all
+```
+
+**Expected result:** air-quality index and classified non-Wi-Fi interferers
+(microwave, Bluetooth) — the spectrum data RRM reacts to.
+
+**Negative test:** blaming Wi-Fi contention for a problem CleanAir shows is a
+microwave oven; the spectrum view finds non-Wi-Fi sources.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.32 — Troubleshoot client connectivity (ENWLSI 7.4)
+
+**Objective:** Trace a client's association/auth failure.
+
+```text
+WLC# show wireless client mac-address <mac> detail
+WLC# show wireless client mac-address <mac> mobility history
+```
+
+**Expected result:** the client's state machine (assoc → 802.1X → DHCP →
+RUN) and where it stalled — the exact failure phase.
+
+**Negative test:** blaming RF for a client stuck at 802.1X (a RADIUS/cert
+problem); the state machine localizes it.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.33 — Implement device access controls (ENWLSI 8.1)
+
+**Objective:** Secure WLC management with RADIUS/TACACS+.
+
+```text
+WLC(config)# aaa authentication login VTY-AUTH group ISE local
+WLC(config)# line vty 0 15
+WLC(config-line)# login authentication VTY-AUTH
+WLC# show run aaa | include authentication login
+```
+
+**Expected result:** WLC admin logins authenticated against ISE with a local
+fallback — centralized management-plane access control.
+
+**Negative test:** external AAA with no local method locks admins out when
+ISE is down; keep a local account.
+
+**Cleanup:** revert to prior VTY auth (keep a local login).
+
+### Lab 5.34 — Implement access point authentication (ENWLSI 8.2)
+
+**Objective:** Require 802.1X for APs joining the switch fabric.
+
+```text
+WLC(config)# ap dot1x username <user> password 0 <pw>
+WLC# show ap dot1x summary
+```
+
+**Expected result:** APs authenticating via 802.1X to the wired switchport —
+only trusted APs join the network.
+
+**Negative test:** an AP on an open switchport with no 802.1X can be swapped
+for a rogue; AP 802.1X binds the AP to the port.
+
+**Cleanup:** remove the AP dot1x credentials.
+
+### Lab 5.35 — Implement control-plane ACLs on the controller (ENWLSI 8.3)
+
+**Objective:** Restrict management access to the WLC control plane.
+
+```text
+WLC(config)# ip access-list extended MGMT-ONLY
+WLC(config-ext-nacl)# permit tcp 10.0.0.0 0.0.0.255 any eq 443
+WLC(config)# control-plane host
+WLC(config-cp-host)# management-interface GigabitEthernet1 allow https ssh
+WLC# show ip access-lists MGMT-ONLY
+```
+
+**Expected result:** management (HTTPS/SSH) restricted to the admin subnet on
+the control plane — CPU-protecting the WLC.
+
+**Negative test:** an unrestricted management interface accepts connections
+from anywhere; the control-plane ACL scopes it.
+
+**Cleanup:** remove the control-plane host management restriction and ACL.
+
+### Lab 5.36 — Catalyst 9800 WLAN with 802.1X and fast roaming (integrative)
+
 **Objective:** Bring up a Catalyst 9800 WLC (or CML/virtual 9800-CL node),
 join an access point, build an 802.1X-secured WLAN with fast roaming
 enabled, and validate client association.
@@ -444,6 +1067,39 @@ enabled, and validate client association.
 
 - Reset the AP's tags to the controller's default tags before returning it
   to a shared pool.
+
+## Design Exercise
+
+**ENWLSD (300-425 Wireless Design)** is a design exam: it rewards reasoning
+from requirements to a wireless design, not configuration recall. The
+implementation labs above (5.1–5.35) cover ENWLSI; this exercise covers
+ENWLSD's design domains — predictive/site survey, high-density, location,
+and security design — with no lab required.
+
+**Scenario.** Design Wi-Fi for a three-story, 200,000-sq-ft hospital: dense
+patient/staff/guest devices, real-time voice and medical telemetry, a
+requirement for ~3 m asset-location accuracy, WPA3 for staff, an isolated
+guest network, and no coverage holes in stairwells or basements.
+
+**Produce, defending each choice against a rejected alternative:**
+
+1. **Coverage and capacity design** — bands, channel width, and AP count/
+   placement from a predictive survey, and why (capacity-driven vs
+   coverage-driven). Justify the 2.4 GHz decision for a high-density site.
+2. **High-density and roaming design** — 802.11r/k/v, band steering, and
+   RRM (DCA/TPC) settings that keep voice/telemetry roaming seamless.
+3. **Location design** — AP density and placement (perimeter + interior) and
+   the technology (RSSI multilateration vs Hyperlocation AoA) needed to hit
+   3 m accuracy, with its cost.
+4. **Segmentation and security design** — SSID/VLAN/SGT plan separating
+   staff (WPA3-Enterprise), medical devices (profiled, MAB/certificate), and
+   guest (isolated, portal); and the wIPS/rogue posture.
+5. **Resilience design** — WLC HA (SSO), FlexConnect vs local mode per site,
+   and survivability if the WAN or a WLC fails.
+
+**Success looks like:** every AP-count, band, and location decision traces to
+a stated requirement (density, voice, 3 m accuracy), each with the
+alternative rejected and why — the design standard ENWLSD applies.
 
 ## Lab Verification
 

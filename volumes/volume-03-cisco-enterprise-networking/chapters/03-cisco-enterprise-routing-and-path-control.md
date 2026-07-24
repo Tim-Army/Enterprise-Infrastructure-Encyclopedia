@@ -350,6 +350,286 @@ EDGE-01# show ip cef vrf GUEST
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the Layer 3 / routing
+exam topics that map here — **CCNA Domain 3 (IP Connectivity)**, **ENCOR
+Domain 3.2 (Layer 3)**, and **all of ENARSI Domain 1 (Layer 3
+Technologies)** — mapped in the volume README's coverage tables. Each is a
+full IOS XE walkthrough (configure, verify with `show`, a negative test,
+cleanup) and ends **`**Lab verified by:** *pending*`** until a human runs
+it.
+
+**Shared prerequisites for Labs 3.1–3.13** — routing-capable Catalyst 9000
+or CML (IOL/CSR) nodes with an IP addressing plan across at least three
+routed links, privileged EXEC access. **Cost:** none beyond lab resources;
+each lab removes its config.
+
+### Lab 3.1 — Interpret the routing table and forwarding decision (CCNA 3.1, 3.2)
+
+**Objective:** Read how the router selects a route (longest match, AD,
+metric).
+
+```text
+R1# show ip route
+R1# show ip route 10.1.1.1
+R1# show ip cef 10.1.1.1
+```
+
+**Expected result:** the routing table with codes (O, D, B, S), and the
+specific longest-match entry CEF will use to forward to `10.1.1.1`.
+
+**Negative test:** two routes to the same prefix from different protocols —
+the lower administrative distance wins regardless of metric; confirm with
+`show ip route <prefix>`.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.2 — Configure and verify IPv4/IPv6 static routing (CCNA 3.3)
+
+**Objective:** Add a static and a default route for both address families.
+
+```text
+R1(config)# ip route 10.2.2.0 255.255.255.0 192.0.2.2
+R1(config)# ipv6 route 2001:db8:2::/64 2001:db8:12::2
+R1(config)# ip route 0.0.0.0 0.0.0.0 192.0.2.2
+R1# show ip route static
+```
+
+**Expected result:** the static routes with AD 1 and the gateway of last
+resort set to `192.0.2.2`.
+
+**Negative test:** point a static route at a next hop that is not on a
+connected subnet; it stays out of the table (`show ip route` omits it) until
+recursion resolves — the connected-next-hop rule.
+
+**Cleanup:** `no ip route 10.2.2.0 255.255.255.0 192.0.2.2` (and the others).
+
+### Lab 3.3 — Configure and verify OSPFv2 (CCNA 3.4, ENCOR 3.2, ENARSI 1.10)
+
+**Objective:** Bring up an OSPF adjacency and confirm the LSDB.
+
+```text
+R1(config)# router ospf 1
+R1(config-router)# network 192.0.2.0 0.0.0.255 area 0
+R1(config-router)# router-id 1.1.1.1
+R1# show ip ospf neighbor
+R1# show ip ospf database
+```
+
+**Expected result:** the neighbor reaches `FULL` and the LSDB lists both
+router-IDs — a converged area 0.
+
+**Negative test:** mismatch the OSPF hello/dead timers or area on the link;
+the adjacency stalls in `EXSTART`/`INIT` — a classic OSPF troubleshooting
+case.
+
+**Cleanup:** `no router ospf 1`.
+
+### Lab 3.4 — Configure and troubleshoot EIGRP (ENCOR 3.2, ENARSI 1.9)
+
+**Objective:** Configure named-mode EIGRP and read the topology table.
+
+```text
+R1(config)# router eigrp CORP
+R1(config-router)# address-family ipv4 unicast autonomous-system 100
+R1(config-router-af)# network 192.0.2.0 0.0.0.255
+R1# show ip eigrp neighbors
+R1# show ip eigrp topology
+```
+
+**Expected result:** an EIGRP neighbor `Up` and successors/feasible
+successors in the topology table.
+
+**Negative test:** mismatch the AS number between neighbors; no adjacency
+forms — EIGRP AS must match, unlike OSPF process IDs.
+
+**Cleanup:** `no router eigrp CORP`.
+
+### Lab 3.5 — Configure and troubleshoot BGP (ENCOR 3.2, ENARSI 1.11)
+
+**Objective:** Establish an eBGP session and advertise a prefix.
+
+```text
+R1(config)# router bgp 65001
+R1(config-router)# neighbor 192.0.2.2 remote-as 65002
+R1(config-router)# network 10.1.1.0 mask 255.255.255.0
+R1# show ip bgp summary
+R1# show ip bgp
+```
+
+**Expected result:** the neighbor state `Established` and `10.1.1.0/24`
+advertised/received.
+
+**Negative test:** eBGP peers not directly connected without
+`ebgp-multihop`; the session never establishes — the TTL check the option
+relaxes.
+
+**Cleanup:** `no router bgp 65001`.
+
+### Lab 3.6 — Configure a first-hop redundancy protocol (CCNA 3.5)
+
+**Objective:** Configure HSRP and verify active/standby roles.
+
+```text
+R1(config-if)# standby 1 ip 10.10.10.1
+R1(config-if)# standby 1 priority 110
+R1(config-if)# standby 1 preempt
+R1# show standby brief
+```
+
+**Expected result:** `R1` is `Active` (priority 110) with the virtual IP
+`10.10.10.1`; the peer is `Standby`.
+
+**Negative test:** omit `preempt`; a recovered higher-priority router stays
+`Standby` — preempt is required to reclaim the active role.
+
+**Cleanup:** `no standby 1` on the interface.
+
+### Lab 3.7 — Troubleshoot administrative distance (ENARSI 1.1)
+
+**Objective:** Change AD to influence route selection and prove it.
+
+```text
+R1(config)# router ospf 1
+R1(config-router)# distance 130
+R1# show ip route 10.2.2.0
+```
+
+**Expected result:** with OSPF AD raised to 130 (above EIGRP's 90), the
+EIGRP path to `10.2.2.0` now wins — AD, not metric, decided.
+
+**Negative test:** setting AD above 255 is rejected; 255 means "unusable"
+and drops the route entirely — the AD ceiling.
+
+**Cleanup:** `no distance 130` under the OSPF process.
+
+### Lab 3.8 — Configure and verify route maps (ENARSI 1.2)
+
+**Objective:** Tag routes with a route map for later matching.
+
+```text
+R1(config)# route-map TAG-BRANCH permit 10
+R1(config-route-map)# set tag 100
+R1(config)# router ospf 1
+R1(config-router)# redistribute eigrp 100 route-map TAG-BRANCH subnets
+R1# show route-map TAG-BRANCH
+```
+
+**Expected result:** redistributed EIGRP routes carry tag 100 (`show ip
+route <prefix>` shows the tag) — the hook for loop-prevention filtering.
+
+**Negative test:** a route map with a `match` that nothing satisfies and no
+`permit` catch-all denies everything (implicit deny) — order and the final
+permit matter.
+
+**Cleanup:** remove the redistribute and `no route-map TAG-BRANCH`.
+
+### Lab 3.9 — Troubleshoot redistribution and loop prevention (ENARSI 1.3, 1.4)
+
+**Objective:** Redistribute mutually and block the tag to prevent a loop.
+
+```text
+R1(config)# route-map DENY-TAG deny 10
+R1(config-route-map)# match tag 100
+R1(config-route-map)# route-map DENY-TAG permit 20
+R1(config)# router eigrp CORP
+R1(config-router-af)# topology base
+R1(config-router-af-topology)# redistribute ospf 1 route-map DENY-TAG
+R1# show ip route eigrp
+```
+
+**Expected result:** routes tagged 100 (originally from EIGRP) are not
+redistributed back into EIGRP — the tag-based loop prevention holds.
+
+**Negative test:** mutual redistribution with no tag filtering creates a
+feedback loop; a route re-enters its origin protocol with a better AD,
+causing a routing loop — exactly what the tag filter stops.
+
+**Cleanup:** remove the redistribute and route map.
+
+### Lab 3.10 — Configure summarization (ENARSI 1.5)
+
+**Objective:** Summarize routes at a boundary and verify the aggregate.
+
+```text
+R1(config-if)# ip summary-address eigrp 100 10.8.0.0 255.252.0.0
+R1# show ip protocols
+R1# show ip route eigrp
+```
+
+**Expected result:** downstream neighbors see one `10.8.0.0/14` summary
+instead of the component /16s, and a Null0 discard route appears locally.
+
+**Negative test:** a summary that is too broad drops traffic to a subnet outside
+the aggregate's real coverage via the Null0 route — size the summary to the
+actual prefixes.
+
+**Cleanup:** `no ip summary-address eigrp 100 10.8.0.0 255.252.0.0`.
+
+### Lab 3.11 — Configure and verify policy-based routing (ENARSI 1.6)
+
+**Objective:** Force traffic from one source out a specific next hop.
+
+```text
+R1(config)# access-list 101 permit ip 10.20.0.0 0.0.255.255 any
+R1(config)# route-map PBR-GUEST permit 10
+R1(config-route-map)# match ip address 101
+R1(config-route-map)# set ip next-hop 203.0.113.2
+R1(config-if)# ip policy route-map PBR-GUEST
+R1# show route-map PBR-GUEST
+```
+
+**Expected result:** guest traffic (10.20.0.0/16) is forwarded to
+`203.0.113.2` regardless of the routing table — policy overrides
+destination routing.
+
+**Negative test:** a PBR next hop that is unreachable falls back to normal
+routing (unless `set interface`/`default` forces a drop) — verify the next
+hop is live.
+
+**Cleanup:** `no ip policy route-map PBR-GUEST` and remove the route map/ACL.
+
+### Lab 3.12 — Configure and verify VRF-Lite (ENARSI 1.7)
+
+**Objective:** Isolate a guest network in its own VRF.
+
+```text
+R1(config)# vrf definition GUEST
+R1(config-vrf)# address-family ipv4
+R1(config-if)# vrf forwarding GUEST
+R1(config-if)# ip address 10.20.0.1 255.255.255.0
+R1# show ip route vrf GUEST
+```
+
+**Expected result:** the GUEST VRF has its own routing table, separate from
+the global table — traffic isolation without separate hardware.
+
+**Negative test:** ping a global-table host from the GUEST VRF without route
+leaking; it fails — VRFs are isolated by default.
+
+**Cleanup:** `no vrf definition GUEST` (removes interface bindings).
+
+### Lab 3.13 — Configure Bidirectional Forwarding Detection (ENARSI 1.8)
+
+**Objective:** Add sub-second failure detection to a routing protocol.
+
+```text
+R1(config-if)# bfd interval 300 min_rx 300 multiplier 3
+R1(config)# router ospf 1
+R1(config-router)# bfd all-interfaces
+R1# show bfd neighbors
+```
+
+**Expected result:** a BFD session `Up` on the OSPF link; a link failure is
+detected in ~900 ms instead of the OSPF dead interval.
+
+**Negative test:** enable BFD on only one side; the session stays `Down` and
+provides no faster detection — BFD must be bidirectional.
+
+**Cleanup:** `no bfd all-interfaces` under OSPF and remove the interface
+BFD timers.
+
+### Lab 3.14 — Multi-area OSPF with EIGRP redistribution and PBR (integrative)
+
 **Objective:** Build a two-area OSPF topology with EIGRP at one branch,
 redistribute safely between them, and add IP SLA–tracked PBR for a guest
 VRF.

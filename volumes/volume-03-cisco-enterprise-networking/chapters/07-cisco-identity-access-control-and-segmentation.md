@@ -333,6 +333,223 @@ DIST-01# show cts role-based permissions
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the security exam
+topics that map here — **CCNA Domain 5 (Security Fundamentals)**, **ENCOR
+Domain 5 (Security)**, and **ENARSI Domain 3 (Infrastructure Security)** —
+mapped in the volume README's coverage tables. Each is a full IOS XE
+walkthrough and ends **`**Lab verified by:** *pending*`** until a human runs
+it.
+
+**Shared prerequisites for Labs 7.1–7.10** — Catalyst 9000/CML routers and
+switches, a RADIUS/TACACS+ (ISE) server where noted, privileged EXEC access.
+**Cost:** none beyond lab resources; each lab removes its config.
+
+### Lab 7.1 — Define and apply key security concepts (CCNA 5.1, 5.2)
+
+**Objective:** Read the device's own exposure surface (the concepts made
+concrete).
+
+```text
+R1# show ip interface brief
+R1# show running-config | include password|secret|transport|access-class
+R1# show users
+```
+
+**Expected result:** open management surfaces (VTY transports, enable
+secret, any cleartext passwords) — the threat/vulnerability inventory the
+concepts name.
+
+**Negative test:** a device with `enable password` (reversible type-7)
+instead of `enable secret` (hashed) is a vulnerability an attacker exploits
+from a config backup.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.2 — Configure device access control with local passwords (CCNA 5.3, 5.4, ENCOR 5.1)
+
+**Objective:** Harden local authentication.
+
+```text
+R1(config)# enable secret 9 <hash>
+R1(config)# username admin privilege 15 secret <pw>
+R1(config)# service password-encryption
+R1(config)# security passwords min-length 10
+R1# show running-config | include secret|min-length
+```
+
+**Expected result:** hashed enable and user secrets, encrypted stored
+passwords, and a 10-character minimum — the local-password policy elements.
+
+**Negative test:** `service password-encryption` uses reversible type-7
+encoding; rely on it alone and a leaked config is trivially decoded — use
+`secret` (type 8/9) for anything that matters.
+
+**Cleanup:** restore prior credentials (keep the hardened defaults).
+
+### Lab 7.3 — Configure and verify access control lists (CCNA 5.6)
+
+**Objective:** Filter traffic with an extended, named ACL.
+
+```text
+R1(config)# ip access-list extended GUEST-FILTER
+R1(config-ext-nacl)# deny ip any 10.0.0.0 0.255.255.255
+R1(config-ext-nacl)# permit ip any any
+R1(config-if)# ip access-group GUEST-FILTER in
+R1# show access-lists GUEST-FILTER
+```
+
+**Expected result:** guest traffic to RFC1918 space is denied while internet
+traffic passes; `show access-lists` shows per-line hit counts.
+
+**Negative test:** place `permit ip any any` above the deny; the deny is
+never reached (implicit order) — ACL order is the control.
+
+**Cleanup:** remove the access-group and the ACL.
+
+### Lab 7.4 — Configure Layer 2 security features (CCNA 5.7, ENCOR 5.2)
+
+**Objective:** Enable DHCP snooping and dynamic ARP inspection.
+
+```text
+SW1(config)# ip dhcp snooping
+SW1(config)# ip dhcp snooping vlan 20
+SW1(config)# interface gig1/0/1
+SW1(config-if)# ip dhcp snooping trust
+SW1(config)# ip arp inspection vlan 20
+SW1# show ip dhcp snooping
+```
+
+**Expected result:** untrusted access ports drop rogue DHCP offers, and DAI
+validates ARP against the snooping binding table — L2 spoofing defenses.
+
+**Negative test:** leave the uplink to the real DHCP server untrusted; its
+offers are dropped and clients get no address — the server port must be
+trusted.
+
+**Cleanup:** `no ip dhcp snooping` and `no ip arp inspection vlan 20`.
+
+### Lab 7.5 — Configure AAA with TACACS+/RADIUS (CCNA 5.8, ENARSI 3.1)
+
+**Objective:** Centralize admin authentication with a local fallback.
+
+```text
+R1(config)# aaa new-model
+R1(config)# tacacs server ISE
+R1(config-server-tacacs)# address ipv4 10.0.0.50
+R1(config-server-tacacs)# key <shared-key>
+R1(config)# aaa authentication login default group tacacs+ local
+R1# test aaa group tacacs+ admin <pw> legacy
+```
+
+**Expected result:** `test aaa` succeeds against TACACS+; if the server is
+down, the `local` method authenticates — centralized AAA with a break-glass.
+
+**Negative test:** `aaa authentication login default group tacacs+` with no
+`local` fallback locks out all admins when ISE is unreachable — always keep
+a local method.
+
+**Cleanup:** remove the TACACS server and revert AAA (keep a local login).
+
+### Lab 7.6 — Configure control plane policing (ENARSI 3.3)
+
+**Objective:** Rate-limit management traffic to the control plane.
+
+```text
+R1(config)# access-list 120 permit tcp any any eq 22
+R1(config)# class-map CoPP-SSH
+R1(config-cmap)# match access-group 120
+R1(config)# policy-map CONTROL-PLANE-POLICY
+R1(config-pmap-c)# class CoPP-SSH
+R1(config-pmap-c)# police 8000 conform-action transmit exceed-action drop
+R1(config)# control-plane
+R1(config-cp)# service-policy input CONTROL-PLANE-POLICY
+R1# show policy-map control-plane
+```
+
+**Expected result:** SSH to the router is policed to 8 kbps; a flood is
+dropped before it reaches the CPU — control-plane protection.
+
+**Negative test:** a CoPP policy that polices *all* traffic including
+routing protocol hellos can break adjacencies — scope the classes carefully.
+
+**Cleanup:** remove the control-plane service-policy and the policy/class/ACL.
+
+### Lab 7.7 — Troubleshoot router security features (ENARSI 3.2)
+
+**Objective:** Audit management-plane hardening.
+
+```text
+R1# show running-config | include login block|access-class|exec-timeout
+R1(config)# login block-for 120 attempts 5 within 60
+R1# show login
+```
+
+**Expected result:** login throttling active (5 failures in 60s triggers a
+120s block) — brute-force protection on the VTYs.
+
+**Negative test:** VTY lines with no `access-class` accept management
+connections from anywhere; restrict with an ACL bound to the line.
+
+**Cleanup:** `no login block-for`.
+
+### Lab 7.8 — Describe IPv6 first-hop security (ENARSI 3.4)
+
+**Objective:** Protect the IPv6 first hop with RA Guard.
+
+```text
+SW1(config)# ipv6 nd raguard policy HOST
+SW1(config-nd-raguard)# device-role host
+SW1(config-if)# ipv6 nd raguard attach-policy HOST
+SW1# show ipv6 nd raguard policy HOST
+```
+
+**Expected result:** access ports drop rogue Router Advertisements — a
+malicious host cannot become the default gateway.
+
+**Negative test:** apply `device-role router` to a host port; rogue RAs are
+permitted and hosts can be redirected — the role must match the port.
+
+**Cleanup:** remove the RA Guard policy from the interface.
+
+### Lab 7.9 — Describe REST API security (ENCOR 5.3)
+
+**Objective:** Read how the device's management API is authenticated.
+
+```text
+R1(config)# restconf
+R1(config)# ip http secure-server
+R1# show platform software yang-management process
+```
+
+**Expected result:** RESTCONF served over HTTPS with the YANG-management
+processes running — API access is authenticated (AAA) and encrypted (TLS).
+
+**Negative test:** enabling `ip http server` (plain HTTP) for the API exposes
+credentials and tokens in cleartext; require `secure-server` (HTTPS) only.
+
+**Cleanup:** `no ip http server` (keep secure-server).
+
+### Lab 7.10 — Describe network security design components (ENCOR 5.4)
+
+**Objective:** Inventory the segmentation/policy components in use.
+
+```text
+R1# show vrf
+R1# show cts environment-data
+R1# show access-lists summary
+```
+
+**Expected result:** the VRFs (segmentation), TrustSec/SGT environment
+(identity-based policy), and ACLs (enforcement) — the components a security
+design composes.
+
+**Negative test:** relying on ACLs alone at scale becomes unmanageable;
+identity-based segmentation (SGT/VRF) is what the design uses to scale.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.11 — 802.1X with MAB fallback and dynamic authorization (integrative)
+
 **Objective:** Deploy 802.1X with MAB fallback on an access port in open
 mode, confirm authorization results (VLAN/dACL) from a RADIUS/ISE policy
 server, and validate CLI administrator access uses TACACS+.

@@ -335,6 +335,160 @@ DIST-01# show stackwise-virtual dual-active-detection
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the campus-switching
+exam topics that map here — **CCNA Domain 2 (Network Access)** switching
+items and **ENCOR Domain 3.1 (Layer 2)** — mapped in the volume README's
+coverage tables. Each is a full IOS XE walkthrough and ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 2.1–2.7** — two or more Catalyst 9000 (or
+CML) switches with a trunked interconnect and an access host, privileged
+EXEC access. **Cost:** none beyond lab resources; each lab removes its
+config.
+
+### Lab 2.1 — Configure and verify VLANs (CCNA 2.1)
+
+**Objective:** Create VLANs and assign an access port.
+
+```text
+SW1(config)# vlan 20
+SW1(config-vlan)# name USERS
+SW1(config)# interface gig1/0/5
+SW1(config-if)# switchport mode access
+SW1(config-if)# switchport access vlan 20
+SW1# show vlan brief
+```
+
+**Expected result:** VLAN 20 `USERS` active with `Gi1/0/5` listed as a
+member.
+
+**Negative test:** assign a port to a VLAN that does not exist; the port
+goes to an inactive VLAN and the host loses connectivity — create the VLAN
+first.
+
+**Cleanup:** `no vlan 20` and reset the interface.
+
+### Lab 2.2 — Configure and verify interswitch connectivity (CCNA 2.2)
+
+**Objective:** Bring up an 802.1Q trunk between switches.
+
+```text
+SW1(config)# interface gig1/0/1
+SW1(config-if)# switchport mode trunk
+SW1(config-if)# switchport trunk allowed vlan 10,20,30
+SW1# show interfaces trunk
+```
+
+**Expected result:** `Gi1/0/1` in trunking mode carrying VLANs 10, 20, 30.
+
+**Negative test:** mismatch the native VLAN across the trunk; CDP logs a
+native-VLAN-mismatch and untagged traffic lands in the wrong VLAN.
+
+**Cleanup:** `no switchport mode trunk` on the interface.
+
+### Lab 2.3 — Configure and verify Layer 2 discovery protocols (CCNA 2.3)
+
+**Objective:** Read neighbor topology with CDP and LLDP.
+
+```text
+SW1(config)# lldp run
+SW1# show cdp neighbors detail
+SW1# show lldp neighbors
+```
+
+**Expected result:** directly connected Cisco devices via CDP and any
+LLDP-speaking (multi-vendor) neighbors, with port and platform detail.
+
+**Negative test:** `no cdp run` globally; the neighbor vanishes from
+`show cdp neighbors`, and a device relying on CDP for VoIP VLAN assignment
+loses it.
+
+**Cleanup:** `no lldp run`.
+
+### Lab 2.4 — Configure and verify EtherChannel (CCNA 2.4)
+
+**Objective:** Bundle two links into a LACP port channel.
+
+```text
+SW1(config)# interface range gig1/0/1-2
+SW1(config-if-range)# channel-group 1 mode active
+SW1(config)# interface port-channel 1
+SW1(config-if)# switchport mode trunk
+SW1# show etherchannel summary
+```
+
+**Expected result:** `Po1` in `SU` (in use) state with both member ports
+bundled `(P)`.
+
+**Negative test:** set one side `active` and the other `on`; the channel
+fails to form (LACP vs no-negotiation mismatch) and ports may err-disable
+from a loop.
+
+**Cleanup:** `no interface port-channel 1` and remove channel-group from
+members.
+
+### Lab 2.5 — Interpret Rapid PVST+ Spanning Tree (CCNA 2.5, ENCOR 3.1)
+
+**Objective:** Read and influence the STP topology.
+
+```text
+SW1(config)# spanning-tree mode rapid-pvst
+SW1(config)# spanning-tree vlan 20 root primary
+SW1# show spanning-tree vlan 20
+```
+
+**Expected result:** `SW1` is root for VLAN 20 (lowest bridge ID), with
+per-port roles (Root/Designated/Alternate) and states (Forwarding/Blocking).
+
+**Negative test:** two switches configured `root primary` for the same VLAN;
+the lower MAC wins and the intended root is not elected — priority ties break
+on MAC.
+
+**Cleanup:** `no spanning-tree vlan 20 root primary`.
+
+### Lab 2.6 — Configure device management access (CCNA 2.8)
+
+**Objective:** Secure management with SSH on a VTY line.
+
+```text
+SW1(config)# ip domain name lab.example
+SW1(config)# crypto key generate rsa modulus 2048
+SW1(config)# line vty 0 15
+SW1(config-line)# transport input ssh
+SW1(config-line)# login local
+SW1# show ip ssh
+```
+
+**Expected result:** SSH v2 enabled and VTY lines restricted to SSH — Telnet
+is refused.
+
+**Negative test:** leave `transport input telnet`; credentials cross the
+network in cleartext — the exposure SSH-only closes.
+
+**Cleanup:** restore prior VTY config; keep SSH (secure default).
+
+### Lab 2.7 — Configure Layer 2 STP protection (ENCOR 3.1)
+
+**Objective:** Protect the edge with PortFast and BPDU Guard.
+
+```text
+SW1(config)# interface gig1/0/5
+SW1(config-if)# spanning-tree portfast
+SW1(config-if)# spanning-tree bpduguard enable
+SW1# show spanning-tree interface gig1/0/5 detail
+```
+
+**Expected result:** the access port transitions to forwarding immediately
+(PortFast) and err-disables if it ever receives a BPDU (BPDU Guard).
+
+**Negative test:** plug a switch into a PortFast+BPDU-Guard port; it
+err-disables the port — preventing the L2 loop an unexpected switch would
+create.
+
+**Cleanup:** remove PortFast and BPDU Guard from the interface.
+
+### Lab 2.8 — Distribution pair with HSRP and loop-free EtherChannel uplink (integrative)
+
 **Objective:** Build a two-switch distribution pair with HSRP and an
 access switch attached by a trunked, EtherChannel uplink, then verify loop
 protection.

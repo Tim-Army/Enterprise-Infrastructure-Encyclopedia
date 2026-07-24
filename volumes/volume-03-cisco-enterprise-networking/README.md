@@ -336,6 +336,168 @@ current lab blueprint and format on the Cisco Learning Network before
 scheduling — CCIE lab topics are separate documents from the written
 exam topics and change independently.
 
+## Topic-level lab coverage
+
+Every exam topic across **all current Cisco Enterprise certifications** — the
+CCNP Enterprise core and concentrations, the wireless implementation exam,
+the assurance and cloud-connectivity exams, and CCIE Enterprise
+Infrastructure — is covered by a hands-on **walkthrough** lab or a Design
+Exercise. Exam topics were harvested from Cisco's official exam-topics PDFs
+(`learningcontent.cisco.com/documents/marketing/exam-topics`) on 24 July
+2026. Labs use IOS XE CLI, Python (Netmiko/ncclient/requests), Ansible,
+NETCONF/RESTCONF and model-driven telemetry, and the Catalyst Center /
+vManage / Meraki / ThousandEyes REST APIs; each carries
+`**Lab verified by:** *pending*` until a human runs it.
+
+| Certification | Exam | Coverage |
+| --- | --- | --- |
+| CCNA | 200-301 | Domains 1–6 across Chapters 01–03, 05–08 (see alignment tables) |
+| CCNP Ent. Core / CCIE written | 350-401 ENCOR | Domains 1–6 across Chapters 01–09 |
+| CCNP Ent. concentration | 300-410 ENARSI | Ch. 03 (L3), 04 (VPN), 06–07 (services, security) |
+| CCNP Ent. concentration | 300-415 ENSDWI | Chapter 04, Labs 4.4–4.29 |
+| CCNP Ent. concentration | 300-420 ENSLD | Chapter 08 **Design Exercise** |
+| CCNP Ent. concentration | 300-435 ENAUTO | Chapter 08, Labs 8.1–8.35 |
+| CCNP Ent. concentration | 300-425 ENWLSD | Chapter 05 **Design Exercise** |
+| CCNP Ent. concentration | 300-430 ENWLSI | Chapter 05, Labs 5.7–5.35 |
+| CCNP Ent. concentration | 300-440 ENCC | Chapter 04 SD-WAN/cloud/IPsec labs (4.3–4.23) |
+| CCNP Ent. concentration | 300-445 ENNA | Chapter 09, Labs 9.8–9.29 |
+| **CCIE Enterprise Infrastructure** | written 350-401 + 8-hr lab | see module map below |
+
+The CCNA, ENCOR, and ENARSI blueprint domains and their chapter mappings are
+in the **Certification alignment** section above; every domain resolves to
+the topic-level labs in the mapped chapters. The three implementation
+concentrations map one lab per exam topic:
+
+**ENSDWI 300-415 → Chapter 4**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Describe Cisco SD-WAN architecture and components | Lab 4.4 |
+| 1.2 Describe Cisco SD-WAN Edge platforms and capabilities | Lab 4.5 |
+| 1.3 Describe Cisco SD-WAN Cloud OnRamp | Lab 4.6 |
+| 2.1 Describe controller cloud deployment | Lab 4.7 |
+| 2.2 Describe controller on-premises deployment | Lab 4.8 |
+| 2.3 Configure certificates and device lists | Lab 4.9 |
+| 2.4 Troubleshoot control plane connectivity | Lab 4.10 |
+| 3.1 Describe WAN Edge deployment | Lab 4.11 |
+| 3.2 Configure Cisco SD-WAN data plane | Lab 4.12 |
+| 3.3 Configure OMP | Lab 4.13 |
+| 3.4 Configure TLOCs | Lab 4.14 |
+| 3.6 Configure CLI and vManage feature configuration templates | Lab 4.15 |
+| 3.7 Describe configuration groups, feature profiles, and workflows | Lab 4.16 |
+| 4.1 Configure control policies | Lab 4.17 |
+| 4.2 Configure data policies | Lab 4.18 |
+| 4.3 Configure end-to-end segmentation | Lab 4.19 |
+| 4.4 Configure Cisco SD-WAN application-aware routing | Lab 4.20 |
+| 4.5 Configure direct Internet access | Lab 4.21 |
+| 5.1 Configure service insertion | Lab 4.22 |
+| 5.2 Describe Cisco SD-WAN security features | Lab 4.23 |
+| 5.3 Describe Cloud security integration | Lab 4.24 |
+| 5.4 Configure QoS treatment on WAN Edge routers | Lab 4.25 |
+| 5.5 Describe Application Quality of Experience (App-QoE) | Lab 4.26 |
+| 6.1 Describe authentication, monitoring, and reporting from vManage | Lab 4.27 |
+| 6.2 Configure authentication, monitoring, and reporting | Lab 4.28 |
+| 6.3 Describe REST API monitoring | Lab 4.29 |
+| 6.4 Describe software image management from vManage | Lab 4.30 |
+
+**ENAUTO 300-435 → Chapter 8**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Utilize common version control operations with git (add, clone, push, commit, diff, | Lab 8.1 |
+| 1.2 Describe characteristics of API styles (REST and RPC) | Lab 8.2 |
+| 1.3 Describe the challenges encountered and patterns used when consuming APIs | Lab 8.3 |
+| 1.4 Interpret Python scripts containing data types, functions, classes, conditions, and | Lab 8.4 |
+| 1.5 Describe the benefits of Python virtual environments | Lab 8.5 |
+| 1.6 Explain the benefits of using network configuration tools such as Ansible and Terraform | Lab 8.6 |
+| 2.1 Identify the JSON instance based on a YANG model (including YANG Suite) | Lab 8.7 |
+| 2.2 Identify the XML instance based on a YANG model (including YANG Suite) | Lab 8.8 |
+| 2.3 Interpret a YANG module tree generated per RFC8340 | Lab 8.9 |
+| 2.4 Compare functionality, benefits, and uses of OpenConfig, IETF, and native YANG models | Lab 8.10 |
+| 2.5 Compare functionality, benefits, and uses of NETCONF and RESTCONF | Lab 8.11 |
+| 3.1 Implement device management and monitoring using NetMiko | Lab 8.12 |
+| 3.2 Construct a Python script using ncclient that uses NETCONF to manage and monitor an | Lab 8.13 |
+| 3.3 Configure device using RESTCONF API utilizing Python requests library | Lab 8.14 |
+| 3.4 Utilize Ansible to configure an IOS XE device | Lab 8.15 |
+| 3.5 Configure a subscription for model driven telemetry on an IOS XE device (CLI, NETCONF, | Lab 8.16 |
+| 3.6 Compare publication and subscription telemetry models | Lab 8.17 |
+| 3.7 Describe the benefits and usage of telemetry data in troubleshooting the network | Lab 8.18 |
+| 3.8 Describe Day 0 provisioning methods | Lab 8.19 |
+| 4.1 Compare traditional versus software-defined networks | Lab 8.20 |
+| 4.2 Describe the features and capabilities of Cisco DNA Center | Lab 8.21 |
+| 4.3 Implement Cisco DNA Center event outbound webhooks | Lab 8.22 |
+| 4.4 Implement API requests for Cisco DNA Center to accomplish network management tasks | Lab 8.23 |
+| 4.5 Implement API requests for Cisco DNA Center to accomplish network management tasks | Lab 8.24 |
+| 4.6 Troubleshoot Cisco DNA Center automation process using Intent APIs | Lab 8.25 |
+| 5.1 Describe features and capabilities of Cisco SD-WAN vManage APIs | Lab 8.26 |
+| 5.2 Implement a Python script to perform API requests for Cisco SD-WAN vManage Device | Lab 8.27 |
+| 5.3 Construct API requests for Cisco SD-WAN vManage Administration APIs | Lab 8.28 |
+| 5.4 Implement a Python script to perform API requests for Cisco SD-WAN vManage | Lab 8.29 |
+| 5.5 Construct API requests for Cisco SD-WAN vManage Monitoring APIs (including real-time) | Lab 8.30 |
+| 5.6 Troubleshoot a Cisco SD-WAN deployment using vManage APIs | Lab 8.31 |
+| 6.1 Describe features and capabilities of Cisco Meraki | Lab 8.32 |
+| 6.2 Create a network using Cisco Meraki APIs | Lab 8.33 |
+| 6.3 Configure a network using Cisco Meraki APIs | Lab 8.34 |
+| 6.4 Implement a Python script for Cisco Meraki Alert WebHooks | Lab 8.35 |
+
+**ENWLSI 300-430 → Chapter 5**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Deploy FlexConnect components such as switching and operating modes | Lab 5.7 |
+| 1.2 Deploy FlexConnect capabilities | Lab 5.8 |
+| 1.3 Implement Office Extend | Lab 5.9 |
+| 2.1 Implement QoS schemes based on requirements including wired to wireless mapping | Lab 5.10 |
+| 2.2 Implement QoS for wireless clients | Lab 5.11 |
+| 2.3 Implement AVC including Fastlane (only on WLC) | Lab 5.12 |
+| 3.1 Implement multicast components | Lab 5.13 |
+| 3.2 Describe how multicast can affect wireless networks | Lab 5.14 |
+| 3.3 Implement multicast on a WLAN | Lab 5.15 |
+| 3.4 Implement mDNS | Lab 5.16 |
+| 3.5 Implement Multicast Direct | Lab 5.17 |
+| 4.1 Deploy CMX and Cisco Spaces on a wireless network | Lab 5.18 |
+| 4.2 Implement location services | Lab 5.19 |
+| 5.1 Implement CMX and Cisco Spaces components | Lab 5.20 |
+| 5.2 Implement location-aware guest services using custom portal and Facebook Wi-Fi | Lab 5.21 |
+| 5.3 Troubleshoot location accuracy using Cisco Hyperlocation | Lab 5.22 |
+| 5.4 Troubleshoot CMX high availability | Lab 5.23 |
+| 5.5 Implement wIPS using Cisco DNA Center | Lab 5.24 |
+| 6.1 Configure client profiling on WLC and ISE | Lab 5.25 |
+| 6.2 Implement BYOD and guest | Lab 5.26 |
+| 6.3 Implement 802.1X and AAA on different wireless architectures and ISE | Lab 5.27 |
+| 6.4 Implement Identity-Based Networking on different wireless architectures (VLANs, QoS, | Lab 5.28 |
+| 7.1 Utilize reports on PI and Cisco DNA center | Lab 5.29 |
+| 7.2 Manage alarms and rogues (APs and clients) | Lab 5.30 |
+| 7.3 Manage RF interferers | Lab 5.31 |
+| 7.4 Troubleshoot client connectivity | Lab 5.32 |
+| 8.1 Implement device access controls (including RADIUS and TACACS+) | Lab 5.33 |
+| 8.2 Implement access point authentication (including 802.1X) | Lab 5.34 |
+| 8.3 Implement control plane ACLs on the controller | Lab 5.35 |
+
+**ENCC 300-440 (Enterprise Cloud Connectivity)** — the connectivity
+(internet/private/SaaS to AWS/Azure/GCP), IPsec-to-cloud, SD-WAN Cloud
+OnRamp, and SD-WAN-policy topics map to Chapter 04's SD-WAN and VPN labs
+(4.3, 4.6, 4.16–4.23); the recommend/design and cloud-native-security topics
+draw on the same labs plus the Chapter 08 design reasoning.
+
+**ENNA 300-445 (Enterprise Network Assurance)** — the 23 topics map to
+Chapter 09 Labs 9.8–9.29 (ThousandEyes/Meraki/Catalyst Center assurance),
+with ENCOR's assurance domain in Labs 9.2–9.7.
+
+### CCIE Enterprise Infrastructure
+
+The CCIE EI **written qualifier is 350-401 ENCOR**, fully covered above. The
+8-hour hands-on **lab** blueprint is expert-depth application of the same
+technologies; its modules map to this volume's labs:
+
+| CCIE EI lab module | Chapters / labs |
+| --- | --- |
+| Network Infrastructure (L2/L3) | Chapters 02 (switching), 03 (routing) |
+| Software-Defined Infrastructure | Chapters 04 (SD-WAN), 09 (SD-Access) |
+| Transport Technologies and Solutions | Chapter 04 (MPLS, DMVPN, VPN) |
+| Infrastructure Security and Services | Chapters 06 (services, QoS), 07 (security) |
+| Infrastructure Automation | Chapter 08 (Python, NETCONF/RESTCONF, telemetry) |
+
 ## Building and validating this volume
 
 From the repository root, after completing

@@ -360,6 +360,259 @@ ACCESS-01# show ip igmp snooping groups
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the IP-services exam
+topics that map here — **CCNA Domain 4 (IP Services)**, **ENCOR QoS
+(1.4) and IP Services (3.3)**, and **ENARSI Domain 4 (Infrastructure
+Services)** — mapped in the volume README's coverage tables. Each is a full
+IOS XE walkthrough and ends **`**Lab verified by:** *pending*`** until a
+human runs it.
+
+**Shared prerequisites for Labs 6.1–6.12** — Catalyst 9000/CML routers and
+switches, a management host, an NTP/SNMP/syslog collector where noted,
+privileged EXEC access. **Cost:** none beyond lab resources.
+
+### Lab 6.1 — Configure and verify inside source NAT (CCNA 4.1)
+
+**Objective:** PAT inside hosts behind one public address.
+
+```text
+R1(config)# ip nat inside source list 1 interface gig0/1 overload
+R1(config)# access-list 1 permit 10.10.0.0 0.0.255.255
+R1(config-if)# ip nat inside   ! on the inside interface
+R1# show ip nat translations
+```
+
+**Expected result:** inside hosts sharing the `Gi0/1` address, each on a
+unique port — `show ip nat translations` lists the mappings.
+
+**Negative test:** forget `ip nat inside/outside` on the interfaces; NAT
+never triggers and translations stay empty — the interface roles are
+required.
+
+**Cleanup:** remove the NAT statement, ACL, and interface `ip nat` roles.
+
+### Lab 6.2 — Configure and verify NTP (CCNA 4.2)
+
+**Objective:** Sync the clock to an NTP server.
+
+```text
+R1(config)# ntp server 10.0.0.10
+R1# show ntp associations
+R1# show ntp status
+```
+
+**Expected result:** an association with `*` (synced) and stratum below 16 —
+accurate time for logs, certificates, and Kerberos.
+
+**Negative test:** a server unreachable or off by more than the panic
+threshold; the client never syncs (`unsynchronized`) — time skew breaks
+TLS/log correlation.
+
+**Cleanup:** `no ntp server 10.0.0.10`.
+
+### Lab 6.3 — Configure and verify DHCP client and relay (CCNA 4.3, 4.6)
+
+**Objective:** Relay DHCP from a remote subnet to a central server.
+
+```text
+R1(config-if)# ip helper-address 10.0.0.50
+R1# show ip dhcp binding
+R1# debug ip dhcp server packet   ! observe relay
+```
+
+**Expected result:** clients on the SVI receive addresses from the central
+server; the relay forwards DISCOVER/OFFER across the subnet boundary.
+
+**Negative test:** omit `ip helper-address`; broadcasts do not cross the
+router and clients get no lease — the relay is what bridges the subnets.
+
+**Cleanup:** `no ip helper-address 10.0.0.50`; `undebug all`.
+
+### Lab 6.4 — Configure and troubleshoot SNMP (CCNA 4.4, ENARSI 4.2)
+
+**Objective:** Enable SNMPv3 with authPriv and verify the engine.
+
+```text
+R1(config)# snmp-server group NETMON v3 priv
+R1(config)# snmp-server user MON NETMON v3 auth sha AuthPass priv aes 128 PrivPass
+R1# show snmp user
+R1# show snmp engineID
+```
+
+**Expected result:** the SNMPv3 user in group `NETMON` with SHA/AES — secure
+polling, no cleartext community strings.
+
+**Negative test:** an NMS configured for `authNoPriv` cannot read from an
+`authPriv`-only user; the security level must match end to end.
+
+**Cleanup:** remove the SNMP user and group.
+
+### Lab 6.5 — Configure and troubleshoot syslog (CCNA 4.5, ENARSI 4.3)
+
+**Objective:** Send timestamped logs to a syslog server at a set severity.
+
+```text
+R1(config)# service timestamps log datetime msec
+R1(config)# logging host 10.0.0.60
+R1(config)# logging trap informational
+R1# show logging
+```
+
+**Expected result:** logs at severity 6 and above stream to `10.0.0.60` with
+millisecond timestamps.
+
+**Negative test:** set `logging trap emergencies` (severity 0); routine
+interface flaps (severity 3–5) are never sent — the trap level gates what
+forwards.
+
+**Cleanup:** `no logging host 10.0.0.60`.
+
+### Lab 6.6 — Configure QoS classification and marking (CCNA 4.7, ENCOR 1.4)
+
+**Objective:** Classify and mark voice traffic with MQC.
+
+```text
+R1(config)# class-map match-any VOICE
+R1(config-cmap)# match dscp ef
+R1(config)# policy-map WAN-EDGE
+R1(config-pmap-c)# class VOICE
+R1(config-pmap-c)# priority percent 20
+R1(config-if)# service-policy output WAN-EDGE
+R1# show policy-map interface gig0/1
+```
+
+**Expected result:** EF-marked voice gets a 20% low-latency queue; `show
+policy-map interface` shows matches and any drops per class.
+
+**Negative test:** trust markings at an untrusted edge; a host marking its
+bulk traffic EF steals the priority queue — mark at a trust boundary, do not
+blindly trust.
+
+**Cleanup:** remove the service-policy, policy-map, and class-map.
+
+### Lab 6.7 — Configure remote access using SSH (CCNA 4.8)
+
+**Objective:** Confirm SSH-only management (as Chapter 02, at the router).
+
+```text
+R1(config)# ip ssh version 2
+R1(config)# line vty 0 4
+R1(config-line)# transport input ssh
+R1# show ip ssh
+```
+
+**Expected result:** SSH v2 enforced on the VTYs — encrypted management.
+
+**Negative test:** `transport input all` re-permits Telnet; a port scan
+finds TCP/23 open — restrict to SSH.
+
+**Cleanup:** keep SSH (secure default).
+
+### Lab 6.8 — Use TFTP/FTP for file transfer (CCNA 4.9)
+
+**Objective:** Archive the running config to a server.
+
+```text
+R1# copy running-config tftp://10.0.0.70/R1-backup.cfg
+R1(config)# archive
+R1(config-archive)# path ftp://user:pass@10.0.0.70/R1-
+R1# show archive
+```
+
+**Expected result:** the config is written to the TFTP/FTP server and the
+archive tracks versions — off-box configuration backup.
+
+**Negative test:** TFTP to an unreachable/read-only server fails with a
+timeout/permission error — verify server reachability and write permission.
+
+**Cleanup:** remove the archive path.
+
+### Lab 6.9 — Configure and verify IP SLA with tracking (ENARSI 4.5)
+
+**Objective:** Measure reachability/latency and track it.
+
+```text
+R1(config)# ip sla 10
+R1(config-ip-sla)# icmp-echo 203.0.113.1
+R1(config-ip-sla)# frequency 5
+R1(config)# ip sla schedule 10 life forever start-time now
+R1(config)# track 1 ip sla 10 reachability
+R1# show ip sla statistics 10
+```
+
+**Expected result:** SLA 10 running with RTT stats, and track 1 `Up` while
+the target answers — the hook for a tracked static route or PBR.
+
+**Negative test:** the target goes unreachable; track 1 transitions to
+`Down`, and any tracked object (route, HSRP priority) reacts — the
+automation IP SLA enables.
+
+**Cleanup:** `no ip sla 10` and `no track 1`.
+
+### Lab 6.10 — Configure and troubleshoot Flexible NetFlow (ENARSI 4.6)
+
+**Objective:** Export flow records for visibility.
+
+```text
+R1(config)# flow record RECORD-1
+R1(config-flow-record)# match ipv4 source address
+R1(config-flow-record)# collect counter bytes
+R1(config)# flow monitor MON-1
+R1(config-flow-monitor)# record RECORD-1
+R1(config-if)# ip flow monitor MON-1 input
+R1# show flow monitor MON-1 cache
+```
+
+**Expected result:** the flow cache populates with per-source byte counts —
+the top-talkers view for troubleshooting and capacity.
+
+**Negative test:** apply the monitor without a matching record key; the cache
+aggregates everything into one flow and loses the per-source detail — the
+key fields define the granularity.
+
+**Cleanup:** remove the flow monitor, record, and interface binding.
+
+### Lab 6.11 — Troubleshoot IPv4/IPv6 DHCP (ENARSI 4.4)
+
+**Objective:** Diagnose a DHCP failure from the server side.
+
+```text
+R1# show ip dhcp binding
+R1# show ip dhcp conflict
+R1# show ip dhcp pool
+```
+
+**Expected result:** current bindings, any address conflicts (ping/gratuitous
+ARP detected), and pool utilization — the data that localizes a "no address"
+complaint.
+
+**Negative test:** a pool exhausted (100% utilization) hands out no new
+leases; the conflict/pool output shows why, not the client — check the
+server first.
+
+**Cleanup:** none (read-only diagnostics).
+
+### Lab 6.12 — Troubleshoot device management (ENARSI 4.1)
+
+**Objective:** Verify the management-plane essentials in one pass.
+
+```text
+R1# show running-config | include ntp|logging|snmp|aaa
+R1# show clock
+R1# show users
+```
+
+**Expected result:** the management services (NTP, logging, SNMP, AAA) and
+current sessions — the baseline a management-plane fault is measured against.
+
+**Negative test:** an unsynced clock (`show clock` shows `*`) invalidates log
+timestamps and certificate checks; management troubleshooting starts with
+time.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.13 — End-to-end QoS from access trust boundary to WAN edge (integrative)
+
 **Objective:** Build an end-to-end QoS policy from an access-layer trust
 boundary through a WAN-edge LLQ/CBWFQ policy, and verify a low-priority
 class is throttled under congestion while the priority class is protected.

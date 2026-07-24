@@ -384,6 +384,670 @@ DIST-01# guestshell status
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the automation exam
+topics that map here — **CCNA Domain 6 (Automation and Programmability)**,
+**ENCOR Domain 6 (Automation and AI) plus 4.6**, and **all of ENAUTO
+(300-435 Enterprise Automation)** — mapped in the volume README's coverage
+tables; the design exam **ENSLD (300-420)** is covered by the Design
+Exercise below. Labs use IOS XE, Python, NETCONF/RESTCONF, Ansible, and the
+Catalyst Center / vManage / Meraki REST APIs. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 8.1–8.37** — an IOS XE device with
+`netconf-yang`/`restconf` enabled, a Python 3 host with `ncclient`,
+`netmiko`, `requests`, and Ansible installed, and API access to Catalyst
+Center (`$DNAC`), vManage (`$VMANAGE`), and a Meraki org (`$MERAKI_KEY`)
+where noted. **Cost:** none beyond lab resources.
+
+### Lab 8.1 — Use version control with git (ENAUTO 1.1)
+
+**Objective:** Track configuration/scripts with git.
+
+```bash
+git init netauto && cd netauto
+git add configs/ && git commit -m "baseline"
+git clone https://example.com/net-templates.git
+git log --oneline
+```
+
+**Expected result:** a versioned repo with a commit history — infrastructure
+and scripts as code, with rollback.
+
+**Negative test:** editing configs on the device with no git history leaves
+no rollback point; commit before change.
+
+**Cleanup:** `rm -rf netauto`.
+
+### Lab 8.2 — Compare REST and RPC API styles (ENAUTO 1.2, ENCOR 6.5)
+
+**Objective:** Read a REST response and its status code.
+
+```bash
+curl -sk -o /dev/null -w '%{http_code}\n' -u admin:pw https://$DEV/restconf/data/ietf-interfaces:interfaces
+```
+
+**Expected result:** a `200` (resource-oriented REST); RPC styles (NETCONF,
+gRPC) instead call an operation — the two API paradigms.
+
+**Negative test:** expecting a NETCONF `<edit-config>` RPC on a REST URL; the
+styles are not interchangeable.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.3 — Describe API consumption patterns (ENAUTO 1.3)
+
+**Objective:** Handle pagination/rate-limits when consuming an API.
+
+```bash
+curl -sk -u admin:pw "https://$DNAC/dna/intent/api/v1/network-device?limit=10&offset=0" -H "X-Auth-Token: $DT" | jq '.response | length'
+```
+
+**Expected result:** a bounded page of results — the pattern (paginate, back
+off on 429, cache tokens) for consuming large APIs.
+
+**Negative test:** requesting all devices unpaginated can time out or hit
+rate limits; paginate.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.4 — Interpret a Python script (ENAUTO 1.4, ENCOR 6.1)
+
+**Objective:** Read a script's data types, functions, and classes.
+
+```bash
+python3 - <<'PY'
+devices = [{"name":"R1","role":"core"}]   # list of dicts
+def by_role(d, role): return [x["name"] for x in d if x["role"]==role]
+print(by_role(devices, "core"))
+PY
+```
+
+**Expected result:** `['R1']` — list/dict data types and a function applied
+to structured device data.
+
+**Negative test:** indexing a dict with an integer key that does not exist
+raises `KeyError`; know the data type before indexing.
+
+**Cleanup:** none.
+
+### Lab 8.5 — Use a Python virtual environment (ENAUTO 1.5)
+
+**Objective:** Isolate script dependencies.
+
+```bash
+python3 -m venv venv && source venv/bin/activate
+pip install ncclient netmiko requests
+pip freeze | head
+```
+
+**Expected result:** an isolated venv with pinned libraries — reproducible,
+conflict-free automation dependencies.
+
+**Negative test:** installing globally can break other tools' dependencies;
+the venv isolates them.
+
+**Cleanup:** `deactivate && rm -rf venv`.
+
+### Lab 8.6 — Describe network configuration tools (ENAUTO 1.6, ENCOR 6.7)
+
+**Objective:** Contrast agent vs agentless config tools.
+
+```bash
+ansible --version | head -1   # agentless (SSH/NETCONF)
+```
+
+**Expected result:** Ansible (agentless, push over SSH/NETCONF) versus
+Puppet/Chef (agent-based, pull) — the orchestration models the exam compares.
+
+**Negative test:** expecting Ansible to run without SSH/API reachability to
+the device; agentless still needs a transport.
+
+**Cleanup:** none.
+
+### Lab 8.7 — Identify JSON from a YANG model (ENAUTO 2.1, ENCOR 6.2)
+
+**Objective:** Read a JSON instance of a YANG interface model.
+
+```bash
+curl -sk -u admin:pw https://$DEV/restconf/data/ietf-interfaces:interfaces -H 'Accept: application/yang-data+json' | jq '.["ietf-interfaces:interfaces"].interface[0].name'
+```
+
+**Expected result:** the interface name from a YANG-modeled JSON payload —
+structured, model-validated data.
+
+**Negative test:** hand-editing JSON that violates the YANG model is rejected
+on write; the model is the schema.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.8 — Identify XML from a YANG model (ENAUTO 2.2)
+
+**Objective:** Read the XML instance of the same model over NETCONF.
+
+```bash
+curl -sk -u admin:pw https://$DEV/restconf/data/ietf-interfaces:interfaces -H 'Accept: application/yang-data+xml' | head -5
+```
+
+**Expected result:** the XML-encoded interface list — NETCONF's encoding of
+the same YANG model.
+
+**Negative test:** mixing JSON and XML content types in one request errors;
+the Accept header selects one encoding.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.9 — Interpret a YANG module tree (ENAUTO 2.3, ENCOR 6.3)
+
+**Objective:** Render a YANG model as a tree (RFC 8340).
+
+```bash
+pyang -f tree ietf-interfaces.yang | head -20
+```
+
+**Expected result:** the module's container/list/leaf tree — the structure a
+NETCONF/RESTCONF payload must follow.
+
+**Negative test:** a config path not present in the tree is invalid; the tree
+defines the addressable data.
+
+**Cleanup:** none.
+
+### Lab 8.10 — Compare data models (ENAUTO 2.4)
+
+**Objective:** Distinguish native, IETF, and OpenConfig models.
+
+```bash
+curl -sk -u admin:pw https://$DEV/restconf/data/Cisco-IOS-XE-native:native -H 'Accept: application/yang-data+json' | jq 'keys' 2>/dev/null | head
+```
+
+**Expected result:** the Cisco native model (vs vendor-neutral OpenConfig/
+IETF) — native exposes everything, OpenConfig standardizes across vendors.
+
+**Negative test:** an OpenConfig path unsupported on the platform returns
+empty/error; check model support per device.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.11 — Compare NETCONF and RESTCONF (ENAUTO 2.5, ENCOR 4.6)
+
+**Objective:** Confirm both interfaces on the device.
+
+```text
+DEV# show netconf-yang sessions
+DEV# show platform software yang-management process
+```
+
+**Expected result:** NETCONF (SSH/830, transactional, candidate datastore)
+and RESTCONF (HTTPS, resource-oriented) both running — two management APIs on
+one YANG backend.
+
+**Negative test:** expecting RESTCONF's per-resource edits to be transactional
+like NETCONF's candidate/commit; RESTCONF commits per request.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.12 — Manage a device with Netmiko (ENAUTO 3.1)
+
+**Objective:** Push a command via SSH with Netmiko.
+
+```bash
+python3 - <<'PY'
+from netmiko import ConnectHandler
+d={"device_type":"cisco_ios","host":"R1","username":"admin","password":"pw"}
+c=ConnectHandler(**d); print(c.send_command("show ip int brief")); c.disconnect()
+PY
+```
+
+**Expected result:** the CLI output returned to Python — screen-scraping
+automation for devices without an API.
+
+**Negative test:** Netmiko against a device with a non-standard prompt hangs;
+set the correct `device_type`.
+
+**Cleanup:** none.
+
+### Lab 8.13 — Configure with ncclient/NETCONF (ENAUTO 3.2)
+
+**Objective:** Edit config in a single transaction over NETCONF.
+
+```bash
+python3 - <<'PY'
+from ncclient import manager
+cfg='<config><interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces"><interface><name>Loopback9</name><enabled>true</enabled></interface></interfaces></config>'
+with manager.connect(host="R1",username="admin",password="pw",hostkey_verify=False) as m:
+    print(m.edit_config(target="running",config=cfg).ok)
+PY
+```
+
+**Expected result:** `True` — `Loopback9` created in a single transaction via
+NETCONF.
+
+**Negative test:** malformed XML that violates the model returns an
+`rpc-error`; NETCONF validates before applying.
+
+**Cleanup:** delete `Loopback9` via NETCONF.
+
+### Lab 8.14 — Configure via RESTCONF with requests (ENAUTO 3.3)
+
+**Objective:** Create config with a Python `requests` PUT.
+
+```bash
+python3 - <<'PY'
+import requests; requests.packages.urllib3.disable_warnings()
+url="https://R1/restconf/data/ietf-interfaces:interfaces/interface=Loopback8"
+body={"ietf-interfaces:interface":{"name":"Loopback8","type":"iana-if-type:softwareLoopback","enabled":True}}
+r=requests.put(url,json=body,auth=("admin","pw"),headers={"Content-Type":"application/yang-data+json"},verify=False)
+print(r.status_code)
+PY
+```
+
+**Expected result:** `201`/`204` — `Loopback8` created via RESTCONF.
+
+**Negative test:** a PUT to a URL whose key does not match the body errors;
+the resource key and payload must agree.
+
+**Cleanup:** RESTCONF DELETE on the interface.
+
+### Lab 8.15 — Configure with Ansible (ENAUTO 3.4)
+
+**Objective:** Apply IOS XE config with an Ansible playbook.
+
+```bash
+cat > pb.yml <<'YAML'
+- hosts: routers
+  gather_facts: no
+  tasks:
+    - cisco.ios.ios_config:
+        lines: ["ip domain name lab.example"]
+YAML
+ansible-playbook -i inventory pb.yml
+```
+
+**Expected result:** `changed=1` — the domain name pushed idempotently; a
+re-run reports `ok` (no change).
+
+**Negative test:** a playbook without idempotent modules (raw CLI every run)
+re-applies unnecessarily; use the declarative modules.
+
+**Cleanup:** remove the config and `rm pb.yml`.
+
+### Lab 8.16 — Configure model-driven telemetry (ENAUTO 3.5)
+
+**Objective:** Subscribe to interface counters via MDT.
+
+```text
+DEV(config)# telemetry ietf subscription 101
+DEV(config-mdt-subs)# encoding encode-kvgpb
+DEV(config-mdt-subs)# filter xpath /interfaces-state/interface/statistics
+DEV(config-mdt-subs)# stream yang-push
+DEV(config-mdt-subs)# update-policy periodic 1000
+DEV(config-mdt-subs)# receiver ip address 10.0.0.80 57500 protocol grpc-tcp
+DEV# show telemetry ietf subscription 101 detail
+```
+
+**Expected result:** subscription 101 streaming stats every 10s to the
+collector — push-based telemetry replacing SNMP polling.
+
+**Negative test:** an XPath that matches no data streams nothing; verify the
+path against the YANG tree.
+
+**Cleanup:** `no telemetry ietf subscription 101`.
+
+### Lab 8.17 — Compare telemetry models (ENAUTO 3.6)
+
+**Objective:** Distinguish dial-in from dial-out telemetry.
+
+```text
+DEV# show telemetry connection all
+```
+
+**Expected result:** dial-out (device initiates to the collector, as in Lab
+8.16) vs dial-in (collector subscribes via gNMI/NETCONF) — the two
+publication/subscription models.
+
+**Negative test:** a dial-out subscription to an unreachable receiver keeps
+retrying and streams nothing; the receiver must be up.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.18 — Use telemetry data in troubleshooting (ENAUTO 3.7)
+
+**Objective:** Correlate a telemetry metric to an event.
+
+```text
+DEV# show telemetry ietf subscription 101 receiver
+```
+
+**Expected result:** the receiver state and last-update time — streaming
+telemetry gives sub-second resolution on a counter SNMP would sample too
+coarsely.
+
+**Negative test:** SNMP polled every 5 minutes misses a 10-second microburst
+telemetry catches; the resolution is the point.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.19 — Describe Day 0 provisioning (ENAUTO 3.8)
+
+**Objective:** Read the ZTP/PnP onboarding state.
+
+```text
+DEV# show pnp status
+DEV# show pnp profile
+```
+
+**Expected result:** the Plug-and-Play/ZTP profile a factory-fresh device
+uses to fetch its config from a PnP/DHCP server — zero-touch onboarding.
+
+**Negative test:** a device with an existing startup-config skips ZTP; Day 0
+provisioning applies only to unconfigured devices.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.20 — Compare traditional and software-defined networks (ENAUTO 4.1, CCNA 6.2)
+
+**Objective:** Read the controller-managed vs device-by-device model.
+
+```bash
+curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/network-device/count" | jq '.response'
+```
+
+**Expected result:** a device count managed centrally by Catalyst Center — the
+controller-based model versus box-by-box CLI.
+
+**Negative test:** expecting central intent to reach a device Catalyst Center
+does not manage; SDN control needs the device in inventory.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.21 — Describe Catalyst Center features (ENAUTO 4.2, CCNA 6.3)
+
+**Objective:** Read Catalyst Center's automation/assurance surface.
+
+```bash
+curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/site" | jq -r '.response[].name' | head
+```
+
+**Expected result:** the site hierarchy Catalyst Center automates
+(design/policy/provision/assurance) — the controller's feature set.
+
+**Negative test:** expecting assurance data for a site with no assigned
+devices; features act on managed inventory.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.22 — Implement Catalyst Center webhooks (ENAUTO 4.3)
+
+**Objective:** Confirm an event webhook (outbound notification).
+
+```bash
+curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/event/subscription/rest" | jq -r '.[].name' 2>/dev/null | head
+```
+
+**Expected result:** a REST/webhook subscription pushing events to an
+external system — event-driven automation.
+
+**Negative test:** a webhook to an unreachable URL fails delivery silently;
+verify the destination.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.23 — Implement Catalyst Center API requests I (ENAUTO 4.4)
+
+**Objective:** Run a template/command through the Catalyst Center API.
+
+```bash
+curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/network-device" | jq -r '.response[0] | "\(.hostname)\t\(.reachabilityStatus)"'
+```
+
+**Expected result:** device data returned via the Intent API — programmatic
+network operations at controller scope.
+
+**Negative test:** an expired auth token returns `401`; refresh the token
+before the call.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.24 — Implement Catalyst Center API requests II (ENAUTO 4.5)
+
+**Objective:** Read command-runner/compliance via API.
+
+```bash
+curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/compliance" | jq -r '.response[0].complianceStatus' 2>/dev/null
+```
+
+**Expected result:** compliance status via API — automating audit at scale.
+
+**Negative test:** a non-compliant device flagged by API but not remediated
+stays out of policy; API read must pair with a remediation action.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.25 — Troubleshoot Catalyst Center with the Intent API (ENAUTO 4.6)
+
+**Objective:** Read a task's status to diagnose an automation failure.
+
+```bash
+curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/task/<taskId>" | jq -r '.response | "\(.isError)\t\(.progress)"'
+```
+
+**Expected result:** the task result (`isError`, progress) — the Intent API's
+task object is where an automation failure's reason lives.
+
+**Negative test:** assuming an API `202 Accepted` means success; it means
+accepted — poll the task for the real outcome.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.26 — Describe vManage API features (ENAUTO 5.1)
+
+**Objective:** Read the vManage API surface.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/device" | jq '.data | length'
+```
+
+**Expected result:** the device count via the vManage REST API — the SD-WAN
+controller's programmable surface (config, monitoring, admin).
+
+**Negative test:** calling the API without a valid session cookie returns
+`403`; authenticate first.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.27 — Script vManage API requests (ENAUTO 5.2)
+
+**Objective:** Query vManage from Python.
+
+```bash
+python3 - <<'PY'
+import requests,os; requests.packages.urllib3.disable_warnings()
+s=requests.Session()
+r=s.get(os.environ["VMANAGE"]+"/dataservice/device/monitor",cookies={"JSESSIONID":os.environ.get("JSID","")},verify=False)
+print(r.status_code)
+PY
+```
+
+**Expected result:** a `200` with device monitoring data — SD-WAN automation
+in Python.
+
+**Negative test:** a request missing the CSRF token on a POST is rejected;
+GET works, mutating calls need the token.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.28 — Construct vManage Administration API requests (ENAUTO 5.3)
+
+**Objective:** Read admin data (users/settings) via API.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/admin/user" | jq -r '.data[].userName' | head
+```
+
+**Expected result:** the vManage users via the Administration API —
+programmatic management-plane administration.
+
+**Negative test:** an operator-role token cannot read admin endpoints;
+RBAC scopes the API too.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.29 — Script vManage configuration API requests (ENAUTO 5.4)
+
+**Objective:** Read templates via the config API.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/template/device" | jq -r '.data[].templateName' | head
+```
+
+**Expected result:** device templates via the configuration API — automating
+config-template lifecycle.
+
+**Negative test:** pushing a template to a device with mismatched variables
+fails attach; variables must resolve.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.30 — Construct vManage Monitoring API requests (ENAUTO 5.5)
+
+**Objective:** Read real-time monitoring via API.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/device/bfd/sessions?deviceId=<ip>" | jq '.data | length'
+```
+
+**Expected result:** BFD session data via the Monitoring API — the telemetry
+a dashboard or NOC tool consumes.
+
+**Negative test:** a monitoring query for a device not in the fabric returns
+empty; the device must be onboarded.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.31 — Troubleshoot SD-WAN with vManage APIs (ENAUTO 5.6)
+
+**Objective:** Diagnose an edge via the control-connections API.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/device/control/connections?deviceId=<ip>" | jq -r '.data[] | "\(.["peer-type"])\t\(.state)"'
+```
+
+**Expected result:** control-connection state per controller via API — scripted
+SD-WAN troubleshooting across many sites at once.
+
+**Negative test:** reading one device's UI page does not scale to a 500-site
+fabric; the API loops it.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.32 — Describe Meraki features (ENAUTO 6.1)
+
+**Objective:** Read the Meraki organizations via the Dashboard API.
+
+```bash
+curl -sk -H "X-Cisco-Meraki-API-Key: $MERAKI_KEY" "https://api.meraki.com/api/v1/organizations" | jq -r '.[].name'
+```
+
+**Expected result:** the cloud-managed orgs — Meraki's API-first, cloud
+dashboard model.
+
+**Negative test:** an API key without org access returns `404`/empty; the key
+is scoped per admin.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.33 — Create a network with the Meraki API (ENAUTO 6.2)
+
+**Objective:** Create a Meraki network programmatically.
+
+```bash
+curl -sk -X POST -H "X-Cisco-Meraki-API-Key: $MERAKI_KEY" -H 'Content-Type: application/json' \
+  "https://api.meraki.com/api/v1/organizations/<orgId>/networks" \
+  -d '{"name":"lab-net","productTypes":["switch","wireless"]}' | jq -r '.id'
+```
+
+**Expected result:** a new network ID — zero-touch cloud provisioning via API.
+
+**Negative test:** a POST exceeding the API rate limit returns `429`; back off
+and retry.
+
+**Cleanup:** DELETE the lab network.
+
+### Lab 8.34 — Configure a network with the Meraki API (ENAUTO 6.3)
+
+**Objective:** Push an SSID config via API.
+
+```bash
+curl -sk -X PUT -H "X-Cisco-Meraki-API-Key: $MERAKI_KEY" -H 'Content-Type: application/json' \
+  "https://api.meraki.com/api/v1/networks/<netId>/wireless/ssids/0" \
+  -d '{"name":"Lab-SSID","enabled":true,"authMode":"psk","psk":"<passphrase>"}' | jq -r '.name'
+```
+
+**Expected result:** the SSID configured cloud-side and pushed to APs — config
+as an API call.
+
+**Negative test:** a PSK below 8 chars is rejected by the API; the model
+validates centrally.
+
+**Cleanup:** disable the lab SSID.
+
+### Lab 8.35 — Implement a Meraki alert webhook (ENAUTO 6.4)
+
+**Objective:** Register a webhook receiver for Meraki alerts.
+
+```bash
+curl -sk -X POST -H "X-Cisco-Meraki-API-Key: $MERAKI_KEY" -H 'Content-Type: application/json' \
+  "https://api.meraki.com/api/v1/networks/<netId>/webhooks/httpServers" \
+  -d '{"name":"lab-hook","url":"https://collector.lab/meraki"}' | jq -r '.id'
+```
+
+**Expected result:** a webhook HTTP server registered — Meraki pushes alerts
+(device down, config change) to the collector.
+
+**Negative test:** a webhook URL that does not return 2xx is disabled after
+repeated failures; the receiver must acknowledge.
+
+**Cleanup:** DELETE the webhook HTTP server.
+
+### Lab 8.36 — Explain AI/ML in network operations (CCNA 6.4)
+
+**Objective:** Read an AI-driven insight from Catalyst Center.
+
+```bash
+curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/insight/networkDevices" 2>/dev/null | jq -r '.response[0]' 2>/dev/null || echo "AI insights endpoint (per release)"
+```
+
+**Expected result:** AI/ML-derived anomalies/trends (predictive) and
+config/assurance recommendations (generative) — machine learning applied to
+network operations.
+
+**Negative test:** treating an AI recommendation as an automatic action; it
+informs, and a human/automation gate should approve changes.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.37 — Construct an EEM applet (ENCOR 6.6)
+
+**Objective:** Automate a local reaction with Embedded Event Manager.
+
+```text
+DEV(config)# event manager applet SAVE-ON-CONFIG
+DEV(config-applet)# event syslog pattern "CONFIGURED"
+DEV(config-applet)# action 1.0 cli command "enable"
+DEV(config-applet)# action 2.0 cli command "write memory"
+DEV# show event manager policy registered
+```
+
+**Expected result:** an EEM applet that auto-saves the config on any change —
+on-box, agentless automation triggered by a syslog event.
+
+**Negative test:** an EEM applet with a too-broad event pattern fires
+constantly and can loop; scope the trigger.
+
+**Cleanup:** `no event manager applet SAVE-ON-CONFIG`.
+
+### Lab 8.38 — NETCONF/RESTCONF query, telemetry, and EEM automation (integrative)
+
 **Objective:** Enable NETCONF and RESTCONF on a Catalyst 9000 switch,
 query and modify configuration over RESTCONF, configure a model-driven
 telemetry subscription, and run an idempotent Ansible playbook against
@@ -481,6 +1145,42 @@ the same device.
   ```text
   DIST-01# guestshell destroy
   ```
+
+## Design Exercise
+
+**ENSLD (300-420 Enterprise Design)** is a design exam covering enterprise
+network design across campus, WAN, services, and automation. The
+implementation labs throughout this volume are its build half; this exercise
+is the reasoning half — designing from requirements, no lab required.
+
+**Scenario.** Design the enterprise network for a company consolidating from
+40 legacy branches and two data centers onto a modern Cisco architecture.
+Requirements: a resilient three-tier (or collapsed-core where justified)
+campus; a WAN that survives any single circuit or carrier failure; end-to-end
+segmentation for corporate, IoT, and guest; sub-second convergence for the
+routing core; centralized management and assurance; and an automation-first
+operating model (no box-by-box CLI for routine change).
+
+**Produce, defending each choice against a rejected alternative:**
+
+1. **Campus design** — tier model, redundancy (StackWise/SSO, HSRP/GLBP), and
+   the routing protocol choice (OSPF area design vs EIGRP), each traced to a
+   convergence/scale requirement.
+2. **WAN design** — SD-WAN vs traditional MPLS/DMVPN, transport mix
+   (MPLS + internet), and the topology (hub-spoke, mesh, regional hubs) that
+   meets the any-single-failure requirement.
+3. **Segmentation design** — VRF/VN and SGT plan for corporate/IoT/guest,
+   consistent from campus (SD-Access) through the WAN (SD-WAN segments).
+4. **Services and QoS design** — the QoS model for voice/video and the network
+   services (DHCP/DNS/NTP/NAT) placement.
+5. **Management and automation design** — Catalyst Center + vManage as the
+   controllers, model-driven telemetry for assurance, and where automation
+   (Ansible/API) replaces manual change; name the operating model.
+
+**Success looks like:** every design decision — tier count, protocol, WAN
+topology, segmentation, controller — traces to a stated requirement with the
+rejected alternative and its trade-off, the breadth-of-design standard ENSLD
+applies.
 
 ## Lab Verification
 

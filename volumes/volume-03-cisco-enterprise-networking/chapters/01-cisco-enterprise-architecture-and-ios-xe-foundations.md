@@ -338,6 +338,202 @@ Common issues and diagnostics:
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the fundamentals exam
+topics that map here — **CCNA Domain 1 (Network Fundamentals)** and the
+architecture/virtualization foundations of **ENCOR (1.1, 2.1, 2.3)** — mapped
+in the volume README's coverage tables. Each is a full IOS XE walkthrough
+and ends **`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 1.1–1.10** — a Catalyst 9000 or CML node and
+a client host, privileged EXEC access. **Cost:** none beyond lab resources.
+
+### Lab 1.1 — Explain the role and function of network components (CCNA 1.1)
+
+**Objective:** Identify the device's role and forwarding function.
+
+```text
+SW1# show version | include Model|System image
+SW1# show platform | include Type
+SW1# show module
+```
+
+**Expected result:** the platform (switch/router/AP), its role in the L2/L3
+path, and its forwarding hardware — the component's function made concrete.
+
+**Negative test:** treating a Layer 2 access switch as a router (expecting it
+to route between VLANs without an SVI/L3 license) fails — the role bounds the
+function.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.2 — Describe topology architectures (CCNA 1.2, ENCOR 1.1)
+
+**Objective:** Read the device's place in a two-/three-tier campus design.
+
+```text
+SW1# show cdp neighbors
+SW1# show spanning-tree root
+```
+
+**Expected result:** upstream distribution/core neighbors and the STP root —
+locating the device in the access/distribution/core hierarchy.
+
+**Negative test:** a collapsed-core design at scale (access straight to core)
+loses the distribution aggregation point; the topology drives the tier count.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.3 — Compare interfaces and identify cable issues (CCNA 1.3, 1.4)
+
+**Objective:** Read interface counters for physical-layer faults.
+
+```text
+SW1# show interfaces gig1/0/1 | include duplex|errors|CRC|input|output
+SW1# show interfaces status err-disabled
+```
+
+**Expected result:** speed/duplex, and any CRC/input errors (cable), late
+collisions (duplex mismatch), or err-disabled ports — the L1 diagnostics.
+
+**Negative test:** a duplex mismatch shows rising late collisions on one side
+and CRC on the other while the link stays up — the "slow, not down" fault.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.4 — Compare TCP to UDP (CCNA 1.5)
+
+**Objective:** Observe TCP vs UDP behavior on the device.
+
+```text
+SW1# show tcp brief
+SW1# show ip sockets
+```
+
+**Expected result:** established TCP sessions (SSH, NETCONF) with sequence
+state versus connectionless UDP sockets (SNMP, syslog, NTP) — reliability vs
+low-overhead.
+
+**Negative test:** expecting UDP-based syslog to retransmit a lost message;
+it does not — UDP trades reliability for overhead, so critical logs need TCP
+syslog or a reliable transport.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.5 — Configure and verify IPv4 addressing and subnetting (CCNA 1.6, 1.7)
+
+**Objective:** Address an interface and confirm the subnet.
+
+```text
+SW1(config)# interface vlan 20
+SW1(config-if)# ip address 10.10.20.1 255.255.255.192
+SW1# show ip interface brief
+SW1# show ip route connected
+```
+
+**Expected result:** SVI 20 up with a /26, and the connected route
+`10.10.20.0/26` — a 62-host subnet from RFC1918 private space.
+
+**Negative test:** two SVIs with overlapping subnets; the second is rejected
+or drops traffic — subnets must not overlap.
+
+**Cleanup:** `no interface vlan 20`.
+
+### Lab 1.6 — Configure and verify IPv6 addressing (CCNA 1.8, 1.9)
+
+**Objective:** Assign IPv6 and read the address types.
+
+```text
+SW1(config)# interface vlan 20
+SW1(config-if)# ipv6 address 2001:db8:20::1/64
+SW1(config-if)# ipv6 enable
+SW1# show ipv6 interface vlan 20
+```
+
+**Expected result:** the global unicast `2001:db8:20::1/64` plus an
+auto-generated link-local (`FE80::`) — the two address types on every
+interface.
+
+**Negative test:** expecting a host to reach a global address before the
+link-local/ND is up; link-local (not the global) is what neighbor discovery
+uses first.
+
+**Cleanup:** `no interface vlan 20`.
+
+### Lab 1.7 — Verify IP parameters for a client OS (CCNA 1.10)
+
+**Objective:** Correlate the switch's view with the client's IP config.
+
+```text
+SW1# show ip dhcp binding
+SW1# show mac address-table | include <client-mac>
+```
+
+**Expected result:** the client's leased IP and the port/MAC it learned on —
+matching what `ipconfig`/`ip addr`/`ifconfig` shows on the host.
+
+**Negative test:** a client with a self-assigned APIPA (169.254.x) address
+never got a lease; the empty DHCP binding confirms the failure is DHCP, not
+the host.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.8 — Explain virtualization fundamentals (CCNA 1.12, ENCOR 2.1)
+
+**Objective:** Read device virtualization (VRF as the on-box example).
+
+```text
+SW1(config)# vrf definition RED
+SW1(config-vrf)# address-family ipv4
+SW1# show vrf
+```
+
+**Expected result:** the `RED` VRF as an isolated virtual routing instance —
+the on-device analogue of server virtualization/containers the topic
+compares.
+
+**Negative test:** assuming one physical switch means one routing table;
+VRFs (and, off-box, VMs/containers) virtualize that assumption away.
+
+**Cleanup:** `no vrf definition RED`.
+
+### Lab 1.9 — Describe switching concepts (CCNA 1.13)
+
+**Objective:** Observe MAC learning and the forwarding table.
+
+```text
+SW1# show mac address-table dynamic
+SW1# show mac address-table count
+```
+
+**Expected result:** dynamically learned MAC-to-port entries and the table
+size — the L2 forwarding decisions frame flooding, learning, and filtering.
+
+**Negative test:** a MAC flap (same MAC on two ports) logs a
+`MAC_MOVE`/loop warning — the switching-loop symptom STP exists to prevent.
+
+**Cleanup:** `clear mac address-table dynamic` (rebuilds by learning).
+
+### Lab 1.10 — Describe network virtualization concepts (ENCOR 2.3)
+
+**Objective:** Read an overlay/underlay virtualization construct (VXLAN
+VNI/VRF mapping).
+
+```text
+SW1# show vrf detail
+SW1# show platform software fed switch active vp summary 2>/dev/null | head
+```
+
+**Expected result:** VRFs mapped to virtual networks — the underlay
+(physical routed fabric) carrying multiple virtual overlays, the concept
+SD-Access (Chapter 09) builds on.
+
+**Negative test:** collapsing all tenants into the global table forfeits the
+overlay isolation network virtualization provides.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.11 — Bring up a Catalyst 9000 baseline (integrative)
+
 **Objective:** Bring up a Catalyst 9000 switch (physical lab or a Cisco
 Modeling Labs / CML topology using the Catalyst 9000v or IOL Layer-3 node)
 from factory defaults to a hardened, licensed, install-mode device.

@@ -370,6 +370,498 @@ DIST-01# show wireless fabric summary
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the assurance and
+software-defined-fabric exam topics that map here — **ENCOR Domain 4
+(Network Assurance) and SD-Access (1.3)**, **ENARSI 4.7 (DNA Center
+assurance)**, and **all of ENNA (300-445 Enterprise Network Assurance)** —
+mapped in the volume README's coverage tables. ENNA is largely a
+ThousandEyes/Meraki-Insight assurance exam, so those labs query the
+assurance platform's API. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
+
+**Shared prerequisites for Labs 9.1–9.29** — a Catalyst Center appliance
+(`$DNAC` with token `$DT`), IOS XE nodes, and a ThousandEyes account
+(`$TE_TOKEN`) / Meraki Dashboard API key (`$MERAKI_KEY`) where noted.
+**Cost:** none beyond lab resources.
+
+### Lab 9.1 — Explain SD-Access principles (ENCOR 1.3)
+
+**Objective:** Read the fabric roles from Catalyst Center.
+
+```bash
+curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/business/sda/fabric" | jq -r '.[].fabricName' 2>/dev/null
+```
+
+**Expected result:** the SD-Access fabric with its control-plane, border, and
+edge roles — an overlay (VXLAN) on a routed underlay with LISP control.
+
+**Negative test:** treating the underlay routing as the fabric; the overlay
+(and its VNs/SGTs) is what carries segmentation, not the underlay IGP.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.2 — Diagnose problems with debugs (ENCOR 4.1)
+
+**Objective:** Use a conditional debug to isolate one flow.
+
+```text
+R1# debug platform condition ipv4 10.10.20.5/32 both
+R1# debug platform condition start
+R1# show platform condition
+```
+
+**Expected result:** debugging scoped to `10.10.20.5` only — the conditional
+filter avoids the CPU hit of an unfiltered debug.
+
+**Negative test:** an unconditioned `debug ip packet` on a busy router can
+spike CPU and drop traffic; always condition first.
+
+**Cleanup:** `debug platform condition stop` and `undebug all`.
+
+### Lab 9.3 — Configure and verify Flexible NetFlow (ENCOR 4.2)
+
+**Objective:** Export flow records for assurance (as Chapter 06, at scale).
+
+```text
+R1# show flow monitor MON-1 cache format table
+R1# show flow exporter statistics
+```
+
+**Expected result:** the flow cache and exporter stats — per-flow visibility
+feeding the assurance/collector pipeline.
+
+**Negative test:** an exporter pointing at an unreachable collector shows
+rising export failures; the flow data never leaves the device.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.4 — Configure SPAN/RSPAN/ERSPAN (ENCOR 4.3)
+
+**Objective:** Mirror a port for packet-level analysis.
+
+```text
+SW1(config)# monitor session 1 source interface gig1/0/5
+SW1(config)# monitor session 1 destination interface gig1/0/24
+SW1# show monitor session 1
+```
+
+**Expected result:** traffic from `Gi1/0/5` mirrored to `Gi1/0/24` for a
+capture tool — local SPAN (RSPAN across switches, ERSPAN across L3).
+
+**Negative test:** a SPAN destination that is also a normal forwarding port
+can loop or overload; the destination should be dedicated.
+
+**Cleanup:** `no monitor session 1`.
+
+### Lab 9.5 — Configure and verify IP SLA (ENCOR 4.4)
+
+**Objective:** Read an IP SLA operation used for assurance.
+
+```text
+R1# show ip sla summary
+R1# show ip sla statistics 10 details
+```
+
+**Expected result:** the SLA's RTT/jitter/loss and success rate — synthetic
+measurement of path health.
+
+**Negative test:** an SLA with too-long a frequency misses a brief brownout
+between probes; assurance needs a frequency matched to the SLA.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.6 — Use Catalyst Center for assurance (ENCOR 4.5, ENARSI 4.7)
+
+**Objective:** Read device and client health from Catalyst Center Assurance.
+
+```bash
+curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/device-health" | jq -r '.response[] | "\(.name)\t\(.overallHealth)"' | head
+```
+
+**Expected result:** per-device health scores — Catalyst Center Assurance
+correlates telemetry into a single health view and root-cause guidance.
+
+**Negative test:** chasing individual syslog messages instead of the health
+score/issue view multiplies effort; assurance aggregates them.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.7 — Configure NETCONF/RESTCONF (ENCOR 4.6)
+
+**Objective:** Confirm the programmable management interfaces are up.
+
+```text
+R1(config)# netconf-yang
+R1(config)# restconf
+R1# show netconf-yang sessions
+```
+
+**Expected result:** active NETCONF/RESTCONF processes — the model-driven
+interfaces assurance and automation platforms use to read/write config.
+
+**Negative test:** enabling `restconf` without `ip http secure-server`
+leaves no HTTPS transport; the API is unreachable until TLS is on.
+
+**Cleanup:** `no netconf-yang` if enabled only for the lab.
+
+### Lab 9.8 — Determine assurance agent types (ENNA 1.1)
+
+**Objective:** Read the configured assurance agents/tests.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/agents" | jq -r '.agents[] | "\(.agentName)\t\(.agentType)"' | head
+```
+
+**Expected result:** enterprise (self-hosted), cloud, and endpoint agent
+types — each suited to a different vantage point.
+
+**Negative test:** a cloud agent cannot see inside the enterprise LAN; agent
+type must match where the measurement is needed.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.9 — Determine agent location (ENNA 1.2)
+
+**Objective:** Read agent locations against the paths they measure.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/agents" | jq -r '.agents[] | "\(.agentName)\t\(.location)"' | head
+```
+
+**Expected result:** agents distributed across sites/regions — placement
+determines which segments a test can observe.
+
+**Negative test:** all agents at HQ cannot characterize a branch's ISP; the
+location must cover the path under scrutiny.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.10 — Describe active and passive monitoring (ENNA 1.3)
+
+**Objective:** Distinguish synthetic (active) from flow (passive) data.
+
+```text
+R1# show ip sla statistics       ! active/synthetic
+R1# show flow monitor MON-1 cache ! passive/observed
+```
+
+**Expected result:** IP SLA (active probes) versus NetFlow (passive
+observation of real traffic) — the two assurance methods (RFC 7799).
+
+**Negative test:** relying on passive data alone misses a path with no
+traffic yet; active probes test it before users do.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.11 — Describe ThousandEyes WAN Insights (ENNA 1.4)
+
+**Objective:** Read WAN path/loss data from ThousandEyes.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/tests/network" | jq -r '.tests[] | "\(.testName)\t\(.interval)s"' | head
+```
+
+**Expected result:** network tests measuring loss/latency/jitter across WAN
+paths — the data WAN Insights turns into recommendations.
+
+**Negative test:** a single test to one target cannot characterize a
+multi-path SD-WAN; test each transport.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.12 — Describe Cisco technology integration (ENNA 1.5)
+
+**Objective:** Read the ThousandEyes↔Catalyst Center/Meraki integration.
+
+```bash
+curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/integration/thousandeyes" 2>/dev/null | jq -r '.status' 2>/dev/null || echo "integration endpoint (per release)"
+```
+
+**Expected result:** the integration status linking device telemetry with
+ThousandEyes path visibility — end-to-end from device to internet.
+
+**Negative test:** device health without internet-path visibility misses an
+ISP problem; the integration adds the outside-in view.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.13 — Describe setting a metric baseline (ENNA 1.6)
+
+**Objective:** Read historical metrics to establish a baseline.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/test-results/network?window=7d" | jq -r '.results[0] | {loss:.loss, latency:.avgLatency}' 2>/dev/null
+```
+
+**Expected result:** a week of loss/latency to baseline normal — the
+reference an alert threshold is set against.
+
+**Negative test:** a static threshold with no baseline fires on normal
+diurnal variation; baseline first, then alert on deviation.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.14 — Select the integration type (ENNA 1.7)
+
+**Objective:** Read the available alert/webhook integrations.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/operations/alert-rules" | jq -r '.alertRules[] | "\(.ruleName)\t\(.alertType)"' | head
+```
+
+**Expected result:** alert rules and their delivery (API, webhook, email,
+PagerDuty) — the integration that routes assurance signals to ops.
+
+**Negative test:** an alert with no notification target is invisible to ops;
+the integration type is what surfaces it.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.15 — Select a network assurance platform (ENNA 1.8)
+
+**Objective:** Match a requirement to the right platform.
+
+```bash
+curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/network-health" | jq -r '.response[0].healthScore' 2>/dev/null
+```
+
+**Expected result:** Catalyst Center (campus/fabric health), ThousandEyes
+(internet/SaaS path), Meraki (cloud-managed) — each fits a different scope.
+
+**Negative test:** using a campus platform to assure a SaaS path it cannot
+see; the platform must match the domain.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.16 — Configure enterprise agent (ENNA 2.1)
+
+**Objective:** Confirm an enterprise agent is online and assigned tests.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/agents" | jq -r '.agents[] | select(.agentType=="enterprise") | "\(.agentName)\t\(.agentState)"' | head
+```
+
+**Expected result:** enterprise agents `online` on application servers /
+network infra — vantage points inside the enterprise.
+
+**Negative test:** an agent behind a proxy without the right config cannot
+reach the controller and stays `offline`.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.17 — Describe endpoint agent deployment at scale (ENNA 2.2)
+
+**Objective:** Read the endpoint-agent fleet.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/endpoint/agents" | jq -r '.agents | length' 2>/dev/null
+```
+
+**Expected result:** the count of endpoint agents — deployed via MDM/GPO to
+measure the actual user experience at scale.
+
+**Negative test:** endpoint agents on only a few machines cannot represent
+the fleet's experience; scale the deployment.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.18 — Configure tests with ThousandEyes/Meraki Insight (ENNA 2.3)
+
+**Objective:** List the tests measuring key applications.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/tests" | jq -r '.tests[] | "\(.testName)\t\(.type)"' | head
+```
+
+**Expected result:** HTTP/network/DNS tests against critical apps — the
+synthetic transactions assurance runs continuously.
+
+**Negative test:** a test interval too coarse for a short outage misses it;
+match interval to the SLA.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.19 — Configure endpoint agent tests (ENNA 2.4)
+
+**Objective:** Read scheduled endpoint tests and their targets.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/endpoint/tests/http-server" | jq -r '.tests[]?.testName' 2>/dev/null | head
+```
+
+**Expected result:** endpoint HTTP tests toward the apps users depend on —
+experience measured from the endpoint out.
+
+**Negative test:** an endpoint test to an internal-only URL from a remote
+user fails by design; scope the target to what the user should reach.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.20 — Describe synthetic monitoring limits (ENNA 2.5)
+
+**Objective:** Read a synthetic transaction test's scripted steps.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/tests/web-transactions" | jq -r '.tests[] | "\(.testName)"' | head
+```
+
+**Expected result:** multi-step web-transaction tests — synthetic monitoring
+of a login/checkout flow, with its limitation: it tests the scripted path,
+not every real user action.
+
+**Negative test:** treating a passing synthetic test as proof all users are
+fine; it validates the scripted path only.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.21 — Implement web authentication methods (ENNA 2.6)
+
+**Objective:** Confirm a test's auth method matches the target.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/tests/http-server" | jq -r '.tests[] | "\(.testName)\t\(.authType // "none")"' | head
+```
+
+**Expected result:** tests configured with basic/digest/NTLM/OAuth auth to
+reach protected apps — the test authenticates like a real user.
+
+**Negative test:** a test with no/incorrect auth to a protected app gets a
+`401` and reports a false outage; match the auth to the app.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.22 — Diagnose network issues (ENNA 3.1)
+
+**Objective:** Read path-visualization data to localize loss.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/test-results/path-vis?testId=<id>" | jq -r '.pathVis[0].hops | length' 2>/dev/null
+```
+
+**Expected result:** the hop-by-hop path with loss/latency per hop — the exact
+hop where a problem begins (ISP vs enterprise).
+
+**Negative test:** blaming the app for slowness that path-vis shows starts at
+an ISP hop; the data assigns the fault correctly.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.23 — Diagnose end-device network issues (ENNA 3.2)
+
+**Objective:** Read endpoint-agent local network data (gateway, DNS, Wi-Fi).
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/endpoint/test-results/network?testId=<id>" | jq -r '.results[0] | {gwLoss:.gatewayLoss, wifi:.wirelessQuality}' 2>/dev/null
+```
+
+**Expected result:** local-network metrics (default gateway loss, Wi-Fi
+signal, DNS time) — the "it's the user's Wi-Fi" root cause made visible.
+
+**Negative test:** escalating a Wi-Fi/gateway problem to the network team;
+endpoint data shows the fault is local.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.24 — Diagnose web application performance (ENNA 3.3)
+
+**Objective:** Read HTTP-server timing breakdown (DNS, connect, SSL, wait).
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/test-results/http-server?testId=<id>" | jq -r '.results[0] | {dns:.dnsTime, connect:.connectTime, ssl:.sslTime, wait:.waitTime}' 2>/dev/null
+```
+
+**Expected result:** the timing phases of the transaction — a high `waitTime`
+points at the server, high `dnsTime` at resolution, and so on.
+
+**Negative test:** a single "slow" number hides which phase is slow; the
+breakdown localizes it.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.25 — Identify security issues (ENNA 3.4)
+
+**Objective:** Detect a routing/DNS anomaly from assurance data.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/test-results/bgp?testId=<id>" | jq -r '.results[] | select(.prefixChange==true) | .prefix' 2>/dev/null | head
+```
+
+**Expected result:** a BGP prefix change/hijack or DNS-resolution anomaly —
+assurance data doubling as a security signal (DDoS, hijack, DNS tampering).
+
+**Negative test:** monitoring only reachability misses a hijack that still
+"resolves"; the path/BGP view is what exposes it.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.26 — Configure alert rules on network conditions (ENNA 4.1)
+
+**Objective:** Read an alert rule keyed on loss/latency.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/operations/alert-rules" | jq -r '.alertRules[] | "\(.ruleName)\t\(.expression)"' | head
+```
+
+**Expected result:** rules firing on TCP/network thresholds (e.g. loss > 5%
+for 3 rounds) — condition-based alerting.
+
+**Negative test:** a rule that fires on a single round produces alert
+storms on transient blips; require multiple consecutive rounds.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.27 — Configure alert rules on end-user experience (ENNA 4.2)
+
+**Objective:** Read an experience-based alert (page-load/app time).
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/operations/alert-rules" | jq -r '.alertRules[] | select(.alertType|test("HTTP|Web|Endpoint")) | .ruleName' 2>/dev/null | head
+```
+
+**Expected result:** alerts tied to what users feel (page-load time,
+availability) — not just infrastructure counters.
+
+**Negative test:** green infrastructure with a slow app still hurts users;
+experience alerts catch what device metrics miss.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.28 — Select deliverables and validate alerts (ENNA 4.3, 4.4)
+
+**Objective:** Confirm a dashboard/alert delivers to its audience and fires.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/dashboards" | jq -r '.dashboards[]?.title' 2>/dev/null | head
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/alerts?window=7d" | jq -r '.alerts | length' 2>/dev/null
+```
+
+**Expected result:** role-appropriate dashboards and a nonzero fired-alert
+history proving the rules actually trigger — validated, not assumed.
+
+**Negative test:** an alert rule never validated may have a typo'd threshold
+that never fires; the 7-day history is the proof.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.29 — Recommend capacity-planning optimization (ENNA 4.5)
+
+**Objective:** Read trend data to recommend a capacity change.
+
+```bash
+curl -sk -H "Authorization: Bearer $TE_TOKEN" "https://api.thousandeyes.com/v7/test-results/network?window=30d&testId=<id>" | jq -r '[.results[].loss] | add/length' 2>/dev/null
+```
+
+**Expected result:** a 30-day loss/utilization trend supporting a
+recommendation (add bandwidth, re-route, topology change) — data-driven
+capacity planning.
+
+**Negative test:** recommending an upgrade from one bad day rather than a
+trend over-provisions; the window matters.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.30 — Provision two SD-Access fabric sites (integrative)
+
 **Objective:** Use a Catalyst Center instance to provision two fabric
 sites, validate underlay and fabric formation through both the Catalyst
 Center GUI/API and device CLI, and use Assurance Path Trace to confirm

@@ -349,6 +349,504 @@ cEdge-01# show sdwan omp routes
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the WAN, transport,
+and SD-WAN exam topics that map here — **ENARSI Domain 2 (VPN
+Technologies)**, **ENCOR SD-WAN/virtualization**, and **all of ENSDWI
+(300-415)** — mapped in the volume README's coverage tables. "Describe"
+topics use a read-only inspection (IOS XE SD-WAN CLI or a vManage API query);
+"Configure" topics build and verify. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 4.1–4.30** — Catalyst 8000v/CSR IOS XE
+SD-WAN edges, a vManage/SD-WAN Manager controller reachable at `$VMANAGE`
+with a session cookie/token in `$VT`, and classic-IOS routers for the
+MPLS/DMVPN labs. **Cost:** none beyond lab resources; each lab removes its
+config.
+
+### Lab 4.1 — Describe MPLS operations (ENARSI 2.1)
+
+**Objective:** Read the label forwarding information base on an LSR.
+
+```text
+PE1# show mpls forwarding-table
+PE1# show mpls ldp neighbor
+```
+
+**Expected result:** local/outgoing label bindings and an LDP neighbor in
+`Oper` state — the LSR is label-switching packets along an LSP.
+
+**Negative test:** an interface without `mpls ip` has no label bindings and
+falls back to IP forwarding — MPLS must be enabled per link.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.2 — Describe MPLS Layer 3 VPN (ENARSI 2.2)
+
+**Objective:** Read a customer VRF and its VPNv4 routes on a PE.
+
+```text
+PE1# show ip route vrf CUST-A
+PE1# show bgp vpnv4 unicast all
+```
+
+**Expected result:** per-customer routes in VRF `CUST-A` carried as VPNv4
+with route targets — customer isolation across a shared MPLS core.
+
+**Negative test:** mismatched import/export route targets; the remote PE's
+routes never appear in the VRF — RTs control the VPN topology.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.3 — Configure and verify DMVPN single hub (ENARSI 2.3, ENCOR 2.2)
+
+**Objective:** Build a Phase 3 DMVPN hub with mGRE and NHRP.
+
+```text
+HUB(config)# interface tunnel0
+HUB(config-if)# ip nhrp network-id 1
+HUB(config-if)# ip nhrp redirect
+HUB(config-if)# tunnel mode gre multipoint
+HUB(config-if)# tunnel protection ipsec profile DMVPN
+HUB# show dmvpn
+```
+
+**Expected result:** spokes registered to the hub via NHRP; `show dmvpn`
+lists dynamic spoke mappings.
+
+**Negative test:** omit `ip nhrp redirect`/`shortcut`; spoke-to-spoke stays
+hairpinned through the hub (Phase 1 behavior) — Phase 3 needs the redirect.
+
+**Cleanup:** `no interface tunnel0` on the hub and spokes.
+
+### Lab 4.4 — Describe Cisco SD-WAN architecture and components (ENSDWI 1.1)
+
+**Objective:** Read the four SD-WAN planes from the controller.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/system/device/controllers" | jq -r '.data[] | "\(.["device-type"])\t\(.["system-ip"])\t\(.reachability)"'
+```
+
+**Expected result:** vManage (management), vSmart (control), vBond
+(orchestration), and WAN Edge (data) devices — the SD-WAN plane separation.
+
+**Negative test:** treating vManage as the control plane; vSmart (not
+vManage) distributes OMP routes and policy — the planes are distinct.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.5 — Describe SD-WAN Edge platforms and capabilities (ENSDWI 1.2)
+
+**Objective:** List the WAN Edge devices and their models.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/device" | jq -r '.data[] | select(.["device-type"]=="vedge") | "\(.["device-model"])\t\(.version)"' | sort -u
+```
+
+**Expected result:** the edge platforms (Catalyst 8000v, ISR/ASR) and
+software versions — the data-plane hardware the fabric runs on.
+
+**Negative test:** expecting a controller-mode-only feature on an
+autonomous-mode router; the device mode determines its SD-WAN capabilities.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.6 — Describe SD-WAN Cloud OnRamp (ENSDWI 1.3)
+
+**Objective:** Read any configured Cloud OnRamp for SaaS/multicloud.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/template/cloudx/manage/apps" | jq -r '.data[]?.appType' 2>/dev/null | head
+```
+
+**Expected result:** the Cloud OnRamp application list (SaaS optimization) —
+the feature that steers cloud/SaaS traffic on best-quality paths.
+
+**Negative test:** without Cloud OnRamp, SaaS traffic follows the default
+route regardless of path quality; OnRamp is what adds per-app path choice.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.7 — Describe controller cloud deployment (ENSDWI 2.1)
+
+**Objective:** Confirm the controllers' hosting and certificates.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/system/device/controllers" | jq -r '.data[] | "\(.["device-type"])\t\(.["cert-install-status"])"'
+```
+
+**Expected result:** controllers with `Installed` certificate status —
+cloud-hosted controllers reachable and trusted.
+
+**Negative test:** a controller with an uninstalled/expired certificate
+cannot form control connections; the whole overlay depends on the PKI.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.8 — Describe controller on-premises deployment (ENSDWI 2.2)
+
+**Objective:** Read control-connection state to on-prem controllers.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/device/control/connections?deviceId=<edge-ip>" | jq -r '.data[] | "\(.["peer-type"])\t\(.state)"'
+```
+
+**Expected result:** control connections to vSmart/vBond in `up` state —
+an edge fully onboarded whether controllers are cloud or on-prem.
+
+**Negative test:** an on-prem controller behind NAT without the correct
+vBond mapping never completes control connections — orchestration must
+resolve the public reachability.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.9 — Configure certificates and device lists (ENSDWI 2.3)
+
+**Objective:** Confirm the valid/staging device list state.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/certificate/vedge/list" | jq -r '.data[] | "\(.["chasisNumber"])\t\(.validity)"' | head
+```
+
+**Expected result:** WAN Edges marked `valid` in the device list — the trust
+allowlist that lets a device join the overlay.
+
+**Negative test:** an edge left in `staging`/`invalid` cannot form data-plane
+tunnels; the device list is the admission control.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.10 — Troubleshoot control plane connectivity (ENSDWI 2.4)
+
+**Objective:** Diagnose why an edge has no control connections.
+
+```text
+Edge# show sdwan control connections
+Edge# show sdwan control connection-history
+```
+
+**Expected result:** connection state per controller; the history reveals the
+failure reason (e.g. `DCONFAIL`, `VB_TMO`, certificate error).
+
+**Negative test:** blaming the data plane when `connection-history` shows a
+control-plane certificate/DTLS failure — control comes first.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.11 — Describe WAN Edge deployment (ENSDWI 3.1)
+
+**Objective:** Read an edge's onboarding/config-sync state.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/device/system/status?deviceId=<edge-ip>" | jq -r '.data[0] | "\(.vdevice_name)\t\(.["config-operation"])"' 2>/dev/null
+```
+
+**Expected result:** the edge in sync with its intended config — deployed
+via ZTP/PnP and managed by vManage.
+
+**Negative test:** an out-of-sync edge (local CLI changes) drifts from the
+template; vManage flags it and can revert — controller-managed config wins.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.12 — Configure the SD-WAN data plane (ENSDWI 3.2)
+
+**Objective:** Verify IPsec data-plane (BFD) tunnels between edges.
+
+```text
+Edge# show sdwan bfd sessions
+Edge# show sdwan ipsec outbound-connections
+```
+
+**Expected result:** BFD sessions `up` between TLOCs — the encrypted
+data-plane overlay carrying site-to-site traffic.
+
+**Negative test:** a firewall blocking the negotiated IPsec/UDP ports drops
+the data plane while control stays up — check both planes separately.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.13 — Configure OMP (ENSDWI 3.3)
+
+**Objective:** Read Overlay Management Protocol routes and TLOCs.
+
+```text
+Edge# show sdwan omp routes
+Edge# show sdwan omp tlocs
+```
+
+**Expected result:** OMP routes (prefixes) and TLOCs (transport locators)
+advertised via vSmart — the SD-WAN control-plane routing.
+
+**Negative test:** an OMP route with no matching TLOC is unusable; the prefix
+and its transport locator must both be present.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.14 — Configure TLOCs (ENSDWI 3.4)
+
+**Objective:** Read the transport-locator colors on an edge.
+
+```text
+Edge# show sdwan control local-properties | include color|tloc
+```
+
+**Expected result:** each WAN transport with its `color` (mpls, biz-internet,
+public-internet) — the TLOC attributes policy steers on.
+
+**Negative test:** two transports sharing a color break restrict/preference
+logic; colors must be assigned deliberately per transport.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.15 — Configure feature templates (ENSDWI 3.6, 3.7)
+
+**Objective:** List vManage feature templates / configuration groups.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/template/feature" | jq -r '.data[] | "\(.templateName)\t\(.templateType)"' | head
+```
+
+**Expected result:** the feature templates (and, in newer releases,
+configuration groups and feature profiles) that build device configs —
+config as reusable, versioned objects.
+
+**Negative test:** editing an attached template pushes to every device using
+it; scope changes with a device-specific template to avoid a fleet-wide
+change.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.16 — Configure control policies (ENSDWI 4.1)
+
+**Objective:** Read the centralized control policy applied at vSmart.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/template/policy/vsmart" | jq -r '.data[] | .policyName' 2>/dev/null | head
+```
+
+**Expected result:** control policies that shape OMP route/TLOC advertisement
+(topology: hub-spoke, mesh) — vSmart enforces them centrally.
+
+**Negative test:** a control policy not applied to a vSmart list has no
+effect; it must be activated and referenced by site list.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.17 — Configure data policies (ENSDWI 4.2)
+
+**Objective:** Read data policies that act on the data plane.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/template/policy/definition/data" | jq -r '.data[] | .name' 2>/dev/null | head
+```
+
+**Expected result:** data policies (traffic steering, service chaining) that
+apply at the edge to matched flows — distinct from control policy.
+
+**Negative test:** a data policy applied in the wrong direction (from-service
+vs from-tunnel) matches nothing; direction is part of the match.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.18 — Configure end-to-end segmentation (ENSDWI 4.3)
+
+**Objective:** Read the VPN segments carried across the fabric.
+
+```text
+Edge# show sdwan omp routes | include VPN
+Edge# show ip vrf
+```
+
+**Expected result:** multiple service VPNs (VRFs) mapped to OMP — end-to-end
+segmentation without per-hop VRF config in the underlay.
+
+**Negative test:** two segments sharing a VPN ID leak between tenants; the
+VPN ID is the isolation boundary across the overlay.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.19 — Configure application-aware routing (ENSDWI 4.4)
+
+**Objective:** Read the AAR policy and SLA class results.
+
+```text
+Edge# show sdwan app-route sla-class
+Edge# show sdwan app-route stats
+```
+
+**Expected result:** SLA classes (loss/latency/jitter) and per-tunnel
+measured stats — traffic is steered to the tunnel meeting the app's SLA.
+
+**Negative test:** an SLA class no tunnel can meet leaves traffic on the
+backup/last-resort path; the SLA must be achievable on some transport.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.20 — Configure direct Internet access (ENSDWI 4.5)
+
+**Objective:** Confirm a DIA NAT path at the branch.
+
+```text
+Edge# show sdwan policy from-vsmart
+Edge# show ip nat translations
+```
+
+**Expected result:** branch internet traffic NATed locally to the transport
+instead of backhauled — DIA offloads the hub.
+
+**Negative test:** DIA without a local security policy exposes the branch;
+DIA must pair with edge security (Lab 4.22).
+
+**Cleanup:** none (read-only).
+
+### Lab 4.21 — Configure service insertion (ENSDWI 5.1)
+
+**Objective:** Read advertised network services for service chaining.
+
+```text
+Edge# show sdwan omp services
+```
+
+**Expected result:** services (firewall, IDP) advertised into OMP so control
+policy can chain traffic through them — service insertion across the fabric.
+
+**Negative test:** a service advertised from a down node drops chained
+traffic; service tracking must remove it on failure.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.22 — Describe SD-WAN security features (ENSDWI 5.2)
+
+**Objective:** Read the edge security policy (enterprise firewall, IPS).
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/template/policy/definition/zonebasedfw" | jq -r '.data[]?.name' 2>/dev/null | head
+```
+
+**Expected result:** zone-based firewall / security policies bound to edges —
+on-box security for DIA and east-west traffic.
+
+**Negative test:** relying on the hub firewall for DIA traffic that never
+reaches the hub; DIA needs edge security.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.23 — Describe cloud security integration (ENSDWI 5.3)
+
+**Objective:** Read any SIG (Secure Internet Gateway) tunnels.
+
+```text
+Edge# show sdwan secure-internet-gateway tunnels
+```
+
+**Expected result:** automatic SIG tunnels to a cloud security provider
+(Umbrella/third-party) — cloud-delivered security for branch internet
+traffic.
+
+**Negative test:** DIA without a SIG or on-box security sends branch traffic
+to the internet uninspected; integrate one of them.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.24 — Configure QoS on WAN Edge (ENSDWI 5.4)
+
+**Objective:** Read the localized QoS policy on the edge.
+
+```text
+Edge# show sdwan policy access-list-counters
+Edge# show policy-map interface GigabitEthernet1
+```
+
+**Expected result:** class queues with match/drop counters on the WAN
+interface — QoS applied at the SD-WAN edge.
+
+**Negative test:** a QoS map with no shaper on a sub-line-rate circuit lets
+bulk traffic starve voice; shape to the circuit rate first.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.25 — Describe Application Quality of Experience (ENSDWI 5.5)
+
+**Objective:** Read AppQoE (TCP optimization/DRE) status.
+
+```text
+Edge# show sdwan appqoe status
+```
+
+**Expected result:** AppQoE services (TCP optimization, DRE) active on the
+edge — improving perceived application performance over the WAN.
+
+**Negative test:** enabling AppQoE without the required resource profile
+fails to activate; the platform must have the capacity.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.26 — Describe authentication, monitoring, and reporting (ENSDWI 6.1)
+
+**Objective:** Read vManage users and roles.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/admin/user" | jq -r '.data[] | "\(.userName)\t\(.group|join(","))"' | head
+```
+
+**Expected result:** vManage users mapped to role groups (netadmin,
+operator) — RBAC on the management plane.
+
+**Negative test:** an operator-role user cannot push templates; role scope
+limits management actions.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.27 — Configure authentication, monitoring, and reporting (ENSDWI 6.2)
+
+**Objective:** Confirm vManage's external AAA (RADIUS/TACACS) setting.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/admin/vmanage" | jq -r '.data | keys[]' 2>/dev/null | grep -i auth
+```
+
+**Expected result:** the configured external authentication server for
+vManage logins — centralized admin auth for the controller.
+
+**Negative test:** external AAA with no local fallback locks admins out when
+the server is unreachable; keep a local netadmin.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.28 — Describe REST API monitoring (ENSDWI 6.3)
+
+**Objective:** Query device statistics through the vManage REST API.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/device/counters?deviceId=<edge-ip>" | jq -r '.data[0] | {omp:.ompPeers, bfd:.bfdSessions}' 2>/dev/null
+```
+
+**Expected result:** OMP peer and BFD session counts via REST — the API that
+automation and monitoring dashboards consume.
+
+**Negative test:** polling the API without a valid session token returns
+`403`; the token/cookie is the auth boundary.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.29 — Describe software image management (ENSDWI 6.4)
+
+**Objective:** Read the software images in the vManage repository.
+
+```bash
+curl -sk -b "$VT" "$VMANAGE/dataservice/device/action/software" | jq -r '.data[]?.versionName' 2>/dev/null | head
+```
+
+**Expected result:** the image repository vManage uses to upgrade edges
+fleet-wide — centralized, staged software management.
+
+**Negative test:** upgrading all edges at once risks a fleet outage on a bad
+image; stage to a canary site first.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.30 — DMVPN Phase 3 overlay with tracked failover (integrative)
+
 **Objective:** Build a DMVPN Phase 3 hub-and-spoke overlay with two spokes,
 verify dynamic spoke-to-spoke tunnel formation, and add IP SLA–tracked
 dual-path failover on the hub's internet edge.
