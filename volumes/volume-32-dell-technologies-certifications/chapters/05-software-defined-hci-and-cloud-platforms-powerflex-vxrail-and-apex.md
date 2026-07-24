@@ -305,6 +305,28 @@ not identical to public Azure.
 
 **Cleanup:** none (read-only).
 
+### Lab 5.10 — Dell XC Plus hybrid cloud with Nutanix (Dell XC Plus / Nutanix Administration)
+
+**Objective:** Read a Dell XC Plus cluster running Nutanix (Prism/AHV).
+
+```bash
+acli host.list 2>/dev/null | head          # Nutanix AHV hosts on Dell XC hardware
+ncli cluster info 2>/dev/null | grep -E "Cluster Name|Version"
+curl -sk -u admin:$PW "https://$PRISM:9440/api/nutanix/v3/clusters/list" -X POST -d '{}' 2>/dev/null | jq -r '.entities[]?.status.name'
+```
+
+**Expected result:** the Nutanix cluster on Dell XC nodes with its AHV hosts —
+**Dell XC Plus** is the co-engineered turnkey HCI of **Dell XC hardware + Nutanix
+Cloud Infrastructure** (AHV hypervisor, Prism management), running traditional,
+virtualized, and GenAI workloads anywhere; administration blends PowerEdge hardware
+operations with Nutanix Prism.
+
+**Negative test:** manage the XC nodes' firmware outside the Dell/Nutanix
+LCM (Life Cycle Manager); the cluster drifts from its validated state — XC Plus
+updates go through the integrated LCM, like VxRail's.
+
+**Cleanup:** none (read-only).
+
 ## Lab Verification
 
 Verification means the VxRail prereq sheet would pass a real

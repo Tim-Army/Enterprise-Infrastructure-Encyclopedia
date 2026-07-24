@@ -279,6 +279,58 @@ it may overfit — cross-validation, not training fit, is the honest selection c
 
 **Cleanup:** none.
 
+### Lab 8.8 — Dell AI Factory infrastructure with NVIDIA (AI Server & Infrastructure with NVIDIA)
+
+**Objective:** Verify the GPU-accelerated AI infrastructure stack on a Dell
+PowerEdge XE server.
+
+```bash
+nvidia-smi --query-gpu=name,memory.total,utilization.gpu --format=csv 2>/dev/null
+nvidia-smi topo -m 2>/dev/null | head
+docker run --rm --gpus all nvcr.io/nvidia/cuda:12.4.0-base-ubuntu22.04 nvidia-smi 2>/dev/null | head
+```
+
+**Expected result:** the GPUs, their NVLink topology, and a GPU-enabled container —
+the **Dell AI Factory with NVIDIA** pairs PowerEdge XE (GPU) servers with the NVIDIA
+AI stack (drivers, CUDA, NGC containers, networking); the **AI Server &
+Infrastructure Foundations/Administration with NVIDIA** credentials combine PowerEdge
+Foundations/XE Operate with the NVIDIA AI Infrastructure & Operations/Professional
+certifications.
+
+**Negative test:** run a GPU container without the NVIDIA Container Toolkit / `--gpus`
+flag; it sees no GPU and falls back to CPU — the GPU runtime plumbing is required to
+expose accelerators to workloads.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.9 — Gen AI model augmentation and data engineering (Gen AI Model Augmentation Solution)
+
+**Objective:** Build a minimal RAG pipeline over a data-engineered corpus.
+
+```bash
+python3 - <<'PY'
+# Retrieval-Augmented Generation: embed a corpus, retrieve, then prompt the LLM
+docs=["PowerStore uses always-on data reduction.","Data Domain deduplicates backups."]
+q="How does PowerStore save space?"
+# 1) retrieve (toy similarity); 2) ground the LLM answer in the retrieved doc
+hit=max(docs, key=lambda d: len(set(q.lower().split()) & set(d.lower().split())))
+print("retrieved:", hit)
+print("prompt -> LLM: Answer using ONLY this context:\n", hit)
+PY
+```
+
+**Expected result:** the retrieved grounding passage feeding the prompt — the **Gen AI
+Model Augmentation and Data Engineering Solution with NVIDIA** combines Dell **data
+engineering** (curate/clean/index the corpus on PowerScale/ECS) with **NVIDIA LLM**
+application development (**RAG**, fine-tuning, NeMo/NIM) so an enterprise LLM answers
+from its own governed data instead of only pretrained knowledge.
+
+**Negative test:** answer the query from the raw LLM with no retrieval; it may
+hallucinate product specifics — grounding the answer in retrieved, engineered data is
+what RAG adds.
+
+**Cleanup:** none.
+
 ## Lab Verification
 
 Verification means all four artifacts exist with evidence (eval
