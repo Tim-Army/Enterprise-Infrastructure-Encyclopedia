@@ -218,61 +218,279 @@ reproductions of any Google exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Demonstrate, in bytes, that partitioning and column
-selection govern BigQuery cost — the single most consequential habit in
-this track.
+These labs cover the exam-guide topics for all three certifications in
+this chapter. **Professional Data Engineer** is covered topic by topic
+(its guide publishes 19 sub-topics); **Cloud Database Engineer** and
+**Machine Learning Engineer** are covered at section level with their
+published weights. Mapping is in the
+[volume README](../README.md#lab-coverage--data-and-ml-professionals).
 
-**Cost note:** All dry runs are free. The one real query in step 4 is
-tiny. Do **not** run the unfiltered query in step 3 without `--dry_run`.
+**Cost note:** BigQuery dry runs are free and used throughout. The public
+datasets cost nothing to query at these sizes. Lab 8.20 deletes
+everything created.
 
 **Prerequisites**
 
-- The sandbox project and budget alert from Chapter 01.
-- `bq` authenticated.
+```bash
+export PROJECT_ID="$(gcloud config get-value project)"
+bq mk --dataset --location=us-central1 "${PROJECT_ID}:de_lab" 2>/dev/null
+bq ls --format=pretty "${PROJECT_ID}:" | grep de_lab
+```
 
-**Steps**
+**Expected result:** `de_lab` listed.
 
-1. **Create a partitioned, clustered table (15 minutes).** Use the `bq mk`
-   command from the Implementation section, then load a small sample or
-   insert a handful of rows spanning several dates.
+### Lab 8.1 — Designing for security and compliance *(DE 1.1)*
 
-   **Expected result:** the table exists; `bq show` reports
-   `timePartitioning`.
+```bash
+bq show --format=prettyjson "${PROJECT_ID}:de_lab" | grep -E '"location"|"access"' | head -5
+```
 
-2. **Dry-run with a partition filter (5 minutes).** Run the filtered query.
+**Expected result:** `"location": "us-central1"` and an access block.
+Dataset location is a compliance control fixed at creation — it cannot be
+changed later, only recreated elsewhere.
 
-   **Expected result:** a small bytes-scanned figure — one partition.
+### Lab 8.2 — Designing for reliability and fidelity *(DE 1.2)*
 
-3. **Dry-run without the filter (5 minutes).** Run the unfiltered query.
+```bash
+bq query --use_legacy_sql=false --dry_run \
+ 'SELECT COUNT(*) c, COUNTIF(word IS NULL) nulls
+  FROM `bigquery-public-data.samples.shakespeare`'
+```
 
-   **Expected result:** a substantially larger figure. Record both
-   numbers; the ratio is the value of partitioning, measured rather than
-   asserted.
+**Expected result:** a bytes estimate and no execution. Fidelity checks
+belong in the pipeline as queries like this — count plus null count is the
+minimum contract on any ingested table.
 
-4. **Column selection (10 minutes).** Dry-run `SELECT *` against the same
-   table, then `SELECT amount` only.
+### Lab 8.3 — Designing for flexibility and portability *(DE 1.3)*
 
-   **Expected result:** `SELECT *` scans more, because storage is
-   columnar. Run only the narrow query for real.
+```bash
+bq show --schema --format=prettyjson bigquery-public-data:samples.shakespeare
+```
 
-5. **Negative test (10 minutes).** Create a second table **without**
-   partitioning, load the same rows, and dry-run the date-filtered query
-   against it.
+**Expected result:** a JSON schema array. A schema exported this way is
+the portable artifact — it recreates the table shape on another platform
+without moving data.
 
-   **Expected result:** the filter does **not** reduce bytes scanned —
-   proving that a `WHERE` clause alone does not prune; the table must be
-   partitioned on that column. This is the misconception the lab exists to
-   break.
+### Lab 8.4 — Designing data migrations *(DE 1.4)*
 
-6. **Cleanup:**
+```bash
+gcloud services list --available --filter="name:datamigration OR name:datastream" \
+  --format='value(name)'
+```
 
-   ```bash
-   bq rm -f -t <PROJECT_ID>:<DATASET>.events
-   bq rm -f -t <PROJECT_ID>:<DATASET>.events_unpartitioned
-   ```
+**Expected result:** `datamigration.googleapis.com` and
+`datastream.googleapis.com` available. Migration is a service selection
+before it is a data movement — record which one a stated cutover window
+would force.
 
-   Or delete the project. Confirm the budget shows only the small step-4
-   query.
+### Lab 8.5 — Planning the data pipelines *(DE 2.1)*
+
+```bash
+bq mk --table --time_partitioning_field=event_date --time_partitioning_type=DAY \
+  --clustering_fields=customer_id \
+  "${PROJECT_ID}:de_lab.events" \
+  event_date:DATE,customer_id:STRING,amount:NUMERIC
+bq show --format=prettyjson "${PROJECT_ID}:de_lab.events" | grep -A3 timePartitioning
+```
+
+**Expected result:** a `timePartitioning` block naming `event_date`.
+Partition and cluster keys are pipeline design decisions, fixed before the
+first row lands.
+
+### Lab 8.6 — Building the pipelines *(DE 2.2)*
+
+```bash
+bq query --use_legacy_sql=false \
+ 'INSERT INTO `'"${PROJECT_ID}"'.de_lab.events` (event_date, customer_id, amount)
+  VALUES (DATE "2026-07-01","c1",10.5), (DATE "2026-07-02","c2",20.0)'
+bq query --use_legacy_sql=false 'SELECT COUNT(*) FROM `'"${PROJECT_ID}"'.de_lab.events`'
+```
+
+**Expected result:** `2`. A pipeline is not built until rows are readable
+at the far end — the count is the proof.
+
+### Lab 8.7 — Deploying and operationalizing pipelines *(DE 2.3)*
+
+```bash
+bq ls -j --max_results=3 --format='table(jobId, state, statistics.query.totalBytesProcessed)'
+```
+
+**Expected result:** your recent jobs with state `DONE` and bytes
+processed. Job history is the operational surface — it answers "did it
+run, and what did it cost?"
+
+### Lab 8.8 — Selecting storage systems *(DE 3.1)*
+
+```bash
+gcloud storage buckets create "gs://de-lab-${PROJECT_ID}" \
+  --location=us-central1 --uniform-bucket-level-access
+gcloud storage buckets describe "gs://de-lab-${PROJECT_ID}" \
+  --format='value(storageClass, location)'
+```
+
+**Expected result:** `STANDARD US-CENTRAL1`. Object storage and BigQuery
+are different answers — state the access pattern that selects each.
+
+### Lab 8.9 — Planning for a data warehouse *(DE 3.2)*
+
+```bash
+bq query --use_legacy_sql=false --dry_run \
+ 'SELECT customer_id, SUM(amount) FROM `'"${PROJECT_ID}"'.de_lab.events`
+  WHERE event_date = "2026-07-01" GROUP BY customer_id'
+```
+
+**Expected result:** a small bytes figure — the partition filter pruned
+the scan. Warehouse planning *is* this arithmetic.
+
+### Lab 8.10 — Using a data lake *(DE 3.3)*
+
+```bash
+echo '{"customer_id":"c3","amount":30.0,"event_date":"2026-07-03"}' > /tmp/e.json
+gcloud storage cp /tmp/e.json "gs://de-lab-${PROJECT_ID}/raw/"
+gcloud storage ls "gs://de-lab-${PROJECT_ID}/raw/"
+```
+
+**Expected result:** the object listed. Raw landing in object storage
+ahead of load is the lake pattern — the file stays authoritative.
+
+### Lab 8.11 — Designing for a data platform *(DE 3.4)*
+
+```bash
+bq query --use_legacy_sql=false \
+ 'CREATE OR REPLACE VIEW `'"${PROJECT_ID}"'.de_lab.v_daily` AS
+  SELECT event_date, SUM(amount) total FROM `'"${PROJECT_ID}"'.de_lab.events`
+  GROUP BY event_date'
+bq show --format=prettyjson "${PROJECT_ID}:de_lab.v_daily" | grep '"query"' | head -1
+```
+
+**Expected result:** the view definition echoed back. A view is the
+platform's contract with consumers — they depend on it, not the table.
+
+### Lab 8.12 — Preparing data for visualization *(DE 4.1)*
+
+```bash
+bq query --use_legacy_sql=false --format=csv \
+ 'SELECT * FROM `'"${PROJECT_ID}"'.de_lab.v_daily` ORDER BY event_date'
+```
+
+**Expected result:** CSV rows with a header — the shape a BI tool
+consumes.
+
+### Lab 8.13 — Preparing data for AI and ML *(DE 4.2)*
+
+```bash
+bq query --use_legacy_sql=false --dry_run \
+ 'SELECT customer_id, AVG(amount) AS avg_amount
+  FROM `'"${PROJECT_ID}"'.de_lab.events` GROUP BY customer_id'
+```
+
+**Expected result:** a bytes estimate. Feature preparation is a query
+before it is a model — this aggregate is a feature.
+
+### Lab 8.14 — Sharing data *(DE 4.3)*
+
+```bash
+bq show --format=prettyjson "${PROJECT_ID}:de_lab" | grep -A6 '"access"' | head -10
+```
+
+**Expected result:** the dataset access list. Sharing via an **authorized
+view** grants the view, not the base table — that distinction is the
+examinable one.
+
+### Lab 8.15 — Optimizing resources *(DE 5.1)*
+
+```bash
+bq query --use_legacy_sql=false --dry_run \
+ 'SELECT * FROM `'"${PROJECT_ID}"'.de_lab.events`'
+```
+
+**Expected result:** a larger bytes figure than Lab 8.9's. `SELECT *`
+against columnar storage is a cost decision, and the two numbers prove it.
+
+### Lab 8.16 — Designing automation and repeatability *(DE 5.2)*
+
+```bash
+bq mk --transfer_config --data_source=scheduled_query \
+  --target_dataset=de_lab --display_name=daily_rollup \
+  --schedule='every 24 hours' \
+  --params='{"query":"SELECT 1","destination_table_name_template":"rollup","write_disposition":"WRITE_TRUNCATE"}' \
+  2>&1 | head -3
+```
+
+**Expected result:** either a transfer config ID, or a message that the
+Data Transfer API must be enabled — both are informative. Scheduling is
+where a query becomes a workload.
+
+### Lab 8.17 — Organizing workloads and monitoring *(DE 5.3, 5.4)*
+
+```bash
+bq ls -j --max_results=5 \
+  --format='table(jobId, state, statistics.query.totalSlotMs)'
+```
+
+**Expected result:** slot-milliseconds per job — the unit that shows which
+workload actually consumes capacity.
+
+### Lab 8.18 — Awareness of failures and mitigation *(DE 5.5)*
+
+```bash
+bq query --use_legacy_sql=false \
+ 'SELECT * FROM `'"${PROJECT_ID}"'.de_lab.no_such_table`' 2>&1 | head -3
+```
+
+**Expected result:** `Not found: Table ... no_such_table`. Knowing the
+exact failure string is what lets an alert distinguish a missing table
+from a permissions error.
+
+### Lab 8.19 — Database and ML sections *(DBE 1–4, MLE 1–6)*
+
+Database Engineer — capacity, HA/DR, connectivity, and service selection
+(section 1, ~32%):
+
+```bash
+gcloud sql tiers list --format='table(tier, RAM, DiskQuota)' | head -6
+```
+
+**Expected result:** available Cloud SQL machine tiers — the sizing
+catalogue section 1.1 asks you to select from. Then record, for a stated
+RPO/RTO: zonal, regional, or multi-regional, and why the other two fail.
+
+Machine Learning Engineer — serving and monitoring (sections 4 and 6):
+
+```bash
+gcloud ai models list --region=us-central1 --format='table(displayName)' 2>&1 | head -3
+gcloud ai endpoints list --region=us-central1 --format='table(displayName)' 2>&1 | head -3
+```
+
+**Expected result:** empty lists (or a "must enable API" message) on a
+fresh project — which is the correct starting state. The examinable point
+is that a *model* and an *endpoint* are separate objects: training
+produces the first, serving requires the second, and drift monitoring
+attaches to the endpoint.
+
+### Lab 8.20 — Negative test and cleanup
+
+Prove partitioning is what prunes, not the `WHERE` clause:
+
+```bash
+bq mk --table "${PROJECT_ID}:de_lab.events_flat" \
+  event_date:DATE,customer_id:STRING,amount:NUMERIC
+bq query --use_legacy_sql=false --dry_run \
+ 'SELECT SUM(amount) FROM `'"${PROJECT_ID}"'.de_lab.events_flat` WHERE event_date = "2026-07-01"'
+```
+
+**Expected result:** the same bytes figure as an unfiltered scan of that
+table — the filter did **not** prune, because the table is not partitioned
+on `event_date`. Compare against Lab 8.9. This is the misconception the
+lab exists to break.
+
+```bash
+gcloud projects delete "$PROJECT_ID" --quiet
+gcloud projects describe "$PROJECT_ID" --format='value(lifecycleState)'
+```
+
+**Expected result:** `DELETE_REQUESTED`, removing the datasets, bucket,
+and any transfer config together.
 
 ## Lab Verification
 

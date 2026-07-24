@@ -229,64 +229,305 @@ reproductions of any Google exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Prove that one global VPC connects regions without peering,
-then convert an SLO into an error budget you could actually defend.
+These labs cover the exam-guide topics for the three infrastructure
+professional certifications: **Network Engineer** and **DevOps Engineer**
+topic by topic, and **Developer** at section level (its surface is the
+same Cloud Run / GKE / integration ground the other two exercise).
+Mapping is in the
+[volume README](../README.md#lab-coverage--infrastructure-professionals).
 
-**Cost note:** VPC and subnets are free. Two `e2-micro` instances are
-minimal; step 6 deletes everything.
+**Cost note:** VPC, subnets, routes, and firewall rules are free. Two
+`e2-micro` instances and one Cloud Run service are minimal. Lab 6.22
+deletes the project.
 
 **Prerequisites**
 
-- The sandbox project and budget alert from Chapter 01.
-- `gcloud` authenticated.
+```bash
+export PROJECT_ID="$(gcloud config get-value project)"
+gcloud config set project "$PROJECT_ID"
+```
 
-**Steps**
+**Expected result:** `Updated property [core/project].`
 
-1. **Build the global VPC (15 minutes).** Create `vpc-global` with subnets
-   in `us-central1` and `europe-west1`.
+### Lab 6.1 — Designing an overall network architecture *(NE 1.1)*
 
-   **Expected result:** one network, two regional subnets.
+```bash
+gcloud compute networks create vpc-net --subnet-mode=custom
+gcloud compute networks describe vpc-net --format='value(name, routingConfig.routingMode)'
+```
 
-2. **Predict, then verify (10 minutes).** Write down whether a VM in
-   `snet-us` can reach a VM in `snet-eu`, and why. Then create one VM in
-   each and add a firewall rule permitting internal ICMP:
+**Expected result:** `vpc-net REGIONAL`. Custom mode (not auto) is the
+architect's default — it means subnets are created deliberately, not one
+per region automatically.
 
-   ```bash
-   gcloud compute firewall-rules create allow-internal-icmp \
-     --network=vpc-global --allow=icmp --source-ranges=10.30.0.0/16,10.31.0.0/16
-   ```
+### Lab 6.2 — Designing VPC networks *(NE 1.2)*
 
-   **Expected result:** they reach each other with **no peering
-   configured** — the platform difference this chapter turns on.
+```bash
+gcloud compute networks subnets create snet-us \
+  --network=vpc-net --range=10.60.0.0/24 --region=us-central1
+gcloud compute networks subnets create snet-eu \
+  --network=vpc-net --range=10.61.0.0/24 --region=europe-west1
+gcloud compute networks subnets list --network=vpc-net \
+  --format='table(name, region, ipCidrRange)'
+```
 
-3. **Negative test (10 minutes).** Delete the firewall rule and retry.
+**Expected result:** two subnets, two regions, one network — the global
+VPC. No peering is needed between them.
 
-   **Expected result:** connectivity fails while routing is unchanged —
-   demonstrating that inside one VPC the usual culprit is firewall, not
-   routing. Re-create the rule afterward.
+### Lab 6.3 — Designing hybrid and multi-cloud networking *(NE 1.3)*
 
-4. **Deploy and measure (15 minutes).** Deploy the Cloud Run sample, send
-   a handful of requests, and read request latency in Cloud Monitoring.
+```bash
+gcloud compute routers create rtr-net --network=vpc-net --region=us-central1 \
+  --asn=64512
+gcloud compute routers describe rtr-net --region=us-central1 \
+  --format='value(name, bgp.asn)'
+```
 
-   **Expected result:** a latency distribution to base an SLI on, with the
-   first request visibly slower (cold start).
+**Expected result:** `rtr-net 64512`. Cloud Router with a BGP ASN is the
+hybrid-connectivity anchor — VPN and Interconnect both attach to it.
 
-5. **Compute an error budget (10 minutes).** Choose an SLO from the
-   observed latency and compute the monthly error budget in minutes.
+### Lab 6.4 — Designing for GKE networking *(NE 1.4)*
 
-   **Expected result:** a defensible SLO and a budget figure you derived
-   rather than guessed.
+```bash
+gcloud compute networks subnets create snet-gke \
+  --network=vpc-net --range=10.62.0.0/24 --region=us-central1 \
+  --secondary-range=pods=10.100.0.0/16,services=10.101.0.0/20
+gcloud compute networks subnets describe snet-gke --region=us-central1 \
+  --format='value(secondaryIpRanges[].rangeName)'
+```
 
-6. **Cleanup:**
+**Expected result:** `pods;services`. VPC-native GKE needs secondary
+ranges for pods and services — designing them up front is topic 1.4.
 
-   ```bash
-   gcloud run services delete svc-demo --region=us-central1 --quiet
-   gcloud compute instances delete vm-us vm-eu --zone-flags... --quiet
-   gcloud compute networks delete vpc-global --quiet
-   ```
+### Lab 6.5 — Configuring VPCs *(NE 2.1)*
 
-   Simplest reliable teardown: delete the whole project. Confirm the
-   budget shows no unexpected spend.
+```bash
+gcloud compute firewall-rules create allow-net-internal \
+  --network=vpc-net --allow=tcp,udp,icmp --source-ranges=10.60.0.0/16
+gcloud compute firewall-rules list --filter="network:vpc-net" \
+  --format='table(name, direction, sourceRanges.list())'
+```
+
+**Expected result:** one INGRESS rule for `10.60.0.0/16`. Ingress is
+denied by default, so this rule is what makes the subnets usable.
+
+### Lab 6.6 — Configuring VPC routing *(NE 2.2)*
+
+```bash
+gcloud compute routes create rt-default-net \
+  --network=vpc-net --destination-range=0.0.0.0/0 \
+  --next-hop-gateway=default-internet-gateway --priority=1000
+gcloud compute routes list --filter="network:vpc-net" \
+  --format='table(name, destRange, priority, nextHopGateway.basename())'
+```
+
+**Expected result:** your route plus the system-created subnet routes.
+Route selection is longest-prefix then priority — the exam tests that
+order.
+
+### Lab 6.7 — Configuring Network Connectivity Center *(NE 2.3, 4.4)*
+
+```bash
+gcloud network-connectivity hubs create hub-net --description="lab hub" 2>&1 | head -3
+gcloud network-connectivity hubs list --format='value(name, state)' 2>&1 | head -3
+```
+
+**Expected result:** a hub in `ACTIVE` state, or an enable-API prompt.
+NCC is Google's managed transitive-connectivity fabric — the alternative
+to hand-built topologies.
+
+### Lab 6.8 — Configuring and maintaining GKE clusters *(NE 2.4)*
+
+```bash
+gcloud container clusters create-auto gke-net --region=us-central1 \
+  --network=vpc-net --subnetwork=snet-gke \
+  --cluster-secondary-range-name=pods --services-secondary-range-name=services
+gcloud container clusters describe gke-net --region=us-central1 \
+  --format='value(status, privateClusterConfig.enablePrivateNodes)'
+```
+
+**Expected result:** `RUNNING`. This binds the cluster to the secondary
+ranges from Lab 6.4 — proof the network design and the cluster agree.
+
+### Lab 6.9 — Configuring load balancing *(NE 3.1)*
+
+```bash
+gcloud compute health-checks create http hc-net --port=80
+gcloud compute backend-services create bes-net --protocol=HTTP \
+  --health-checks=hc-net --global
+gcloud compute backend-services describe bes-net --global \
+  --format='value(name, loadBalancingScheme, protocol)'
+```
+
+**Expected result:** `bes-net EXTERNAL_MANAGED HTTP`. A global external
+HTTP(S) load balancer fronts backends in many regions from one anycast IP.
+
+### Lab 6.10 — Configuring Cloud CDN *(NE 3.2)*
+
+```bash
+gcloud compute backend-services update bes-net --global --enable-cdn
+gcloud compute backend-services describe bes-net --global --format='value(enableCDN)'
+```
+
+**Expected result:** `True`. CDN is a flag on the backend service — the
+design decision is *which* backend caches, not a separate product.
+
+### Lab 6.11 — Configuring Cloud DNS *(NE 3.3)*
+
+```bash
+gcloud dns managed-zones create zone-net --dns-name="lab.example.com." \
+  --description="lab" --visibility=private --networks=vpc-net
+gcloud dns managed-zones describe zone-net --format='value(name, visibility)'
+```
+
+**Expected result:** `zone-net private`. A private zone resolves only
+inside the attached VPC — the split-horizon design DNS questions turn on.
+
+### Lab 6.12 — Configuring Cloud Interconnect and VPN *(NE 4.1, 4.2, 4.3)*
+
+```bash
+gcloud compute vpn-gateways create vgw-net --network=vpc-net --region=us-central1
+gcloud compute vpn-gateways describe vgw-net --region=us-central1 \
+  --format='value(name, vpnInterfaces[].ipAddress.list())'
+```
+
+**Expected result:** the gateway with two interface IPs (HA VPN is
+dual-interface by design). Interconnect and VPN both terminate on
+constructs like this and route via the Cloud Router from Lab 6.3.
+
+### Lab 6.13 — Logging and monitoring network operations *(NE 5.1)*
+
+```bash
+gcloud compute networks subnets update snet-us --region=us-central1 \
+  --enable-flow-logs
+gcloud compute networks subnets describe snet-us --region=us-central1 \
+  --format='value(logConfig.enable)'
+```
+
+**Expected result:** `True`. VPC Flow Logs are the raw material for
+network monitoring and are off by default — enabling them is a deliberate,
+billable choice.
+
+### Lab 6.14 — Troubleshooting connectivity *(NE 5.2)*
+
+```bash
+gcloud compute instances create vm-a --zone=us-central1-a --machine-type=e2-micro \
+  --subnet=snet-us --no-address --image-family=debian-12 --image-project=debian-cloud
+gcloud network-management connectivity-tests create test-net \
+  --source-instance=vm-a --destination-instance=vm-a \
+  --protocol=ICMP 2>&1 | head -3
+```
+
+**Expected result:** a test created, or an enable-API prompt. Connectivity
+Tests give Google's own reachability verdict — the answer to "is it
+firewall, route, or destination?"
+
+### Lab 6.15 — Cloud Armor and firewall policies *(NE 6.1, 6.2)*
+
+```bash
+gcloud compute security-policies create armor-net --description="lab"
+gcloud compute security-policies rules create 1000 \
+  --security-policy=armor-net --src-ip-ranges="203.0.113.0/24" --action=deny-403
+gcloud compute security-policies describe armor-net \
+  --format='value(rules[].action.list())'
+```
+
+**Expected result:** `deny-403;allow` (your rule plus the default). Cloud
+Armor is edge WAF/DDoS policy, distinct from VPC firewall rules that act
+at the instance.
+
+### Lab 6.16 — Packet Mirroring and network appliances *(NE 6.4)*
+
+```bash
+gcloud compute packet-mirrorings list --region=us-central1 \
+  --format='value(name)' 2>&1 | head -3
+```
+
+**Expected result:** an empty list (or enable prompt) on a fresh project.
+Packet Mirroring copies traffic to a collector for inspection — the design
+hook for a network virtual appliance.
+
+### Lab 6.17 — Bootstrapping and managing the organization *(DevOps 1.1–1.5)*
+
+```bash
+gcloud resource-manager org-policies list --project="$PROJECT_ID" \
+  --format='table(constraint)' | head -6
+```
+
+**Expected result:** effective constraints. Bootstrapping an org is
+codifying its hierarchy and guardrails — organization policy is where that
+becomes real.
+
+### Lab 6.18 — CI/CD pipelines and secrets *(DevOps 2.1–2.4)*
+
+```bash
+echo -n "s3cr3t" | gcloud secrets create lab-secret --data-file=- 2>&1 | head -2
+gcloud secrets versions access latest --secret=lab-secret
+```
+
+**Expected result:** `s3cr3t`. Secret Manager, not pipeline variables, is
+where deployment secrets live — securing the pipeline (topic 2.4) is this.
+
+### Lab 6.19 — SRE practices and error budgets *(DevOps 3.1–3.3)*
+
+```text
+# An SLO converts release risk into arithmetic. Fill and compute:
+SLO 99.9% over 28 days
+  total minutes   = 28 * 24 * 60 = 40,320
+  error budget    = 40,320 * 0.001 = ______ minutes
+```
+
+**Expected result:** 40.3 minutes. Spend it deliberately on releases;
+when exhausted, stop shipping. This is DevOps section 3 in one figure.
+
+### Lab 6.20 — Observability and troubleshooting *(DevOps 4.1–4.5)*
+
+```bash
+gcloud run deploy svc-obs \
+  --image=us-docker.pkg.dev/cloudrun/container/hello \
+  --region=us-central1 --allow-unauthenticated
+gcloud logging read 'resource.type="cloud_run_revision"' --limit=3 \
+  --format='table(timestamp, severity)'
+```
+
+**Expected result:** the service URL, then recent log lines. Telemetry,
+logs, metrics, and traces are the four observability topics — logs are the
+one on by default.
+
+### Lab 6.21 — Optimizing performance and cost / FinOps *(DevOps 5.1, 5.2)*
+
+```bash
+gcloud run services update svc-obs --region=us-central1 --max-instances=2 --cpu=1
+gcloud run services describe svc-obs --region=us-central1 \
+  --format='value(spec.template.metadata.annotations["autoscaling.knative.dev/maxScale"])'
+```
+
+**Expected result:** `2`. Capping max instances is the simplest FinOps
+control — it bounds the cost of a traffic spike.
+
+### Lab 6.22 — Negative test and cleanup
+
+Prove VPC firewall default-deny, not routing, is what blocks traffic:
+
+```bash
+gcloud compute firewall-rules delete allow-net-internal --quiet
+gcloud compute instances create vm-b --zone=us-central1-a --machine-type=e2-micro \
+  --subnet=snet-us --no-address --image-family=debian-12 --image-project=debian-cloud
+gcloud compute ssh vm-a --zone=us-central1-a --command="ping -c2 -W2 10.60.0.3" 2>&1 | tail -4
+```
+
+**Expected result:** the ping **fails** (100% loss) even though both VMs
+are in one subnet with valid routes — because ingress is denied by
+default once the allow rule is gone. Re-create the rule and the ping
+succeeds; that pair is the whole lesson.
+
+```bash
+gcloud projects delete "$PROJECT_ID" --quiet
+gcloud projects describe "$PROJECT_ID" --format='value(lifecycleState)'
+```
+
+**Expected result:** `DELETE_REQUESTED` — the cluster, load balancer,
+VPN gateway, Cloud Run service, and network are removed together.
 
 ## Lab Verification
 

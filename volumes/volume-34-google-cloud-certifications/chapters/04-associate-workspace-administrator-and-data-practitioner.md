@@ -200,58 +200,225 @@ reproductions of any Google exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Confirm the associate lineup and levels from the source,
-then build the BigQuery cost-control habit that the data track depends on.
+These labs cover the exam-guide topics for both associate certifications
+in this chapter. **Data Practitioner** is exercised through the Google
+Cloud data surface (BigQuery, Cloud Storage) topic by topic. **Google
+Workspace Administrator** is administered in the Admin console and Admin
+SDK, **not** `gcloud` — so its labs are console-and-API walkthroughs with
+the exact navigation and the observable result, since a Google Cloud
+project cannot stand in for a Workspace tenant. Mapping is in the
+[volume README](../README.md#lab-coverage--associate-workspace-administrator-and-data-practitioner).
 
-**Cost note:** `bq ls`, `bq show`, and `--dry_run` are free. The single
-real query in step 4 scans a small public dataset; keep the filter in
-place.
+**Cost note:** BigQuery dry runs and public-dataset reads are free.
+Workspace labs need a Workspace tenant (a trial tenant, never production).
+Lab 4.16 cleans up the Google Cloud project.
 
 **Prerequisites**
 
-- The sandbox project and budget alert from Chapter 01.
-- `gcloud` and `bq` authenticated.
+```bash
+export PROJECT_ID="$(gcloud config get-value project)"
+bq mk --dataset --location=us-central1 "${PROJECT_ID}:dp_lab" 2>/dev/null; echo ok
+```
 
-**Steps**
+**Expected result:** `ok`, and `dp_lab` visible in `bq ls`.
 
-1. **Confirm the levels (10 minutes).** Run the certification-page query
-   and read the Associate section.
+### Lab 4.1 — Prepare and process data *(Data Practitioner 1.1)*
 
-   **Expected result:** Cloud Engineer, Google Workspace Administrator,
-   and Data Practitioner listed as associate — or a documented difference.
+```bash
+bq query --use_legacy_sql=false --dry_run \
+ 'SELECT word, LOWER(word) AS norm, LENGTH(word) AS len
+  FROM `bigquery-public-data.samples.shakespeare` WHERE word_count > 100'
+```
 
-2. **Explore a public dataset (10 minutes).**
+**Expected result:** a bytes estimate, no execution. Preparation is
+transformation expressed as SQL — normalizing and deriving columns before
+they land.
 
-   ```bash
-   bq show --schema --format=prettyjson bigquery-public-data:samples.shakespeare
-   ```
+### Lab 4.2 — Extract and load into storage systems *(Data Practitioner 1.2)*
 
-   **Expected result:** the schema printed, with no query cost incurred.
+```bash
+bq query --use_legacy_sql=false --destination_table="${PROJECT_ID}:dp_lab.top_words" \
+ --replace 'SELECT word, word_count FROM `bigquery-public-data.samples.shakespeare`
+  WHERE corpus = "hamlet" ORDER BY word_count DESC LIMIT 50'
+bq query --use_legacy_sql=false 'SELECT COUNT(*) FROM `'"${PROJECT_ID}"'.dp_lab.top_words`'
+```
 
-3. **Dry-run first (10 minutes).**
+**Expected result:** `50`. ELT loads into BigQuery as the target system —
+the row count confirms the load, not the job's success flag.
 
-   ```bash
-   bq query --use_legacy_sql=false --dry_run \
-     'SELECT word, word_count FROM `bigquery-public-data.samples.shakespeare` WHERE corpus = "hamlet"'
-   ```
+### Lab 4.3 — Data analysis and presentation *(Data Practitioner 2.x)*
 
-   **Expected result:** a bytes-scanned estimate and explicitly no data
-   returned — the number you should always see before paying.
+```bash
+bq query --use_legacy_sql=false --format=csv \
+ 'SELECT word, word_count FROM `'"${PROJECT_ID}"'.dp_lab.top_words` ORDER BY word_count DESC LIMIT 5'
+```
 
-4. **Run it (5 minutes).** Remove `--dry_run` and run the same query.
+**Expected result:** CSV with a header and five rows — the shape a
+presentation layer consumes. For the ML sub-topic (2.3), a `CREATE MODEL`
+in BigQuery ML is the low-code path; confirm the current guide's product
+list before studying it, since this area moves.
 
-   **Expected result:** results returned, and bytes billed matching the
-   estimate.
+### Lab 4.4 — Design and implement simple pipelines *(Data Practitioner 3.1)*
 
-5. **Negative test (10 minutes).** Dry-run a deliberately unfiltered query
-   against a large public table, for example a `SELECT *` with no `WHERE`.
+```bash
+bq query --use_legacy_sql=false \
+ 'CREATE OR REPLACE VIEW `'"${PROJECT_ID}"'.dp_lab.v_top` AS
+  SELECT word, word_count FROM `'"${PROJECT_ID}"'.dp_lab.top_words` WHERE word_count > 20'
+bq show --format=prettyjson "${PROJECT_ID}:dp_lab.v_top" | grep '"query"' | head -1
+```
 
-   **Expected result:** a dramatically larger bytes-scanned figure — the
-   concrete demonstration of why the dry run is the habit. **Do not run it
-   without `--dry_run`.**
+**Expected result:** the view definition echoed back — the simplest
+durable pipeline step, a transformation consumers depend on.
 
-6. **Cleanup:** no resources were created; public datasets need no
-   teardown. Confirm the budget shows only the small step-4 query.
+### Lab 4.5 — Schedule, automate, and monitor *(Data Practitioner 3.2)*
+
+```bash
+bq ls -j --max_results=3 --format='table(jobId, state, statistics.query.totalBytesProcessed)'
+```
+
+**Expected result:** recent jobs with `state: DONE` and bytes processed —
+the monitoring surface for automated data tasks.
+
+### Lab 4.6 — Configure access control and governance *(Data Practitioner 4.1)*
+
+```bash
+bq show --format=prettyjson "${PROJECT_ID}:dp_lab" | grep -A6 '"access"' | head -10
+```
+
+**Expected result:** the dataset access list. Governance here is
+dataset-level IAM plus authorized views — sharing the view, not the base
+table.
+
+### Lab 4.7 — Configure lifecycle management *(Data Practitioner 4.2)*
+
+```bash
+bq update --default_table_expiration 3600 "${PROJECT_ID}:dp_lab"
+bq show --format=prettyjson "${PROJECT_ID}:dp_lab" | grep defaultTableExpiration
+```
+
+**Expected result:** `defaultTableExpiration` set to `3600000` ms. A
+default expiration is lifecycle management as a data-governance control —
+tables age out automatically.
+
+### Lab 4.8 — Workspace: managing the user life cycle *(Workspace 1.1)*
+
+```text
+Admin console → Directory → Users → Add new user.
+Or the Admin SDK Directory API:
+  POST https://admin.googleapis.com/admin/directory/v1/users
+    { "primaryEmail": "test.user@your-domain",
+      "name": {"givenName":"Test","familyName":"User"},
+      "password": "<generated>" }
+```
+
+**Expected result:** the user appears in Directory → Users with status
+**Active**, and a `200` with the user resource from the API. Suspending
+(not deleting) is the reversible lifecycle action the exam distinguishes.
+
+### Lab 4.9 — Workspace: organizational units *(Workspace 1.2)*
+
+```text
+Admin console → Directory → Organizational units → Create OU
+"lab-ou" under the root.
+```
+
+**Expected result:** `lab-ou` appears in the OU tree. Policies applied to
+an OU inherit to users in it — the same downward inheritance as Google
+Cloud's resource hierarchy, applied to people.
+
+### Lab 4.10 — Workspace: groups, domains, and resources *(Workspace 1.3–1.5)*
+
+```text
+Admin console → Directory → Groups → Create group "lab-team";
+  Account → Domains → Manage domains (verify state);
+  Directory → Buildings and resources → add a calendar resource.
+```
+
+**Expected result:** the group listed with a member count, the primary
+domain shown **Verified**, and a bookable resource in Calendar. Groups are
+the unit access should be granted to — never individual users.
+
+### Lab 4.11 — Workspace: core services *(Workspace 2.1–2.7)*
+
+```text
+Admin console → Apps → Google Workspace → Gmail (routing, compliance),
+  Drive and Docs (sharing settings), Calendar, Meet, Chat. The Gemini/
+  generative-AI settings (2.6) live under the same Apps panel.
+```
+
+**Expected result:** each service shows an **ON/OFF for everyone or by
+OU** toggle. Service state is set per OU — the mechanism that lets a
+policy differ by department.
+
+### Lab 4.12 — Workspace: data governance and compliance *(Workspace 3.1–3.5)*
+
+```text
+Vault (vault.google.com) → create a retention rule and a hold;
+  Admin console → Security → Data protection → create a DLP rule that
+  detects a credit-card pattern in Drive; Drive trust rules; data export.
+```
+
+**Expected result:** a Vault retention rule listed, and a DLP rule that
+shows a match count after a test document is added. DLP and Vault are the
+governance controls the exam weights.
+
+### Lab 4.13 — Workspace: security policies and access *(Workspace 4.1–4.3)*
+
+```text
+Admin console → Security → Authentication → 2-step verification
+  (enforce for an OU); → Security → Overview and the security
+  investigation tool; Apps → review third-party app access.
+```
+
+**Expected result:** 2SV shows **Enforced** for the chosen OU, and the
+investigation tool returns login events. Enforcing 2SV by OU is the
+single highest-value Workspace security control.
+
+### Lab 4.14 — Workspace: browsers and endpoints *(Workspace 5.1–5.2)*
+
+```text
+Admin console → Devices → Mobile & endpoints (set a mobile policy);
+  → Devices → Chrome → Settings (a browser policy).
+```
+
+**Expected result:** a mobile-management policy and a Chrome policy each
+show **applied to** an OU. Endpoint policy inherits down the OU tree, same
+as service state.
+
+### Lab 4.15 — Workspace: monitoring and troubleshooting *(Workspace 6.1–6.4)*
+
+```text
+Admin console → Reporting → Reports and Audit logs (Login, Drive, Admin);
+  Reporting → check email log search for a specific message.
+```
+
+**Expected result:** audit log entries for the actions taken in the labs
+above, and an email-log-search result for a test message. The audit logs
+are where "who did this?" is answered for the collaboration estate.
+
+### Lab 4.16 — Negative test and cleanup
+
+Prove a BigQuery `WHERE` clause alone does not control cost — dry-run an
+unfiltered scan of a large public table:
+
+```bash
+bq query --use_legacy_sql=false --dry_run \
+ 'SELECT * FROM `bigquery-public-data.wikipedia.pageviews_2020` WHERE wiki = "en"'
+```
+
+**Expected result:** a **very large** bytes-scanned figure (tens of GB),
+because `pageviews_2020` is huge and the `wiki` filter does not prune an
+unpartitioned column. **Do not run it without `--dry_run`.** This is why
+Data Practitioners dry-run first.
+
+```bash
+bq rm -r -f -d "${PROJECT_ID}:dp_lab"
+gcloud projects delete "$PROJECT_ID" --quiet
+```
+
+**Expected result:** the dataset removed and the project
+`DELETE_REQUESTED`. (Workspace tenants are cleaned up in the Admin console
+by suspending the test user and deleting the lab OU/group.)
 
 ## Lab Verification
 

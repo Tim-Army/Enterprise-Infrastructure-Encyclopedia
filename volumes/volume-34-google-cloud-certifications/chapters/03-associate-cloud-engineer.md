@@ -216,64 +216,321 @@ reproductions of any Google exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Build the core engineer objects, then prove that a
-predefined role grants exactly what you expect — and that a missing API
-fails differently from a missing permission.
+These labs cover **every topic in the Associate Cloud Engineer exam
+guide**, section by section. Each is a walkthrough: run the command shown
+and compare against the stated expected result. The topic-to-lab mapping
+is in the [volume README](../README.md#lab-coverage--associate-cloud-engineer).
 
-**Cost note:** An `e2-micro` instance and a small bucket are minimal but
-not free. Step 6 deletes the project, which removes everything.
+**Cost note:** `e2-micro` instances, a small bucket, one Cloud SQL
+instance, and a single-node GKE Autopilot cluster are minimal but **not
+free**. GKE and Cloud SQL are the expensive items — Lab 3.7 deletes the
+whole project, which stops everything.
 
 **Prerequisites**
 
-- The sandbox project and budget alert from Chapter 01.
-- `gcloud` authenticated with rights to create resources and IAM bindings.
+- The sandbox project and budget alert from
+  [Chapter 01](01-the-google-cloud-certification-program-levels-and-validity.md).
+- `gcloud` authenticated. Set your project once:
 
-**Steps**
+  ```bash
+  export PROJECT_ID="$(gcloud config get-value project)"
+  echo "$PROJECT_ID"
+  ```
 
-1. **Build (20 minutes).** Enable the Compute API, then create the VPC,
-   subnet, a VM, and a bucket using the Implementation commands.
+  **Expected result:** your sandbox project ID, not `(unset)`.
 
-   **Expected result:** all four exist and appear in their `list`
-   commands.
+### Lab 3.1 — Setting up cloud projects and accounts *(guide topic 1.1)*
 
-2. **Create and attach a service account (10 minutes).** Create
-   `sa-ace-lab`, grant it `roles/storage.objectViewer`, and attach it to a
-   VM.
+```bash
+gcloud projects describe "$PROJECT_ID" \
+  --format='table(projectId, name, lifecycleState, parent.type)'
+```
 
-   **Expected result:** the binding appears in the project IAM policy and
-   the VM reports the service account.
+**Expected result:** one row, `lifecycleState: ACTIVE`. `parent.type`
+reads `folder` or `organization` if the project sits in a hierarchy, and
+is blank for a standalone project — which is itself the answer to "is
+this project governed from above?"
 
-3. **Test permissions directly (10 minutes).** Run
-   `test-iam-permissions` for `storage.objects.get` and
-   `storage.objects.delete`.
+### Lab 3.2 — Managing billing configuration *(guide topic 1.2)*
 
-   **Expected result:** `get` returns as permitted, `delete` does not —
-   demonstrating that the predefined role is genuinely scoped.
+```bash
+gcloud billing projects describe "$PROJECT_ID" \
+  --format='value(billingAccountName, billingEnabled)'
+```
 
-4. **Negative test — two different failures (15 minutes).** First, disable
-   an API you have not used and attempt an operation needing it. Then, as
-   the service account, attempt `storage.objects.delete`.
+**Expected result:** `billingAccounts/XXXXXX-XXXXXX-XXXXXX True`. If
+`billingEnabled` is `False`, every later lab fails at resource creation —
+fix it before continuing. Note the billing account is a *separate* object
+from the project, which is why budgets attach to it.
 
-   **Expected result:** two distinguishable errors — one naming a disabled
-   API and directing you to `gcloud services enable`, one naming a missing
-   permission. Being able to tell them apart from the message alone is the
-   point.
+### Lab 3.3 — Planning and configuring compute resources *(guide topic 2.1)*
 
-5. **Check inheritance (10 minutes).** In writing, state what would change
-   if `roles/editor` were granted at the folder level above this project.
+```bash
+gcloud compute machine-types list --filter="zone:us-central1-a AND name~'^e2-'" \
+  --format='table(name, guestCpus, memoryMb)' --limit=5
+```
 
-   **Expected result:** a correct account — the broad role would be
-   inherited and would *not* be constrained by the narrow binding you
-   made.
+**Expected result:** a short table including `e2-micro` with `guestCpus: 2`
+and `memoryMb: 1024`. Sizing is a selection problem before it is a
+provisioning problem — this is the catalogue you select from.
 
-6. **Cleanup:**
+### Lab 3.4 — Planning and configuring data storage options *(guide topic 2.2)*
 
-   ```bash
-   gcloud projects delete <PROJECT_ID>
-   ```
+```bash
+gcloud storage buckets create "gs://ace-lab-${PROJECT_ID}" \
+  --location=us-central1 --uniform-bucket-level-access
+gcloud storage buckets describe "gs://ace-lab-${PROJECT_ID}" \
+  --format='value(location, storageClass, uniformBucketLevelAccess.enabled)'
+```
 
-   Confirm it shows `DELETE_REQUESTED`, and check the budget for
-   unexpected spend.
+**Expected result:** `US-CENTRAL1 STANDARD True`. Uniform bucket-level
+access being `True` matters: it disables per-object ACLs, which is the
+configuration that makes effective access reasonable to audit.
+
+### Lab 3.5 — Planning and configuring network resources *(guide topic 2.3)*
+
+```bash
+gcloud compute networks create vpc-ace --subnet-mode=custom
+gcloud compute networks subnets create snet-ace \
+  --network=vpc-ace --range=10.40.0.0/24 --region=us-central1
+gcloud compute networks subnets list --network=vpc-ace \
+  --format='table(name, region, ipCidrRange)'
+```
+
+**Expected result:** one row — `snet-ace us-central1 10.40.0.0/24`. The
+VPC itself is global; only the subnet carries a region, which is the
+Google Cloud networking fact Chapter 06 builds on.
+
+### Lab 3.6 — Deploying Compute Engine resources *(guide topic 3.1)*
+
+```bash
+gcloud compute instances create vm-ace --zone=us-central1-a \
+  --machine-type=e2-micro --subnet=snet-ace --no-address \
+  --image-family=debian-12 --image-project=debian-cloud
+gcloud compute instances describe vm-ace --zone=us-central1-a \
+  --format='value(status, machineType.basename(), networkInterfaces[0].networkIP)'
+```
+
+**Expected result:** `RUNNING e2-micro 10.40.0.2`. `--no-address` means no
+external IP — the instance is reachable only inside the VPC, which is the
+posture the security chapters assume.
+
+### Lab 3.7 — Deploying Google Kubernetes Engine resources *(guide topic 3.2)*
+
+```bash
+gcloud container clusters create-auto gke-ace \
+  --region=us-central1 --network=vpc-ace --subnetwork=snet-ace
+gcloud container clusters describe gke-ace --region=us-central1 \
+  --format='value(status, currentMasterVersion)'
+```
+
+**Expected result:** `RUNNING` and a version string. This takes several
+minutes and is the most expensive resource in the chapter — if you are
+watching cost, read the expected result here and skip to Lab 3.9.
+
+### Lab 3.8 — Deploying Cloud Run and Cloud Functions *(guide topic 3.3)*
+
+```bash
+gcloud run deploy svc-ace \
+  --image=us-docker.pkg.dev/cloudrun/container/hello \
+  --region=us-central1 --allow-unauthenticated
+gcloud run services describe svc-ace --region=us-central1 \
+  --format='value(status.url, status.conditions[0].status)'
+```
+
+**Expected result:** an `https://svc-ace-...run.app` URL and `True`.
+`curl` that URL and you should get the sample page — Cloud Run scales to
+zero, so the first request is measurably slower than the second.
+
+### Lab 3.9 — Deploying data solutions *(guide topic 3.4)*
+
+```bash
+bq mk --dataset --location=us-central1 "${PROJECT_ID}:ace_lab"
+bq ls --format=pretty "${PROJECT_ID}:"
+```
+
+**Expected result:** a table listing `ace_lab`. Creating a dataset is
+free; queries against it are not, which is why Chapter 04's dry-run habit
+exists.
+
+### Lab 3.10 — Deploying networking resources *(guide topic 3.5)*
+
+```bash
+gcloud compute firewall-rules create allow-ace-internal \
+  --network=vpc-ace --allow=tcp:22,icmp --source-ranges=10.40.0.0/24
+gcloud compute firewall-rules list --filter="network:vpc-ace" \
+  --format='table(name, direction, sourceRanges.list(), allowed[].map().firewall_rule().list())'
+```
+
+**Expected result:** one INGRESS rule for `10.40.0.0/24` allowing
+`tcp:22` and `icmp`. Google Cloud denies ingress by default, so without
+this rule the instance from Lab 3.6 is unreachable even from inside the
+subnet.
+
+### Lab 3.11 — Implementing resources through infrastructure as code *(guide topic 3.6)*
+
+```bash
+cat > /tmp/ace.tf <<'TF'
+resource "google_storage_bucket" "iac" {
+  name                        = "ace-iac-${var.project_id}"
+  location                    = "US-CENTRAL1"
+  uniform_bucket_level_access = true
+}
+variable "project_id" { type = string }
+TF
+cd /tmp && terraform init -input=false >/dev/null && \
+  terraform plan -input=false -var="project_id=$PROJECT_ID" | tail -5
+```
+
+**Expected result:** `Plan: 1 to add, 0 to change, 0 to destroy.` The
+plan is the deliverable here — infrastructure as code is examined as a
+declarative workflow, and reading a plan before applying is the habit.
+
+### Lab 3.12 — Managing Compute Engine resources *(guide topic 4.1)*
+
+```bash
+gcloud compute instances stop vm-ace --zone=us-central1-a
+gcloud compute instances describe vm-ace --zone=us-central1-a --format='value(status)'
+gcloud compute instances start vm-ace --zone=us-central1-a
+gcloud compute instances describe vm-ace --zone=us-central1-a --format='value(status)'
+```
+
+**Expected result:** `TERMINATED` then `RUNNING`. A stopped instance still
+bills for its persistent disk — stopping is not deleting, and the exam
+tests that distinction.
+
+### Lab 3.13 — Managing Google Kubernetes Engine resources *(guide topic 4.2)*
+
+```bash
+gcloud container clusters get-credentials gke-ace --region=us-central1
+kubectl create deployment web --image=us-docker.pkg.dev/google-samples/containers/gke/hello-app:1.0
+kubectl get deployment web -o wide
+```
+
+**Expected result:** `web  1/1  1  1` once the pod is scheduled. On
+Autopilot the node appears on demand, so `READY` may take a minute —
+`kubectl get pods -w` shows the transition.
+
+### Lab 3.14 — Managing Cloud Run resources *(guide topic 4.3)*
+
+```bash
+gcloud run services update svc-ace --region=us-central1 --max-instances=3
+gcloud run services describe svc-ace --region=us-central1 \
+  --format='value(spec.template.metadata.annotations["autoscaling.knative.dev/maxScale"])'
+```
+
+**Expected result:** `3`. Capping max instances is the standard guard
+against a traffic spike turning into a bill spike.
+
+### Lab 3.15 — Managing storage and database solutions *(guide topic 4.4)*
+
+```bash
+echo "ace lab object" > /tmp/ace.txt
+gcloud storage cp /tmp/ace.txt "gs://ace-lab-${PROJECT_ID}/"
+gcloud storage ls -L "gs://ace-lab-${PROJECT_ID}/ace.txt" | grep -E 'Storage class|Content-Length'
+```
+
+**Expected result:** `Storage class: STANDARD` and a byte count. Then set
+a lifecycle rule and confirm it is recorded:
+
+```bash
+printf '{"lifecycle":{"rule":[{"action":{"type":"Delete"},"condition":{"age":1}}]}}' > /tmp/lc.json
+gcloud storage buckets update "gs://ace-lab-${PROJECT_ID}" --lifecycle-file=/tmp/lc.json
+gcloud storage buckets describe "gs://ace-lab-${PROJECT_ID}" --format='value(lifecycle)'
+```
+
+**Expected result:** the rule echoed back with `age: 1`.
+
+### Lab 3.16 — Managing networking resources *(guide topic 4.5)*
+
+```bash
+gcloud compute networks subnets expand-ip-range snet-ace \
+  --region=us-central1 --prefix-length=23
+gcloud compute networks subnets describe snet-ace --region=us-central1 \
+  --format='value(ipCidrRange)'
+```
+
+**Expected result:** `10.40.0.0/23` — the range widened in place.
+Subnet ranges can be expanded but **never shrunk**, which is why initial
+CIDR planning (Lab 3.5) matters.
+
+### Lab 3.17 — Monitoring and logging *(guide topic 4.6)*
+
+```bash
+gcloud logging read \
+  'resource.type="gce_instance" AND protoPayload.methodName:"compute.instances.start"' \
+  --limit=3 --format='table(timestamp, protoPayload.authenticationInfo.principalEmail)'
+```
+
+**Expected result:** at least one row showing your own account and the
+time you ran Lab 3.12 — Admin Activity audit logs are on by default and
+answer "who did this?" without configuration.
+
+### Lab 3.18 — Managing IAM *(guide topic 5.1)*
+
+```bash
+gcloud projects get-iam-policy "$PROJECT_ID" \
+  --flatten='bindings[].members' \
+  --format='table(bindings.role, bindings.members)' | head -10
+```
+
+**Expected result:** your account against one or more roles. Now test a
+specific permission rather than inferring it:
+
+```bash
+gcloud projects test-iam-permissions "$PROJECT_ID" \
+  --permissions=compute.instances.create,resourcemanager.projects.delete
+```
+
+**Expected result:** the permissions you actually hold are echoed back;
+any you lack are simply absent from the response.
+
+### Lab 3.19 — Managing service accounts *(guide topic 5.2)*
+
+```bash
+gcloud iam service-accounts create sa-ace --display-name="ACE lab"
+SA="sa-ace@${PROJECT_ID}.iam.gserviceaccount.com"
+gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+  --member="serviceAccount:${SA}" --role="roles/storage.objectViewer" \
+  --condition=None --format='value(bindings.role)' | tail -1
+```
+
+**Expected result:** `roles/storage.objectViewer` in the updated policy —
+a *predefined* role, not a basic one.
+
+### Lab 3.20 — Negative test: prove the role is genuinely scoped
+
+```bash
+gcloud iam service-accounts add-iam-policy-binding "$SA" \
+  --member="user:$(gcloud config get-value account)" \
+  --role="roles/iam.serviceAccountTokenCreator"
+gcloud storage rm "gs://ace-lab-${PROJECT_ID}/ace.txt" \
+  --impersonate-service-account="$SA"
+```
+
+**Expected result:** the delete **fails** with
+`403 ... does not have storage.objects.delete access`. That is the point:
+`objectViewer` grants read and not delete, and impersonating the service
+account proves it against the real identity rather than by reading the
+policy. Confirm the object survived:
+
+```bash
+gcloud storage ls "gs://ace-lab-${PROJECT_ID}/"
+```
+
+**Expected result:** `ace.txt` still listed.
+
+### Lab 3.21 — Cleanup
+
+```bash
+gcloud projects delete "$PROJECT_ID" --quiet
+gcloud projects describe "$PROJECT_ID" --format='value(lifecycleState)'
+```
+
+**Expected result:** `DELETE_REQUESTED`. Deleting the project removes the
+cluster, instance, bucket, dataset, and service account together — which
+is why the sandbox project is the unit of teardown. Confirm in the billing
+console that GKE and Cloud Run stop accruing.
 
 ## Lab Verification
 

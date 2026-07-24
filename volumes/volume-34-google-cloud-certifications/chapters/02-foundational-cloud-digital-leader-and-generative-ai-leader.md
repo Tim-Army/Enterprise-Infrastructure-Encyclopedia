@@ -192,58 +192,148 @@ reproductions of any Google exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Establish the resource-hierarchy and billing scaffolding the
-whole volume assumes, and prove that IAM inheritance works the way the
-foundational exams describe.
+These labs cover the exam-guide topics for both foundational
+certifications. **Cloud Digital Leader** is a knowledge credential, so its
+labs read the platform facts the exam asks about (there is no build to
+perform). **Generative AI Leader** is exercised against its published
+guide sections (fundamentals, Google Cloud's offerings, techniques,
+business strategy). Mapping is in the
+[volume README](../README.md#lab-coverage--foundational).
 
-**Cost note:** Every command here is a read or a free project operation.
-No billable resources are created.
+**Cost note:** every command here is a read or an API-availability check.
+Nothing billable is created; there is nothing to clean up beyond the
+optional project deletion in Lab 2.10.
 
 **Prerequisites**
 
-- The sandbox project and budget alert from Chapter 01.
-- `gcloud` authenticated.
+```bash
+export PROJECT_ID="$(gcloud config get-value project)"; echo "$PROJECT_ID"
+```
 
-**Steps**
+**Expected result:** your sandbox project ID.
 
-1. **Read the hierarchy (10 minutes).** List organizations, folders (if
-   any), and projects, and draw the shape you see.
+### Lab 2.1 — Digital transformation with Google Cloud *(Cloud Digital Leader)*
 
-   **Expected result:** an accurate hierarchy sketch, even if it is a
-   single project with no organization.
+```bash
+gcloud services list --available --format='value(name)' | wc -l
+```
 
-2. **Separate project from billing (10 minutes).** List billing accounts
-   and identify which funds your sandbox project.
+**Expected result:** a count in the hundreds — the breadth of the service
+catalogue a digital-transformation conversation draws on. The leader
+credential is about knowing this surface exists, not operating it.
 
-   **Expected result:** the two named separately, with the relationship
-   stated in your own words.
+### Lab 2.2 — Infrastructure and application modernization *(Cloud Digital Leader)*
 
-3. **Read the IAM policy (10 minutes).** Run the flattened
-   `get-iam-policy` query on the sandbox project.
+```bash
+gcloud compute machine-types list --filter="zone:us-central1-a" \
+  --format='value(name)' | head -5
+gcloud run services list --format='value(name)' 2>/dev/null | head -3
+```
 
-   **Expected result:** a role-to-principal table, and the observation
-   that roles accumulate rather than override.
+**Expected result:** VM types (lift-and-shift) and any Cloud Run services
+(modernized). Naming the spectrum from VM to container to serverless is
+the modernization talking point the exam tests.
 
-4. **Negative test (10 minutes).** Query the IAM policy of a project you
-   do not have access to:
+### Lab 2.3 — Data and AI in the cloud *(Cloud Digital Leader)*
 
-   ```bash
-   gcloud projects get-iam-policy some-project-you-cannot-see
-   ```
+```bash
+gcloud services list --available \
+  --filter="name:(bigquery.googleapis.com OR aiplatform.googleapis.com)" \
+  --format='value(name)'
+```
 
-   **Expected result:** a clear permission error rather than an empty
-   result — confirming you can tell "no access" from "nothing there,"
-   which matters in every later chapter's troubleshooting.
+**Expected result:** both `bigquery.googleapis.com` and
+`aiplatform.googleapis.com` listed — the data and AI pillars a leader is
+expected to place in the portfolio.
 
-5. **Explain inheritance (10 minutes).** In writing, state what would
-   happen to your project's effective permissions if a role were granted
-   at the folder or organization level above it.
+### Lab 2.4 — Trust, security, scaling, and operations *(Cloud Digital Leader)*
 
-   **Expected result:** a correct account of downward inheritance and
-   additive roles.
+```bash
+gcloud resource-manager org-policies list --project="$PROJECT_ID" \
+  --format='value(constraint)' | head -5
+```
 
-6. **Cleanup:** nothing billable was created. Confirm the budget alert
-   from Chapter 01 is still active.
+**Expected result:** governance constraints (or none on a bare project).
+The leader-level point is that trust and security are configurable
+controls, not properties you hope for.
+
+### Lab 2.5 — Fundamentals of gen AI *(Generative AI Leader §1)*
+
+```bash
+gcloud ai models list --region=us-central1 --filter="displayName:gemini" \
+  --format='value(displayName)' 2>&1 | head -5
+```
+
+**Expected result:** Gemini foundation models, or an enable-API message.
+Section 1 is about recognizing foundation-model use cases and strengths —
+this is where they live.
+
+### Lab 2.6 — Google Cloud's gen AI offerings *(Generative AI Leader §2)*
+
+```bash
+gcloud services list --available \
+  --filter="name:(aiplatform.googleapis.com OR discoveryengine.googleapis.com)" \
+  --format='value(name)'
+```
+
+**Expected result:** Vertex AI (`aiplatform`) and the agent/search surface
+(`discoveryengine`). These are the offerings the section names for
+building and for agents.
+
+### Lab 2.7 — Techniques to improve gen AI output *(Generative AI Leader §3)*
+
+```text
+# Grounding is the section-3 technique that most changes output quality.
+# On Vertex AI it is enabled per request. Record the difference:
+Ungrounded prompt  : "What is our Q3 refund policy?"  -> model may invent
+Grounded prompt    : same prompt + a grounding source (your docs / Search)
+                     -> answer cites the source
+```
+
+**Expected result:** a written contrast showing grounding replaces
+plausible-but-invented answers with sourced ones — the exam's core
+technique point, alongside prompt engineering.
+
+### Lab 2.8 — Business strategies and responsible AI *(Generative AI Leader §4)*
+
+```bash
+gcloud services list --available --filter="name:modelarmor OR name:dlp" \
+  --format='value(name)' 2>&1 | head -3
+```
+
+**Expected result:** data-protection / safety services available.
+Responsible AI (4.3) is examinable and real — knowing which controls
+exist is the business-strategy competence the section rewards.
+
+### Lab 2.9 — Verify the fundamentals scaffolding *(both certifications)*
+
+```bash
+gcloud projects describe "$PROJECT_ID" --format='value(projectId, lifecycleState)'
+gcloud billing projects describe "$PROJECT_ID" --format='value(billingEnabled)'
+```
+
+**Expected result:** an `ACTIVE` project with `billingEnabled: True`.
+Project, billing, and hierarchy are the shared vocabulary both foundational
+exams assume — confirm you can read them.
+
+### Lab 2.10 — Negative test: recognizing a disabled service
+
+```bash
+gcloud ai models list --region=us-central1 2>&1 | head -3
+```
+
+**Expected result:** either a model list, **or** the message
+`API [aiplatform.googleapis.com] not enabled`. Being able to tell "the
+service is off" from "there is nothing there" is the foundational
+troubleshooting skill — and the leader exams frame it as knowing that
+capabilities must be *enabled* before they exist for a project.
+
+```bash
+# Optional cleanup if this was a throwaway project:
+gcloud projects delete "$PROJECT_ID" --quiet
+```
+
+**Expected result:** `DELETE_REQUESTED`, or skip this to keep the sandbox.
 
 ## Lab Verification
 

@@ -115,6 +115,196 @@ Enterprise Agent Platform** and **Google Cloud's data and analytics
 stack**, and directs candidates to each exam guide for the products
 actually covered. The data and AI certifications are the most affected.
 
+### Lab coverage — Associate Cloud Engineer
+
+Labs are mapped to the certification's published **exam guide topics**,
+which this repository treats as the blueprint. Every topic in the guide
+has a walkthrough lab in
+[Chapter 03](chapters/03-associate-cloud-engineer.md); section weights are
+Google's own.
+
+| Exam guide section | Topic | Lab |
+| --- | --- | --- |
+| 1 — Setting up a cloud solution environment (~20%) | 1.1 Cloud projects and accounts | 3.1 |
+| | 1.2 Billing configuration | 3.2 |
+| 2 — Planning and configuring (~17.5%) | 2.1 Compute resources | 3.3 |
+| | 2.2 Data storage options | 3.4 |
+| | 2.3 Network resources | 3.5 |
+| 3 — Deploying and implementing (~25%) | 3.1 Compute Engine | 3.6 |
+| | 3.2 Google Kubernetes Engine | 3.7 |
+| | 3.3 Cloud Run and Cloud Functions | 3.8 |
+| | 3.4 Data solutions | 3.9 |
+| | 3.5 Networking resources | 3.10 |
+| | 3.6 Infrastructure as code | 3.11 |
+| 4 — Ensuring successful operation (~20%) | 4.1 Managing Compute Engine | 3.12 |
+| | 4.2 Managing GKE | 3.13 |
+| | 4.3 Managing Cloud Run | 3.14 |
+| | 4.4 Managing storage and databases | 3.15 |
+| | 4.5 Managing networking | 3.16 |
+| | 4.6 Monitoring and logging | 3.17 |
+| 5 — Configuring access and security (~17.5%) | 5.1 Managing IAM | 3.18 |
+| | 5.2 Managing service accounts | 3.19, 3.20 |
+
+Lab 3.20 is the negative test (proving a predefined role is genuinely
+scoped) and 3.21 is cleanup. Every lab is a **walkthrough**: the runnable
+command plus the expected result to check against.
+
+**All fourteen certifications in this volume now carry topic-level lab
+coverage**, mapped to each certification's published exam guide (Chapters
+02–08). Chapter 01 (program planning) and Chapter 09 (currency check)
+carry process labs rather than blueprint-topic labs, since their subject is
+the program itself rather than a product surface.
+
+### Lab coverage — Professional Cloud Architect
+
+Mapped to the exam guide's own sections and weights (harvested from
+Google's published guide PDF). Labs are in
+[Chapter 05](chapters/05-professional-cloud-architect.md).
+
+| Exam guide section | Topic | Lab |
+| --- | --- | --- |
+| 1 — Designing and planning (~25%) | 1.1 Business requirements | 5.1 |
+| | 1.2 Technical requirements | 5.2 |
+| | 1.3 Network, storage, compute | 5.3 |
+| | 1.4 Migration plan | 5.4 |
+| | 1.5 Future improvements | 5.5 |
+| 2 — Managing and provisioning (~17.5%) | 2.1 Network topologies | 5.6 |
+| | 2.2 Storage systems | 5.7 |
+| | 2.3 Compute systems | 5.8 |
+| | 2.4 Gemini Enterprise Agent Platform | 5.9 |
+| | 2.5 Prebuilt solutions and APIs | 5.10 |
+| 3 — Security and compliance (~17.5%) | 3.1 Designing for security | 5.11 |
+| | 3.2 Designing for compliance | 5.12 |
+| 4 — Technical and business processes (~15%) | 4.1 Technical processes | 5.13 |
+| | 4.2 Business processes | 5.14 |
+| 5 — Managing implementation (~12.5%) | 5.1 Advising teams | 5.15 |
+| | 5.2 Interacting programmatically | 5.16 |
+| 6 — Solution and operations excellence (~12.5%) | 6.2 Observability | 5.17 |
+| | 6.3 / 6.5 Release and quality control | 5.18 |
+
+Lab 5.19 is the negative test and cleanup. **Topics 2.4 and 2.5 name the
+Gemini Enterprise Agent Platform** — content that entered the guide with
+the Google Cloud Next '26 refresh, and the newest material on the exam.
+
+### Lab coverage — Foundational
+
+Cloud Digital Leader is a knowledge credential (no build); its labs read
+the platform facts the exam asks about. Generative AI Leader is mapped to
+its exam-guide sections. Labs are in
+[Chapter 02](chapters/02-foundational-cloud-digital-leader-and-generative-ai-leader.md).
+
+| Certification / section | Lab |
+| --- | --- |
+| Cloud Digital Leader — digital transformation | 2.1 |
+| Cloud Digital Leader — modernization | 2.2 |
+| Cloud Digital Leader — data and AI | 2.3 |
+| Cloud Digital Leader — trust, security, operations | 2.4 |
+| Generative AI Leader §1 — fundamentals of gen AI | 2.5 |
+| Generative AI Leader §2 — Google Cloud's gen AI offerings | 2.6 |
+| Generative AI Leader §3 — techniques to improve output | 2.7 |
+| Generative AI Leader §4 — business strategy, responsible AI | 2.8 |
+
+Labs 2.9–2.10 verify the shared scaffolding and the negative test.
+
+### Lab coverage — Associate Workspace Administrator and Data Practitioner
+
+Data Practitioner is mapped topic by topic to its exam guide; Workspace
+Administrator is covered per guide section (administered in the Admin
+console / Admin SDK, not `gcloud`). Labs are in
+[Chapter 04](chapters/04-associate-workspace-administrator-and-data-practitioner.md).
+
+| Exam guide topic | Lab |
+| --- | --- |
+| Data Practitioner 1.1 Prepare and process data | 4.1 |
+| Data Practitioner 1.2 Extract and load | 4.2 |
+| Data Practitioner 2.x Analysis and presentation | 4.3 |
+| Data Practitioner 3.1 Design pipelines | 4.4 |
+| Data Practitioner 3.2 Schedule and monitor | 4.5 |
+| Data Practitioner 4.1 Access control and governance | 4.6 |
+| Data Practitioner 4.2 Lifecycle management | 4.7 |
+| Workspace 1 User accounts, domains, Directory | 4.8, 4.10 |
+| Workspace 1.2 Organizational units | 4.9 |
+| Workspace 2 Core Workspace services | 4.11 |
+| Workspace 3 Data governance and compliance | 4.12 |
+| Workspace 4 Security policies and access | 4.13 |
+| Workspace 5 Browsers and endpoints | 4.14 |
+| Workspace 6 Monitoring and troubleshooting | 4.15 |
+
+Lab 4.16 is the negative test and cleanup.
+
+### Lab coverage — Infrastructure Professionals
+
+Network Engineer and DevOps Engineer are mapped topic by topic to their
+exam guides; Developer shares the Cloud Run / GKE / integration surface
+those labs exercise. Labs are in
+[Chapter 06](chapters/06-infrastructure-professionals-network-engineer-devops-engineer-and-developer.md).
+
+| Exam guide topic | Lab |
+| --- | --- |
+| Network 1.1–1.4 Designing/planning the VPC | 6.1–6.4 |
+| Network 2.1 Configuring VPCs | 6.5 |
+| Network 2.2 VPC routing | 6.6 |
+| Network 2.3 / 4.4 Network Connectivity Center | 6.7 |
+| Network 2.4 GKE clusters | 6.8 |
+| Network 3.1 Load balancing | 6.9 |
+| Network 3.2 Cloud CDN | 6.10 |
+| Network 3.3 Cloud DNS | 6.11 |
+| Network 4.1–4.3 Interconnect, VPN, Router | 6.12 |
+| Network 5.1 Logging and monitoring | 6.13 |
+| Network 5.2 Troubleshooting connectivity | 6.14 |
+| Network 6.1–6.2 Cloud Armor, firewall policies | 6.15 |
+| Network 6.4 Packet Mirroring, appliances | 6.16 |
+| DevOps 1.1–1.5 Bootstrapping the org | 6.17 |
+| DevOps 2.1–2.4 CI/CD pipelines and secrets | 6.18 |
+| DevOps 3.1–3.3 SRE practices, error budgets | 6.19 |
+| DevOps 4.1–4.5 Observability | 6.20 |
+| DevOps 5.1–5.2 Performance and FinOps | 6.21 |
+
+Lab 6.22 is the negative test (default-deny firewall) and cleanup.
+
+### Lab coverage — Security Professionals
+
+Cloud Security Engineer mapped topic by topic; Security Operations
+Engineer touched where detection/response adjoins (Labs 7.13, 7.15). Labs
+are in [Chapter 07](chapters/07-security-professionals-cloud-security-engineer-and-security-operations-engineer.md).
+
+| Exam guide topic | Lab |
+| --- | --- |
+| 1.1 Cloud Identity | 7.1 |
+| 1.2 Service accounts | 7.2 |
+| 1.3 Authentication | 7.3 |
+| 1.4 Authorization controls | 7.4 |
+| 1.5 Resource hierarchy | 7.5 |
+| 2.1 Perimeter security | 7.6 |
+| 2.2 Boundary segmentation | 7.7 |
+| 2.3 Private connectivity | 7.8 |
+| 3.1 Preventing data loss | 7.9 |
+| 3.2 Encryption (CMEK) | 7.10 |
+| 3.3 Securing AI workloads | 7.11 |
+| 4.1 Automating security | 7.12 |
+| 4.2 Logging, monitoring, detection | 7.13 |
+| 5.1 Compliance | 7.14 |
+
+Lab 7.15 covers Data Access audit logs; 7.16 is the CMEK negative test and cleanup.
+
+### Lab coverage — Data and ML Professionals
+
+Data Engineer mapped topic by topic; Database Engineer and Machine
+Learning Engineer covered at section level (Lab 8.19) with their published
+weights. Labs are in
+[Chapter 08](chapters/08-data-and-ml-professionals-data-engineer-database-engineer-and-machine-learning-engineer.md).
+
+| Exam guide topic | Lab |
+| --- | --- |
+| Data Eng 1.1–1.4 Designing processing systems | 8.1–8.4 |
+| Data Eng 2.1–2.3 Ingesting and processing | 8.5–8.7 |
+| Data Eng 3.1–3.4 Storing the data | 8.8–8.11 |
+| Data Eng 4.1–4.3 Preparing for analysis | 8.12–8.14 |
+| Data Eng 5.1–5.5 Maintaining and automating | 8.15–8.18 |
+| Database Eng §1–4; ML Eng §1–6 | 8.19 |
+
+Lab 8.20 is the partitioning negative test and cleanup.
+
 ### Training access
 
 **[Google Skills](https://cloud.google.com/learn)** provides a free

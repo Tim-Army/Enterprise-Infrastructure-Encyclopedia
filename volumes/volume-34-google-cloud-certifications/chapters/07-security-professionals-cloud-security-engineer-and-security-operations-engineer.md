@@ -222,66 +222,226 @@ reproductions of any Google exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Apply a customer-managed encryption key and prove it is in
-force, then distinguish the three denial types Google Cloud produces.
+These labs cover **every topic in the Professional Cloud Security Engineer
+exam guide**, section by section, and touch the Security Operations
+Engineer surface (detection and response) where it adjoins. Mapping is in
+the [volume README](../README.md#lab-coverage--security-professionals).
 
-**Cost note:** KMS keys carry a small monthly charge per key version; the
-bucket is negligible. Step 6 deletes the project, which stops both.
+**Cost note:** IAM, org policy, and audit-log reads are free. One KMS key
+(a small monthly per-version charge) and one bucket are the only billable
+items. Lab 7.16 disables the key and deletes the project.
 
 **Prerequisites**
 
-- The sandbox project and budget alert from Chapter 01.
-- `gcloud` authenticated with rights to create KMS keys and buckets.
+```bash
+export PROJECT_ID="$(gcloud config get-value project)"; echo "$PROJECT_ID"
+```
 
-**Steps**
+**Expected result:** your sandbox project ID.
 
-1. **Create the key (10 minutes).** Create the key ring and key from the
-   Implementation section.
+### Lab 7.1 — Managing Cloud Identity *(topic 1.1)*
 
-   **Expected result:** the key exists and is `ENABLED`.
+```bash
+gcloud organizations list --format='table(displayName, id)' 2>&1 | head -3
+```
 
-2. **Create a CMEK bucket (10 minutes).** Create a bucket with the key as
-   its default encryption key.
+**Expected result:** your organization, or none for a standalone project.
+Cloud Identity is where users and groups originate before IAM ever grants
+them anything — the identity layer beneath access.
 
-   **Expected result:** the bucket exists.
+### Lab 7.2 — Managing service accounts *(topic 1.2)*
 
-3. **Verify CMEK is in force (5 minutes).**
+```bash
+gcloud iam service-accounts create sa-sec --display-name="sec lab"
+SA="sa-sec@${PROJECT_ID}.iam.gserviceaccount.com"
+gcloud iam service-accounts describe "$SA" --format='value(email, disabled)'
+```
 
-   ```bash
-   gcloud storage buckets describe gs://<BUCKET> --format='value(default_kms_key)'
-   ```
+**Expected result:** the email and `disabled:` blank (= enabled). Note
+**no key was created** — that is the secure default this exam rewards.
 
-   **Expected result:** your key's full resource name — not empty.
-   Trusting the create command without this check is the mistake.
+### Lab 7.3 — Managing authentication *(topic 1.3)*
 
-4. **Negative test — break the key (15 minutes).** Disable the key
-   version, then attempt to write an object:
+```bash
+gcloud iam service-accounts keys list --iam-account="$SA" \
+  --format='table(name.basename(), keyType)'
+```
 
-   ```bash
-   gcloud kms keys versions disable 1 --key=key-lab --keyring=kr-lab --location=us-central1
-   echo test > /tmp/t.txt && gcloud storage cp /tmp/t.txt gs://<BUCKET>/
-   ```
+**Expected result:** one `SYSTEM_MANAGED` key and **no** `USER_MANAGED`
+keys. User-managed keys are the leak risk; their absence is the finding
+you want.
 
-   **Expected result:** the write **fails**, naming the key. This proves
-   CMEK is genuinely in the data path — and demonstrates that key
-   management is an availability risk. Re-enable the version afterward.
+### Lab 7.4 — Managing authorization controls *(topic 1.4)*
 
-5. **Distinguish denials (15 minutes).** Produce and compare three errors:
-   an IAM denial (act outside your roles), an organization policy denial
-   (reuse the external-IP constraint from
-   [Chapter 05](05-professional-cloud-architect.md)), and the key failure
-   above.
+```bash
+gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+  --member="serviceAccount:${SA}" --role="roles/storage.objectViewer" \
+  --condition=None
+gcloud projects get-iam-policy "$PROJECT_ID" --flatten='bindings[].members' \
+  --filter="bindings.members:${SA}" --format='value(bindings.role)'
+```
 
-   **Expected result:** you can name the mechanism from each message
-   alone.
+**Expected result:** `roles/storage.objectViewer` — a predefined role, not
+a basic one. Authorization is additive and inherited downward.
 
-6. **Cleanup:** re-enable the key version, then delete the project:
+### Lab 7.5 — Defining the resource hierarchy *(topic 1.5)*
 
-   ```bash
-   gcloud projects delete <PROJECT_ID>
-   ```
+```bash
+gcloud projects describe "$PROJECT_ID" --format='value(parent.type, parent.id)'
+```
 
-   Confirm no KMS key versions remain billable.
+**Expected result:** `folder` or `organization` with an ID, or blank for a
+standalone project. The hierarchy is where inherited IAM and policy
+originate — security design starts here.
+
+### Lab 7.6 — Designing perimeter security *(topic 2.1)*
+
+```bash
+gcloud access-context-manager policies list --organization="$(gcloud projects describe "$PROJECT_ID" --format='value(parent.id)')" \
+  --format='value(name)' 2>&1 | head -3
+```
+
+**Expected result:** an access policy name, or a message that none exists
+/ no org. VPC Service Controls perimeters live under an access policy —
+the control that answers *where data may go*.
+
+### Lab 7.7 — Configuring boundary segmentation *(topic 2.2)*
+
+```bash
+gcloud compute networks create vpc-sec --subnet-mode=custom
+gcloud compute firewall-rules create deny-all-ingress \
+  --network=vpc-sec --action=deny --rules=all --direction=INGRESS --priority=65534
+gcloud compute firewall-rules describe deny-all-ingress \
+  --format='value(denied[].IPProtocol.list(), priority)'
+```
+
+**Expected result:** `all 65534`. An explicit low-priority deny makes the
+default-deny posture readable rather than implicit — segmentation as
+written intent.
+
+### Lab 7.8 — Establishing private connectivity *(topic 2.3)*
+
+```bash
+gcloud compute networks subnets create snet-sec \
+  --network=vpc-sec --range=10.70.0.0/24 --region=us-central1 \
+  --enable-private-ip-google-access
+gcloud compute networks subnets describe snet-sec --region=us-central1 \
+  --format='value(privateIpGoogleAccess)'
+```
+
+**Expected result:** `True`. Private Google Access lets workloads reach
+Google APIs with no external IP — the private-connectivity building block.
+
+### Lab 7.9 — Preventing data loss *(topic 3.1)*
+
+```bash
+gcloud services list --available --filter="name:dlp" --format='value(name)'
+```
+
+**Expected result:** `dlp.googleapis.com` available. Sensitive Data
+Protection (DLP) discovers and de-identifies sensitive data — the topic-3.1
+control, applied before data spreads.
+
+### Lab 7.10 — Managing encryption *(topic 3.2)*
+
+```bash
+gcloud kms keyrings create kr-sec --location=us-central1
+gcloud kms keys create key-sec --location=us-central1 --keyring=kr-sec \
+  --purpose=encryption
+gcloud storage buckets create "gs://sec-lab-${PROJECT_ID}" --location=us-central1 \
+  --uniform-bucket-level-access \
+  --default-encryption-key="projects/${PROJECT_ID}/locations/us-central1/keyRings/kr-sec/cryptoKeys/key-sec"
+gcloud storage buckets describe "gs://sec-lab-${PROJECT_ID}" --format='value(default_kms_key)'
+```
+
+**Expected result:** the key's full resource name — CMEK is in force.
+Reading it back is the verification; the create command alone is not
+evidence.
+
+### Lab 7.11 — Securing AI workloads *(topic 3.3)*
+
+```bash
+gcloud services list --available --filter="name:aiplatform" --format='value(name)'
+```
+
+**Expected result:** `aiplatform.googleapis.com` available. Securing AI
+workloads (a recent guide addition) means the same controls — IAM, CMEK,
+VPC-SC — applied to Vertex AI resources; confirm current guide wording.
+
+### Lab 7.12 — Automating infrastructure security *(topic 4.1)*
+
+```bash
+gcloud resource-manager org-policies deny compute.vmExternalIpAccess all \
+  --project="$PROJECT_ID"
+gcloud resource-manager org-policies list --project="$PROJECT_ID" \
+  --format='value(constraint)' | grep vmExternalIpAccess
+```
+
+**Expected result:** `constraints/compute.vmExternalIpAccess`. Org policy
+is security automation — a guardrail that enforces itself on every future
+resource without a human in the loop.
+
+### Lab 7.13 — Logging, monitoring, and detection *(topic 4.2)*
+
+```bash
+gcloud logging read 'protoPayload.methodName:"SetIamPolicy"' --limit=3 \
+  --format='table(timestamp, protoPayload.authenticationInfo.principalEmail)'
+gcloud scc findings list "$(gcloud projects describe "$PROJECT_ID" --format='value(parent.id)')" \
+  --filter='state="ACTIVE"' --format='value(category)' 2>&1 | head -3
+```
+
+**Expected result:** IAM-change log lines, and either Security Command
+Center findings or an access message. This is the Security Operations
+Engineer overlap — detection is built on these two surfaces.
+
+### Lab 7.14 — Supporting compliance requirements *(topic 5.1)*
+
+```bash
+gcloud resource-manager org-policies describe constraints/gcp.resourceLocations \
+  --project="$PROJECT_ID" --effective 2>&1 | head -5
+```
+
+**Expected result:** a location allow-list, or a "not currently enforced"
+result. Data-residency compliance is expressed as this constraint — a
+regulatory requirement made technical.
+
+### Lab 7.15 — Data Access audit logs *(operations, cross-topic)*
+
+```bash
+gcloud projects get-iam-policy "$PROJECT_ID" --format=json > /tmp/pol.json
+grep -c auditConfigs /tmp/pol.json || echo "no Data Access audit logs configured"
+```
+
+**Expected result:** `no Data Access audit logs configured` on a fresh
+project. Admin Activity logs are always on; Data Access logs are **not**,
+so "who read this object?" has no answer unless enabled in advance — the
+lesson that surfaces only during an investigation.
+
+### Lab 7.16 — Negative test and cleanup
+
+Prove CMEK is genuinely in the data path — disable the key and try to
+write:
+
+```bash
+gcloud kms keys versions disable 1 --key=key-sec --keyring=kr-sec --location=us-central1
+echo test > /tmp/t.txt
+gcloud storage cp /tmp/t.txt "gs://sec-lab-${PROJECT_ID}/" 2>&1 | tail -2
+```
+
+**Expected result:** the write **fails**, the error naming the disabled
+key (`KMS key ... is not enabled`). That failure is the proof CMEK sits in
+the write path — and that key management is an availability risk, not only
+a confidentiality one.
+
+```bash
+gcloud kms keys versions enable 1 --key=key-sec --keyring=kr-sec --location=us-central1
+gcloud projects delete "$PROJECT_ID" --quiet
+gcloud projects describe "$PROJECT_ID" --format='value(lifecycleState)'
+```
+
+**Expected result:** `DELETE_REQUESTED`. Re-enabling the key first avoids
+leaving a disabled-key alert behind; project deletion removes the key
+ring, bucket, VPC, and policies together.
 
 ## Lab Verification
 
