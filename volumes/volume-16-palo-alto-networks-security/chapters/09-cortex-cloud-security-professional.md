@@ -325,6 +325,112 @@ curl -sk -X GET \
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the major capability
+areas of the **Cloud Security Professional** certification — the CNAPP
+pillars: cloud posture (CSPM), identity entitlement (CIEM), workload/runtime
+protection (CWPP), code and IaC security, and compliance — mapped in the
+volume README's coverage table. Because Palo Alto publishes the Cortex
+datasheets behind a dynamic portal rather than a downloadable blueprint,
+these labs are mapped to the certification's documented CNAPP capability
+areas; re-check against the live datasheet on the next currency cycle. Each
+lab uses the Cortex Cloud REST API and ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 9.1–9.5** — a Cortex Cloud tenant with an
+API key in `$CORTEX_TOKEN` and the base URL in `$CC` (else run the check
+against product docs). All labs are read-only. **Cost:** none.
+
+### Lab 9.1 — Onboard and read cloud posture (CSPM)
+
+**Objective:** Confirm a connected cloud account and read its posture score.
+
+```bash
+curl -sk -H "Authorization: $CORTEX_TOKEN" "$CC/cspm/v1/accounts" \
+  | jq -r '.accounts[] | "\(.cloud_type)\t\(.account_id)\t\(.status)"'
+```
+
+**Expected result:** connected AWS/Azure/GCP accounts with a `status` of
+`connected` — the agentless posture scan reads config across the account.
+
+**Negative test:** an account onboarded with insufficient read permissions
+shows `partial`/`error`; CSPM needs the full read role to assess posture.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.2 — Read cloud misconfiguration findings (CSPM)
+
+**Objective:** Surface a high-severity misconfiguration.
+
+```bash
+curl -sk -H "Authorization: $CORTEX_TOKEN" \
+  "$CC/cspm/v1/findings?severity=high&status=open" \
+  | jq -r '.findings[0] | "\(.policy)\t\(.resource)\t\(.severity)"'
+```
+
+**Expected result:** a finding such as a public S3 bucket or unrestricted
+security group — posture policy evaluated against real cloud config.
+
+**Negative test:** scanning only at deploy time misses drift; continuous
+posture assessment is what catches a bucket made public after deploy.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.3 — Read identity entitlements (CIEM)
+
+**Objective:** Find over-permissioned or unused cloud identities.
+
+```bash
+curl -sk -H "Authorization: $CORTEX_TOKEN" \
+  "$CC/ciem/v1/findings?severity=high&type=unused-permission" \
+  | jq -r '.findings[] | "\(.identity)\t\(.unused_permissions|length) unused"' | head
+```
+
+**Expected result:** identities carrying unused high-risk permissions — the
+least-privilege gap CIEM quantifies.
+
+**Negative test:** posture scanning alone does not analyze effective identity
+permissions; CIEM's entitlement graph is what surfaces privilege creep.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.4 — Read workload/runtime protection (CWPP)
+
+**Objective:** Read runtime findings on a protected workload.
+
+```bash
+curl -sk -H "Authorization: $CORTEX_TOKEN" \
+  "$CC/cwpp/v1/incidents?type=runtime&severity=high" \
+  | jq -r '.incidents[0] | "\(.resource)\t\(.rule)\t\(.severity)"'
+```
+
+**Expected result:** a runtime detection (e.g. a container spawning an
+unexpected process) — CWPP protects the workload at runtime, beyond posture.
+
+**Negative test:** posture (CSPM) sees the container's *config* but not its
+*behavior*; a compromised-but-compliant container is caught only at runtime.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.5 — Read code and IaC security findings
+
+**Objective:** Read IaC scan results from the code-security surface.
+
+```bash
+curl -sk -H "Authorization: $CORTEX_TOKEN" \
+  "$CC/code-security/v1/issues?severity=high&framework=terraform" \
+  | jq -r '.issues[0] | "\(.check_id)\t\(.file)\t\(.resource)"'
+```
+
+**Expected result:** an IaC misconfiguration caught in code (shift-left) —
+the same policy enforced before deploy that CSPM enforces after.
+
+**Negative test:** relying on runtime detection alone lets a known-bad
+Terraform reach production; the code-security gate stops it pre-merge.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.6 — Checkov IaC scan with a CI/CD gate (integrative)
+
 **Objective:** Scan a Terraform configuration with Checkov, identify and
 remediate an intentionally introduced misconfiguration, integrate the scan
 into a CI/CD gate, and validate an agentless cloud account connection

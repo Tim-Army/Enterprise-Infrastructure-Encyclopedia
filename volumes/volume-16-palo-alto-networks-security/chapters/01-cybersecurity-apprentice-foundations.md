@@ -308,6 +308,144 @@ firewall feels slow."
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **each of the seven
+Cybersecurity Apprentice blueprint domains** — Cybersecurity, Network
+Fundamentals, Network Security, Endpoint Security, Cloud Security, Security
+Operations, and Identity Security — mapped in the volume README's coverage
+table. Apprentice is a foundational (knowledge) exam, so each lab
+*demonstrates* its domain concept concretely on a lab firewall rather than
+building production infrastructure. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 1.1–1.7** — a lab PAN-OS firewall with CLI
+access as `admin` (the first-touch setup is Lab 1.8). All labs are read-only
+demonstrations. **Cost:** none.
+
+### Lab 1.1 — Cybersecurity fundamentals (Domain 1)
+
+**Objective:** Observe the CIA triad in action by reading a blocked threat.
+
+```text
+admin@pa-fw01> show log threat direction equal backward | match deny
+```
+
+**Expected result:** threat-log entries where the firewall preserved
+integrity/availability by blocking an exploit — a concrete instance of the
+CIA triad the domain defines.
+
+**Negative test:** an empty threat log with allow-all policy means threats
+pass uninspected; "no logs" is not "no threats."
+
+**Cleanup:** none (read-only).
+
+### Lab 1.2 — Network fundamentals (Domain 2)
+
+**Objective:** Read the L3/L4/L7 fields of a live session (OSI in practice).
+
+```text
+admin@pa-fw01> show session all filter application web-browsing
+admin@pa-fw01> show session id <id>
+```
+
+**Expected result:** a session showing source/destination IP (L3), ports
+(L4), and application (L7) — the layered model made concrete.
+
+**Negative test:** identifying an app by port alone (80 = web) is unreliable;
+App-ID shows the true L7 app regardless of port — why the OSI layers are
+distinct.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.3 — Network security (Domain 3)
+
+**Objective:** See a zone-based security rule enforce a trust boundary.
+
+```text
+admin@pa-fw01> test security-policy-match from untrust to trust source 8.8.8.8 destination 10.10.20.5 application ssh protocol 6 destination-port 22
+```
+
+**Expected result:** the match returns the interzone default `deny` (no rule
+permits untrust→trust SSH) — the NGFW's default-deny posture.
+
+**Negative test:** the same test intrazone (trust→trust) is allowed by the
+implicit rule — trust level, set by the zone, is what changes the outcome.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.4 — Endpoint security (Domain 4)
+
+**Objective:** Read how the firewall extends protection toward endpoints via
+GlobalProtect posture.
+
+```text
+admin@pa-fw01> show global-protect-gateway current-user
+```
+
+**Expected result:** connected endpoints with their host information (HIP)
+where GlobalProtect is deployed — endpoint posture feeding network policy.
+
+**Negative test:** without a HIP profile, a non-compliant endpoint (no disk
+encryption) still connects; endpoint security requires the HIP check to gate
+access.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.5 — Cloud security (Domain 5)
+
+**Objective:** Read the firewall's cloud-delivered security subscriptions
+(the shared-responsibility split in practice).
+
+```text
+admin@pa-fw01> request license info
+```
+
+**Expected result:** cloud-delivered services (WildFire, Advanced Threat
+Prevention, Advanced URL Filtering) — the vendor secures the cloud analysis;
+the customer configures and consumes it.
+
+**Negative test:** assuming the cloud provider secures your *configuration*;
+misconfigured policy is the customer's responsibility, not the vendor's — the
+shared-responsibility line.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.6 — Security operations (Domain 6)
+
+**Objective:** See how the firewall feeds a SOC by forwarding logs.
+
+```text
+admin@pa-fw01> show log-collector-status
+admin@pa-fw01> show logging-status
+```
+
+**Expected result:** logging/forwarding status showing logs streaming to a
+collector/SIEM — the telemetry a SOC's detection and response depends on.
+
+**Negative test:** a firewall not forwarding logs is invisible to the SOC;
+detection needs the telemetry, so forwarding is a SecOps prerequisite.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.7 — Identity security (Domain 7)
+
+**Objective:** Read IP-to-user mappings (identity as a policy dimension).
+
+```text
+admin@pa-fw01> show user ip-user-mapping all
+```
+
+**Expected result:** users mapped to IPs, so policy and logs are attributed
+to identities, not just addresses — the foundation of identity-based
+security.
+
+**Negative test:** without User-ID, a shared-IP or DHCP environment cannot
+attribute activity to a person; identity mapping is what enables
+accountability.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.8 — First-touch firewall initialization (integrative)
+
 **Objective:** Perform first-touch initial configuration of a lab PAN-OS
 firewall using console and CLI access, including hostname, management
 addressing, an administrator account, and a validated commit — with a

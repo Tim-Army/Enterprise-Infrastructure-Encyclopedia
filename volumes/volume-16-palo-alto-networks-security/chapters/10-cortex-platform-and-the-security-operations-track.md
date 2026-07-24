@@ -125,6 +125,117 @@ Knowledge checks:
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the core **Cortex
+platform / Security Operations** capabilities the XSIAM and XSOAR
+certifications assume — data sources, ingestion, XQL query, correlation, and
+incident management — mapped in the volume README's coverage table. The
+Cortex datasheets sit behind a dynamic portal, so these labs map to the
+platform's documented capability areas (re-check on the next currency
+cycle). Each uses the Cortex REST API and ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 10.1–10.5** — a Cortex XSIAM/XDR tenant with
+`$XSIAM_KEY`, `$XSIAM_ID`, and base URL `$XS` (else run against product
+docs). All read-only. **Cost:** none.
+
+### Lab 10.1 — Read platform data sources
+
+**Objective:** List the data sources feeding the platform.
+
+```bash
+curl -sk -X POST "$XS/public_api/v1/data_sources/get_data_sources/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" -d '{"request_data":{}}' \
+  | jq -r '.reply[] | "\(.name)\t\(.status)"' 2>/dev/null | head
+```
+
+**Expected result:** connected sources (firewall logs, EDR, cloud, identity)
+with status — the platform correlates across all of them.
+
+**Negative test:** a SOC fed by one source (network only) misses
+endpoint/identity signal; cross-source correlation needs breadth of
+ingestion.
+
+**Cleanup:** none (read-only).
+
+### Lab 10.2 — Confirm data ingestion and normalization
+
+**Objective:** Verify events are ingested and mapped to the Cortex Data
+Model.
+
+```bash
+curl -sk -X POST "$XS/public_api/v1/xql/start_xql_query/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" \
+  -d '{"request_data":{"query":"dataset = xdr_data | fields _time, event_type | limit 5"}}' | jq -r '.reply'
+```
+
+**Expected result:** a query execution ID whose results show recent
+normalized events — ingestion plus parsing into the data model.
+
+**Negative test:** a custom log source with no parser lands as raw text and
+is not queryable by field; normalization is what makes it analyzable.
+
+**Cleanup:** none (read-only).
+
+### Lab 10.3 — Query telemetry with XQL
+
+**Objective:** Run an XQL query and read results.
+
+```bash
+QID=$(curl -sk -X POST "$XS/public_api/v1/xql/start_xql_query/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" \
+  -d '{"request_data":{"query":"dataset = xdr_data | filter action_local_ip != null | comp count() by action_local_ip | sort desc count | limit 10"}}' | jq -r '.reply')
+curl -sk -X POST "$XS/public_api/v1/xql/get_query_results/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" \
+  -d "{\"request_data\":{\"query_id\":\"$QID\"}}" | jq -r '.reply.status'
+```
+
+**Expected result:** a `SUCCESS` status with top talkers by IP — XQL is the
+platform's investigation and detection query language.
+
+**Negative test:** querying a field that the source did not populate returns
+nulls; know the data model each source maps to.
+
+**Cleanup:** none (read-only).
+
+### Lab 10.4 — Read correlation/detection rules
+
+**Objective:** List the correlation rules that turn events into alerts.
+
+```bash
+curl -sk -X POST "$XS/public_api/v1/correlations/get_correlations/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" -d '{"request_data":{}}' \
+  | jq -r '.reply[] | "\(.name)\t\(.enabled)"' 2>/dev/null | head
+```
+
+**Expected result:** correlation rules (built-in and custom) with enabled
+state — the logic that promotes raw telemetry to alerts.
+
+**Negative test:** a disabled correlation rule generates no alerts even as
+matching events stream in; enablement, not authorship, activates detection.
+
+**Cleanup:** none (read-only).
+
+### Lab 10.5 — Manage an incident lifecycle
+
+**Objective:** Read an incident and its aggregated alerts.
+
+```bash
+curl -sk -X POST "$XS/public_api/v1/incidents/get_incidents/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" -d '{"request_data":{"filters":[]}}' \
+  | jq -r '.reply.incidents[0] | "\(.incident_id)\t\(.status)\t\(.alert_count) alerts"'
+```
+
+**Expected result:** an incident grouping multiple alerts with a status — the
+platform reduces alert volume by aggregating related alerts into incidents.
+
+**Negative test:** working individual alerts instead of incidents multiplies
+analyst effort; incident grouping is the volume-reduction the platform
+provides.
+
+**Cleanup:** none (read-only).
+
+### Lab 10.6 — SOC track-map planning (integrative)
+
 Build the track map for your SOC role: pick analyst or engineer, pull
 the objectives for the XDR/XSIAM cert that fits, and produce a
 one-page study plan (cert order, Cortex products involved, digital-

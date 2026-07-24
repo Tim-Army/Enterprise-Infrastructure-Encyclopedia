@@ -86,6 +86,79 @@ Education sources; they do not reproduce proprietary assessment content.
 Always confirm the current blueprint against the vendor's official page
 before using a chapter for exam preparation.
 
+## Topic-level lab coverage
+
+Every blueprint domain across the volume's certifications is covered by
+hands-on **walkthrough** labs — **72 topic-level labs** plus one integrative
+lab per chapter and two Design Exercises. Because Palo Alto Networks
+publishes its exam datasheets through a dynamic portal rather than
+downloadable blueprints, coverage is measured against the blueprint
+**domains and weights** documented in Chapter 08 (Network Security track,
+from the official datasheets, verified 22 July 2026) and each Cortex
+certification's documented capability areas; re-confirm against the live
+datasheets on the certification-currency cycle. Labs use the PAN-OS CLI,
+XML/REST APIs, Panorama, and the Cortex Cloud / XSIAM / XSOAR REST APIs, and
+each carries `**Lab verified by:** *pending*` until a human runs it.
+
+The two design credentials — **Network Security Architect** and, in the
+SecOps track, the architect tier — are covered by Design Exercises
+(Chapter 08 and the reasoning throughout), consistent with the design-exam
+treatment used for Cisco CCDE, VMware VCDX, and the cloud architect exams.
+
+### Network Security track
+
+**Next-Generation Firewall Engineer (Domains → labs)**
+
+| Domain | Weight | Labs |
+| --- | --- | --- |
+| 1. PAN-OS Networking Configuration | 40% | 4.1–4.8 |
+| 2. PAN-OS Device Setting Configuration | 40% | 3.1–3.7, 5.3–5.7 |
+| 3. Integration and Automation | 20% | 7.1, 7.3–7.5, 7.7 |
+
+**Network Security Analyst**
+
+| Domain | Weight | Labs |
+| --- | --- | --- |
+| 1. Object Configuration Creation and Application | 30% | 5.1 |
+| 2. Policy Creation and Application | 30% | 5.2–5.9 |
+| 3. Management and Operations | 26% | 6.1–6.7, 7.5, 7.7 |
+| 4. Troubleshooting | 14% | 7.2, 7.6 |
+
+**Network Security Professional** — spans the platform: Fundamentals 1.1–1.7;
+NGFW/SASE functionality 2.1–2.6; platform tools 3.1–3.7; maintenance and
+configuration 3.5, 7.1; CDSS and infrastructure 5.3–5.5, 6.5; connectivity
+and security 4.1–4.9, 5.1–5.9.
+
+**Cybersecurity Practitioner** — the six domains map to Labs 2.1–2.6.
+
+**Cybersecurity Apprentice** — the seven domains map to Labs 1.1–1.7.
+
+**SD-WAN Engineer** — Deployment and Configuration 4.9; Planning/Design,
+Troubleshooting, Operations, and Unified SASE draw on 4.1–4.8 and 2.3.
+
+**Security Service Edge Engineer** — Prisma Access planning/services and
+Prisma Browser map to 2.3; Administration and Troubleshooting to 7.2, 7.6.
+
+**Network Security Architect** — the ten design domains are covered by the
+Chapter 08 **Design Exercise** and capstone.
+
+### Security Operations and Cloud Security tracks (Cortex)
+
+**Cloud Security Professional** — CSPM 9.1–9.2; CIEM 9.3; CWPP 9.4; code/IaC
+security 9.5; compliance 9.6.
+
+**XSIAM Analyst** — investigation and response 11.1–11.3; platform operation
+10.1, 10.3, 10.5.
+
+**XSIAM Engineer** — ingestion and detection engineering 11.4–11.6; platform
+build 10.2, 10.4.
+
+**XSOAR Engineer** — playbooks, integrations, and automation 12.1–12.3;
+platform 10.5.
+
+**Cloud Security Engineer** — cloud remediation and policy-as-code 12.4–12.5,
+9.3–9.5.
+
 ## Software and platform baseline
 
 Chapters in this volume reference the dated baseline recorded in

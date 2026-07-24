@@ -130,6 +130,112 @@ Knowledge checks:
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the **XSOAR Engineer**
+(playbooks, integrations, automation) and **Cloud Security Engineer**
+(cloud remediation, policy-as-code) capability areas the two certifications
+assume — mapped in the volume README's coverage table. The Cortex datasheets
+sit behind a dynamic portal, so these labs map to each certification's
+documented capability areas (re-check on the next currency cycle). Each uses
+the XSOAR / Cortex Cloud REST API and ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 12.1–12.5** — an XSOAR/XSIAM tenant with an
+API key in `$XSOAR_KEY` and base URL `$SOAR`, plus the Cortex Cloud tenant
+from Chapter 09 (`$CORTEX_TOKEN`, `$CC`) for the Cloud Security Engineer
+labs. **Cost:** none; automation targets lab resources only.
+
+### Lab 12.1 — Trigger and read a playbook run (XSOAR)
+
+**Objective:** Kick off an incident and read its playbook execution.
+
+```bash
+IID=$(curl -sk -X POST "$SOAR/incident" -H "Authorization: $XSOAR_KEY" \
+  -H 'Content-Type: application/json' -d '{"name":"lab-enrich","type":"Unclassified"}' | jq -r '.id')
+curl -sk "$SOAR/inv-playbook/$IID" -H "Authorization: $XSOAR_KEY" | jq -r '.state, .tasks | length'
+```
+
+**Expected result:** the incident's playbook in a running/completed state
+with its task count — automation orchestrating the response.
+
+**Negative test:** an incident with no playbook assigned sits untouched;
+the playbook binding is what triggers automation.
+
+**Cleanup:** delete the lab incident.
+
+### Lab 12.2 — Configure an integration instance (XSOAR)
+
+**Objective:** Confirm an enabled integration the playbooks call.
+
+```bash
+curl -sk "$SOAR/settings/integration/search" -H "Authorization: $XSOAR_KEY" \
+  -H 'Content-Type: application/json' -d '{"size":50}' \
+  | jq -r '.instances[] | select(.enabled=="true") | "\(.brand)\t\(.name)"' | head
+```
+
+**Expected result:** enabled integration instances (firewall, XDR, threat
+intel) — the connectors a playbook uses to enrich and act.
+
+**Negative test:** a playbook that calls a disabled integration errors at the
+task; the instance must be enabled and healthy first.
+
+**Cleanup:** none (read-only).
+
+### Lab 12.3 — Read a playbook task result / war room (XSOAR)
+
+**Objective:** Read an automation task's output from the incident war room.
+
+```bash
+curl -sk "$SOAR/investigation/$IID" -H "Authorization: $XSOAR_KEY" \
+  -H 'Content-Type: application/json' -d '{"pageSize":20}' \
+  | jq -r '.entries[] | select(.type==1) | .contents' 2>/dev/null | head
+```
+
+**Expected result:** task entries (enrichment output, indicator verdicts) in
+the war room — the auditable record of what the automation did.
+
+**Negative test:** an auto-containment action taken with no war-room entry is
+untraceable; every automated action should log to the war room for audit.
+
+**Cleanup:** none (read-only).
+
+### Lab 12.4 — Automate cloud remediation (Cloud Security Engineer)
+
+**Objective:** Read the remediation available for a cloud finding.
+
+```bash
+curl -sk -H "Authorization: $CORTEX_TOKEN" \
+  "$CC/cspm/v1/findings?severity=high&remediable=true" \
+  | jq -r '.findings[0] | "\(.policy)\t\(.remediation.type)"'
+```
+
+**Expected result:** a high-severity finding with an available remediation
+(auto or guided) — the engineer wires findings to automated fixes.
+
+**Negative test:** auto-remediating without a guardrail can break a
+legitimate resource; remediation automation needs scoping and approval for
+destructive fixes.
+
+**Cleanup:** none (read-only).
+
+### Lab 12.5 — Enforce a policy-as-code guardrail (Cloud Security Engineer)
+
+**Objective:** Read the code-security policy that blocks bad IaC pre-merge.
+
+```bash
+curl -sk -H "Authorization: $CORTEX_TOKEN" "$CC/code-security/v1/policies?enabled=true" \
+  | jq -r '.policies[] | "\(.name)\t\(.severity)\t\(.enforcement)"' | head
+```
+
+**Expected result:** enabled code-security policies with an enforcement mode
+(`block`/`monitor`) — guardrails that stop misconfiguration in the pipeline.
+
+**Negative test:** a policy in `monitor` mode logs but does not block; a
+guardrail must be in `block` mode to actually prevent the merge.
+
+**Cleanup:** none (read-only).
+
+### Lab 12.6 — Enrich, contain, and remediate playbook (integrative)
+
 XSOAR (evaluation/free digital-learning labs, else runbook): build one
 playbook that enriches an indicator, auto-contains on an unambiguous
 malicious verdict, and gates isolation behind an analyst task; test it

@@ -120,6 +120,132 @@ Knowledge checks:
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the **XSIAM Analyst**
+(investigate/respond) and **XSIAM Engineer** (ingest/detect/tune) capability
+areas the two certifications assume — mapped in the volume README's coverage
+table. The Cortex datasheets sit behind a dynamic portal, so these labs map
+to each certification's documented capability areas (re-check on the next
+currency cycle). Each uses the Cortex XSIAM/XDR REST API and ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 11.1–11.6** — a Cortex XSIAM/XDR tenant with
+`$XSIAM_KEY`, `$XSIAM_ID`, base URL `$XS` (else a runbook against product
+docs). **Cost:** none; response actions target a lab endpoint only.
+
+### Lab 11.1 — Investigate an incident (Analyst)
+
+**Objective:** Pull an incident's alerts and key artifacts.
+
+```bash
+curl -sk -X POST "$XS/public_api/v1/incidents/get_incident_extra_data/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" \
+  -d '{"request_data":{"incident_id":"<id>","alerts_limit":50}}' \
+  | jq -r '.reply.alerts.data[] | "\(.severity)\t\(.name)"' | head
+```
+
+**Expected result:** the incident's constituent alerts by severity — the
+starting point of an analyst investigation.
+
+**Negative test:** triaging by the incident title alone misses a low-severity
+alert that is the true entry point; the alert breakdown is the investigation.
+
+**Cleanup:** none (read-only).
+
+### Lab 11.2 — Read an alert's causality chain (Analyst)
+
+**Objective:** Trace the process causality behind an endpoint alert.
+
+```bash
+curl -sk -X POST "$XS/public_api/v1/alerts/get_alerts_multi_events/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" \
+  -d '{"request_data":{"filters":[{"field":"alert_id_list","operator":"in","value":["<alert-id>"]}]}}' \
+  | jq -r '.reply.events[] | "\(.action_process_image_name) -> \(.action_process_signature_status)"' | head
+```
+
+**Expected result:** the causality group (parent→child process tree) with
+signature status — XDR's analytics show *why* an alert fired, not just that
+it did.
+
+**Negative test:** an alert with no causality context forces manual host
+forensics; the causality chain is what makes triage fast.
+
+**Cleanup:** none (read-only).
+
+### Lab 11.3 — Take an endpoint response action (Analyst)
+
+**Objective:** Isolate a compromised endpoint from the network.
+
+```bash
+curl -sk -X POST "$XS/public_api/v1/endpoints/isolate/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" \
+  -d '{"request_data":{"endpoint_id":"<lab-endpoint-id>"}}' | jq -r '.reply.action_id'
+```
+
+**Expected result:** an `action_id` and the endpoint moving to `isolated` —
+network containment while forensics proceed.
+
+**Negative test:** powering off the host instead destroys volatile memory
+evidence; isolation contains while preserving forensic state.
+
+**Cleanup:** `unisolate` the endpoint after the exercise.
+
+### Lab 11.4 — Configure a data source and parser (Engineer)
+
+**Objective:** Confirm a data source is parsed to the data model.
+
+```bash
+curl -sk -X POST "$XS/public_api/v1/data_sources/get_data_sources/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" -d '{"request_data":{}}' \
+  | jq -r '.reply[] | select(.status!="active") | "\(.name)\t\(.status)"'
+```
+
+**Expected result:** any source not `active` (the engineer's onboarding
+backlog) — an engineer's job is complete, parsed ingestion.
+
+**Negative test:** an ingested-but-unparsed source is invisible to detection
+rules that reference model fields; ingestion without parsing is not coverage.
+
+**Cleanup:** none (read-only).
+
+### Lab 11.5 — Build a correlation/BIOC detection rule (Engineer)
+
+**Objective:** Read (and template) a custom correlation rule.
+
+```bash
+curl -sk -X POST "$XS/public_api/v1/correlations/get_correlations/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" -d '{"request_data":{}}' \
+  | jq -r '.reply[] | select(.is_custom==true) | "\(.name)\t\(.xql_query|.[0:40])"' | head
+```
+
+**Expected result:** custom correlation rules with their XQL logic — the
+engineer authors detections as XQL that promote events to alerts.
+
+**Negative test:** a rule with too-broad XQL floods analysts with false
+positives; detection engineering is tuning precision, not just writing logic.
+
+**Cleanup:** none (read-only).
+
+### Lab 11.6 — Tune alert exclusions (Engineer)
+
+**Objective:** Read alert-exclusion/suppression policy that cuts noise.
+
+```bash
+curl -sk -X POST "$XS/public_api/v1/alerts/get_alerts/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" \
+  -d '{"request_data":{"filters":[{"field":"alert_source","operator":"eq","value":"Correlation"}],"sort":{"field":"severity","keyword":"desc"}}}' \
+  | jq -r '.reply.alerts | length'
+```
+
+**Expected result:** the correlation-alert volume the engineer tunes down
+with exclusions/suppression — the ongoing noise-reduction work.
+
+**Negative test:** an exclusion that is too broad suppresses a real attack;
+tuning trades noise against coverage, and must be reviewed.
+
+**Cleanup:** none (read-only).
+
+### Lab 11.7 — Analyst investigation and engineer detection (integrative)
+
 In a Cortex evaluation tenant or the free digital-learning labs (else
 a documented runbook against product docs): as Analyst, investigate a
 seeded incident end to end — causality chain, scope, one response

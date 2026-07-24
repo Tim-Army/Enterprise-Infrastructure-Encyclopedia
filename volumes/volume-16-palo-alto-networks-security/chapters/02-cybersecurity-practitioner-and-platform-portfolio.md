@@ -293,6 +293,131 @@ url-filtering-version: 20260715.20123
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **each of the six
+Cybersecurity Practitioner blueprint domains** — Cybersecurity, Network
+Security, Secure Access, Cloud Security, Endpoint Security, and Security
+Operations — spanning the Strata, Prisma, and Cortex portfolio and mapped in
+the volume README's coverage table. Practitioner is a knowledge exam across
+the platform, so each lab demonstrates its domain concept on the relevant
+product surface. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
+
+**Shared prerequisites for Labs 2.1–2.6** — a lab PAN-OS firewall (CLI as
+`admin`); the Prisma/Cortex labs read from Strata Cloud Manager or a Cortex
+tenant where available, else describe the check. All are read-only. **Cost:**
+none.
+
+### Lab 2.1 — Cybersecurity (Domain 1: prevention-first, Zero Trust)
+
+**Objective:** Show a default-deny, least-privilege posture (Zero Trust in
+practice).
+
+```text
+admin@pa-fw01> show running security-policy | match deny
+admin@pa-fw01> test security-policy-match from trust to untrust source 10.10.20.5 destination 1.1.1.1 application unknown-tcp protocol 6 destination-port 4444
+```
+
+**Expected result:** an unknown application to an odd port hits a deny rule —
+prevention-first blocks what is not explicitly allowed.
+
+**Negative test:** an `any/any/allow` rule inverts Zero Trust to
+allow-by-default — the anti-pattern the domain warns against.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.2 — Network security (Domain 2: NGFW App-ID/Content-ID)
+
+**Objective:** Show App-ID identifying an application independent of port.
+
+```text
+admin@pa-fw01> show session all filter application ssl
+admin@pa-fw01> show running application-cache
+```
+
+**Expected result:** sessions classified by true application (App-ID) with
+Content-ID inspection — the NGFW capability beyond port/protocol firewalls.
+
+**Negative test:** a legacy port-based rule permits any traffic on 443,
+including tunneled non-web apps; App-ID exposes and controls them.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.3 — Secure access (Domain 3: SASE / Prisma Access / ZTNA)
+
+**Objective:** Show remote-access enforcement (GlobalProtect / Prisma Access
+as the SASE edge).
+
+```text
+admin@pa-fw01> show global-protect-gateway statistics
+admin@pa-fw01> show global-protect-gateway current-user
+```
+
+**Expected result:** active remote users terminating on the gateway with
+policy applied — SASE brings security to the user, wherever they are.
+
+**Negative test:** backhauling all remote traffic to a single data center
+(VPN concentrator model) adds latency SASE's distributed edges remove — the
+architectural difference.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.4 — Cloud security (Domain 4: Prisma/Cortex Cloud, CNAPP)
+
+**Objective:** Read a cloud posture finding (CNAPP visibility).
+
+```bash
+curl -sk -H "Authorization: $CORTEX_TOKEN" \
+  "https://api.cortex-cloud.paloaltonetworks.com/ciem/v1/findings?severity=high&type=unused-permission" \
+  | jq -r '.findings[0] | "\(.resource)\t\(.severity)"' 2>/dev/null
+```
+
+**Expected result:** a high-severity cloud finding (e.g. an unused
+permission) — CNAPP correlates posture, identity, and runtime risk across
+clouds.
+
+**Negative test:** agent-based endpoint tools do not see cloud IAM
+misconfiguration; CNAPP's cloud-native visibility is what surfaces it.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.5 — Endpoint security (Domain 5: Cortex XDR)
+
+**Objective:** Read endpoint agent posture / incidents from the XDR tenant.
+
+```bash
+curl -sk -X POST "https://<tenant>.xdr.paloaltonetworks.com/public_api/v1/endpoints/get_endpoint/" \
+  -H "Authorization: $XDR_KEY" -H "x-xdr-auth-id: $XDR_ID" -d '{"request_data":{}}' \
+  | jq -r '.reply.endpoints[0] | "\(.endpoint_name)\t\(.endpoint_status)"' 2>/dev/null
+```
+
+**Expected result:** endpoints with their protection status — XDR extends
+prevention and detection to the endpoint and correlates it with network data.
+
+**Negative test:** signature-only antivirus misses fileless/behavioral
+attacks; XDR's behavioral analytics is what catches them.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.6 — Security operations (Domain 6: Cortex XSIAM/XSOAR)
+
+**Objective:** Read an incident and its automation from the SecOps platform.
+
+```bash
+curl -sk -X POST "https://api-<tenant>.xdr.paloaltonetworks.com/public_api/v1/incidents/get_incidents/" \
+  -H "Authorization: $XSIAM_KEY" -H "x-xdr-auth-id: $XSIAM_ID" -d '{"request_data":{"filters":[]}}' \
+  | jq -r '.reply.incidents[0] | "\(.incident_id)\t\(.status)\t\(.severity)"' 2>/dev/null
+```
+
+**Expected result:** an incident with status and severity — XSIAM aggregates
+telemetry into incidents and XSOAR playbooks automate the response.
+
+**Negative test:** manual, tool-by-tool triage does not scale to SOC alert
+volume; the automation (XSOAR) is what closes the gap.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.7 — Licensing and content-update validation (integrative)
+
 **Objective:** Verify and activate licensing on a lab firewall, then
 configure and validate a dynamic content update, including a deliberate
 failure case that demonstrates the download-before-install dependency.

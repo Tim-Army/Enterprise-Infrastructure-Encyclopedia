@@ -344,6 +344,215 @@ admin@pa-fw01# commit
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for each sub-topic of the
+**Next-Generation Firewall Engineer (PCNSE-successor) Domain 1 "PAN-OS
+Networking Configuration"** and the **SD-WAN Engineer** deployment domain —
+interfaces, zones, routing, NAT, HA, GlobalProtect, tunnels, and SD-WAN —
+mapped in the volume README's coverage table. Each lab is a full PAN-OS CLI
+walkthrough (configure, verify, a negative test, cleanup) and ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 4.1–4.9**
+
+- Two lab PAN-OS 11.x firewalls (VM-Series is fine) with two+ data
+  interfaces and a dedicated HA link, CLI access as `admin`, and an
+  upstream gateway segment. Config-mode commands are shown at the `#`
+  prompt, operational commands at the `>` prompt.
+- **Cost:** none beyond lab resources; each lab ends by deleting its config
+  and committing.
+
+### Lab 4.1 — Configure Layer 3 interfaces and zones (Domain 1: Interfaces)
+
+**Objective:** Bring up an L3 interface pair and bind them to security
+zones.
+
+```text
+admin@pa-fw01# set network interface ethernet1/1 layer3 ip 203.0.113.2/30
+admin@pa-fw01# set network interface ethernet1/2 layer3 ip 10.10.20.1/24
+admin@pa-fw01# set zone untrust network layer3 ethernet1/1
+admin@pa-fw01# set zone trust network layer3 ethernet1/2
+admin@pa-fw01# commit
+admin@pa-fw01> show interface ethernet1/1
+```
+
+**Expected result:** `show interface` reports `ethernet1/1` up with IP
+`203.0.113.2/30` in zone `untrust` — the L3 boundary between zones.
+
+**Negative test:** send traffic between two interfaces in the *same* zone
+with intra-zone default set to deny; it is dropped — the zone, not the
+interface, is the policy boundary.
+
+**Cleanup:** `delete network interface ethernet1/1 layer3 ip 203.0.113.2/30` (and the zones), then `commit`.
+
+### Lab 4.2 — Configure a virtual router and static routing (Domain 1: Routing)
+
+**Objective:** Add a default static route on the virtual router.
+
+```text
+admin@pa-fw01# set network virtual-router default interface [ ethernet1/1 ethernet1/2 ]
+admin@pa-fw01# set network virtual-router default routing-table ip static-route default destination 0.0.0.0/0 nexthop ip-address 203.0.113.1
+admin@pa-fw01# commit
+admin@pa-fw01> show routing route
+```
+
+**Expected result:** a `0.0.0.0/0` route via `203.0.113.1` with the correct
+egress interface in the routing table.
+
+**Negative test:** remove the interface from the virtual router; the route
+disappears and traffic is dropped — an interface must belong to the VR to
+route.
+
+**Cleanup:** `delete network virtual-router default routing-table ip static-route default`, then `commit`.
+
+### Lab 4.3 — Configure dynamic routing with BGP (Domain 1: Routing)
+
+**Objective:** Establish a BGP peering on the virtual router.
+
+```text
+admin@pa-fw01# set network virtual-router default protocol bgp enable yes
+admin@pa-fw01# set network virtual-router default protocol bgp router-id 10.10.20.1
+admin@pa-fw01# set network virtual-router default protocol bgp local-as 65010
+admin@pa-fw01# set network virtual-router default protocol bgp peer-group PG peer P1 peer-address ip 203.0.113.1 peer-as 65001
+admin@pa-fw01# commit
+admin@pa-fw01> show routing protocol bgp peer
+```
+
+**Expected result:** the BGP peer to AS 65001 reaches `Established` and
+learned prefixes appear in `show routing route`.
+
+**Negative test:** set the wrong `peer-as`; the session stays in
+`Connect`/`Active` — the AS mismatch BGP will not establish over.
+
+**Cleanup:** `delete network virtual-router default protocol bgp`, then `commit`.
+
+### Lab 4.4 — Configure source and destination NAT (Domain 1: NAT)
+
+**Objective:** Add outbound source NAT (DIPP) and an inbound destination
+NAT.
+
+```text
+admin@pa-fw01# set rulebase nat rules Outbound-DIPP from trust to untrust source any destination any source-translation dynamic-ip-and-port interface-address interface ethernet1/1
+admin@pa-fw01# set rulebase nat rules Inbound-Web from untrust to untrust source any destination 203.0.113.2 service service-https destination-translation translated-address 10.10.20.50
+admin@pa-fw01# commit
+admin@pa-fw01> show running nat-policy
+```
+
+**Expected result:** both NAT rules in the running policy; outbound sessions
+share the egress IP, and 443 to `203.0.113.2` translates to `10.10.20.50`.
+
+**Negative test:** set the destination-NAT rule's `to` zone to `trust`
+(post-NAT) instead of `untrust` (pre-NAT); it never matches — NAT rules use
+the pre-NAT zone.
+
+**Cleanup:** `delete rulebase nat rules Outbound-DIPP` and `Inbound-Web`, then `commit`.
+
+### Lab 4.5 — Configure active/passive HA (Domain 1: HA)
+
+**Objective:** Build an active/passive HA pair and read peer state.
+
+```text
+admin@pa-fw01# set deviceconfig high-availability enabled yes
+admin@pa-fw01# set deviceconfig high-availability group group-id 1 mode active-passive
+admin@pa-fw01# set deviceconfig high-availability group group-id 1 peer-ip 1.1.1.2
+admin@pa-fw01# set deviceconfig high-availability interface ha1 ip-address 1.1.1.1 netmask 255.255.255.0
+admin@pa-fw01# commit
+admin@pa-fw01> show high-availability state
+```
+
+**Expected result:** the local device `active`, peer `passive`, and HA links
+`up` — a synchronized pair.
+
+**Negative test:** mismatch the PAN-OS version between members; HA state
+shows `non-functional` — version parity is required for A/P HA.
+
+**Cleanup:** `set deviceconfig high-availability enabled no`, then `commit`.
+
+### Lab 4.6 — Configure HA link and path monitoring (Domain 1: HA)
+
+**Objective:** Add path monitoring so an upstream failure triggers failover.
+
+```text
+admin@pa-fw01# set deviceconfig high-availability group group-id 1 monitoring path-monitoring enabled yes
+admin@pa-fw01# set deviceconfig high-availability group group-id 1 monitoring path-monitoring path-group virtual-router default virtual-router-name default destination-ip-group DG1 destination-ip 203.0.113.1
+admin@pa-fw01# commit
+admin@pa-fw01> show high-availability path-monitoring
+```
+
+**Expected result:** the monitored path to `203.0.113.1` shows `up`; if it
+fails, the group's failover condition triggers.
+
+**Negative test:** monitor an unreachable IP; the path shows `down` and
+forces a failover even though the firewall itself is healthy — tune the
+monitored target carefully.
+
+**Cleanup:** disable path-monitoring, then `commit`.
+
+### Lab 4.7 — Configure GlobalProtect portal and gateway (Domain 1: GlobalProtect)
+
+**Objective:** Stand up a GlobalProtect gateway and portal for remote
+access.
+
+```text
+admin@pa-fw01# set network interface tunnel units tunnel.1
+admin@pa-fw01# set global-protect global-protect-gateway GP-GW local-address interface ethernet1/1 tunnel-interface tunnel.1
+admin@pa-fw01# set global-protect global-protect-portal GP-Portal portal-config local-address interface ethernet1/1
+admin@pa-fw01# commit
+admin@pa-fw01> show global-protect-gateway current-user
+```
+
+**Expected result:** the gateway and portal are configured; a connected
+client appears in `current-user` with an assigned tunnel IP.
+
+**Negative test:** configure the gateway without a client/SSL certificate
+bound to the portal; clients fail the TLS handshake — GlobalProtect requires
+a valid certificate.
+
+**Cleanup:** delete the GlobalProtect gateway, portal, and `tunnel.1`, then `commit`.
+
+### Lab 4.8 — Configure an IPSec site-to-site tunnel (Domain 1: Tunnels)
+
+**Objective:** Build an IPSec tunnel to a peer and confirm the SA.
+
+```text
+admin@pa-fw01# set network interface tunnel units tunnel.2
+admin@pa-fw01# set network ike gateway IKE-GW protocol ikev2 dpd enable yes peer-address ip 198.51.100.1 local-address interface ethernet1/1
+admin@pa-fw01# set network tunnel ipsec IPSEC-Tunnel tunnel-interface tunnel.2 auto-key ike-gateway IKE-GW
+admin@pa-fw01# commit
+admin@pa-fw01> show vpn ipsec-sa
+```
+
+**Expected result:** an IPSec SA to `198.51.100.1` in `active` state and the
+tunnel interface up.
+
+**Negative test:** mismatch the IKE pre-shared key or proposal; Phase 1 fails
+and `show vpn ike-sa` shows no established gateway — the crypto must match
+both ends.
+
+**Cleanup:** delete the IPSec tunnel, IKE gateway, and `tunnel.2`, then `commit`.
+
+### Lab 4.9 — Configure PAN-OS SD-WAN (SD-WAN Engineer: Deployment)
+
+**Objective:** Enable SD-WAN and read link path health.
+
+```text
+admin@pa-fw01# set network sdwan enable yes
+admin@pa-fw01# set network sdwan interface-profile ISP1 link-tag internet eligible yes
+admin@pa-fw01# set network interface ethernet1/1 sdwan-link-settings enable yes sdwan-interface-profile ISP1
+admin@pa-fw01# commit
+admin@pa-fw01> show sdwan connection all
+```
+
+**Expected result:** the SD-WAN link's path quality (latency, jitter, loss)
+reported — application traffic can now be steered by a path-quality policy.
+
+**Negative test:** an SD-WAN policy that references a link tag no interface
+carries has no eligible path; traffic falls back to the default route,
+bypassing SD-WAN steering.
+
+**Cleanup:** `set network sdwan enable no`, then `commit`.
+
+### Lab 4.10 — Interfaces, routing, NAT, and A/P HA failover (integrative)
+
 **Objective:** Configure Layer 3 interfaces, zones, a static default route,
 a source NAT rule for outbound access, and validate an active/passive HA
 pair with a deliberate failover test.

@@ -327,6 +327,162 @@ admin@panorama01# commit
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the **central
+management, template, device-group, and logging sub-topics** of the Network
+Security Analyst Domain 3 (Management and Operations) and the NGFW Engineer
+integration domain — the Panorama topics — mapped in the volume README's
+coverage table. Each is a full walkthrough and ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 6.1–6.7** — a Panorama 11.x appliance/VM and
+at least one managed PAN-OS firewall, CLI as `admin` on both, network
+reachability on TCP 3978 (device↔Panorama). **Cost:** none beyond lab
+resources.
+
+### Lab 6.1 — Onboard a managed firewall (Management)
+
+**Objective:** Register a firewall to Panorama and confirm connection.
+
+```text
+# on Panorama
+admin@panorama# set device-group DG-Branch devices 0123456789
+admin@panorama# commit
+# on the firewall
+admin@pa-fw01# set deviceconfig system panorama-server 10.10.20.5
+admin@pa-fw01# commit
+admin@panorama> show devices connected
+```
+
+**Expected result:** the firewall appears `connected` in
+`show devices connected` — Panorama can now push config to it.
+
+**Negative test:** onboard a device whose serial is not added to Panorama; it
+connects but Panorama refuses to manage it — the serial must be registered.
+
+**Cleanup:** remove the panorama-server on the firewall and the device from
+the group, then `commit`.
+
+### Lab 6.2 — Configure templates and a template stack (Management)
+
+**Objective:** Push network/device settings via a template stack.
+
+```text
+admin@panorama# set template T-Base config devices localhost.localdomain deviceconfig system dns-setting servers primary 8.8.8.8
+admin@panorama# set template-stack TS-Branch templates [ T-Base ] devices 0123456789
+admin@panorama# commit
+admin@panorama> show template-stack TS-Branch
+```
+
+**Expected result:** the stack `TS-Branch` binds `T-Base` to the device —
+DNS and other device settings are now centrally managed.
+
+**Negative test:** two templates in a stack set the same setting; the
+higher-priority template wins silently — stack ordering resolves conflicts,
+so order matters.
+
+**Cleanup:** delete the template-stack and template, then `commit`.
+
+### Lab 6.3 — Configure a device-group hierarchy (Management)
+
+**Objective:** Build a parent/child device-group tree for policy
+inheritance.
+
+```text
+admin@panorama# set device-group DG-Corp
+admin@panorama# set device-group DG-Branch parent-dg DG-Corp
+admin@panorama# commit
+admin@panorama> show device-group DG-Branch
+```
+
+**Expected result:** `DG-Branch` inherits from `DG-Corp` — shared corporate
+policy defined once at the parent applies to all children.
+
+**Negative test:** define a conflicting rule name in both parent and child;
+the child's pre-rules evaluate before the parent's, changing the effective
+order — inheritance order is a design consideration.
+
+**Cleanup:** delete both device groups, then `commit`.
+
+### Lab 6.4 — Configure shared and pre/post rules (Policy management)
+
+**Objective:** Push a Shared pre-rule that every device group inherits.
+
+```text
+admin@panorama# set shared pre-rulebase security rules Corp-Deny-Bad from any to any application [ web-browsing ] category [ malware ] action deny
+admin@panorama# set device-group DG-Branch pre-rulebase security rules Branch-Allow from trust to untrust application ssl action allow
+admin@panorama# commit
+admin@panorama> show shared pre-rulebase security
+```
+
+**Expected result:** a Shared pre-rule ahead of every device group's local
+rules, plus a device-group pre-rule — layered central policy.
+
+**Negative test:** placing an allow in a Shared pre-rule above a
+device-group deny makes the deny unreachable everywhere; Shared pre-rules
+evaluate first globally.
+
+**Cleanup:** delete both rules, then `commit`.
+
+### Lab 6.5 — Configure a Collector Group for logging (Logging)
+
+**Objective:** Set up log collection so devices forward logs to Panorama.
+
+```text
+admin@panorama# set log-collector-group Corp-CG collectors [ 0987654321 ]
+admin@panorama# set template T-Base config devices localhost.localdomain deviceconfig system panorama local-panorama log-settings
+admin@panorama# commit
+admin@panorama> show log-collector-group all
+```
+
+**Expected result:** a Collector Group with a log collector — managed
+firewalls forward logs to Panorama for central reporting and correlation.
+
+**Negative test:** a Collector Group with no assigned collector drops
+forwarded logs; the collector membership is what stores them.
+
+**Cleanup:** delete the Collector Group, then `commit`.
+
+### Lab 6.6 — Commit and push to managed devices (Operations)
+
+**Objective:** Push a Panorama config change to devices and confirm.
+
+```text
+admin@panorama> commit all
+admin@panorama> commit-all shared-policy device-group DG-Branch
+admin@panorama> show jobs all
+```
+
+**Expected result:** `commit all` writes to Panorama, then the device-group
+push applies to member firewalls; `show jobs` reports success per device.
+
+**Negative test:** a `commit` (Panorama only) without a `commit-all` (push)
+leaves the change on Panorama but not enforced on firewalls — both steps are
+required.
+
+**Cleanup:** none (the push is the intended state).
+
+### Lab 6.7 — Configure Panorama high availability (Operations)
+
+**Objective:** Pair two Panorama nodes in active/passive HA.
+
+```text
+admin@panorama# set deviceconfig high-availability enabled yes
+admin@panorama# set deviceconfig high-availability group peer-ip 10.10.20.6
+admin@panorama# commit
+admin@panorama> show high-availability state
+```
+
+**Expected result:** the local Panorama `active`, peer `passive` — management
+survives a Panorama node failure.
+
+**Negative test:** managed firewalls keep enforcing policy even if both
+Panorama nodes are down (they cache config); Panorama HA protects
+*management*, not the data plane — know what HA does and does not cover.
+
+**Cleanup:** `set deviceconfig high-availability enabled no`, then `commit`.
+
+### Lab 6.8 — Device-group hierarchy, template stack, and push (integrative)
+
 **Objective:** Build a two-level device group hierarchy with a Shared
 pre-rule and a device-group-scoped rule, create a template stack, onboard a
 lab firewall, push both device group and template configuration, and

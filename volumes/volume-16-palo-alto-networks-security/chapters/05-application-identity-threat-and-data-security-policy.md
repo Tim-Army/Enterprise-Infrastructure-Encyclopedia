@@ -340,6 +340,200 @@ admin@pa-fw01> test security-policy-match from trust to untrust source 10.10.20.
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for each sub-topic of the
+**Network Security Analyst Domain 1 (Object Configuration) and Domain 2
+(Policy Creation)** and the NGFW Engineer device-setting topics that live in
+policy — objects, App-ID policy, security profiles, URL filtering, WildFire,
+decryption, User-ID, dynamic address groups, and DoS/zone protection — all
+mapped in the volume README's coverage table. Each is a full PAN-OS CLI
+walkthrough and ends **`**Lab verified by:** *pending*`** until a human runs
+it.
+
+**Shared prerequisites for Labs 5.1–5.9** — a licensed PAN-OS 11.x firewall
+with trust/untrust zones (from Chapter 04), a Threat Prevention + WildFire +
+URL Filtering subscription for the profile labs, CLI as `admin`. **Cost:**
+none beyond lab resources; each lab deletes its config and commits.
+
+### Lab 5.1 — Create address, service, and application objects (Domain 1: Objects)
+
+**Objective:** Define reusable objects that policy will reference.
+
+```text
+admin@pa-fw01# set address web-server ip-netmask 10.10.20.50/32
+admin@pa-fw01# set service tcp-8443 protocol tcp port 8443
+admin@pa-fw01# set application-group approved-apps members [ web-browsing ssl ssh ]
+admin@pa-fw01# commit
+admin@pa-fw01> show running application-group approved-apps
+```
+
+**Expected result:** the address, service, and application-group objects
+exist and are referenceable by name in policy.
+
+**Negative test:** reference an object name in a rule before creating it; the
+commit fails validation — objects must exist before policy binds them.
+
+**Cleanup:** delete the three objects, then `commit`.
+
+### Lab 5.2 — Build an App-ID security policy rule (Domain 2: Policy)
+
+**Objective:** Write a rule that matches on application, not port.
+
+```text
+admin@pa-fw01# set rulebase security rules Allow-Web from trust to untrust source any destination any application [ web-browsing ssl ] service application-default action allow
+admin@pa-fw01# commit
+admin@pa-fw01> test security-policy-match from trust to untrust source 10.10.20.5 destination 8.8.8.8 application web-browsing protocol 6 destination-port 80
+```
+
+**Expected result:** `test security-policy-match` returns `Allow-Web` — the
+rule matches on App-ID with `application-default` service.
+
+**Negative test:** run the same app over a non-standard port with
+`application-default`; the rule does not match (the app is not on its
+default port) — App-ID plus application-default is stricter than a port rule.
+
+**Cleanup:** `delete rulebase security rules Allow-Web`, then `commit`.
+
+### Lab 5.3 — Attach security profiles (Threat Prevention)
+
+**Objective:** Bind antivirus, anti-spyware, and vulnerability profiles to a
+rule via a group.
+
+```text
+admin@pa-fw01# set profile-group Standard virus default anti-spyware strict vulnerability strict
+admin@pa-fw01# set rulebase security rules Allow-Web profile-setting group Standard
+admin@pa-fw01# commit
+admin@pa-fw01> show running security-policy
+```
+
+**Expected result:** the rule shows the `Standard` profile group — allowed
+traffic is now scanned for malware and exploits.
+
+**Negative test:** a rule with `action allow` but no profile group passes
+traffic uninspected; "allow" is not "inspect" — the profile does the scanning.
+
+**Cleanup:** remove the profile-setting and delete the group, then `commit`.
+
+### Lab 5.4 — Configure URL Filtering (Domain 2: Policy)
+
+**Objective:** Block a URL category and log the rest.
+
+```text
+admin@pa-fw01# set profiles url-filtering Corp-URL block [ malware phishing command-and-control ] alert [ social-networking ]
+admin@pa-fw01# set rulebase security rules Allow-Web profile-setting profiles url-filtering Corp-URL
+admin@pa-fw01# commit
+admin@pa-fw01> show running url-filtering-policy
+```
+
+**Expected result:** the URL profile blocks malicious categories and alerts
+on social-networking — category-based web control.
+
+**Negative test:** browse a `malware`-category URL; the response is a block
+page, while an `alert` category is permitted but logged — the action per
+category is enforced.
+
+**Cleanup:** remove the URL profile from the rule and delete it, then `commit`.
+
+### Lab 5.5 — Configure WildFire and file blocking
+
+**Objective:** Forward unknown files to WildFire and block risky types.
+
+```text
+admin@pa-fw01# set profiles wildfire-analysis Corp-WF rules default analysis public-cloud
+admin@pa-fw01# set profiles file-blocking Corp-FB rules block-exe application any file-type [ pe ] direction both action block
+admin@pa-fw01# set rulebase security rules Allow-Web profile-setting profiles wildfire-analysis Corp-WF file-blocking Corp-FB
+admin@pa-fw01# commit
+admin@pa-fw01> show wildfire statistics
+```
+
+**Expected result:** unknown files are submitted to WildFire and PE
+executables are blocked inline — zero-day and file-type control.
+
+**Negative test:** download a `pe` file through the rule; it is blocked, while
+the same content renamed to `.txt` is still detected by true file-type — PAN-OS
+inspects content, not extension.
+
+**Cleanup:** remove both profiles from the rule and delete them, then `commit`.
+
+### Lab 5.6 — Configure SSL Forward Proxy decryption (NGFW Domain 2)
+
+**Objective:** Decrypt outbound TLS with a category exclusion.
+
+```text
+admin@pa-fw01# set rulebase decryption rules Decrypt-Outbound from trust to untrust source any destination any category any action decrypt type ssl-forward-proxy
+admin@pa-fw01# set rulebase decryption rules No-Decrypt-Finance from trust to untrust source any destination any category [ financial-services health-and-medicine ] action no-decrypt
+admin@pa-fw01# commit
+admin@pa-fw01> show running decryption-policy
+```
+
+**Expected result:** outbound TLS is decrypted for inspection except
+financial/health categories — privacy-aware decryption.
+
+**Negative test:** decrypt without deploying the forward-trust CA to clients;
+every HTTPS site throws a certificate error — the trust chain is required.
+
+**Cleanup:** delete both decryption rules, then `commit`.
+
+### Lab 5.7 — Configure User-ID (NGFW Domain 2: Identity)
+
+**Objective:** Enable User-ID so policy can match users, not just IPs.
+
+```text
+admin@pa-fw01# set zone trust enable-user-identification yes
+admin@pa-fw01# set user-id-agent Corp-Agent host 10.10.20.10 port 5007
+admin@pa-fw01# commit
+admin@pa-fw01> show user ip-user-mapping all
+```
+
+**Expected result:** IP-to-user mappings appear — security rules can now use
+a source-user instead of a source IP.
+
+**Negative test:** enable User-ID on the untrust (internet) zone; it maps
+untrusted external IPs to bogus users — User-ID belongs only on trusted
+internal zones.
+
+**Cleanup:** delete the user-id-agent and disable user-identification, then `commit`.
+
+### Lab 5.8 — Configure dynamic address groups (tag-based automation)
+
+**Objective:** Build a DAG whose membership follows a tag.
+
+```text
+admin@pa-fw01# set address-group quarantine dynamic filter "'quarantine'"
+admin@pa-fw01# set rulebase security rules Block-Quarantine from any to any source quarantine destination any action deny
+admin@pa-fw01# commit
+admin@pa-fw01> show object dynamic-address-group all
+```
+
+**Expected result:** a DAG matching the `quarantine` tag; tagging an IP (via
+API or log-forwarding action) adds it to the group and the deny rule with no
+commit.
+
+**Negative test:** a static address group requires a commit to change
+membership; the DAG updates live — the point of tag-based automation.
+
+**Cleanup:** delete the rule and address-group, then `commit`.
+
+### Lab 5.9 — Configure DoS and zone protection
+
+**Objective:** Cap flood rates at the zone edge.
+
+```text
+admin@pa-fw01# set profiles zone-protection Edge-ZP flood tcp-syn enable yes red activate-rate 10000 maximal-rate 40000
+admin@pa-fw01# set zone untrust zone-protection-profile Edge-ZP
+admin@pa-fw01# commit
+admin@pa-fw01> show zone-protection zone untrust
+```
+
+**Expected result:** the untrust zone drops SYN traffic above the activate
+rate — reconnaissance and flood protection at the perimeter.
+
+**Negative test:** a SYN flood on a zone with no protection profile reaches
+the data plane and consumes session capacity — the profile is what caps it.
+
+**Cleanup:** remove the profile from the zone and delete it, then `commit`.
+
+### Lab 5.10 — App-ID policy with profiles and decryption (integrative)
+
 **Objective:** Build an App-ID-based security policy rule with an attached
 security profile group, validate its match behavior, and configure a
 scoped SSL Forward Proxy decryption rule with a category-based exclusion —

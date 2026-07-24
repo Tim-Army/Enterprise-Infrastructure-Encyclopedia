@@ -342,6 +342,169 @@ Bootstrap: SUCCESS
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for the deployment and
+device-setting sub-topics of the **Next-Generation Firewall Engineer
+Domain 2 (PAN-OS Device Setting Configuration)** and the platform-lifecycle
+topics of the Network Security Professional exam — bootstrap, licensing,
+management access, certificates, content updates, virtual systems, and
+authentication — mapped in the volume README's coverage table. Each is a
+full PAN-OS walkthrough and ends **`**Lab verified by:** *pending*`** until
+a human runs it.
+
+**Shared prerequisites for Labs 3.1–3.7** — a hypervisor able to run
+VM-Series 11.x, a Customer Support Portal account with an auth code, and CLI
+access as `admin`. **Cost:** VM-Series consumes a license/credits where
+metered; deactivate at the end.
+
+### Lab 3.1 — Build a bootstrap package (Domain 2: Deployment)
+
+**Objective:** Assemble the bootstrap directory structure for zero-touch
+provisioning.
+
+```bash
+mkdir -p bootstrap/{config,content,license,software}
+cat > bootstrap/config/init-cfg.txt <<'EOF'
+type=static
+ip-address=10.10.10.10/24
+default-gateway=10.10.10.1
+hostname=pa-fw01
+dns-primary=8.8.8.8
+vm-auth-key=<vm-auth-key>
+EOF
+ls -R bootstrap
+```
+
+**Expected result:** the four-folder layout with `init-cfg.txt` — the
+firewall reads this on first boot and self-configures management + licensing.
+
+**Negative test:** omit `init-cfg.txt`; the VM boots to defaults (DHCP,
+factory config) instead of the intended state — the file is what makes
+bootstrap zero-touch.
+
+**Cleanup:** `rm -rf bootstrap` after deployment.
+
+### Lab 3.2 — License the firewall (Domain 2: Platform lifecycle)
+
+**Objective:** Activate the license from an auth code and confirm
+entitlements.
+
+```text
+admin@pa-fw01> request license fetch auth-code <AUTH-CODE>
+admin@pa-fw01> request license info
+```
+
+**Expected result:** `request license info` lists active subscriptions
+(Threat Prevention, WildFire, URL Filtering) with expiry dates.
+
+**Negative test:** apply an auth code already bound to another serial; the
+fetch is rejected — auth codes are single-use per instance.
+
+**Cleanup:** `request license deactivate VM-Series mode auto` before deleting
+the VM, to return the license to the pool.
+
+### Lab 3.3 — Configure management access and admin roles (Domain 2)
+
+**Objective:** Restrict management access and create a scoped admin.
+
+```text
+admin@pa-fw01# set deviceconfig system permitted-ip 10.10.20.0/24
+admin@pa-fw01# set shared admin-role read-only-audit role device webui monitor enable
+admin@pa-fw01# set mgt-config users auditor permissions role-based custom profile read-only-audit
+admin@pa-fw01# commit
+admin@pa-fw01> show admins
+```
+
+**Expected result:** management restricted to the trusted subnet and an
+`auditor` admin with a read-only role — least-privilege management.
+
+**Negative test:** leave `permitted-ip` unset with management on a public
+interface; the box is exposed to the internet — always scope management
+access.
+
+**Cleanup:** delete the admin, role, and permitted-ip, then `commit`.
+
+### Lab 3.4 — Generate and manage certificates (Domain 2: Certificates)
+
+**Objective:** Generate the forward-trust CA the firewall uses for
+decryption.
+
+```text
+admin@pa-fw01# request certificate generate name Forward-Trust-CA certificate-name Forward-Trust-CA algorithm RSA rsa-nbits 2048 signed-by Forward-Trust-CA ca yes
+admin@pa-fw01# commit
+admin@pa-fw01> show sslmgr-store config-certificate-info
+```
+
+**Expected result:** a self-signed CA certificate exists, ready to bind as
+the forward-trust certificate for SSL decryption (Chapter 05).
+
+**Negative test:** use a non-CA leaf certificate as the forward-trust cert;
+decryption fails to issue per-site certs — the forward-trust cert must be a
+CA.
+
+**Cleanup:** `delete shared certificate Forward-Trust-CA`, then `commit`.
+
+### Lab 3.5 — Configure dynamic content update schedules (Domain 2)
+
+**Objective:** Schedule automatic threat-content updates.
+
+```text
+admin@pa-fw01# set deviceconfig system update-schedule threats recurring daily at 01:00 action download-and-install
+admin@pa-fw01# set deviceconfig system update-schedule wildfire recurring real-time
+admin@pa-fw01# commit
+admin@pa-fw01> request content upgrade info
+```
+
+**Expected result:** a daily threats schedule and real-time WildFire — the
+firewall stays current on signatures automatically.
+
+**Negative test:** `download-and-install` immediately after a content release
+with no soak time can push a bad signature into production; production should
+stagger install behind a threshold/delay.
+
+**Cleanup:** remove the update-schedules, then `commit`.
+
+### Lab 3.6 — Configure virtual systems (Domain 2: VSYS)
+
+**Objective:** Create a second virtual system for tenant separation.
+
+```text
+admin@pa-fw01# set deviceconfig system multi-vsys on
+admin@pa-fw01# set vsys vsys2 display-name Tenant-B
+admin@pa-fw01# commit
+admin@pa-fw01> show system setting multi-vsys
+```
+
+**Expected result:** multi-vsys enabled with `vsys2` present — one physical
+firewall partitioned into isolated virtual firewalls.
+
+**Negative test:** reference an object from `vsys1` in a `vsys2` rule without
+sharing it; it is not visible — VSYS provides administrative and object
+isolation by default.
+
+**Cleanup:** `delete vsys vsys2`, set `multi-vsys off`, then `commit`.
+
+### Lab 3.7 — Configure an authentication profile (Domain 2: Authentication)
+
+**Objective:** Add RADIUS-backed admin authentication with MFA.
+
+```text
+admin@pa-fw01# set shared server-profile radius Corp-RADIUS server RAD1 ip-address 10.10.20.15 secret <secret>
+admin@pa-fw01# set shared authentication-profile Admin-MFA method radius server-profile Corp-RADIUS
+admin@pa-fw01# set shared authentication-profile Admin-MFA multi-factor-auth mfa-enable yes
+admin@pa-fw01# commit
+admin@pa-fw01> test authentication authentication-profile Admin-MFA username auditor password <pw>
+```
+
+**Expected result:** `test authentication` succeeds against RADIUS — admin
+logins now require directory credentials plus MFA.
+
+**Negative test:** an unreachable RADIUS server with no local fallback locks
+out all admins; always keep a local admin as a break-glass account.
+
+**Cleanup:** delete the authentication-profile and server-profile, then `commit`.
+
+### Lab 3.8 — Bootstrap a licensed, configured VM-Series (integrative)
+
 **Objective:** Build a bootstrap package for a VM-Series instance, deploy it
 on a hypervisor with the bootstrap volume attached, and validate that the
 instance reaches a licensed, network-configured state without manual

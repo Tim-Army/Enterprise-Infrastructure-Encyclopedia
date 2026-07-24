@@ -583,6 +583,43 @@ configuration.
     admin@panorama01# commit
     ```
 
+## Design Exercise
+
+The **Network Security Architect** exam is a design credential — its ten
+blueprint domains, none weighted above 13%, test breadth of design judgment
+rather than depth in any one product. The capstone lab above is the *build*
+half; this exercise is the *design* half, covering the Architect domains by
+reasoning from requirements to a defensible architecture (no lab required).
+
+**Scenario.** A retailer with 300 branches, two data centers, and a
+mobile/remote workforce is consolidating onto the Palo Alto Networks
+platform. Requirements: segment cardholder-data (PCI) traffic end to end;
+give remote users the same policy as on-site; centralize policy and logging
+for a 24×7 SOC; tolerate the loss of any one firewall or data center with no
+security gap; and keep the branch hardware footprint minimal.
+
+**Produce, defending each choice against a rejected alternative:**
+
+1. **Requirements register** — classify each requirement as a requirement,
+   constraint, assumption, or risk, each with a measurable acceptance test.
+2. **Platform architecture** — where Strata NGFW, Prisma Access (SASE),
+   Panorama, and Cortex (XSIAM/XSOAR) each sit, and why; the branch model
+   (hardware NGFW vs Prisma Access) traded against the minimal-footprint
+   constraint.
+3. **Segmentation design** — zones, decryption, and User-ID strategy that
+   keeps PCI traffic isolated and inspected end to end.
+4. **Resilience design** — HA at each tier (firewall HA, Panorama HA,
+   multi-DC) meeting the "lose any one" requirement, with the failure modes
+   each covers and does not.
+5. **Operations design** — centralized logging/Collector Groups feeding the
+   SOC, and where XSOAR automation replaces manual response.
+6. **Decision log** — at least five decisions as {decision, justification,
+   rejected alternative, impact}.
+
+**Success looks like:** every product placement traces to a requirement, each
+resilience claim names the failure it survives, and no requirement is left
+unaddressed — the breadth-of-judgment standard the Architect exam applies.
+
 ## Lab Verification
 
 Complete this sign-off once the lab has been run end to end, including the
