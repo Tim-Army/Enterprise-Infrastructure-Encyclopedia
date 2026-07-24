@@ -352,6 +352,115 @@ policy cannot escalate beyond the boundary.
 
 ## Hands-On Lab
 
+Beyond this chapter's integrative lab, the labs below are topic-level
+walkthroughs for the identity, authorization, and multi-account tasks of
+**SAA-C03 and SCS-C03** that this chapter owns; the volume README's
+coverage tables map each one. Every lab ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+### Lab 2.1 — Design secure access to AWS resources (SAA-C03 1.1)
+
+**Objective:** Create a role assumable only by a specific service, with a
+permission boundary capping its reach.
+
+```bash
+aws iam create-role --role-name app-role \
+  --assume-role-policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"lambda.amazonaws.com"},"Action":"sts:AssumeRole"}]}' \
+  --permissions-boundary arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess \
+  --query 'Role.Arn' --output text
+```
+
+**Expected result:** a role ARN whose effective permissions can never exceed
+read-only S3, no matter what policies are later attached.
+
+**Negative test:** attach `AdministratorAccess` to the role, then try an EC2
+call; it is denied — the boundary wins, proving least privilege is enforced
+structurally.
+
+**Cleanup:** `aws iam delete-role --role-name app-role`.
+
+### Lab 2.2 — Design and implement authentication strategies (SCS-C03 4.1)
+
+**Objective:** Enforce MFA on an IAM group with a deny-if-no-MFA policy.
+
+```bash
+aws iam create-group --group-name mfa-required
+aws iam put-group-policy --group-name mfa-required --policy-name deny-without-mfa \
+  --policy-document '{"Version":"2012-10-17","Statement":[{"Sid":"DenyIfNoMFA","Effect":"Deny","NotAction":["iam:CreateVirtualMFADevice","iam:EnableMFADevice","sts:GetSessionToken"],"Resource":"*","Condition":{"BoolIfExists":{"aws:MultiFactorAuthPresent":"false"}}}]}'
+aws iam get-group-policy --group-name mfa-required --policy-name deny-without-mfa \
+  --query 'PolicyDocument.Statement[0].Sid' --output text
+```
+
+**Expected result:** `DenyIfNoMFA` — group members can do nothing beyond
+enrolling MFA until they authenticate with it.
+
+**Negative test:** a member without an active MFA session calls
+`s3:ListBuckets`; it is denied, proving the authentication requirement bites.
+
+**Cleanup:** delete the group policy and the group.
+
+### Lab 2.3 — Design and implement authorization strategies (SCS-C03 4.2)
+
+**Objective:** Author an attribute-based (ABAC) policy that authorizes by
+matching tags.
+
+```bash
+aws iam create-policy --policy-name abac-project \
+  --policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":"ec2:StartInstances","Resource":"*","Condition":{"StringEquals":{"aws:ResourceTag/project":"${aws:PrincipalTag/project}"}}}]}' \
+  --query 'Policy.Arn' --output text
+```
+
+**Expected result:** a policy ARN granting start rights only when the
+principal's `project` tag equals the resource's — authorization that scales
+without per-resource rules.
+
+**Negative test:** a principal tagged `project=alpha` starts an instance
+tagged `project=beta`; denied, proving the tag match is the authorization
+gate.
+
+**Cleanup:** `aws iam delete-policy --policy-arn <arn>`.
+
+### Lab 2.4 — Develop a strategy to centrally deploy and manage accounts (SCS-C03 6.1)
+
+**Objective:** Read the organization's structure — the control plane for
+centralized account management.
+
+```bash
+aws organizations describe-organization \
+  --query 'Organization.{FeatureSet:FeatureSet,Master:MasterAccountId}'
+aws organizations list-accounts --query 'length(Accounts)' --output text
+```
+
+**Expected result:** `FeatureSet: ALL` (required for SCPs) and the member-
+account count — the foundation for central governance.
+
+**Negative test:** an organization in `CONSOLIDATED_BILLING` mode cannot
+attach SCPs; the missing feature set blocks centralized control.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.5 — Implement a secure and consistent deployment strategy (SCS-C03 6.2)
+
+**Objective:** Read the account baseline delivered by StackSets so every
+account is provisioned identically.
+
+```bash
+aws cloudformation list-stack-instances --stack-set-name AWSControlTowerBP-BASELINE-CONFIG \
+  --query 'length(Summaries)' --output text 2>&1 | head -1
+aws cloudformation list-stack-sets --status ACTIVE \
+  --query 'Summaries[].StackSetName' --output text 2>&1 | head -1
+```
+
+**Expected result:** the active StackSets (Control Tower baselines or your
+own) that guarantee consistent, secure provisioning across accounts.
+
+**Negative test:** an account provisioned by hand outside the StackSet drifts
+from the baseline; the StackSet is what keeps deployment consistent.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.6 — Region-restriction SCP guardrail (integrative)
+
 **Objective:** Create an organizational unit, attach a Region-restriction
 SCP, and verify the guardrail blocks out-of-Region resource creation.
 

@@ -447,6 +447,117 @@ aws backup create-backup-selection \
 
 ## Hands-On Lab
 
+Beyond this chapter's integrative lab, the labs below are topic-level
+walkthroughs for the **SAA-C03 and SCS-C03** storage, database, and data-
+protection tasks this chapter owns; the volume README's coverage tables map
+each one. Every lab ends **`**Lab verified by:** *pending*`** until a human
+runs it.
+
+### Lab 5.1 — Determine appropriate data security controls (SAA-C03 1.3)
+
+**Objective:** Lock a bucket down with Block Public Access and a TLS-only
+policy.
+
+```bash
+aws s3api put-public-access-block --bucket "$BUCKET" \
+  --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
+aws s3api put-bucket-policy --bucket "$BUCKET" --policy '{"Version":"2012-10-17","Statement":[{"Sid":"TLSonly","Effect":"Deny","Principal":"*","Action":"s3:*","Resource":["arn:aws:s3:::'"$BUCKET"'","arn:aws:s3:::'"$BUCKET"'/*"],"Condition":{"Bool":{"aws:SecureTransport":"false"}}}]}'
+aws s3api get-public-access-block --bucket "$BUCKET" \
+  --query 'PublicAccessBlockConfiguration.RestrictPublicBuckets' --output text
+```
+
+**Expected result:** `True`, plus a policy denying any non-TLS request —
+two layered controls on the same data.
+
+**Negative test:** `aws s3api get-object` over `http://` (SecureTransport
+false) is denied, proving the TLS-only control is enforced.
+
+**Cleanup:** delete the bucket policy; leave Block Public Access on.
+
+### Lab 5.2 — Determine high-performing and scalable storage (SAA-C03 3.1)
+
+**Objective:** Choose EBS performance characteristics deliberately by
+provisioning gp3 throughput.
+
+```bash
+VOL=$(aws ec2 create-volume --availability-zone "$(aws configure get region)a" \
+  --size 20 --volume-type gp3 --iops 4000 --throughput 250 \
+  --query 'VolumeId' --output text)
+aws ec2 describe-volumes --volume-ids "$VOL" \
+  --query 'Volumes[0].{Type:VolumeType,Iops:Iops,TP:Throughput}'
+```
+
+**Expected result:** a gp3 volume with 4000 IOPS and 250 MB/s — performance
+decoupled from size, unlike gp2.
+
+**Negative test:** request 250 MB/s at only 3000 IOPS; the throughput-to-IOPS
+ratio is rejected, a real performance constraint.
+
+**Cleanup:** `aws ec2 delete-volume --volume-id "$VOL"`.
+
+### Lab 5.3 — Determine high-performing database solutions (SAA-C03 3.3)
+
+**Objective:** Add a read replica to scale reads off the primary.
+
+```bash
+aws rds create-db-instance-read-replica --db-instance-identifier "$DB-ro" \
+  --source-db-instance-identifier "$DB" --db-instance-class db.t3.medium \
+  --query 'DBInstance.StatusInfos' 2>&1 | head -1
+aws rds describe-db-instances --db-instance-identifier "$DB-ro" \
+  --query 'DBInstances[0].ReadReplicaSourceDBInstanceIdentifier' --output text
+```
+
+**Expected result:** the replica reports its source instance — read traffic
+can now be directed to it, scaling the read path. **Cost:** a replica bills
+as a full instance; delete it after.
+
+**Negative test:** send all reads to the primary under load; it saturates —
+the replica is what offloads them.
+
+**Cleanup:** `aws rds delete-db-instance --db-instance-identifier "$DB-ro" --skip-final-snapshot`.
+
+### Lab 5.4 — Determine high-performing data ingestion and transformation (SAA-C03 3.5)
+
+**Objective:** Stand up a Kinesis Data Stream for high-throughput ingestion.
+
+```bash
+aws kinesis create-stream --stream-name ingest --shard-count 2
+aws kinesis wait stream-exists --stream-name ingest
+aws kinesis describe-stream-summary --stream-name ingest \
+  --query 'StreamDescriptionSummary.{Shards:OpenShardCount,Mode:StreamModeDetails.StreamMode}'
+```
+
+**Expected result:** a 2-shard stream (≈2 MB/s or 2000 records/s in) — a
+scalable ingestion front end for streaming transforms.
+
+**Negative test:** push beyond a shard's 1 MB/s limit; `put-record` returns
+`ProvisionedThroughputExceededException`, the signal to add shards.
+
+**Cleanup:** `aws kinesis delete-stream --stream-name ingest`.
+
+### Lab 5.5 — Design and implement controls for data at rest (SCS-C03 5.2)
+
+**Objective:** Encrypt an existing unencrypted resource path by enforcing
+SSE-KMS with a customer-managed key.
+
+```bash
+aws s3api put-bucket-encryption --bucket "$BUCKET" \
+  --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"aws:kms","KMSMasterKeyID":"'"$KID"'"},"BucketKeyEnabled":true}]}'
+aws s3api get-bucket-encryption --bucket "$BUCKET" \
+  --query 'ServerSideEncryptionConfiguration.Rules[0].ApplyServerSideEncryptionByDefault.KMSMasterKeyID' --output text
+```
+
+**Expected result:** the CMK ID as the default encryption key — new objects
+are encrypted at rest under a key whose access you control.
+
+**Negative test:** a principal without `kms:Decrypt` on the key cannot read
+objects even with `s3:GetObject`, showing at-rest encryption adds an
+authorization layer.
+
+**Cleanup:** `aws s3api delete-bucket-encryption --bucket "$BUCKET"`.
+
+### Lab 5.6 — Encrypted, versioned, access-blocked S3 bucket (integrative)
+
 **Objective:** Create an encrypted, versioned S3 bucket with Block Public
 Access enforced, apply a lifecycle rule, and confirm that an attempt to
 make the bucket public is blocked.

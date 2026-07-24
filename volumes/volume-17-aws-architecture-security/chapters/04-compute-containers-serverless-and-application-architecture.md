@@ -452,6 +452,57 @@ aws lambda update-function-code \
 
 ## Hands-On Lab
 
+Beyond this chapter's integrative lab, the labs below are topic-level
+walkthroughs for the **SAA-C03** compute and application-architecture tasks
+this chapter owns; the volume README's coverage tables map each one. Every
+lab ends **`**Lab verified by:** *pending*`** until a human runs it.
+
+### Lab 4.1 — Design scalable and loosely coupled architectures (SAA-C03 2.1)
+
+**Objective:** Decouple a producer from a consumer with an SQS queue so
+either can scale or fail independently.
+
+```bash
+QUEUE_URL=$(aws sqs create-queue --queue-name orders --query QueueUrl --output text)
+aws sqs send-message --queue-url "$QUEUE_URL" --message-body '{"order":1}' --query 'MessageId' --output text
+aws sqs get-queue-attributes --queue-url "$QUEUE_URL" \
+  --attribute-names ApproximateNumberOfMessages \
+  --query 'Attributes.ApproximateNumberOfMessages' --output text
+```
+
+**Expected result:** a queued message count of `1` — the producer completed
+without the consumer being present, the essence of loose coupling.
+
+**Negative test:** a synchronous producer→consumer call fails entirely when
+the consumer is down; the queue instead buffers the work for later.
+
+**Cleanup:** `aws sqs delete-queue --queue-url "$QUEUE_URL"`.
+
+### Lab 4.2 — Design high-performing and elastic compute solutions (SAA-C03 3.2)
+
+**Objective:** Create a launch template and an Auto Scaling group that grows
+and shrinks with demand.
+
+```bash
+aws autoscaling create-auto-scaling-group --auto-scaling-group-name web-asg \
+  --launch-template LaunchTemplateId=$LT --min-size 1 --max-size 8 --desired-capacity 2 \
+  --vpc-zone-identifier "$SUBNET_A,$SUBNET_B"
+aws autoscaling put-scaling-policy --auto-scaling-group-name web-asg \
+  --policy-name cpu50 --policy-type TargetTrackingScaling \
+  --target-tracking-configuration '{"PredefinedMetricSpecification":{"PredefinedMetricType":"ASGAverageCPUUtilization"},"TargetValue":50.0}' \
+  --query 'PolicyARN' --output text
+```
+
+**Expected result:** an ASG (1–8 instances) holding CPU at 50% — elastic
+compute that adds capacity under load and removes it when idle.
+
+**Negative test:** a fixed fleet of 2 instances saturates under a spike and
+drops requests; the scaling policy is what preserves performance.
+
+**Cleanup:** `aws autoscaling delete-auto-scaling-group --auto-scaling-group-name web-asg --force-delete`.
+
+### Lab 4.3 — Lambda behind API Gateway with least privilege (integrative)
+
 **Objective:** Deploy a Lambda function behind an HTTP API Gateway with a
 least-privilege execution role, verify successful invocation, and confirm
 that removing the required IAM permission produces an authorization

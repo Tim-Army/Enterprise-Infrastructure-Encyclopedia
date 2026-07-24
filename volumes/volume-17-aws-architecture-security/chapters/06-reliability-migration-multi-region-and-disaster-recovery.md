@@ -432,6 +432,36 @@ aws resiliencehub start-app-assessment \
 
 ## Hands-On Lab
 
+Beyond this chapter's integrative lab, the lab below is a topic-level
+walkthrough for the **SAA-C03** availability task this chapter owns; the
+volume README's coverage tables map it. Every lab ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+### Lab 6.1 — Design highly available and/or fault-tolerant architectures (SAA-C03 2.2)
+
+**Objective:** Register targets in two AZs behind one target group and let
+health checks route around failure.
+
+```bash
+aws elbv2 create-target-group --name ha-tg --protocol HTTP --port 80 --vpc-id "$VPC" \
+  --health-check-path /health --query 'TargetGroups[0].TargetGroupArn' --output text
+aws elbv2 register-targets --target-group-arn "$TG" \
+  --targets Id=$INSTANCE_AZ_A Id=$INSTANCE_AZ_B
+aws elbv2 describe-target-health --target-group-arn "$TG" \
+  --query 'TargetHealthDescriptions[].{Id:Target.Id,State:TargetHealth.State}' --output table
+```
+
+**Expected result:** two targets in two AZs reporting `healthy` — the loss
+of one AZ removes half the fleet, not the service.
+
+**Negative test:** fail the `/health` check on one target; it goes
+`unhealthy` and the load balancer stops routing to it, proving fault
+tolerance is automatic.
+
+**Cleanup:** deregister targets and delete the target group.
+
+### Lab 6.2 — Route 53 failover routing (integrative)
+
 **Objective:** Configure Route 53 failover routing between two endpoints
 with a health check, and confirm that failing the primary's health check
 shifts resolution to the secondary.

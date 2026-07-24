@@ -520,6 +520,97 @@ resource "aws_cloudfront_distribution" "site" {
 
 ## Hands-On Lab
 
+Beyond this chapter's integrative lab, the labs below are topic-level
+walkthroughs for the **SAA-C03 and SCS-C03** networking tasks this chapter
+owns; the volume README's coverage tables map each one. Every lab ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+### Lab 3.1 — Design secure workloads and applications (SAA-C03 1.2)
+
+**Objective:** Isolate a tier with a security group that only accepts
+traffic from another SG, not a CIDR.
+
+```bash
+aws ec2 authorize-security-group-ingress --group-id "$APP_SG" \
+  --protocol tcp --port 8080 --source-group "$WEB_SG"
+aws ec2 describe-security-groups --group-ids "$APP_SG" \
+  --query 'SecurityGroups[0].IpPermissions[0].UserIdGroupPairs[0].GroupId' --output text
+```
+
+**Expected result:** the app tier accepts 8080 only from the web tier's SG —
+a reference that follows instances as they scale, unlike a static CIDR.
+
+**Negative test:** an instance not in `$WEB_SG` connects to 8080; it is
+refused, proving the SG reference, not the subnet, is the boundary.
+
+**Cleanup:** revoke the ingress rule.
+
+### Lab 3.2 — Determine high-performing and scalable network architectures (SAA-C03 3.4)
+
+**Objective:** Place instances in a cluster placement group for low-latency,
+high-throughput networking.
+
+```bash
+aws ec2 create-placement-group --group-name perf-pg --strategy cluster
+aws ec2 describe-placement-groups --group-names perf-pg \
+  --query 'PlacementGroups[0].{Strategy:Strategy,State:State}'
+```
+
+**Expected result:** a `cluster` placement group `available` — instances
+launched into it get up to the highest per-flow bandwidth within one AZ.
+
+**Negative test:** span a cluster placement group across AZs; launches fail,
+showing the low-latency guarantee is AZ-local by design.
+
+**Cleanup:** `aws ec2 delete-placement-group --group-name perf-pg`.
+
+### Lab 3.3 — Security controls for network edge services (SCS-C03 3.1)
+
+**Objective:** Attach an AWS WAF web ACL with a rate-based rule to an edge
+distribution.
+
+```bash
+aws wafv2 create-web-acl --name edge-acl --scope REGIONAL \
+  --default-action Allow={} --region "$(aws configure get region)" \
+  --visibility-config SampledRequestsEnabled=true,CloudWatchMetricsEnabled=true,MetricName=edge \
+  --rules '[{"Name":"rate","Priority":1,"Statement":{"RateBasedStatement":{"Limit":2000,"AggregateKeyType":"IP"}},"Action":{"Block":{}},"VisibilityConfig":{"SampledRequestsEnabled":true,"CloudWatchMetricsEnabled":true,"MetricName":"rate"}}]' \
+  --query 'Summary.ARN' --output text
+```
+
+**Expected result:** a web-ACL ARN with a rule blocking any IP over 2000
+requests/5-min — an L7 edge control against floods and scrapers.
+
+**Negative test:** without the web ACL, a request flood reaches the origin
+directly; the ACL is what absorbs it at the edge.
+
+**Cleanup:** `aws wafv2 delete-web-acl` (with the returned lock token).
+
+### Lab 3.4 — Design and troubleshoot network security controls (SCS-C03 3.3)
+
+**Objective:** Add a stateless subnet-edge control and confirm evaluation
+order (SG stateful vs NACL stateless).
+
+```bash
+NACL=$(aws ec2 describe-network-acls --filters Name=vpc-id,Values=$VPC \
+  --query 'NetworkAcls[?IsDefault==`true`].NetworkAclId' --output text)
+aws ec2 create-network-acl-entry --network-acl-id "$NACL" --rule-number 100 \
+  --protocol tcp --port-range From=22,To=22 --cidr-block 0.0.0.0/0 \
+  --rule-action deny --ingress
+aws ec2 describe-network-acls --network-acl-ids "$NACL" \
+  --query 'NetworkAcls[0].Entries[?RuleNumber==`100`].RuleAction' --output text
+```
+
+**Expected result:** a `deny` on inbound SSH at the subnet edge — a
+stateless control that blocks even before a security group is evaluated.
+
+**Negative test:** allow SSH in the SG but keep the NACL deny; the
+connection still fails, demonstrating NACLs are evaluated independently of
+(and can override) SG allows.
+
+**Cleanup:** `aws ec2 delete-network-acl-entry --network-acl-id "$NACL" --rule-number 100 --ingress`.
+
+### Lab 3.5 — Two-AZ VPC with referenced security groups (integrative)
+
 **Objective:** Build a two-AZ VPC with public and private subnets, apply
 security groups that reference each other, verify the path with the VPC
 Reachability Analyzer, and confirm a denied path fails as expected.

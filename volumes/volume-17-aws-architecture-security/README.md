@@ -124,6 +124,297 @@ that keeps this table, the
 [course-catalog appendix](../volume-97-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md),
 and the repository blueprint in step.
 
+## Topic-level lab coverage
+
+Every task in all **twelve** current AWS exam guides is covered by a
+hands-on **walkthrough** lab in this volume — **193 topic-level labs** in
+all, plus one integrative lab per chapter. The task lists were harvested
+from the authoritative exam guides at
+`docs.aws.amazon.com/aws-certification` on 24 July 2026. Solutions
+Architect – Associate (SAA-C03) and Security – Specialty (SCS-C03) are
+distributed across the Chapter 01–09 architecture spine; the other ten
+certifications map to the certification chapters 10–13. Each lab is a full
+walkthrough — runnable command, expected result, a negative test, and
+cleanup — and carries `**Lab verified by:** *pending*` until a human runs
+it, per the root README Disclaimer.
+
+### Cloud Practitioner (CLF-C02) — 19 topic-tasks
+
+Labs in [Chapter 10](chapters/10-the-aws-certification-program-structure-foundational-tier-and-recertification.md#hands-on-lab).
+
+| Domain | Exam-guide task | Lab |
+| --- | --- | --- |
+| 1 | 1.1 Define the benefits of the AWS Cloud | Lab 10.1 |
+| 1 | 1.2 Identify design principles of the AWS Cloud | Lab 10.2 |
+| 1 | 1.3 Understand the benefits of and strategies for migration to the AWS Cloud | Lab 10.3 |
+| 1 | 1.4 Understand concepts of cloud economics | Lab 10.4 |
+| 2 | 2.1 Understand the AWS shared responsibility model | Lab 10.5 |
+| 2 | 2.2 Understand AWS Cloud security, governance, and compliance concepts | Lab 10.6 |
+| 2 | 2.3 Identify AWS access management capabilities | Lab 10.7 |
+| 2 | 2.4 Identify components and resources for security | Lab 10.8 |
+| 3 | 3.1 Define methods of deploying and operating in the AWS Cloud | Lab 10.9 |
+| 3 | 3.2 Define the AWS global infrastructure | Lab 10.10 |
+| 3 | 3.3 Identify AWS compute services | Lab 10.11 |
+| 3 | 3.4 Identify AWS database services | Lab 10.12 |
+| 3 | 3.5 Identify AWS network services | Lab 10.13 |
+| 3 | 3.6 Identify AWS storage services | Lab 10.14 |
+| 3 | 3.7 Identify AWS artificial intelligence and machine learning (AI/ML) services and analytics services | Lab 10.15 |
+| 3 | 3.8 Identify services from other in-scope AWS service categories | Lab 10.16 |
+| 4 | 4.1 Compare AWS pricing models | Lab 10.17 |
+| 4 | 4.2 Understand resources for billing, budget, and cost management | Lab 10.18 |
+| 4 | 4.3 Identify AWS technical resources and AWS Support options | Lab 10.19 |
+
+### AI Practitioner (AIF-C01) — 14 topic-tasks
+
+Labs in [Chapter 10](chapters/10-the-aws-certification-program-structure-foundational-tier-and-recertification.md#hands-on-lab).
+
+| Domain | Exam-guide task | Lab |
+| --- | --- | --- |
+| 1 | 1.1 Explain basic AI concepts and terminologies | Lab 10.20 |
+| 1 | 1.2 Identify practical use cases for AI | Lab 10.21 |
+| 1 | 1.3 Describe the AI/ML development lifecycle | Lab 10.22 |
+| 2 | 2.1 Explain the basic concepts of generative AI (GenAI) | Lab 10.23 |
+| 2 | 2.2 Understand the capabilities and limitations of GenAI for solving business problems | Lab 10.24 |
+| 2 | 2.3 Describe AWS infrastructure and technologies for building GenAI applications | Lab 10.25 |
+| 3 | 3.1 Describe design considerations for applications that use foundation models (FMs) | Lab 10.26 |
+| 3 | 3.2 Choose effective prompt engineering techniques | Lab 10.27 |
+| 3 | 3.3 Describe the training and fine-tuning process for FMs | Lab 10.28 |
+| 3 | 3.4 Describe methods to evaluate FM performance | Lab 10.29 |
+| 4 | 4.1 Explain the development of AI systems that are responsible | Lab 10.30 |
+| 4 | 4.2 Recognize the importance of transparent and explainable models | Lab 10.31 |
+| 5 | 5.1 Explain methods to secure AI systems | Lab 10.32 |
+| 5 | 5.2 Recognize governance and compliance regulations for AI systems | Lab 10.33 |
+
+### Developer – Associate (DVA-C02) — 13 topic-tasks
+
+Labs in [Chapter 11](chapters/11-the-associate-tier-developer-cloudops-data-engineer-and-machine-learning-engineer.md#hands-on-lab).
+
+| Domain | Exam-guide task | Lab |
+| --- | --- | --- |
+| 1 | 1 Develop code for applications hosted on AWS | Lab 11.1 |
+| 1 | 2 Develop code for AWS Lambda | Lab 11.2 |
+| 1 | 3 Use data stores in application development | Lab 11.3 |
+| 2 | 1 Implement authentication and/or authorization for applications and AWS services | Lab 11.4 |
+| 2 | 2 Implement encryption by using AWS services | Lab 11.5 |
+| 2 | 3 Manage sensitive data in application code | Lab 11.6 |
+| 3 | 1 Prepare application artifacts to be deployed to AWS | Lab 11.7 |
+| 3 | 2 Test applications in development environments | Lab 11.8 |
+| 3 | 3 Automate deployment testing | Lab 11.9 |
+| 3 | 4 Deploy code by using AWS Continuous Integration and Continuous Delivery (CI/CD) services | Lab 11.10 |
+| 4 | 1 Assist in a root cause analysis | Lab 11.11 |
+| 4 | 2 Instrument code for observability | Lab 11.12 |
+| 4 | 3 Optimize applications by using AWS services and features | Lab 11.13 |
+
+### CloudOps Engineer – Associate (SOA-C03) — 13 topic-tasks
+
+Labs in [Chapter 11](chapters/11-the-associate-tier-developer-cloudops-data-engineer-and-machine-learning-engineer.md#hands-on-lab).
+
+| Domain | Exam-guide task | Lab |
+| --- | --- | --- |
+| 1 | 1.1 Implement metrics, alarms, and filters by using AWS monitoring and logging services | Lab 11.14 |
+| 1 | 1.2 Identify and remediate issues by using monitoring and availability metrics | Lab 11.15 |
+| 1 | 1.3 Implement performance optimization strategies for compute, storage, and database resources | Lab 11.16 |
+| 2 | 2.1 Implement scalability and elasticity | Lab 11.17 |
+| 2 | 2.2 Implement highly available and resilient environments | Lab 11.18 |
+| 2 | 2.3 Implement backup and restore strategies | Lab 11.19 |
+| 3 | 3.1 Provision and maintain cloud resources | Lab 11.20 |
+| 3 | 3.2 Automate the management of existing resources | Lab 11.21 |
+| 4 | 4.1 Implement and manage security and compliance tools and policies | Lab 11.22 |
+| 4 | 4.2 Implement strategies to protect data and infrastructure | Lab 11.23 |
+| 5 | 5.1 Implement and optimize networking features and connectivity | Lab 11.24 |
+| 5 | 5.2 Configure domains, DNS services, and content delivery | Lab 11.25 |
+| 5 | 5.3 Troubleshoot network connectivity issues | Lab 11.26 |
+
+### Data Engineer – Associate (DEA-C01) — 17 topic-tasks
+
+Labs in [Chapter 11](chapters/11-the-associate-tier-developer-cloudops-data-engineer-and-machine-learning-engineer.md#hands-on-lab).
+
+| Domain | Exam-guide task | Lab |
+| --- | --- | --- |
+| 1 | 1.1 Perform data ingestion | Lab 11.27 |
+| 1 | 1.2 Transform and process data | Lab 11.28 |
+| 1 | 1.3 Orchestrate data pipelines | Lab 11.29 |
+| 1 | 1.4 Apply programming concepts | Lab 11.30 |
+| 2 | 2.1 Choose a data store | Lab 11.31 |
+| 2 | 2.2 Understand data cataloging systems | Lab 11.32 |
+| 2 | 2.3 Manage the lifecycle of data | Lab 11.33 |
+| 2 | 2.4 Design data models and schema evolution | Lab 11.34 |
+| 3 | 3.1 Automate data processing by using AWS services | Lab 11.35 |
+| 3 | 3.2 Analyze data by using AWS services | Lab 11.36 |
+| 3 | 3.3 Maintain and monitor data pipelines | Lab 11.37 |
+| 3 | 3.4 Ensure data quality | Lab 11.38 |
+| 4 | 4.1 Apply authentication mechanisms | Lab 11.39 |
+| 4 | 4.2 Apply authorization mechanisms | Lab 11.40 |
+| 4 | 4.3 Ensure data encryption and masking | Lab 11.41 |
+| 4 | 4.4 Prepare logs for audit | Lab 11.42 |
+| 4 | 4.5 Understand data privacy and governance | Lab 11.43 |
+
+### Machine Learning Engineer – Associate (MLA-C01) — 12 topic-tasks
+
+Labs in [Chapter 11](chapters/11-the-associate-tier-developer-cloudops-data-engineer-and-machine-learning-engineer.md#hands-on-lab).
+
+| Domain | Exam-guide task | Lab |
+| --- | --- | --- |
+| 1 | 1.1 Ingest and store data | Lab 11.44 |
+| 1 | 1.2 Transform data and perform feature engineering | Lab 11.45 |
+| 1 | 1.3 Ensure data integrity and prepare data for modeling | Lab 11.46 |
+| 2 | 2.1 Choose a modeling approach | Lab 11.47 |
+| 2 | 2.2 Train and refine models | Lab 11.48 |
+| 2 | 2.3 Analyze model performance | Lab 11.49 |
+| 3 | 3.1 Select deployment infrastructure based on existing architecture and requirements | Lab 11.50 |
+| 3 | 3.2 Create and script infrastructure based on existing architecture and requirements | Lab 11.51 |
+| 3 | 3.3 Use automated orchestration tools to set up continuous integration and continuous delivery (CI/CD) pipelines | Lab 11.52 |
+| 4 | 4.1 Monitor model inference | Lab 11.53 |
+| 4 | 4.2 Monitor and optimize infrastructure and costs | Lab 11.54 |
+| 4 | 4.3 Secure AWS resources | Lab 11.55 |
+
+### Solutions Architect – Professional (SAP-C02) — 20 topic-tasks
+
+Labs in [Chapter 12](chapters/12-the-professional-tier-solutions-architect-devops-engineer-and-generative-ai-developer.md#hands-on-lab).
+
+| Domain | Exam-guide task | Lab |
+| --- | --- | --- |
+| 1 | 1.1 Architect network connectivity strategies | Lab 12.1 |
+| 1 | 1.2 Prescribe security controls | Lab 12.2 |
+| 1 | 1.3 Design reliable and resilient architectures | Lab 12.3 |
+| 1 | 1.4 Design a multi-account AWS environment | Lab 12.4 |
+| 1 | 1.5 Determine cost optimization and visibility strategies | Lab 12.5 |
+| 2 | 2.1 Design a deployment strategy to meet business requirements | Lab 12.6 |
+| 2 | 2.2 Design a solution to ensure business continuity | Lab 12.7 |
+| 2 | 2.3 Determine security controls based on requirements | Lab 12.8 |
+| 2 | 2.4 Design a strategy to meet reliability requirements | Lab 12.9 |
+| 2 | 2.5 Design a solution to meet performance objectives | Lab 12.10 |
+| 2 | 2.6 Determine a cost optimization strategy to meet solution goals and objectives | Lab 12.11 |
+| 3 | 3.1 Determine a strategy to improve overall operational excellence | Lab 12.12 |
+| 3 | 3.2 Determine a strategy to improve security | Lab 12.13 |
+| 3 | 3.3 Determine a strategy to improve performance | Lab 12.14 |
+| 3 | 3.4 Determine a strategy to improve reliability | Lab 12.15 |
+| 3 | 3.5 Identify opportunities for cost optimizations | Lab 12.16 |
+| 4 | 4.1 Select existing workloads and processes for potential migration | Lab 12.17 |
+| 4 | 4.2 Determine the optimal migration approach for existing workloads | Lab 12.18 |
+| 4 | 4.3 Determine a new architecture for existing workloads | Lab 12.19 |
+| 4 | 4.4 Determine opportunities for modernization and enhancements | Lab 12.20 |
+
+### DevOps Engineer – Professional (DOP-C02) — 19 topic-tasks
+
+Labs in [Chapter 12](chapters/12-the-professional-tier-solutions-architect-devops-engineer-and-generative-ai-developer.md#hands-on-lab).
+
+| Domain | Exam-guide task | Lab |
+| --- | --- | --- |
+| 1 | 1.1 Implement CI/CD pipelines | Lab 12.21 |
+| 1 | 1.2 Integrate automated testing into CI/CD pipelines | Lab 12.22 |
+| 1 | 1.3 Build and manage artifacts | Lab 12.23 |
+| 1 | 1.4 Implement deployment strategies for instance, container, and serverless environments | Lab 12.24 |
+| 2 | 2.1 Define cloud infrastructure and reusable components to provision and manage systems throughout their lifecycle | Lab 12.25 |
+| 2 | 2.2 Deploy automation to create, onboard, and secure AWS accounts in a multi-account or multi-Region environment | Lab 12.26 |
+| 2 | 2.3 Design and build automated solutions for complex tasks and large-scale environments | Lab 12.27 |
+| 3 | 3.1 Implement highly available solutions to meet resilience and business requirements | Lab 12.28 |
+| 3 | 3.2 Implement solutions that are scalable to meet business requirements | Lab 12.29 |
+| 3 | 3.3 Implement automated recovery processes to meet RTO and RPO requirements | Lab 12.30 |
+| 4 | 4.1 Configure the collection, aggregation, and storage of logs and metrics | Lab 12.31 |
+| 4 | 4.2 Audit, monitor, and analyze logs and metrics to detect issues | Lab 12.32 |
+| 4 | 4.3 Automate monitoring and event management of complex environments | Lab 12.33 |
+| 5 | 5.1 Manage event sources to process, notify, and take action in response to events | Lab 12.34 |
+| 5 | 5.2 Implement configuration changes in response to events | Lab 12.35 |
+| 5 | 5.3 Troubleshoot system and application failures | Lab 12.36 |
+| 6 | 6.1 Implement techniques for identity and access management at scale | Lab 12.37 |
+| 6 | 6.2 Apply automation for security controls and data protection | Lab 12.38 |
+| 6 | 6.3 Implement security monitoring and auditing solutions | Lab 12.39 |
+
+### Generative AI Developer – Professional (AIP-C01) — 20 topic-tasks
+
+Labs in [Chapter 12](chapters/12-the-professional-tier-solutions-architect-devops-engineer-and-generative-ai-developer.md#hands-on-lab).
+
+| Domain | Exam-guide task | Lab |
+| --- | --- | --- |
+| 1 | 1.1 Analyze requirements and design GenAI solutions | Lab 12.40 |
+| 1 | 1.2 Select and configure FMs | Lab 12.41 |
+| 1 | 1.3 Implement data validation and processing pipelines for FM consumption | Lab 12.42 |
+| 1 | 1.4 Design and implement vector store solutions | Lab 12.43 |
+| 1 | 1.5 Design retrieval mechanisms for FM augmentation | Lab 12.44 |
+| 1 | 1.6 Implement prompt engineering strategies and governance for FM interactions | Lab 12.45 |
+| 2 | 2.1 Implement agentic AI solutions and tool integrations | Lab 12.46 |
+| 2 | 2.2 Implement model deployment strategies | Lab 12.47 |
+| 2 | 2.3 Design and implement enterprise integration architectures | Lab 12.48 |
+| 2 | 2.4 Implement FM API integrations | Lab 12.49 |
+| 2 | 2.5 Implement application integration patterns and development tools | Lab 12.50 |
+| 3 | 3.1 Implement input and output safety controls | Lab 12.51 |
+| 3 | 3.2 Implement data security and privacy controls | Lab 12.52 |
+| 3 | 3.3 Implement AI governance and compliance mechanisms | Lab 12.53 |
+| 3 | 3.4 Implement responsible AI principles | Lab 12.54 |
+| 4 | 4.1 Implement cost optimization and resource efficiency strategies | Lab 12.55 |
+| 4 | 4.2 Optimize application performance | Lab 12.56 |
+| 4 | 4.3 Implement monitoring systems for GenAI applications | Lab 12.57 |
+| 5 | 5.1 Implement evaluation systems for GenAI | Lab 12.58 |
+| 5 | 5.2 Troubleshoot GenAI applications | Lab 12.59 |
+
+### Advanced Networking – Specialty (ANS-C01) — 16 topic-tasks
+
+Labs in [Chapter 13](chapters/13-specialty-certifications-and-keeping-the-aws-certification-program-current.md#hands-on-lab).
+
+| Domain | Exam-guide task | Lab |
+| --- | --- | --- |
+| 1 | 1.1 Design a solution that incorporates edge network services to optimize user performance and traffic management for global architectures | Lab 13.1 |
+| 1 | 1.2 Design DNS solutions that meet public, private, and hybrid requirements | Lab 13.2 |
+| 1 | 1.3 Design solutions that integrate load balancing to meet high availability, scalability, and security requirements | Lab 13.3 |
+| 1 | 1.4 Define logging and monitoring requirements across AWS and hybrid networks | Lab 13.4 |
+| 1 | 1.5 Design a routing strategy and connectivity architecture between on-premises networks and the AWS Cloud | Lab 13.5 |
+| 1 | 1.6 Design a routing strategy and connectivity architecture that include multiple AWS accounts, AWS Regions, and VPCs to support different connectivity patterns | Lab 13.6 |
+| 2 | 2.1 Implement routing and connectivity between on-premises networks and the AWS Cloud | Lab 13.7 |
+| 2 | 2.2 Implement routing and connectivity across multiple AWS accounts, Regions, and VPCs to support different connectivity patterns | Lab 13.8 |
+| 2 | 2.3 Implement complex hybrid and multi-account DNS architectures | Lab 13.9 |
+| 2 | 2.4 Automate and configure network infrastructure | Lab 13.10 |
+| 3 | 3.1 Maintain routing and connectivity on AWS and hybrid networks | Lab 13.11 |
+| 3 | 3.2 Monitor and analyze network traffic to troubleshoot and optimize connectivity patterns | Lab 13.12 |
+| 3 | 3.3 Optimize AWS networks for performance, reliability, and cost-effectiveness | Lab 13.13 |
+| 4 | 4.1 Implement and maintain network features to meet security and compliance needs and requirements | Lab 13.14 |
+| 4 | 4.2 Validate and audit security by using network monitoring and logging services | Lab 13.15 |
+| 4 | 4.3 Implement and maintain confidentiality of data and communications of the network | Lab 13.16 |
+
+### Solutions Architect – Associate (SAA-C03) — 14 topic-tasks
+
+Distributed across the Chapter 01–09 architecture spine.
+
+| Domain | Exam-guide task | Lab |
+| --- | --- | --- |
+| 1 | 1.1 Design secure access to AWS resources | Lab 2.1 |
+| 1 | 1.2 Design secure workloads and applications | Lab 3.1 |
+| 1 | 1.3 Determine appropriate data security controls | Lab 5.1 |
+| 2 | 2.1 Design scalable and loosely coupled architectures | Lab 4.1 |
+| 2 | 2.2 Design highly available and/or fault-tolerant architectures | Lab 6.1 |
+| 3 | 3.1 Determine high-performing and/or scalable storage solutions | Lab 5.2 |
+| 3 | 3.2 Design high-performing and elastic compute solutions | Lab 4.2 |
+| 3 | 3.3 Determine high-performing database solutions | Lab 5.3 |
+| 3 | 3.4 Determine high-performing and/or scalable network architectures | Lab 3.2 |
+| 3 | 3.5 Determine high-performing data ingestion and transformation solutions | Lab 5.4 |
+| 4 | 4.1 Design cost-optimized storage solutions | Lab 7.1 |
+| 4 | 4.2 Design cost-optimized compute solutions | Lab 7.2 |
+| 4 | 4.3 Design cost-optimized database solutions | Lab 7.3 |
+| 4 | 4.4 Design cost-optimized network architectures | Lab 7.4 |
+
+### Security – Specialty (SCS-C03) — 16 topic-tasks
+
+Distributed across the security spine (Chapters 02–08).
+
+| Domain | Exam-guide task | Lab |
+| --- | --- | --- |
+| 1 | 1.1 Design and implement monitoring and alerting solutions for an AWS account or organization | Lab 8.1 |
+| 1 | 1.2 Design and implement logging solutions | Lab 8.2 |
+| 1 | 1.3 Troubleshoot security monitoring, logging, and alerting solutions | Lab 8.3 |
+| 2 | 2.1 Design and test an incident response plan | Lab 8.4 |
+| 2 | 2.2 Respond to security events | Lab 8.5 |
+| 3 | 3.1 Design, implement, and troubleshoot security controls for network edge services | Lab 3.3 |
+| 3 | 3.2 Design, implement, and troubleshoot security controls for compute workloads | Lab 8.6 |
+| 3 | 3.3 Design and troubleshoot network security controls | Lab 3.4 |
+| 4 | 4.1 Design, implement, and troubleshoot authentication strategies | Lab 2.2 |
+| 4 | 4.2 Design, implement, and troubleshoot authorization strategies | Lab 2.3 |
+| 5 | 5.1 Design and implement controls for data in transit | Lab 8.7 |
+| 5 | 5.2 Design and implement controls for data at rest | Lab 5.5 |
+| 5 | 5.3 Design and implement controls to protect confidential data, credentials, secrets, and cryptographic key materials | Lab 8.8 |
+| 6 | 6.1 Develop a strategy to centrally deploy and manage AWS accounts | Lab 2.4 |
+| 6 | 6.2 Implement a secure and consistent deployment strategy for cloud resources | Lab 2.5 |
+| 6 | 6.3 Evaluate the compliance of AWS resources | Lab 8.9 |
+
 ## Building and validating this volume
 
 From the repository root, after completing

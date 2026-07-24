@@ -282,6 +282,399 @@ reproductions of any AWS exam item)*
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **every task in the
+AWS Certified Advanced Networking – Specialty (ANS-C01) exam guide** (four
+domains, sixteen tasks), each mapped in the volume README's ANS-C01
+coverage table. Security – Specialty (SCS-C03) is the volume's security
+spine and its topic labs live in Chapters 02–08; this chapter closes with
+one integrative program-currency lab (Lab 13.17).
+
+**Shared prerequisites for Labs 13.1–13.16**
+
+- AWS CLI v2 authenticated to a sandbox account with network-admin rights,
+  and a default Region set (`aws configure get region`). Labs use
+  `export RG=ans-lab` and `export AZ1=$(aws configure get region)a` as
+  working names.
+- **Cost:** most labs use free or sub-cent resources (VPCs, route tables,
+  security groups, Route 53 zones at ~$0.50/zone/month, flow logs). Labs
+  that touch billable services — CloudFront, Global Accelerator, NAT
+  gateways, Transit Gateway attachments, VPN, Network Firewall — say so and
+  end with a cleanup step. Delete resources the same day.
+- Every lab ends **`**Lab verified by:** *pending*`** until a human runs it.
+
+### Lab 13.1 — Design a solution that incorporates edge network services for global performance
+
+**Objective:** Put Amazon CloudFront in front of an S3 origin and prove it
+terminates at the edge.
+
+```bash
+export B=ans-edge-$(aws sts get-caller-identity --query Account --output text)
+aws s3 mb "s3://$B"
+DIST=$(aws cloudfront create-distribution \
+  --origin-domain-name "$B.s3.amazonaws.com" \
+  --default-root-object index.html \
+  --query 'Distribution.Id' --output text)
+aws cloudfront get-distribution --id "$DIST" --query 'Distribution.Status'
+```
+
+**Expected result:** a distribution ID and a status of `InProgress`, then
+`Deployed` after several minutes. `aws cloudfront get-distribution` returns
+a `DomainName` like `d111111abcdef8.cloudfront.net`.
+
+**Negative test:** request a path the origin does not have —
+`curl -s -o /dev/null -w '%{http_code}' https://<domain>/missing.html`
+returns `403`/`404` from the edge, not a connection error, proving the edge
+answered.
+
+**Cleanup:** `aws cloudfront delete-distribution` (after disabling and
+waiting for `Deployed`), then `aws s3 rb "s3://$B" --force`. CloudFront is
+billed per request and data-out; delete promptly.
+
+### Lab 13.2 — Design DNS solutions for public, private, and hybrid requirements
+
+**Objective:** Create a private hosted zone and resolve a record only from
+inside the VPC.
+
+```bash
+VPC=$(aws ec2 create-vpc --cidr-block 10.20.0.0/16 --query 'Vpc.VpcId' --output text)
+ZID=$(aws route53 create-hosted-zone --name internal.ans. \
+  --vpc VPCRegion=$(aws configure get region),VPCId=$VPC \
+  --caller-reference "ans-$(date +%s)" --query 'HostedZone.Id' --output text)
+aws route53 list-hosted-zones-by-vpc --vpc-id "$VPC" \
+  --vpc-region "$(aws configure get region)" --query 'HostedZoneSummaries[].Name'
+```
+
+**Expected result:** the private zone `internal.ans.` is listed as
+associated with the VPC.
+
+**Negative test:** query the private name from a public resolver —
+`dig @8.8.8.8 db.internal.ans +short` returns nothing, proving the zone is
+private to the VPC.
+
+**Cleanup:** `aws route53 delete-hosted-zone --id "$ZID"`; delete the VPC.
+
+### Lab 13.3 — Design load balancing for high availability, scalability, and security
+
+**Objective:** Stand up an internet-facing Application Load Balancer across
+two subnets and read its scheme.
+
+```bash
+ALB=$(aws elbv2 create-load-balancer --name ans-alb \
+  --subnets $SUBNET_A $SUBNET_B --security-groups $SG \
+  --scheme internet-facing --type application \
+  --query 'LoadBalancers[0].LoadBalancerArn' --output text)
+aws elbv2 describe-load-balancers --load-balancer-arns "$ALB" \
+  --query 'LoadBalancers[0].{Scheme:Scheme,AZs:AvailabilityZones[].ZoneName}'
+```
+
+**Expected result:** `Scheme: internet-facing` spanning two Availability
+Zones — the minimum for an HA ALB.
+
+**Negative test:** try to create an ALB in a single subnet —
+`... --subnets $SUBNET_A` fails with
+`At least two subnets in two different Availability Zones must be specified`.
+
+**Cleanup:** `aws elbv2 delete-load-balancer --load-balancer-arn "$ALB"`.
+
+### Lab 13.4 — Define logging and monitoring across AWS and hybrid networks
+
+**Objective:** Enable VPC Flow Logs to CloudWatch and confirm records land.
+
+```bash
+aws logs create-log-group --log-group-name /ans/flow-logs
+aws ec2 create-flow-logs --resource-type VPC --resource-ids "$VPC" \
+  --traffic-type ALL --log-group-name /ans/flow-logs \
+  --deliver-logs-permission-arn "$FLOW_ROLE_ARN"
+aws ec2 describe-flow-logs --filter Name=resource-id,Values=$VPC \
+  --query 'FlowLogs[0].FlowLogStatus'
+```
+
+**Expected result:** `FlowLogStatus: ACTIVE`; within ~10 minutes
+`aws logs filter-log-events --log-group-name /ans/flow-logs` returns
+records with `srcaddr`/`dstaddr`/`action`.
+
+**Negative test:** pass a role without `logs:PutLogEvents` — `FlowLogStatus`
+becomes `ACTIVE` but no events ever arrive, the classic silent-failure the
+task tests for.
+
+**Cleanup:** delete the flow log and the log group.
+
+### Lab 13.5 — Design routing and connectivity between on-premises and AWS
+
+**Objective:** Model a Site-to-Site VPN by creating a customer gateway and
+VPN gateway and reading the proposed tunnels.
+
+```bash
+CGW=$(aws ec2 create-customer-gateway --type ipsec.1 \
+  --public-ip 203.0.113.10 --bgp-asn 65000 \
+  --query 'CustomerGateway.CustomerGatewayId' --output text)
+VGW=$(aws ec2 create-vpn-gateway --type ipsec.1 \
+  --query 'VpnGateway.VpnGatewayId' --output text)
+aws ec2 attach-vpn-gateway --vpn-gateway-id "$VGW" --vpc-id "$VPC"
+```
+
+**Expected result:** a customer gateway with ASN 65000 and a VPN gateway
+that attaches to the VPC (`State: attached`).
+
+**Negative test:** create the VPN connection with
+`--options StaticRoutesOnly=false` but no BGP on the customer side; the
+tunnels stay `DOWN`, proving dynamic routing needs a BGP speaker.
+
+**Cleanup:** detach and delete the VPN gateway and customer gateway (VPN
+gateways are billed hourly).
+
+### Lab 13.6 — Design multi-account, multi-Region, multi-VPC connectivity
+
+**Objective:** Create a Transit Gateway and attach a VPC — the hub for
+scaled connectivity.
+
+```bash
+TGW=$(aws ec2 create-transit-gateway --description ans-hub \
+  --query 'TransitGateway.TransitGatewayId' --output text)
+aws ec2 create-transit-gateway-vpc-attachment \
+  --transit-gateway-id "$TGW" --vpc-id "$VPC" --subnet-ids "$SUBNET_A" \
+  --query 'TransitGatewayVpcAttachment.State'
+```
+
+**Expected result:** the attachment reports `pending` then `available`;
+`aws ec2 describe-transit-gateways` shows `State: available`.
+
+**Negative test:** attach a second VPC whose CIDR overlaps the first; the
+route in the TGW route table is rejected as a blackhole, demonstrating why
+non-overlapping CIDRs are a design constraint.
+
+**Cleanup:** delete the attachment, then the Transit Gateway. Attachments
+bill hourly.
+
+### Lab 13.7 — Implement routing and connectivity between on-premises and AWS
+
+**Objective:** Add a route to the VPN gateway and enable route propagation.
+
+```bash
+aws ec2 enable-vgw-route-propagation --route-table-id "$RTB" --gateway-id "$VGW"
+aws ec2 describe-route-tables --route-table-ids "$RTB" \
+  --query 'RouteTables[0].PropagatingVgws'
+```
+
+**Expected result:** `PropagatingVgws` lists the VGW, so BGP-learned
+on-premises routes populate the table automatically.
+
+**Negative test:** query the route table before enabling propagation —
+`PropagatingVgws` is empty and on-prem prefixes are absent, so traffic to
+them is dropped.
+
+**Cleanup:** `aws ec2 disable-vgw-route-propagation`.
+
+### Lab 13.8 — Implement multi-account/Region/VPC routing patterns
+
+**Objective:** Give the Transit Gateway an explicit static route and read
+the route table.
+
+```bash
+TGW_RTB=$(aws ec2 describe-transit-gateway-route-tables \
+  --filters Name=transit-gateway-id,Values=$TGW \
+  --query 'TransitGatewayRouteTables[0].TransitGatewayRouteTableId' --output text)
+aws ec2 create-transit-gateway-route --destination-cidr-block 10.30.0.0/16 \
+  --transit-gateway-route-table-id "$TGW_RTB" \
+  --transit-gateway-attachment-id "$ATTACH"
+aws ec2 search-transit-gateway-routes --transit-gateway-route-table-id "$TGW_RTB" \
+  --filters Name=type,Values=static --query 'Routes[].DestinationCidrBlock'
+```
+
+**Expected result:** `10.30.0.0/16` appears as a static route with
+`State: active`.
+
+**Negative test:** point the route at a detached attachment; its state
+shows `blackhole` and traffic to the CIDR is silently dropped.
+
+**Cleanup:** `aws ec2 delete-transit-gateway-route`.
+
+### Lab 13.9 — Implement complex hybrid and multi-account DNS
+
+**Objective:** Create a Route 53 Resolver outbound endpoint and a
+forwarding rule for hybrid name resolution.
+
+```bash
+EP=$(aws route53resolver create-resolver-endpoint --direction OUTBOUND \
+  --security-group-ids "$SG" --name ans-out \
+  --ip-addresses SubnetId=$SUBNET_A SubnetId=$SUBNET_B \
+  --creator-request-id "ans-$(date +%s)" \
+  --query 'ResolverEndpoint.Id' --output text)
+aws route53resolver create-resolver-rule --rule-type FORWARD \
+  --domain-name corp.example.com --resolver-endpoint-id "$EP" \
+  --name ans-fwd --target-ips Ip=192.0.2.10 \
+  --creator-request-id "ans-r-$(date +%s)"
+```
+
+**Expected result:** an outbound endpoint (`Status: OPERATIONAL`) and a
+FORWARD rule sending `corp.example.com` queries to the on-prem resolver.
+
+**Negative test:** forward a domain with no reachable target IP; queries
+`SERVFAIL`, showing the rule forwards but the target must answer.
+
+**Cleanup:** delete the resolver rule and endpoint (endpoints bill per ENI
+per hour).
+
+### Lab 13.10 — Automate and configure network infrastructure
+
+**Objective:** Deploy a VPC as code with CloudFormation and confirm drift
+status.
+
+```bash
+cat > /tmp/vpc.yaml <<'YAML'
+Resources:
+  Net: {Type: AWS::EC2::VPC, Properties: {CidrBlock: 10.40.0.0/16}}
+YAML
+aws cloudformation deploy --template-file /tmp/vpc.yaml --stack-name ans-net
+aws cloudformation detect-stack-drift --stack-name ans-net
+aws cloudformation describe-stacks --stack-name ans-net \
+  --query 'Stacks[0].StackStatus'
+```
+
+**Expected result:** `StackStatus: CREATE_COMPLETE`; drift detection
+reports `IN_SYNC` immediately after deployment.
+
+**Negative test:** manually change the VPC's tags in the console, re-run
+`detect-stack-drift`; the stack now reports `DRIFTED`, the signal that a
+manual change bypassed the pipeline.
+
+**Cleanup:** `aws cloudformation delete-stack --stack-name ans-net`.
+
+### Lab 13.11 — Maintain routing and connectivity on AWS and hybrid networks
+
+**Objective:** Audit a route table for the specific next hop a prefix
+resolves to.
+
+```bash
+aws ec2 describe-route-tables --route-table-ids "$RTB" \
+  --query 'RouteTables[0].Routes[].{Dest:DestinationCidrBlock,GW:GatewayId,TGW:TransitGatewayId,State:State}' \
+  --output table
+```
+
+**Expected result:** a table where `0.0.0.0/0` points to an internet or NAT
+gateway and internal prefixes point to the TGW or VGW, each `State: active`.
+
+**Negative test:** delete the IGW route and re-run; `0.0.0.0/0` disappears
+and instances lose internet egress — a maintenance error made visible.
+
+**Cleanup:** restore the default route
+(`aws ec2 create-route --destination-cidr-block 0.0.0.0/0 ...`).
+
+### Lab 13.12 — Monitor and analyze network traffic to troubleshoot connectivity
+
+**Objective:** Use VPC Reachability Analyzer to prove (or disprove) a path.
+
+```bash
+PATH_ID=$(aws ec2 create-network-insights-path --source "$IGW" \
+  --destination "$ENI" --protocol tcp --destination-port 443 \
+  --query 'NetworkInsightsPath.NetworkInsightsPathId' --output text)
+ANALYSIS=$(aws ec2 start-network-insights-analysis \
+  --network-insights-path-id "$PATH_ID" \
+  --query 'NetworkInsightsAnalysis.NetworkInsightsAnalysisId' --output text)
+aws ec2 describe-network-insights-analyses \
+  --network-insights-analysis-ids "$ANALYSIS" \
+  --query 'NetworkInsightsAnalyses[0].NetworkPathFound'
+```
+
+**Expected result:** `NetworkPathFound: true` when a security group and
+route allow 443 to the ENI.
+
+**Negative test:** remove the inbound 443 rule and re-run; the analysis
+returns `false` and names the blocking security group in
+`ExplanationCode`, pinpointing the fault.
+
+**Cleanup:** delete the analysis and the insights path.
+
+### Lab 13.13 — Optimize AWS networks for performance, reliability, and cost
+
+**Objective:** Replace NAT-gateway data charges for S3 traffic with a free
+Gateway VPC endpoint.
+
+```bash
+aws ec2 create-vpc-endpoint --vpc-id "$VPC" --vpc-endpoint-type Gateway \
+  --service-name "com.amazonaws.$(aws configure get region).s3" \
+  --route-table-ids "$RTB" \
+  --query 'VpcEndpoint.State'
+aws ec2 describe-vpc-endpoints --filters Name=vpc-id,Values=$VPC \
+  --query 'VpcEndpoints[].ServiceName'
+```
+
+**Expected result:** the S3 endpoint is `available` and a prefix-list route
+to S3 appears in the route table — S3 traffic now bypasses the NAT gateway.
+
+**Negative test:** send S3 traffic from a private subnet with no endpoint
+and no NAT; the request times out, showing the endpoint (not the internet
+path) is what restored — and cheapened — access.
+
+**Cleanup:** `aws ec2 delete-vpc-endpoints --vpc-endpoint-ids ...`.
+
+### Lab 13.14 — Implement network features for security and compliance
+
+**Objective:** Add a stateless deny at the subnet edge with a network ACL
+rule.
+
+```bash
+NACL=$(aws ec2 describe-network-acls --filters Name=vpc-id,Values=$VPC \
+  --query 'NetworkAcls[0].NetworkAclId' --output text)
+aws ec2 create-network-acl-entry --network-acl-id "$NACL" --rule-number 90 \
+  --protocol tcp --port-range From=23,To=23 --cidr-block 0.0.0.0/0 \
+  --rule-action deny --ingress
+aws ec2 describe-network-acls --network-acl-ids "$NACL" \
+  --query 'NetworkAcls[0].Entries[?RuleNumber==`90`]'
+```
+
+**Expected result:** a deny rule for TCP/23 (Telnet) at rule number 90,
+evaluated before the default allow.
+
+**Negative test:** place the same deny at rule number 200, *after* an allow
+at 100; because NACLs evaluate in order, Telnet is now permitted —
+demonstrating rule-order sensitivity.
+
+**Cleanup:** `aws ec2 delete-network-acl-entry --rule-number 90 --ingress`.
+
+### Lab 13.15 — Validate and audit security via network monitoring and logging
+
+**Objective:** Query flow logs for rejected traffic to audit the perimeter.
+
+```bash
+aws logs filter-log-events --log-group-name /ans/flow-logs \
+  --filter-pattern '[version, account, eni, src, dst, srcport, dstport, protocol, packets, bytes, start, end, action=REJECT, status]' \
+  --query 'events[0:5].message'
+```
+
+**Expected result:** up to five records whose final field is `REJECT`,
+each showing the source that was denied — evidence for a security audit.
+
+**Negative test:** run the same filter with `action=ACCEPT` on a locked-down
+subnet with no traffic; zero records return, confirming the filter, not
+absence of logging, is what selects rejects.
+
+**Cleanup:** none (read-only query).
+
+### Lab 13.16 — Implement and maintain confidentiality of data and communications
+
+**Objective:** Enforce HTTPS on the ALB by attaching an ACM certificate to
+an HTTPS listener.
+
+```bash
+aws elbv2 create-listener --load-balancer-arn "$ALB" --protocol HTTPS \
+  --port 443 --certificates CertificateArn="$ACM_ARN" \
+  --ssl-policy ELBSecurityPolicy-TLS13-1-2-2021-06 \
+  --default-actions Type=forward,TargetGroupArn="$TG" \
+  --query 'Listeners[0].SslPolicy'
+```
+
+**Expected result:** an HTTPS listener on 443 with a TLS 1.2/1.3 security
+policy — traffic to the ALB is now encrypted in transit.
+
+**Negative test:** curl the HTTP listener after adding a redirect action —
+`curl -sI http://<alb-dns>/` returns `301` to `https://`, proving plaintext
+is refused rather than served.
+
+**Cleanup:** delete the listener; the certificate remains in ACM for reuse.
+
+### Lab 13.17 — Program currency check (integrative)
+
 **Objective:** Run one complete, primary-source currency check across the
 AWS certification program and produce an auditable drift log — the
 maintenance skill this chapter teaches, exercised for real.

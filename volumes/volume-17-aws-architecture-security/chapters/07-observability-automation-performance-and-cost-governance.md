@@ -403,6 +403,97 @@ aws budgets create-budget --account-id 111122223333 --budget '{
 
 ## Hands-On Lab
 
+Beyond this chapter's integrative lab, the labs below are topic-level
+walkthroughs for the **SAA-C03** cost-optimization tasks this chapter owns;
+the volume README's coverage tables map each one. Every lab ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+### Lab 7.1 — Design cost-optimized storage solutions (SAA-C03 4.1)
+
+**Objective:** Let S3 Intelligent-Tiering move objects between access tiers
+automatically.
+
+```bash
+aws s3api put-bucket-intelligent-tiering-configuration --bucket "$BUCKET" --id auto \
+  --intelligent-tiering-configuration '{"Id":"auto","Status":"Enabled","Tierings":[{"Days":90,"AccessTier":"ARCHIVE_ACCESS"},{"Days":180,"AccessTier":"DEEP_ARCHIVE_ACCESS"}]}'
+aws s3api list-bucket-intelligent-tiering-configurations --bucket "$BUCKET" \
+  --query 'IntelligentTieringConfigurationList[0].Status' --output text
+```
+
+**Expected result:** `Enabled` — infrequently accessed objects tier down to
+archive automatically, with no retrieval fees for the frequent/infrequent
+move.
+
+**Negative test:** keep everything in `STANDARD` for rarely read data;
+the monthly bill stays high — the waste Intelligent-Tiering removes.
+
+**Cleanup:** delete the Intelligent-Tiering configuration.
+
+### Lab 7.2 — Design cost-optimized compute solutions (SAA-C03 4.2)
+
+**Objective:** Quantify the Spot discount to right-size a batch workload's
+cost.
+
+```bash
+OD=0.0104   # t3.micro On-Demand $/hr (us-east-1, from Lab 10.4)
+SPOT=$(aws ec2 describe-spot-price-history --instance-types t3.micro \
+  --product-descriptions "Linux/UNIX" --max-items 1 \
+  --query 'SpotPriceHistory[0].SpotPrice' --output text)
+python3 -c "print(f'Spot saves {100*(1-$SPOT/$OD):.0f}% vs On-Demand')"
+```
+
+**Expected result:** a printed saving (commonly 60–70%). **Decision to
+record:** run interruption-tolerant batch on Spot, keep the steady baseline
+on a Savings Plan.
+
+**Negative test:** put a stateful, interruption-sensitive service on Spot; a
+reclaim causes an outage — the cost win applies only to tolerant workloads.
+
+**Cleanup:** none (read-only calculation).
+
+### Lab 7.3 — Design cost-optimized database solutions (SAA-C03 4.3)
+
+**Objective:** Match capacity to demand with Aurora Serverless v2 scaling
+bounds.
+
+```bash
+aws rds describe-db-clusters --db-cluster-identifier "$CLUSTER" \
+  --query 'DBClusters[0].ServerlessV2ScalingConfiguration' 2>&1 | head -4
+```
+
+**Expected result:** the min/max ACU bounds (or a prompt that the cluster is
+provisioned). **Decision to record:** for spiky or intermittent databases,
+Serverless v2 scales to near-zero at idle; for steady load, a reserved
+instance is cheaper.
+
+**Negative test:** a fixed provisioned instance sized for peak sits mostly
+idle and overspends between peaks.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.4 — Design cost-optimized network architectures (SAA-C03 4.4)
+
+**Objective:** Cut data-transfer cost by keeping S3 traffic on a free
+Gateway endpoint instead of a NAT gateway.
+
+```bash
+aws ec2 create-vpc-endpoint --vpc-id "$VPC" --vpc-endpoint-type Gateway \
+  --service-name "com.amazonaws.$(aws configure get region).s3" \
+  --route-table-ids "$RTB" --query 'VpcEndpoint.State'
+aws ec2 describe-vpc-endpoints --filters Name=vpc-id,Values=$VPC \
+  --query "VpcEndpoints[?ServiceName=='com.amazonaws.$(aws configure get region).s3'].State" --output text
+```
+
+**Expected result:** an `available` S3 gateway endpoint — S3 traffic from
+private subnets now avoids per-GB NAT data-processing charges.
+
+**Negative test:** route S3 traffic through a NAT gateway instead; every GB
+incurs NAT processing cost the endpoint would have made free.
+
+**Cleanup:** `aws ec2 delete-vpc-endpoints --vpc-endpoint-ids <id>`.
+
+### Lab 7.5 — CloudWatch alarm on a custom metric (integrative)
+
 **Objective:** Create a CloudWatch alarm on a custom metric, trigger it
 with a manually published data point, confirm the SNS notification
 fires, and confirm the alarm returns to `OK` when the condition clears.

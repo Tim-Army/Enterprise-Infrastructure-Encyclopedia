@@ -404,6 +404,197 @@ aws cloudtrail get-query-results --query-id "$QUERY_ID"
 
 ## Hands-On Lab
 
+Beyond this chapter's integrative lab, the labs below are topic-level
+walkthroughs for the **SCS-C03** monitoring, incident-response, compute-
+security, data-protection, and compliance tasks this chapter owns (SCS-C03
+is the volume's security spine); the volume README's coverage tables map
+each one. Every lab ends **`**Lab verified by:** *pending*`** until a human
+runs it.
+
+### Lab 8.1 — Design and implement monitoring and alerting solutions (SCS-C03 1.1)
+
+**Objective:** Aggregate security signals with Security Hub and read the
+top findings.
+
+```bash
+aws securityhub enable-security-hub --enable-default-standards 2>&1 | head -1
+aws securityhub get-findings \
+  --filters '{"RecordState":[{"Value":"ACTIVE","Comparison":"EQUALS"}]}' \
+  --max-results 5 --query 'Findings[].{Sev:Severity.Label,Title:Title}' --output table
+```
+
+**Expected result:** Security Hub enabled and a table of active findings by
+severity — one pane aggregating GuardDuty, Inspector, and Config alerts.
+
+**Negative test:** rely on per-service consoles instead; a cross-cutting
+issue is easy to miss without the aggregated view Security Hub provides.
+
+**Cleanup:** `aws securityhub disable-security-hub` if enabled only for the
+lab.
+
+### Lab 8.2 — Design and implement logging solutions (SCS-C03 1.2)
+
+**Objective:** Create a multi-Region CloudTrail with log-file validation.
+
+```bash
+aws cloudtrail create-trail --name sec-trail --s3-bucket-name "$BUCKET" \
+  --is-multi-region-trail --enable-log-file-validation \
+  --query 'TrailARN' --output text
+aws cloudtrail start-logging --name sec-trail
+aws cloudtrail get-trail-status --name sec-trail --query 'IsLogging' --output text
+```
+
+**Expected result:** `true` — every API call across all Regions is now
+recorded to a tamper-evident, validated log.
+
+**Negative test:** a single-Region trail misses activity elsewhere; the
+multi-Region flag is what makes the audit complete.
+
+**Cleanup:** `aws cloudtrail delete-trail --name sec-trail`.
+
+### Lab 8.3 — Troubleshoot security monitoring, logging, and alerting (SCS-C03 1.3)
+
+**Objective:** Prove the CloudTrail logs have not been tampered with using
+digest validation.
+
+```bash
+aws cloudtrail validate-logs --trail-arn "$TRAIL_ARN" \
+  --start-time $(date -u -v-1d +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -d '1 day ago' +%Y-%m-%dT%H:%M:%SZ) \
+  2>&1 | tail -3
+```
+
+**Expected result:** a report that log and digest files are valid — the
+integrity guarantee an auditor or incident responder depends on.
+
+**Negative test:** delete or alter a log object, re-run validation; it
+reports the file as invalid/missing, catching tampering — the failure this
+control exists to detect.
+
+**Cleanup:** none (read-only validation).
+
+### Lab 8.4 — Design and test an incident response plan (SCS-C03 2.1)
+
+**Objective:** Codify a containment runbook as an SSM Automation document so
+response is repeatable.
+
+```bash
+aws ssm create-document --name IR-IsolateInstance --document-type Automation \
+  --content '{"schemaVersion":"0.3","description":"Isolate an EC2 instance","parameters":{"InstanceId":{"type":"String"}},"mainSteps":[{"name":"Isolate","action":"aws:executeAwsApi","inputs":{"Service":"ec2","Api":"ModifyInstanceAttribute","InstanceId":"{{InstanceId}}","Groups":["'"$QUARANTINE_SG"'"]}}]}' \
+  --query 'DocumentDescription.Name' --output text
+```
+
+**Expected result:** a runbook document `IR-IsolateInstance` — the response
+plan is executable and testable, not a wiki page.
+
+**Negative test:** an ad-hoc manual response under pressure is slow and
+inconsistent; the codified runbook makes containment one command.
+
+**Cleanup:** `aws ssm delete-document --name IR-IsolateInstance`.
+
+### Lab 8.5 — Respond to security events (SCS-C03 2.2)
+
+**Objective:** Contain a compromised instance by moving it to a quarantine
+security group with no egress.
+
+```bash
+aws ec2 modify-instance-attribute --instance-id "$INSTANCE_ID" --groups "$QUARANTINE_SG"
+aws ec2 describe-instances --instance-ids "$INSTANCE_ID" \
+  --query 'Reservations[0].Instances[0].SecurityGroups[].GroupId' --output text
+```
+
+**Expected result:** the instance now belongs only to the quarantine SG —
+isolated for forensics while still running (memory preserved).
+
+**Negative test:** terminating the instance instead destroys volatile
+forensic evidence; isolation preserves it, the reason to quarantine before
+terminate.
+
+**Cleanup:** restore the original security group after the exercise.
+
+### Lab 8.6 — Design and troubleshoot security controls for compute workloads (SCS-C03 3.2)
+
+**Objective:** Scan workloads for vulnerabilities with Amazon Inspector.
+
+```bash
+aws inspector2 enable --resource-types EC2 ECR 2>&1 | head -2
+aws inspector2 list-findings \
+  --filter-criteria '{"severity":[{"comparison":"EQUALS","value":"CRITICAL"}]}' \
+  --max-results 5 --query 'findings[].{Title:title,Type:type}' --output table 2>&1 | head
+```
+
+**Expected result:** Inspector enabled and any critical CVE findings on EC2
+and container images — continuous compute-security assessment.
+
+**Negative test:** unmanaged instances with no agent are never scanned; a
+vulnerability there is invisible until exploited.
+
+**Cleanup:** `aws inspector2 disable --resource-types EC2 ECR` if enabled for
+the lab only.
+
+### Lab 8.7 — Design and implement controls for data in transit (SCS-C03 5.1)
+
+**Objective:** Enforce a modern TLS policy on a public listener.
+
+```bash
+aws elbv2 modify-listener --listener-arn "$HTTPS_LISTENER" \
+  --ssl-policy ELBSecurityPolicy-TLS13-1-2-2021-06 \
+  --query 'Listeners[0].SslPolicy' --output text
+```
+
+**Expected result:** the listener uses a TLS 1.2/1.3 policy — legacy
+protocols and weak ciphers are refused for data in transit.
+
+**Negative test:** set `ELBSecurityPolicy-TLS-1-0-2015-04`; a scanner flags
+TLS 1.0 as noncompliant, the exposure the modern policy closes.
+
+**Cleanup:** none (the modern policy is the desired end state).
+
+### Lab 8.8 — Protect confidential data, credentials, and secrets (SCS-C03 5.3)
+
+**Objective:** Put a database credential under automatic rotation in Secrets
+Manager.
+
+```bash
+aws secretsmanager create-secret --name prod/db-cred \
+  --secret-string '{"username":"app","password":"initial"}' >/dev/null
+aws secretsmanager rotate-secret --secret-id prod/db-cred \
+  --rotation-lambda-arn "$ROTATION_LAMBDA" \
+  --rotation-rules AutomaticallyAfterDays=30 \
+  --query 'ARN' --output text 2>&1 | head -1
+```
+
+**Expected result:** the secret is scheduled to rotate every 30 days — no
+long-lived static credential in code or config.
+
+**Negative test:** a credential hard-coded in an app never rotates and leaks
+permanently once exposed; managed rotation limits the exposure window.
+
+**Cleanup:** `aws secretsmanager delete-secret --secret-id prod/db-cred --force-delete-without-recovery`.
+
+### Lab 8.9 — Evaluate the compliance of AWS resources (SCS-C03 6.3)
+
+**Objective:** Deploy a Config conformance pack and read the aggregate
+compliance score.
+
+```bash
+aws configservice put-conformance-pack --conformance-pack-name sec-baseline \
+  --template-body 'Resources:\n  R1:\n    Type: AWS::Config::ConfigRule\n    Properties:\n      ConfigRuleName: s3-bucket-public-read-prohibited\n      Source: {Owner: AWS, SourceIdentifier: S3_BUCKET_PUBLIC_READ_PROHIBITED}' \
+  2>&1 | head -1
+aws configservice describe-conformance-pack-compliance --conformance-pack-name sec-baseline \
+  --query 'ConformancePackRuleComplianceList[0].ComplianceType' --output text 2>&1 | head -1
+```
+
+**Expected result:** a conformance pack whose rules report
+`COMPLIANT`/`NON_COMPLIANT` — compliance measured continuously against a
+named baseline, not a point-in-time audit.
+
+**Negative test:** with the Config recorder off, the pack cannot evaluate
+(`INSUFFICIENT_DATA`) — the dependency from Lab 10.6.
+
+**Cleanup:** `aws configservice delete-conformance-pack --conformance-pack-name sec-baseline`.
+
+### Lab 8.10 — GuardDuty detection to automated response (integrative)
+
 **Objective:** Enable GuardDuty, generate a sample finding using
 GuardDuty's built-in finding generator, and confirm an EventBridge rule
 correctly routes the finding to an SNS notification.
