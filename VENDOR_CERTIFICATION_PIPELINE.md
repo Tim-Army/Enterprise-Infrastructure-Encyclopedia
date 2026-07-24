@@ -54,9 +54,20 @@ this pipeline.
    it `retired on <date>` and add the successor alongside.
 3. **Content.** Chapters following the house template
    ([templates/chapter.md](templates/chapter.md)), one diagram per chapter,
-   blueprint mapping, study plans derived from published domain weights,
-   and a hands-on lab with a negative test and cleanup. Naming paid
-   courseware is fine; reproducing it is not.
+   blueprint mapping, and study plans derived from published domain
+   weights. Naming paid courseware is fine; reproducing it is not.
+
+   **Labs must cover every topic on every blueprint.** Coverage is
+   measured against each certification's published exam guide, topic by
+   topic — *not* against the chapter count. The template's single
+   `## Hands-On Lab` section is a floor, not a target: where one lab
+   cannot carry a chapter's topics, add further labs under that heading
+   (`### Lab 2 — …`) or split the chapter. More chapters is acceptable;
+   uncovered topics is not. Every lab keeps the house standard — stated
+   objective, prerequisites, numbered steps with expected results, a
+   negative test, cost implications where the platform bills, and
+   cleanup — and records a blueprint-topic-to-lab mapping in the volume
+   README so coverage is auditable.
 4. **Integration.** `book.yml`, volume README/INDEX/GLOSSARY,
    [SUMMARY.md](SUMMARY.md), [MASTER_TOC.md](MASTER_TOC.md), root README
    counts and Tracks row, [PROJECT_STATUS.md](PROJECT_STATUS.md),
