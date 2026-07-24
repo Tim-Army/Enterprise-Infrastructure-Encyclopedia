@@ -48,7 +48,7 @@ does not by itself verify every technical claim in it.
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 351 of 351 drafted (100%). Every volume has a
+**Total declared chapters:** 352 of 352 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
