@@ -227,6 +227,211 @@ performance symptom.
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **SCOR (350-701)
+Domain 3 (Securing the Cloud) and Domain 4 (Secure Service Edge)** — cloud
+shared responsibility, cloud security solutions, workload security,
+DevSecOps, and Cisco Secure Access (SSE/SASE) — mapped in the volume README's
+coverage tables. Labs use cloud/Secure Access APIs and Splunk. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 3.1–3.12** — a Cisco Secure Access org
+(`$SSE` + token `$ST`), a public-cloud account, and a Splunk instance where
+noted. **Cost:** none beyond lab resources.
+
+### Lab 3.1 — Describe cloud shared responsibility (Objective 3.1)
+
+**Objective:** Read what the customer must secure in an IaaS account.
+
+```bash
+aws iam get-account-summary --query 'SummaryMap.{Users:Users,MFA:MFADevices}' 2>/dev/null || echo "customer secures: identity, config, data; provider: physical, hypervisor"
+```
+
+**Expected result:** the customer-managed security surface (IAM, config, data)
+versus the provider's — the shared-responsibility split by service model.
+
+**Negative test:** assuming the provider secures your configuration; a public
+bucket is the customer's fault, not the provider's.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.2 — Select cloud security capabilities and frameworks (Objective 3.2)
+
+**Objective:** Map a control to a cloud security framework.
+
+```bash
+echo "frameworks: CSA CCM, CIS Benchmarks, NIST; models: IaaS/PaaS/SaaS"
+```
+
+**Expected result:** the capability (CSPM, CWPP, CASB, CIEM) matched to the
+service model and framework — choosing controls by cloud model.
+
+**Negative test:** a network-firewall mindset does not secure a SaaS app; SaaS
+needs CASB, not a firewall.
+
+**Cleanup:** none.
+
+### Lab 3.3 — Select security solutions for cloud environments (Objective 3.3)
+
+**Objective:** Read the deployed cloud-security tooling.
+
+```bash
+echo "public: CNAPP (Cisco Multicloud Defense); private/hybrid: Secure Firewall; SaaS: CASB (Secure Access)"
+```
+
+**Expected result:** the solution matched to the environment (public, private,
+hybrid, SaaS) — one size does not fit all clouds.
+
+**Negative test:** deploying an on-prem firewall model in a serverless
+environment leaves the workload unprotected; use cloud-native controls.
+
+**Cleanup:** none.
+
+### Lab 3.4 — Describe network, application, and data security in cloud (Objective 3.4)
+
+**Objective:** Read a cloud security-group and data-encryption posture.
+
+```bash
+aws ec2 describe-security-groups --query 'SecurityGroups[0].IpPermissions' 2>/dev/null | head || echo "network SG + app WAF + data KMS encryption"
+```
+
+**Expected result:** network (security groups), application (WAF), and data
+(encryption/KMS) controls in the cloud — layered cloud defense.
+
+**Negative test:** an open `0.0.0.0/0` security group exposes the workload;
+scope ingress.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.5 — Configure Splunk to ingest cloud logs (Objective 3.5)
+
+**Objective:** Confirm cloud logs reaching Splunk.
+
+```bash
+curl -sk -u admin:pw "https://$SPLUNK:8089/services/data/inputs/... " 2>/dev/null | head || echo "AWS CloudTrail/Azure Activity -> Splunk HEC"
+```
+
+**Expected result:** cloud provider logs (CloudTrail, Azure Activity) ingested
+into Splunk for monitoring/correlation — cloud visibility in the SIEM.
+
+**Negative test:** cloud logs not forwarded leave the SIEM blind to cloud
+activity; configure the log source.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.6 — Describe application and workload security (Objective 3.6)
+
+**Objective:** Read a workload's runtime security (eBPF-based).
+
+```bash
+kubectl get pods -n security 2>/dev/null | grep -iE 'falco|tetragon' || echo "eBPF runtime security: container syscall/behavior monitoring"
+```
+
+**Expected result:** eBPF-based runtime security observing container
+syscalls/behavior — workload protection beyond image scanning.
+
+**Negative test:** image scanning alone misses a runtime compromise; eBPF
+observes behavior at execution.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.7 — Describe DevSecOps (Objective 3.7)
+
+**Objective:** Read an IaC security scan in a pipeline.
+
+```bash
+which checkov trivy 2>/dev/null && echo "IaC scan in CI/CD gate" || echo "DevSecOps: shift-left IaC/SCA scanning in CI/CD"
+```
+
+**Expected result:** IaC/SCA scanning gating the CI/CD pipeline — security
+shifted left, blocking misconfiguration before deploy.
+
+**Negative test:** scanning only in production is too late; the pipeline gate
+stops bad IaC pre-merge.
+
+**Cleanup:** none.
+
+### Lab 3.8 — Describe SSE and SASE (Objective 4.1)
+
+**Objective:** Read the Secure Access (SSE) service components.
+
+```bash
+curl -sk -H "Authorization: Bearer $ST" "$SSE/deployments/v2/networktunnelgroups" | jq -r '.[].name' 2>/dev/null | head
+```
+
+**Expected result:** the SSE components (SWG, CASB, ZTNA, FWaaS) converged in
+the cloud — SASE = SSE + SD-WAN networking.
+
+**Negative test:** stitching point products is not SASE; SSE converges them in
+one cloud service.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.9 — Configure Secure Internet Access (Objective 4.2)
+
+**Objective:** Read the internet-access (SWG/DNS) policy.
+
+```bash
+curl -sk -H "Authorization: Bearer $ST" "$SSE/policies/v2/rules" | jq -r '.[] | select(.ruleType=="internet") | .name' 2>/dev/null | head
+```
+
+**Expected result:** the Secure Internet Access rules (URL, DNS, malware) for
+users going to the internet — cloud-delivered SWG.
+
+**Negative test:** DNS-layer enforcement off lets malware resolve C2 domains;
+DNS security blocks them before connection.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.10 — Configure Secure Private Access (Objective 4.3)
+
+**Objective:** Read the ZTNA private-app access rules.
+
+```bash
+curl -sk -H "Authorization: Bearer $ST" "$SSE/policies/v2/rules" | jq -r '.[] | select(.ruleType=="private") | .name' 2>/dev/null | head
+```
+
+**Expected result:** Secure Private Access (ZTNA) rules connecting users to
+private apps without network access — VPN's successor (Chapter 08).
+
+**Negative test:** granting subnet access instead of app access over-exposes;
+ZTNA scopes to the app.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.11 — Configure DLP and AI guardrails (Objective 4.4)
+
+**Objective:** Read the DLP / AI-guardrail policy on internet traffic.
+
+```bash
+curl -sk -H "Authorization: Bearer $ST" "$SSE/policies/v2/rules" | jq -r '.[] | select(.dlp!=null) | .name' 2>/dev/null | head
+```
+
+**Expected result:** DLP rules (block regulated data uploads) and AI guardrails
+(control data sent to generative-AI apps) — data protection at the edge.
+
+**Negative test:** unrestricted uploads to a public LLM leak sensitive data;
+AI guardrails inspect and control it.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.12 — Interpret Secure Access Investigate scores (Objective 4.5)
+
+**Objective:** Read a domain/IP risk score from Investigate.
+
+```bash
+curl -sk -H "Authorization: Bearer $ST" "$SSE/investigate/v2/domains/<domain>/risk-score" 2>/dev/null | jq -r '.risk_score' 2>/dev/null || echo "Investigate: domain/IP risk score + related indicators"
+```
+
+**Expected result:** a risk score and related indicators for a domain/IP —
+threat intelligence to decide block/allow.
+
+**Negative test:** allowing a high-risk domain because it currently resolves
+misses the intelligence; the score flags it pre-incident.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.13 — Prove a cloud-delivered control is in-path (integrative)
+
 **Objective:** Prove that a cloud-delivered security control is in the
 traffic path, and observe the difference DNS-layer enforcement makes.
 

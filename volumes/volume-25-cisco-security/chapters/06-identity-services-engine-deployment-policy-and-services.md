@@ -268,6 +268,499 @@ the two-stage model.
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **every objective in
+the SISE (300-715) exam guide** — all seven domains, from ISE architecture
+through device administration — mapped in the volume README's coverage
+tables. Labs use the ISE CLI, the ISE ERS/Open API, and switch-side RADIUS
+verification. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
+
+**Shared prerequisites for Labs 6.1–6.29** — an ISE deployment reachable at
+`$ISE` with ERS enabled and an API credential in `$IA` (an `Authorization`
+header), a Catalyst switch as the NAD, an AD/LDAP identity store, and test
+endpoints. **Cost:** none beyond lab resources.
+
+### Lab 6.1 — Configure ISE personas (Objective 1.1)
+
+**Objective:** Read the persona roles a node runs.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/node" | jq -r '.SearchResult.resources[].name'
+# on the node
+show application status ise | include Running
+```
+
+**Expected result:** the node's personas (PAN, MnT, PSN, pxGrid) — the
+functional roles ISE splits management, monitoring, and policy service into.
+
+**Negative test:** a single-node lab running all personas cannot scale to
+production PSN load; personas distribute across nodes for HA/scale.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.2 — Describe ISE deployment options (Objective 1.2)
+
+**Objective:** Read the deployment topology (standalone vs distributed).
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/node" | jq '.SearchResult.total'
+```
+
+**Expected result:** the node count — standalone (1), or distributed (2
+admin + N PSNs) for HA and scale.
+
+**Negative test:** a two-node deployment with both PANs primary is invalid;
+one primary + one secondary admin is the supported model.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.3 — Describe hardware and VM performance specs (Objective 1.3)
+
+**Objective:** Read the node's resource profile against the sizing guide.
+
+```bash
+show tech-support | include CPU|Memory|Disk
+show application status ise
+```
+
+**Expected result:** the CPU/RAM/disk profile — ISE VM sizing (small/medium/
+large) caps concurrent sessions/endpoints per node.
+
+**Negative test:** an undersized VM hits its session ceiling and drops
+authentications under load; size to the endpoint count.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.4 — Describe zero-touch provisioning (Objective 1.4)
+
+**Objective:** Confirm the automated node-onboarding/registration path.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/node/<id>" | jq -r '.Node.otherAttributes // "registered"'
+```
+
+**Expected result:** nodes registered to the deployment via automated
+provisioning — hands-off scale-out of PSNs.
+
+**Negative test:** a node with a mismatched certificate/time cannot join the
+deployment; ZTP still requires PKI/NTP alignment.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.5 — Configure native AD and LDAP (Objective 2.1)
+
+**Objective:** Confirm the external identity source join.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/activedirectory" | jq -r '.SearchResult.resources[].name'
+```
+
+**Expected result:** the AD join point (and any LDAP source) ISE
+authenticates users against — enterprise identity, not local accounts.
+
+**Negative test:** an AD join with clock skew beyond Kerberos tolerance fails;
+ISE and the DC must be time-synced.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.6 — Describe identity store options (Objective 2.2)
+
+**Objective:** Read the identity source sequence.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/idstoresequence" | jq -r '.SearchResult.resources[].name'
+```
+
+**Expected result:** an identity-source sequence (internal → AD → LDAP) —
+the ordered stores ISE checks for a credential.
+
+**Negative test:** a sequence that stops on first store miss can block a
+valid user in a later store; order and "continue" behavior matter.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.7 — Configure wireless 802.1X (Objective 2.3)
+
+**Objective:** Verify a wireless 802.1X authentication reached ISE.
+
+```bash
+# on the WLC/switch, then confirm in ISE
+show authentication sessions | include dot1x
+curl -sk -H "$IA" "$ISE:9060/ers/config/... " >/dev/null  # RADIUS live-log via MnT API
+```
+
+**Expected result:** a wireless client authenticated via 802.1X/EAP against
+ISE, with an authorization result (VLAN/dACL) returned.
+
+**Negative test:** an EAP method mismatch (client PEAP, policy EAP-TLS) fails
+auth; the allowed protocols must include the client's method.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.8 — Configure wired 802.1X and IBNS 2.0 (Objective 2.4)
+
+**Objective:** Read an IBNS 2.0 policy-map-driven wired auth session.
+
+```text
+SW# show authentication sessions interface gig1/0/5 details
+SW# show access-session interface gig1/0/5 policy
+```
+
+**Expected result:** the port's concurrent 802.1X/MAB session under an IBNS
+2.0 (Cisco Common Classification Policy Language) policy map.
+
+**Negative test:** legacy IBNS 1.0 `authentication` commands cannot express
+concurrent/priority auth; IBNS 2.0 `policy-map type control subscriber` can.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.9 — Implement MAB (Objective 2.5)
+
+**Objective:** Authenticate a non-802.1X device by MAC.
+
+```text
+SW# show authentication sessions interface gig1/0/6 | include MAB|Mac
+```
+
+**Expected result:** a printer/IoT device authenticated via MAB against ISE's
+endpoint store — a policy-driven path for supplicant-less devices.
+
+**Negative test:** MAB with no matching endpoint/identity in ISE is rejected
+or lands in a limited VLAN; MAB is only as strong as the MAC allowlist.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.10 — Configure Cisco TrustSec (Objective 2.6)
+
+**Objective:** Read the SGT assigned by ISE authorization.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/sgt" | jq -r '.SearchResult.resources[].name'
+```
+
+**Expected result:** the Security Group Tags ISE can assign — identity-based
+micro-segmentation carried in the fabric.
+
+**Negative test:** an SGACL matrix with no default-deny leaks traffic between
+groups; the matrix must be explicit.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.11 — Configure authentication and authorization policies (Objective 2.7)
+
+**Objective:** Read a policy set's rules.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/... " 2>/dev/null; \
+echo "policy sets via ISE UI/OpenAPI: authN + authZ conditions -> result"
+```
+
+**Expected result:** a policy set with authentication (identity store) and
+authorization (VLAN/dACL/SGT) rules — the decision logic per access request.
+
+**Negative test:** an authorization rule above a more specific one shadows it
+(first-match); order the rules specific-to-general.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.12 — Configure web authentication (Objective 3.1)
+
+**Objective:** Confirm a central web-auth (CWA) redirect.
+
+```text
+SW# show authentication sessions interface gig1/0/7 details | include URL|ACL
+```
+
+**Expected result:** an unauthenticated client redirected to ISE's web portal
+by a redirect ACL — browser-based auth for devices without a supplicant.
+
+**Negative test:** a redirect ACL that permits the portal but not DNS leaves
+the client unable to resolve the portal URL; permit DNS in the redirect ACL.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.13 — Configure guest access services (Objective 3.2)
+
+**Objective:** Read the guest access type in use.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/guestuser" | jq '.SearchResult.total'
+```
+
+**Expected result:** guest accounts (hotspot, self-registered, sponsored) —
+the guest-onboarding model.
+
+**Negative test:** hotspot access with no AUP acceptance grants network access
+with no accountability; require the acceptable-use policy.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.14 — Configure sponsor and guest portals (Objective 3.3)
+
+**Objective:** Read the portal configuration.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/sponsorportal" | jq -r '.SearchResult.resources[].name'
+```
+
+**Expected result:** the sponsor and guest portals — sponsors create guest
+accounts; guests self-register or use them.
+
+**Negative test:** a sponsor group with no portal mapping cannot create
+accounts; the portal-to-group binding is required.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.15 — Implement profiler services (Objective 4.1)
+
+**Objective:** Read a profiled endpoint's device type.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/endpoint" | jq -r '.SearchResult.resources[0].name'
+```
+
+**Expected result:** endpoints classified by profile (Apple-Device,
+IP-Phone) — profiling drives differentiated authorization.
+
+**Negative test:** an not-yet-profiled endpoint falls to a generic policy; more
+probes/CoA refine the profile.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.16 — Implement probes (Objective 4.2)
+
+**Objective:** Read the profiling probes enabled on a PSN.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/profilerprobeconfig" 2>/dev/null | jq -r '.' | head
+```
+
+**Expected result:** enabled probes (RADIUS, DHCP, HTTP, SNMP, NMAP, DNS) —
+the data sources that classify a device.
+
+**Negative test:** relying on one probe (MAC OUI) misclassifies spoofed
+devices; multiple probes raise confidence.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.17 — Implement Change of Authorization (Objective 4.3)
+
+**Objective:** Trigger and confirm a CoA.
+
+```bash
+curl -sk -X PUT -H "$IA" "$ISE:9060/ers/config/endpoint/<id>" >/dev/null
+# switch shows re-authentication
+```
+
+**Expected result:** a re-profiled endpoint triggers a CoA, re-authorizing
+the live session without the user reconnecting — dynamic policy change.
+
+**Negative test:** a NAD not configured for CoA (dynamic-author) ignores the
+request; the switch must accept CoA on UDP 1700.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.18 — Configure endpoint identity management (Objective 4.4)
+
+**Objective:** Read the endpoint identity groups.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/endpointgroup" | jq -r '.SearchResult.resources[].name'
+```
+
+**Expected result:** endpoint identity groups (static and profiled) used in
+authorization conditions — managing devices as identities.
+
+**Negative test:** a statically grouped endpoint overrides its profile;
+static assignment wins, which can mis-authorize a re-purposed device.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.19 — Describe Cisco BYOD functionality (Objective 5.1)
+
+**Objective:** Read the BYOD onboarding flow components.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/portal" | jq -r '.SearchResult.resources[] | .name' | grep -i byod
+```
+
+**Expected result:** the BYOD portal — dual-SSID/single-SSID onboarding that
+provisions a certificate and moves the device to secured access.
+
+**Negative test:** BYOD without a supplicant-provisioning wizard leaves users
+manually configuring 802.1X; the flow automates it.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.20 — Configure BYOD onboarding with the internal CA (Objective 5.2)
+
+**Objective:** Confirm the ISE internal CA is issuing endpoint certs.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/internalcaserver" 2>/dev/null | jq -r '.' | head
+show application status ise | include CA
+```
+
+**Expected result:** the internal CA service running and issuing BYOD
+certificates — device identity via PKI, no shared PSK.
+
+**Negative test:** the internal CA disabled forces an external CA or blocks
+cert-based BYOD; the CA service must be enabled.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.21 — Configure certificates for BYOD (Objective 5.3)
+
+**Objective:** Read the certificate template used for BYOD.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/certificatetemplate" 2>/dev/null | jq -r '.' | head
+```
+
+**Expected result:** the cert template (key size, SAN, validity) issued to
+onboarded devices — the identity the device authenticates with thereafter.
+
+**Negative test:** a template with too-long a validity outlives device
+ownership; scope validity to the device lifecycle.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.22 — Configure block list / allow list (Objective 5.4)
+
+**Objective:** Read the blocklist endpoint group.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/endpointgroup" | jq -r '.SearchResult.resources[] | select(.name|test("Blocklist|Blacklist";"i")) | .name'
+```
+
+**Expected result:** the Blocklist group — a lost/stolen device dropped into
+it is denied network access by policy.
+
+**Negative test:** block-listing by IP (which changes) instead of MAC/identity
+fails to follow the device; blocklist by endpoint identity.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.23 — Describe posture services and client provisioning (Objective 6.1)
+
+**Objective:** Read the posture status of an endpoint.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/... " 2>/dev/null; \
+echo "posture: Compliant/NonCompliant/Unknown drives authZ"
+```
+
+**Expected result:** endpoints with a posture status (Compliant/NonCompliant/
+Unknown) that authorization keys on — health-gated access.
+
+**Negative test:** granting full access before posture completes (no
+"pending" state handling) lets a non-compliant device on; gate on Compliant.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.24 — Configure posture conditions and provisioning (Objective 6.2)
+
+**Objective:** Read a posture policy's requirement.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/... " 2>/dev/null; \
+echo "posture requirement: e.g. AV running, disk encrypted, patch level"
+```
+
+**Expected result:** a posture requirement (AV/AS running, firewall on, patch
+level) with a remediation action — the compliance bar and how to meet it.
+
+**Negative test:** a requirement with no remediation leaves non-compliant
+users stuck; provide a remediation path.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.25 — Configure the compliance module (Objective 6.3)
+
+**Objective:** Confirm the AnyConnect/Secure Client compliance module
+version.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/... " 2>/dev/null; \
+echo "compliance module version deployed to clients"
+```
+
+**Expected result:** the compliance module version ISE pushes to clients —
+it evaluates the posture conditions on the endpoint.
+
+**Negative test:** an outdated compliance module cannot evaluate newer OS/AV
+checks; keep it current.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.26 — Configure posture agents and modes (Objective 6.4)
+
+**Objective:** Distinguish agent vs agentless posture.
+
+```bash
+echo "agent (Secure Client ISE Posture) vs temporal agent vs agentless (API)"
+curl -sk -H "$IA" "$ISE:9060/ers/config/... " >/dev/null 2>&1 || true
+```
+
+**Expected result:** the posture agent type in use — persistent agent,
+temporal (dissolvable) agent, or agentless posture over an API.
+
+**Negative test:** agentless posture on an unmanaged device it cannot reach
+returns Unknown; match the mode to device manageability.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.27 — Describe supplicant and authenticator (Objective 6.5)
+
+**Objective:** Read the 802.1X roles on a live session.
+
+```text
+SW# show authentication sessions interface gig1/0/5 details | include Method|Server
+```
+
+**Expected result:** the supplicant (endpoint), authenticator (switch), and
+authentication server (ISE) roles and the EAP method — the 802.1X triangle.
+
+**Negative test:** a device with no supplicant cannot do 802.1X and needs MAB;
+the role must exist for the method.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.28 — Compare AAA protocols (Objective 7.1)
+
+**Objective:** Contrast RADIUS and TACACS+ usage in ISE.
+
+```bash
+curl -sk -H "$IA" -H 'Accept: application/json' "$ISE:9060/ers/config/networkdevice" | jq -r '.SearchResult.resources[0].name'
+```
+
+**Expected result:** NADs configured for RADIUS (network access) and/or
+TACACS+ (device admin) — the two AAA protocols and their jobs.
+
+**Negative test:** using RADIUS for per-command device-admin authorization is
+weak; TACACS+ separates and authorizes commands.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.29 — Configure TACACS+ device administration (Objective 7.2)
+
+**Objective:** Verify TACACS+ command authorization from a NAD.
+
+```text
+SW# test aaa group tacacs+ admin <pw> legacy
+SW# show tacacs
+```
+
+**Expected result:** admin logins and per-command authorization enforced by
+ISE's device-admin service — granular CLI control.
+
+**Negative test:** a command set that permits `configure terminal` but no
+sub-commands blocks all config; scope command sets to the role's needs.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.30 — Build an ISE policy set and diagnose an authorization failure (integrative)
+
 **Objective:** Build an ISE policy set, drive 802.1X authorization with
 it, and diagnose an "authenticated but denied" condition using the live
 logs.

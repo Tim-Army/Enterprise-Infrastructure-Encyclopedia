@@ -245,6 +245,158 @@ turns denials into disconnections.
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **SCOR (350-701)
+Domain 6 (Secure Network Access, Visibility, and Enforcement)** — identity
+and access, 802.1X/MAB, CoA, exfiltration detection, telemetry/NAT
+visibility, Duo, and security automation — mapped in the volume README's
+coverage tables. The deep ISE treatment is Chapter 06 (SISE); this is the
+SCOR-level coverage. Each ends **`**Lab verified by:** *pending*`** until a
+human runs it.
+
+**Shared prerequisites for Labs 5.1–5.8** — a Catalyst switch as the NAD, ISE
+as the RADIUS server, NetFlow/Stealthwatch (Secure Network Analytics) and
+Duo where noted. **Cost:** none beyond lab resources.
+
+### Lab 5.1 — Describe identity and secure network access (Objective 6.1)
+
+**Objective:** Read the identity-driven access on a live session.
+
+```text
+SW# show authentication sessions interface gig1/0/5 details
+```
+
+**Expected result:** the session's user/endpoint identity, method, and
+authorization result — access decided by identity, not port.
+
+**Negative test:** open ports with no identity grant anyone access; 802.1X/MAB
+ties access to identity.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.2 — Describe device compliance and application control (Objective 6.2)
+
+**Objective:** Read the compliance/posture result gating access.
+
+```text
+SW# show authentication sessions interface gig1/0/5 details | include Compliance|SGT|ACS ACL
+```
+
+**Expected result:** the posture/compliance status and the resulting policy
+(quarantine dACL if non-compliant) — health-gated access.
+
+**Negative test:** granting full access before compliance is confirmed lets an
+unpatched device on; gate on Compliant.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.3 — Configure 802.1X and MAB (Objective 6.3)
+
+**Objective:** Configure concurrent 802.1X + MAB on an access port.
+
+```text
+SW(config)# interface gig1/0/5
+SW(config-if)# access-session port-control auto
+SW(config-if)# dot1x pae authenticator
+SW(config-if)# mab
+SW(config-if)# service-policy type control subscriber DOT1X-MAB
+SW# show access-session interface gig1/0/5
+```
+
+**Expected result:** the port trying 802.1X first, then MAB — a supplicant-
+capable device does 802.1X; a printer falls back to MAB.
+
+**Negative test:** MAB before 802.1X (wrong priority) authenticates a
+spoofable MAC when a supplicant was available; 802.1X should be preferred.
+
+**Cleanup:** reset the interface to default.
+
+### Lab 5.4 — Configure Change of Authorization (Objective 6.4)
+
+**Objective:** Enable the switch to accept CoA from ISE.
+
+```text
+SW(config)# aaa server radius dynamic-author
+SW(config-locsvr-da-radius)# client 10.0.0.50 server-key <key>
+SW# show authentication sessions | include Reauth
+```
+
+**Expected result:** the switch accepting CoA on UDP 1700 — ISE can re-
+authorize or bounce a live session (e.g. after profiling or a threat signal).
+
+**Negative test:** without `dynamic-author`, ISE's CoA is ignored and policy
+changes do not apply to live sessions until reconnect.
+
+**Cleanup:** `no aaa server radius dynamic-author`.
+
+### Lab 5.5 — Explain exfiltration techniques (Objective 6.5)
+
+**Objective:** Detect a DNS-tunneling pattern in flow data.
+
+```text
+SW# show flow monitor MON cache | include 53
+# or on Stealthwatch: long-duration/high-volume DNS to one host
+```
+
+**Expected result:** anomalous DNS (many/large TXT queries to one domain) —
+the signature of DNS tunneling exfiltration.
+
+**Negative test:** allowing all DNS outbound enables tunneling; DNS-layer
+security (Umbrella/Secure Access) and flow analytics catch it.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.6 — Describe network visibility and enforcement (Objective 6.6)
+
+**Objective:** Read NetFlow/telemetry feeding Secure Network Analytics.
+
+```text
+SW# show flow exporter statistics
+SW# show flow monitor MON cache format table
+```
+
+**Expected result:** flow records exported to Stealthwatch/SNA for
+behavioral detection — visibility that turns into enforcement (via ISE ANC).
+
+**Negative test:** enforcement without visibility is blind; the telemetry is
+what detects the anomaly to enforce against.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.7 — Describe Cisco Duo in zero trust (Objective 6.7)
+
+**Objective:** Read Duo's trust-monitor / device-trust posture.
+
+```bash
+curl -sk -H "$DUO" "https://api-<host>.duosecurity.com/admin/v1/endpoints" | jq -r '.response[0].trust_level' 2>/dev/null || echo "Duo: MFA + device trust in the ZT access decision"
+```
+
+**Expected result:** Duo evaluating user MFA and device trust as part of the
+access decision — the identity pillar of zero trust (Chapter 08).
+
+**Negative test:** MFA without device trust admits a valid credential on a
+compromised device; both are checked.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.8 — Describe security orchestration and automation (Objective 6.8)
+
+**Objective:** Read an automated security response (SOAR/XDR).
+
+```bash
+curl -sk -H "Authorization: Bearer $XT" "$XDR/workflows?type=response" | jq -r '.data[].name' 2>/dev/null | head || echo "SOAR: correlation -> ISE ANC quarantine, automatically"
+```
+
+**Expected result:** an orchestration workflow that, on detection,
+automatically contains the endpoint (ISE ANC via pxGrid) — machine-speed
+response.
+
+**Negative test:** manual containment lags the attack; automation closes the
+detect-to-contain loop.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.9 — 802.1X with MAB fallback in monitor mode (integrative)
+
 **Objective:** Configure and validate 802.1X with MAB fallback in monitor
 mode, and read the authentication sessions and flow telemetry that make
 the network visible.

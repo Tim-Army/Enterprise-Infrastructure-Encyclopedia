@@ -307,6 +307,46 @@ where the exam's weight and the role's value both sit.
    them. They are the deliverable, and together they demonstrate the whole
    CCNP Security track applied to one scenario.
 
+## Design Exercise
+
+**SDSI (300-745 Designing Cisco Security Infrastructure)** is a design
+concentration: it tests designing a secure infrastructure from requirements,
+not configuration recall. The capstone above is the build-and-document half;
+this exercise is the reasoning half, covering SDSI's design domains — no lab
+required.
+
+**Scenario.** Design the security infrastructure for a mid-size enterprise
+consolidating onto Cisco: 5,000 users across HQ and 30 branches, a hybrid
+data center plus AWS and Azure, a remote/hybrid workforce, PCI and HIPAA
+scope, and a 24×7 SOC. Requirements: zero-trust access for users and
+workloads; consistent policy across on-prem and cloud; segmentation for
+regulated data; centralized visibility and automated response; and no single
+point of failure in any security control.
+
+**Produce, defending each choice against a rejected alternative:**
+
+1. **Requirements and risk register** — classify each requirement (RCAR) with
+   a measurable acceptance test, and map the top risks to controls.
+2. **Architecture** — place each Cisco control in the Security Reference
+   Architecture / SAFE (Secure Firewall, ISE, Secure Access SSE, Secure
+   Endpoint, Secure Email/Web, XDR), and justify on-prem vs cloud-delivered
+   for each.
+3. **Zero-trust and segmentation design** — the identity (ISE/Duo), device
+   posture, and SGT/VRF segmentation plan spanning campus, WAN, and cloud;
+   how PCI/HIPAA scope is isolated end to end.
+4. **VPN and edge design** — ZTNA (Secure Private Access) vs VPN per use case,
+   and the branch/edge security model (FWaaS vs on-prem firewall).
+5. **Visibility and response design** — the telemetry sources feeding XDR/SNA
+   and where automation (SOAR, ISE ANC) replaces manual response.
+6. **Resilience and decision log** — HA for each control (firewall/ISE/SSE),
+   and at least six decisions recorded as {decision, justification, rejected
+   alternative, impact}.
+
+**Success looks like:** every control placement traces to a requirement, each
+resilience and segmentation claim names the failure/exposure it addresses,
+and each decision names the rejected option and its trade-off — the design
+standard SDSI applies, and the basis of a CCIE Security lab design.
+
 ## Lab Verification
 
 Complete this sign-off once the lab has been run end to end, including the

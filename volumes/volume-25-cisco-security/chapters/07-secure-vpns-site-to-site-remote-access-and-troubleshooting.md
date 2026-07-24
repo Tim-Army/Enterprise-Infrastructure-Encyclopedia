@@ -274,6 +274,367 @@ reasons to prefer it.
 
 ## Hands-On Lab
 
+This chapter carries a topic-level walkthrough lab for **every objective in
+the SVPN (300-730 Implementing Secure Solutions with VPNs) exam guide** —
+site-to-site (GETVPN/DMVPN/FlexVPN), remote access (AnyConnect/Clientless),
+troubleshooting, and architecture/design — plus the SCOR VPN topics, mapped
+in the volume README's coverage tables. Labs use IOS and ASA CLI. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 7.1–7.20** — IOS routers and an ASA (or CML
+equivalents), a CA for certificate labs, an AnyConnect/Secure Client image on
+the ASA. **Cost:** none beyond lab resources; each lab removes its config.
+
+### Lab 7.1 — Describe GETVPN (Objective 1.1)
+
+**Objective:** Read a GETVPN group member's registration and SA.
+
+```text
+GM1# show crypto gdoi
+GM1# show crypto gdoi gm
+```
+
+**Expected result:** the group member registered to the Key Server with a
+shared group SA — tunnel-less encryption preserving the original IP header,
+ideal for a fully-meshed private WAN.
+
+**Negative test:** GETVPN over the public internet breaks (no NAT traversal,
+original header preserved); it is for private (MPLS) transport.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.2 — Implement DMVPN (Objective 1.2)
+
+**Objective:** Build a Phase 3 DMVPN spoke and confirm NHRP.
+
+```text
+SPOKE1(config)# interface tunnel0
+SPOKE1(config-if)# ip nhrp shortcut
+SPOKE1(config-if)# tunnel protection ipsec profile DMVPN
+SPOKE1# show dmvpn detail
+```
+
+**Expected result:** the spoke registered to the hub and a dynamic
+spoke-to-spoke tunnel forming on demand — Phase 3 direct spoke traffic.
+
+**Negative test:** without `ip nhrp shortcut`/`redirect`, spoke-to-spoke
+hairpins through the hub (Phase 1); Phase 3 needs both.
+
+**Cleanup:** `no interface tunnel0`.
+
+### Lab 7.3 — Implement FlexVPN with local AAA (Objective 1.3)
+
+**Objective:** Build a FlexVPN hub using IKEv2 and local AAA.
+
+```text
+HUB(config)# aaa authorization network FLEX local
+HUB(config)# crypto ikev2 profile FLEX-PROF
+HUB(config-ikev2-profile)# aaa authorization group psk list FLEX FLEX-POLICY
+HUB# show crypto ikev2 sa
+```
+
+**Expected result:** IKEv2 SAs established with per-peer authorization from
+local AAA — FlexVPN's unified IKEv2 framework for site-to-site and RA.
+
+**Negative test:** a FlexVPN peer with no matching authorization policy gets
+no attributes (IP/routes) and the tunnel is useless; authorization is
+required.
+
+**Cleanup:** remove the IKEv2 profile and AAA list.
+
+### Lab 7.4 — Implement AnyConnect IKEv2 on ASA/routers (Objective 2.1)
+
+**Objective:** Confirm an AnyConnect IKEv2 remote-access session.
+
+```text
+ASA# show vpn-sessiondb detail anyconnect
+```
+
+**Expected result:** a remote user connected via AnyConnect IKEv2 with an
+assigned pool address and group policy — RA VPN over IKEv2/IPsec.
+
+**Negative test:** an IKEv2 RA connection with no client profile pushing the
+IKEv2 protocol falls back or fails; the profile selects the protocol.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.5 — Implement AnyConnect SSL VPN on ASA (Objective 2.2)
+
+**Objective:** Read the AnyConnect SSL (TLS/DTLS) session.
+
+```text
+ASA# show vpn-sessiondb detail anyconnect | include Tunnel|Encryption
+```
+
+**Expected result:** an SSL/TLS (with DTLS for data) AnyConnect tunnel — the
+default RA VPN where firewalls block IKEv2/IPsec.
+
+**Negative test:** DTLS blocked by a firewall forces TLS-only, degrading
+real-time performance; permit DTLS/UDP 443 for best experience.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.6 — Implement Clientless SSL VPN on ASA (Objective 2.3)
+
+**Objective:** Read the clientless (browser) VPN configuration.
+
+```text
+ASA# show running-config webvpn
+ASA# show vpn-sessiondb webvpn
+```
+
+**Expected result:** a clientless portal proxying specific web apps in the
+browser — no client install, for limited app access.
+
+**Negative test:** expecting full network access from clientless; it proxies
+specific apps only, not an IP tunnel.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.7 — Implement FlexVPN on routers (Objective 2.4)
+
+**Objective:** Build a FlexVPN remote-access hub for Secure Client.
+
+```text
+HUB(config)# crypto ikev2 authorization policy FLEX-RA
+HUB(config-ikev2-author-policy)# pool RA-POOL
+HUB# show crypto ikev2 client flexvpn
+```
+
+**Expected result:** a FlexVPN RA hub assigning pool addresses to clients —
+the router-based unified RA VPN.
+
+**Negative test:** a FlexVPN RA client with no authorization pool gets no
+address; the authorization policy must define one.
+
+**Cleanup:** remove the authorization policy.
+
+### Lab 7.8 — Troubleshoot IPsec (Objective 3.1)
+
+**Objective:** Diagnose an IPsec SA failure.
+
+```text
+R1# show crypto ipsec sa
+R1# show crypto isakmp sa
+R1# debug crypto ipsec
+```
+
+**Expected result:** Phase 1 (ISAKMP/IKE) and Phase 2 (IPsec) SA state; the
+debug names the mismatch (transform set, proxy ACL, PSK).
+
+**Negative test:** a mismatched Phase 2 proxy ACL (interesting traffic) leaves
+Phase 1 up but no data flows; check both phases.
+
+**Cleanup:** `undebug all`.
+
+### Lab 7.9 — Troubleshoot DMVPN (Objective 3.2)
+
+**Objective:** Diagnose a DMVPN registration failure.
+
+```text
+HUB# show dmvpn detail
+HUB# show ip nhrp
+HUB# debug nhrp packet
+```
+
+**Expected result:** NHRP registration state; the debug reveals the fault
+(NHRP auth mismatch, wrong NHS, tunnel-key mismatch).
+
+**Negative test:** a tunnel-key mismatch drops NHRP silently; both ends must
+share the key.
+
+**Cleanup:** `undebug all`.
+
+### Lab 7.10 — Troubleshoot FlexVPN (Objective 3.3)
+
+**Objective:** Diagnose a FlexVPN IKEv2 negotiation.
+
+```text
+HUB# show crypto ikev2 sa detail
+HUB# debug crypto ikev2
+```
+
+**Expected result:** the IKEv2 SA exchange; the debug names the failure
+(auth method, proposal, cert validation).
+
+**Negative test:** a certificate-authenticated FlexVPN peer with an expired
+cert fails IKEv2 AUTH; check PKI validity/time.
+
+**Cleanup:** `undebug all`.
+
+### Lab 7.11 — Troubleshoot AnyConnect IKEv2/SSL (Objective 3.4)
+
+**Objective:** Diagnose a remote-access connection failure on the ASA.
+
+```text
+ASA# show vpn-sessiondb fail
+ASA# debug webvpn anyconnect 255
+```
+
+**Expected result:** the failed-session log and debug naming the cause (group
+policy, certificate, license limit).
+
+**Negative test:** hitting the AnyConnect license limit rejects new sessions
+though config is correct; check the license count.
+
+**Cleanup:** `undebug all`.
+
+### Lab 7.12 — Troubleshoot Clientless SSL VPN (Objective 3.5)
+
+**Objective:** Diagnose a clientless portal/bookmark failure.
+
+```text
+ASA# debug webvpn 255
+ASA# show webvpn ... 
+```
+
+**Expected result:** the debug showing why a bookmark/app fails (rewrite
+engine, DNS, plugin) — clientless rewriting is fragile per-app.
+
+**Negative test:** a complex web app that the rewrite engine cannot proxy
+breaks clientless; use AnyConnect for full access instead.
+
+**Cleanup:** `undebug all`.
+
+### Lab 7.13 — Identify GETVPN/FlexVPN/DMVPN/IPsec components (Objective 4.1)
+
+**Objective:** Match components to the technology.
+
+```text
+R1# show crypto session
+```
+
+**Expected result:** the session shows the technology's components (GETVPN =
+KS/GM/GDOI; DMVPN = mGRE/NHRP; FlexVPN = IKEv2/tunnel) — identify by
+component.
+
+**Negative test:** confusing DMVPN's NHRP with FlexVPN's IKEv2 config leads to
+the wrong troubleshooting path; the components identify the technology.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.14 — Identify FlexVPN/IPsec/Clientless components (Objective 4.2)
+
+**Objective:** Read the component set of a remote-access solution.
+
+```text
+ASA# show running-config crypto ikev2
+ASA# show running-config group-policy
+```
+
+**Expected result:** the IKEv2 policy, group policy, and connection profile —
+the components an RA VPN is assembled from.
+
+**Negative test:** a connection profile referencing a missing group policy
+fails; the components must all be present and linked.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.15 — Identify VPN technology from config output I (Objective 4.3)
+
+**Objective:** Read a config and name the VPN type.
+
+```text
+R1# show running-config | section crypto
+```
+
+**Expected result:** `crypto gdoi` = GETVPN, `tunnel mode gre multipoint` =
+DMVPN, `crypto ikev2 profile` + `interface tunnel` = FlexVPN — identify from
+the configuration.
+
+**Negative test:** a static crypto map is legacy site-to-site, not DMVPN/
+FlexVPN; the config keywords distinguish them.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.16 — Identify VPN technology from config output II (Objective 4.4)
+
+**Objective:** Read a remote-access config and name the type.
+
+```text
+ASA# show running-config | include tunnel-group|webvpn|ikev2
+```
+
+**Expected result:** `webvpn` + `anyconnect enable` = AnyConnect SSL;
+`webvpn` without client = clientless; `crypto ikev2` = IKEv2 RA — identified
+from config.
+
+**Negative test:** assuming any `webvpn` line means clientless; AnyConnect SSL
+also uses `webvpn` — check for the client-enable line.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.17 — Identify split-tunneling requirements (Objective 4.5)
+
+**Objective:** Read the split-tunnel policy on an RA group policy.
+
+```text
+ASA# show running-config group-policy | include split-tunnel
+```
+
+**Expected result:** the split-tunnel ACL (tunnel only corporate subnets) vs
+tunnel-all — the policy deciding what traffic uses the VPN.
+
+**Negative test:** tunnel-all backhauls all internet traffic through the VPN,
+adding latency; split-tunnel sends only corporate traffic over it (with the
+security trade-off).
+
+**Cleanup:** none (read-only).
+
+### Lab 7.18 — Design a site-to-site VPN solution (Objective 4.6)
+
+**Objective:** Choose the site-to-site technology from requirements.
+
+```text
+R1# show crypto session brief
+```
+
+**Decision to record:** for a fully-meshed private WAN → GETVPN; for
+dynamic spoke-to-spoke over the internet → DMVPN Phase 3; for a
+standards-based IKEv2 framework → FlexVPN. Record the driver and the rejected
+option.
+
+**Negative test:** GETVPN over the internet, or a full mesh of static tunnels
+at 100 sites — the anti-patterns each design avoids.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.19 — Design a remote-access VPN solution (Objective 4.7)
+
+**Objective:** Choose the RA technology and posture from requirements.
+
+```text
+ASA# show vpn-sessiondb summary
+```
+
+**Decision to record:** AnyConnect SSL (broadest firewall traversal),
+AnyConnect IKEv2 (best performance where permitted), or clientless (limited
+app access, no install); plus split-tunnel and posture. Record the driver.
+
+**Negative test:** clientless for users needing full network access
+under-serves them; match the technology to the access requirement.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.20 — Identify ECC algorithms (Objective 4.8)
+
+**Objective:** Read the elliptic-curve crypto in a proposal.
+
+```text
+R1# show crypto ikev2 proposal
+ASA# show crypto ikev2 sa detail | include Encr|PRF|DH
+```
+
+**Expected result:** ECC in use (ECDSA authentication, ECDH groups 19/20/21) —
+stronger security at smaller key sizes than RSA/DH group 14.
+
+**Negative test:** pairing an ECDSA certificate with an RSA-only IKEv2 policy
+fails auth; the algorithms must match end to end.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.21 — Build and troubleshoot a route-based IKEv2 site-to-site VPN (integrative)
+
 **Objective:** Build a route-based site-to-site IKEv2 VPN, then deliberately
 break and diagnose it — spending the lab time where the exam puts its
 weight.

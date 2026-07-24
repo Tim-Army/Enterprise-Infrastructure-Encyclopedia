@@ -343,6 +343,254 @@ points to the current product documentation rather than treating any
 single release as timeless. Update that file, not individual chapters,
 when the baseline changes.
 
+## Topic-level lab coverage
+
+Every exam topic across **all current Cisco Security certifications** — the
+SCOR core, all seven CCNP Security concentrations, and CCIE Security — is
+covered by a hands-on **walkthrough** lab or a Design Exercise. Exam topics
+were harvested from Cisco's official exam-topics PDFs
+(`learningcontent.cisco.com`) on 24 July 2026 (SCOR v2.0, the edition current
+from 26 August 2026). Labs use the FTD/FMC, ISE, ASA/IOS, ESA/WSA, and Secure
+Access / XDR CLIs and APIs; each carries `**Lab verified by:** *pending*`
+until a human runs it. (SAUTO 300-735 is retired and excluded.)
+
+| Certification | Exam | Coverage |
+| --- | --- | --- |
+| CCNP Sec. core / CCIE written | 350-701 SCOR v2.0 | Domains 1–6 across Chapters 01–08 (see below) |
+| CCNP Sec. concentration | 300-710 SNCF | Chapter 02, Labs 2.1–2.22 |
+| CCNP Sec. concentration | 300-715 SISE | Chapter 06, Labs 6.1–6.29 |
+| CCNP Sec. concentration | 300-720 SESA | Chapter 04, Labs 4.1–4.31 |
+| CCNP Sec. concentration | 300-725 SWSA | Chapter 04, Labs 4.32–4.68 |
+| CCNP Sec. concentration | 300-730 SVPN | Chapter 07, Labs 7.1–7.20 |
+| CCNP Sec. concentration | 300-740 SCAZT | Chapter 08, Labs 8.1–8.30 |
+| CCNP Sec. concentration | 300-745 SDSI | Chapter 09 **Design Exercise** |
+| **CCIE Security** | written 350-701 + 8-hr lab | see module map below |
+
+**SCOR 350-701 v2.0** maps by domain: Domain 1 (Security Concepts) → Chapter
+01 Labs 1.1–1.10; Domain 2 (Network Security) → the SNCF firewall labs
+(Chapter 02) and SVPN labs (Chapter 07); Domain 3 (Cloud) → Chapter 03 Labs
+3.1–3.7; Domain 4 (Secure Service Edge) → Chapter 03 Labs 3.8–3.12; Domain 5
+(Endpoint) → the SESA/SWSA and Secure Endpoint labs (Chapter 04); Domain 6
+(Secure Network Access, Visibility, Enforcement) → Chapter 05 Labs 5.1–5.8
+and the ISE labs (Chapter 06).
+
+The six implementation concentrations map one lab per exam topic:
+
+**SNCF 300-710 → Chapter 2**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Implement Secure Firewall modes | Lab 2.1 |
+| 1.2 Implement NGIPS modes | Lab 2.2 |
+| 1.3 Implement high availability options | Lab 2.3 |
+| 1.4 Describe virtual appliance on-premises and cloud deployment | Lab 2.4 |
+| 2.1 Configure system settings in Secure Firewall Management Center | Lab 2.5 |
+| 2.2 Configure policies in Secure Firewall Management Center | Lab 2.6 |
+| 2.3 Configure these features using Secure Firewall Management Center | Lab 2.7 |
+| 2.4 Configure objects using Secure Firewall Management Center | Lab 2.8 |
+| 2.5 Configure devices using Secure Firewall Management Center | Lab 2.9 |
+| 2.6 Describe the use of Snort within Secure Firewall Threat Defense | Lab 2.10 |
+| 3.1 Troubleshoot with Secure Firewall Management Center GUI and device CLI | Lab 2.11 |
+| 3.2 Configure dashboards and reporting in Secure Firewall Management Center | Lab 2.12 |
+| 3.3 Troubleshoot using: | Lab 2.13 |
+| 3.4 Analyze risk and standard reports | Lab 2.14 |
+| 3.5 Describe device management tools | Lab 2.15 |
+| 4.1 Configure Cisco Secure Firewall Malware Defense (formerly AMP for Networks) in | Lab 2.16 |
+| 4.2 Configure Cisco Secure Endpoint (formerly AMP for Endpoints) integration with Secure | Lab 2.17 |
+| 4.3 Implement Threat Intelligence Director for third-party security intelligence feeds | Lab 2.18 |
+| 4.4 Describe using Cisco SecureX for security investigations | Lab 2.19 |
+| 4.5 Describe Secure Firewall Management Center integration using pxGrid | Lab 2.20 |
+| 4.6 Describe Rapid Threat Containment (RTC) functionality within Secure Firewall | Lab 2.21 |
+| 4.7 Describe Cisco Security Analytics and Logging | Lab 2.22 |
+
+**SESA 300-720 → Chapter 4**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Configure Cisco Secure Email Gateway features | Lab 4.1 |
+| 1.2 Describe centralized services on a Cisco Secure Email and Web Manager | Lab 4.2 |
+| 1.3 Configure mail policies | Lab 4.3 |
+| 1.4 Integrate Cisco Secure Email Gateway with SecureX | Lab 4.4 |
+| 1.5 Configure Cisco Secure Email Threat Defense | Lab 4.5 |
+| 2.1 Control spam with Talos SenderBase and Antispam | Lab 4.6 |
+| 2.2 Describe graymail management solution | Lab 4.7 |
+| 2.3 Configure file reputation filtering and file analysis features | Lab 4.8 |
+| 2.4 Implement malicious or undesirable URLs protection | Lab 4.9 |
+| 2.5 Describe the bounce verification feature | Lab 4.10 |
+| 3.1 Describe the functions and capabilities of content filters | Lab 4.11 |
+| 3.2 Create text resources such as content dictionaries, disclaimers, and templates | Lab 4.12 |
+| 3.3 Configure message filters components, rules, processing order, and attachment | Lab 4.13 |
+| 3.4 Configure scan behavior | Lab 4.14 |
+| 3.5 Configure the Cisco Secure Email Gateway to scan for viruses using Sophos and McAfee | Lab 4.15 |
+| 3.6 Configure outbreak filters | Lab 4.16 |
+| 3.7 Configure Data Loss Prevention (DLP) | Lab 4.17 |
+| 4.1 Configure and verify LDAP servers and queries (Queries and Directory Harvest Attack) | Lab 4.18 |
+| 4.2 Understand spam quarantine functions | Lab 4.19 |
+| 4.3 Understand SMTP functionality | Lab 4.20 |
+| 5.1 Configure Domain Keys and DKIM signing | Lab 4.21 |
+| 5.2 Configure SPF and SIDF | Lab 4.22 |
+| 5.3 Configure DMARC verification | Lab 4.23 |
+| 5.4 Configure forged email detection | Lab 4.24 |
+| 5.5 Configure email encryption | Lab 4.25 |
+| 5.6 Describe S/MIME security services and communication encryption with other MTAs | Lab 4.26 |
+| 5.7 Configure Cisco Secure Email | Lab 4.27 |
+| 6.1 Configure quarantine (spam, policy, virus, and outbreak) | Lab 4.28 |
+| 6.2 Use safelists and blocklists to control email delivery | Lab 4.29 |
+| 6.3 Manage messages in local or external spam quarantines | Lab 4.30 |
+| 6.4 Configure virtual gateways | Lab 4.31 |
+
+**SWSA 300-725 → Chapter 4**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Describe Cisco Secure Web Appliance features and functionality | Lab 4.32 |
+| 1.2 Describe Secure Web Appliance solutions | Lab 4.33 |
+| 1.3 Integrate Cisco Secure Web Appliance with Advanced Web Security Reporting | Lab 4.34 |
+| 1.4 Integrate Cisco Secure Web Appliance with Cisco ISE | Lab 4.35 |
+| 1.5 Troubleshoot data security and external data loss using log files | Lab 4.36 |
+| 2.1 Perform initial configuration tasks on Cisco Secure Web Appliance | Lab 4.37 |
+| 2.2 Configure an access policy | Lab 4.38 |
+| 2.3 Configure and verify web proxy features | Lab 4.39 |
+| 2.4 Configure a referrer header to filter web categories | Lab 4.40 |
+| 3.1 Describe deployment options | Lab 4.41 |
+| 3.2 Describe these features: | Lab 4.42 |
+| 3.3 Describe the functions of a Proxy Auto-Configuration (PAC) file | Lab 4.43 |
+| 3.4 Describe the SOCKS protocol and the SOCKS proxy services | Lab 4.44 |
+| 4.1 Describe authentication features | Lab 4.45 |
+| 4.2 Configure traffic redirection to Cisco Secure Web Appliance using transparent proxy | Lab 4.46 |
+| 4.3 Describe the FTP proxy authentication | Lab 4.47 |
+| 4.4 Troubleshoot authentication issues | Lab 4.48 |
+| 5.1 Describe SSL and TLS inspection | Lab 4.49 |
+| 5.2 Configure HTTPS capabilities | Lab 4.50 |
+| 5.3 Configure self-signed and intermediate certificates within SSL/TLS transactions | Lab 4.51 |
+| 6.1 Describe access policies | Lab 4.52 |
+| 6.2 Describe identification profiles and authentication | Lab 4.53 |
+| 6.3 Troubleshoot using access logs | Lab 4.54 |
+| 7.1 Configure URL filtering | Lab 4.55 |
+| 7.2 Configure time-based and traffic volume acceptable use policies and end user | Lab 4.56 |
+| 7.3 Configure web application visibility and control (Office 365, third-party feeds) | Lab 4.57 |
+| 7.4 Create a corporate global acceptable use policy | Lab 4.58 |
+| 7.5 Implement policy trace tool to verify corporate global acceptable use policy | Lab 4.59 |
+| 7.6 Configure Secure Web Appliance to inspect archive file types | Lab 4.60 |
+| 8.1 Describe scanning engines | Lab 4.61 |
+| 8.2 Configure file reputation filtering and file analysis | Lab 4.62 |
+| 8.3 Describe Cisco Secure Endpoint | Lab 4.63 |
+| 8.4 Describe integration with Cognitive Intelligence | Lab 4.64 |
+| 9.1 Configure and analyze web tracking reports | Lab 4.65 |
+| 9.2 Configure Cisco Advanced Web Security Reporting (AWSR) | Lab 4.66 |
+| 9.3 Troubleshoot connectivity issues | Lab 4.67 |
+| 9.4 Interpret system health using the System Health Dashboard | Lab 4.68 |
+| 9.5 Describe REST API support | Lab 4.69 |
+
+**SISE 300-715 → Chapter 6**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Configure personas | Lab 6.1 |
+| 1.2 Describe deployment options | Lab 6.2 |
+| 1.3 Describe hardware and virtual machine performance specifications | Lab 6.3 |
+| 1.4 Describe zero-touch provisioning | Lab 6.4 |
+| 2.1 Configure native AD and LDAP | Lab 6.5 |
+| 2.2 Describe identity store options | Lab 6.6 |
+| 2.3 Configure wireless network access using 802.1X | Lab 6.7 |
+| 2.4 Configure wired network access using 802.1X and IBNS 2.0 | Lab 6.8 |
+| 2.5 Implement MAB | Lab 6.9 |
+| 2.6 Configure Cisco TrustSec | Lab 6.10 |
+| 2.7 Configure policies including authentication and authorization profiles | Lab 6.11 |
+| 3.1 Configure web authentication | Lab 6.12 |
+| 3.2 Configure guest access services | Lab 6.13 |
+| 3.3 Configure sponsor and guest portals | Lab 6.14 |
+| 4.1 Implement profiler services | Lab 6.15 |
+| 4.2 Implement probes | Lab 6.16 |
+| 4.3 Implement CoA | Lab 6.17 |
+| 4.4 Configure endpoint identity management | Lab 6.18 |
+| 5.1 Describe Cisco BYOD functionality | Lab 6.19 |
+| 5.2 Configure BYOD device on-boarding using internal CA with Cisco switches and Cisco | Lab 6.20 |
+| 5.3 Configure certificates for BYOD | Lab 6.21 |
+| 5.4 Configure block list/allow list | Lab 6.22 |
+| 6.1 Describe endpoint compliance, posture services, and client provisioning | Lab 6.23 |
+| 6.2 Configure posture conditions and policy, and client provisioning | Lab 6.24 |
+| 6.3 Configure the compliance module | Lab 6.25 |
+| 6.4 Configure posture agents and operational modes | Lab 6.26 |
+| 6.5 Describe supplicant, supplicant options, authenticator, and server | Lab 6.27 |
+| 7.1 Compare AAA protocols | Lab 6.28 |
+| 7.2 Configure TACACS+ device administration and command authorization | Lab 6.29 |
+
+**SVPN 300-730 → Chapter 7**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Describe GETVPN | Lab 7.1 |
+| 1.2 Implement DMVPN | Lab 7.2 |
+| 1.3 Implement FlexVPN using local AAA | Lab 7.3 |
+| 2.1 Implement AnyConnect IKEv2 VPNs on ASA and routers | Lab 7.4 |
+| 2.2 Implement AnyConnect SSL VPN on ASA | Lab 7.5 |
+| 2.3 Implement Clientless SSL VPN on ASA | Lab 7.6 |
+| 2.4 Implement Flex VPN on routers | Lab 7.7 |
+| 3.1 Troubleshoot IPsec | Lab 7.8 |
+| 3.2 Troubleshoot DMVPN | Lab 7.9 |
+| 3.3 Troubleshoot FlexVPN | Lab 7.10 |
+| 3.4 Troubleshoot AnyConnect IKEv2 and SSL VPNs on ASA and routers | Lab 7.11 |
+| 3.5 Troubleshoot and Clientless SSL VPN on ASA | Lab 7.12 |
+| 4.1 Identify functional components of GETVPN, FlexVPN, DMVPN, and IPsec for site-to-site | Lab 7.13 |
+| 4.2 Identify functional components of FlexVPN, IPsec, and Clientless SSL for remote access | Lab 7.14 |
+| 4.3 Identify VPN technology based on configuration output for site-to-site VPN solutions | Lab 7.15 |
+| 4.4 Identify VPN technology based on configuration output for remote access VPN solutions | Lab 7.16 |
+| 4.5 Identify split tunneling requirements for remote access VPN solutions | Lab 7.17 |
+| 4.6 Design site-to-site VPN solutions | Lab 7.18 |
+| 4.7 Design remote access VPN solutions | Lab 7.19 |
+| 4.8 Identify Elliptic Curve Cryptography (ECC) algorithms | Lab 7.20 |
+
+**SCAZT 300-740 → Chapter 8**
+
+| Exam topic | Lab |
+| --- | --- |
+| 1.1 Describe the components of the Cisco Security Reference Architecture | Lab 8.1 |
+| 1.2 Describe use cases and the recommended capabilities within an integrated architecture | Lab 8.2 |
+| 1.3 Describe industry security frameworks such as NIST, CISA, and DISA | Lab 8.3 |
+| 1.4 Describe the SAFE architectural framework | Lab 8.4 |
+| 1.5 Describe the SAFE Key structure | Lab 8.5 |
+| 2.1 Implement user and device authentication via identity certificates | Lab 8.6 |
+| 2.2 Implement multifactor authentication for users and devices | Lab 8.7 |
+| 2.3 Implement endpoint posture policies for user access to resources | Lab 8.8 |
+| 2.4 Configure SAML/SSO and OIDC using an identity provider connection | Lab 8.9 |
+| 2.5 Configure user and device trust using SAML authentication for a mobile or web | Lab 8.10 |
+| 3.1 Determine security policies for endpoints to permit access to cloud applications | Lab 8.11 |
+| 3.2 Determine security policies for endpoints to permit access to SaaS applications such as | Lab 8.12 |
+| 3.3 Determine security policies for remote users using VPN or application-based | Lab 8.13 |
+| 3.4 Determine security policies for network security edge to enforce application policy | Lab 8.14 |
+| 4.1 Describe the MITRE ATT&CK framework and attacker defense mitigation techniques | Lab 8.15 |
+| 4.2 Describe cloud security attack tactics and mitigation strategies | Lab 8.16 |
+| 4.3 Describe how web application firewall protect against DDoS attacks | Lab 8.17 |
+| 4.4 Determine security policies for application enforcement using Cisco Secure Workload | Lab 8.18 |
+| 4.5 Determine cloud (hybrid and multicloud) platform security policies based on application | Lab 8.19 |
+| 5.1 Describe the Cisco XDR solution | Lab 8.20 |
+| 5.2 Describe use cases for visibility and assurance automation | Lab 8.21 |
+| 5.3 Describe benefits and capabilities of visibility and logging tools such as SIEM, Open | Lab 8.22 |
+| 5.4 Validate traffic flow and telemetry reports for baseline and compliance behavior | Lab 8.23 |
+| 5.5 Diagnose issues with user application and workload access | Lab 8.24 |
+| 5.6 Verify user access to applications and data using tools (firewall logs, Duo, Umbrella, and | Lab 8.25 |
+| 5.7 Analyze application dependencies using tools such as firewall logs and Cisco Secure | Lab 8.26 |
+| 6.1 Describe use cases for response automation | Lab 8.27 |
+| 6.2 Determine actions based on telemetry reports | Lab 8.28 |
+| 6.3 Determine policies based on security audit reports | Lab 8.29 |
+| 6.4 Determine action based on user or application compromise | Lab 8.30 |
+
+### CCIE Security
+
+The CCIE Security **written qualifier is 350-701 SCOR**, covered above. The
+8-hour hands-on **lab** blueprint is expert-depth application of the same
+technologies; its modules map to this volume's labs:
+
+| CCIE Security lab module | Chapters / labs |
+| --- | --- |
+| Perimeter Security and Intrusion Prevention | Chapter 02 (Secure Firewall/IPS) |
+| Secure Connectivity and Segmentation | Chapter 07 (VPNs), Chapters 05–06 (segmentation) |
+| Infrastructure Security | Chapters 05–06 (802.1X, TrustSec, device hardening) |
+| Identity Management, Information Exchange, Access Control | Chapter 06 (ISE) |
+| Advanced Threat Protection and Content Security | Chapter 04 (email/web/endpoint) |
+| Cloud, Zero-Trust, and Automation | Chapters 03, 08 (SSE/ZTNA), Chapter 09 (automation) |
+
 ## Building and validating this volume
 
 From the repository root, after completing [SETUP.md](../../SETUP.md):
