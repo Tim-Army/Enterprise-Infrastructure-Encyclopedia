@@ -63,11 +63,20 @@ this pipeline.
    `## Hands-On Lab` section is a floor, not a target: where one lab
    cannot carry a chapter's topics, add further labs under that heading
    (`### Lab 2 — …`) or split the chapter. More chapters is acceptable;
-   uncovered topics is not. Every lab keeps the house standard — stated
-   objective, prerequisites, numbered steps with expected results, a
-   negative test, cost implications where the platform bills, and
-   cleanup — and records a blueprint-topic-to-lab mapping in the volume
-   README so coverage is auditable.
+   uncovered topics is not. Every lab records a blueprint-topic-to-lab
+   mapping in the volume README so coverage is auditable.
+
+   **Every lab must be a walkthrough.** A lab is a guided path that shows
+   the work being done, not a set of tasks assigned to the reader. Each
+   step carries the **actual runnable command** (full invocation, not
+   "create a VM"), the **expected output or observable result** stated
+   concretely enough to check against — a sample line, a status value, a
+   count, a specific error string — and, where not obvious, why the step
+   exists. Keep the house furniture around that: objective,
+   prerequisites, cost implications where the platform bills, a
+   **negative test** that proves the control actually works (shown as a
+   walkthrough too, with the failing command and the exact error), and
+   cleanup.
 4. **Integration.** `book.yml`, volume README/INDEX/GLOSSARY,
    [SUMMARY.md](SUMMARY.md), [MASTER_TOC.md](MASTER_TOC.md), root README
    counts and Tracks row, [PROJECT_STATUS.md](PROJECT_STATUS.md),
