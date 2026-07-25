@@ -411,137 +411,102 @@ locally or in CI.
 
 ## Hands-On Lab
 
-**Objective:** Build a version-controlled infrastructure domain inventory,
-validate it against a required-field and controlled-vocabulary schema, and
-confirm the validator correctly rejects a malformed record.
+This chapter carries a topic-level walkthrough lab for **each layer of enterprise infrastructure** —
+the compute/storage/network stack, virtualization and containers, cloud service models, and the
+on-prem/cloud trade-off. These are orientation labs that inspect real system state and reason about
+models. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.4** — a Linux host to inspect, and a browser for reasoning
+about cloud models. **Cost:** none.
 
-- `bash` and `jq` installed.
-- A local Git repository (any scratch repository is sufficient; this lab
-  does not require a remote).
+### Lab 6.1 — The infrastructure layers (Topic: Infrastructure stack)
 
-**Steps**
+**Objective:** Identify compute, storage, and network on a real host.
 
-1. Create a working directory and the inventory file:
+```bash
+lscpu | grep -E "^CPU\(s\)|Model name" ; free -h | head -2      # compute (CPU, memory)
+lsblk ; df -h --total | tail -1                                  # storage (disks, filesystems)
+ip -br addr show                                                 # network (interfaces, addresses)
+```
 
-   ```bash
-   mkdir -p ~/infra-lab/infrastructure ~/infra-lab/scripts
-   cd ~/infra-lab
-   git init -q
-   cat > infrastructure/domain-inventory.json <<'EOF'
-   [
-     {
-       "domain": "networking",
-       "owner": "network-engineering@example.com",
-       "consumption_model": "on-premises",
-       "criticality_tier": "tier-1",
-       "primary_locations": ["hq-datacenter"],
-       "encyclopedia_reference": "Volume II"
-     },
-     {
-       "domain": "identity",
-       "owner": "identity-platform@example.com",
-       "consumption_model": "public-cloud",
-       "criticality_tier": "tier-1",
-       "primary_locations": ["public-cloud-us-east"],
-       "encyclopedia_reference": "Volume X"
-     }
-   ]
-   EOF
-   ```
+**Expected result:** the host's compute (cores/RAM), storage (disks/filesystems), and network
+(interfaces) — every workload runs on these three fundamental resources, and understanding the stack
+(and each resource's limits) is the foundation for capacity, performance, and design decisions in
+later volumes.
 
-2. Add the validator script:
+**Negative test:** reason about an application's needs without knowing the underlying compute/storage/
+network limits; you cannot size or troubleshoot it — the resource layers are the ground truth every
+higher abstraction sits on.
 
-   ```bash
-   cat > scripts/validate-domain-inventory.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -euo pipefail
-   FILE="${1:-infrastructure/domain-inventory.json}"
+**Cleanup:** none (read-only).
 
-   REQUIRED_FIELDS=(domain owner consumption_model criticality_tier primary_locations encyclopedia_reference)
-   VALID_TIERS=(tier-1 tier-2 tier-3)
-   VALID_MODELS=(on-premises colocation private-cloud public-cloud hybrid edge)
+### Lab 6.2 — Virtualization and containers (Topic: Abstraction layers)
 
-   fail=0
-   count=$(jq 'length' "$FILE")
+**Objective:** Distinguish the two workload-isolation models.
 
-   for ((i = 0; i < count; i++)); do
-     record=$(jq ".[$i]" "$FILE")
-     for field in "${REQUIRED_FIELDS[@]}"; do
-       if [[ "$(echo "$record" | jq "has(\"$field\")")" != "true" ]]; then
-         echo "RECORD $i: missing required field '$field'" >&2
-         fail=1
-       fi
-     done
-     tier=$(echo "$record" | jq -r '.criticality_tier // empty')
-     if [[ -n "$tier" ]] && [[ ! " ${VALID_TIERS[*]} " =~ " ${tier} " ]]; then
-       echo "RECORD $i: invalid criticality_tier '$tier'" >&2
-       fail=1
-     fi
-     model=$(echo "$record" | jq -r '.consumption_model // empty')
-     if [[ -n "$model" ]] && [[ ! " ${VALID_MODELS[*]} " =~ " ${model} " ]]; then
-       echo "RECORD $i: invalid consumption_model '$model'" >&2
-       fail=1
-     fi
-   done
+```bash
+systemd-detect-virt 2>/dev/null            # is this host a VM? which hypervisor?
+cat /proc/1/cgroup | head -3               # container? (cgroup path reveals it)
+# VM: full guest OS on virtual hardware (strong isolation, more overhead)
+# Container: shared host kernel, isolated namespace (light, fast, less isolation)
+```
 
-   exit "$fail"
-   EOF
-   chmod +x scripts/validate-domain-inventory.sh
-   ```
+**Expected result:** whether the host is virtualized and/or containerized — **virtualization** runs
+full guest OSes on a hypervisor (strong isolation, more overhead), while **containers** share the host
+kernel with namespace isolation (lightweight, dense); the choice trades isolation against efficiency.
 
-3. Run the validator against the valid inventory:
+**Negative test:** use a container where strong OS-level isolation or a different kernel is required
+(or a full VM where a lightweight process would do); the isolation/efficiency trade-off is mismatched
+— match the abstraction to the isolation and density needs.
 
-   ```bash
-   ./scripts/validate-domain-inventory.sh infrastructure/domain-inventory.json
-   echo "Exit code: $?"
-   ```
+**Cleanup:** none (read-only).
 
-   **Expected result:** Exit code `0` and no error output.
+### Lab 6.3 — Cloud service models (Topic: Service models)
 
-4. Commit the baseline:
+**Objective:** Place responsibilities on the IaaS/PaaS/SaaS spectrum.
 
-   ```bash
-   git add -A
-   git commit -q -m "feat: add validated domain inventory"
-   ```
+```text
+# For a web app, map who manages what across the models:
+#   On-prem: you manage everything (hardware -> app)
+#   IaaS:    provider manages hardware/virtualization; you manage OS -> app
+#   PaaS:    provider manages up to the runtime; you manage app + data
+#   SaaS:    provider manages everything; you manage only your data/config
+# Draw the "shared responsibility" line for each model.
+```
 
-5. **Negative test:** Add a record with a missing required field and an
-   invalid controlled-vocabulary value, then re-run the validator:
+**Expected result:** a shared-responsibility mapping across on-prem → IaaS → PaaS → SaaS — the cloud
+service models differ in *where the management boundary falls*; moving up the stack trades control for
+reduced operational burden, and knowing the boundary tells you what you are (and are not) responsible
+for securing and operating.
 
-   ```bash
-   jq '. + [{"domain": "observability", "owner": "observability-team@example.com", "consumption_model": "on-prem", "criticality_tier": "critical"}]' \
-     infrastructure/domain-inventory.json > /tmp/updated-inventory.json
-   mv /tmp/updated-inventory.json infrastructure/domain-inventory.json
+**Negative test:** assume the cloud provider secures your application/data on IaaS; they secure the
+infrastructure, you secure the OS and up (shared responsibility) — misreading the boundary leaves gaps
+unowned.
 
-   ./scripts/validate-domain-inventory.sh infrastructure/domain-inventory.json
-   echo "Exit code: $?"
-   ```
+**Cleanup:** none.
 
-   **Expected result:** The validator reports `RECORD 2: missing required
-   field 'primary_locations'`, `RECORD 2: missing required field
-   'encyclopedia_reference'`, `RECORD 2: invalid criticality_tier
-   'critical'`, and `RECORD 2: invalid consumption_model 'on-prem'`, and
-   exits non-zero — confirming the schema catches both missing fields and
-   both controlled-vocabulary violations (`on-prem` instead of
-   `on-premises`, `critical` instead of a defined tier) in the same run.
+### Lab 6.4 — On-prem versus cloud trade-offs (Topic: Sourcing decision)
 
-6. Restore the valid inventory and confirm recovery:
+**Objective:** Reason about where a workload should run.
 
-   ```bash
-   git checkout -- infrastructure/domain-inventory.json
-   ./scripts/validate-domain-inventory.sh infrastructure/domain-inventory.json
-   echo "Exit code: $?"
-   ```
+```text
+# For a given workload, weigh:
+#   - cost model: capex (on-prem) vs opex/elastic (cloud); TCO over the horizon
+#   - elasticity: variable/spiky load favors cloud; steady predictable load may favor on-prem
+#   - data gravity/latency/compliance: data location and residency constraints
+#   - operational capability: who runs it, and their skills
+```
 
-   **Expected result:** Exit code `0` again.
+**Expected result:** a sourcing recommendation tied to cost model, elasticity, data
+gravity/compliance, and operational capability — the on-prem/cloud (and hybrid) decision is a
+trade-off, not a default; spiky or fast-growing workloads favor cloud elasticity, while steady,
+data-heavy, or compliance-bound workloads may favor on-prem or hybrid.
 
-7. **Cleanup:**
+**Negative test:** move everything to cloud (or keep everything on-prem) by policy without the
+trade-off analysis; a steady heavy workload can cost more in cloud, and a spiky one is starved
+on-prem — the workload's characteristics drive the placement.
 
-   ```bash
-   cd ~ && rm -rf ~/infra-lab
-   ```
+**Cleanup:** none.
 
 ## Lab Verification
 

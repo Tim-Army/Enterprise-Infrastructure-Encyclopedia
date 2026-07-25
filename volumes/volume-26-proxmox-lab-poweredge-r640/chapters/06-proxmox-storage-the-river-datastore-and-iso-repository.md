@@ -199,46 +199,96 @@ the node.
 
 ## Hands-On Lab
 
-**Objective:** Add `river` as VM storage and create an ISO repository on it,
-and verify both are usable.
+This chapter carries a topic-level walkthrough lab for **each storage-configuration step** — turning
+the `river` RAID-5 array into a Proxmox datastore, setting content types, and an ISO repository.
+Commands are runnable Proxmox storage CLI (`pvesm`). Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites:** The healthy `river` array from
-[Chapter 02](02-storage-boss-boot-mirror-and-the-river-raid-5-array.md), the
-installed and networked node from Chapters 03–05.
+**Shared prerequisites for Labs 6.1–6.4** — a Proxmox node with the `river` RAID-5 virtual disk
+(Chapter 02) presented as a block device, and root SSH. **Cost:** none.
 
-**Reproducible on any Proxmox node with a spare data volume** standing in
-for `river`.
+### Lab 6.1 — Create the `river` datastore (Topic: VM datastore)
 
-**Procedure**
+**Objective:** Make the RAID-5 array a Proxmox storage for VM disks.
 
-1. Add `river` as VM storage — LVM-Thin for snapshot-capable VM disks, or a
-   directory content type if using file-based images — with content type
-   `images`.
-2. Create a directory-backed ISO storage on `river` (content type `iso`),
-   with the `template/iso/` path Proxmox expects.
-3. Run `pvesm status` and confirm both storages are active.
-4. In the web UI, confirm the VM storage appears as a disk target and the
-   ISO storage offers an upload/import option.
-5. Confirm both are backed by `river` (the RAID 5 capacity), not the BOSS
-   mirror.
+```bash
+lsblk                                        # identify the 'river' block device (e.g. /dev/sdb)
+# Create an LVM-thin pool on it (thin provisioning + snapshots on hardware RAID):
+pvcreate /dev/sdb
+vgcreate river /dev/sdb
+lvcreate -l 95%FREE --thinpool riverpool river
+pvesm add lvmthin river --vgname river --thinpool riverpool --content images,rootdir
+pvesm status
+```
 
-**Negative test**
+**Expected result:** an LVM-thin storage named `river` for VM disks and containers appears in
+`pvesm status` — on a hardware-RAID array, **LVM-thin** gives thin provisioning and snapshots
+without stacking ZFS on the RAID controller; this is the datastore the ten VMs will use.
 
-6. Attempt to set the ISO content type on a block (LVM-Thin) storage and
-   observe that ISO upload is unavailable — demonstrating that ISOs require a
-   directory/filesystem storage, not block storage. Then confirm the
-   directory-backed ISO storage does offer upload.
+**Negative test:** put ZFS directly on the hardware-RAID `river` device for its features; ZFS cannot
+see or manage the individual disks behind the PERC, losing its self-healing/scrub value — LVM-thin
+is the appropriate layer on hardware RAID.
 
-**Expected results**
+**Cleanup:** keep `river` (it is the build's VM datastore).
 
-- `river` available as VM (`images`) storage.
-- An ISO (`iso`) repository on `river` ready to receive media.
-- Both confirmed on the RAID 5 array, not the boot mirror.
+### Lab 6.2 — Storage content types (Topic: Content types)
 
-**Cleanup**
+**Objective:** Understand what each storage may hold.
 
-7. Leave both storages in place — Chapter 07 fills the ISO repository and
-   Chapter 08 uses the VM storage.
+```bash
+pvesm status --content images        # storages that can hold VM disk images
+cat /etc/pve/storage.cfg
+```
+
+**Expected result:** `storage.cfg` shows each storage's allowed **content** — `images` (VM disks),
+`rootdir` (container filesystems), `iso` (install media), `vztmpl` (container templates), `backup`
+(vzdump archives), `snippets` — a storage only accepts the content types it is configured for, so
+`river` holds images/rootdir while ISOs go elsewhere.
+
+**Negative test:** try to upload an ISO to a storage whose content is only `images`; Proxmox refuses
+it — the content-type setting governs what a storage can store, so ISO media needs an `iso`-capable
+storage (Lab 6.3).
+
+**Cleanup:** none.
+
+### Lab 6.3 — ISO repository storage (Topic: ISO repository)
+
+**Objective:** Provide a place for install media.
+
+```bash
+# A directory storage on 'river' (or local) for ISOs and container templates:
+mkdir -p /river/template/iso /river/template/cache
+pvesm add dir riverfiles --path /river --content iso,vztmpl,backup
+pvesm status --content iso
+```
+
+**Expected result:** a directory storage (`riverfiles`) that accepts `iso`, container templates, and
+backups — the ISO repository (Chapter 07) needs an `iso`-content storage; a directory storage on the
+`river` array keeps install media on the large array rather than the small boot mirror.
+
+**Negative test:** store ISOs on the small BOSS boot mirror (`local`); it fills quickly and risks the
+OS volume — put the ISO library on the large `river` array where there is room.
+
+**Cleanup:** remove `riverfiles` only if reworking the storage layout.
+
+### Lab 6.4 — Verify storage (Topic: Verification)
+
+**Objective:** Confirm all storages are online with expected capacity.
+
+```bash
+pvesm status
+pvesh get /nodes/pve01/storage --output-format json | python3 -c "import json,sys; [print(s['storage'], s['type'], s.get('content')) for s in json.load(sys.stdin)]"
+```
+
+**Expected result:** `local` (boot mirror, small), `river` (LVM-thin, large, images/rootdir), and
+`riverfiles` (dir, iso/backup) all active with correct sizes — verifying the storage layout confirms
+VM disks will land on the RAID-5 array and ISOs/backups have a home before you build VMs.
+
+**Negative test:** deploy VMs before confirming `river` is active; if the LVM-thin pool failed to
+create, VM disks fall back to the tiny boot mirror and fill it — verify storage is online and sized
+first.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

@@ -394,124 +394,116 @@ pattern as `terraform plan`.
 
 ## Hands-On Lab
 
-**Objective:** Build a two-stage GitHub Actions pipeline — a read-only
-validation job that runs on every pull request, and a separate, manually
-approved job that only runs after merge — then prove the approval gate
-actually blocks unapproved execution.
+This chapter carries a topic-level walkthrough lab for **each element of automation architecture** —
+task automation, CI pipelines, pre-commit hooks, and idempotence. Labs use `make`, GitHub Actions
+YAML, and `pre-commit`. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 3.1–3.4** — `git`, `make`, and (Lab 3.3) `pre-commit`. Work in a
+scratch repo. **Cost:** none.
 
-- A GitHub repository you can configure (the scratch repository from
-  [Chapter 02](02-repository-architecture.md)'s lab works, or a new one).
-- `gh` CLI authenticated with permission to manage repository environments.
+### Lab 3.1 — Task automation with a Makefile (Topic: Task automation)
 
-**Steps**
+**Objective:** Give the project one consistent command interface.
 
-1. In the repository, create a protected environment requiring your own
-   approval:
+```bash
+mkdir -p ~/auto && cd ~/auto
+cat > Makefile <<'EOF'
+.PHONY: lint build test
+lint:  ; @echo "running linters..."
+build: lint ; @echo "building..."
+test:  build ; @echo "running tests..."
+EOF
+make test
+```
 
-   ```bash
-   gh api --method PUT \
-     repos/:owner/:repo/environments/production \
-     -f 'reviewers[][type]=User' \
-     -f "reviewers[][id]=$(gh api user --jq .id)"
-   ```
+**Expected result:** `make test` runs lint → build → test via declared dependencies — a Makefile (or
+task runner) gives every contributor and CI one canonical set of commands (`make lint/build/test`),
+so the "how do I build this" knowledge lives in the repo, not in someone's head.
 
-2. Add a validation workflow that runs on every pull request:
+**Negative test:** document build steps only in a README prose paragraph; steps drift from reality and
+CI runs different commands than developers — a task runner makes the commands executable and shared.
 
-   ```bash
-   mkdir -p .github/workflows
-   cat > .github/workflows/validate.yml <<'EOF'
-   name: Validate
-   on:
-     pull_request:
-       branches: [main]
-   permissions:
-     contents: read
-   jobs:
-     validate:
-       runs-on: ubuntu-latest
-       steps:
-         - uses: actions/checkout@v4
-         - run: echo "Validation passed" && test -f README.md
-   EOF
-   ```
+**Cleanup:** `rm -rf ~/auto`.
 
-3. Add a second workflow that requires the `production` environment and
-   only runs on `main`:
+### Lab 3.2 — A CI pipeline (Topic: CI/CD)
 
-   ```bash
-   cat > .github/workflows/deploy.yml <<'EOF'
-   name: Deploy
-   on:
-     push:
-       branches: [main]
-   permissions:
-     contents: read
-   jobs:
-     deploy:
-       runs-on: ubuntu-latest
-       environment: production
-       steps:
-         - uses: actions/checkout@v4
-         - run: echo "Deployment step executed"
-   EOF
-   ```
+**Objective:** Run the same tasks automatically on every change.
 
-4. Commit, push, and open a pull request:
+```bash
+mkdir -p ~/auto/.github/workflows && cd ~/auto
+cat > .github/workflows/ci.yml <<'EOF'
+name: ci
+on: [push, pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make lint
+      - run: make build
+      - run: make test
+EOF
+python3 -c "import yaml; yaml.safe_load(open('.github/workflows/ci.yml')); print('workflow valid')"
+```
 
-   ```bash
-   git checkout -b lab/automation-architecture
-   git add -A && git commit -m "feat: add two-stage pipeline"
-   git push -u origin lab/automation-architecture
-   gh pr create --fill --base main
-   ```
+**Expected result:** a pipeline that runs `make lint/build/test` on every push/PR — CI executes the
+same task interface (Lab 3.1) automatically, so broken changes fail before merge and `main` stays
+green; the pipeline is the mechanical gate that enforces quality.
 
-5. **Expected result:** The `Validate` workflow runs automatically and
-   passes on the pull request; the `Deploy` workflow does **not** run yet,
-   because it is scoped to pushes on `main`.
+**Negative test:** rely on contributors to run checks locally; someone forgets and a broken change
+merges — CI runs the checks on every change without depending on anyone's memory.
 
-6. Merge the pull request:
+**Cleanup:** `rm -rf ~/auto`.
 
-   ```bash
-   gh pr merge --squash --delete-branch
-   ```
+### Lab 3.3 — Pre-commit hooks (Topic: Shift-left checks)
 
-7. **Expected result:** The `Deploy` workflow starts but pauses in a
-   "Waiting" state because the `production` environment requires approval.
-   Confirm with:
+**Objective:** Catch issues before they are committed.
 
-   ```bash
-   gh run list --workflow=deploy.yml --limit 1
-   ```
+```bash
+cd ~/auto 2>/dev/null || mkdir -p ~/auto && cd ~/auto && git init -q
+cat > .pre-commit-config.yaml <<'EOF'
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks: [ {id: trailing-whitespace}, {id: end-of-file-fixer}, {id: check-yaml} ]
+EOF
+python3 -c "import yaml; yaml.safe_load(open('.pre-commit-config.yaml')); print('config valid')"
+# pre-commit install   # wires hooks into .git/hooks so they run on every commit
+```
 
-8. Approve the deployment:
+**Expected result:** a valid pre-commit config that, once installed, fixes whitespace/EOF and
+validates YAML at commit time — pre-commit "shifts left," catching trivial issues on the developer's
+machine before they reach CI, the cheapest place to fix them.
 
-   ```bash
-   gh run list --workflow=deploy.yml --limit 1 --json databaseId --jq '.[0].databaseId'
-   # then, using the run ID from above:
-   gh api --method POST \
-     repos/:owner/:repo/actions/runs/<run-id>/pending_deployments \
-     -f 'environment_ids[]=<environment-id>' -f state=approved -f comment="lab approval"
-   ```
+**Negative test:** depend only on CI for whitespace/YAML checks; developers push broken commits and
+wait for a red pipeline — pre-commit catches the same issues seconds earlier, locally.
 
-   **Expected result:** The `Deploy` job proceeds and completes, printing
-   `Deployment step executed`.
+**Cleanup:** `rm -rf ~/auto`.
 
-9. **Negative test:** Revoke your own reviewer permission on the
-   `production` environment, push a trivial change directly to a new branch
-   that also targets the deploy path, and confirm a run queued against
-   `production` cannot proceed without any eligible reviewer — this
-   demonstrates the environment gate fails closed rather than open when no
-   approver is configured. Restore the reviewer afterward.
+### Lab 3.4 — Idempotent automation (Topic: Idempotence)
 
-10. **Cleanup:**
+**Objective:** Make an automation script safe to re-run.
 
-    ```bash
-    gh api --method DELETE repos/:owner/:repo/environments/production
-    git checkout main
-    git branch -D lab/automation-architecture
-    ```
+```bash
+cat > ensure.sh <<'EOF'
+#!/bin/bash
+# Idempotent: converge to desired state, safe on repeat
+mkdir -p /tmp/app/config                       # -p: no error if it exists
+grep -qxF "mode=prod" /tmp/app/config/app.conf 2>/dev/null || echo "mode=prod" >> /tmp/app/config/app.conf
+EOF
+bash ensure.sh; bash ensure.sh          # run twice
+cat /tmp/app/config/app.conf            # still one 'mode=prod' line
+```
+
+**Expected result:** running twice leaves the same single-line result — **idempotence** (same outcome
+however many times it runs) is the property that lets automation be re-run safely after a failure or
+on a schedule, the basis of declarative tools (Terraform, Ansible).
+
+**Negative test:** replace the guarded append with a plain `echo >>`; each run adds a duplicate line
+and re-running corrupts state — non-idempotent automation is dangerous to re-run, which idempotence
+fixes.
+
+**Cleanup:** `rm -rf /tmp/app ensure.sh`.
 
 ## Lab Verification
 

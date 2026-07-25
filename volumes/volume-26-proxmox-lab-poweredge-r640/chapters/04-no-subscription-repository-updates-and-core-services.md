@@ -213,45 +213,93 @@ now, not discovered later.
 
 ## Hands-On Lab
 
-**Objective:** Switch the node to the no-subscription repository, bring it
-fully up to date, and point DNS and NTP at the gateway.
+This chapter carries a topic-level walkthrough lab for **each post-install configuration step** —
+the no-subscription repository, updates, and the core Proxmox services. Every step is a runnable
+command on the node. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites:** The installed Proxmox node from
-[Chapter 03](03-installing-proxmox-ve.md), reachable on its management
-address, with a path to the Proxmox package mirrors and the gateway.
+**Shared prerequisites for Labs 4.1–4.4** — a freshly installed Proxmox VE node (Chapter 03) with
+root SSH, and internet access. **Cost:** none (the no-subscription repo is free).
 
-**This lab is reproducible on any Proxmox node**, hardware or nested — the
-repository and service configuration is not hardware-specific.
+### Lab 4.1 — Switch to the no-subscription repository (Topic: Repositories)
 
-**Procedure**
+**Objective:** Point APT at the free community repo.
 
-1. Disable the `pve-enterprise` repository and enable `pve-no-subscription`.
-   Run `apt update` and confirm it completes with no enterprise error.
-2. Run `apt full-upgrade`, and reboot if the kernel updated.
-3. Confirm the version with `pveversion` and `uname -r`.
-4. Point the resolver at 10.30.161.1 and confirm `getent hosts
-   download.proxmox.com` resolves.
-5. Set the NTP source to 10.30.161.1 and confirm `chronyc sources` (or
-   `timedatectl`) shows the node synchronized to the gateway.
+```bash
+# Disable the enterprise repo (needs a subscription) and enable no-subscription:
+sed -i 's/^deb/#deb/' /etc/apt/sources.list.d/pve-enterprise.list 2>/dev/null
+echo "deb http://download.proxmox.com/debian/pve $(. /etc/os-release; echo $VERSION_CODENAME) pve-no-subscription" \
+  > /etc/apt/sources.list.d/pve-no-subscription.list
+apt update
+```
 
-**Negative test**
+**Expected result:** `apt update` succeeds against the `pve-no-subscription` repo instead of erroring
+on the enterprise repo — a Proxmox node without a subscription must use the no-subscription
+repository to receive package updates; the enterprise repo returns 401 without a key.
 
-6. Re-enable the `pve-enterprise` repository, run `apt update`, and observe
-   the authentication error on `enterprise.proxmox.com` — confirming that
-   the enterprise repo, not a missing free repo, is what causes the common
-   post-install update failure. Disable it again and confirm `apt update`
-   is clean.
+**Negative test:** leave only the enterprise repo enabled with no subscription; `apt update` fails
+with a 401 and the node never updates — the no-subscription repo is what a free/lab node updates
+from.
 
-**Expected results**
+**Cleanup:** none (keep the repo configured).
 
-- `apt update` runs clean with no enterprise error.
-- The node is fully updated and running the current kernel.
-- DNS resolves through the gateway and time is synchronized to it.
+### Lab 4.2 — Update and upgrade (Topic: Updates)
 
-**Cleanup**
+**Objective:** Bring the node current.
 
-7. Leave the no-subscription repository and the gateway DNS/NTP settings in
-   place — they are the node's steady state for the rest of the build.
+```bash
+apt update && apt -y full-upgrade
+pveversion -v | grep -E "pve-manager|pve-kernel|qemu"
+```
+
+**Expected result:** the node upgrades to the current no-subscription package set (kernel, pve-
+manager, QEMU) — keeping Proxmox current picks up security and stability fixes; `full-upgrade` (not
+just `upgrade`) is used because PVE upgrades sometimes need to install/remove dependent packages.
+
+**Negative test:** use `apt upgrade` alone across a PVE point release that changes dependencies;
+some packages are held back and the node ends in a partial state — `full-upgrade` handles the
+dependency changes Proxmox releases require.
+
+**Cleanup:** reboot if a new kernel was installed (`reboot`) during a maintenance window.
+
+### Lab 4.3 — Core services (Topic: Services)
+
+**Objective:** Confirm the Proxmox control-plane services are healthy.
+
+```bash
+systemctl status pve-cluster pvedaemon pveproxy pvestatd --no-pager | grep -E "●|Active" | head
+pvesh get /cluster/resources --output-format json 2>/dev/null | python3 -c "import json,sys; print('resources visible:', len(json.load(sys.stdin)))"
+```
+
+**Expected result:** `pve-cluster` (the config filesystem `/etc/pve`), `pvedaemon`/`pveproxy` (API/
+UI), and `pvestatd` (stats) are all active, and the API returns cluster resources — these services
+are Proxmox's control plane; `/etc/pve` is a special FUSE filesystem backed by `pve-cluster`, so if
+it is down, configuration cannot be read or written.
+
+**Negative test:** edit files under `/etc/pve` when `pve-cluster` is stopped; writes fail because
+that path is the pmxcfs FUSE mount, not a normal directory — the service must be running for config
+to work.
+
+**Cleanup:** none.
+
+### Lab 4.4 — Remove the subscription nag (Topic: UI configuration)
+
+**Objective:** Suppress the no-subscription login popup (lab convenience).
+
+```bash
+# The community-documented one-liner patches the JS that shows the subscription warning:
+sed -i "s/data.status !== 'Active'/false/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js 2>/dev/null
+systemctl restart pveproxy
+# (Re-applies after a pve-manager upgrade; not required for function.)
+```
+
+**Expected result:** the "No valid subscription" popup no longer appears at login on this lab node —
+the nag is cosmetic (the node works fully without a subscription); patching it is a lab convenience,
+and it reappears after upgrades that replace the JS file.
+
+**Negative test:** treat the subscription popup as a functional block; it is not — the node updates
+and runs VMs fine on the no-subscription repo, so the popup is informational only.
+
+**Cleanup:** none (the patch is reverted by the next `proxmox-widget-toolkit` upgrade anyway).
 
 ## Lab Verification
 

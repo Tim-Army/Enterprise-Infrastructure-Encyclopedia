@@ -413,181 +413,107 @@ implements them back to the record of why:
 
 ## Hands-On Lab
 
-**Objective:** Stand up an ADR log with a validated template, record two
-linked decisions (one superseding the other), and prove the validator
-correctly rejects a malformed ADR before it would reach review.
+This chapter carries a topic-level walkthrough lab for **each enterprise-architecture fundamental** —
+architecture domains, design principles, requirements-to-architecture, and a synthesis design
+exercise. These are design-and-reasoning labs. Each ends **`**Lab verified by:** *pending*`** until a
+human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.4** — a place to write and diagram. **Cost:** none.
 
-- `bash`, `awk`, and `jq` installed.
-- A local Git repository (a new scratch repository is sufficient).
+### Lab 7.1 — Architecture domains (Topic: EA frameworks)
 
-**Steps**
+**Objective:** Separate a system's concerns into architecture domains.
 
-1. Create the ADR directory and template:
+```text
+# For a proposed system, describe it across the standard EA domains (TOGAF-style):
+#   Business      -> the capabilities/processes it supports and the drivers
+#   Data/Information -> the key entities, ownership, and flows
+#   Application   -> the applications/services and their interactions
+#   Technology    -> the infrastructure (compute/storage/network/platforms) beneath
+```
 
-   ```bash
-   mkdir -p ~/ea-lab/docs/adr ~/ea-lab/scripts
-   cd ~/ea-lab
-   git init -q
-   cat > docs/adr/adr-template.md <<'EOF'
-   # ADR-NNNN: {Short, imperative decision title}
+**Expected result:** the system described across business, data, application, and technology domains —
+enterprise architecture separates concerns into domains so each is reasoned about deliberately and
+their alignment is explicit; technology serves applications, which serve data and business
+capabilities.
 
-   ## Status
+**Negative test:** design only the technology domain (servers, networks) with no business/data/
+application context; you build infrastructure with no traceable purpose — the domains keep technology
+aligned to what the business actually needs.
 
-   Proposed
+**Cleanup:** none.
 
-   ## Context
+### Lab 7.2 — Design principles (Topic: Design principles)
 
-   ## Decision
+**Objective:** Apply core principles and name their trade-offs.
 
-   ## Consequences
-   EOF
-   ```
+```text
+# Apply and justify for a design:
+#   - Modularity + loose coupling: components with clear interfaces, independently changeable
+#   - Separation of concerns: each component one responsibility
+#   - Standardization: reuse patterns/platforms over bespoke one-offs
+#   - Design for failure: assume components fail; contain the blast radius
+# For each, state what it costs (e.g. modularity adds interface/integration overhead).
+```
 
-2. Add the validator:
+**Expected result:** a design justified by principles, each with its cost stated — principles
+(modularity, loose coupling, separation of concerns, design-for-failure) make architectures adaptable
+and resilient, but each has a cost (indirection, overhead), so they are applied where the benefit
+outweighs it, not dogmatically.
 
-   ```bash
-   cat > scripts/validate-adr-log.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -euo pipefail
-   DIR="${1:-docs/adr}"
-   VALID_STATUSES='^(Proposed|Accepted|Deprecated|Superseded by ADR-[0-9]{4})$'
-   fail=0
-   for file in "$DIR"/[0-9]*.md; do
-     [[ -e "$file" ]] || continue
-     for section in "## Status" "## Context" "## Decision" "## Consequences"; do
-       if ! grep -qF "$section" "$file"; then
-         echo "MISSING SECTION '$section' in $file" >&2
-         fail=1
-       fi
-     done
-     status=$(awk '/^## Status/{getline; while ($0 ~ /^$/) getline; print; exit}' "$file")
-     if ! [[ "$status" =~ $VALID_STATUSES ]]; then
-       echo "INVALID STATUS '$status' in $file" >&2
-       fail=1
-     fi
-   done
-   exit "$fail"
-   EOF
-   chmod +x scripts/validate-adr-log.sh
-   ```
+**Negative test:** cite "best practice" principles without their costs or context; over-applying
+modularity to a tiny system adds needless complexity — a principle is a tool with trade-offs, applied
+where it pays off.
 
-3. Write the first ADR:
+**Cleanup:** none.
 
-   ```bash
-   cat > docs/adr/0001-standardize-on-monorepo-for-platform-tooling.md <<'EOF'
-   # ADR-0001: Standardize on a monorepo for platform tooling
+### Lab 7.3 — From requirements to architecture (Topic: Requirements)
 
-   ## Status
+**Objective:** Trace architecture decisions back to requirements.
 
-   Accepted
+```text
+# Given functional + non-functional requirements (availability, performance, security, cost),
+#   produce architecture decisions where EACH names the requirement that drives it:
+#   e.g. "redundant AZs  <- 99.99% availability requirement  (cost: 2x infra)"
+#        "read replicas  <- read-heavy performance requirement (cost: replication lag)"
+# Review both ways: every requirement addressed, every decision traceable.
+```
 
-   ## Context
+**Expected result:** an architecture where every decision traces to a requirement and every
+requirement is addressed — architecture is the set of decisions that satisfy requirements within
+constraints; traceability (decision ← requirement) is what makes the design defensible and reviewable,
+the same discipline the CCDE (Volume XXX) formalizes.
 
-   Platform tooling is currently spread across twelve small repositories
-   with duplicated CI configuration.
+**Negative test:** make architecture decisions from technology preference with no requirement
+traceability; you cannot justify the design or tell whether it meets the needs — requirements drive
+architecture, not the reverse.
 
-   ## Decision
+**Cleanup:** none.
 
-   Consolidate platform tooling into a single monorepo with path-scoped CI.
+### Lab 7.4 — Design Exercise: a small enterprise platform architecture (Topic: Synthesis)
 
-   ## Consequences
+**Objective:** Produce a defensible end-to-end architecture.
 
-   Cross-cutting changes become atomic. The migration requires updating
-   twelve sets of CI credentials and access controls.
-   EOF
-   ```
+> **Scenario.** Architect the foundational platform for a growing company: source control and CI/CD,
+> a documentation/knowledge system, standardized environments, and the infrastructure to run internal
+> services — on a modest budget, built to scale.
 
-4. Run the validator:
+Work through and **write down**: the four EA domains for the platform (Lab 7.1); the design principles
+applied and their costs (Lab 7.2); the engineering practices from Chapters 01–05 (workstation
+standards, repo architecture, automation, workflow governance, docs-as-code) as the platform's
+backbone; the infrastructure model (on-prem/cloud/hybrid) from Chapter 06; and requirement
+traceability for the major decisions (Lab 7.3).
 
-   ```bash
-   ./scripts/validate-adr-log.sh docs/adr
-   echo "Exit code: $?"
-   ```
+**Expected result:** a written architecture integrating the volume — standardized engineering
+practices, governed workflow, docs-as-code, and a justified infrastructure model — where every major
+decision traces to a requirement and the whole thing is coherent and scalable, the foundation every
+other volume assumes.
 
-   **Expected result:** Exit code `0`, no error output.
+**Negative test:** assemble tools without an architecture (ad-hoc repos, no CI governance, scattered
+docs, unjustified infra); it works briefly then fragments as the company grows — the architecture and
+practices are what let the platform scale coherently.
 
-5. Write a second ADR that supersedes the first, and update the first
-   record's status:
-
-   ```bash
-   cat > docs/adr/0002-revert-to-polyrepo-for-platform-tooling.md <<'EOF'
-   # ADR-0002: Revert to polyrepo for platform tooling
-
-   ## Status
-
-   Accepted
-
-   ## Context
-
-   The monorepo from ADR-0001 created a single point of CI failure that
-   blocked unrelated teams during a recent incident.
-
-   ## Decision
-
-   Split platform tooling back into per-domain repositories with a shared,
-   versioned CI workflow template instead of shared source.
-
-   ## Consequences
-
-   Restores team-level CI isolation. Reintroduces the coordination cost
-   for genuinely cross-cutting changes that ADR-0001 was written to solve.
-   EOF
-   sed -i.bak 's/^Accepted$/Superseded by ADR-0002/' docs/adr/0001-standardize-on-monorepo-for-platform-tooling.md
-   rm docs/adr/0001-standardize-on-monorepo-for-platform-tooling.md.bak
-   ```
-
-6. Re-run the validator:
-
-   ```bash
-   ./scripts/validate-adr-log.sh docs/adr
-   echo "Exit code: $?"
-   ```
-
-   **Expected result:** Exit code `0` — both the `Superseded by ADR-0002`
-   and `Accepted` status values match the validator's pattern.
-
-7. **Negative test:** Add a malformed ADR missing a required section and
-   using an invalid status value:
-
-   ```bash
-   cat > docs/adr/0003-broken-record.md <<'EOF'
-   # ADR-0003: Broken record
-
-   ## Status
-
-   In Review
-
-   ## Decision
-
-   Something was decided.
-   EOF
-   ./scripts/validate-adr-log.sh docs/adr
-   echo "Exit code: $?"
-   ```
-
-   **Expected result:** The validator reports `MISSING SECTION '##
-   Context' in docs/adr/0003-broken-record.md`, `MISSING SECTION '##
-   Consequences' in docs/adr/0003-broken-record.md`, and `INVALID STATUS
-   'In Review' in docs/adr/0003-broken-record.md`, exiting non-zero —
-   confirming both the section and status checks fire independently.
-
-8. Remove the broken record and confirm recovery:
-
-   ```bash
-   rm docs/adr/0003-broken-record.md
-   ./scripts/validate-adr-log.sh docs/adr
-   echo "Exit code: $?"
-   ```
-
-   **Expected result:** Exit code `0` again.
-
-9. **Cleanup:**
-
-   ```bash
-   cd ~ && rm -rf ~/ea-lab
-   ```
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 

@@ -214,48 +214,91 @@ mirror, PERC for `river`.
 
 ## Hands-On Lab
 
-**Objective:** Build the BOSS RAID 1 boot mirror and the six-drive RAID 5
-array `river`, and confirm both are healthy before installing an OS.
+This chapter carries a topic-level walkthrough lab for **each storage-provisioning step** — the
+BOSS boot mirror and the `river` RAID-5 data array that this build runs on. Commands are real RACADM
+storage actions. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites:** The R640 with iDRAC access from
-[Chapter 01](01-idrac-out-of-band-access-and-first-configuration.md), the
-two BOSS SSDs, and the six front drives, all visible in the inventory.
+**Shared prerequisites for Labs 2.1–2.4** — the R640 with a BOSS-S1 card (two M.2 SSDs) and a PERC
+controller with the data disks, iDRAC RACADM access. **Safety:** creating virtual disks destroys
+data — this is a fresh lab server. **Cost:** none.
 
-**This lab requires the physical server and its drives.** RAID
-configuration is a hardware operation with no virtual substitute.
+### Lab 2.1 — BOSS boot mirror (Topic: Boot device)
 
-**Procedure**
+**Objective:** Mirror the two M.2 devices for the OS.
 
-1. From the iDRAC virtual console, enter the Lifecycle Controller (or BOSS
-   setup) and create a RAID 1 mirror across the two 256 GB BOSS SSDs.
-2. On the PERC, create a RAID 5 virtual disk across all six front drives and
-   name it `river`.
-3. Apply the storage jobs and let them run (a reboot may be required for the
-   pending configuration).
-4. After the jobs complete, confirm with `storage get vdisks` that the BOSS
-   mirror is RAID 1 Online and `river` is RAID 5 Optimal, with the expected
-   sizes.
-5. Note which physical bay corresponds to which array member for future
-   drive replacement.
+```bash
+racadm storage get controllers | grep -i BOSS
+racadm storage createvd:RAID.SL.3-1 -rl r1 \
+  -pdkey:Disk.Bay.0:Enclosure.Internal.0-1:RAID.SL.3-1,Disk.Bay.1:Enclosure.Internal.0-1:RAID.SL.3-1
+racadm jobqueue create RAID.SL.3-1 -s TIME_NOW
+racadm jobqueue view
+```
 
-**Negative test**
+**Expected result:** a RAID-1 virtual disk across the two BOSS M.2 devices, applied by a config job
+— the BOSS card gives a dedicated, mirrored boot device for Proxmox, isolating the hypervisor OS
+from the data array so a data-disk operation never risks the boot volume.
 
-6. Before building `river`, if it is safe in your environment, remove and
-   reseat one of the six front drives and observe the inventory reflect its
-   absence, then presence. Confirm you would have caught a missing drive
-   *before* building the array — the guard against a degraded-from-birth
-   RAID 5. (Do not build the array with a drive absent.)
+**Negative test:** install Proxmox onto the data array instead of the BOSS mirror; boot and data
+then share a controller and lifecycle — the BOSS mirror exists to keep the OS boot device separate
+and redundant.
 
-**Expected results**
+**Cleanup:** on a throwaway lab server only, `racadm storage deletevd` to redo; otherwise keep it.
 
-- A BOSS RAID 1 mirror, Online, ready to receive the OS.
-- A `river` RAID 5 array, Optimal, ready to hold VM storage.
-- A recorded bay-to-array mapping.
+### Lab 2.2 — The `river` RAID-5 data array (Topic: Data array)
 
-**Cleanup**
+**Objective:** Build the RAID-5 array for VM storage.
 
-7. The arrays are the foundation for every later chapter; leave them in
-   place. Nothing to remove.
+```bash
+racadm storage get pdisks -o | grep -iE "Disk.Bay|State|Size" | head
+racadm storage createvd:RAID.Integrated.1-1 -rl r5 -name river \
+  -pdkey:Disk.Bay.0:Enclosure.Internal.0-0:RAID.Integrated.1-1,Disk.Bay.1:Enclosure.Internal.0-0:RAID.Integrated.1-1,Disk.Bay.2:Enclosure.Internal.0-0:RAID.Integrated.1-1
+racadm jobqueue create RAID.Integrated.1-1 -s TIME_NOW
+```
+
+**Expected result:** a RAID-5 virtual disk named `river` across the data disks — RAID-5 gives
+capacity plus single-disk fault tolerance (parity striped across members), the right balance for a
+lab VM datastore where you want usable space and survivability without mirroring's 50% overhead.
+
+**Negative test:** build the data array as RAID-0 for maximum space; one disk failure loses every VM
+— RAID-5 tolerates a single disk failure, which is the point of the `river` array.
+
+**Cleanup:** keep `river` (it is the build's datastore).
+
+### Lab 2.3 — Apply and confirm the storage jobs (Topic: Config jobs)
+
+**Objective:** Commit the pending storage configuration.
+
+```bash
+racadm jobqueue view                      # confirm the RAID jobs completed
+racadm storage get vdisks -o
+```
+
+**Expected result:** both config jobs show completed, and `get vdisks` lists the BOSS mirror and
+`river` as ready virtual disks — iDRAC stages storage changes as pending and a job commits them;
+confirming the jobs completed is how you know the arrays are actually built before installing.
+
+**Negative test:** start the Proxmox install before the RAID jobs finish; the target disks are not
+yet presented and the installer sees nothing usable — the config jobs must complete first.
+
+**Cleanup:** none.
+
+### Lab 2.4 — Verify the presented virtual disks (Topic: Verification)
+
+**Objective:** Confirm exactly two targets: boot mirror and `river`.
+
+```bash
+racadm storage get vdisks -o | grep -iE "Name|Layout|Size|State"
+# Expect: a RAID-1 boot VD (BOSS) and a RAID-5 VD named 'river', both Optimal/Ready.
+```
+
+**Expected result:** two optimal virtual disks — the small RAID-1 BOSS boot mirror and the large
+RAID-5 `river` array — matching the build plan, so the install (Chapter 03) targets the boot mirror
+and the VM storage (Chapter 06) uses `river`.
+
+**Negative test:** proceed with a virtual disk in a degraded/rebuilding state; performance and
+resilience are compromised from day one — both VDs should be Optimal before building on them.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

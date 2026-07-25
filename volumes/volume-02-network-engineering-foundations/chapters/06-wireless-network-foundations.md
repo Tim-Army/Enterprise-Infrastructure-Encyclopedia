@@ -357,151 +357,95 @@ healthy.
 
 ## Hands-On Lab
 
-**Objective.** Construct and decode synthetic 802.11 management frames to
-observe the beacon/probe/association sequence directly, and calculate free
-space path loss to quantify the coverage trade-off between 2.4 GHz, 5 GHz,
-and 6 GHz — reproducible entirely in software, without wireless hardware.
+This chapter carries a topic-level walkthrough lab for **each wireless foundation** — RF bands and
+channels, SSID/security, coverage/capacity design, and wireless troubleshooting. Where a Wi-Fi
+adapter exists, labs use `iw`; otherwise they are reasoning exercises. Each ends **`**Lab verified
+by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.4** — a Linux host with a Wi-Fi adapter and `iw`/`iwlist` for
+the runnable steps (a wired-only host can still work the design reasoning). **Cost:** none.
 
-- A Linux, macOS, or Windows host with `python3`.
-- `scapy` and `tshark` (Wireshark CLI) installed:
+### Lab 6.1 — RF bands and channels (Topic: Wireless fundamentals)
 
-  ```bash
-  python3 -m venv ~/wifi-lab-venv
-  source ~/wifi-lab-venv/bin/activate
-  pip install scapy
-  # tshark: sudo apt-get install -y tshark   (Debian/Ubuntu)
-  ```
-
-**Lab Steps**
-
-1. Craft a synthetic Beacon frame advertising a lab SSID on channel 6
-   (2.4 GHz) and write it to a pcap file:
-
-   ```bash
-   python3 - <<'PYEOF'
-   from scapy.all import RadioTap, Dot11, Dot11Beacon, Dot11Elt, wrpcap
-
-   frame = (
-       RadioTap()
-       / Dot11(type=0, subtype=8, addr1="ff:ff:ff:ff:ff:ff",
-               addr2="02:00:00:00:00:01", addr3="02:00:00:00:00:01")
-       / Dot11Beacon(cap="ESS")
-       / Dot11Elt(ID="SSID", info="LAB-WLAN")
-       / Dot11Elt(ID="DSset", info=bytes([6]))
-   )
-   wrpcap("/tmp/wifi-lab.pcap", [frame])
-   print("Beacon frame written to /tmp/wifi-lab.pcap")
-   PYEOF
-   ```
-
-2. Decode the frame with `tshark` and confirm it is recognized as a
-   management-type beacon on the expected channel:
-
-   ```bash
-   tshark -r /tmp/wifi-lab.pcap -V | grep -E "SSID|Type/Subtype|DS Parameter"
-   ```
-
-   **Expected result:** the decode shows `Type/Subtype: Beacon frame
-   (0x0008)`, `SSID parameter set: LAB-WLAN`, and `Current Channel: 6` —
-   confirming the frame matches the management-frame structure described
-   in this chapter's theory section.
-
-3. Extend the capture with a Probe Request, Probe Response, Association
-   Request, and Association Response to reproduce the full association
-   sequence from the chapter:
-
-   ```bash
-   python3 - <<'PYEOF'
-   from scapy.all import (RadioTap, Dot11, Dot11ProbeReq, Dot11ProbeResp,
-                           Dot11AssoReq, Dot11AssoResp, Dot11Elt, rdpcap, wrpcap)
-
-   client = "02:00:00:00:00:02"
-   ap = "02:00:00:00:00:01"
-
-   probe_req = (RadioTap() / Dot11(type=0, subtype=4, addr1=ap, addr2=client, addr3=ap)
-                / Dot11ProbeReq() / Dot11Elt(ID="SSID", info="LAB-WLAN"))
-   probe_resp = (RadioTap() / Dot11(type=0, subtype=5, addr1=client, addr2=ap, addr3=ap)
-                 / Dot11ProbeResp(cap="ESS") / Dot11Elt(ID="SSID", info="LAB-WLAN"))
-   assoc_req = (RadioTap() / Dot11(type=0, subtype=0, addr1=ap, addr2=client, addr3=ap)
-                / Dot11AssoReq() / Dot11Elt(ID="SSID", info="LAB-WLAN"))
-   assoc_resp = (RadioTap() / Dot11(type=0, subtype=1, addr1=client, addr2=ap, addr3=ap)
-                 / Dot11AssoResp(status=0))
-
-   existing = rdpcap("/tmp/wifi-lab.pcap")
-   wrpcap("/tmp/wifi-lab.pcap", existing + [probe_req, probe_resp, assoc_req, assoc_resp])
-   print("Association sequence appended.")
-   PYEOF
-
-   tshark -r /tmp/wifi-lab.pcap -T fields -e frame.number -e wlan.fc.type_subtype
-   ```
-
-   **Expected result:** five frames in order — subtype `0x08` (Beacon),
-   `0x04` (Probe Request), `0x05` (Probe Response), `0x00` (Association
-   Request), `0x01` (Association Response) — matching the theory section's
-   association sequence.
-
-4. Calculate free space path loss and estimated RSSI at increasing
-   distances for 2.4 GHz, 5 GHz, and 6 GHz to quantify the coverage
-   trade-off from this chapter's RF fundamentals section:
-
-   ```bash
-   python3 - <<'PYEOF'
-   import math
-
-   def fspl_db(distance_m, freq_mhz):
-       # FSPL(dB) = 20*log10(d_km) + 20*log10(f_MHz) + 32.44
-       d_km = distance_m / 1000
-       return 20 * math.log10(d_km) + 20 * math.log10(freq_mhz) + 32.44
-
-   TX_EIRP_DBM = 20  # typical enterprise AP EIRP
-   bands = {"2.4 GHz": 2437, "5 GHz": 5200, "6 GHz": 6115}
-
-   for distance in (10, 30, 60):
-       print(f"--- Distance: {distance} m ---")
-       for band, freq in bands.items():
-           loss = fspl_db(distance, freq)
-           rssi = TX_EIRP_DBM - loss
-           print(f"  {band}: FSPL={loss:.1f} dB  estimated RSSI={rssi:.1f} dBm")
-   PYEOF
-   ```
-
-   **Expected result:** at every distance, 6 GHz shows the highest path
-   loss (weakest estimated RSSI) and 2.4 GHz the lowest, confirming that
-   higher-frequency bands attenuate faster over distance — the physical
-   reason 6 GHz deployments require higher AP density than 2.4/5 GHz for
-   equivalent coverage.
-
-**Negative Test**
-
-Recompute step 4 at 100 meters and compare the 6 GHz result against a
-typical enterprise receiver sensitivity threshold of −70 dBm for reliable
-data throughput:
+**Objective:** Read the available bands and channels.
 
 ```bash
-python3 -c "
-import math
-d_km = 100/1000
-loss = 20*math.log10(d_km) + 20*math.log10(6115) + 32.44
-rssi = 20 - loss
-print(f'6 GHz RSSI at 100m: {rssi:.1f} dBm')
-print('Link viable for data' if rssi > -70 else 'Link budget deficit: below reliable threshold')
-"
+iw list 2>/dev/null | grep -iE "Band|MHz" | head -30 || \
+  echo "2.4 GHz: channels 1/6/11 non-overlapping; 5 GHz: many 20/40/80 MHz channels; 6 GHz: Wi-Fi 6E"
+iw dev 2>/dev/null | grep -iE "Interface|channel"
 ```
 
-**Expected result:** the estimated RSSI falls below −70 dBm, printing
-"Link budget deficit" — demonstrating in calculation what the design
-section states in prose: 6 GHz cells must be smaller (denser AP placement)
-than 2.4/5 GHz cells to deliver the same reliability at range.
+**Expected result:** the adapter's supported bands and channels — Wi-Fi uses the 2.4 GHz (few
+non-overlapping channels: 1/6/11), 5 GHz (many channels, wider bonding), and 6 GHz (Wi-Fi 6E) bands;
+channel choice and width trade range against throughput and interference.
 
-**Cleanup**
+**Negative test:** deploy adjacent 2.4 GHz APs on overlapping channels (e.g. 1 and 3); they interfere
+and throughput collapses — only 1/6/11 are non-overlapping in 2.4 GHz, which is a core RF-planning
+constraint.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.2 — SSID and security (Topic: Wireless security)
+
+**Objective:** Scan for networks and read their security.
 
 ```bash
-rm -f /tmp/wifi-lab.pcap
-deactivate
-rm -rf ~/wifi-lab-venv
+sudo iw dev wlan0 scan 2>/dev/null | grep -iE "SSID|signal|RSN|WPA|WPS" | head -20 || \
+  echo "security tiers: Open (none) < WPA2-PSK < WPA2-Enterprise (802.1X) < WPA3"
 ```
+
+**Expected result:** nearby SSIDs with signal strength and their security (WPA2/WPA3, PSK vs
+Enterprise) — an SSID names a wireless network, and its security determines confidentiality:
+WPA2/WPA3 encrypt, Enterprise (802.1X) adds per-user identity, while Open networks are unencrypted.
+
+**Negative test:** run a corporate WLAN as Open or WEP; traffic is trivially intercepted — WPA2/WPA3
+(Enterprise for corporate) is the baseline, and per-user 802.1X beats a shared PSK for access
+control.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.3 — Coverage and capacity design (Topic: RF design)
+
+**Objective:** Reason about AP placement.
+
+```text
+# Design a WLAN for an office floor:
+#   - coverage: AP spacing/power for signal (RSSI) everywhere, with cell overlap for roaming
+#   - capacity: enough APs/channels for the client density (not just coverage)
+#   - channel plan: non-overlapping channels on adjacent APs to limit co-channel interference
+#   - band steering: push capable clients to 5/6 GHz
+```
+
+**Expected result:** a design balancing **coverage** (signal everywhere) and **capacity** (enough
+airtime for the client count), with a non-overlapping channel plan and overlap for seamless roaming —
+high-density WLANs are capacity-limited, not just coverage-limited, so more APs on well-planned
+channels serve more clients.
+
+**Negative test:** design purely for coverage (few high-power APs) in a dense area; airtime
+contention throttles everyone despite full signal bars — capacity (AP density + channel plan) is what
+serves high client counts.
+
+**Cleanup:** none.
+
+### Lab 6.4 — Wireless troubleshooting (Topic: Wireless troubleshooting)
+
+**Objective:** Diagnose a weak/flaky wireless link.
+
+```bash
+iw dev wlan0 link 2>/dev/null       # associated AP, signal (dBm), tx bitrate
+iw dev wlan0 station dump 2>/dev/null | grep -iE "signal|tx bitrate|rx bitrate" | head
+# Signal guide: > -60 dBm good, -70 marginal, < -80 poor.
+```
+
+**Expected result:** the associated AP, signal level (dBm), and negotiated rate — wireless problems
+are usually RF: low signal (too far / obstruction), interference (co-channel/non-Wi-Fi), or
+capacity (too many clients); the signal and rate tell you which.
+
+**Negative test:** troubleshoot a slow wireless client at L3/L4 first; if the RF signal is -85 dBm the
+problem is coverage, not routing — check the RF link (signal/rate) before the higher layers for
+wireless.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

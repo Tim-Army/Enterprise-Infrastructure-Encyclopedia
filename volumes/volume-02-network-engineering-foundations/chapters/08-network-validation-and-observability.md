@@ -337,142 +337,90 @@ incident cannot be reliably determined from logs alone.
 
 ## Hands-On Lab
 
-**Objective.** Build a minimal [RFC 5424](https://www.rfc-editor.org/rfc/rfc5424) syslog receiver, generate tagged
-log messages at varying severities, and implement a simple alert
-correlation rule — demonstrating the centralized logging and alert-fatigue
-concepts from this chapter end to end.
+This chapter carries a topic-level walkthrough lab for **each validation/observability skill** —
+connectivity testing, packet capture, performance measurement, and flow/SNMP monitoring. Labs use
+standard diagnostic tools. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.4** — a Linux host with `ping`/`traceroute`/`mtr`, `tcpdump`,
+`iperf3`, and `snmpwalk` where a device is available; `sudo` for capture. **Cost:** none.
 
-- A Linux host with `python3` (standard library only — no external
-  packages required).
-- The `logger` utility (part of `util-linux`/`bsdutils`, present on
-  virtually all Linux distributions) with [RFC 5424](https://www.rfc-editor.org/rfc/rfc5424) and UDP support.
-  Confirm support first:
+### Lab 8.1 — Connectivity and path testing (Topic: Reachability)
 
-  ```bash
-  logger --help 2>&1 | grep -E "rfc5424|udp" || echo "Fallback sender required — see step 2 note."
-  ```
-
-**Lab Steps**
-
-1. Write a minimal UDP syslog receiver that parses the [RFC 5424](https://www.rfc-editor.org/rfc/rfc5424) PRI field
-   (facility/severity) and prints a human-readable summary:
-
-   ```bash
-   cat <<'PYEOF' > /tmp/syslog_receiver.py
-   import re
-   import socket
-   import sys
-   from datetime import datetime
-
-   SEVERITY_NAMES = ["Emergency", "Alert", "Critical", "Error",
-                      "Warning", "Notice", "Informational", "Debug"]
-
-   PRI_RE = re.compile(r"^<(\d+)>")
-
-   def parse(message: str):
-       match = PRI_RE.match(message)
-       if not match:
-           return None
-       pri = int(match.group(1))
-       facility, severity = divmod(pri, 8)
-       return facility, severity, message[match.end():].strip()
-
-   sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-   sock.bind(("127.0.0.1", 1514))
-   print("Syslog receiver listening on 127.0.0.1:1514 (Ctrl+C to stop)")
-
-   recent_errors = []
-   while True:
-       data, _ = sock.recvfrom(4096)
-       text = data.decode(errors="replace")
-       parsed = parse(text)
-       now = datetime.now()
-       if parsed is None:
-           print(f"[UNPARSEABLE] raw message: {text!r}")
-           continue
-       facility, severity, body = parsed
-       sev_name = SEVERITY_NAMES[severity] if severity < 8 else "Unknown"
-       print(f"[{sev_name}] facility={facility} :: {body}")
-       if severity <= 3:  # Error or more severe
-           recent_errors.append(now)
-           recent_errors[:] = [t for t in recent_errors if (now - t).total_seconds() <= 10]
-           if len(recent_errors) >= 3:
-               print(f"  !! ALERT: {len(recent_errors)} error-or-higher messages within 10 seconds")
-   PYEOF
-   python3 /tmp/syslog_receiver.py &
-   RECEIVER_PID=$!
-   sleep 1
-   ```
-
-2. Send a single tagged message and confirm the receiver decodes severity
-   and facility correctly:
-
-   ```bash
-   logger -n 127.0.0.1 -P 1514 -d --rfc5424 -p local0.warning "lab: interface Gi0/1 flapping"
-   sleep 1
-   ```
-
-   If `logger` does not support `--rfc5424`/`-d` on this system, use the
-   fallback sender instead:
-
-   ```bash
-   python3 -c "
-   import socket
-   s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-   s.sendto(b'<132>lab: interface Gi0/1 flapping', ('127.0.0.1', 1514))
-   "
-   ```
-
-   **Expected result:** the receiver prints `[Warning] facility=16 ::
-   lab: interface Gi0/1 flapping` — facility 16 is `local0`, severity 4 is
-   `Warning`, matching the severity table in this chapter's theory section.
-
-3. Generate a burst of three error-severity messages within a few seconds
-   to trigger the correlation rule implemented in the receiver:
-
-   ```bash
-   for i in 1 2 3; do
-     logger -n 127.0.0.1 -P 1514 -d --rfc5424 -p local0.err "lab: BGP neighbor $i down" \
-       || python3 -c "import socket; socket.socket(socket.AF_INET, socket.SOCK_DGRAM).sendto(b'<131>lab: BGP neighbor $i down', ('127.0.0.1', 1514))"
-     sleep 1
-   done
-   ```
-
-   **Expected result:** after the third message, the receiver prints an
-   `ALERT` line — demonstrating, in miniature, the correlation-over-raw-
-   threshold alerting principle from the Design Considerations section:
-   one error is noted individually, but three within ten seconds triggers a
-   distinct, actionable alert.
-
-**Negative Test**
-
-Send a deliberately malformed message with no valid PRI field and confirm
-the receiver flags it rather than crashing:
+**Objective:** Confirm reachability and localize loss.
 
 ```bash
-python3 -c "
-import socket
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.sendto(b'this is not a valid syslog message', ('127.0.0.1', 1514))
-"
-sleep 1
+ping -c4 8.8.8.8 | tail -2                 # reachability + RTT + loss
+mtr -n -c10 --report 8.8.8.8 | head        # per-hop loss/latency over the path
 ```
 
-**Expected result:** the receiver prints `[UNPARSEABLE] raw message: ...`
-and continues running rather than throwing an unhandled exception —
-demonstrating why production log pipelines need defensive parsing:
-malformed or non-conforming messages are a routine occurrence, not an edge
-case, and a pipeline that crashes on one loses every subsequent message
-until restarted.
+**Expected result:** RTT and loss to the destination, plus a per-hop breakdown from `mtr` that shows
+*where* loss/latency is introduced — `ping` proves reachability and measures RTT/loss; `mtr` combines
+traceroute and ping to localize the degrading hop over many samples.
 
-**Cleanup**
+**Negative test:** judge a path from a single ping; transient loss or a specific bad hop is missed —
+`mtr` over many samples reveals sustained per-hop loss that one ping cannot.
+
+**Cleanup:** none.
+
+### Lab 8.2 — Packet capture and analysis (Topic: Packet capture)
+
+**Objective:** Capture and read traffic for a specific flow.
 
 ```bash
-kill "$RECEIVER_PID" 2>/dev/null || true
-rm -f /tmp/syslog_receiver.py
+sudo tcpdump -i any -w /tmp/cap.pcap 'host 8.8.8.8' -c 50
+tcpdump -r /tmp/cap.pcap -n | head
+sudo tcpdump -i any -c5 'tcp[tcpflags] & tcp-syn != 0'    # capture SYNs (connection starts)
 ```
+
+**Expected result:** a capture filtered to one host, readable per-packet, and a filter isolating TCP
+SYNs — packet capture is the ground truth: when higher-level tools disagree, `tcpdump` (or Wireshark,
+Volume XX) shows exactly what is on the wire, filtered to the flow of interest.
+
+**Negative test:** capture with no filter on a busy link; the file is enormous and the relevant
+packets are buried — a capture filter (`host`, `port`, flags) is what makes the capture usable.
+
+**Cleanup:** `rm -f /tmp/cap.pcap`.
+
+### Lab 8.3 — Performance measurement (Topic: Throughput)
+
+**Objective:** Measure achievable bandwidth end to end.
+
+```bash
+# On the server:  iperf3 -s
+# On the client:
+iperf3 -c <server-ip> -t 10 | tail -5
+iperf3 -c <server-ip> -u -b 100M | tail -3     # UDP: test loss/jitter at a target rate
+```
+
+**Expected result:** the achieved TCP throughput (and UDP loss/jitter) between the two hosts —
+`iperf3` measures real end-to-end bandwidth and, in UDP mode, loss and jitter, which validates whether
+a link/path delivers its rated capacity or is constrained.
+
+**Negative test:** infer bandwidth from interface speed (a 1 Gb NIC) alone; the *path* (a slower WAN
+link, congestion, or a duplex mismatch) may deliver much less — `iperf3` measures what the path
+actually delivers.
+
+**Cleanup:** stop the `iperf3 -s` server.
+
+### Lab 8.4 — Flow and device monitoring (Topic: Observability)
+
+**Objective:** Read device counters and flow data.
+
+```bash
+snmpwalk -v2c -c public <device-ip> IF-MIB::ifHCInOctets 2>/dev/null | head || \
+  cat /proc/net/dev | head        # interface byte/packet/error counters (host-local fallback)
+ethtool -S eth0 2>/dev/null | grep -iE "error|drop|discard" | head
+```
+
+**Expected result:** per-interface traffic counters (via SNMP on a device, or `/proc/net/dev`/
+`ethtool -S` locally), including errors/drops — network observability watches interface counters
+(utilization, errors, discards) via SNMP/streaming telemetry and flow records (NetFlow/IPFIX) to see
+utilization and who is talking to whom over time.
+
+**Negative test:** monitor only up/down link state; a link that is up but dropping/erroring frames (or
+saturated) degrades traffic while showing "up" — the error/discard and utilization counters reveal it.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

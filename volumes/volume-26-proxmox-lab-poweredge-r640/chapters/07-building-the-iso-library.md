@@ -208,50 +208,92 @@ media.
 
 ## Hands-On Lab
 
-**Objective:** Assemble the nine-image library in the `river` ISO
-repository, verifying each image and noting the appliances and the licensed
-images.
+This chapter carries a topic-level walkthrough lab for **each step of building the ISO/image
+library** — downloading install media, verifying integrity, listing it in Proxmox, and preparing
+cloud images for templates. Commands are runnable. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites:** The ISO repository on `river` from
-[Chapter 06](06-proxmox-storage-the-river-datastore-and-iso-repository.md),
-and access to the appropriate download/entitlement sources.
+**Shared prerequisites for Labs 7.1–7.4** — a Proxmox node with the `riverfiles` (iso-content)
+storage from Chapter 06, internet access, and root SSH. **Cost:** none.
 
-**Reproducible to the extent your entitlements allow.** The free images are
-fully reproducible; the licensed ones require your own CML, RHEL, and Windows
-access.
+### Lab 7.1 — Download install ISOs (Topic: Install media)
 
-**Procedure**
+**Objective:** Populate the ISO storage.
 
-1. Download the free images (Ubuntu Desktop, Ubuntu Server, EVE-ng, GNS3)
-   from their official sources and verify each checksum.
-2. Obtain RHEL through your Red Hat account (developer subscription) and note
-   that one image serves both the desktop and server machines.
-3. Obtain the Windows 11 and Windows Server evaluation ISOs from Microsoft
-   and verify them.
-4. Obtain Cisco CML through your Cisco entitlement — recognizing there is no
-   free download.
-5. Place the installer ISOs in `river`'s `template/iso/` path, confirm
-   `pvesm list river-iso` shows them, and note GNS3/EVE-ng as appliances to
-   import in Chapter 08.
+```bash
+cd /river/template/iso
+wget -q https://releases.ubuntu.com/24.04/ubuntu-24.04-live-server-amd64.iso
+# (Proxmox GUI: Datacenter > riverfiles > ISO Images > Download from URL does the same.)
+pvesm list riverfiles --content iso
+```
 
-**Negative test**
+**Expected result:** the ISO lands in the `iso`-content storage and appears in `pvesm list` — the
+ISO library holds the OS install media the VMs boot from; storing it on the `river` array's directory
+storage keeps it available to every VM without re-downloading.
 
-6. Alter one byte of a downloaded ISO (a copy, not the original) and re-run
-   its checksum; confirm it no longer matches the publisher's value —
-   demonstrating that verification catches corruption before an image
-   becomes a VM. Discard the altered copy.
+**Negative test:** point a VM at an ISO that is not in an `iso`-content storage; Proxmox will not
+offer it as a CD/DVD source — install media must live in an `iso`-capable storage.
 
-**Expected results**
+**Cleanup:** remove unused ISOs to reclaim space.
 
-- All nine images accounted for, each obtained through a legitimate source.
-- Every image checksum-verified.
-- Installer ISOs visible in the `river-iso` repository; appliances noted for
-  import.
+### Lab 7.2 — Verify ISO integrity (Topic: Integrity)
 
-**Cleanup**
+**Objective:** Confirm the download is authentic and complete.
 
-7. Keep the verified library in place; Chapter 08 builds every VM from it.
-   Remove any altered test copies from the negative test.
+```bash
+cd /river/template/iso
+sha256sum ubuntu-24.04-live-server-amd64.iso
+# Compare to the publisher's SHA256SUMS (and verify its GPG signature for authenticity):
+# wget -q https://releases.ubuntu.com/24.04/SHA256SUMS && grep live-server SHA256SUMS
+```
+
+**Expected result:** the ISO's SHA-256 matches the publisher's published value — verifying the hash
+(and ideally the signed SHASUMS file) confirms the media is complete and unaltered before you build
+ten VMs from it; a corrupt ISO causes install failures that look like hardware faults.
+
+**Negative test:** install from an ISO whose hash you never checked; a truncated or tampered image
+fails partway or installs compromised software — verifying integrity first rules that out.
+
+**Cleanup:** none.
+
+### Lab 7.3 — List and manage the library (Topic: Library management)
+
+**Objective:** Inventory the available media.
+
+```bash
+pvesm list riverfiles
+pvesm list riverfiles --content iso | awk '{print $1, $4}'    # volid + size
+```
+
+**Expected result:** a listed inventory of ISOs (and later container templates/backups) with their
+volume IDs and sizes — `pvesm list` gives the authoritative inventory of what a storage holds, and
+the volid (`riverfiles:iso/ubuntu-24.04...iso`) is how VMs reference the media.
+
+**Negative test:** reference an ISO by a guessed path instead of its Proxmox volid; the VM config is
+invalid — Proxmox addresses media by `storage:content/name` volid, which `pvesm list` gives you.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.4 — Cloud images for templates (Topic: Cloud images)
+
+**Objective:** Stage a cloud image for fast VM cloning.
+
+```bash
+cd /river/template/cache
+wget -q https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
+# This qcow2 cloud image becomes a cloud-init template in Chapter 08 (imported as a VM disk).
+ls -lh noble-server-cloudimg-amd64.img
+```
+
+**Expected result:** a downloaded Ubuntu cloud image (qcow2) ready to import — cloud images are
+pre-installed, cloud-init-ready disk images, so instead of running the installer for each of the ten
+VMs, you import one cloud image, make it a template, and clone it (Chapter 08), which is far faster
+and consistent.
+
+**Negative test:** install all ten VMs from the full ISO one by one; it is slow and inconsistent — a
+cloud-init template cloned ten times is the efficient, repeatable approach.
+
+**Cleanup:** none (the image is used in Chapter 08).
 
 ## Lab Verification
 

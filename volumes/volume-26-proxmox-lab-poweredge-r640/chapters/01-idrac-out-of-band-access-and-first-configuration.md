@@ -198,51 +198,92 @@ for most "the iDRAC won't come up" cases.
 
 ## Hands-On Lab
 
-**Objective:** Bring the iDRAC up at its assigned static address, reach its
-web interface and virtual console, and confirm the server is healthy and
-has the storage this build requires.
+This chapter carries a topic-level walkthrough lab for **each first-access task on the lab R640's
+iDRAC** — the out-of-band foundation the whole build depends on. Commands are real RACADM/iDRAC
+actions on the specific server. Each ends **`**Lab verified by:** *pending*`** until a human runs
+it.
 
-**Prerequisites:** The physical Dell PowerEdge R640, a cable in the
-dedicated iDRAC port, and a workstation on the 10.30.161.0/24 management
-network. The iDRAC credentials.
+**Shared prerequisites for Labs 1.1–1.4** — the target Dell PowerEdge R640 racked and powered, its
+iDRAC cabled to the management network, and a workstation with SSH and a browser. **Cost:** none.
 
-**This lab requires the physical server.** The iDRAC is hardware; there is
-no substitute for this phase.
+### Lab 1.1 — First iDRAC access and password change (Topic: First access)
 
-**Procedure**
+**Objective:** Log in and secure the controller.
 
-1. Power on the R640 and enter System Setup (F2) → iDRAC Settings →
-   Network. Set NIC Selection to Dedicated, disable DHCP, and set the
-   static address 10.30.161.25, mask 255.255.255.0, gateway 10.30.161.1,
-   DNS 10.30.161.1. Apply.
-2. From your workstation, `ping 10.30.161.25` and confirm it answers.
-3. Browse to `https://10.30.161.25/`, log in, and change the default
-   password if needed. Store the new credentials in a vault.
-4. Launch the virtual console and confirm you can see the server's screen.
-5. From RACADM or the web UI, confirm overall health is OK and that the two
-   BOSS SSDs and the six front drives appear in the physical-disk inventory.
+```bash
+ssh <idrac-ip> -l root        # default password on the pull-out service tag / factory label
+racadm getsysinfo | grep -iE "System Model|Service Tag|iDRAC"
+racadm set iDRAC.Users.2.Password '<strong-password>'    # change the default admin password
+```
 
-**Negative test**
+**Expected result:** `getsysinfo` prints the R640 model, service tag, and iDRAC version, and the
+default password is changed — the iDRAC is the out-of-band controller that will drive storage,
+install, and console for this build, so securing it first is step zero.
 
-6. Temporarily set NIC Selection to the shared LOM (if safe to do so in
-   your environment) and confirm the iDRAC stops answering at 10.30.161.25
-   on the dedicated port — demonstrating that NIC Selection, not just the
-   address, determines reachability. Restore it to Dedicated and confirm
-   the address returns.
+**Negative test:** leave the factory-default iDRAC password; anyone on the management network can
+take over the server's out-of-band controller — changing it is the first hardening step.
 
-**Expected results**
+**Cleanup:** none (keep the new password).
 
-- The iDRAC answers at 10.30.161.25 and the web UI and virtual console
-  open.
-- Overall health is OK.
-- The BOSS SSDs and six front drives are present in the inventory.
-- The default password has been changed and stored.
+### Lab 1.2 — iDRAC management network (Topic: Network configuration)
 
-**Cleanup**
+**Objective:** Give the iDRAC a stable static address.
 
-7. This lab configures the controller rather than producing disposable
-   artifacts; the iDRAC access it establishes is used by every later
-   chapter. Leave NIC Selection on Dedicated.
+```bash
+racadm set iDRAC.IPv4.DHCPEnable Disabled
+racadm set iDRAC.IPv4.Address 192.168.10.10
+racadm set iDRAC.IPv4.Netmask 255.255.255.0
+racadm set iDRAC.IPv4.Gateway 192.168.10.1
+racadm get iDRAC.IPv4.Address
+```
+
+**Expected result:** the iDRAC holds a static management IP — the controller must be reliably
+reachable at a fixed address throughout the build (and afterward for operations), so it is not left
+on DHCP.
+
+**Negative test:** run the build with the iDRAC on DHCP; a lease change mid-install drops your
+console/virtual-media session — a static address keeps out-of-band access stable.
+
+**Cleanup:** none (keep the static address).
+
+### Lab 1.3 — Virtual console and virtual media (Topic: Remote presence)
+
+**Objective:** Prepare the remote install path.
+
+```bash
+racadm set iDRAC.VirtualConsole.Enable Enabled
+racadm get iDRAC.VirtualConsole.Enable
+# GUI: https://192.168.10.10 > Virtual Console (HTML5) launches the server screen;
+#   Virtual Media will mount the Proxmox ISO in Chapter 03.
+```
+
+**Expected result:** the virtual console launches to the server's screen and virtual media is
+available — these are how Proxmox is installed with no monitor or USB stick at the rack; the whole
+OS install (Chapter 03) runs through them.
+
+**Negative test:** plan to install Proxmox by walking a USB stick to the rack; virtual console/media
+do it remotely — for a headless lab server they are the install path.
+
+**Cleanup:** none.
+
+### Lab 1.4 — Server readiness and health (Topic: Operational readiness)
+
+**Objective:** Confirm the server is healthy before building on it.
+
+```bash
+racadm getsensorinfo | grep -iE "System Board|PS Redundancy|Fan" | head
+racadm serveraction powerstatus
+racadm getversion
+```
+
+**Expected result:** healthy sensors, known power state, and current firmware versions (iDRAC/BIOS/
+PERC) — verifying hardware health and firmware before installing avoids building on a faulty PSU,
+fan, or an out-of-date controller that would cause problems later.
+
+**Negative test:** install the OS onto a server with a failing PSU or badly outdated PERC firmware;
+you chase phantom OS issues that are really hardware — a health/firmware check first rules that out.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

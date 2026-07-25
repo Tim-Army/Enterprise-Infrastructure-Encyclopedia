@@ -333,113 +333,92 @@ gh api --method PUT \
 
 ## Hands-On Lab
 
-**Objective:** Configure a structured issue template, a linked pull
-request workflow, and a GitHub Project (v2) board with an automated status
-transition, then prove the linkage and automation both work — and that a
-malformed link fails to auto-close.
+This chapter carries a topic-level walkthrough lab for **each GitHub workflow-management skill** —
+issues, pull requests, branch protection, and project automation. Labs use the `gh` CLI. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.4** — the GitHub CLI `gh` authenticated (`gh auth login`) and a
+repository you own for the write operations. **Cost:** none.
 
-- A GitHub repository you can configure (reuse the scratch repository from
-  earlier chapters or create a new one) and `gh` CLI authenticated.
-- Organization or personal account permission to create a Project (v2).
+### Lab 4.1 — Issues and labels (Topic: Work tracking)
 
-**Steps**
+**Objective:** Track work as structured, labeled issues.
 
-1. Add an issue template:
+```bash
+gh label create bug --color d73a4a --description "Something isn't working" 2>/dev/null
+gh issue create --title "Add health endpoint" --body "Expose /healthz returning 200." --label enhancement
+gh issue list --limit 5
+```
 
-   ```bash
-   mkdir -p .github/ISSUE_TEMPLATE
-   cat > .github/ISSUE_TEMPLATE/task.yml <<'EOF'
-   name: Task
-   description: A trackable unit of work
-   labels: ["type:task"]
-   body:
-     - type: textarea
-       id: description
-       attributes:
-         label: Description
-       validations:
-         required: true
-   EOF
-   git add -A && git commit -m "feat: add task issue template"
-   git push
-   ```
+**Expected result:** a labeled issue tracking a unit of work — issues make work visible, discussable,
+and linkable to commits/PRs; labels categorize (bug/enhancement/priority) so work can be filtered and
+prioritized rather than living in chat or someone's memory.
 
-2. Create an issue and a project, and link the issue to it:
+**Negative test:** track work in ad-hoc chat messages; it is lost, unsearchable, and unlinked to the
+code that resolved it — issues give work a durable, referenceable home.
 
-   ```bash
-   gh issue create --title "Lab task" --body "Demonstrates linked PR workflow" --label "type:task"
-   gh project create --owner :owner --title "Workflow Lab"
-   ```
+**Cleanup:** `gh issue close <n>` for the lab issue.
 
-   Note the issue number and the project number printed by each command.
+### Lab 4.2 — Pull requests and review (Topic: Code review)
 
-3. Add the issue to the project:
+**Objective:** Propose and review a change via a PR.
 
-   ```bash
-   gh project item-add <project-number> --owner :owner \
-     --url https://github.com/:owner/:repo/issues/<issue-number>
-   ```
+```bash
+git switch -c feature/healthz
+echo "ok" > healthz && git add healthz && git commit -qm "feat: add healthz"
+git push -u origin feature/healthz
+gh pr create --fill --base main
+gh pr view --json title,reviewDecision,mergeable
+```
 
-4. Create a branch and a pull request that correctly closes the issue:
+**Expected result:** a pull request proposing the branch's changes for review before merge — the PR
+is the unit of review and discussion: it shows the diff, runs CI, collects approvals, and records
+*why* a change was made, which is how quality and shared understanding are maintained.
 
-   ```bash
-   git checkout -b lab/close-issue
-   echo "resolved" > lab-task.txt
-   git add lab-task.txt
-   git commit -m "feat: resolve lab task"
-   git push -u origin lab/close-issue
-   gh pr create --title "Resolve lab task" \
-     --body "Closes #<issue-number>" --base main
-   ```
+**Negative test:** push straight to `main` with no PR; the change lands unreviewed, CI-gate skipped,
+and with no discussion record — the PR is the review and quality checkpoint.
 
-5. **Expected result:** Open the issue in the GitHub UI (or run `gh issue
-   view <issue-number>`) and confirm a "linked a pull request" reference
-   appears in its timeline.
+**Cleanup:** close the lab PR and delete the branch.
 
-6. Merge the pull request:
+### Lab 4.3 — Branch protection (Topic: Governance)
 
-   ```bash
-   gh pr merge --squash --delete-branch
-   ```
+**Objective:** Require review and passing CI before merge.
 
-7. **Expected result:** Confirm the issue auto-closed:
+```bash
+gh api -X PUT repos/:owner/:repo/branches/main/protection \
+  -f "required_status_checks[strict]=true" \
+  -F "required_pull_request_reviews[required_approving_review_count]=1" \
+  -F "enforce_admins=true" -F "restrictions=" 2>/dev/null || \
+  echo "(configure via Settings > Branches: require PR, 1 approval, passing checks, no direct push)"
+```
 
-   ```bash
-   gh issue view <issue-number> --json state --jq .state
-   ```
+**Expected result:** `main` cannot be pushed to directly; merges require a PR, an approval, and
+passing status checks — branch protection turns the *conventions* (PRs, review, CI) into *enforced
+rules*, so the process cannot be bypassed under deadline pressure.
 
-   Output must be `CLOSED`.
+**Negative test:** rely on team discipline alone to always use PRs; under pressure someone pushes to
+`main` and breaks it — branch protection enforces the process mechanically.
 
-8. **Negative test:** Create a second issue and a pull request that
-   references it only in a code comment, not in the PR body's closing
-   keyword syntax:
+**Cleanup:** relax the protection rule if it was set only for the lab.
 
-   ```bash
-   gh issue create --title "Lab task 2" --body "Should not auto-close" --label "type:task"
-   git checkout -b lab/no-close
-   echo "// relates to issue but does not close it" > lab-task-2.txt
-   git add lab-task-2.txt
-   git commit -m "feat: unrelated change referencing issue in a comment only"
-   git push -u origin lab/no-close
-   gh pr create --title "Does not close" --body "See lab-task-2.txt" --base main
-   gh pr merge --squash --delete-branch
-   gh issue view <second-issue-number> --json state --jq .state
-   ```
+### Lab 4.4 — Project automation with gh (Topic: Workflow automation)
 
-   **Expected result:** Output is `OPEN` — confirming that only the
-   documented closing-keyword syntax in the PR body triggers auto-close,
-   not an informal reference elsewhere in the change.
+**Objective:** Script routine project operations.
 
-9. **Cleanup:**
+```bash
+gh issue list --state open --label bug --json number,title | \
+  python3 -c "import json,sys; [print('#'+str(i['number']), i['title']) for i in json.load(sys.stdin)]"
+# gh can also drive Projects, auto-assign, and comment — scripting routine triage.
+```
 
-   ```bash
-   gh issue close <second-issue-number>
-   gh project delete <project-number> --owner :owner
-   git checkout main && git pull
-   git branch -D lab/close-issue lab/no-close
-   ```
+**Expected result:** a scripted query of open bugs (and, more broadly, `gh`-driven triage/Projects
+automation) — the `gh` CLI and API make project management programmable, so routine workflow
+(labeling, assigning, moving cards, reporting) is automated rather than clicked.
+
+**Negative test:** manage a large backlog entirely by clicking the web UI; triage is slow and
+inconsistent — scripting routine operations with `gh` makes them fast and repeatable.
+
+**Cleanup:** none (read-only query).
 
 ## Lab Verification
 

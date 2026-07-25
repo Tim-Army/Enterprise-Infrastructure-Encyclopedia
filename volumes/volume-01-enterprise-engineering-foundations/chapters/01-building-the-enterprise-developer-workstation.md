@@ -327,97 +327,103 @@ check.
 
 ## Hands-On Lab
 
-**Objective:** Build and validate a minimal, idempotent workstation
-bootstrap that installs Git, configures SSH-based commit signing, and
-verifies the configuration — safely, in a disposable environment.
+This chapter carries a topic-level walkthrough lab for **each part of building the enterprise
+developer workstation** — Git identity, shell/editor consistency, version managers, and toolchain
+verification. Labs use the same open toolchain this encyclopedia is built with. Each ends **`**Lab
+verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 1.1–1.4** — a Linux/macOS workstation with a shell, `git`, and a
+package manager (`apt`/`brew`). **Cost:** none.
 
-- A macOS or Linux machine (or a disposable VM/container you are willing to
-  modify) with `bash`, `curl`, and `git` available.
-- A GitHub account and the GitHub CLI (`gh`) installed and authenticated
-  (`gh auth login`).
+### Lab 1.1 — Git identity and signing (Topic: Version-control identity)
 
-**Steps**
+**Objective:** Configure an attributable, verifiable Git identity.
 
-1. Create a working directory and a minimal manifest:
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --global init.defaultBranch main
+ssh-keygen -t ed25519 -C "you@example.com" -f ~/.ssh/id_ed25519 -N ""   # key for git remotes
+git config --global --list | grep -E "user|init"
+```
 
-   ```bash
-   mkdir -p ~/lab-workstation/dotfiles && cd ~/lab-workstation
-   cat > Brewfile <<'EOF'
-   brew "git"
-   brew "gh"
-   EOF
-   ```
+**Expected result:** every commit is attributed to a real name/email, `main` is the default branch,
+and an SSH key exists for remotes — a consistent Git identity (ideally with commit signing) makes
+history attributable and trustworthy, the foundation of collaborative engineering.
 
-2. Generate a lab-only SSH key (do not reuse a production key):
+**Negative test:** commit with no configured identity; Git either refuses or records a machine-default
+author, and history becomes un-attributable — the identity must be set before the first commit.
 
-   ```bash
-   ssh-keygen -t ed25519 -C "lab-workstation" -f ~/.ssh/id_ed25519_lab -N ""
-   ```
+**Cleanup:** none (keep the identity).
 
-3. Register the key as a signing key on your GitHub account:
+### Lab 1.2 — Consistent shell and editor (Topic: Environment consistency)
 
-   ```bash
-   gh ssh-key add ~/.ssh/id_ed25519_lab.pub --title "lab-workstation-signing" --type signing
-   ```
+**Objective:** Standardize formatting across contributors.
 
-4. Configure a scoped Git identity for this lab only, using
-   `--local` inside a throwaway repository so global settings are untouched:
+```bash
+cat > .editorconfig <<'EOF'
+root = true
+[*]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+EOF
+cat .editorconfig
+```
 
-   ```bash
-   git init ~/lab-workstation/repo && cd ~/lab-workstation/repo
-   git config --local user.name "Lab Engineer"
-   git config --local user.email "lab@example.com"
-   git config --local gpg.format ssh
-   git config --local user.signingkey ~/.ssh/id_ed25519_lab.pub
-   git config --local commit.gpgsign true
-   ```
+**Expected result:** an `.editorconfig` that every compliant editor applies (indent, line endings,
+final newline) — consistent whitespace/line-ending settings across contributors prevent noisy diffs
+and cross-platform (`CRLF` vs `LF`) breakage, so reviews focus on real changes.
 
-5. Make and sign a commit:
+**Negative test:** let each contributor use their own editor defaults; you get diffs full of
+whitespace/line-ending churn that obscure the actual change — `.editorconfig` standardizes it
+mechanically.
 
-   ```bash
-   echo "# Lab" > README.md
-   git add README.md
-   git commit -m "Initial commit"
-   ```
+**Cleanup:** none (keep `.editorconfig`).
 
-6. **Expected result:** Validate the signature:
+### Lab 1.3 — Version managers for reproducible toolchains (Topic: Toolchain management)
 
-   ```bash
-   git log --show-signature -1
-   ```
+**Objective:** Pin language/tool versions per project.
 
-   The output must include `Good "git" signature for ... using ED25519 key`.
+```bash
+# Example with a per-project version file (asdf/mise/pyenv/nvm all follow this pattern):
+echo "python 3.12.4" > .tool-versions
+echo "nodejs 20.14.0" >> .tool-versions
+cat .tool-versions
+# A version manager reads this and provisions exactly these versions for the project.
+```
 
-7. **Negative test:** Temporarily point `user.signingkey` at a key that was
-   never registered with GitHub, and commit again:
+**Expected result:** a `.tool-versions` (or equivalent) pinning the exact language runtimes the
+project needs — version managers make the toolchain reproducible per project, so every contributor
+and CI runner uses identical versions, eliminating "works on my machine."
 
-   ```bash
-   ssh-keygen -t ed25519 -f /tmp/unregistered_key -N ""
-   git config --local user.signingkey /tmp/unregistered_key.pub
-   echo "change" >> README.md
-   git add README.md
-   git commit -m "Unregistered key test"
-   git log --show-signature -1
-   ```
+**Negative test:** rely on whatever language version is installed system-wide; one contributor on a
+newer runtime hits behavior differences CI never saw — a pinned per-project version is what makes
+builds reproducible.
 
-   **Expected result:** Git still creates a local cryptographic signature
-   (local signing does not require host registration), but `gh` and GitHub's
-   web UI will show the commit as **Unverified** because the key is not
-   registered to your account — confirm this by pushing to a scratch
-   repository and checking the commit's badge in the GitHub UI. This
-   demonstrates why key registration, not just local signing, is the control
-   that matters for supply-chain trust.
+**Cleanup:** none.
 
-8. **Cleanup:**
+### Lab 1.4 — Verify the toolchain (Topic: Verification)
 
-   ```bash
-   cd ~ && rm -rf ~/lab-workstation
-   rm -f ~/.ssh/id_ed25519_lab ~/.ssh/id_ed25519_lab.pub /tmp/unregistered_key /tmp/unregistered_key.pub
-   gh ssh-key list   # confirm the lab key's ID, then:
-   gh ssh-key delete <key-id>
-   ```
+**Objective:** Confirm the core tools are present and current.
+
+```bash
+for t in git gh make node python3 pandoc; do
+  printf "%-10s " "$t"; command -v "$t" >/dev/null && "$t" --version 2>/dev/null | head -1 || echo "MISSING";
+done
+```
+
+**Expected result:** each core tool reports a version (or is flagged MISSING) — a documented,
+verified toolchain (`git`, `gh`, `make`, a runtime, and doc tools like `pandoc`) is the workstation
+baseline every later chapter's automation assumes.
+
+**Negative test:** start project work before verifying the toolchain; a missing `pandoc` or `gh`
+surfaces mid-task as a confusing failure — verifying the toolchain up front turns that into a clear,
+early gap.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

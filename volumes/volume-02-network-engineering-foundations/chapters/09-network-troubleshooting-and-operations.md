@@ -404,156 +404,99 @@ section describes, applied rather than only explained.
 
 ## Hands-On Lab
 
-**Objective.** Diagnose and resolve a deliberately injected, single-cause
-network fault using the structured troubleshooting methodology from this
-chapter, in a reproducible Linux network namespace topology combining DNS
-and DHCP from [Chapter 5](05-core-network-services.md).
+This chapter closes the volume with **structured troubleshooting and operations** — a layered method,
+L1/L2 faults, L3 faults, and an integrative capstone. Labs use the diagnostic tools from Chapter 08.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 9.1–9.4** — a Linux host with `iproute2`, `ethtool`, `ping`,
+`traceroute`, `tcpdump`, and `sudo`. **Cost:** none.
 
-- A Linux host with `sudo` access, `iproute2`, `dnsmasq`, `isc-dhcp-client`,
-  and `dnsutils` (`dig`):
+### Lab 9.1 — The layered troubleshooting method (Topic: Methodology)
 
-  ```bash
-  sudo apt-get update && sudo apt-get install -y dnsmasq isc-dhcp-client dnsutils
-  sudo systemctl stop dnsmasq 2>/dev/null || true
-  ```
-
-**Lab Steps**
-
-1. Build the topology: a client namespace and a router namespace running
-   `dnsmasq` for both DHCP and DNS, connected by a veth pair.
-
-   ```bash
-   sudo ip netns add ns-client
-   sudo ip netns add ns-router
-
-   sudo ip link add veth-c type veth peer name veth-cr
-   sudo ip link set veth-c netns ns-client
-   sudo ip link set veth-cr netns ns-router
-
-   sudo ip netns exec ns-router ip addr add 10.95.0.1/24 dev veth-cr
-   sudo ip netns exec ns-router ip link set veth-cr up
-   sudo ip netns exec ns-router ip link set lo up
-   ```
-
-2. Start `dnsmasq` with a **deliberately injected fault**: the DHCP scope
-   correctly hands out an address and gateway, but hands out a DNS server
-   address that nothing is listening on (`10.95.0.53` instead of the
-   router's own address, `10.95.0.1`, where `dnsmasq` is actually serving
-   DNS):
-
-   ```bash
-   sudo ip netns exec ns-router dnsmasq \
-     --interface=veth-cr --bind-interfaces --except-interface=lo \
-     --dhcp-range=10.95.0.100,10.95.0.150,255.255.255.0,12h \
-     --dhcp-option=option:router,10.95.0.1 \
-     --dhcp-option=option:dns-server,10.95.0.53 \
-     --address=/app.lab.internal/10.95.0.1 \
-     --no-resolv --pid-file=/tmp/dnsmasq-ch9.pid --log-facility=/tmp/dnsmasq-ch9.log
-   ```
-
-3. Obtain a lease in the client namespace, then **Step 1 (Define the
-   problem)**: attempt to resolve the lab application name and observe the
-   failure.
-
-   ```bash
-   sudo ip netns exec ns-client dhclient -v veth-c \
-     -pf /tmp/dhclient-ch9.pid -lf /tmp/dhclient-ch9.leases
-   sudo ip netns exec ns-client timeout 5 dig app.lab.internal +short
-   echo "Exit status: $?"
-   ```
-
-   **Expected result:** `dig` returns no answer and times out (non-zero
-   exit status) — the defined problem is "name resolution fails for
-   `app.lab.internal` from the client," not yet "the network is down."
-
-4. **Step 2 (Gather information) and Step 3 (Establish a theory).**
-   Bottom-up: confirm Layer 3 reachability to the gateway first, which
-   narrows the fault away from routing/addressing:
-
-   ```bash
-   sudo ip netns exec ns-client ping -c 3 10.95.0.1
-   sudo ip netns exec ns-client cat /etc/resolv.conf
-   ```
-
-   **Expected result:** the ping to the gateway succeeds (3/3, confirming
-   Layer 3 is healthy), but `/etc/resolv.conf` shows nameserver
-   `10.95.0.53` — the theory is now specific: DHCP handed out a DNS server
-   address that is not actually running DNS.
-
-5. **Step 4 (Test the theory)** by querying the *correct* DNS server
-   directly, bypassing the client's misconfigured resolver:
-
-   ```bash
-   sudo ip netns exec ns-client dig @10.95.0.1 app.lab.internal +short
-   ```
-
-   **Expected result:** this succeeds and returns `10.95.0.1`, confirming
-   the theory — DNS itself works fine; only the DHCP-delivered resolver
-   address is wrong. This is the theory-testing step that prevents a
-   broader, unnecessary fix (such as restarting the client's entire network
-   stack, which would not resolve anything).
-
-6. **Step 5 (Implement the fix), Step 6 (Verify).** Correct the DHCP
-   option and have the client renew its lease:
-
-   ```bash
-   sudo kill "$(cat /tmp/dnsmasq-ch9.pid)"
-   sleep 1
-   sudo ip netns exec ns-router dnsmasq \
-     --interface=veth-cr --bind-interfaces --except-interface=lo \
-     --dhcp-range=10.95.0.100,10.95.0.150,255.255.255.0,12h \
-     --dhcp-option=option:router,10.95.0.1 \
-     --dhcp-option=option:dns-server,10.95.0.1 \
-     --address=/app.lab.internal/10.95.0.1 \
-     --no-resolv --pid-file=/tmp/dnsmasq-ch9.pid --log-facility=/tmp/dnsmasq-ch9.log
-
-   sudo ip netns exec ns-client dhclient -r veth-c \
-     -pf /tmp/dhclient-ch9.pid -lf /tmp/dhclient-ch9.leases
-   sudo ip netns exec ns-client dhclient -v veth-c \
-     -pf /tmp/dhclient-ch9.pid -lf /tmp/dhclient-ch9.leases
-   sudo ip netns exec ns-client dig app.lab.internal +short
-   ```
-
-   **Expected result:** `/etc/resolv.conf` now shows `10.95.0.1`, and
-   `dig app.lab.internal` succeeds without needing the `@10.95.0.1`
-   override — verifying the fix resolved the originally defined problem
-   from step 3, not just a symptom of it.
-
-**Negative Test**
-
-To demonstrate why testing the theory (step 5 above) before implementing a
-broad fix matters, deliberately skip it: with the *original* fault still in
-place (repeat step 2's faulty `dnsmasq` command), "fix" the problem by
-restarting only the client's interface instead of correcting the DHCP
-option:
+**Objective:** Work a fault bottom-up through the layers.
 
 ```bash
-sudo ip netns exec ns-client ip link set veth-c down
-sudo ip netns exec ns-client ip link set veth-c up
-sudo ip netns exec ns-client dhclient -v veth-c \
-  -pf /tmp/dhclient-ch9.pid -lf /tmp/dhclient-ch9.leases
-sudo ip netns exec ns-client dig app.lab.internal +short
-echo "Exit status: $?"
+ip -br link show                     # L1/L2: is the link up? (state UP, carrier)
+ip -br addr show                     # L3: does the interface have the right IP/subnet?
+ip route get <dest>                  # L3: is there a route to the destination?
+ping -c2 <gateway> && ping -c2 <dest>  # L3 reachability: gateway first, then destination
+ss -tan 'dst <dest>'                 # L4: does the connection establish?
 ```
 
-**Expected result:** the problem persists (`dig` still fails) because the
-interface bounce did not address the actual root cause — the DHCP scope
-still hands out the wrong DNS server. This reproduces, concretely, why an
-unverified guess ("maybe cycling the interface will fix it") wastes an
-operational cycle that a five-second theory test (step 5) would have
-avoided entirely.
+**Expected result:** each layer checked in order — link (L1/L2), addressing/route (L3), reachability,
+then transport (L4) — a structured, bottom-up method finds the lowest broken layer first, because a
+fault there makes everything above it fail; fixing the lowest layer often resolves the rest.
 
-**Cleanup**
+**Negative test:** start debugging the application (L7) when the interface is down (L1); you waste
+time above a broken foundation — check the lowest layers first, since higher layers depend on them.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.2 — Physical and Layer-2 faults (Topic: L1/L2 troubleshooting)
+
+**Objective:** Diagnose a link-level problem.
 
 ```bash
-sudo kill "$(cat /tmp/dnsmasq-ch9.pid)" 2>/dev/null || true
-sudo pkill -f "dhclient.*veth-c" 2>/dev/null || true
-sudo ip netns del ns-client 2>/dev/null || true
-sudo ip netns del ns-router 2>/dev/null || true
-rm -f /tmp/dnsmasq-ch9.* /tmp/dhclient-ch9.*
+ethtool eth0 | grep -iE "Speed|Duplex|Link detected"
+ethtool -S eth0 | grep -iE "error|crc|drop" | head
+ip neigh show | grep -iE "FAILED|INCOMPLETE"        # ARP failures (L2 resolution)
 ```
+
+**Expected result:** link state, negotiated speed/duplex, CRC/error counters, and any failed ARP —
+L1/L2 faults show as a down link, a **duplex mismatch** (half/full — causes collisions/CRC errors at
+speed), rising CRC/errors (bad cable/SFP), or failed ARP (peer unreachable at L2).
+
+**Negative test:** chase an intermittent "slow network" at the application when `ethtool -S` shows
+climbing CRC errors and a half-duplex mismatch; the fault is physical (cable/duplex) — the L1/L2
+counters name it.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.3 — Layer-3 faults (Topic: L3 troubleshooting)
+
+**Objective:** Diagnose a routing/addressing problem.
+
+```bash
+ip route get <unreachable-dest>       # is a route selected? via the right next hop?
+ping -c2 <gateway>                    # is the first hop reachable?
+traceroute -n <dest> | head           # where does the path break?
+ip addr show | grep -A1 <iface>       # correct IP/mask? (a wrong mask breaks on-subnet reach)
+```
+
+**Expected result:** the selected route/next-hop, gateway reachability, and the hop where the path
+breaks — L3 faults are usually a missing/wrong route, an unreachable gateway, a wrong subnet mask (so
+the host mis-classifies on- vs off-subnet), or an asymmetric or silently-dropped path that `traceroute`
+localizes.
+
+**Negative test:** assume a reachability failure is DNS or the remote host when `ip route get` shows
+no route (or the wrong next hop); the fault is local routing/addressing — check the route and mask
+before blaming the far end.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.4 — Capstone: end-to-end triage (Topic: Synthesis)
+
+**Objective:** Diagnose "I can't reach the application" methodically, top to bottom of the stack.
+
+```bash
+# Work the layers in order for a real reachability complaint to <app-host>:<port>:
+ip -br link show                             # 1. L1/L2 link up?
+ip -br addr show ; ip route get <app-host>   # 2. L3 address + route present?
+ping -c2 <gateway> ; ping -c2 <app-host>     # 3. L3 reachability (gateway, then host)
+getent hosts <app-host>                      # 4. L7 name resolves? (DNS)
+ss -tan "dst <app-host>" ; nc -vz <app-host> <port>   # 5. L4 port open/established?
+sudo tcpdump -i any -c5 "host <app-host> and port <port>"   # 6. ground truth on the wire
+```
+
+**Expected result:** the fault is localized to one layer — dead link, missing route, unreachable
+gateway, DNS failure, or a blocked/closed port — by walking L1→L7 with the right tool at each step,
+which is the disciplined triage every prior chapter's tools feed into.
+
+**Negative test:** guess at the cause and change things at random (restart the app, reboot, edit DNS)
+without the layered check; you may "fix" the wrong thing or mask the real fault — the method isolates
+the actual broken layer before any change.
+
+**Cleanup:** none (read-only diagnostics).
 
 ## Lab Verification
 

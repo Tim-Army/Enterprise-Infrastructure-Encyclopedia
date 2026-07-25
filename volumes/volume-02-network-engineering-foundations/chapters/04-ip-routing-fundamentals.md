@@ -329,123 +329,90 @@ regardless of AD or metric on a less specific competing route.
 
 ## Hands-On Lab
 
-**Objective.** Build a three-router topology using Linux network
-namespaces and FRRouting (FRR), configure OSPF to dynamically learn routes
-across it, and confirm convergence after a simulated link failure.
+This chapter carries a topic-level walkthrough lab for **each routing skill** — the routing table and
+longest-prefix match, static routes, dynamic routing, and path verification. Labs use `ip route`,
+`traceroute`, and FRR. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.4** — a Linux host with `iproute2` and `traceroute`, `sudo`,
+and (Lab 4.3) FRR (`frr` package) for dynamic routing. **Cost:** none.
 
-- A Linux host with `sudo` access and FRRouting installed
-  (`sudo apt-get install frr frr-pythontools`, or the equivalent for the
-  lab distribution).
-- `iproute2` and familiarity with the namespace conventions from earlier
-  chapters in this volume.
-- Enable the OSPF daemon in FRR's `/etc/frr/daemons` file
-  (`ospfd=yes`) before starting the service, then restart FRR
-  (`sudo systemctl restart frr`).
+### Lab 4.1 — The routing table and longest-prefix match (Topic: Routing table)
 
-**Lab Steps**
-
-1. Create three router namespaces (`r1`, `r2`, `r3`) connected in a line
-   (`r1 - r2 - r3`) with veth pairs, each link on its own `/30`:
-
-   ```bash
-   sudo ip netns add r1
-   sudo ip netns add r2
-   sudo ip netns add r3
-
-   sudo ip link add r1-r2 type veth peer name r2-r1
-   sudo ip link add r2-r3 type veth peer name r3-r2
-   sudo ip link set r1-r2 netns r1
-   sudo ip link set r2-r1 netns r2
-   sudo ip link set r2-r3 netns r2
-   sudo ip link set r3-r2 netns r3
-
-   sudo ip netns exec r1 ip addr add 10.0.12.1/30 dev r1-r2
-   sudo ip netns exec r2 ip addr add 10.0.12.2/30 dev r2-r1
-   sudo ip netns exec r2 ip addr add 10.0.23.1/30 dev r2-r3
-   sudo ip netns exec r3 ip addr add 10.0.23.2/30 dev r3-r2
-
-   for ns in r1 r2 r3; do
-     sudo ip netns exec $ns ip link set r1-r2 up 2>/dev/null
-     sudo ip netns exec $ns ip link set r2-r1 up 2>/dev/null
-     sudo ip netns exec $ns ip link set r2-r3 up 2>/dev/null
-     sudo ip netns exec $ns ip link set r3-r2 up 2>/dev/null
-     sudo ip netns exec $ns ip link set lo up
-   done
-   ```
-
-2. Give `r1` and `r3` each a simulated loopback "LAN" address to advertise:
-
-   ```bash
-   sudo ip netns exec r1 ip addr add 192.168.1.1/32 dev lo
-   sudo ip netns exec r3 ip addr add 192.168.3.1/32 dev lo
-   ```
-
-3. Start an isolated FRR instance per namespace and configure OSPF on
-   each, advertising all connected interfaces into Area 0:
-
-   ```bash
-   for r in r1 r2 r3; do
-     sudo ip netns exec $r /usr/lib/frr/zebra -d -N $r
-     sudo ip netns exec $r /usr/lib/frr/ospfd -d -N $r
-   done
-
-   sudo vtysh -N r1 -c "configure terminal" \
-     -c "router ospf" -c "network 10.0.12.0/30 area 0" \
-     -c "network 192.168.1.1/32 area 0"
-
-   sudo vtysh -N r2 -c "configure terminal" \
-     -c "router ospf" -c "network 10.0.12.0/30 area 0" \
-     -c "network 10.0.23.0/30 area 0"
-
-   sudo vtysh -N r3 -c "configure terminal" \
-     -c "router ospf" -c "network 10.0.23.0/30 area 0" \
-     -c "network 192.168.3.1/32 area 0"
-   ```
-
-4. Confirm OSPF neighbor adjacencies form and routes are learned
-   dynamically end to end:
-
-   ```bash
-   sudo vtysh -N r2 -c "show ip ospf neighbor"
-   sudo vtysh -N r1 -c "show ip route ospf"
-   sudo ip netns exec r1 ping -c 3 192.168.3.1
-   ```
-
-   **Expected result:** `show ip ospf neighbor` on `r2` lists both `r1` and
-   `r3` in state `Full`; `show ip route ospf` on `r1` shows
-   `192.168.3.1/32` learned via `r2`; the ping from `r1` to `r3`'s
-   loopback succeeds with 0% packet loss, confirming end-to-end dynamic
-   routing across a router `r1` never has a direct link to.
-
-**Negative Test**
-
-Simulate a link failure between `r1` and `r2` (the only path to `r3`) and
-confirm OSPF withdraws the route and reachability fails cleanly rather than
-silently:
+**Objective:** Read how the host chooses an egress.
 
 ```bash
-sudo ip netns exec r1 ip link set r1-r2 down
-sleep 5
-sudo vtysh -N r1 -c "show ip route ospf"
-sudo ip netns exec r1 ping -c 3 -W 1 192.168.3.1
+ip route show
+ip route get 8.8.8.8            # shows which route the kernel selects for this destination
+ip route get 192.168.10.20     # a directly-connected destination
 ```
 
-**Expected result:** `show ip route ospf` on `r1` no longer lists
-`192.168.3.1/32`; the subsequent ping fails immediately with
-"Network is unreachable" rather than timing out, confirming OSPF correctly
-withdrew the now-unreachable route instead of leaving a stale forwarding
-entry.
+**Expected result:** `ip route get` returns the specific route chosen for each destination — the
+router/host forwards by **longest-prefix match**: the most specific matching route wins (a /32 beats
+a /24 beats the /0 default), which `ip route get` resolves for any destination.
 
-**Cleanup**
+**Negative test:** assume the default route handles a destination that also matches a more specific
+route; the specific route wins — longest-prefix match, not route order, decides forwarding.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.2 — Static routes (Topic: Static routing)
+
+**Objective:** Add a route to a remote subnet.
 
 ```bash
-for r in r1 r2 r3; do
-  sudo pkill -f "N $r" 2>/dev/null
-  sudo ip netns del $r
-done
+sudo ip route add 192.168.50.0/24 via 192.168.10.1 dev eth0
+ip route get 192.168.50.10       # confirm it uses the new route
+sudo ip route add default via 192.168.10.1   # the default/gateway of last resort
 ```
+
+**Expected result:** traffic to `192.168.50.0/24` routes via the specified next hop, and a default
+route catches everything else — static routes explicitly map a destination prefix to a next hop; the
+default route (`0.0.0.0/0`) is the catch-all when no more-specific route matches.
+
+**Negative test:** add a route via a next hop that is not on a directly-connected subnet; the kernel
+rejects it ("nexthop has invalid gateway") — the next hop must be reachable on a connected interface.
+
+**Cleanup:** `sudo ip route del 192.168.50.0/24; sudo ip route del default via 192.168.10.1`.
+
+### Lab 4.3 — Dynamic routing with OSPF (Topic: Dynamic routing)
+
+**Objective:** Advertise and learn routes automatically.
+
+```bash
+sudo systemctl enable --now frr
+sudo vtysh -c 'configure terminal' -c 'router ospf' -c 'network 192.168.10.0/24 area 0' -c 'end'
+sudo vtysh -c 'show ip ospf neighbor'
+sudo vtysh -c 'show ip route ospf'
+```
+
+**Expected result:** OSPF forms a neighbor adjacency and installs learned routes automatically — a
+dynamic routing protocol (OSPF/IS-IS/BGP) exchanges reachability so routes adapt to topology changes
+without manual edits; `show ip ospf neighbor` in `Full` state confirms the adjacency.
+
+**Negative test:** rely on static routes across a large or changing network; every topology change
+means manual edits on every router — dynamic routing propagates changes automatically, which static
+routing cannot.
+
+**Cleanup:** `sudo vtysh -c 'configure terminal' -c 'no router ospf' -c 'end'`.
+
+### Lab 4.4 — Verify the path (Topic: Path verification)
+
+**Objective:** Trace the actual forwarding path.
+
+```bash
+traceroute -n 8.8.8.8 | head
+mtr -n -c5 --report 8.8.8.8 2>/dev/null | head    # per-hop loss/latency over time
+```
+
+**Expected result:** the ordered list of hops (routers) the packet traverses, with per-hop latency —
+`traceroute` reveals the actual path (each hop decrements TTL, and the expiring router replies), and
+`mtr` adds per-hop loss/latency, which localizes where a path degrades.
+
+**Negative test:** conclude "the destination is down" from a failed connection without a traceroute;
+the trace may show the packet dies at an intermediate hop (a routing/firewall issue), not the
+destination — the path trace localizes the failure.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

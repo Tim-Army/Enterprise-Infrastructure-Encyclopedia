@@ -212,50 +212,116 @@ first.
 
 ## Hands-On Lab
 
-**Objective:** Configure the split network — management on port 0, a
-VLAN-aware trunk bridge on port 1 carrying VLANs 3, 6, 10, 200, 202 — and
-verify management reachability and the bridge's VLANs.
+This chapter carries a topic-level walkthrough lab for **each networking step** — the management
+bridge, a VLAN-aware trunk, per-VLAN bridges, and verification. Proxmox networking is `ifupdown2`
+config in `/etc/network/interfaces`. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
 
-**Prerequisites:** The updated Proxmox node from
-[Chapter 04](04-no-subscription-repository-updates-and-core-services.md), two
-NICs cabled (port 0 to the management network, port 1 to a switchport
-trunking the same VLANs), and iDRAC console access as the recovery path.
+**Shared prerequisites for Labs 5.1–5.4** — a Proxmox node (Chapter 03) with its NIC(s) cabled to a
+switch trunk carrying the lab VLANs, and root SSH. **Safety:** network edits can drop your session
+— have iDRAC console as a fallback. **Cost:** none.
 
-**The Proxmox side is reproducible on any two-NIC host;** the switchport
-trunk requires a managed switch configured to match.
+### Lab 5.1 — The management bridge vmbr0 (Topic: Management network)
 
-**Procedure**
+**Objective:** Confirm/define the Linux bridge carrying management + VMs.
 
-1. Configure port 0 as the management interface with address 10.30.161.10/24,
-   gateway 10.30.161.1, DNS 10.30.161.1.
-2. Configure port 1 as a manual interface (no IP) and build a VLAN-aware
-   bridge `vmbr1` over it with `bridge-vids 3 6 10 200 202`.
-3. Apply the configuration and confirm the web UI/SSH is still reachable on
-   10.30.161.10 (use the iDRAC console if it is not).
-4. Confirm the bridge is VLAN-aware and lists VLAN 3 among its VIDs with
-   `bridge vlan show`.
-5. Confirm the matching switchport trunks the same VLANs.
+```bash
+cat /etc/network/interfaces        # installer created vmbr0 on the mgmt NIC
+ip -br addr show vmbr0
+```
 
-**Negative test**
+```text
+# vmbr0 in /etc/network/interfaces (bridge over the management NIC):
+auto vmbr0
+iface vmbr0 inet static
+    address 192.168.10.20/24
+    gateway 192.168.10.1
+    bridge-ports eno1
+    bridge-stp off
+    bridge-fd 0
+```
 
-6. Remove VLAN 3 from `bridge-vids` (leaving 6, 10, 200, 202 — the original
-   erroneous list), apply, and later in [Chapter 08](08-deploying-the-virtual-machines.md)
-   a server VM on VLAN 3 will be unable to reach its gateway. For now,
-   confirm `bridge vlan show` no longer lists 3, then restore VLAN 3 and
-   confirm it returns — demonstrating the silent-drop the correction
-   prevents.
+**Expected result:** `vmbr0` is a Linux bridge holding the node's management IP with a physical NIC
+enslaved — in Proxmox a **bridge** (`vmbrN`) is the virtual switch VMs attach to; `vmbr0` typically
+carries both node management and VM traffic on the untagged/native VLAN.
 
-**Expected results**
+**Negative test:** put the management IP directly on the physical NIC (`eno1`) instead of the bridge;
+VMs then have no virtual switch to attach to — the bridge is what lets VMs share the physical uplink.
 
-- Management reachable on 10.30.161.10 on port 0.
-- A VLAN-aware bridge `vmbr1` on the port 1 trunk carrying VLANs 3, 6, 10,
-  200, 202.
-- Confirmation that VLAN 3 is present, so server VMs will work.
+**Cleanup:** none (vmbr0 is required).
 
-**Cleanup**
+### Lab 5.2 — VLAN-aware bridge and trunk (Topic: VLAN trunk)
 
-7. Leave VLAN 3 in the allow-list and the management interface on port 0 —
-   this is the network every VM in Chapter 08 depends on.
+**Objective:** Make one bridge carry many VLANs.
+
+```text
+# Make vmbr0 VLAN-aware so a VM's NIC can specify any VLAN tag on the trunk:
+auto vmbr0
+iface vmbr0 inet static
+    address 192.168.10.20/24
+    gateway 192.168.10.1
+    bridge-ports eno1
+    bridge-vlan-aware yes
+    bridge-vids 2-4094
+```
+
+```bash
+ifreload -a
+bridge vlan show | head        # confirms VLANs allowed on the bridge/ports
+```
+
+**Expected result:** `vmbr0` is VLAN-aware and the switch-side trunk carries VIDs 2–4094, so a VM
+NIC set to "VLAN tag 30" lands on VLAN 30 — a VLAN-aware bridge lets one physical trunk serve many
+VLANs to VMs, set per-VM-NIC, instead of a separate bridge per VLAN.
+
+**Negative test:** set a VM NIC to a VLAN tag while the bridge is not VLAN-aware and the switch port
+is an access port; the tag is ignored or dropped — the bridge must be VLAN-aware and the switch port
+a trunk carrying that VID.
+
+**Cleanup:** none.
+
+### Lab 5.3 — Per-VLAN bridges or subinterfaces (Topic: Network segmentation)
+
+**Objective:** Give the node an IP on a second VLAN (e.g. storage/backup).
+
+```text
+# A VLAN subinterface on the trunk for node traffic on VLAN 20 (e.g. backup network):
+auto vmbr0.20
+iface vmbr0.20 inet static
+    address 192.168.20.20/24
+# (Alternatively, a dedicated bridge vmbr1 on a separate NIC for isolation.)
+```
+
+**Expected result:** the node gains an IP on VLAN 20 via a `vmbr0.20` subinterface — you segment
+node/VM traffic across VLANs either with a VLAN-aware bridge (per-VM tags) or with VLAN
+subinterfaces/dedicated bridges for the node's own traffic (management, storage, backup).
+
+**Negative test:** run management, VM, storage, and backup traffic all untagged on one VLAN; a
+broadcast storm or a noisy VM degrades management/storage — VLAN segmentation isolates these traffic
+classes.
+
+**Cleanup:** remove the lab subinterface if added only for the exercise.
+
+### Lab 5.4 — Verify networking (Topic: Verification)
+
+**Objective:** Confirm bridges, VLANs, and reachability.
+
+```bash
+ip -br link show type bridge
+bridge vlan show
+ping -c2 192.168.10.1                       # gateway on mgmt VLAN
+ping -c2 -I vmbr0.20 192.168.20.1 2>/dev/null   # gateway on VLAN 20 (if configured)
+```
+
+**Expected result:** the bridges are up, the expected VLANs are allowed, and gateways on each VLAN
+respond — verifying connectivity per VLAN before deploying VMs ensures a VM placed on VLAN 30 will
+actually reach its gateway, rather than discovering the trunk is misconfigured after the VM is built.
+
+**Negative test:** deploy VMs onto a VLAN whose trunk was never verified; they have no gateway and
+you debug the VM when the fault is the switch trunk — verify each VLAN's reachability from the node
+first.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

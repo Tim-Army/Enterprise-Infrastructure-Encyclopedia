@@ -358,150 +358,99 @@ check (or an actual failure event) reveals.
 
 ## Hands-On Lab
 
-**Objective.** Build a VRRP-protected default gateway across two router
-namespaces sharing a Linux bridge, validate normal Master/Backup election
-and end-to-end reachability, then induce a controlled failure and measure
-failover.
+This chapter carries a topic-level walkthrough lab for **each enterprise-design theme** —
+hierarchical design, first-hop and path redundancy, segmentation, and a design exercise. These are
+design-and-reasoning labs; the deliverable is a defensible design. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.4** — a place to sketch/write designs; the earlier chapters'
+concepts (VLANs, routing, addressing). **Cost:** none.
 
-- A Linux host with `sudo` access and `iproute2`.
-- `keepalived` installed:
+### Lab 7.1 — Hierarchical network design (Topic: Design hierarchy)
 
-  ```bash
-  sudo apt-get update && sudo apt-get install -y keepalived
-  ```
+**Objective:** Structure a network into functional tiers.
 
-**Lab Steps**
-
-1. Create two router namespaces, a client namespace, and a shared bridge
-   connecting all three (VRRP requires a shared Layer 2 segment):
-
-   ```bash
-   sudo ip netns add ns-r1
-   sudo ip netns add ns-r2
-   sudo ip netns add ns-client
-
-   sudo ip link add br-vrrp type bridge
-   sudo ip link set br-vrrp up
-
-   sudo ip link add veth-r1 type veth peer name veth-r1-br
-   sudo ip link add veth-r2 type veth peer name veth-r2-br
-   sudo ip link add veth-cl type veth peer name veth-cl-br
-
-   sudo ip link set veth-r1 netns ns-r1
-   sudo ip link set veth-r2 netns ns-r2
-   sudo ip link set veth-cl netns ns-client
-
-   for p in veth-r1-br veth-r2-br veth-cl-br; do
-     sudo ip link set "$p" master br-vrrp
-     sudo ip link set "$p" up
-   done
-   ```
-
-2. Address each namespace on the shared `10.60.0.0/24` segment:
-
-   ```bash
-   sudo ip netns exec ns-r1 ip addr add 10.60.0.2/24 dev veth-r1
-   sudo ip netns exec ns-r1 ip link set veth-r1 up
-   sudo ip netns exec ns-r1 ip link set lo up
-
-   sudo ip netns exec ns-r2 ip addr add 10.60.0.3/24 dev veth-r2
-   sudo ip netns exec ns-r2 ip link set veth-r2 up
-   sudo ip netns exec ns-r2 ip link set lo up
-
-   sudo ip netns exec ns-client ip addr add 10.60.0.100/24 dev veth-cl
-   sudo ip netns exec ns-client ip link set veth-cl up
-   sudo ip netns exec ns-client ip route add default via 10.60.0.1
-   ```
-
-3. Write `keepalived` configuration for each router, with `ns-r1` as the
-   higher-priority (Master) peer:
-
-   ```bash
-   cat <<'EOF' | sudo tee /tmp/keepalived-r1.conf
-   vrrp_instance VRRP_LAB {
-       state MASTER
-       interface veth-r1
-       virtual_router_id 60
-       priority 150
-       advert_int 1
-       virtual_ipaddress { 10.60.0.1/24 }
-   }
-   EOF
-
-   cat <<'EOF' | sudo tee /tmp/keepalived-r2.conf
-   vrrp_instance VRRP_LAB {
-       state BACKUP
-       interface veth-r2
-       virtual_router_id 60
-       priority 100
-       advert_int 1
-       virtual_ipaddress { 10.60.0.1/24 }
-   }
-   EOF
-   ```
-
-4. Start `keepalived` in each router namespace and confirm election:
-
-   ```bash
-   sudo ip netns exec ns-r1 keepalived -f /tmp/keepalived-r1.conf \
-     -p /tmp/keepalived-r1.pid -n -D &
-   sudo ip netns exec ns-r2 keepalived -f /tmp/keepalived-r2.conf \
-     -p /tmp/keepalived-r2.pid -n -D &
-   sleep 5
-
-   sudo ip netns exec ns-r1 ip addr show veth-r1 | grep 10.60.0.1
-   ```
-
-   **Expected result:** `10.60.0.1/24` appears as a secondary address on
-   `ns-r1`'s `veth-r1`, confirming `ns-r1` (priority 150) won the election
-   and holds the virtual IP.
-
-5. Confirm the client reaches the virtual gateway and identify which
-   physical router is currently answering:
-
-   ```bash
-   sudo ip netns exec ns-client ping -c 3 10.60.0.1
-   ```
-
-   **Expected result:** 3 packets transmitted, 3 received, 0% loss.
-
-**Negative Test**
-
-Kill `keepalived` on the Master (`ns-r1`) to simulate a router failure, and
-measure the failover using a continuous ping:
-
-```bash
-sudo ip netns exec ns-client ping -i 0.5 10.60.0.1 > /tmp/vrrp-failover.log 2>&1 &
-PING_PID=$!
-sleep 3
-sudo kill "$(cat /tmp/keepalived-r1.pid)"
-sleep 8
-sudo kill "$PING_PID"
-
-grep -c "bytes from" /tmp/vrrp-failover.log
-sudo ip netns exec ns-r2 ip addr show veth-r2 | grep 10.60.0.1
+```text
+# Design a campus in the classic tiers (or a collapsed-core variant), and justify:
+#   Access       -> connects endpoints; VLANs, PoE, port security
+#   Distribution -> aggregates access; inter-VLAN routing, policy, redundancy
+#   Core         -> high-speed backbone between distribution blocks
+# For a small site, collapse core+distribution; justify by size/growth.
 ```
 
-**Expected result:** the ping log shows a short gap (typically one to three
-missed replies around the kill event, consistent with `advert_int 1`'s
-roughly 3-second default failure-detection window) but resumes
-successfully, and `10.60.0.1` now appears on `ns-r2`, confirming the
-Backup assumed the Master role — this is the expected, correct behavior of
-FHRP failover, quantified rather than just described.
+**Expected result:** a tiered design (three-tier or collapsed-core) with each tier's role justified by
+scale — hierarchical design keeps the network modular and scalable: faults and changes are contained
+to a tier/block, and you scale by adding blocks rather than redesigning.
 
-**Cleanup**
+**Negative test:** build a flat network where every switch connects to every other; it does not
+scale, faults propagate widely, and troubleshooting is hard — hierarchy contains failure domains and
+simplifies growth.
 
-```bash
-sudo kill "$(cat /tmp/keepalived-r1.pid)" 2>/dev/null || true
-sudo kill "$(cat /tmp/keepalived-r2.pid)" 2>/dev/null || true
-sudo ip netns del ns-r1 2>/dev/null || true
-sudo ip netns del ns-r2 2>/dev/null || true
-sudo ip netns del ns-client 2>/dev/null || true
-sudo ip link del br-vrrp 2>/dev/null || true
-rm -f /tmp/keepalived-r1.* /tmp/keepalived-r2.* /tmp/vrrp-failover.log
+**Cleanup:** none.
+
+### Lab 7.2 — First-hop and path redundancy (Topic: Resilience)
+
+**Objective:** Remove single points of failure.
+
+```text
+# Design redundancy at each layer:
+#   - first-hop gateway: FHRP (VRRP/HSRP) so hosts keep a gateway if one router fails
+#   - links: redundant uplinks (with STP or L3 ECMP) so one link loss is survivable
+#   - devices: dual distribution/core with no single chokepoint
+# State the failure each mechanism covers and its cost.
 ```
+
+**Expected result:** a design where the default gateway (FHRP/VRRP), the uplinks (redundant paths),
+and the devices are all redundant, so no single failure isolates users — resilience is designed in at
+every layer, and FHRP specifically keeps hosts' gateway alive across a router failure.
+
+**Negative test:** give hosts a single default gateway on a single router; that router's failure
+isolates the whole subnet — FHRP (a virtual gateway shared by two routers) is what survives it.
+
+**Cleanup:** none.
+
+### Lab 7.3 — Segmentation design (Topic: Segmentation)
+
+**Objective:** Separate traffic classes by policy.
+
+```text
+# Design segmentation for a site with corporate, guest, VoIP, IoT, and management traffic:
+#   - a VLAN/subnet per class, with inter-VLAN policy enforced at the distribution/L3 layer
+#   - management on its own out-of-band or tightly-controlled segment
+#   - guest isolated to internet-only; IoT restricted to its controllers
+```
+
+**Expected result:** a per-class VLAN/subnet plan with routed policy between them and an isolated
+management segment — segmentation limits blast radius (a compromised IoT device cannot reach
+corporate) and enforces least-privilege between traffic classes at the L3 boundary.
+
+**Negative test:** put every device on one flat VLAN "for simplicity"; a compromised guest/IoT device
+has direct L2 reach to corporate and management — segmentation with routed policy is what contains
+that.
+
+**Cleanup:** none.
+
+### Lab 7.4 — Design Exercise: a resilient small-enterprise network (Topic: Synthesis)
+
+**Objective:** Produce a defensible end-to-end design.
+
+> **Scenario.** Design the network for a 300-user, two-floor office plus a small server room and
+> guest Wi-Fi, with a resilience requirement (no single failure isolates users) and room to grow.
+
+Work through and **write down**: the hierarchy (collapsed-core vs three-tier) with justification
+(Ch07); the addressing/VLAN plan per traffic class (Ch02, Ch03); inter-VLAN routing and the FHRP
+gateway redundancy (Ch04, Ch07); redundant uplinks/devices; the WLAN coverage/capacity/security plan
+(Ch06); and core services (DHCP/DNS/NTP) placement (Ch05).
+
+**Expected result:** a written design integrating hierarchy, addressing/segmentation, routing and
+gateway redundancy, wireless, and services — a small-enterprise network that is scalable, segmented,
+and resilient to any single failure, with each choice justified by the requirements.
+
+**Negative test:** design for connectivity only (everything works on day one) with no redundancy or
+segmentation; the first switch/router/gateway failure isolates users and a single compromise spreads
+— resilience and segmentation are requirements, not extras.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 

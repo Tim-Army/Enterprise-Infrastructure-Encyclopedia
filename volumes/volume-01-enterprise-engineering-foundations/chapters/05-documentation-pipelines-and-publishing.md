@@ -363,101 +363,113 @@ structurally broken source tree can never reach a published deployment.
 
 ## Hands-On Lab
 
-**Objective:** Build a minimal Markdown-to-HTML documentation pipeline with
-lint, internal-link validation, and a Pandoc build, then prove the pipeline
-correctly blocks a broken link before it would reach a published build.
+This chapter carries a topic-level walkthrough lab for **each documentation-pipeline skill** —
+authoring and linting Markdown, multi-format builds with Pandoc, static publishing, and the docs-as-
+code CI gate. This is exactly how this encyclopedia is produced. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 5.1–5.4** — `pandoc`, `node`/`npx` (for `markdownlint-cli2` and
+`cspell`), and `git`. **Cost:** none.
 
-- `pandoc` installed (`brew install pandoc` or your platform's package
-  manager) at a 3.x version.
-- Node.js and `pnpm` available (via Corepack), or `npx` as a fallback.
+### Lab 5.1 — Author and lint Markdown (Topic: Docs-as-code authoring)
 
-**Steps**
+**Objective:** Write docs as linted, version-controlled Markdown.
 
-1. Create a scratch documentation source tree:
+```bash
+mkdir -p ~/docs && cd ~/docs
+cat > guide.md <<'EOF'
+# Deployment Guide
 
-   ```bash
-   mkdir -p ~/docs-lab/content && cd ~/docs-lab
-   cat > content/intro.md <<'EOF'
-   # Introduction
+## Prerequisites
 
-   See the [setup guide](setup.md) for prerequisites.
-   EOF
-   cat > content/setup.md <<'EOF'
-   # Setup Guide
+- A configured workstation
 
-   Install the required tooling before continuing.
-   EOF
-   ```
+## Steps
 
-2. Add an internal-link checker:
+1. Clone the repo
+2. Run `make deploy`
+EOF
+npx markdownlint-cli2 "guide.md" 2>&1 | tail -2
+npx cspell "guide.md" 2>&1 | tail -1
+```
 
-   ```bash
-   mkdir -p scripts
-   cat > scripts/check-internal-links.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -euo pipefail
-   fail=0
-   for file in content/*.md; do
-     dir=$(dirname "$file")
-     grep -oE '\]\([a-zA-Z0-9_./-]+\.md\)' "$file" | sed -E 's/^\]\((.*)\)$/\1/' | while read -r link; do
-       if [[ ! -f "${dir}/${link}" ]]; then
-         echo "BROKEN LINK in $file -> $link" >&2
-         exit 1
-       fi
-     done
-   done
-   EOF
-   chmod +x scripts/check-internal-links.sh
-   ```
+**Expected result:** the Markdown lints clean for style (markdownlint) and spelling (cspell) —
+docs-as-code treats documentation like source: plain-text Markdown in Git, linted for consistency and
+spelling, reviewed in PRs, so docs stay current and consistent with the code.
 
-3. Run the checker against the valid content:
+**Negative test:** keep documentation in a binary word processor or a wiki outside version control;
+it drifts from the code, is un-reviewable in PRs, and cannot be linted — Markdown-in-Git keeps docs
+alongside and in sync with the code.
 
-   ```bash
-   ./scripts/check-internal-links.sh
-   echo "Exit code: $?"
-   ```
+**Cleanup:** `rm -rf ~/docs`.
 
-   **Expected result:** Exit code `0`, no broken-link output.
+### Lab 5.2 — Multi-format build with Pandoc (Topic: Publishing pipeline)
 
-4. Build HTML output with Pandoc:
+**Objective:** Render one source into multiple formats.
 
-   ```bash
-   mkdir -p output/html
-   pandoc content/intro.md --standalone --embed-resources -o output/html/intro.html
-   ```
+```bash
+cd ~/docs 2>/dev/null || { mkdir -p ~/docs && cd ~/docs && printf '# Guide\n\nHello.\n' > guide.md; }
+pandoc guide.md -o guide.html --standalone
+pandoc guide.md -o guide.pdf 2>/dev/null || pandoc guide.md -o guide.epub
+ls -1 guide.*
+```
 
-   **Expected result:** `output/html/intro.html` exists and, when opened
-   in a browser, renders the link to the setup guide.
+**Expected result:** the single `guide.md` renders to HTML (and PDF/EPUB) — Pandoc is the
+single-source-multi-output engine: author once in Markdown, publish to HTML for the web, PDF for
+print, and EPUB for readers, which is how this encyclopedia produces all its formats from one source.
 
-5. **Negative test:** Introduce a broken link and confirm the checker
-   catches it before any build step runs:
+**Negative test:** maintain separate hand-written HTML and PDF versions of the same doc; they diverge
+and double the work — a single Markdown source rendered by Pandoc keeps every format consistent.
 
-   ```bash
-   sed -i.bak 's/setup.md/setpu.md/' content/intro.md
-   ./scripts/check-internal-links.sh; echo "Exit code: $?"
-   ```
+**Cleanup:** `rm -rf ~/docs`.
 
-   **Expected result:** The script prints `BROKEN LINK in content/intro.md
-   -> setpu.md` and exits non-zero, demonstrating that the validation gate
-   catches the defect before a Pandoc build would have silently produced
-   HTML containing a dead link.
+### Lab 5.3 — Static publishing (Topic: Publishing)
 
-6. Restore the valid content and confirm recovery:
+**Objective:** Publish rendered docs as a static site.
 
-   ```bash
-   mv content/intro.md.bak content/intro.md
-   ./scripts/check-internal-links.sh; echo "Exit code: $?"
-   ```
+```bash
+mkdir -p ~/site && cd ~/site
+pandoc <(printf '# Home\n\nWelcome.\n') -o index.html --standalone --embed-resources
+# A static site (self-contained HTML) is served by GitHub Pages / any web host with no backend:
+python3 -m http.server 8080 & sleep 1; curl -s http://localhost:8080/ | head -3; kill %1
+```
 
-   **Expected result:** Exit code `0` again.
+**Expected result:** a self-contained `index.html` served statically — static sites (embedded
+resources, no server-side code) are cheap, fast, secure, and easily hosted (GitHub Pages), which is
+why documentation portals are typically static builds published from CI.
 
-7. **Cleanup:**
+**Negative test:** run a dynamic CMS/backend just to serve read-only documentation; it adds attack
+surface and operational cost for no benefit — static rendered docs need no backend to serve.
 
-   ```bash
-   cd ~ && rm -rf ~/docs-lab
-   ```
+**Cleanup:** `rm -rf ~/site`.
+
+### Lab 5.4 — The docs-as-code CI gate (Topic: Quality gate)
+
+**Objective:** Fail the build on doc-quality violations.
+
+```yaml
+# .github/workflows/docs.yml — lint + build docs on every change
+name: docs
+on: [push, pull_request]
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npx markdownlint-cli2 "**/*.md"
+      - run: npx cspell "**/*.md"
+      - run: pandoc README.md -o /tmp/out.html
+```
+
+**Expected result:** a CI job that lints, spell-checks, and builds the docs on every change, failing
+on any violation — gating docs in CI (exactly as this repository does) keeps documentation
+consistently formatted, correctly spelled, and buildable, so quality does not depend on individual
+diligence.
+
+**Negative test:** publish docs with no CI gate; broken links, lint violations, and typos accumulate
+and the site build eventually fails silently — the CI gate catches each violation at the PR.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

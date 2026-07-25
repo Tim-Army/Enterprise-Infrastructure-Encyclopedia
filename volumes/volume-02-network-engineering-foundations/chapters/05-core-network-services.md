@@ -429,146 +429,92 @@ troubleshooting order established in [Chapter 1](01-network-models-and-protocol-
 
 ## Hands-On Lab
 
-**Objective.** Build an isolated topology providing DHCP-assigned
-addressing, custom DNS resolution, and outbound PAT using Linux network
-namespaces and `dnsmasq`, then validate each service and observe a scope
-exhaustion failure.
+This chapter carries a topic-level walkthrough lab for **each core network service** — DHCP, DNS,
+NTP, and NAT. Labs use standard client tools and lightweight servers. Each ends **`**Lab verified
+by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 5.1–5.4** — a Linux host with `dig`, `chronyc`, and (for the DHCP/NAT
+labs) `dnsmasq`/`nft` and `sudo`. **Cost:** none.
 
-- A Linux host with `sudo` access and `iproute2`.
-- `dnsmasq`, `isc-dhcp-client`, and `dnsutils` (`dig`) installed:
+### Lab 5.1 — DHCP (Topic: Dynamic addressing)
 
-  ```bash
-  sudo apt-get update && sudo apt-get install -y dnsmasq isc-dhcp-client dnsutils iptables
-  sudo systemctl stop dnsmasq 2>/dev/null || true
-  sudo systemctl disable dnsmasq 2>/dev/null || true
-  ```
-
-  (The lab runs its own `dnsmasq` instance manually inside a namespace; the
-  system service, if present, must be stopped first so it does not bind the
-  lab's listening port.)
-
-**Lab Steps**
-
-1. Create three namespaces representing a client, a router providing
-   DHCP/DNS, and a simulated "internet" host, joined by veth pairs:
-
-   ```bash
-   sudo ip netns add ns-client
-   sudo ip netns add ns-router
-   sudo ip netns add ns-wan
-
-   sudo ip link add veth-c type veth peer name veth-cr
-   sudo ip link set veth-c netns ns-client
-   sudo ip link set veth-cr netns ns-router
-
-   sudo ip link add veth-w type veth peer name veth-wr
-   sudo ip link set veth-w netns ns-wan
-   sudo ip link set veth-wr netns ns-router
-   ```
-
-2. Address the router's two interfaces and the "internet" host, then
-   enable forwarding and configure PAT on the router namespace:
-
-   ```bash
-   sudo ip netns exec ns-router ip addr add 10.90.0.1/24 dev veth-cr
-   sudo ip netns exec ns-router ip link set veth-cr up
-   sudo ip netns exec ns-router ip addr add 203.0.113.1/30 dev veth-wr
-   sudo ip netns exec ns-router ip link set veth-wr up
-   sudo ip netns exec ns-router ip link set lo up
-   sudo ip netns exec ns-router sysctl -w net.ipv4.ip_forward=1
-
-   sudo ip netns exec ns-wan ip addr add 203.0.113.2/30 dev veth-w
-   sudo ip netns exec ns-wan ip link set veth-w up
-   sudo ip netns exec ns-wan ip link set lo up
-   sudo ip netns exec ns-wan ip route add default via 203.0.113.1
-
-   sudo ip netns exec ns-router iptables -t nat -A POSTROUTING \
-     -s 10.90.0.0/24 -o veth-wr -j MASQUERADE
-   ```
-
-3. Start `dnsmasq` in the router namespace, providing both a DHCP scope and
-   a custom DNS record for a lab domain:
-
-   ```bash
-   sudo ip netns exec ns-router dnsmasq \
-     --interface=veth-cr --bind-interfaces --except-interface=lo \
-     --dhcp-range=10.90.0.100,10.90.0.100,255.255.255.0,12h \
-     --dhcp-option=option:router,10.90.0.1 \
-     --dhcp-option=option:dns-server,10.90.0.1 \
-     --address=/app.lab.internal/10.90.0.1 \
-     --no-resolv --pid-file=/tmp/dnsmasq-lab.pid --log-facility=/tmp/dnsmasq-lab.log
-   ```
-
-   Note the DHCP range is deliberately a single address (`10.90.0.100`) to
-   set up the negative test in a later step.
-
-4. Obtain a DHCP lease in the client namespace and confirm the assigned
-   address, gateway, and DNS server match the scope configuration:
-
-   ```bash
-   sudo ip netns exec ns-client dhclient -v veth-c \
-     -pf /tmp/dhclient-lab.pid -lf /tmp/dhclient-lab.leases
-   sudo ip netns exec ns-client ip -4 addr show veth-c
-   sudo ip netns exec ns-client ip route show default
-   ```
-
-   **Expected result:** `veth-c` shows address `10.90.0.100/24`, and the
-   default route is via `10.90.0.1` — both delivered entirely by DHCP, with
-   no static configuration on the client.
-
-5. Validate DNS resolution of the custom lab record and confirm end-to-end
-   PAT translation to the "internet" namespace:
-
-   ```bash
-   sudo ip netns exec ns-client dig @10.90.0.1 app.lab.internal +short
-   sudo ip netns exec ns-client ping -c 3 203.0.113.2
-   sudo ip netns exec ns-router iptables -t nat -L POSTROUTING -v -n
-   ```
-
-   **Expected result:** `dig` returns `10.90.0.1`; the ping to `203.0.113.2`
-   succeeds (3 received, 0% loss); and the `iptables` NAT rule shows a
-   non-zero packet/byte counter, confirming translation occurred rather than
-   direct routing (`ns-wan` never received a route back to `10.90.0.0/24`).
-
-**Negative Test**
-
-Add a second client namespace and attempt to obtain a lease from the same
-single-address scope configured in step 3:
+**Objective:** Observe the DHCP lease process.
 
 ```bash
-sudo ip netns add ns-client2
-sudo ip link add veth-c2 type veth peer name veth-c2r
-sudo ip link set veth-c2 netns ns-client2
-sudo ip link set veth-c2r netns ns-router
-sudo ip netns exec ns-router ip link set veth-c2r up
-# veth-c2r must join the same L2 domain dnsmasq is serving; for this lab,
-# bridge it is out of scope, so instead observe scope exhaustion directly:
-sudo ip netns exec ns-client2 dhclient -v veth-c2 \
-  -pf /tmp/dhclient-lab2.pid -lf /tmp/dhclient-lab2.leases &
-sleep 6
-sudo ip netns exec ns-client2 ip -4 addr show veth-c2
+sudo dhclient -v eth0 2>&1 | grep -iE "DHCPDISCOVER|DHCPOFFER|DHCPREQUEST|DHCPACK|bound"
+ip addr show eth0 | grep inet
 ```
 
-**Expected result:** the second client never receives an address (no
-`inet` line appears for `veth-c2`, and `dhclient` logs repeated
-`DHCPDISCOVER` retries with no `DHCPOFFER`), because the scope configured in
-step 3 contains exactly one address, already leased to the first client —
-reproducing DHCP scope exhaustion, the same failure class described in the
-symptom table above.
+**Expected result:** the four-message **DORA** exchange (Discover → Offer → Request → Ack) and a
+bound lease with an address, gateway, and DNS — DHCP automates host addressing: the client broadcasts
+Discover, a server Offers, the client Requests, the server acknowledges, and the host is configured with a
+time-limited lease.
 
-**Cleanup**
+**Negative test:** expect a host to get an address with no DHCP server reachable on the segment;
+Discover goes unanswered and the host self-assigns a useless link-local (169.254.x) — a reachable
+DHCP server (or static config) is required.
+
+**Cleanup:** none (or `sudo dhclient -r eth0` to release).
+
+### Lab 5.2 — DNS resolution (Topic: Name resolution)
+
+**Objective:** Trace how a name becomes an address.
 
 ```bash
-sudo kill "$(cat /tmp/dnsmasq-lab.pid)" 2>/dev/null || true
-sudo pkill -f "dhclient.*veth-c" 2>/dev/null || true
-sudo ip netns del ns-client 2>/dev/null || true
-sudo ip netns del ns-client2 2>/dev/null || true
-sudo ip netns del ns-router 2>/dev/null || true
-sudo ip netns del ns-wan 2>/dev/null || true
-rm -f /tmp/dnsmasq-lab.* /tmp/dhclient-lab*
+dig +trace example.com A | tail -20        # walks root -> TLD -> authoritative
+dig example.com A +short                    # the answer
+dig -x 93.184.216.34 +short                 # reverse (PTR) lookup
 ```
+
+**Expected result:** `+trace` shows the recursive resolution from the root servers down to the
+authoritative answer, and reverse lookup maps IP→name — DNS is the distributed hierarchy that
+resolves names to addresses; a resolver walks root → TLD → authoritative (or uses a cache) to answer.
+
+**Negative test:** blame "the network" when a site fails but `dig` returns SERVFAIL or NXDOMAIN; the
+failure is name resolution, not connectivity — `dig` distinguishes a DNS problem from a reachability
+problem.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.3 — NTP time synchronization (Topic: Time)
+
+**Objective:** Confirm the host's clock is synchronized.
+
+```bash
+chronyc sources -v | head
+chronyc tracking | grep -E "Reference|Stratum|System time"
+timedatectl | grep -i synchronized
+```
+
+**Expected result:** reachable time sources with a selected synchronization source and a small system
+offset — NTP keeps clocks synchronized to a reference (stratum hierarchy), which is required for logs
+to correlate, TLS certificates to validate, and Kerberos/2FA to work.
+
+**Negative test:** operate with an unsynchronized clock; log timestamps across hosts do not correlate
+and certificate/time-sensitive auth fails — NTP is a quiet but critical core service.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.4 — NAT (Topic: Address translation)
+
+**Objective:** Translate a private subnet to a routable address.
+
+```bash
+sudo sysctl -w net.ipv4.ip_forward=1
+sudo nft add table ip nat 2>/dev/null
+sudo nft 'add chain ip nat postrouting { type nat hook postrouting priority 100 ; }'
+sudo nft add rule ip nat postrouting oifname "eth0" masquerade
+sudo nft list table ip nat
+```
+
+**Expected result:** private-source traffic egressing `eth0` is masqueraded to the host's public
+address — **NAT** (masquerade/PAT) lets many private hosts share one routable address by rewriting the
+source IP/port, which is how private IPv4 networks reach the internet.
+
+**Negative test:** expect private (RFC 1918) addresses to be routable on the internet directly; they
+are not — NAT (or IPv6 global addressing) is what gives private hosts external reachability.
+
+**Cleanup:** `sudo nft delete table ip nat; sudo sysctl -w net.ipv4.ip_forward=0`.
 
 ## Lab Verification
 

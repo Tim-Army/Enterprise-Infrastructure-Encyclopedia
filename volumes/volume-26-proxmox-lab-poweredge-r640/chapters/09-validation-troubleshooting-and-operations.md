@@ -189,55 +189,103 @@ to accept. The spec is the definition of done.
 
 ## Hands-On Lab
 
-**Objective:** Validate the entire build against its specification, exercise
-the layered troubleshooting method, and establish day-2 operations.
+This chapter closes the build with **validation, troubleshooting, and day-2 operations** — plus a
+capstone that confirms the whole R640→Proxmox→10-VM stack. Commands are runnable `qm`/`pvesm`/
+`vzdump`/journal. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites:** The complete build from Chapters 01–08 — hardware,
-Proxmox, network, storage, and the ten VMs.
+**Shared prerequisites for Labs 9.1–9.4** — the completed Proxmox node with the VM fleet deployed
+(Chapter 08), and root SSH. **Cost:** none.
 
-**The validation is fully reproducible on the built environment;** the
-capstone composes every prior chapter.
+### Lab 9.1 — Validate the fleet and node (Topic: Validation)
 
-**Procedure — validation**
+**Objective:** Confirm the VMs and node are healthy.
 
-1. Walk the stack top to bottom with the commands above: confirm the arrays
-   are healthy, Proxmox is current with time via the gateway, the bridge
-   carries VLANs 3 and 6, and all ten VMs are running.
-2. For each VM, confirm its hostname, address, VLAN tag, and gateway
-   reachability against the specification table.
-3. Confirm no address is duplicated — specifically that Red Hat Server (.88)
-   and Windows Server (.89) are distinct.
-4. Produce an as-built record and diff it against the README's specification
-   table; every value must match.
+```bash
+qm list                                       # all VMs running
+pvesh get /nodes/pve01/status --output-format json | python3 -c "import json,sys; d=json.load(sys.stdin); print('cpu:', round(d['cpu']*100,1),'% mem used:', round(d['memory']['used']/d['memory']['total']*100,1),'%')"
+pvesm status                                  # datastores online, capacity healthy
+for id in $(seq 101 110); do qm guest cmd $id ping 2>/dev/null || true; done
+```
 
-**Procedure — day-2 operations**
+**Expected result:** all ten VMs `running`, the node's CPU/memory within healthy headroom, and
+`river` with capacity to spare — validation confirms the build's goal (a node hosting ten VMs) is met
+and the datastore is not over-committed.
 
-5. Configure a scheduled VM backup job targeting storage *other than*
-   `river`.
-6. Confirm the update path is clean (`apt update`), and note the monitoring
-   available from Proxmox and the iDRAC.
+**Negative test:** declare success from "VMs are running" without checking node memory/`river`
+capacity; ten VMs may over-commit RAM (ballooning/swap) or fill the thin pool — validate node and
+storage headroom, not just VM power state.
 
-**Negative test**
+**Cleanup:** none (read-only).
 
-7. Pick one server VM and re-tag its NIC from VLAN 3 to VLAN 6. Using only
-   the layered method — VM tag, bridge, trunk — diagnose why it lost gateway
-   connectivity, without checking the guest OS first. Confirm the method
-   localizes the fault to the network layer and the tag specifically, then
-   restore VLAN 3.
+### Lab 9.2 — Backups with vzdump (Topic: Backups)
 
-**Expected results**
+**Objective:** Protect the VMs with scheduled backups.
 
-- Every value in the specification table confirmed true of the running
-  system.
-- No duplicate addresses; the .88/.89 split verified.
-- A scheduled backup targeting off-array storage.
-- The layered method demonstrated to localize a fault without guesswork.
+```bash
+vzdump 101 --storage riverfiles --mode snapshot --compress zstd
+ls -lh /river/dump/ | head
+# Schedule via Datacenter > Backup (or /etc/pve/jobs.cfg) for the whole fleet, nightly.
+```
 
-**Cleanup**
+**Expected result:** a compressed backup archive of VM 101 in the backup storage, and a schedulable
+job for the fleet — `vzdump` (snapshot mode for running VMs) is Proxmox's built-in backup; scheduled
+backups to the `river` directory storage (or a Proxmox Backup Server) make the lab recoverable.
 
-8. Restore any change made in the negative test, confirm all ten VMs are
-   healthy on their correct VLANs, and retain the as-built record as the
-   reference for future changes.
+**Negative test:** run the lab with no backups; a bad change or disk failure loses VMs with no
+recovery — even a lab benefits from scheduled `vzdump`, and production requires it.
+
+**Cleanup:** remove the lab backup archive if space is tight.
+
+### Lab 9.3 — Troubleshooting (Topic: Troubleshooting)
+
+**Objective:** Diagnose a VM/node issue from the logs.
+
+```bash
+qm status 101 --verbose 2>/dev/null | head
+journalctl -u pveproxy -u pvedaemon --since "-1 hour" --no-pager | tail
+tail -5 /var/log/pve/tasks/index 2>/dev/null           # the task log: every action + result
+qm showcmd 101                                          # the exact QEMU command line for a VM
+```
+
+**Expected result:** VM status, control-plane service logs, the Proxmox **task log** (every UI/CLI
+action and its outcome), and the QEMU command line for a VM — Proxmox troubleshooting works from the
+task log (what was done and whether it failed), service journals, and per-VM QEMU details, rather
+than guessing.
+
+**Negative test:** retry a failing VM start repeatedly without reading the task log/`qm showcmd`;
+the task log names the cause (e.g. a missing ISO volid, or the thin pool full) that a retry will not
+fix.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.4 — Capstone: verify the whole build (Topic: Synthesis)
+
+**Objective:** Confirm the end-to-end R640→Proxmox→fleet stack against the build's goal.
+
+```bash
+# 1. Hardware/OOB (Ch01-02): arrays optimal, node on the BOSS mirror
+racadm storage get vdisks -o | grep -iE "river|State"      # (from a mgmt host with racadm)
+# 2. Platform (Ch03-04): current, services healthy
+pveversion | head -1 ; systemctl is-active pve-cluster pveproxy pvedaemon
+# 3. Network (Ch05): VLAN-aware bridge + reachability
+bridge vlan show | head
+# 4. Storage (Ch06-07): river datastore + ISO library online
+pvesm status
+# 5. Fleet (Ch08): ten VMs up, cloud-init-configured, backed up (Ch09)
+qm list ; ls /river/dump/ 2>/dev/null | head
+```
+
+**Expected result:** every layer checks out — optimal RAID arrays, a current node with healthy
+services on the BOSS mirror, a VLAN-aware network, the `river` datastore and ISO library online, and
+ten backed-up VMs — the complete, working Proxmox lab this volume set out to build, verified end to
+end.
+
+**Negative test:** call the build "done" when the VMs run but backups were never configured, the
+array is degraded, or the node is unpatched; the stack is fragile — the capstone verifies *every*
+layer (hardware, platform, network, storage, fleet, backup), which is what "done" actually means.
+
+**Cleanup:** none — this is the finished lab; tear-down commands appear in the earlier chapters'
+cleanups.
 
 ## Lab Verification
 

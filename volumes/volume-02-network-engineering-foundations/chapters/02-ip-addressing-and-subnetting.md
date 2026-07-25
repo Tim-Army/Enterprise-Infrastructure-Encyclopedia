@@ -314,124 +314,106 @@ cabling or switchport investigation.
 
 ## Hands-On Lab
 
-**Objective.** Design, allocate, implement, and validate a VLSM addressing
-plan for a simulated three-VLAN site using Linux network namespaces, and
-confirm the plan summarizes correctly.
+This chapter carries a topic-level walkthrough lab for **each addressing skill** — IPv4/CIDR,
+subnetting with VLSM, IPv6 addressing, and verification. Labs use `ipcalc`/Python and `ip`. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.4** — a Linux host with `python3` (and `ipcalc`/`sipcalc` if
+available), and the `ip` command. **Cost:** none.
 
-- A Linux host with `sudo` access and the `iproute2` package (`ip` command).
-- `python3` with the standard library (no external packages required for
-  this lab).
+### Lab 2.1 — IPv4 addressing and CIDR (Topic: IPv4 addressing)
 
-**Lab Steps**
-
-1. Design the addressing plan on paper first: from `10.50.0.0/24`, allocate
-   a `/26` for a "Users" segment, a `/27` for a "Servers" segment, and a
-   `/30` for a simulated point-to-point link, using the VLSM method from
-   this chapter (largest block first).
-
-2. Validate the plan programmatically before implementing it:
-
-   ```bash
-   python3 - <<'PYEOF'
-   import ipaddress
-
-   parent = ipaddress.ip_network("10.50.0.0/24")
-   users = ipaddress.ip_network("10.50.0.0/26")
-   servers = ipaddress.ip_network("10.50.0.64/27")
-   p2p = ipaddress.ip_network("10.50.0.96/30")
-
-   for name, net in [("users", users), ("servers", servers), ("p2p", p2p)]:
-       assert net.subnet_of(parent), f"{name} is not inside {parent}"
-       print(f"{name}: {net} usable={net.num_addresses - 2}")
-   PYEOF
-   ```
-
-   **Expected result:** three lines print with no `AssertionError`,
-   confirming each block is a valid subset of the `/24` parent.
-
-3. Build two network namespaces connected by a veth pair to represent the
-   "Users" and "Servers" segments joined through a simulated router
-   namespace:
-
-   ```bash
-   sudo ip netns add ns-users
-   sudo ip netns add ns-servers
-   sudo ip netns add ns-router
-
-   sudo ip link add veth-u type veth peer name veth-ur
-   sudo ip link add veth-s type veth peer name veth-sr
-   sudo ip link set veth-u netns ns-users
-   sudo ip link set veth-ur netns ns-router
-   sudo ip link set veth-s netns ns-servers
-   sudo ip link set veth-sr netns ns-router
-   ```
-
-4. Address each interface according to the validated plan (using the first
-   usable address in each block as the gateway):
-
-   ```bash
-   sudo ip netns exec ns-users ip addr add 10.50.0.2/26 dev veth-u
-   sudo ip netns exec ns-users ip link set veth-u up
-   sudo ip netns exec ns-users ip link set lo up
-
-   sudo ip netns exec ns-servers ip addr add 10.50.0.65/27 dev veth-s
-   sudo ip netns exec ns-servers ip link set veth-s up
-   sudo ip netns exec ns-servers ip link set lo up
-
-   sudo ip netns exec ns-router ip addr add 10.50.0.1/26 dev veth-ur
-   sudo ip netns exec ns-router ip addr add 10.50.0.66/27 dev veth-sr
-   sudo ip netns exec ns-router ip link set veth-ur up
-   sudo ip netns exec ns-router ip link set veth-sr up
-   sudo ip netns exec ns-router sysctl -w net.ipv4.ip_forward=1
-   ```
-
-5. Add default routes on the endpoint namespaces pointing at the router
-   namespace, then validate end-to-end reachability across the two
-   VLSM-derived subnets:
-
-   ```bash
-   sudo ip netns exec ns-users ip route add default via 10.50.0.1
-   sudo ip netns exec ns-servers ip route add default via 10.50.0.66
-
-   sudo ip netns exec ns-users ping -c 3 10.50.0.65
-   ```
-
-   **Expected result:** 3 packets transmitted, 3 received, 0% packet loss —
-   confirming that the "Users" `/26` and "Servers" `/27` segments, though
-   different sizes, correctly route through the shared router namespace.
-
-**Negative Test**
-
-Add a fourth namespace addressed from an overlapping range that was not
-validated in step 2 (for example, `10.50.0.30/26` on a new namespace,
-which collides with the already-allocated "Users" block):
+**Objective:** Compute a network's boundaries from CIDR.
 
 ```bash
-sudo ip netns add ns-conflict
-sudo ip link add veth-c type veth peer name veth-cr
-sudo ip link set veth-c netns ns-conflict
-sudo ip link set veth-cr netns ns-router
-sudo ip netns exec ns-conflict ip addr add 10.50.0.30/26 dev veth-c
-sudo ip netns exec ns-conflict ip link set veth-c up
-sudo ip netns exec ns-router ip addr add 10.50.0.30/26 dev veth-cr
+python3 - <<'EOF'
+import ipaddress
+net = ipaddress.ip_network("192.168.10.0/26", strict=False)
+print("network:", net.network_address, "broadcast:", net.broadcast_address)
+print("mask:", net.netmask, "usable hosts:", net.num_addresses - 2)
+print("first/last host:", list(net.hosts())[0], list(net.hosts())[-1])
+EOF
 ```
 
-**Expected result:** the second `ip addr add` on `ns-router` fails with
-`RTNETLINK answers: File exists`, because `10.50.0.30/26` overlaps an
-address already assigned to `veth-ur` in the same namespace — this
-reproduces, in miniature, the overlapping-allocation failure that an
-un-tracked IPAM process produces at enterprise scale.
+**Expected result:** for /26 — network `.0`, broadcast `.63`, 62 usable hosts, first `.1`/last `.62`
+— CIDR notation (`/26`) defines the network/host boundary; the prefix length sets the mask, and from
+it you derive the network address, broadcast, and usable host range.
 
-**Cleanup**
+**Negative test:** treat the network (`.0`) or broadcast (`.63`) address as an assignable host; they
+are reserved — usable hosts are `num_addresses - 2`, which the calculation makes explicit.
+
+**Cleanup:** none.
+
+### Lab 2.2 — Subnetting with VLSM (Topic: Subnetting)
+
+**Objective:** Carve a block into right-sized subnets.
 
 ```bash
-sudo ip netns del ns-users
-sudo ip netns del ns-servers
-sudo ip netns del ns-router
-sudo ip netns del ns-conflict 2>/dev/null || true
+python3 - <<'EOF'
+import ipaddress
+supernet = ipaddress.ip_network("10.0.0.0/24")
+# VLSM: allocate by need — a /25 (126 hosts), a /26 (62), two /27s (30 each)
+subs = list(supernet.subnets(new_prefix=25))[:1] + \
+       list(list(supernet.subnets(new_prefix=25))[1].subnets(new_prefix=26))[:1] + \
+       list(list(list(supernet.subnets(new_prefix=25))[1].subnets(new_prefix=26))[1].subnets(new_prefix=27))
+for s in subs: print(s, "->", s.num_addresses-2, "hosts")
+EOF
 ```
+
+**Expected result:** the /24 is divided into variable-size subnets sized to need (a /25, a /26, and
+/27s) with no waste — **VLSM** allocates each subnet the smallest prefix that fits its host count, so
+address space is used efficiently instead of one-size-fits-all.
+
+**Negative test:** subnet a /24 into equal /28s regardless of need; a 100-host segment does not fit a
+/28 (14 hosts) while a point-to-point link wastes a /28 — VLSM right-sizes each subnet.
+
+**Cleanup:** none.
+
+### Lab 2.3 — IPv6 addressing (Topic: IPv6)
+
+**Objective:** Read IPv6 address types and structure.
+
+```bash
+python3 - <<'EOF'
+import ipaddress
+for a in ["2001:db8::1", "fe80::1", "::1", "ff02::1"]:
+    ip = ipaddress.ip_address(a)
+    print(a, "global" if ip.is_global else "", "link-local" if ip.is_link_local else "",
+          "loopback" if ip.is_loopback else "", "multicast" if ip.is_multicast else "")
+EOF
+ip -6 addr show | grep -E "inet6" | head
+```
+
+**Expected result:** each address classified — global unicast (`2001:db8::/32` doc range), link-local
+(`fe80::/10`), loopback (`::1`), multicast (`ff00::/8`) — IPv6 uses 128-bit addresses with well-known
+type prefixes; every interface has a link-local address, and global addresses provide routable
+reachability.
+
+**Negative test:** expect IPv6 to work like IPv4 (broadcast, ARP, NAT-by-default); IPv6 uses
+multicast not broadcast, NDP not ARP, and global addressing not NAT — reading the address types shows
+the different model.
+
+**Cleanup:** none.
+
+### Lab 2.4 — Apply and verify addressing (Topic: Verification)
+
+**Objective:** Assign an address and confirm reachability within the subnet.
+
+```bash
+sudo ip addr add 192.168.10.5/26 dev eth0
+ip addr show eth0 | grep inet
+ping -c2 192.168.10.1        # gateway within the /26
+```
+
+**Expected result:** the interface holds the address with the correct prefix, and the gateway (in the
+same subnet) is reachable — an address plus prefix defines which hosts are directly reachable (same
+subnet) versus routed (different subnet); the gateway must be in the host's own subnet.
+
+**Negative test:** assign an address whose subnet does not contain the gateway (e.g. gateway in a
+different /26); the host cannot reach the gateway directly and has no default path — the gateway must
+be on-subnet.
+
+**Cleanup:** `sudo ip addr del 192.168.10.5/26 dev eth0`.
 
 ## Lab Verification
 

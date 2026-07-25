@@ -422,139 +422,107 @@ jq -r --arg cutoff "$(date -u -v+180d +%Y-%m-%d 2>/dev/null || date -u -d '+180 
 
 ## Hands-On Lab
 
-**Objective:** Build a minimal, git-tracked CMDB record with an enforced
-lifecycle state machine, drive an asset through several legal transitions
-to decommissioning, and prove the validator rejects an illegal transition
-attempted after decommissioning.
+This chapter closes the volume with **infrastructure lifecycle management** — provisioning,
+configuration and drift, operation, and decommissioning — plus a capstone. Labs pair runnable IaC/Git
+steps with lifecycle reasoning. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.4** — `git`, and Terraform (or OpenTofu) with the `local`
+provider for the IaC steps. **Cost:** none.
 
-- `bash` and `jq` installed.
-- A local Git repository (a new scratch repository is sufficient).
+### Lab 8.1 — Provisioning as code (Topic: Provisioning)
 
-**Steps**
+**Objective:** Provision a resource declaratively and reproducibly.
 
-1. Create the working directory and an initial CMDB record:
+```bash
+mkdir -p ~/lc && cd ~/lc
+cat > main.tf <<'EOF'
+resource "local_file" "server" {
+  filename = "${path.module}/server-inventory.txt"
+  content  = "hostname=app01\nrole=web\nprovisioned=true\n"
+}
+EOF
+terraform init -no-color >/dev/null && terraform apply -auto-approve -no-color | tail -2
+cat server-inventory.txt
+```
 
-   ```bash
-   mkdir -p ~/lifecycle-lab/scripts ~/lifecycle-lab/cmdb
-   cd ~/lifecycle-lab
-   git init -q
-   cat > cmdb/srv-app-lab-001.json <<'EOF'
-   {
-     "asset_id": "srv-app-lab-001",
-     "domain": "compute",
-     "lifecycle_state": "planned",
-     "owner": "platform-eng@example.com",
-     "environment": "lab",
-     "eol_date": "2030-01-01",
-     "last_reviewed": "2026-07-18"
-   }
-   EOF
-   ```
+**Expected result:** the resource is provisioned from declarative code and re-applying is a no-op —
+provisioning-as-code (IaC) makes the *creation* of infrastructure repeatable, versioned, and
+reviewable, so environments are reproduced identically rather than hand-built (this is the start of
+the lifecycle Volume IX covers in depth).
 
-2. Add the transition validator:
+**Negative test:** provision servers by hand from a runbook; each differs subtly and none is
+reproducible from source — IaC makes provisioning deterministic and version-controlled.
 
-   ```bash
-   cat > scripts/validate-lifecycle-transition.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -euo pipefail
-   from="$1"
-   to="$2"
-   case "$from" in
-     planned)         allowed="procured" ;;
-     procured)        allowed="deployed" ;;
-     deployed)        allowed="operating" ;;
-     operating)       allowed="maintenance decommissioned" ;;
-     maintenance)     allowed="operating decommissioned" ;;
-     decommissioned)  allowed="" ;;
-     *)
-       echo "UNKNOWN STATE: '$from' is not a valid lifecycle state" >&2
-       exit 1
-       ;;
-   esac
-   if [[ ! " ${allowed} " =~ " ${to} " ]]; then
-     echo "ILLEGAL TRANSITION: '$from' -> '$to' is not permitted" >&2
-     echo "Allowed from '$from': ${allowed:-none (terminal state)}" >&2
-     exit 1
-   fi
-   echo "OK: '$from' -> '$to' is a legal transition"
-   EOF
-   chmod +x scripts/validate-lifecycle-transition.sh
-   ```
+**Cleanup:** `terraform destroy -auto-approve -no-color`.
 
-3. Add the apply script:
+### Lab 8.2 — Configuration and drift (Topic: Configuration management)
 
-   ```bash
-   cat > scripts/apply-transition.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -euo pipefail
-   FILE="$1"
-   NEW_STATE="$2"
-   CURRENT_STATE=$(jq -r '.lifecycle_state' "$FILE")
-   "$(dirname "$0")/validate-lifecycle-transition.sh" "$CURRENT_STATE" "$NEW_STATE"
-   jq --arg state "$NEW_STATE" --arg date "$(date -u +%Y-%m-%d)" \
-     '.lifecycle_state = $state | .last_reviewed = $date' \
-     "$FILE" > "${FILE}.tmp"
-   mv "${FILE}.tmp" "$FILE"
-   echo "Applied: $FILE is now '$NEW_STATE'"
-   EOF
-   chmod +x scripts/apply-transition.sh
-   ```
+**Objective:** Detect when reality diverges from the declared state.
 
-4. Drive the asset through its normal lifecycle:
+```bash
+cd ~/lc && terraform apply -auto-approve -no-color >/dev/null
+echo "tampered" >> server-inventory.txt            # out-of-band change (drift)
+terraform plan -detailed-exitcode -no-color; echo "plan exit=$? (2 == drift detected)"
+```
 
-   ```bash
-   ./scripts/apply-transition.sh cmdb/srv-app-lab-001.json procured
-   ./scripts/apply-transition.sh cmdb/srv-app-lab-001.json deployed
-   ./scripts/apply-transition.sh cmdb/srv-app-lab-001.json operating
-   ```
+**Expected result:** `terraform plan -detailed-exitcode` returns 2, signaling the file drifted from
+its declared state — after provisioning, the lifecycle must *maintain* the desired configuration;
+drift detection (declared state vs reality) is what catches manual changes before they cause
+incidents.
 
-   **Expected result:** Each command prints `OK: ... is a legal
-   transition` followed by `Applied: ... is now '<state>'`, and
-   `jq -r '.lifecycle_state' cmdb/srv-app-lab-001.json` reports
-   `operating`.
+**Negative test:** assume infrastructure stays as provisioned with no drift checks; a manual "quick
+fix" silently diverges and is lost on the next apply or causes an outage — periodic drift detection
+surfaces it.
 
-5. Commit the baseline:
+**Cleanup:** `terraform destroy -auto-approve -no-color`.
 
-   ```bash
-   git add -A
-   git commit -q -m "feat: track srv-app-lab-001 through deployment to operating"
-   ```
+### Lab 8.3 — Operation and change (Topic: Operate phase)
 
-6. Transition the asset to maintenance and back to operating, then
-   decommission it:
+**Objective:** Change infrastructure through the versioned pipeline, not by hand.
 
-   ```bash
-   ./scripts/apply-transition.sh cmdb/srv-app-lab-001.json maintenance
-   ./scripts/apply-transition.sh cmdb/srv-app-lab-001.json operating
-   ./scripts/apply-transition.sh cmdb/srv-app-lab-001.json decommissioned
-   jq -r '.lifecycle_state' cmdb/srv-app-lab-001.json
-   ```
+```bash
+cd ~/lc
+git init -q 2>/dev/null; git add -A 2>/dev/null; git commit -qm "infra: initial" 2>/dev/null
+sed -i 's/role=web/role=api/' main.tf
+git diff --stat
+# The change is reviewed (PR), CI-planned, and applied — never edited live on the resource.
+terraform apply -auto-approve -no-color >/dev/null && grep role server-inventory.txt 2>/dev/null || true
+```
 
-   **Expected result:** Final output is `decommissioned`.
+**Expected result:** the change is made in code, diffable and reviewable, then applied through the
+pipeline — during the operate phase, all change flows through version control and CI (plan → review →
+apply), so infrastructure has an audit trail and changes are reversible, the same discipline as
+application code.
 
-7. **Negative test:** Attempt to bring the decommissioned asset back into
-   service:
+**Negative test:** edit the live resource directly to "just fix it"; the change is untracked,
+un-reviewed, and reverted by the next apply (drift) — operating through the pipeline keeps state and
+reality in sync.
 
-   ```bash
-   ./scripts/apply-transition.sh cmdb/srv-app-lab-001.json operating
-   echo "Exit code: $?"
-   ```
+**Cleanup:** `terraform destroy -auto-approve -no-color; rm -rf ~/lc`.
 
-   **Expected result:** The script prints `ILLEGAL TRANSITION:
-   'decommissioned' -> 'operating' is not permitted` and `Allowed from
-   'decommissioned': none (terminal state)`, exits non-zero, and — because
-   the validator runs before the record is modified — `jq -r
-   '.lifecycle_state' cmdb/srv-app-lab-001.json` still reports
-   `decommissioned`, confirming the record was never corrupted by the
-   rejected transition.
+### Lab 8.4 — Decommissioning and capstone (Topic: Retire phase + synthesis)
 
-8. **Cleanup:**
+**Objective:** Retire infrastructure cleanly and review the whole lifecycle.
 
-   ```bash
-   cd ~ && rm -rf ~/lifecycle-lab
-   ```
+```bash
+cd ~/lc 2>/dev/null && terraform destroy -auto-approve -no-color | tail -2
+ls server-inventory.txt 2>/dev/null && echo "STILL EXISTS (incomplete decommission)" || echo "decommissioned cleanly"
+```
+
+**Objective (capstone):** confirm the full lifecycle — **provision** (Lab 8.1, IaC) → **configure/
+detect drift** (Lab 8.2) → **operate/change through the pipeline** (Lab 8.3) → **decommission** (this
+lab) — each phase version-controlled, reviewed, and reversible.
+
+**Expected result:** the resource is destroyed with nothing left behind, completing the lifecycle —
+decommissioning is a first-class phase (release resources, revoke access, remove DNS/monitoring,
+archive data), and doing it as code ensures nothing is orphaned; the capstone confirms every phase is
+managed as code end to end.
+
+**Negative test:** "delete the server" without tracking the rest (leftover DNS records, IAM
+permissions, monitoring, storage); orphaned resources cost money and create security/attack surface —
+decommissioning-as-code retires everything the provisioning created.
+
+**Cleanup:** `rm -rf ~/lc` (done above).
 
 ## Lab Verification
 

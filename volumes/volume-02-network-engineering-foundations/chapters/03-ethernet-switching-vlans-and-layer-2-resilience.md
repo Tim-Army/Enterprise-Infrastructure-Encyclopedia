@@ -317,151 +317,94 @@ identified.
 
 ## Hands-On Lab
 
-**Objective.** Build a two-VLAN, trunk-connected topology using Linux
-bridges with 802.1Q VLAN filtering, confirm broadcast-domain isolation, and
-observe how enabling the bridge's built-in STP prevents a loop that would
-otherwise cause a storm.
+This chapter carries a topic-level walkthrough lab for **each Layer-2 skill** — Ethernet/MAC
+learning, the Linux bridge as a switch, VLANs, and L2 resilience. Labs use the Linux bridge and VLAN
+tooling. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 3.1–3.4** — a Linux host with `iproute2` (`ip`, `bridge`) and
+`sudo`; network namespaces or veth pairs let you build a switched topology on one host. **Cost:**
+none.
 
-- A Linux host with `sudo` access and `iproute2` (the `ip` and `bridge`
-  commands).
-- Familiarity with [Chapter 2](02-ip-addressing-and-subnetting.md)'s network namespace conventions.
+### Lab 3.1 — Ethernet frames and MAC learning (Topic: Ethernet)
 
-**Lab Steps**
-
-1. Create two host namespaces and one "switch" namespace, and a
-   VLAN-aware Linux bridge inside the switch namespace:
-
-   ```bash
-   sudo ip netns add ns-host-a
-   sudo ip netns add ns-host-b
-   sudo ip netns add ns-switch
-
-   sudo ip netns exec ns-switch ip link add br0 type bridge vlan_filtering 1
-   sudo ip netns exec ns-switch ip link set br0 up
-   ```
-
-2. Connect both hosts to the bridge with veth pairs, and configure the
-   bridge side of each link as an access port tagged internally to VLAN 20:
-
-   ```bash
-   sudo ip link add veth-a type veth peer name veth-a-br
-   sudo ip link add veth-b type veth peer name veth-b-br
-   sudo ip link set veth-a netns ns-host-a
-   sudo ip link set veth-b netns ns-host-b
-   sudo ip link set veth-a-br netns ns-switch
-   sudo ip link set veth-b-br netns ns-switch
-
-   sudo ip netns exec ns-switch ip link set veth-a-br master br0
-   sudo ip netns exec ns-switch ip link set veth-b-br master br0
-   sudo ip netns exec ns-switch ip link set veth-a-br up
-   sudo ip netns exec ns-switch ip link set veth-b-br up
-
-   # Access-port behavior: untag on egress, accept only VLAN 20 (PVID 20)
-   sudo ip netns exec ns-switch bridge vlan add dev veth-a-br vid 20 pvid untagged
-   sudo ip netns exec ns-switch bridge vlan add dev veth-b-br vid 20 pvid untagged
-   sudo ip netns exec ns-switch bridge vlan del dev veth-a-br vid 1
-   sudo ip netns exec ns-switch bridge vlan del dev veth-b-br vid 1
-   ```
-
-3. Address and bring up both host interfaces, then confirm reachability
-   across the simulated VLAN 20 access ports:
-
-   ```bash
-   sudo ip netns exec ns-host-a ip addr add 10.20.0.2/24 dev veth-a
-   sudo ip netns exec ns-host-a ip link set veth-a up
-   sudo ip netns exec ns-host-a ip link set lo up
-
-   sudo ip netns exec ns-host-b ip addr add 10.20.0.3/24 dev veth-b
-   sudo ip netns exec ns-host-b ip link set veth-b up
-   sudo ip netns exec ns-host-b ip link set lo up
-
-   sudo ip netns exec ns-host-a ping -c 3 10.20.0.3
-   ```
-
-   **Expected result:** 3 packets transmitted, 3 received, 0% loss —
-   confirming Layer 2 connectivity through the simulated access switch.
-
-4. Confirm broadcast-domain isolation by adding a third host on a
-   different VLAN (VLAN 30) attached to the same bridge, and show that it
-   cannot reach hosts on VLAN 20 despite sharing the same physical bridge:
-
-   ```bash
-   sudo ip netns add ns-host-c
-   sudo ip link add veth-c type veth peer name veth-c-br
-   sudo ip link set veth-c netns ns-host-c
-   sudo ip link set veth-c-br netns ns-switch
-   sudo ip netns exec ns-switch ip link set veth-c-br master br0
-   sudo ip netns exec ns-switch ip link set veth-c-br up
-   sudo ip netns exec ns-switch bridge vlan add dev veth-c-br vid 30 pvid untagged
-   sudo ip netns exec ns-switch bridge vlan del dev veth-c-br vid 1
-
-   sudo ip netns exec ns-host-c ip addr add 10.20.0.4/24 dev veth-c
-   sudo ip netns exec ns-host-c ip link set veth-c up
-   sudo ip netns exec ns-host-c ip link set lo up
-
-   sudo ip netns exec ns-host-c ping -c 3 -W 1 10.20.0.2
-   ```
-
-   **Expected result:** 100% packet loss — VLAN 30 is a separate broadcast
-   domain from VLAN 20 even though both attach to the same bridge,
-   demonstrating VLAN-based segmentation.
-
-5. Observe the bridge's MAC forwarding table populated by the learning
-   process described in this chapter:
-
-   ```bash
-   sudo ip netns exec ns-switch bridge fdb show br br0 | grep -v permanent
-   ```
-
-   **Expected result:** dynamic entries for the MAC addresses of
-   `veth-a`, `veth-b`, and `veth-c`, each associated with its ingress port
-   and learned VLAN.
-
-**Negative Test**
-
-Add a second link between `ns-host-a` and the switch bridge (simulating a
-redundant, but looped, cable) with STP disabled, and observe the resulting
-duplicate-frame/loop symptom; then enable the bridge's STP and confirm the
-loop is broken.
+**Objective:** Observe MAC addresses and the forwarding table.
 
 ```bash
-# Add a second, looping connection from host A back to the same bridge
-sudo ip link add veth-a2 type veth peer name veth-a2-br
-sudo ip link set veth-a2 netns ns-host-a
-sudo ip link set veth-a2-br netns ns-switch
-sudo ip netns exec ns-switch ip link set veth-a2-br master br0
-sudo ip netns exec ns-switch bridge vlan add dev veth-a2-br vid 20 pvid untagged
-sudo ip netns exec ns-switch bridge vlan del dev veth-a2-br vid 1
-sudo ip netns exec ns-host-a ip link set veth-a2 up
-sudo ip netns exec ns-switch ip link set veth-a2-br up
-
-# Without STP, this creates a genuine bridging loop; observe rapidly
-# growing broadcast traffic with a short capture, then stop it immediately
-sudo timeout 3 ip netns exec ns-switch tcpdump -i br0 -nn broadcast or multicast | wc -l
-
-# Now enable STP on the bridge and confirm it blocks the redundant path
-sudo ip netns exec ns-switch ip link set br0 type bridge stp_state 1
-sleep 5
-sudo ip netns exec ns-switch bridge -d link show | grep -E "veth-a-br|veth-a2-br"
+ip -br link show                 # interface MAC addresses
+ip neigh show                    # the ARP/neighbor table (IP -> MAC)
+sudo ping -c1 <peer> >/dev/null; ip neigh show <peer>   # learn the peer's MAC via ARP
 ```
 
-**Expected result:** the pre-STP capture shows a rapidly climbing broadcast
-frame count characteristic of a loop; after enabling `stp_state 1` and
-allowing convergence, `bridge -d link show` reports one of the two links
-to host A in a `state blocking` (or `discarding`) state while the other
-remains `state forwarding`, confirming STP has broken the loop exactly as
-described in this chapter's theory section.
+**Expected result:** interface MACs and the neighbor table mapping IPs to MACs — Ethernet delivers
+frames by **MAC address** within a broadcast domain, and a host learns a peer's MAC via ARP (IPv4)
+before it can frame traffic to it; the neighbor table caches those mappings.
 
-**Cleanup**
+**Negative test:** send to an IP with no resolvable MAC (host down); the frame cannot be built and
+traffic queues/fails at ARP — L2 delivery needs the destination MAC, which ARP provides.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.2 — The Linux bridge as a switch (Topic: Switching)
+
+**Objective:** Build a software switch and read its FDB.
 
 ```bash
-sudo ip netns del ns-host-a
-sudo ip netns del ns-host-b
-sudo ip netns del ns-host-c
-sudo ip netns del ns-switch
+sudo ip link add br0 type bridge
+sudo ip link set br0 up
+sudo ip link add veth0 type veth peer name veth0b
+sudo ip link set veth0 master br0 && sudo ip link set veth0 up
+bridge link show ; bridge fdb show br br0 | head
 ```
+
+**Expected result:** `br0` is a bridge (switch) with `veth0` as a port, and `bridge fdb` shows the
+forwarding database (learned MAC → port) — a switch/bridge forwards frames by learning which MAC is
+on which port, flooding only unknown/broadcast frames, which is what makes switching efficient.
+
+**Negative test:** expect a bridge to forward between different IP subnets; it operates at L2 (MACs)
+only — inter-subnet forwarding is routing (L3, Chapter 04), not switching.
+
+**Cleanup:** `sudo ip link del veth0; sudo ip link del br0`.
+
+### Lab 3.3 — VLANs (802.1Q) (Topic: VLANs)
+
+**Objective:** Segment one link into multiple broadcast domains.
+
+```bash
+sudo ip link add link eth0 name eth0.30 type vlan id 30
+sudo ip addr add 192.168.30.5/24 dev eth0.30
+sudo ip link set eth0.30 up
+ip -d link show eth0.30 | grep vlan
+```
+
+**Expected result:** a tagged VLAN 30 subinterface on `eth0`, isolated from the untagged and other
+VLANs on the same physical link — **802.1Q VLANs** tag frames so one physical switch/link carries
+multiple isolated broadcast domains, each a separate segment (and typically a separate subnet).
+
+**Negative test:** expect two VLANs on the same switch to communicate without a router; VLANs are
+separate broadcast domains — inter-VLAN traffic requires L3 routing (a router-on-a-stick or L3
+switch).
+
+**Cleanup:** `sudo ip link del eth0.30`.
+
+### Lab 3.4 — Layer-2 resilience: STP and link aggregation (Topic: L2 resilience)
+
+**Objective:** Understand loop prevention and link bonding.
+
+```bash
+# STP on a bridge prevents loops from redundant links:
+sudo ip link set br0 type bridge stp_state 1 2>/dev/null; bridge link show 2>/dev/null | head
+# Link aggregation (LACP bond) for redundancy + bandwidth:
+sudo ip link add bond0 type bond mode 802.3ad 2>/dev/null && echo "bond0 (LACP) created"
+```
+
+**Expected result:** STP enabled on the bridge (blocking loops from redundant paths) and an LACP
+`bond0` for aggregated/redundant links — L2 resilience needs **STP** to prevent broadcast storms from
+loops, and **link aggregation** (LACP) to combine links for bandwidth and failover.
+
+**Negative test:** connect redundant switch links with STP disabled; a bridging loop floods until the
+segment collapses (broadcast storm) — STP is what makes redundant L2 links safe.
+
+**Cleanup:** `sudo ip link del bond0 2>/dev/null; true`.
 
 ## Lab Verification
 

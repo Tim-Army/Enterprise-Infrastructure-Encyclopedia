@@ -307,116 +307,99 @@ exit "$fail"
 
 ## Hands-On Lab
 
-**Objective:** Stand up a small repository with an enforced directory
-contract, CODEOWNERS, branch protection, and a pre-commit structural check,
-then prove the controls work with both a passing and a failing change.
+This chapter carries a topic-level walkthrough lab for **each element of repository architecture** —
+structure, branching, commit hygiene, and mono- vs poly-repo. Labs use `git`. Each ends **`**Lab
+verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.4** — `git` and a scratch directory. **Cost:** none.
 
-- `git`, `gh` (authenticated), and `pre-commit` installed.
-- Permission to create a repository in your GitHub account or a sandbox
-  organization.
+### Lab 2.1 — A well-structured repository (Topic: Repository structure)
 
-**Steps**
+**Objective:** Initialize a repo with the conventional scaffolding.
 
-1. Create and clone a scratch repository:
+```bash
+mkdir -p ~/proj && cd ~/proj && git init -q
+printf "# Project\n" > README.md
+printf "MIT\n" > LICENSE
+printf "node_modules/\n*.log\n.env\n" > .gitignore
+mkdir -p src docs .github/workflows
+git add -A && git commit -qm "chore: scaffold repository"
+git ls-files
+```
 
-   ```bash
-   gh repo create repo-architecture-lab --private --clone
-   cd repo-architecture-lab
-   ```
+**Expected result:** a repo with a README, LICENSE, `.gitignore`, and a clear directory layout under
+version control — a discoverable structure (docs, source, CI config, ignore rules) makes a repo
+navigable and safe (secrets/artifacts ignored), which is the baseline for collaboration and
+automation.
 
-2. Create the directory contract and a structure validator:
+**Negative test:** commit without a `.gitignore`; build artifacts, logs, and `.env` secrets get
+committed — the ignore file is what keeps generated files and credentials out of history.
 
-   ```bash
-   mkdir -p units/unit-01-example
-   touch units/unit-01-example/README.md
-   mkdir -p scripts
-   cat > scripts/validate-structure.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -euo pipefail
-   fail=0
-   for u in units/*/; do
-     [[ -f "${u}README.md" ]] || { echo "MISSING: ${u}README.md" >&2; fail=1; }
-   done
-   exit "$fail"
-   EOF
-   chmod +x scripts/validate-structure.sh
-   ```
+**Cleanup:** `rm -rf ~/proj`.
 
-3. Add CODEOWNERS and a pre-commit config:
+### Lab 2.2 — A branching model (Topic: Branching)
 
-   ```bash
-   mkdir -p .github
-   echo "* @$(gh api user --jq .login)" > .github/CODEOWNERS
-   cat > .pre-commit-config.yaml <<'EOF'
-   repos:
-     - repo: local
-       hooks:
-         - id: structure-check
-           name: structure check
-           entry: scripts/validate-structure.sh
-           language: system
-           pass_filenames: false
-   EOF
-   pre-commit install
-   ```
+**Objective:** Use short-lived feature branches off a protected `main`.
 
-4. Commit and push the baseline, then enable branch protection:
+```bash
+cd ~/proj 2>/dev/null || { mkdir -p ~/proj && cd ~/proj && git init -q && git commit -q --allow-empty -m init; }
+git switch -c feature/add-config
+echo "setting: true" > config.yaml && git add config.yaml && git commit -qm "feat: add config"
+git switch main && git merge --no-ff feature/add-config -m "merge: add config" && git branch -d feature/add-config
+git log --oneline --graph | head
+```
 
-   ```bash
-   git add -A && git commit -m "feat: initial repository contract"
-   git push -u origin main
-   gh api --method PUT -H "Accept: application/vnd.github+json" \
-     repos/:owner/repo-architecture-lab/branches/main/protection \
-     -f required_status_checks.strict=false \
-     -f 'required_status_checks.contexts[]=' \
-     -f enforce_admins=true \
-     -f required_pull_request_reviews.required_approving_review_count=1 \
-     -f restrictions=null
-   ```
+**Expected result:** work is done on a short-lived feature branch and merged back to `main` via a
+reviewable merge — a trunk-based/feature-branch model keeps `main` always releasable while changes
+are developed and reviewed in isolation, which branch protection (Chapter 04) then enforces.
 
-5. **Expected result:** Confirm protection is active:
+**Negative test:** commit everything directly to `main`; unreviewed, half-finished work lands on the
+releasable branch — feature branches are what keep `main` clean and reviewable.
 
-   ```bash
-   gh api repos/:owner/repo-architecture-lab/branches/main/protection --jq .enforce_admins
-   ```
+**Cleanup:** `rm -rf ~/proj`.
 
-   Output must be `true`.
+### Lab 2.3 — Commit hygiene (Topic: Commit conventions)
 
-6. Add a second unit that satisfies the contract and confirm the local hook
-   passes:
+**Objective:** Write structured, conventional commits.
 
-   ```bash
-   mkdir -p units/unit-02-example
-   touch units/unit-02-example/README.md
-   git add -A
-   git commit -m "feat: add unit-02"
-   ```
+```bash
+cd ~/proj 2>/dev/null || { mkdir -p ~/proj && cd ~/proj && git init -q; }
+git commit -q --allow-empty -m "feat(api): add health endpoint" -m "Adds /healthz returning 200. Refs #12."
+git commit -q --allow-empty -m "fix(db): handle nil connection"
+git log --oneline | head
+```
 
-   **Expected result:** the `structure-check` hook runs and the commit
-   succeeds.
+**Expected result:** commits follow a convention (`type(scope): summary` + body/refs) — conventional
+commits make history scannable, enable automated changelogs/semantic versioning, and tie changes to
+issues, turning the log into documentation rather than noise.
 
-7. **Negative test:** Add a unit that violates the contract and confirm the
-   hook blocks it:
+**Negative test:** write commits like "stuff" and "wip fix"; the history is useless for changelogs,
+bisecting, or understanding *why* a change was made — a convention makes each commit informative.
 
-   ```bash
-   mkdir -p units/unit-03-broken
-   git add -A
-   git commit -m "feat: add unit-03 (missing README)"
-   ```
+**Cleanup:** `rm -rf ~/proj`.
 
-   **Expected result:** the commit is rejected locally with
-   `MISSING: units/unit-03-broken/README.md` before it ever reaches GitHub,
-   demonstrating that the structural gate runs pre-commit rather than only
-   in CI.
+### Lab 2.4 — Mono-repo versus poly-repo (Topic: Repository topology)
 
-8. **Cleanup:**
+**Objective:** Choose a repository topology for a project set.
 
-   ```bash
-   cd .. && rm -rf repo-architecture-lab
-   gh repo delete repo-architecture-lab --yes
-   ```
+```text
+# For a system of 5 related services + shared libraries, decide and justify:
+#   Mono-repo:  one repo, atomic cross-service changes, shared tooling/CI, unified history;
+#               cost = larger repo, needs path-scoped CI and CODEOWNERS
+#   Poly-repo:  a repo per service, independent lifecycle/permissions/release;
+#               cost = cross-service changes span repos, duplicated tooling
+```
+
+**Expected result:** a topology choice justified by team structure, release coupling, and tooling —
+mono-repo favors atomic changes and shared tooling for tightly-coupled components; poly-repo favors
+independent lifecycles for loosely-coupled ones; the decision follows how the components actually
+change together.
+
+**Negative test:** split tightly-coupled services that always change together into separate repos;
+every feature now spans multiple PRs across repos with no atomicity — the topology should match the
+change coupling.
+
+**Cleanup:** none (design decision).
 
 ## Lab Verification
 

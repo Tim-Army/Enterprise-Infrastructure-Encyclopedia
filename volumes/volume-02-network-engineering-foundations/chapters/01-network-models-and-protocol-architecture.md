@@ -294,103 +294,91 @@ reasoning reaches in seconds instead of by guesswork.
 
 ## Hands-On Lab
 
-**Objective.** Capture, decode, and construct packets to observe the
-layered model directly, confirming that theoretical encapsulation matches
-what appears on the wire.
+This chapter carries a topic-level walkthrough lab for **each foundation of network models and
+protocol architecture** — encapsulation, the OSI/TCP-IP mapping, PDUs and MTU, and ports/sockets.
+The volume is vendor-neutral; labs use standard Linux networking tools. Each ends **`**Lab verified
+by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 1.1–1.4** — a Linux host with `tcpdump`, `ip`, `ss`, and network
+access (root/`sudo` for capture). **Cost:** none.
 
-- A Linux host or VM with `sudo` access (any current distribution).
-- `python3`, `pip`, `tcpdump`, and `tshark`/Wireshark CLI tools installed.
-- Outbound network access for the `curl` step (a local web server also
-  works if the lab environment is offline).
+### Lab 1.1 — Encapsulation across the layers (Topic: Encapsulation)
 
-**Lab Steps**
-
-1. Install the lab dependencies:
-
-   ```bash
-   sudo apt-get update && sudo apt-get install -y tcpdump tshark python3-pip
-   python3 -m venv ~/netlab-venv
-   source ~/netlab-venv/bin/activate
-   pip install scapy
-   ```
-
-2. Start a background capture scoped to HTTP/HTTPS traffic on the primary
-   interface (replace `eth0` with the lab host's interface name from
-   `ip link`):
-
-   ```bash
-   sudo tcpdump -i eth0 -w /tmp/model-lab.pcap 'tcp port 80 or tcp port 443' &
-   TCPDUMP_PID=$!
-   sleep 2
-   ```
-
-3. Generate traffic to capture:
-
-   ```bash
-   curl -s -o /dev/null -w "HTTP status: %{http_code}\n" http://example.com
-   sleep 2
-   sudo kill "$TCPDUMP_PID"
-   ```
-
-4. Decode the capture layer by layer and confirm the expected header
-   fields are present:
-
-   ```bash
-   tshark -r /tmp/model-lab.pcap -V -c 1 | less
-   ```
-
-   **Expected result:** the decode shows, in order, a Frame section, an
-   Ethernet II section (source/destination MAC, EtherType `0x0800`), an
-   Internet Protocol Version 4 section (source/destination IP, protocol
-   `TCP (6)`), a Transmission Control Protocol section (source/destination
-   port, sequence number, flags), and — for the HTTP request — a Hypertext
-   Transfer Protocol section.
-
-5. Confirm the TCP three-way handshake is visible as three distinct frames:
-
-   ```bash
-   tshark -r /tmp/model-lab.pcap -Y "tcp.flags.syn==1 or tcp.flags.fin==1" \
-     -T fields -e frame.number -e tcp.flags -e tcp.seq -e tcp.ack
-   ```
-
-   **Expected result:** the first matching frame shows the `SYN` flag only;
-   a subsequent frame from the server shows `SYN, ACK`; and the following
-   frame from the client shows `ACK` only, completing the handshake.
-
-6. Build and inspect a packet programmatically with `scapy` to compare the
-   constructed layer stack against the captured one:
-
-   ```bash
-   python3 - <<'PYEOF'
-   from scapy.all import IP, TCP, Raw
-
-   packet = IP(dst="93.184.216.34") / TCP(dport=80, flags="S") / Raw(load=b"")
-   packet.show()
-   PYEOF
-   ```
-
-   **Expected result:** the printed layer stack shows `###[ IP ]###`
-   followed by `###[ TCP ]###`, matching the header order observed in the
-   `tshark` decode from step 4.
-
-**Negative Test**
-
-Repeat step 2 with an intentionally wrong filter (`'tcp port 8443'`, a port
-nothing in the lab uses) and re-run the `curl` step. Confirm the resulting
-`.pcap` file is empty of matching packets (`tshark -r` returns no records),
-demonstrating that a capture filter operates at the same header-field level
-described in this chapter — an incorrect Layer 4 filter value silently
-discards all matching traffic rather than producing an error.
-
-**Cleanup**
+**Objective:** See a single packet's nested headers.
 
 ```bash
-rm -f /tmp/model-lab.pcap
-deactivate
-rm -rf ~/netlab-venv
+sudo tcpdump -i any -c1 -vv -e 'tcp port 443' &
+curl -s https://example.com >/dev/null
+# tcpdump prints, for one packet: Ethernet (src/dst MAC, type) -> IPv4 (src/dst IP, proto)
+#   -> TCP (src/dst port, flags, seq) -> payload
 ```
+
+**Expected result:** one captured packet shows the layered headers — Ethernet frame wrapping an IP
+packet wrapping a TCP segment wrapping data — **encapsulation** is how each layer adds its own header
+around the layer above, and `tcpdump` lets you see every layer of a real packet.
+
+**Negative test:** try to explain a connectivity issue from the application alone; the problem may be
+in the L2 frame (wrong VLAN), L3 packet (bad route), or L4 segment (blocked port) — reading the
+encapsulated layers is what localizes it.
+
+**Cleanup:** `kill %1 2>/dev/null` (stop the background tcpdump).
+
+### Lab 1.2 — OSI and TCP/IP layer mapping (Topic: Network models)
+
+**Objective:** Map a real flow to the model layers.
+
+```bash
+ip link show        # L1/L2: interfaces, MAC addresses
+ip addr show        # L3: IP addresses
+ss -tan | head      # L4: TCP sockets (ports, states)
+getent hosts example.com   # L7: name resolution
+```
+
+**Expected result:** each command exposes a different layer — link/MAC (L1/L2), IP (L3), TCP sockets
+(L4), and application name resolution (L7) — the OSI/TCP-IP models are a shared vocabulary for *where*
+in the stack something happens, and each tool inspects a specific layer.
+
+**Negative test:** conflate "the network is down" across layers; a working link (L1/L2) with no route
+(L3), or a route with a blocked port (L4), are different problems — naming the layer directs the fix.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.3 — PDUs and MTU (Topic: Protocol data units)
+
+**Objective:** Find the path MTU and see fragmentation behavior.
+
+```bash
+ip link show | grep -oE 'mtu [0-9]+' | head
+ping -M do -s 1472 -c1 <gateway>      # 1472 + 28 (ICMP/IP hdr) = 1500 = standard MTU
+ping -M do -s 1500 -c1 <gateway>      # expect "Message too long" (exceeds MTU, DF set)
+```
+
+**Expected result:** the 1472-byte payload succeeds while 1500 fails with "message too long" — each
+layer's PDU (frame/packet/segment) has a size limit; the **MTU** (1500 bytes standard Ethernet) caps
+the L3 packet, and `ping -M do` (don't-fragment) probes the path MTU.
+
+**Negative test:** assume large payloads always work; a smaller path MTU (VPN/tunnel overhead) with DF
+set causes silent drops (PMTU black hole) — the DF ping reveals the real path MTU.
+
+**Cleanup:** none.
+
+### Lab 1.4 — Ports and sockets (Topic: Transport addressing)
+
+**Objective:** Read the transport-layer endpoints.
+
+```bash
+ss -tlnp | head           # listening TCP sockets (services + ports)
+ss -tan state established | head   # active connections (4-tuple: src/dst IP:port)
+```
+
+**Expected result:** listening services on their ports and established connections identified by the
+4-tuple (source IP:port ↔ destination IP:port) — a **socket** is the endpoint of a connection, and
+the port number is how the transport layer demultiplexes traffic to the right service.
+
+**Negative test:** expect two services to share one TCP listening port on the same address; only one
+can bind it — the IP:port pair uniquely identifies a listening socket.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

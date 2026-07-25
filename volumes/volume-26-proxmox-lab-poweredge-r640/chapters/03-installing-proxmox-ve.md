@@ -193,46 +193,95 @@ proceed.
 
 ## Hands-On Lab
 
-**Objective:** Install Proxmox VE onto the BOSS boot mirror through the
-iDRAC virtual media, and reach its web interface.
+This chapter carries a topic-level walkthrough lab for **each step of installing Proxmox VE** onto
+the R640's BOSS boot mirror. The install runs through iDRAC virtual media/console; verification is
+runnable CLI. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites:** The healthy BOSS mirror and `river` array from
-[Chapter 02](02-storage-boss-boot-mirror-and-the-river-raid-5-array.md), the
-Proxmox VE ISO (checksum-verified), and iDRAC access.
+**Shared prerequisites for Labs 3.1–3.4** — the BOSS boot mirror and `river` array built (Chapter
+02), the Proxmox VE ISO downloaded to your workstation, and iDRAC virtual console/media access.
+**Cost:** none.
 
-**This lab requires the physical server.** The install target is the
-hardware BOSS mirror.
+### Lab 3.1 — Mount the ISO and boot the installer (Topic: Install media)
 
-**Procedure**
+**Objective:** Boot the R640 from the Proxmox ISO remotely.
 
-1. Mount the Proxmox VE ISO as iDRAC virtual media and set a one-time boot
-   to the virtual CD.
-2. Power-cycle and open the virtual console.
-3. Run the installer: select the **BOSS mirror** as the target (confirm by
-   size), ext4 filesystem, set locale/time/keyboard, root password, admin
-   email, and an initial reachable management address.
-4. Complete the install, remove the virtual media, and reboot from the BOSS
-   mirror.
-5. Browse to `https://<mgmt-ip>:8006/`, log in as root, and confirm the node
-   appears (the subscription warning is expected).
+```bash
+racadm remoteimage -c -l //share/user:pass@/isos/proxmox-ve.iso   # attach the ISO as virtual media
+racadm remoteimage -s
+racadm set iDRAC.ServerBoot.FirstBootDevice VCD-DVD               # one-time boot from virtual CD
+racadm serveraction powercycle
+# In the virtual console, the Proxmox VE installer appears.
+```
 
-**Negative test**
+**Expected result:** the server boots into the Proxmox VE installer from the virtual media — the ISO
+is presented remotely and a one-time virtual-CD boot launches the installer, so no physical media is
+needed at the rack.
 
-6. On the installer's target-disk screen, note the two available targets by
-   size — the ~256 GB BOSS mirror and the larger `river` array — and
-   confirm you can tell them apart *before* selecting. This is the check
-   that prevents installing onto the data array. (Select the BOSS mirror.)
+**Negative test:** power-cycle without setting the one-time boot device; the server boots to its
+normal order (or PXE) and never reaches the installer — the boot-device override is what lands you in
+the installer.
 
-**Expected results**
+**Cleanup:** `racadm remoteimage -d` after the install completes.
 
-- Proxmox VE installed on and booting from the BOSS mirror.
-- The web interface reachable on port 8006, node visible.
-- `river` untouched, still available for Chapter 06.
+### Lab 3.2 — Install to the BOSS mirror (Topic: Installation)
 
-**Cleanup**
+**Objective:** Target the boot mirror with the right filesystem.
 
-7. Detach the virtual media. The installed hypervisor is the base for every
-   later chapter; leave it running.
+```text
+# In the Proxmox installer:
+#   - Target disk: select the BOSS RAID-1 virtual disk (NOT the 'river' RAID-5 array)
+#   - Filesystem: ext4 (on the hardware-RAID boot mirror) — do not layer ZFS on hardware RAID
+#   - Set hostname (e.g. pve01.lab.example.com), management IP/gateway/DNS, and root password
+#   - Finish and let it install, then reboot
+```
+
+**Expected result:** Proxmox installs onto the BOSS mirror with ext4, leaving the `river` RAID-5
+array untouched for VM storage — installing to the dedicated boot mirror keeps the OS separate; ext4
+on hardware RAID avoids stacking ZFS on top of a RAID controller (which hides disk state from ZFS).
+
+**Negative test:** install onto the `river` array, or put ZFS on top of the hardware-RAID BOSS
+volume; you couple boot to data, or give ZFS a single opaque device it cannot manage — target the
+boot mirror with a plain filesystem.
+
+**Cleanup:** none.
+
+### Lab 3.3 — First boot and web UI (Topic: First boot)
+
+**Objective:** Reach the Proxmox management interface.
+
+```bash
+# After reboot, from your workstation:
+ssh root@192.168.10.20 'hostname; pveversion'
+# Web UI: https://192.168.10.20:8006  (log in as root@pam)
+```
+
+**Expected result:** SSH and the web UI at port 8006 respond, and `pveversion` prints the installed
+PVE version — Proxmox is managed via the web UI (port 8006), the CLI (`pve*`/`qm`/`pct`), and the
+API; confirming all reachable means the install succeeded.
+
+**Negative test:** expect the UI on the standard HTTPS 443; Proxmox serves its UI on **8006** — using
+the wrong port makes it look "down" when it is fine.
+
+**Cleanup:** none.
+
+### Lab 3.4 — Verify the installation (Topic: Verification)
+
+**Objective:** Confirm the node is healthy and sees its disks.
+
+```bash
+pveversion -v | head
+lsblk | grep -iE "boss|sd|nvme" ; echo "---"
+pvesh get /nodes/pve01/status --output-format json | python3 -c "import json,sys; d=json.load(sys.stdin); print('uptime:', d.get('uptime'), 'kversion ok')"
+```
+
+**Expected result:** the PVE version/components, the boot disk mounted, and the node status healthy
+via the API — a clean install shows the boot mirror in use, the node up, and `pvesh` (the API CLI)
+responding, which is the baseline before configuring repos, networking, and storage.
+
+**Negative test:** proceed to configure the node while a service (pve-cluster/pveproxy) is failed;
+subsequent steps error mysteriously — confirm the node status is healthy first.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

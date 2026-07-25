@@ -290,47 +290,107 @@ to prevent exactly this; confirm the two are on distinct addresses.
 
 ## Hands-On Lab
 
-**Objective:** Deploy all ten virtual machines with their exact VLANs,
-addresses, gateways, and hostnames, and confirm each reaches its gateway.
+This chapter carries a topic-level walkthrough lab for **each VM-deployment step** — creating a VM,
+building a cloud-init template, cloning it into the fleet, and the container alternative. Commands
+are runnable `qm`/`pct`. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites:** The VM datastore and verified ISO library from Chapters
-06–07, and the VLAN-aware trunk bridge from Chapter 05 carrying VLAN 3.
+**Shared prerequisites for Labs 8.1–8.4** — a Proxmox node with the `river` datastore, ISOs and a
+cloud image in the library (Chapters 06–07), a VLAN-aware bridge (Chapter 05), and root SSH.
+**Cost:** none.
 
-**Reproducible to the extent your images allow** — the free-image VMs fully,
-the licensed ones with your entitlements.
+### Lab 8.1 — Create a VM from an ISO (Topic: VM creation)
 
-**Procedure**
+**Objective:** Build one VM the manual way.
 
-1. Create each installer-ISO VM (Ubuntu ×2, RHEL ×2, Windows ×2, CML) with a
-   disk on `river`, a NIC on `vmbr1` tagged to its VLAN, and the installer
-   ISO attached; run setup and set the guest's address, gateway, and
-   hostname per the table.
-2. Create each appliance VM (GNS3, EVE-ng) by importing its appliance disk,
-   tagging its NIC to VLAN 3, enabling nested virtualization, and setting its
-   address per the table.
-3. For each VM, confirm the NIC's VLAN tag matches its subnet (3 for
-   10.30.10.x, 6 for 10.30.12.x).
-4. From each guest, ping its gateway and confirm connectivity.
-5. Confirm all ten addresses are unique — in particular that Red Hat Server
-   (.88) and Windows Server (.89) do not collide.
+```bash
+qm create 100 --name test-vm --memory 2048 --cores 2 \
+  --net0 virtio,bridge=vmbr0,tag=30 \
+  --scsihw virtio-scsi-single --scsi0 river:32 \
+  --ide2 riverfiles:iso/ubuntu-24.04-live-server-amd64.iso,media=cdrom \
+  --boot order='scsi0;ide2' --ostype l26
+qm start 100
+qm status 100
+```
 
-**Negative test**
+**Expected result:** VM 100 is created with a 32 GB disk on `river`, a NIC on VLAN 30 via the
+VLAN-aware bridge, the Ubuntu ISO attached, and it powers on to the installer — `qm create` defines a
+VM entirely from the CLI (disk on the datastore, NIC on a tagged bridge, ISO as CD), the foundation
+for scripting the fleet.
 
-6. Change one server VM's NIC tag from 3 to 6 while leaving its 10.30.10.x
-   address, and confirm it can no longer reach its gateway — the correct-IP,
-   wrong-VLAN failure. Restore the tag to 3 and confirm connectivity returns.
+**Negative test:** attach the disk to `local` (boot mirror) instead of `river`; the VM competes with
+the OS for the small boot device — VM disks belong on the `river` datastore.
 
-**Expected results**
+**Cleanup:** `qm stop 100; qm destroy 100`.
 
-- All ten VMs running, each on its correct VLAN with its fixed address and
-  hostname.
-- Each guest reaches its gateway.
-- No duplicate addresses — the .88/.89 split in effect.
+### Lab 8.2 — Build a cloud-init template (Topic: Templates)
 
-**Cleanup**
+**Objective:** Turn a cloud image into a reusable template.
 
-7. Leave the VMs running; Chapter 09 validates the whole environment.
-   Restore any tag changed in the negative test.
+```bash
+qm create 9000 --name ubuntu-2404-template --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0,tag=30
+qm importdisk 9000 /river/template/cache/noble-server-cloudimg-amd64.img river
+qm set 9000 --scsihw virtio-scsi-single --scsi0 river:vm-9000-disk-0
+qm set 9000 --ide2 river:cloudinit --boot order=scsi0 --serial0 socket --vga serial0
+qm set 9000 --ciuser labadmin --sshkeys ~/.ssh/id_ed25519.pub --ipconfig0 ip=dhcp
+qm template 9000
+```
+
+**Expected result:** VM 9000 becomes a **template** with the cloud image as its disk and a cloud-init
+drive that injects user/SSH-key/network on first boot — a cloud-init template is a golden image;
+clones of it come up fully configured with no interactive install.
+
+**Negative test:** clone a VM that has no cloud-init drive expecting per-clone hostname/IP/keys; each
+clone is an identical copy with the same identity — the cloud-init drive is what makes each clone
+uniquely configured.
+
+**Cleanup:** keep the template (Lab 8.3 clones it).
+
+### Lab 8.3 — Clone the fleet (Topic: Fleet deployment)
+
+**Objective:** Deploy the ten VMs from the template.
+
+```bash
+for id in $(seq 101 110); do
+  qm clone 9000 "$id" --name "vm-$id" --full --storage river
+  qm set "$id" --ipconfig0 ip=192.168.30.$id/24,gw=192.168.30.1
+  qm start "$id"
+done
+qm list
+```
+
+**Expected result:** ten VMs (101–110) are cloned from the template, each with its own IP via
+cloud-init, and started — cloning a cloud-init template in a loop deploys a consistent fleet in
+minutes; `--full` makes independent copies (vs `--link` linked clones that share the base).
+
+**Negative test:** deploy ten VMs by running the ISO installer ten times; it is slow and each may
+differ subtly — templated cloning gives identical, fast, scriptable deployment (the point of the
+ten-VM build).
+
+**Cleanup:** `for id in $(seq 101 110); do qm stop $id; qm destroy $id; done` when tearing down.
+
+### Lab 8.4 — Containers as a lighter alternative (Topic: Containers)
+
+**Objective:** Deploy an LXC container where a full VM is overkill.
+
+```bash
+pveam update && pveam available --section system | grep -i ubuntu | head -1
+pveam download riverfiles ubuntu-24.04-standard_24.04-2_amd64.tar.zst 2>/dev/null || true
+pct create 200 riverfiles:vztmpl/ubuntu-24.04-standard_24.04-2_amd64.tar.zst \
+  --hostname ct200 --memory 1024 --cores 1 --rootfs river:8 \
+  --net0 name=eth0,bridge=vmbr0,tag=30,ip=192.168.30.200/24,gw=192.168.30.1
+pct start 200 ; pct status 200
+```
+
+**Expected result:** an LXC container (200) starts with far less overhead than a VM — Proxmox runs
+both full VMs (`qm`, hardware-virtualized, any OS) and system containers (`pct`, LXC, shared kernel,
+lightweight); containers suit many Linux services where a full VM's isolation/overhead is
+unnecessary.
+
+**Negative test:** run a Windows or a custom-kernel workload in an LXC container; it cannot (LXC
+shares the host kernel) — use a full VM (`qm`) for non-Linux or kernel-specific workloads, containers
+for lightweight Linux services.
+
+**Cleanup:** `pct stop 200; pct destroy 200`.
 
 ## Lab Verification
 
