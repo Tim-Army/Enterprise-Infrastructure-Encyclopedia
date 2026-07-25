@@ -421,149 +421,101 @@ if __name__ == "__main__":
 
 ## Hands-On Lab
 
-**Objective:** Implement a host-based segmentation policy using Linux
-`nftables`, validate that permitted traffic succeeds and denied traffic is
-blocked, and run the segmentation policy CI validator against a
-deliberately broken policy file.
+This chapter carries a topic-level walkthrough lab for **each network-defense skill** — host
+firewalling, segmentation and reconnaissance, intrusion detection, and intrusion traffic
+analysis — the CyberOps "Network Intrusion Analysis" domain. Every step is runnable. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.4** — a Linux host with `sudo`, `nftables`/`iptables`,
+`nmap`, `suricata` (or `snort`), and `tshark`. **Safety:** scan and probe only hosts you own.
+**Cost:** none.
 
-- A Linux lab VM (RHEL 10 or Ubuntu Server 26.04 LTS) with `sudo` access
-  and `nftables` installed.
-- Python 3.11 or later with `pyyaml` installed
-  (`pip install --user pyyaml`).
-- A second host or terminal session able to reach the lab VM over the
-  network for connectivity testing.
-- Perform this lab on an isolated lab network segment, not a host you
-  depend on for production access.
+### Lab 4.1 — Default-deny host firewall (Topic: Infrastructure defense)
 
-**Steps**
-
-1. Create a lab directory and confirm the current `nftables` ruleset is
-   empty or save it for restoration:
-
-   ```bash
-   mkdir -p ~/labs/vol10-ch04 && cd ~/labs/vol10-ch04
-   sudo nft list ruleset > original-ruleset.nft
-   ```
-
-2. Apply a minimal segmentation policy that allows only SSH (22/tcp) and
-   HTTPS (443/tcp) inbound, denying and logging everything else:
-
-   ```bash
-   sudo tee lab-segmentation.nft > /dev/null << 'EOF'
-   table inet lab_segmentation {
-     chain inbound {
-       type filter hook input priority 0; policy drop;
-       ct state established,related accept
-       iif lo accept
-       tcp dport 22 accept
-       tcp dport 443 accept
-       log prefix "SEG-DENY: " drop
-     }
-   }
-   EOF
-   sudo nft -f lab-segmentation.nft
-   ```
-
-3. **Expected result:** Confirm the ruleset loaded:
-
-   ```bash
-   sudo nft list table inet lab_segmentation
-   ```
-
-   Output should show the `inbound` chain with the accept rules for ports
-   22 and 443 and a final logged drop.
-
-4. From the second host, confirm the permitted path succeeds (adjust for
-   an available service; a simple listener works for this test):
-
-   ```bash
-   # On the lab VM, start a temporary listener on 443 for the test
-   sudo python3 -m http.server 443 &
-
-   # From the second host
-   curl -sS -o /dev/null -w "%{http_code}\n" http://<lab-host-ip>:443/
-   ```
-
-   **Expected result:** An HTTP status code is returned (for example
-   `200`), confirming the allowed port is reachable.
-
-5. **Negative test:** From the second host, attempt to reach a port that
-   is not in the allow list:
-
-   ```bash
-   curl -sS --connect-timeout 3 http://<lab-host-ip>:8080/ ; echo "exit=$?"
-   ```
-
-   **Expected result:** The connection times out or is refused (a nonzero
-   `curl` exit code), and the lab VM's kernel log shows the denial:
-
-   ```bash
-   sudo dmesg | grep "SEG-DENY" | tail -5
-   ```
-
-   The presence of a logged `SEG-DENY` entry for the blocked port
-   confirms the segmentation policy is both enforcing and generating the
-   audit trail [Chapter 6](06-security-telemetry-detection-engineering-and-soc-operations.md)'s detection pipeline depends on.
-
-6. Save the CI validator script (`validate_segmentation.py` from the
-   Implementation and Automation section) and a valid policy file, then
-   confirm it passes:
-
-   ```bash
-   cat > policy.yaml << 'EOF'
-   zone: payment-processing
-   rules:
-     - id: seg-pp-001
-       description: "App tier reaches payment DB only"
-       source: zone.app-tier
-       destination: zone.payment-processing
-       port: 5432/tcp
-       action: allow
-     - id: seg-pp-002
-       description: "No direct internet egress"
-       source: zone.payment-processing
-       destination: any
-       port: any
-       action: deny
-       log: true
-   EOF
-   python3 validate_segmentation.py policy.yaml ; echo "exit=$?"
-   ```
-
-   **Expected result:** No `POLICY ERROR` lines print, and `exit=0`.
-
-7. Introduce a policy defect (remove the default-deny rule) and re-run to
-   confirm the validator catches it before it would reach production:
-
-   ```bash
-   cat > broken-policy.yaml << 'EOF'
-   zone: payment-processing
-   rules:
-     - id: seg-pp-001
-       description: "App tier reaches payment DB only"
-       source: zone.app-tier
-       destination: zone.payment-processing
-       port: 5432/tcp
-       action: allow
-   EOF
-   python3 validate_segmentation.py broken-policy.yaml ; echo "exit=$?"
-   ```
-
-   **Expected result:**
-   `POLICY ERROR: payment-processing: no explicit default-deny egress rule`
-   prints and `exit=1`, demonstrating the same fail-closed CI gate pattern
-   used for the OSCAP remediation review in [Chapter 3](03-platform-hardening-configuration-and-endpoint-defense.md).
-
-**Cleanup**
+**Objective:** Permit only intended traffic and drop the rest.
 
 ```bash
-sudo pkill -f "http.server 443" 2>/dev/null
-sudo nft flush ruleset
-sudo nft -f original-ruleset.nft 2>/dev/null || true
-cd ~ && rm -rf ~/labs/vol10-ch04
+sudo nft add table inet filter 2>/dev/null
+sudo nft 'add chain inet filter input { type filter hook input priority 0 ; policy drop ; }'
+sudo nft add rule inet filter input ct state established,related accept
+sudo nft add rule inet filter input iif lo accept
+sudo nft add rule inet filter input tcp dport 22 accept          # allow SSH only
+sudo nft list chain inet filter input
 ```
+
+**Expected result:** the input chain defaults to `drop`, allowing only loopback, established
+flows, and SSH — a default-deny firewall inverts the trust model: nothing is allowed unless
+explicitly permitted, which is the foundation of network defense at host and perimeter.
+
+**Negative test:** run a default-allow firewall with a few block rules; any service you forget
+to block is exposed — default-deny means a forgotten service is closed, not open, which is the
+safer failure mode.
+
+**Cleanup:** `sudo nft delete table inet filter`.
+
+### Lab 4.2 — Reconnaissance and attack-surface enumeration (Topic: Network analysis)
+
+**Objective:** See your host the way an attacker's scanner does.
+
+```bash
+sudo nmap -sS -sV -O -p- 127.0.0.1 2>/dev/null | grep -E "open|OS details" | head
+nmap --script vuln 127.0.0.1 2>/dev/null | grep -iE "VULNERABLE|CVE" | head
+```
+
+**Expected result:** the open ports, service versions, and any flagged vulnerabilities on the
+target — reconnaissance (port/service/OS discovery) is both the attacker's first move and the
+defender's attack-surface check; you cannot defend a service you did not know was exposed.
+
+**Negative test:** assume a host only runs what you deployed; a forgotten dev service or default
+daemon is listening — scanning reveals the *actual* attack surface, which usually exceeds the
+intended one.
+
+**Cleanup:** none (read-only scan of your own host).
+
+### Lab 4.3 — Intrusion detection with Suricata (Topic: IDS/IPS)
+
+**Objective:** Alert on a matching signature.
+
+```bash
+cd ~ && cat > local.rules <<'EOF'
+alert icmp any any -> any any (msg:"ICMP ping detected"; itype:8; sid:1000001; rev:1;)
+EOF
+sudo suricata -r /usr/share/doc/suricata/*.pcap -S local.rules -l /tmp/suri 2>/dev/null; \
+  grep -o '"signature":"[^"]*"' /tmp/suri/eve.json 2>/dev/null | head || \
+  echo "(install suricata) rule would alert on matching traffic; alerts land in eve.json"
+```
+
+**Expected result:** Suricata raises the signature alert (in `eve.json`) on matching traffic —
+an IDS/IPS inspects traffic against signatures and behavioral rules (Suricata/Snort), alerting
+(IDS) or blocking (IPS) known-bad patterns; rules encode the threats you watch for.
+
+**Negative test:** rely on the firewall's port rules alone for detection; it permits legitimate
+ports but cannot see a malicious payload riding an allowed port — the IDS inspects *content*,
+which port filtering does not.
+
+**Cleanup:** `rm -f ~/local.rules; sudo rm -rf /tmp/suri`.
+
+### Lab 4.4 — Intrusion traffic analysis (Topic: Network intrusion analysis)
+
+**Objective:** Find a scan or beacon pattern in a capture.
+
+```bash
+# Detect a port scan: one source hitting many ports with SYNs
+tshark -r capture.pcapng -Y "tcp.flags.syn==1 && tcp.flags.ack==0" \
+  -T fields -e ip.src -e tcp.dstport 2>/dev/null | sort | uniq -c | sort -rn | head
+# Detect beaconing: regular-interval connections to one destination
+tshark -r capture.pcapng -Y "tcp.flags.syn==1" -T fields -e ip.dst 2>/dev/null | sort | uniq -c | sort -rn | head
+```
+
+**Expected result:** one source touching many destination ports (a scan) or repeated
+connections to one host (a beacon) stand out in the counts — network intrusion analysis reads
+captures/flows for attack patterns (scanning, beaconing, exfiltration) that individual packets do
+not reveal, which is the SOC's network-side detection skill.
+
+**Negative test:** judge intrusion from a single packet; a scan or beacon is a *pattern* across
+many packets — aggregating by source/destination/port over time is what exposes it.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

@@ -454,87 +454,129 @@ next_review: 2026-08-15
 
 ## Hands-On Lab
 
-**Objective:** Build and run a reproducible continuous control
-validation scorecard covering controls from earlier chapters in this
-volume, confirm a healthy environment passes, and introduce a
-deliberately broken control to confirm the scorecard fails correctly and
-exits with a non-zero status suitable for CI/CD gating.
+This chapter closes the volume with **security automation, threat hunting, control assurance,
+and lifecycle** — the CBRCOR "Automation/Processes" domains — and a **Design Exercise**
+synthesizing a security program. Every operational step is runnable; the capstone is a written
+design. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 9.1–9.4** — a host with `python3`, `jq`, and access to sample
+logs. Work in `mkdir -p ~/hunt && cd ~/hunt`. **Cost:** none.
 
-- A workstation with Python 3.11 or later.
-- No production security tooling is required — this lab uses the
-  self-contained simulated checks from the Implementation and Automation
-  section.
+### Lab 9.1 — Security automation (SOAR) (Topic: Automation)
 
-**Steps**
-
-1. Create a lab directory and save `control_validation.py`:
-
-   ```bash
-   mkdir -p ~/labs/vol10-ch09 && cd ~/labs/vol10-ch09
-   # save control_validation.py here
-   ```
-
-2. Run the baseline scorecard:
-
-   ```bash
-   python3 control_validation.py ; echo "exit=$?"
-   ```
-
-3. **Expected result:** All three checks print `[PASS]`, the summary
-   line reads `Scorecard: 3 passed, 0 failed`, and `exit=0` — confirming
-   a healthy set of simulated controls (default-deny segmentation, no
-   standing privileged access, a verified backup restore) passes
-   validation.
-
-4. Introduce a deliberately broken control by editing
-   `check_privileged_access_is_jit` to add a standing (non-expiring)
-   grant, simulating a real regression — for example, an emergency
-   access exception that was never converted back to time-boxed JIT
-   access:
-
-   ```bash
-   python3 - << 'EOF'
-   with open("control_validation.py") as fh:
-       content = fh.read()
-   content = content.replace(
-       '''grants = [{"role": "db-admin", "duration_minutes": 60},
-              {"role": "network-admin", "duration_minutes": 30}]''',
-       '''grants = [{"role": "db-admin", "duration_minutes": 60},
-              {"role": "network-admin", "duration_minutes": 30},
-              {"role": "backup-admin", "duration_minutes": None}]'''
-   )
-   with open("control_validation.py", "w") as fh:
-       fh.write(content)
-   EOF
-   ```
-
-5. Re-run the scorecard:
-
-   ```bash
-   python3 control_validation.py ; echo "exit=$?"
-   ```
-
-6. **Negative test — expected result:** `CTL-002-01` now prints `[FAIL]`
-   (it passed in step 3; the newly added standing `backup-admin` grant
-   with no expiration is exactly the regression this check exists to
-   catch), and the summary reads `Scorecard: 2 passed, 1 failed` with
-   `exit=1`. Confirm that a CI pipeline consuming this scorecard would
-   correctly block promotion on the nonzero exit code, exactly as the
-   CI/CD security gates in the Implementation and Automation section are
-   designed to do.
-
-7. Fix the underlying issue by removing the standing `backup-admin`
-   grant (representing remediating the finding by converting it to
-   time-boxed JIT access or revoking it), then re-run to confirm the
-   scorecard returns to `3 passed, 0 failed` and `exit=0`.
-
-**Cleanup**
+**Objective:** Script an enrich-and-respond playbook for an alert.
 
 ```bash
-cd ~ && rm -rf ~/labs/vol10-ch09
+cd ~/hunt
+python3 - <<'EOF'
+def handle(alert):
+    steps=[]
+    # 1. Enrich
+    ioc=alert["src_ip"]; reputation="malicious" if ioc.startswith("185.") else "unknown"
+    steps.append(f"enrich {ioc} -> {reputation}")
+    # 2. Decide + respond (auto-contain only high-confidence, with an approval gate for prod)
+    if reputation=="malicious":
+        steps.append(f"block {ioc} at firewall (auto)")
+        steps.append("open ticket + notify SOC")
+    else:
+        steps.append("queue for analyst triage")
+    return steps
+for s in handle({"src_ip":"185.220.101.4","rule":"C2 beacon"}): print(s)
+EOF
 ```
+
+**Expected result:** the playbook enriches the IOC, and on a malicious verdict auto-blocks and
+tickets — SOAR codifies analyst runbooks so routine response (enrich → decide → contain →
+notify) is consistent and fast, with humans approving high-impact actions.
+
+**Negative test:** automate an irreversible containment (e.g. isolate a production server) with no
+confidence threshold or approval gate; a false positive causes an outage — high-impact automated
+actions need confidence gating and human approval.
+
+**Cleanup:** none.
+
+### Lab 9.2 — Hypothesis-driven threat hunting (Topic: Threat hunting)
+
+**Objective:** Hunt for a technique rather than wait for an alert.
+
+```bash
+cd ~/hunt
+# Hypothesis: an attacker uses a scheduled task for persistence (ATT&CK T1053).
+ls -la /etc/cron.d/ /etc/cron.daily/ 2>/dev/null
+crontab -l 2>/dev/null; sudo ls -la /var/spool/cron/ 2>/dev/null
+# Hypothesis: rare parent-child process (living-off-the-land)
+ps -eo comm,ppid,cmd 2>/dev/null | grep -E "sh -c|curl|wget|nc " | head
+```
+
+**Expected result:** an inventory of scheduled tasks and suspicious process lineage to review
+against "known good" — threat hunting is proactive and hypothesis-driven: you assume a technique
+(persistence, LOLbins) and search for its evidence, finding threats that evaded automated
+detection.
+
+**Negative test:** wait only for alerts to fire; a patient attacker who stays below detection
+thresholds is never found — hunting assumes compromise and actively looks, closing the gap that
+alert-only monitoring leaves.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.3 — Control assurance / purple teaming (Topic: Assurance)
+
+**Objective:** Validate that a control actually detects what it should.
+
+```bash
+cd ~/hunt
+# Emulate a benign "attack" technique, then confirm the detection fired:
+logger -p auth.warning "Failed password for invalid user attacker from 203.0.113.5"   # simulate
+sleep 1
+journalctl -p warning --since "-1 min" 2>/dev/null | grep -q "Failed password" && \
+  echo "DETECTION VALIDATED: brute-force signal is being logged/detected" || \
+  echo "GAP: the emulated technique produced no detectable signal"
+```
+
+**Expected result:** the emulated technique produces a signal the detection sees, validating
+coverage (or exposing a gap) — control assurance (atomic tests / purple teaming, e.g. Atomic Red
+Team) proves detections work against real techniques, rather than assuming they do; a passing
+test is evidence, a gap is a work item.
+
+**Negative test:** assume a deployed detection works because it exists; many detections silently
+break (log source moved, rule disabled) — only emulating the technique and confirming the alert
+proves current coverage.
+
+**Cleanup:** none.
+
+### Lab 9.4 — Design Exercise: an enterprise security program (Topic: Synthesis)
+
+**Objective:** Produce a defensible security-program design — the CISO/architect deliverable,
+not a tool list.
+
+> **Scenario.** A 2,000-person company with on-prem and multi-cloud must build a security
+> program from governance to operations: protect data, detect and respond to threats, and prove
+> compliance — with finite budget and staff.
+
+Work through and **write down**:
+
+1. **Govern & assess** — risk register, framework (NIST CSF/CIS), and threat model driving
+   priorities (Ch01, Ch05).
+2. **Protect** — identity/Zero-Trust and PAM, hardening baselines and endpoint defense, network
+   segmentation and default-deny, encryption and key management (Ch02, Ch03, Ch04, Ch08).
+3. **Detect** — telemetry pipeline, detection-as-code, SIEM correlation with ATT&CK coverage, and
+   tuned alerting (Ch06).
+4. **Respond & recover** — IR lifecycle and playbooks, forensics readiness, and tested
+   ransomware-resilient backups (Ch07, Ch08).
+5. **Assure & improve** — vulnerability/exposure management, threat hunting, purple-team control
+   validation, and security automation (Ch05, Ch09).
+6. **Prioritize under constraint** — where the finite budget goes first (identity + monitoring +
+   backups usually outrank shiny point tools) and why.
+
+**Expected result:** a written program spanning govern → protect → detect → respond → recover →
+assure, with defense in depth and a defensible spend priority — a security program is judged on
+coverage of the whole lifecycle and risk-based prioritization, not on any single product.
+
+**Negative test:** buy point tools with no governance, monitoring, IR plan, or tested backups; you
+have spend without a program, and the first real incident finds the gaps — the lifecycle coverage
+and prioritization are the program's actual value.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 

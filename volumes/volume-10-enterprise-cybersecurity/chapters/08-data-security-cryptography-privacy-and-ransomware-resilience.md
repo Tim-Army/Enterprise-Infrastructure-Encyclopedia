@@ -471,100 +471,110 @@ storage-cli object lock-status --bucket backup-prod-immutable --key nightly-2026
 
 ## Hands-On Lab
 
-**Objective:** Implement and test a working envelope-encryption workflow,
-confirming successful encrypt/decrypt round-trip and validating that
-tampered ciphertext is detected and rejected rather than silently
-decrypted incorrectly.
+This chapter carries a topic-level walkthrough lab for **each data-protection skill** —
+symmetric/asymmetric cryptography, hashing and signatures, TLS/certificates, and ransomware
+resilience. Cryptography is best learned by running it, so every step uses `openssl`/`gpg`. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.4** — a host with `openssl`, `gpg`, and `sha256sum`. Work
+in `mkdir -p ~/crypto && cd ~/crypto`. **Cost:** none.
 
-- A workstation with Python 3.11 or later and the `cryptography` package
-  installed (`pip install --user cryptography`).
-- No production KMS or key material is required — this lab simulates the
-  KEK locally for reproducibility.
+### Lab 8.1 — Symmetric and asymmetric encryption (Topic: Cryptography)
 
-**Steps**
-
-1. Create a lab directory and a sample plaintext file:
-
-   ```bash
-   mkdir -p ~/labs/vol10-ch08 && cd ~/labs/vol10-ch08
-   echo "customer record: restricted classification sample data" > record.txt
-   ```
-
-2. Save the `envelope_encrypt.py` script from the Implementation and
-   Automation section into the same directory.
-
-3. Encrypt the sample file:
-
-   ```bash
-   python3 envelope_encrypt.py encrypt record.txt record.enc
-   ```
-
-4. **Expected result:**
-   `Encrypted record.txt -> record.enc` prints, and `record.enc` contains
-   a JSON envelope with `data_nonce`, `ciphertext`, `wrapped_dek`, and
-   `kek_nonce` fields:
-
-   ```bash
-   cat record.enc
-   ```
-
-5. Decrypt the file and confirm it matches the original:
-
-   ```bash
-   python3 envelope_encrypt.py decrypt record.enc record.decrypted.txt
-   diff record.txt record.decrypted.txt && echo "MATCH: round-trip successful"
-   ```
-
-   **Expected result:** `MATCH: round-trip successful` prints, confirming
-   the envelope-encryption round trip preserved the data exactly.
-
-6. **Negative test:** Tamper with the ciphertext field in the encrypted
-   envelope (simulating corruption or an attempted modification) and
-   attempt to decrypt it:
-
-   ```bash
-   python3 - << 'EOF'
-   import json
-   with open("record.enc") as fh:
-       envelope = json.load(fh)
-   # Flip the last character of the ciphertext to simulate tampering
-   envelope["ciphertext"] = envelope["ciphertext"][:-1] + (
-       "A" if envelope["ciphertext"][-1] != "A" else "B"
-   )
-   with open("record.tampered.enc", "w") as fh:
-       json.dump(envelope, fh)
-   EOF
-   python3 envelope_encrypt.py decrypt record.tampered.enc record.tampered.out.txt
-   echo "exit=$?"
-   ```
-
-   **Expected result:** The script raises a
-   `cryptography.exceptions.InvalidTag` exception and exits with a
-   nonzero status — AES-GCM's authentication tag detects that the
-   ciphertext was modified after encryption and refuses to produce
-   output, rather than silently returning corrupted plaintext. This is
-   the same tamper-evidence property, applied to encrypted data instead
-   of a hash log, that the chain-of-custody tooling in [Chapter 7](07-cybersecurity-incident-response-and-digital-evidence.md) relies
-   on for evidence integrity.
-
-7. Confirm no `record.tampered.out.txt` file was written, since the
-   decryption failed before any output was produced:
-
-   ```bash
-   ls record.tampered.out.txt 2>&1
-   ```
-
-   **Expected result:** `No such file or directory`, confirming the
-   failure occurred before any (potentially corrupted) plaintext was
-   written to disk.
-
-**Cleanup**
+**Objective:** Encrypt with a shared key, then with a keypair.
 
 ```bash
-cd ~ && rm -rf ~/labs/vol10-ch08
+cd ~/crypto
+echo "secret payload" > msg.txt
+# Symmetric (AES): fast, one shared key
+openssl enc -aes-256-cbc -pbkdf2 -salt -in msg.txt -out msg.enc -pass pass:labkey
+openssl enc -d -aes-256-cbc -pbkdf2 -in msg.enc -pass pass:labkey
+# Asymmetric (RSA): public key encrypts, private key decrypts
+openssl genpkey -algorithm RSA -out priv.pem -pkeyopt rsa_keygen_bits:2048 2>/dev/null
+openssl rsa -in priv.pem -pubout -out pub.pem 2>/dev/null
+openssl pkeyutl -encrypt -pubin -inkey pub.pem -in msg.txt -out msg.rsa && echo "RSA-encrypted"
 ```
+
+**Expected result:** AES decrypts back to the plaintext with the shared key, and RSA encrypts to
+the public key — symmetric crypto is fast for bulk data (one shared key), asymmetric solves key
+distribution (public encrypts / private decrypts); real systems combine them (hybrid: RSA/ECDH
+to exchange an AES key).
+
+**Negative test:** encrypt gigabytes directly with RSA; it is impractically slow and size-limited
+— that is exactly why TLS uses asymmetric only to establish a symmetric session key.
+
+**Cleanup:** `rm -f ~/crypto/msg.* ~/crypto/priv.pem ~/crypto/pub.pem`.
+
+### Lab 8.2 — Hashing, HMAC, and digital signatures (Topic: Integrity and authenticity)
+
+**Objective:** Prove integrity and origin.
+
+```bash
+cd ~/crypto
+echo "contract v1" > doc.txt
+sha256sum doc.txt                                          # integrity fingerprint
+openssl dgst -sha256 -hmac "sharedkey" doc.txt            # keyed integrity (HMAC)
+gpg --batch --passphrase '' --quick-gen-key "Lab <lab@example.com>" default default 2>/dev/null
+gpg --clearsign doc.txt 2>/dev/null && gpg --verify doc.txt.asc 2>&1 | grep -i "good signature"
+```
+
+**Expected result:** a SHA-256 hash, an HMAC (integrity with a shared secret), and a GPG
+signature that verifies as a "Good signature" — hashing proves *integrity* (unchanged), HMAC adds
+a shared-key check, and a digital signature proves *authenticity + integrity + non-repudiation*
+(only the private-key holder could sign it).
+
+**Negative test:** rely on a plain hash for authenticity; anyone can recompute the hash of a
+tampered file, so a bare hash proves integrity only if delivered over a trusted channel — a
+signature binds the content to an identity.
+
+**Cleanup:** `rm -f ~/crypto/doc.txt ~/crypto/doc.txt.asc; gpg --batch --yes --delete-secret-and-public-key "Lab <lab@example.com>" 2>/dev/null; true`.
+
+### Lab 8.3 — TLS and certificate inspection (Topic: Transport security)
+
+**Objective:** Inspect a live TLS certificate and chain.
+
+```bash
+openssl s_client -connect example.com:443 -servername example.com </dev/null 2>/dev/null | \
+  openssl x509 -noout -subject -issuer -dates -ext subjectAltName
+```
+
+**Expected result:** the certificate's subject, issuer, validity dates, and SANs — TLS provides
+confidentiality and authenticity in transit; certificate validation (trusted issuer, matching
+name, in-date, not revoked) is what proves you are talking to the real server, not a
+man-in-the-middle.
+
+**Negative test:** ignore a certificate name mismatch or expiry warning and connect anyway; that
+is the exact condition a MITM presents — certificate validation is the check that catches it, so
+warnings must never be clicked through.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.4 — Ransomware resilience: 3-2-1 and restore testing (Topic: Resilience)
+
+**Objective:** Prove you can recover — the only real ransomware defense.
+
+```bash
+cd ~/crypto
+mkdir -p prod backup-local backup-offsite
+echo "critical data v1" > prod/data.txt
+cp prod/data.txt backup-local/         # copy 2 (different media)
+cp prod/data.txt backup-offsite/       # copy 3 (offsite/immutable)
+# Simulate ransomware, then RESTORE and verify:
+echo "ENCRYPTED_BY_RANSOMWARE" > prod/data.txt
+cp backup-offsite/data.txt prod/data.txt
+grep -q "critical data v1" prod/data.txt && echo "RESTORE OK from offsite copy"
+```
+
+**Expected result:** the restore from the offsite/immutable copy recovers the original data — the
+**3-2-1 rule** (3 copies, 2 media, 1 offsite/immutable) plus *tested* restores is the defense
+that actually defeats ransomware: encryption of production is survivable if a clean, offline copy
+exists and the restore is proven.
+
+**Negative test:** keep only online backups the ransomware can also reach and encrypt; the "backup"
+is encrypted too and recovery fails — an offline/immutable copy and a tested restore are what make
+backups ransomware-proof.
+
+**Cleanup:** `rm -rf ~/crypto/prod ~/crypto/backup-local ~/crypto/backup-offsite`.
 
 ## Lab Verification
 

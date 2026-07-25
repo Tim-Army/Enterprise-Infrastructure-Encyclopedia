@@ -351,92 +351,114 @@ leaked, would remain valid indefinitely.
 
 ## Hands-On Lab
 
-**Objective:** Implement and test a just-in-time privileged elevation
-workflow, including policy-enforced validation and a negative test for an
-over-duration request.
+This chapter carries a topic-level walkthrough lab for **each identity-security skill** —
+multi-factor authentication, password/credential security, least privilege, and Zero-Trust
+privileged access. Every step is runnable with portable tools. Each ends **`**Lab verified
+by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.4** — a Linux host with `python3`, `openssl`, and
+`oathtool` (for TOTP). Work in `mkdir -p ~/id && cd ~/id`. **Cost:** none.
 
-- A workstation with Python 3.11 or later.
-- No production identity system access is required — this lab uses the
-  local simulation script from the Implementation and Automation section.
+### Lab 2.1 — Multi-factor authentication with TOTP (Topic: Strong authentication)
 
-**Steps**
-
-1. Create a lab directory and save the `jit_elevation.py` script from this
-   chapter:
-
-   ```bash
-   mkdir -p ~/labs/vol10-ch02 && cd ~/labs/vol10-ch02
-   # save jit_elevation.py here
-   ```
-
-2. Run the baseline scenario:
-
-   ```bash
-   python3 jit_elevation.py
-   ```
-
-3. **Expected result:** Output shows
-   `Granted db-admin to alice@corp.example — active=True`, confirming the
-   grant is active immediately after issuance.
-
-4. Extend the script to test expiry by adding this block at the end of the
-   file (replacing the existing `__main__` block):
-
-   ```python
-   if __name__ == "__main__":
-       from datetime import datetime, timedelta, timezone
-
-       grant = request_elevation("alice@corp.example", "db-admin",
-                                  "INC-20458 replication lag remediation", 60)
-       print(f"Granted {grant.role} to {grant.principal} — active={grant.is_active()}")
-
-       future = datetime.now(timezone.utc) + timedelta(minutes=61)
-       print(f"After 61 minutes — active={grant.is_active(future)}")
-   ```
-
-5. Re-run the script:
-
-   ```bash
-   python3 jit_elevation.py
-   ```
-
-6. **Expected result:** The second line prints `active=False`, confirming
-   the elevation automatically expires after its 60-minute window without
-   requiring manual revocation.
-
-7. **Negative test:** Attempt a policy-violating request — no
-   justification, and a duration exceeding the 8-hour policy maximum:
-
-   ```bash
-   python3 -c "
-   from jit_elevation import request_elevation
-   request_elevation('bob@corp.example', 'domain-admin', '', 60)
-   "
-   ```
-
-   **Expected result:** The script raises
-   `ValueError: Elevation requests require a justification (ticket reference).`
-   Then test the duration guard:
-
-   ```bash
-   python3 -c "
-   from jit_elevation import request_elevation
-   request_elevation('bob@corp.example', 'domain-admin', 'INC-1', 600)
-   "
-   ```
-
-   **Expected result:**
-   `ValueError: Elevation duration exceeds policy maximum of 8 hours.`
-   Both failures demonstrate the policy engine rejecting a non-compliant
-   elevation request before any credential is ever issued.
-
-**Cleanup**
+**Objective:** Generate a time-based one-time code from a shared secret.
 
 ```bash
-cd ~ && rm -rf ~/labs/vol10-ch02
+SECRET=$(head -c20 /dev/urandom | base32)
+echo "enrolled secret: $SECRET"
+oathtool --totp -b "$SECRET"                 # current 6-digit code
+sleep 31 && oathtool --totp -b "$SECRET"     # a different code in the next window
 ```
+
+**Expected result:** two different 6-digit codes 30 seconds apart from the same secret — TOTP
+is "something you have" (the seed on your device) added to "something you know" (the password);
+the code changes each window, so a captured code is useless moments later.
+
+**Negative test:** protect an account with a password alone; a phished or breached password
+grants full access — MFA means a stolen password is not enough, which is why it blocks the vast
+majority of account takeovers.
+
+**Cleanup:** none (discard the lab secret).
+
+### Lab 2.2 — Password and credential security (Topic: Credential security)
+
+**Objective:** Compare fast vs. slow password hashing.
+
+```bash
+cd ~/id
+python3 - <<'EOF'
+import hashlib, time
+pw = b"CorrectHorseBattery"
+# Fast hash (WRONG for passwords): instant, brute-forced at billions/sec
+t=time.time(); [hashlib.sha256(pw).hexdigest() for _ in range(200000)]
+print(f"sha256 x200k: {time.time()-t:.2f}s  (too fast -> weak)")
+# Slow KDF (RIGHT): deliberately expensive per guess
+t=time.time(); hashlib.pbkdf2_hmac("sha256", pw, b"salt", 200000)
+print(f"pbkdf2 200k iters: {time.time()-t:.3f}s per hash (slow -> resistant)")
+EOF
+```
+
+**Expected result:** 200k SHA-256 hashes finish almost instantly while a single PBKDF2 hash
+takes measurable time — passwords must be stored with a **slow, salted KDF** (bcrypt/scrypt/
+argon2/PBKDF2), because a fast hash lets an attacker with the database try billions of guesses
+per second.
+
+**Negative test:** store passwords as plain SHA-256 (or worse, plaintext); a database leak is
+cracked in hours — the deliberate slowness of a KDF plus a unique salt is what makes offline
+cracking infeasible.
+
+**Cleanup:** none.
+
+### Lab 2.3 — Least privilege and RBAC (Topic: Authorization)
+
+**Objective:** Grant only the access a role needs, and verify the boundary.
+
+```bash
+sudo groupadd -f logreaders
+sudo useradd -m -G logreaders analyst 2>/dev/null || true
+sudo setfacl -m g:logreaders:r-- /var/log/syslog 2>/dev/null || \
+  echo "(demo) grant read-only on logs to the logreaders group"
+sudo -u analyst cat /etc/shadow 2>&1 | head -1     # expected: Permission denied
+```
+
+**Expected result:** the analyst can read logs (their role) but is denied `/etc/shadow` — least
+privilege grants each identity only the access its function requires, so a compromised analyst
+account cannot reach secrets outside its role.
+
+**Negative test:** give the analyst `sudo` "to save time"; a phish of that account now yields
+root — over-provisioning turns a minor compromise into a full one, which least privilege
+prevents.
+
+**Cleanup:** `sudo userdel -r analyst 2>/dev/null; sudo groupdel logreaders 2>/dev/null; true`.
+
+### Lab 2.4 — Zero Trust and privileged access (Topic: Privileged access)
+
+**Objective:** Reason through a Zero-Trust access decision.
+
+```bash
+cd ~/id
+python3 - <<'EOF'
+def allow(user_verified, device_compliant, mfa, sensitivity):
+    # Zero Trust: never trust, always verify EVERY request on signals
+    reasons=[]
+    if not user_verified: reasons.append("identity unverified")
+    if not device_compliant: reasons.append("device non-compliant")
+    if sensitivity=="high" and not mfa: reasons.append("MFA required for high-sensitivity")
+    return ("ALLOW", []) if not reasons else ("DENY", reasons)
+print(allow(True, True, True, "high"))     # ALLOW
+print(allow(True, False, True, "high"))    # DENY - device posture
+EOF
+```
+
+**Expected result:** access is granted only when identity, device posture, and MFA all satisfy
+the resource's sensitivity — Zero Trust replaces "inside the network = trusted" with per-request
+verification on identity, device, and context; privileged access adds just-in-time elevation and
+session recording.
+
+**Negative test:** grant standing VPN access that trusts anything on the network; a compromised
+device roams freely — Zero Trust's per-request, posture-aware checks are what contain that.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

@@ -386,162 +386,124 @@ mapped_detections:
 
 ## Hands-On Lab
 
-**Objective:** Build and run a defensive log-correlation script that
-detects a credential-stuffing / brute-force success pattern (repeated
-authentication failures followed by a success) from sample authentication
-telemetry, and validate it against both a true-positive and a
-benign (negative-test) dataset.
+This chapter is the **highest-value chapter for CyberOps** — Security Monitoring is the
+CCNA Cybersecurity exam's heaviest domain at 25%. It carries a lab for each SOC skill: log
+collection and normalization, detection engineering, correlation with MITRE ATT&CK mapping,
+and alert triage. Every step is runnable. Each ends **`**Lab verified by:** *pending*`** until
+a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.4** — a Linux host with `journalctl`/`jq`/`python3`, and
+sample auth logs (`/var/log` or a copied sample). Work in `mkdir -p ~/soc && cd ~/soc`.
+**Cost:** none.
 
-- A workstation with Python 3.11 or later.
-- No production SIEM or identity provider access is required — this lab
-  uses local sample telemetry files.
+### Lab 6.1 — Collect and normalize logs (Topic: Telemetry sources)
 
-**Steps**
-
-1. Create a lab directory:
-
-   ```bash
-   mkdir -p ~/labs/vol10-ch06 && cd ~/labs/vol10-ch06
-   ```
-
-2. Create sample authentication telemetry representing a credential-
-   stuffing success pattern (eight failures followed by a success, for
-   the same user, within 15 minutes):
-
-   ```bash
-   cat > signin_events.csv << 'EOF'
-   user,event_time,event_type,source_ip
-   bob@corp.example,2026-07-18T09:00:00Z,failure,203.0.113.44
-   bob@corp.example,2026-07-18T09:00:05Z,failure,203.0.113.44
-   bob@corp.example,2026-07-18T09:00:11Z,failure,203.0.113.44
-   bob@corp.example,2026-07-18T09:00:16Z,failure,203.0.113.44
-   bob@corp.example,2026-07-18T09:00:22Z,failure,203.0.113.44
-   bob@corp.example,2026-07-18T09:00:29Z,failure,203.0.113.44
-   bob@corp.example,2026-07-18T09:00:35Z,failure,203.0.113.44
-   bob@corp.example,2026-07-18T09:00:41Z,failure,203.0.113.44
-   bob@corp.example,2026-07-18T09:00:47Z,success,203.0.113.44
-   alice@corp.example,2026-07-18T09:05:00Z,success,198.51.100.20
-   EOF
-   ```
-
-3. Save the detection script:
-
-   ```bash
-   cat > detect_credential_stuffing.py << 'EOF'
-   #!/usr/bin/env python3
-   """detect_credential_stuffing.py — flag repeated authentication
-   failures followed by a success within a 15-minute window, per user.
-   """
-   import csv
-   import sys
-   from collections import defaultdict
-   from datetime import datetime, timedelta
-
-   FAILURE_THRESHOLD = 8
-   WINDOW = timedelta(minutes=15)
-
-
-   def load_events(path):
-       events = defaultdict(list)
-       with open(path, newline="", encoding="utf-8") as fh:
-           for row in csv.DictReader(fh):
-               row["event_time"] = datetime.fromisoformat(
-                   row["event_time"].replace("Z", "+00:00"))
-               events[row["user"]].append(row)
-       return events
-
-
-   def detect(events):
-       findings = []
-       for user, rows in events.items():
-           rows.sort(key=lambda r: r["event_time"])
-           for i, row in enumerate(rows):
-               if row["event_type"] != "success":
-                   continue
-               window_start = row["event_time"] - WINDOW
-               failures = [
-                   r for r in rows[:i]
-                   if r["event_type"] == "failure" and r["event_time"] >= window_start
-               ]
-               if len(failures) >= FAILURE_THRESHOLD:
-                   findings.append({
-                       "user": user,
-                       "success_time": row["event_time"].isoformat(),
-                       "prior_failures": len(failures),
-                       "source_ip": row["source_ip"],
-                   })
-       return findings
-
-
-   def main(path):
-       events = load_events(path)
-       findings = detect(events)
-       if not findings:
-           print("No credential-stuffing success pattern detected.")
-           return
-       for f in findings:
-           print(f"ALERT: {f['user']} succeeded at {f['success_time']} "
-                 f"after {f['prior_failures']} failures from {f['source_ip']}")
-
-
-   if __name__ == "__main__":
-       main(sys.argv[1] if len(sys.argv) > 1 else "signin_events.csv")
-   EOF
-   ```
-
-4. Run the detection script:
-
-   ```bash
-   python3 detect_credential_stuffing.py signin_events.csv
-   ```
-
-5. **Expected result:** An `ALERT` line prints for `bob@corp.example`
-   showing 8 prior failures before the success, and no alert is raised
-   for `alice@corp.example`, whose single successful sign-in has no
-   preceding failures.
-
-6. **Negative test:** Create a benign dataset with failures spread far
-   apart in time (outside the 15-minute window) that should not trigger
-   the detection:
-
-   ```bash
-   cat > signin_events_benign.csv << 'EOF'
-   user,event_time,event_type,source_ip
-   carol@corp.example,2026-07-18T08:00:00Z,failure,198.51.100.55
-   carol@corp.example,2026-07-18T08:20:00Z,failure,198.51.100.55
-   carol@corp.example,2026-07-18T09:10:00Z,success,198.51.100.55
-   EOF
-   python3 detect_credential_stuffing.py signin_events_benign.csv
-   ```
-
-   **Expected result:**
-   `No credential-stuffing success pattern detected.` — confirming the
-   rule correctly distinguishes a benign, widely spaced retry pattern
-   (a plausible forgotten-password scenario) from the tightly clustered
-   pattern indicative of automated credential stuffing, avoiding a false
-   positive.
-
-7. Confirm the detection threshold is enforced correctly by removing one
-   failure event from the malicious dataset (leaving 7) and re-running —
-   this represents tuning validation, confirming the rule's boundary
-   condition behaves as documented:
-
-   ```bash
-   head -8 signin_events.csv > signin_events_below_threshold.csv
-   tail -n +10 signin_events.csv >> signin_events_below_threshold.csv
-   python3 detect_credential_stuffing.py signin_events_below_threshold.csv
-   ```
-
-   **Expected result:** No alert, since only 7 failures precede the
-   success — one below `FAILURE_THRESHOLD`.
-
-**Cleanup**
+**Objective:** Turn raw logs into structured, queryable events.
 
 ```bash
-cd ~ && rm -rf ~/labs/vol10-ch06
+cd ~/soc
+journalctl -u ssh --since "-1 day" -o json 2>/dev/null | \
+  jq -r 'select(.MESSAGE|test("Failed password")) | "\(.__REALTIME_TIMESTAMP) \(.MESSAGE)"' | head || \
+  grep "Failed password" /var/log/auth.log 2>/dev/null | head
+# Normalize to a common schema (time, source_ip, user, outcome):
+grep "Failed password" /var/log/auth.log 2>/dev/null | \
+  sed -E 's/.*from ([0-9.]+) .*for (invalid user )?([a-z]+).*/ip=\1 user=\3 outcome=fail/' | head
 ```
+
+**Expected result:** raw log lines normalized into `ip=… user=… outcome=fail` fields — SOC work
+starts with telemetry: collecting logs (auth, network, endpoint) and normalizing them to a common
+schema so events from many sources can be searched and correlated together.
+
+**Negative test:** search raw, unnormalized logs from ten different products; each has a different
+format and correlation is impossible — normalization to a common schema is what makes cross-source
+detection work.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.2 — Detection engineering with Sigma (Topic: Detection engineering)
+
+**Objective:** Write a portable detection rule and apply its logic.
+
+```bash
+cd ~/soc
+cat > brute-force.yml <<'EOF'
+title: SSH Brute Force
+logsource: {product: linux, service: sshd}
+detection:
+  selection: {message: "Failed password"}
+  timeframe: 5m
+  condition: selection | count() by source_ip > 10
+level: high
+EOF
+# Apply the logic against normalized events:
+grep "Failed password" /var/log/auth.log 2>/dev/null | \
+  grep -oE 'from [0-9.]+' | awk '{print $2}' | sort | uniq -c | awk '$1>10{print "ALERT brute-force from "$2" ("$1" fails)"}'
+```
+
+**Expected result:** the Sigma rule expresses "more than 10 SSH failures from one IP in 5
+minutes," and the shell applies that logic to flag offending IPs — detection engineering writes
+portable, reviewable detections (Sigma → any SIEM) as code, versioned and tested like software
+rather than clicked into a console.
+
+**Negative test:** hand-tune one-off searches in a SIEM UI with no saved, version-controlled
+rule; the detection is not reviewable, portable, or testable — detection-as-code (Sigma) is what
+makes coverage durable and auditable.
+
+**Cleanup:** `rm -f ~/soc/brute-force.yml`.
+
+### Lab 6.3 — Correlation and MITRE ATT&CK mapping (Topic: SOC workflow)
+
+**Objective:** Correlate multi-source events and map to attacker techniques.
+
+```bash
+cd ~/soc
+python3 - <<'EOF'
+# Correlate: failed logins THEN a success from the same IP = possible successful brute force
+events=[("10.0.0.9","fail"),("10.0.0.9","fail"),("10.0.0.9","fail"),("10.0.0.9","success")]
+from collections import defaultdict
+seq=defaultdict(list)
+for ip,o in events: seq[ip].append(o)
+for ip,os in seq.items():
+    if os.count("fail")>=3 and "success" in os:
+        print(f'CORRELATED: {ip} brute force -> success | ATT&CK T1110 (Brute Force), TA0006 (Credential Access)')
+EOF
+```
+
+**Expected result:** the correlation flags failures followed by a success from one IP and maps it
+to **ATT&CK T1110** — correlation combines events into a story (recon → access → action) that no
+single alert tells, and mapping to MITRE ATT&CK gives a shared language for technique coverage and
+gaps.
+
+**Negative test:** treat each failed login as an isolated low-severity event; the fail-then-
+success pattern (a likely compromise) is missed — correlation across events is what elevates
+noise into a real detection.
+
+**Cleanup:** none.
+
+### Lab 6.4 — Alert triage and tuning (Topic: SOC operations)
+
+**Objective:** Enrich an alert and reduce false positives.
+
+```bash
+cd ~/soc
+python3 - <<'EOF'
+alert={"src":"10.0.0.9","rule":"SSH brute force","count":42}
+# Enrich: is the source a known scanner/allowlisted admin jump host?
+allowlist={"10.0.0.5"}   # admin bastion
+verdict = "FALSE POSITIVE (allowlisted bastion)" if alert["src"] in allowlist else "TRUE POSITIVE - escalate/contain"
+print(f'{alert["rule"]} from {alert["src"]} ({alert["count"]}x) -> {verdict}')
+EOF
+```
+
+**Expected result:** the alert is triaged to true/false positive using enrichment (allowlist,
+asset context) — SOC operations is a workflow: triage each alert with context, tune out benign
+sources to cut false positives, and escalate real ones, so analysts spend time on genuine threats.
+
+**Negative test:** ship noisy detections with no tuning or enrichment; analysts drown in false
+positives and miss the real alert (alert fatigue) — enrichment and tuning are what keep the signal
+above the noise.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

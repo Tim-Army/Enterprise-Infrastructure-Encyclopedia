@@ -395,103 +395,122 @@ review evidence is captured where engineers already work:
 
 ## Hands-On Lab
 
-**Objective:** Build a working risk register and compute ranked residual
-risk scores from structured data, then validate the register's data
-quality with a scripted check.
+This chapter carries a topic-level walkthrough lab for **each foundation of the CyberOps
+"Security Concepts" domain** — the CIA triad and risk, threat modeling, control frameworks,
+and defense in depth. The volume is vendor-neutral, so these labs use portable tools and
+reasoning. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 1.1–1.4** — a workstation with `python3` and a shell. Work in
+`mkdir -p ~/sec && cd ~/sec`. **Cost:** none.
 
-- A workstation or lab VM with Python 3.11 or later installed.
-- A text editor and terminal access.
-- No network access or elevated privileges are required.
+### Lab 1.1 — The CIA triad and quantified risk (Topic: Security concepts)
 
-**Steps**
-
-1. Create a working directory and the risk register CSV:
-
-   ```bash
-   mkdir -p ~/labs/vol10-ch01 && cd ~/labs/vol10-ch01
-   cat > risk_register.csv << 'EOF'
-   risk_id,title,category,likelihood,impact,control_ids,owner,status,next_review
-   RISK-0142,Unpatched internet-facing VPN concentrator,vulnerability,4,5,"local-priv-access-mfa,patch-sla-critical",network-eng,open,2026-10-01
-   RISK-0143,Shadow SaaS with unreviewed data access,third-party,3,4,"vendor-tiering,saas-discovery",grc,open,2026-08-15
-   RISK-0144,No documented owner,unknown,3,3,"",,open,2026-09-01
-   EOF
-   ```
-
-2. Save the `compute_risk.py` script from the Implementation and Automation
-   section into the same directory.
-
-3. Run the scoring script:
-
-   ```bash
-   python3 compute_risk.py risk_register.csv
-   ```
-
-4. **Expected result:** Three rows print, ranked by residual score
-   descending. `RISK-0144` (no controls) should show a residual score equal
-   to its inherent score (3 x 3 = 9), since no control effectiveness
-   applies, while `RISK-0142` should show a materially reduced residual
-   score due to the two mapped controls.
-
-5. Add a data-quality guard that fails the run when a risk has no owner —
-   this represents the governance rule that every risk must be assigned.
-   Insert it, along with a call at the top of `main()`, using a small
-   Python patch rather than a plain append — `validate` must be defined
-   *before* `main()` calls it, and `main()` is invoked immediately when
-   the script runs:
-
-   ```bash
-   python3 - << 'EOF'
-   with open("compute_risk.py") as fh:
-       content = fh.read()
-
-   validate_fn = '''def validate(path: str) -> None:
-       import csv as _csv
-       with open(path, newline="", encoding="utf-8") as fh:
-           for row in _csv.DictReader(fh):
-               if not row["owner"].strip():
-                   raise SystemExit(f"VALIDATION FAILED: {row['risk_id']} has no owner")
-
-
-   '''
-
-   content = content.replace(
-       "def main(path: str) -> None:\n    rows = []",
-       validate_fn + 'def main(path: str) -> None:\n    validate(path)\n    rows = []'
-   )
-
-   with open("compute_risk.py", "w") as fh:
-       fh.write(content)
-   EOF
-   ```
-
-6. Re-run the script:
-
-   ```bash
-   python3 compute_risk.py risk_register.csv
-   ```
-
-7. **Negative test — expected result:** The script exits with
-   `VALIDATION FAILED: RISK-0144 has no owner` and a non-zero exit code,
-   demonstrating that an unowned risk blocks the register from being
-   reported — exactly the governance failure mode described in Validation
-   and Troubleshooting. Confirm the exit code:
-
-   ```bash
-   echo $?
-   ```
-
-   It should print a nonzero value (typically `1`).
-
-8. Fix the data by assigning an owner to `RISK-0144` and re-run to confirm
-   the script now succeeds and prints all three ranked rows.
-
-**Cleanup**
+**Objective:** Turn a threat into a comparable risk number.
 
 ```bash
-cd ~ && rm -rf ~/labs/vol10-ch01
+cd ~/sec
+python3 - <<'EOF'
+# Risk = likelihood x impact; rank a small register
+risks = [
+  {"asset":"customer DB","cia":"C","likelihood":0.4,"impact":9},
+  {"asset":"public web","cia":"A","likelihood":0.7,"impact":5},
+  {"asset":"backups","cia":"I","likelihood":0.2,"impact":8},
+]
+for r in sorted(risks, key=lambda x: x["likelihood"]*x["impact"], reverse=True):
+    print(f'{r["asset"]:12} {r["cia"]}  risk={r["likelihood"]*r["impact"]:.1f}')
+EOF
 ```
+
+**Expected result:** the register ranks by `likelihood × impact`, putting the customer DB
+first — every control decision maps back to the **CIA triad** (Confidentiality, Integrity,
+Availability) and to risk, so quantifying risk is how you prioritize finite security effort.
+
+**Negative test:** treat every finding as equally urgent with no risk ranking; you spend on
+low-impact issues while a high-risk one waits — risk scoring is what directs effort to what
+matters most.
+
+**Cleanup:** none.
+
+### Lab 1.2 — Threat modeling with STRIDE (Topic: Threat modeling)
+
+**Objective:** Enumerate threats against a component systematically.
+
+```bash
+cd ~/sec
+cat > threat-model.md <<'EOF'
+Component: Login API
+- Spoofing            -> require MFA, verify tokens
+- Tampering           -> TLS, signed requests, input validation
+- Repudiation         -> audit logging with integrity
+- Information disclosure -> encrypt data, least-privilege
+- Denial of service   -> rate limiting, WAF
+- Elevation of privilege -> RBAC, deny-by-default
+EOF
+cat threat-model.md
+```
+
+**Expected result:** each STRIDE category yields a concrete threat and a mitigating control —
+threat modeling (STRIDE, attack trees, data-flow diagrams) systematically surfaces *how* a
+component can be attacked *before* it ships, so controls are designed in, not bolted on.
+
+**Negative test:** design a service and add security "later"; you miss whole classes of threat
+(e.g. repudiation) that a structured model would have caught — modeling up front is cheaper than
+retrofitting.
+
+**Cleanup:** `rm -f ~/sec/threat-model.md`.
+
+### Lab 1.3 — Map controls to a framework (Topic: Frameworks and controls)
+
+**Objective:** Assess coverage against a recognized control set.
+
+```bash
+cd ~/sec
+python3 - <<'EOF'
+# NIST CSF functions vs. our implemented controls
+csf = {"Identify":["asset inventory","risk register"],
+       "Protect":["MFA","encryption","hardening"],
+       "Detect":["SIEM","IDS"],
+       "Respond":["IR plan"],
+       "Recover":[]}                 # gap: no tested recovery
+for fn, ctrls in csf.items():
+    print(f'{fn:9} {"OK" if ctrls else "GAP":4} {ctrls}')
+EOF
+```
+
+**Expected result:** the mapping shows coverage across Identify/Protect/Detect/Respond and a
+**gap in Recover** — frameworks (NIST CSF, CIS Controls, ISO 27001) give a common language and a
+checklist so you can see, and report, where controls are missing.
+
+**Negative test:** claim "we're secure" with no framework mapping; you cannot prove coverage or
+find the Recover gap — the framework is what turns a vague claim into an auditable posture.
+
+**Cleanup:** none.
+
+### Lab 1.4 — Defense in depth (Topic: Security architecture)
+
+**Objective:** Show that layered controls survive a single failure.
+
+```bash
+cd ~/sec
+python3 - <<'EOF'
+layers = ["perimeter firewall","network segmentation","host firewall","MFA","least privilege","encryption","backups"]
+import random
+failed = random.choice(layers)
+survivors = [l for l in layers if l != failed]
+print(f'FAILED: {failed}')
+print(f'Still protecting ({len(survivors)}): {survivors}')
+EOF
+```
+
+**Expected result:** with any one layer failed, the remaining layers still protect the asset —
+defense in depth assumes any single control can fail, so overlapping layers (network, host,
+identity, data) mean one breach does not equal total compromise.
+
+**Negative test:** rely on a single strong control (just a perimeter firewall); when it is
+bypassed there is nothing behind it — layering is what prevents one failure from becoming a
+full breach.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

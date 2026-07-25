@@ -413,87 +413,111 @@ if __name__ == "__main__":
 
 ## Hands-On Lab
 
-**Objective:** Build and run a chain-of-custody evidence logging and
-integrity-verification workflow, confirming that an unmodified artifact
-verifies successfully and a tampered artifact is detected and rejected.
+This chapter carries a topic-level walkthrough lab for **each incident-response and forensics
+skill** — the IR lifecycle, evidence acquisition and chain of custody, host-artifact analysis,
+and network forensics — anchoring the CBRFIR forensics/IR domains. Every step is runnable. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.4** — a Linux host with `sha256sum`, `dd`, `python3`, and
+`tshark`. Work in `mkdir -p ~/ir && cd ~/ir`. **Safety:** practice on lab data only. **Cost:**
+none.
 
-- A workstation with Python 3.11 or later.
-- No production evidence-handling systems are involved — this lab uses a
-  local sample file to represent a collected artifact.
+### Lab 7.1 — The incident-response lifecycle (Topic: IR fundamentals)
 
-**Steps**
-
-1. Create a lab directory and a sample "evidence" artifact (representing
-   a collected log export or memory image reference file):
-
-   ```bash
-   mkdir -p ~/labs/vol10-ch07 && cd ~/labs/vol10-ch07
-   echo "sample host memory summary — process list snapshot 2026-07-18T10:00Z" > host-snapshot.txt
-   ```
-
-2. Save the `evidence_custody.py` script from the Implementation and
-   Automation section into the same directory.
-
-3. Log the initial collection event, establishing the chain-of-custody
-   baseline hash:
-
-   ```bash
-   python3 evidence_custody.py log EV-2026-0031 host-snapshot.txt "analyst.chen"
-   ```
-
-4. **Expected result:** A confirmation line prints showing the evidence
-   ID, handler, and a SHA-256 digest, and a `custody_log.csv` file is
-   created:
-
-   ```bash
-   cat custody_log.csv
-   ```
-
-   Output shows one row with `evidence_id=EV-2026-0031`,
-   `action=collected`, and the recorded hash.
-
-5. Verify integrity against the unmodified artifact:
-
-   ```bash
-   python3 evidence_custody.py verify EV-2026-0031 host-snapshot.txt
-   ```
-
-   **Expected result:**
-   `Integrity verified: EV-2026-0031 matches original chain-of-custody hash`.
-
-6. **Negative test:** Simulate evidence tampering by modifying the
-   artifact after collection, then attempt to verify it again:
-
-   ```bash
-   echo "tampered line appended after collection" >> host-snapshot.txt
-   python3 evidence_custody.py verify EV-2026-0031 host-snapshot.txt ; echo "exit=$?"
-   ```
-
-   **Expected result:** The script exits with an
-   `INTEGRITY FAILURE: EV-2026-0031 hash mismatch` message showing the
-   expected and actual hashes differ, and a nonzero exit code —
-   demonstrating that the custody log detects post-collection tampering
-   rather than silently accepting a modified artifact.
-
-7. Restore the artifact to its original state and confirm verification
-   succeeds again, illustrating that integrity checking is deterministic
-   and reproducible, not a one-time check:
-
-   ```bash
-   sed -i.bak '$ d' host-snapshot.txt 2>/dev/null || sed -i '' '$ d' host-snapshot.txt
-   python3 evidence_custody.py verify EV-2026-0031 host-snapshot.txt
-   ```
-
-   **Expected result:** Integrity verification succeeds again, confirming
-   the hash comparison is exact and repeatable.
-
-**Cleanup**
+**Objective:** Walk an incident through the PICERL phases.
 
 ```bash
-cd ~ && rm -rf ~/labs/vol10-ch07
+cd ~/ir
+cat > ir-playbook.md <<'EOF'
+Incident: suspected credential compromise
+1. Preparation   - IR plan, contacts, tooling ready (before the incident)
+2. Identification- confirm scope: which accounts/hosts, what evidence
+3. Containment   - isolate host, disable account, preserve evidence
+4. Eradication   - remove persistence, reset creds, patch entry vector
+5. Recovery      - restore from known-good, monitor for recurrence
+6. Lessons Learned - post-incident review, update controls/detections
+EOF
+cat ir-playbook.md
 ```
+
+**Expected result:** a phase-by-phase playbook from Preparation through Lessons Learned — the IR
+lifecycle (NIST/SANS PICERL) is a repeatable process so responders act consistently under
+pressure; **containment before eradication** preserves evidence and stops the bleeding first.
+
+**Negative test:** wipe and rebuild a compromised host immediately (skipping containment/
+evidence); you destroy the forensic record and may miss how they got in, inviting reinfection —
+the ordered lifecycle preserves both evidence and root-cause.
+
+**Cleanup:** `rm -f ~/ir/ir-playbook.md`.
+
+### Lab 7.2 — Evidence acquisition and chain of custody (Topic: Digital evidence)
+
+**Objective:** Acquire an image and prove its integrity over time.
+
+```bash
+cd ~/ir
+echo "sensitive evidence content" > evidence.dat
+sha256sum evidence.dat | tee evidence.sha256              # acquisition hash
+cp evidence.dat evidence.image                            # (dd for a real disk/partition)
+cat > custody.log <<EOF
+$(date -u) acquired by analyst; sha256=$(sha256sum evidence.image | awk '{print $1}')
+EOF
+sha256sum -c <(awk '{print $1"  evidence.image"}' evidence.sha256)   # verify copy == original
+```
+
+**Expected result:** the image's hash matches the source and a custody log records who/when/what
+— digital evidence is only admissible if its integrity is provable: hash at acquisition, work on
+copies, and log every transfer (chain of custody), so the evidence can be shown unaltered.
+
+**Negative test:** analyze the original evidence directly and take no hash; any accidental change
+is undetectable and the evidence is challengeable — always hash first and work on verified copies.
+
+**Cleanup:** `rm -f ~/ir/evidence.dat ~/ir/evidence.image ~/ir/evidence.sha256 ~/ir/custody.log`.
+
+### Lab 7.3 — Host-artifact and timeline analysis (Topic: Forensics techniques)
+
+**Objective:** Reconstruct what happened from host artifacts.
+
+```bash
+cd ~/ir
+# Build a super-timeline of recent file activity in a directory:
+find /etc -maxdepth 1 -type f -printf '%TY-%Tm-%Td %TH:%TM  %p\n' 2>/dev/null | sort | tail
+# Look for persistence: unexpected cron/systemd/autostart
+ls -la /etc/cron.d/ 2>/dev/null; systemctl list-unit-files --state=enabled 2>/dev/null | tail -5
+last -n 5 2>/dev/null                                      # recent logins
+```
+
+**Expected result:** a time-ordered view of file changes, enabled persistence mechanisms, and
+recent logins — host forensics reconstructs attacker activity from artifacts (timestamps, logs,
+persistence, command history), and a **timeline** correlates them into the sequence of events.
+
+**Negative test:** investigate by spot-checking a few files with no timeline; you miss the
+sequence and the persistence mechanism — ordering artifacts by time is what turns scattered clues
+into a coherent attack narrative.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.4 — Network forensics of an incident (Topic: Incident analysis)
+
+**Objective:** Extract indicators from an incident capture.
+
+```bash
+cd ~/ir
+# Who did the suspect host talk to, and what was transferred?
+tshark -r incident.pcapng -q -z conv,ip 2>/dev/null | sort -k7 -rn | head        # top talkers by bytes
+tshark -r incident.pcapng -Y "dns.flags.response==0" -T fields -e dns.qry.name 2>/dev/null | sort | uniq -c | sort -rn | head   # queried domains (C2?)
+tshark -r incident.pcapng -Y "http.request" -T fields -e http.host -e http.request.uri 2>/dev/null | head
+```
+
+**Expected result:** the suspect's top conversations, queried domains (possible C2), and HTTP
+requests — network forensics pulls indicators (IPs, domains, URLs, transferred volume) from a
+capture, feeding the IOC list used to scope the incident and hunt for other affected hosts.
+
+**Negative test:** conclude the scope from the one alerting host alone; the capture's domains/IPs
+are IOCs that reveal *other* compromised hosts talking to the same C2 — network forensics is how
+you find the full blast radius.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 
