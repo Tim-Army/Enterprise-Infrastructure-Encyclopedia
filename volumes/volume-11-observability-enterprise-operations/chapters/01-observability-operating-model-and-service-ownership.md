@@ -345,112 +345,103 @@ rather than chasing every new tool:
 
 ## Hands-On Lab
 
-**Objective:** Build a minimal, auditable service catalog for three
-services and validate it with an automated completeness check.
+This chapter carries a topic-level walkthrough lab for **each foundation of the observability
+operating model** — the three pillars, service ownership, the RED/USE methods, and golden-signal
+selection. The volume is vendor-neutral; labs use the open-source stack (Prometheus, Grafana, OTel,
+Loki, Tempo). Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 1.1–1.4** — a lab observability stack (e.g. Prometheus + Grafana +
+Loki + Tempo via Docker Compose or the OpenTelemetry demo), and a browser/`curl`. **Cost:** none.
 
-- A POSIX shell (bash 5.x) and `yq` (Mike Farah's Go implementation, v4.x)
-  installed locally.
-- No production access required; this lab is entirely local files.
+### Lab 1.1 — The three pillars and observability vs. monitoring (Topic: Observability fundamentals)
 
-### Procedure
-
-1. Create the working lab directory and a catalog subdirectory per
-   service:
-
-   ```bash
-   mkdir -p ~/obs-lab/catalog/checkout-api \
-            ~/obs-lab/catalog/inventory-service \
-            ~/obs-lab/catalog/legacy-reporting
-   cd ~/obs-lab
-   ```
-
-2. Create a complete catalog entry for `checkout-api`:
-
-   ```bash
-   cat > catalog/checkout-api/catalog-info.yaml <<'EOF'
-   apiVersion: backstage.io/v1alpha1
-   kind: Component
-   metadata:
-     name: checkout-api
-     tags: ["tier-0"]
-     annotations:
-       pagerduty.com/service-id: "P1A2B3C"
-   spec:
-     type: service
-     owner: group:payments-platform-team
-     lifecycle: production
-   EOF
-   ```
-
-3. Create a complete catalog entry for `inventory-service`:
-
-   ```bash
-   cat > catalog/inventory-service/catalog-info.yaml <<'EOF'
-   apiVersion: backstage.io/v1alpha1
-   kind: Component
-   metadata:
-     name: inventory-service
-     tags: ["tier-1"]
-     annotations:
-       pagerduty.com/service-id: "P4D5E6F"
-   spec:
-     type: service
-     owner: group:catalog-team
-     lifecycle: production
-   EOF
-   ```
-
-4. Create a deliberately incomplete entry for `legacy-reporting` (missing
-   owner and escalation route), representing an unowned legacy system:
-
-   ```bash
-   cat > catalog/legacy-reporting/catalog-info.yaml <<'EOF'
-   apiVersion: backstage.io/v1alpha1
-   kind: Component
-   metadata:
-     name: legacy-reporting
-     tags: ["tier-3"]
-   spec:
-     type: service
-     lifecycle: deprecated
-   EOF
-   ```
-
-5. Save the audit script from the Implementation and Automation section
-   above as `audit-catalog.sh`, make it executable, and run it:
-
-   ```bash
-   chmod +x audit-catalog.sh
-   ./audit-catalog.sh ./catalog
-   ```
-
-### Expected Results
-
-The script prints `MISSING OWNER: ./catalog/legacy-reporting/catalog-info.yaml`
-and `MISSING ESCALATION ROUTE: ./catalog/legacy-reporting/catalog-info.yaml`,
-reports `Catalog audit complete: 2 issue(s) found`, and exits with a
-non-zero status (`2`). `checkout-api` and `inventory-service` produce no
-findings.
-
-### Negative Test
-
-Run `echo $?` immediately after the script exits. Confirm it returns `2`,
-not `0` — a CI pipeline gate on this script must fail the build when
-ownership metadata is incomplete. Then intentionally corrupt
-`inventory-service`'s YAML (delete the closing `EOF` line effect by
-truncating the file with `truncate -s -20 catalog/inventory-service/catalog-info.yaml`)
-and re-run the script; confirm it errors clearly rather than silently
-treating the service as compliant, and fix the script's YAML validation if
-it does not.
-
-### Cleanup
+**Objective:** Answer one question across metrics, logs, and traces.
 
 ```bash
-cd ~
-rm -rf ~/obs-lab
+# Metric (Prometheus): the request rate for a service
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode 'query=sum(rate(http_requests_total[5m]))' | python3 -m json.tool | head
+# Log (Loki LogQL): recent errors for the same service
+curl -s 'http://localhost:3100/loki/api/v1/query_range' --data-urlencode 'query={service="checkout"} |= "error"' | python3 -c "import json,sys; print('log streams:', len(json.load(sys.stdin)['data']['result']))"
+# Trace (Tempo): (in Grafana) open a trace for a slow request to see the span breakdown
 ```
+
+**Expected result:** the same incident is visible three ways — a metric shows *that* error rate
+rose, logs show *what* the error was, a trace shows *where* in the call path — monitoring tells you a
+known thing broke; observability lets you ask *new* questions (why is this specific request slow)
+across metrics, logs, and traces.
+
+**Negative test:** rely on metrics dashboards alone to debug a novel failure; they show the symptom
+but not the cause — you need logs/traces to explain a problem you did not predict, which is the
+observability-vs-monitoring distinction.
+
+**Cleanup:** none (read-only queries).
+
+### Lab 1.2 — Service ownership and SLO ownership (Topic: Operating model)
+
+**Objective:** Define a service, its owner, and its SLIs.
+
+```text
+# For one service (e.g. "checkout"), write down:
+#   - owning team + on-call rotation
+#   - the user-facing SLIs (availability = good requests / total; latency = p99 < X ms)
+#   - where its telemetry lives (metrics namespace, log labels, trace service.name)
+#   - the SLO target and who is accountable for the error budget
+```
+
+**Expected result:** a service definition tying an owner to measurable SLIs and an error-budget
+accountability — the operating model makes each service *owned* (a team, an on-call, an SLO), so
+observability data has a responsible consumer rather than being collected and ignored.
+
+**Negative test:** collect telemetry for a service no team owns; alerts fire to nobody and the data
+is never acted on — ownership is what turns telemetry into operations.
+
+**Cleanup:** none.
+
+### Lab 1.3 — RED and USE methods (Topic: Signal selection)
+
+**Objective:** Apply the right method to a service versus a resource.
+
+```bash
+# RED (request-driven services): Rate, Errors, Duration
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode 'query=sum(rate(http_requests_total[5m])) by (status)' | python3 -m json.tool | head
+# USE (resources): Utilization, Saturation, Errors — e.g. CPU utilization
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode 'query=1 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m]))' | python3 -m json.tool | head
+```
+
+**Expected result:** RED characterizes a *service* (rate/errors/duration) and USE characterizes a
+*resource* (utilization/saturation/errors) — matching the method to what you are observing gives
+complete coverage; a request service is diagnosed with RED, a CPU/disk/queue with USE.
+
+**Negative test:** apply USE metrics (CPU%) to judge a user-facing service's health; high CPU does
+not mean users are hurting, and low CPU does not mean they are fine — RED (what users experience) is
+the right lens for a service.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.4 — Golden signals (Topic: Golden signals)
+
+**Objective:** Establish the four golden signals for a service.
+
+```bash
+# Latency, Traffic, Errors, Saturation for one service:
+for q in \
+  'histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))' \
+  'sum(rate(http_requests_total[5m]))' \
+  'sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))' \
+  'max(rate(node_cpu_seconds_total{mode!="idle"}[5m]))'; do
+  curl -s 'http://localhost:9090/api/v1/query' --data-urlencode "query=$q" | python3 -c "import json,sys; r=json.load(sys.stdin)['data']['result']; print('value:', r[0]['value'][1] if r else 'n/a')"
+done
+```
+
+**Expected result:** four numbers — p99 latency, traffic, error ratio, saturation — the Google SRE
+**golden signals**, which are the minimum a service should expose; if you can only watch four things,
+these tell you whether users are being served.
+
+**Negative test:** instrument dozens of low-level metrics but not the golden signals; you have data
+without a health verdict — the golden signals are the small set that answers "is the service OK for
+users."
+
+**Cleanup:** none.
 
 ## Lab Verification
 

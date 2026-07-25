@@ -488,205 +488,119 @@ if __name__ == "__main__":
 
 ## Hands-On Lab
 
-**Objective:** Build a rate-limited, audited closed-loop remediation
-script against a simulated failing service, validate its guardrail
-behavior under a sustained failure condition, and compute an MTTA/MTTR
-trend from sample incident data.
+This chapter closes the volume with **operational automation, analytics, and continual improvement**
+— and a **Design Exercise** capstone for an enterprise observability platform. Each ends **`**Lab
+verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 9.1–9.4** — the observability stack from the earlier chapters,
+Alertmanager with a webhook receiver, and `python3`/`curl`. **Cost:** none.
 
-- Python 3.11+ available locally.
-- A POSIX shell.
-- No production or cluster access required; this lab simulates the
-  target service and Kubernetes API calls locally.
+### Lab 9.1 — SLO reporting automation (Topic: Automation)
 
-### Procedure
-
-1. Create the lab directory and a simulated "pod" whose health check
-   fails on a controllable schedule, standing in for the Kubernetes API
-   interactions in the Implementation section without requiring a real
-   cluster:
-
-   ```bash
-   mkdir -p ~/automation-lab && cd ~/automation-lab
-   cat > sim_cluster.py <<'EOF'
-   import json
-   import os
-
-   STATE_FILE = "pod_state.json"
-
-   def get_pod_health(pod_name):
-       if not os.path.exists(STATE_FILE):
-           return "healthy"
-       with open(STATE_FILE) as f:
-           state = json.load(f)
-       return state.get(pod_name, "healthy")
-
-   def set_pod_health(pod_name, status):
-       state = {}
-       if os.path.exists(STATE_FILE):
-           with open(STATE_FILE) as f:
-               state = json.load(f)
-       state[pod_name] = status
-       with open(STATE_FILE, "w") as f:
-           json.dump(state, f)
-
-   def restart_pod(pod_name):
-       set_pod_health(pod_name, "healthy")
-   EOF
-   ```
-
-2. Create the rate-limited remediation script, adapted from the
-   Implementation and Automation section to call the simulated cluster
-   module instead of the real Kubernetes client:
-
-   ```bash
-   cat > auto_remediate.py <<'EOF'
-   import logging
-   import time
-   from collections import deque
-   from sim_cluster import get_pod_health, restart_pod
-
-   MAX_ACTIONS_PER_WINDOW = 3
-   WINDOW_SECONDS = 10  # shortened for lab observation
-   action_history = deque()
-
-   logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
-   logger = logging.getLogger("auto-remediate")
-
-   def within_rate_limit():
-       now = time.time()
-       while action_history and now - action_history[0] > WINDOW_SECONDS:
-           action_history.popleft()
-       return len(action_history) < MAX_ACTIONS_PER_WINDOW
-
-   def check_and_remediate(pod_name):
-       if get_pod_health(pod_name) != "unhealthy":
-           return
-       if not within_rate_limit():
-           logger.warning("RATE LIMIT EXCEEDED for %s; escalating to on-call, not retrying", pod_name)
-           with open("audit.jsonl", "a") as f:
-               f.write(f'{{"pod":"{pod_name}","action":"escalate","reason":"rate_limit_exceeded"}}\n')
-           return
-       action_history.append(time.time())
-       restart_pod(pod_name)
-       logger.info("RESTARTED %s", pod_name)
-       with open("audit.jsonl", "a") as f:
-           f.write(f'{{"pod":"{pod_name}","action":"restart"}}\n')
-
-   if __name__ == "__main__":
-       for _ in range(120):  # run for 24 seconds at 0.2s intervals
-           check_and_remediate("checkout-api-7f8d")
-           time.sleep(0.2)
-   EOF
-   ```
-
-3. Create a fault-injection script that repeatedly marks the simulated
-   pod unhealthy faster than it can legitimately recover, to exercise
-   the rate limiter, and run both concurrently:
-
-   ```bash
-   cat > inject_fault.py <<'EOF'
-   import time
-   from sim_cluster import set_pod_health
-
-   for _ in range(120):
-       set_pod_health("checkout-api-7f8d", "unhealthy")
-       time.sleep(0.2)
-   EOF
-   python3 inject_fault.py &
-   INJECT_PID=$!
-   python3 auto_remediate.py
-   wait $INJECT_PID 2>/dev/null || true
-   ```
-
-4. Create sample incident data and run the MTTA/MTTR trend script from
-   the Implementation and Automation section:
-
-   ```bash
-   cat > incidents.jsonl <<'EOF'
-   {"declared_at":"2026-05-03T14:00:00","acknowledged_at":"2026-05-03T14:06:00","resolved_at":"2026-05-03T14:40:00"}
-   {"declared_at":"2026-05-12T09:00:00","acknowledged_at":"2026-05-12T09:04:00","resolved_at":"2026-05-12T09:30:00"}
-   {"declared_at":"2026-06-02T11:00:00","acknowledged_at":"2026-06-02T11:09:00","resolved_at":"2026-06-02T12:10:00"}
-   {"declared_at":"2026-06-20T16:00:00","acknowledged_at":"2026-06-20T16:11:00","resolved_at":"2026-06-20T17:05:00"}
-   {"declared_at":"2026-07-05T08:00:00","acknowledged_at":"2026-07-05T08:15:00","resolved_at":"2026-07-05T09:45:00"}
-   EOF
-   cp /dev/stdin operational_analytics.py <<'EOF'
-   import json, statistics
-   from collections import defaultdict
-   from datetime import datetime
-
-   def load_incidents(path):
-       with open(path) as f:
-           return [json.loads(line) for line in f]
-
-   def monthly_trend(incidents):
-       by_month = defaultdict(lambda: {"tta": [], "ttr": []})
-       for inc in incidents:
-           month = inc["declared_at"][:7]
-           declared = datetime.fromisoformat(inc["declared_at"])
-           acked = datetime.fromisoformat(inc["acknowledged_at"])
-           resolved = datetime.fromisoformat(inc["resolved_at"])
-           by_month[month]["tta"].append((acked - declared).total_seconds() / 60)
-           by_month[month]["ttr"].append((resolved - declared).total_seconds() / 60)
-       for month in sorted(by_month):
-           tta = statistics.mean(by_month[month]["tta"])
-           ttr = statistics.mean(by_month[month]["ttr"])
-           print(f"{month}: MTTA={tta:5.1f}min  MTTR={ttr:6.1f}min  n={len(by_month[month]['tta'])}")
-
-   monthly_trend(load_incidents("incidents.jsonl"))
-   EOF
-   python3 operational_analytics.py
-   ```
-
-### Expected Results
-
-In step 3's output, confirm the log shows `RESTARTED checkout-api-7f8d`
-at most 3 times within any rolling 10-second window, followed by
-`RATE LIMIT EXCEEDED ... escalating to on-call, not retrying` for
-subsequent detections within that same window — demonstrating the
-guardrail correctly stops the automation from looping indefinitely
-against a condition it cannot actually resolve (the fault injector keeps
-re-breaking the pod faster than a legitimate fix would need to). Inspect
-`audit.jsonl` and confirm it contains both `"action":"restart"` and
-`"action":"escalate"` entries. In step 4's output, confirm two monthly
-rows print (`2026-05` and `2026-06` and `2026-07` — three months total)
-with computed MTTA and MTTR values, showing MTTR trending from roughly
-34 minutes in May to roughly 87 minutes in July, an upward trend that
-would warrant the operational-analytics investigation described in this
-chapter's Validation section.
-
-### Negative Test
-
-Confirm the rate limiter is genuinely bounding action count, not merely
-logging a warning while still restarting: count actual restarts against
-the fault-injection rate directly.
+**Objective:** Generate an SLO/error-budget report automatically.
 
 ```bash
-rm -f audit.jsonl pod_state.json
-python3 inject_fault.py &
-INJECT_PID=$!
-python3 auto_remediate.py
-wait $INJECT_PID 2>/dev/null || true
-restart_count=$(grep -c '"action":"restart"' audit.jsonl)
-escalate_count=$(grep -c '"action":"escalate"' audit.jsonl)
-echo "restarts: $restart_count, escalations: $escalate_count"
+# A scheduled job queries the SLI and computes budget remaining, for a weekly report:
+python3 - <<'EOF'
+import urllib.request, urllib.parse, json
+q='sum(rate(http_requests_total{status!~"5.."}[30d]))/sum(rate(http_requests_total[30d]))'
+u='http://localhost:9090/api/v1/query?'+urllib.parse.urlencode({'query':q})
+sli=float(json.load(urllib.request.urlopen(u))['data']['result'][0]['value'][1])
+slo=0.999; budget=1-slo; consumed=(slo-sli)/budget if sli<slo else 0
+print(f"SLI={sli:.5f} SLO={slo} budget_consumed={max(consumed,0)*100:.1f}%")
+EOF
 ```
 
-With fault injection re-breaking the pod every 0.2 seconds for roughly
-24 seconds (about 120 fault events) against a limit of 3 restarts per
-10-second window, confirm `restart_count` is well under 120 (bounded to
-roughly 6-9, consistent with the two-to-three 10-second windows the run
-spans) and `escalate_count` accounts for the remainder — confirming the
-guardrail actually bounds the action count under sustained fault
-pressure rather than merely warning while continuing to act every cycle.
+**Expected result:** a scripted SLO report showing SLI vs. SLO and budget consumed, ready to schedule
+weekly — automating SLO reporting removes manual toil and gives every service owner a regular,
+objective reliability scorecard that drives the freeze/ship decision.
 
-### Cleanup
+**Negative test:** compile SLO status by hand each week; it is slow, error-prone, and skipped when
+busy — automated reporting makes the reliability signal continuous and trustworthy.
+
+**Cleanup:** none.
+
+### Lab 9.2 — Auto-remediation (Topic: Toil reduction)
+
+**Objective:** Turn a known alert into an automatic fix.
+
+```yaml
+# Alertmanager routes a known, safe-to-automate alert to a webhook that runs a remediation:
+route:
+  routes:
+    - matchers: [ alertname="DiskFillingTmp", severity="warning" ]
+      receiver: auto-remediate
+receivers:
+  - name: auto-remediate
+    webhook_configs:
+      - url: "http://runbook-automation:8080/clean-tmp"   # idempotent, bounded, logged, with a kill-switch
+```
+
+**Expected result:** a well-understood, low-risk alert (temp disk filling) triggers an idempotent
+remediation instead of paging a human — auto-remediation removes toil for *known* problems with
+*safe* fixes, freeing responders for novel issues; it must be idempotent, bounded, logged, and have a
+manual kill-switch.
+
+**Negative test:** auto-remediate an ambiguous alert with a risky action (restart the database on any
+latency blip); the automation causes an outage — automate only known problems with safe, reversible
+actions, and page a human for anything ambiguous.
+
+**Cleanup:** remove the lab route.
+
+### Lab 9.3 — Analytics and anomaly detection (Topic: Analytics)
+
+**Objective:** Detect abnormal behavior beyond static thresholds.
 
 ```bash
-cd ~
-rm -rf ~/automation-lab
+# Compare current traffic to the same time last week (seasonality-aware deviation):
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode \
+  'query=abs(sum(rate(http_requests_total[5m])) - sum(rate(http_requests_total[5m] offset 7d))) / sum(rate(http_requests_total[5m] offset 7d)) > 0.5' | python3 -m json.tool | head
 ```
+
+**Expected result:** a deviation alert when current traffic differs >50% from the same time last week
+— analytics/anomaly detection catches problems that static thresholds miss (a drop in traffic to
+zero is not "below a max" but is clearly broken), using seasonality (week-over-week) to avoid false
+alarms on normal daily/weekly cycles.
+
+**Negative test:** rely only on static upper-bound thresholds; a *drop* to zero (outage) or an
+off-hours anomaly is missed because it is "under the max" — comparing to the seasonal baseline catches
+both directions of anomaly.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.4 — Design Exercise: an enterprise observability platform (Topic: Synthesis)
+
+**Objective:** Produce a defensible platform design — the deliverable, not a tool list.
+
+> **Scenario.** Stand up observability for a 200-service enterprise across on-prem and multi-cloud:
+> unified metrics/logs/traces, SLO-driven operations, humane on-call, controlled change, and bounded
+> cost.
+
+Work through and **write down**:
+
+1. **Telemetry** — OpenTelemetry instrumentation standard and Collector pipelines; sampling/
+   cardinality control for cost (Ch02).
+2. **Storage & query** — metrics (Prometheus/long-term store), logs (Loki + tiered retention),
+   traces (Tempo), correlated by trace_id/exemplars (Ch03–05).
+3. **SLOs & alerting** — per-service SLIs/SLOs and error budgets; symptom-based, multi-burn-rate
+   alerting; Alertmanager routing to owning teams (Ch03, Ch06).
+4. **Operations** — ownership model, humane on-call, incident/problem/change processes with
+   SLO-gated progressive delivery (Ch01, Ch07).
+5. **Efficiency** — capacity forecasting and unit-cost (FinOps) metrics; telemetry-cost controls
+   (Ch08, Ch02).
+6. **Improvement** — automated SLO reporting, auto-remediation of known toil, and anomaly analytics
+   (Ch09).
+
+**Expected result:** a written platform design where instrumentation is standardized, the three
+signals are correlated and cost-bounded, SLOs drive alerting and change, on-call is humane, and
+automation removes toil — an observability *platform* judged on whether it makes the enterprise more
+reliable and efficient, not on the number of tools deployed.
+
+**Negative test:** deploy every observability tool with no SLOs, ownership, cost controls, or
+operating model; you get expensive dashboards, alert fatigue, and unchanged reliability — the
+platform's value is the operating model and correlation it enables, not the tool count.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 

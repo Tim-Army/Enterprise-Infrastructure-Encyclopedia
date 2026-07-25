@@ -446,154 +446,119 @@ the service's escalation policy.
 
 ## Hands-On Lab
 
-**Objective:** Configure Prometheus and Alertmanager locally with
-routing, grouping, and inhibition rules; fire synthetic alerts; and
-validate that grouping and inhibition behave as configured, including a
-negative test for a misconfigured inhibition rule.
+This chapter carries a topic-level walkthrough lab for **each alerting and on-call skill** — alert
+rules, Alertmanager routing, actionable-alert design, and on-call/escalation. Labs use Prometheus
+Alertmanager. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 6.1–6.4** — Prometheus + Alertmanager, a notification target (a lab
+webhook/Slack/email sink), and `curl`. **Cost:** none.
 
-- Docker Engine and Docker Compose v2.
-- `curl` and a POSIX shell.
-- Approximately 1 GB of free memory for the lab stack.
+### Lab 6.1 — Alerting rules (Topic: Alert rules)
 
-### Procedure
+**Objective:** Define an alert on a symptom.
 
-1. Create the lab directory and an Alertmanager configuration with
-   grouping and one inhibition rule:
-
-   ```bash
-   mkdir -p ~/alert-lab && cd ~/alert-lab
-   cat > alertmanager.yaml <<'EOF'
-   route:
-     receiver: webhook-catchall
-     group_by: [alertname, service]
-     group_wait: 10s
-     group_interval: 30s
-     repeat_interval: 1h
-   inhibit_rules:
-     - source_matchers: [alertname="NodeDown"]
-       target_matchers: [alertname="PodUnavailable"]
-       equal: [node]
-   receivers:
-     - name: webhook-catchall
-       webhook_configs:
-         - url: "http://webhook-sink:8080/alerts"
-           send_resolved: true
-   EOF
-   ```
-
-2. Create a minimal webhook sink to capture and log received
-   notifications for inspection:
-
-   ```bash
-   cat > sink.py <<'EOF'
-   import json
-   from http.server import BaseHTTPRequestHandler, HTTPServer
-
-   class Handler(BaseHTTPRequestHandler):
-       def do_POST(self):
-           length = int(self.headers["Content-Length"])
-           body = json.loads(self.rfile.read(length))
-           with open("/data/received.jsonl", "a") as f:
-               f.write(json.dumps(body) + "\n")
-           self.send_response(200)
-           self.end_headers()
-
-   HTTPServer(("0.0.0.0", 8080), Handler).serve_forever()
-   EOF
-   mkdir -p data
-   ```
-
-3. Create the Compose file and start Alertmanager and the sink:
-
-   ```bash
-   cat > docker-compose.yaml <<'EOF'
-   services:
-     alertmanager:
-       image: prom/alertmanager:v0.28.0
-       volumes:
-         - ./alertmanager.yaml:/etc/alertmanager/alertmanager.yaml
-       ports:
-         - "9093:9093"
-     webhook-sink:
-       image: python:3.13-slim
-       volumes:
-         - ./sink.py:/sink.py
-         - ./data:/data
-       command: ["python", "/sink.py"]
-       ports:
-         - "8080:8080"
-   EOF
-   docker compose up -d
-   ```
-
-4. Fire three `PodUnavailable` alerts (different pods, same node) and
-   confirm they group into one notification:
-
-   ```bash
-   curl -s -H "Content-Type: application/json" -X POST http://localhost:9093/api/v2/alerts -d '[
-     {"labels": {"alertname":"PodUnavailable","service":"checkout-api","node":"node-7","pod":"checkout-api-1"}},
-     {"labels": {"alertname":"PodUnavailable","service":"checkout-api","node":"node-7","pod":"checkout-api-2"}},
-     {"labels": {"alertname":"PodUnavailable","service":"checkout-api","node":"node-7","pod":"checkout-api-3"}}
-   ]'
-   sleep 12
-   ```
-
-### Expected Results
-
-Inspect the webhook sink's received notifications:
-
-```bash
-cat data/received.jsonl | python3 -m json.tool
+```yaml
+groups:
+- name: service-alerts
+  rules:
+  - alert: CheckoutHighErrorRate
+    expr: sum(rate(http_requests_total{service="checkout",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="checkout"}[5m])) > 0.02
+    for: 5m
+    labels: { severity: page, service: checkout }
+    annotations:
+      summary: "Checkout error rate > 2% for 5m"
+      runbook: "https://runbooks.example.com/checkout-errors"
 ```
 
-Confirm a single notification payload contains an `alerts` array with
-all three `PodUnavailable` entries grouped together (matching
-`group_by: [alertname, service]`), rather than three separate
-notification payloads — demonstrating grouping is functioning as
-configured.
+**Expected result:** the alert fires when the *user-facing* error ratio exceeds 2% for 5 minutes,
+carrying a severity, service label, and a runbook link — good alerts fire on symptoms users feel
+(error ratio, latency), include the context to act, and use `for:` to avoid flapping on brief blips.
 
-### Negative Test
+**Negative test:** alert on a cause metric (CPU > 80%) instead of a symptom; high CPU may not affect
+users while a real user-facing failure at low CPU raises no alert — alert on symptoms, diagnose with
+causes.
 
-Now fire a `NodeDown` alert for the same `node-7`, which should inhibit
-any *new* `PodUnavailable` alert for that node from producing a further
-notification:
+**Cleanup:** remove the lab rule.
 
-```bash
-> data/received.jsonl  # clear captured notifications
-curl -s -H "Content-Type: application/json" -X POST http://localhost:9093/api/v2/alerts -d '[
-  {"labels": {"alertname":"NodeDown","node":"node-7"}}
-]'
-sleep 12
-curl -s -H "Content-Type: application/json" -X POST http://localhost:9093/api/v2/alerts -d '[
-  {"labels": {"alertname":"PodUnavailable","service":"checkout-api","node":"node-7","pod":"checkout-api-4"}}
-]'
-sleep 12
-cat data/received.jsonl | python3 -c "
-import json, sys
-lines = [json.loads(l) for l in sys.stdin]
-pod_notifications = [l for l in lines for a in l.get('alerts', []) if a['labels'].get('alertname') == 'PodUnavailable']
-print(f'PodUnavailable notifications after NodeDown fired: {len(pod_notifications)}')
-"
+### Lab 6.2 — Alertmanager routing, grouping, and inhibition (Topic: Alert routing)
+
+**Objective:** Route alerts to the right team and suppress noise.
+
+```yaml
+route:
+  receiver: default
+  group_by: [service, severity]
+  group_wait: 30s
+  group_interval: 5m
+  routes:
+    - matchers: [ severity="page" ]
+      receiver: pagerduty
+    - matchers: [ team="payments" ]
+      receiver: payments-slack
+inhibit_rules:
+  - source_matchers: [ severity="page", alertname="ClusterDown" ]
+    target_matchers: [ severity=~"page|warning" ]
+    equal: [ cluster ]
+receivers:
+  - { name: default }
+  - { name: pagerduty, pagerduty_configs: [{ routing_key: "<key>" }] }
+  - { name: payments-slack, slack_configs: [{ channel: "#payments-alerts" }] }
 ```
 
-Confirm the count is `0` — the inhibition rule suppressed the new
-`PodUnavailable` alert because a matching `NodeDown` alert with the same
-`node` label is active. Then repeat the same test but fire
-`PodUnavailable` with `node: node-8` instead (a node that has no active
-`NodeDown` alert) and confirm that notification *is* delivered,
-demonstrating the inhibition correctly scopes to the matching `node`
-label rather than suppressing all `PodUnavailable` alerts globally.
+**Expected result:** pages go to PagerDuty, team alerts to the team's Slack, related alerts are
+grouped into one notification, and a cluster-down alert **inhibits** the flood of downstream alerts
+it causes — routing/grouping/inhibition turn a storm of raw alerts into a few actionable
+notifications to the right owners.
 
-### Cleanup
+**Negative test:** send every alert individually to one shared channel with no grouping/inhibition;
+a single outage generates hundreds of notifications and the real signal is buried — grouping and
+inhibition are what keep alerts actionable during an incident.
 
-```bash
-cd ~/alert-lab
-docker compose down -v
-cd ~
-rm -rf ~/alert-lab
+**Cleanup:** revert to the lab default config.
+
+### Lab 6.3 — Actionable alerts (Topic: Alert quality)
+
+**Objective:** Make every alert answer "what do I do?"
+
+```text
+# Audit each alert against the actionability checklist:
+#   - Is it a symptom (user impact), not just a cause? 
+#   - Does it require human action now (page) vs. later (ticket) vs. FYI (dashboard only)?
+#   - Does it link a runbook and name the owning service/team?
+#   - Would a responder know the first step from the alert alone?
+# Delete or downgrade any alert that fails these (especially non-actionable "FYI" pages).
 ```
+
+**Expected result:** every page is a symptom that needs action now and carries a runbook and owner;
+non-actionable alerts are downgraded to tickets/dashboards — alert quality (not quantity) is what
+prevents alert fatigue; a page that no one can act on is training responders to ignore pages.
+
+**Negative test:** keep alerting on everything "just in case"; responders normalize ignoring alerts
+and miss the real one — pruning to actionable, symptom-based alerts is what keeps paging trustworthy.
+
+**Cleanup:** none.
+
+### Lab 6.4 — On-call and escalation design (Topic: On-call)
+
+**Objective:** Design a humane, effective on-call.
+
+```text
+# Define the on-call model for the service:
+#   - rotation (follow-the-sun or weekly), primary + secondary, and escalation timeouts
+#   - what pages a human (SLO-burn/symptom pages only) vs. auto-remediates (Chapter 09)
+#   - handoff process, and a page-load budget (e.g. < 2 actionable pages per on-call shift)
+#   - blameless expectations and comp/time-off-in-lieu for out-of-hours pages
+```
+
+**Expected result:** an on-call design with clear rotation, escalation, a bounded page load, and
+blameless, humane practices — on-call is a people system: it must be sustainable (low, actionable
+page volume; fair rotation) or responders burn out and reliability suffers.
+
+**Negative test:** run on-call with one person, no secondary/escalation, and dozens of noisy pages a
+night; burnout and missed pages follow — a bounded, fairly-rotated, escalation-backed on-call is
+what makes it sustainable.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

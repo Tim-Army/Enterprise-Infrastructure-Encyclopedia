@@ -444,146 +444,104 @@ Elevated 5xx error rate on /checkout, peaking at 8% of requests, for
 
 ## Hands-On Lab
 
-**Objective:** Build a lightweight, file-based incident and change
-record workflow with an automated postmortem-completeness audit and a
-change-approval gate, and validate both the compliant and
-non-compliant paths.
+This chapter carries a topic-level walkthrough lab for **each service-management discipline** —
+incident, problem, and change management, plus an operating-model design exercise. These are
+process-and-artifact labs (the deliverables are runbooks, postmortems, and change plans, not
+commands). Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 7.1–7.4** — the observability stack from the earlier chapters (for
+evidence), and a place to write the artifacts. **Cost:** none.
 
-- A POSIX shell (bash 5.x) and `yq` (Mike Farah's Go implementation,
-  v4.x) installed locally.
-- No production access required; this lab is entirely local files.
+### Lab 7.1 — Incident management (Topic: Incident response)
 
-### Procedure
+**Objective:** Run an incident with defined roles and severity.
 
-1. Create the lab directory structure:
-
-   ```bash
-   mkdir -p ~/svcmgmt-lab/incidents ~/svcmgmt-lab/postmortems ~/svcmgmt-lab/changes
-   cd ~/svcmgmt-lab
-   ```
-
-2. Create two incident records, one SEV1 and one SEV3, and one
-   postmortem linked to the SEV1:
-
-   ```bash
-   cat > incidents/INC-1001.yaml <<'EOF'
-   incident_id: INC-1001
-   severity: SEV1
-   service: checkout-api
-   status: resolved
-   EOF
-
-   cat > incidents/INC-1002.yaml <<'EOF'
-   incident_id: INC-1002
-   severity: SEV3
-   service: inventory-service
-   status: resolved
-   EOF
-
-   cat > postmortems/INC-1001.yaml <<'EOF'
-   incident_id: INC-1001
-   contributing_factors:
-     - Missing index after schema migration
-     - No circuit breaker on DB connection pool
-   action_items:
-     - owner: alice
-       ticket: JIRA-4473
-       status: open
-   EOF
-   ```
-
-3. Save the `require-change-approval.sh` script from the Implementation
-   and Automation section, make it executable, and create one fully
-   approved `normal` change and one under-approved one:
-
-   ```bash
-   chmod +x require-change-approval.sh
-
-   cat > changes/CHG-2001.yaml <<'EOF'
-   change_id: CHG-2001
-   risk_category: normal
-   approvals:
-     - approver: team-lead
-       status: approved
-     - approver: dba-team
-       status: approved
-   EOF
-
-   cat > changes/CHG-2002.yaml <<'EOF'
-   change_id: CHG-2002
-   risk_category: normal
-   approvals:
-     - approver: team-lead
-       status: approved
-   EOF
-   ```
-
-4. Create the postmortem-completeness audit script:
-
-   ```bash
-   cat > audit-postmortem-coverage.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -euo pipefail
-   missing=0
-   for f in incidents/*.yaml; do
-     id=$(yq '.incident_id' "$f")
-     sev=$(yq '.severity' "$f")
-     if [[ "$sev" == "SEV1" || "$sev" == "SEV2" ]]; then
-       if [[ ! -f "postmortems/${id}.yaml" ]]; then
-         echo "MISSING POSTMORTEM: $id ($sev)"
-         missing=$((missing + 1))
-       fi
-     fi
-   done
-   echo "Postmortem coverage audit complete: $missing issue(s) found"
-   exit "$missing"
-   EOF
-   chmod +x audit-postmortem-coverage.sh
-   ```
-
-5. Run both audits:
-
-   ```bash
-   ./audit-postmortem-coverage.sh
-   echo "--- change gate: CHG-2001 ---"
-   ./require-change-approval.sh changes/CHG-2001.yaml && echo "exit: $?"
-   echo "--- change gate: CHG-2002 ---"
-   ./require-change-approval.sh changes/changes/CHG-2002.yaml 2>/dev/null || echo "exit: $?"
-   ```
-
-### Expected Results
-
-The postmortem audit reports `0 issue(s) found`, since `INC-1001` (SEV1)
-has a linked postmortem and `INC-1002` (SEV3) does not require one. The
-change gate for `CHG-2001` prints `Change CHG-2001 approved; proceeding.`
-and exits `0`. The change gate for `CHG-2002` (correct the path to
-`changes/CHG-2002.yaml`) prints a `BLOCKED` message reporting `1/2`
-approvals and exits non-zero.
-
-### Negative Test
-
-Remove the postmortem for `INC-1001` to simulate an incident closed
-without one, and confirm the audit now catches it:
-
-```bash
-mv postmortems/INC-1001.yaml postmortems/INC-1001.yaml.bak
-./audit-postmortem-coverage.sh || echo "exit code: $?"
+```text
+# For a simulated Sev-2 (checkout error rate breaching SLO), produce:
+#   - severity classification (user impact + scope) and the criteria for it
+#   - roles: Incident Commander, Comms Lead, Ops/Subject-matter responders
+#   - a comms cadence (status updates every N min to a status page/stakeholders)
+#   - a timeline log (what was seen, decided, done, at what time) captured live
+#   - the "mitigate first, root-cause later" ordering
 ```
 
-Confirm the script reports `MISSING POSTMORTEM: INC-1001 (SEV1)` and
-exits non-zero, demonstrating the gate would fail a CI check on this
-condition rather than silently allowing a SEV1 incident to close without
-a postmortem. Restore the file (`mv postmortems/INC-1001.yaml.bak
-postmortems/INC-1001.yaml`) and confirm the audit passes again.
+**Expected result:** an incident handled with a clear commander, defined severity, regular comms, and
+a live timeline — incident management is about coordinating people under pressure: an IC to decide,
+comms to inform, and mitigation before root cause, so the outage is shortened and well-communicated.
 
-### Cleanup
+**Negative test:** respond to a major incident with everyone debugging in one channel, no commander,
+and no comms; effort is duplicated, stakeholders are uninformed, and mitigation is slow — defined
+roles and comms are what make response effective.
 
-```bash
-cd ~
-rm -rf ~/svcmgmt-lab
+**Cleanup:** none (retain the timeline for Lab 7.2).
+
+### Lab 7.2 — Problem management and blameless postmortem (Topic: Root cause)
+
+**Objective:** Turn an incident into durable improvement.
+
+```text
+# From the Lab 7.1 incident, write a BLAMELESS postmortem:
+#   - impact (users, duration, SLO/error-budget consumed — from Chapter 03 data)
+#   - timeline (detection -> mitigation -> resolution) from the incident log
+#   - contributing factors (the systemic conditions, not a person to blame)
+#   - action items with owners and due dates (detection, prevention, response gaps)
+#   - what worked well (keep it)
 ```
+
+**Expected result:** a blameless postmortem with systemic contributing factors and tracked action
+items — problem management asks "what about the *system* let this happen and how do we prevent
+recurrence," and blamelessness is what makes people share the honest facts needed to actually fix it.
+
+**Negative test:** write a postmortem that blames an individual ("operator ran the wrong command");
+people hide facts to avoid blame and the systemic cause (why was that command easy to run wrongly?)
+goes unfixed — blameless analysis is what surfaces the real, fixable cause.
+
+**Cleanup:** none.
+
+### Lab 7.3 — Change management and progressive delivery (Topic: Change)
+
+**Objective:** Reduce change risk without blocking velocity.
+
+```text
+# Classify a change and design its rollout:
+#   - change type: standard (pre-approved, low-risk) / normal (reviewed) / emergency
+#   - progressive delivery: canary -> percentage rollout -> full, each gated by SLO/error-budget
+#     health checks (auto-rollback if the canary's golden signals degrade)
+#   - a rollback plan and the observability that will detect a bad change fast
+```
+
+**Expected result:** a change classified by risk and rolled out progressively with SLO-gated
+promotion and automatic rollback — most incidents are change-induced, so change management plus
+progressive delivery (canary, gated promotion, fast rollback) is what lets you ship often *and*
+safely, using the observability signals as the gate.
+
+**Negative test:** deploy a risky change to 100% at once with no canary or health gate; a regression
+hits every user before anyone notices — progressive, observability-gated rollout is what bounds the
+blast radius of a bad change.
+
+**Cleanup:** none.
+
+### Lab 7.4 — Design Exercise: the operating model (Topic: Operations design)
+
+**Objective:** Tie observability and service management into one model.
+
+> **Scenario.** A 40-service platform has good tooling but chaotic operations: noisy alerts, unclear
+> ownership, slow incidents, and change-caused outages. Design the operating model.
+
+Work through and **write down**: service ownership + SLOs per service (Ch01, Ch03); the alerting/on-
+call model that pages only on SLO burn (Ch06); the incident/problem/change processes above; and how
+observability data feeds each (SLOs gate change, telemetry drives incidents, postmortems create
+action items). State how the model reduces toil and MTTR.
+
+**Expected result:** an operating model where owned services with SLOs drive symptom-based paging,
+coordinated incident response, blameless problem management, and SLO-gated change — the disciplines
+reinforce each other, turning tooling into reliable operations.
+
+**Negative test:** buy more tooling without the operating model (ownership, SLOs, processes); the
+noise and slow incidents persist because tools do not decide who owns what or how to respond — the
+operating model, not the tooling, is what produces reliability.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 

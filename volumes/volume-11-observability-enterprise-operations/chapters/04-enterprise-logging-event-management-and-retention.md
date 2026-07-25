@@ -443,149 +443,107 @@ overrides:
 
 ## Hands-On Lab
 
-**Objective:** Deploy a local log pipeline (Vector plus Loki), ship
-structured JSON logs from a sample application, run LogQL queries by
-label and by extracted field, and validate a PII redaction rule with a
-positive and negative test.
+This chapter carries a topic-level walkthrough lab for **each logging skill** — structured logging,
+LogQL queries, log-derived metrics, and retention/tiering. Labs use Grafana Loki. Each ends **`**Lab
+verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 4.1–4.4** — Grafana Loki with a lab app shipping logs (via Promtail/
+Alloy or the OTel Collector), and `curl`. **Cost:** none.
 
-- Docker Engine and Docker Compose v2.
-- `curl` and a POSIX shell.
-- Approximately 1.5 GB of free memory for the lab stack.
+### Lab 4.1 — Structured logging (Topic: Log structure)
 
-### Procedure
-
-1. Create the lab directory and a script that emits structured JSON log
-   lines to a file, simulating an application's log output, including
-   one line with a sensitive field to validate redaction:
-
-   ```bash
-   mkdir -p ~/log-lab/logs && cd ~/log-lab
-   cat > emit-logs.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -euo pipefail
-   for i in $(seq 1 20); do
-     echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)\",\"level\":\"info\",\"service_name\":\"lab-app\",\"deployment_environment_name\":\"production\",\"message\":\"request completed\",\"attempt\":1}" >> logs/lab-app.log
-     sleep 0.2
-   done
-   echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)\",\"level\":\"error\",\"service_name\":\"lab-app\",\"deployment_environment_name\":\"production\",\"message\":\"payment gateway timeout\",\"authorization\":\"Bearer super-secret-token\",\"attempt\":2}" >> logs/lab-app.log
-   EOF
-   chmod +x emit-logs.sh
-   ```
-
-2. Create a Vector configuration that reads the log file, parses JSON,
-   redacts the `authorization` field, and ships to Loki:
-
-   ```bash
-   cat > vector.toml <<'EOF'
-   [sources.file_logs]
-   type = "file"
-   include = ["/logs/lab-app.log"]
-
-   [transforms.parse_json]
-   type = "remap"
-   inputs = ["file_logs"]
-   source = '''
-     . = parse_json!(.message)
-   '''
-
-   [transforms.redact]
-   type = "remap"
-   inputs = ["parse_json"]
-   source = '''
-     if exists(.authorization) { del(.authorization) }
-   '''
-
-   [sinks.loki_out]
-   type = "loki"
-   inputs = ["redact"]
-   endpoint = "http://loki:3100"
-   encoding.codec = "json"
-   labels.service_name = "{{ service_name }}"
-   labels.deployment_environment_name = "{{ deployment_environment_name }}"
-   labels.level = "{{ level }}"
-   EOF
-   ```
-
-3. Create the Compose file for Loki and Vector, and start Loki first:
-
-   ```bash
-   cat > docker-compose.yaml <<'EOF'
-   services:
-     loki:
-       image: grafana/loki:3.2.1
-       ports:
-         - "3100:3100"
-     vector:
-       image: timberio/vector:0.43.0-debian
-       volumes:
-         - ./vector.toml:/etc/vector/vector.toml:ro
-         - ./logs:/logs:ro
-       command: ["--config", "/etc/vector/vector.toml"]
-       depends_on:
-         - loki
-   EOF
-   docker compose up -d loki
-   sleep 5
-   docker compose up -d vector
-   ```
-
-4. Run the log emitter to generate sample traffic, including the
-   sensitive-field line:
-
-   ```bash
-   ./emit-logs.sh
-   sleep 5
-   ```
-
-5. Query Loki directly via its HTTP API (equivalent to a LogQL query run
-   from Grafana's Explore view) to confirm ingestion and redaction:
-
-   ```bash
-   curl -s -G "http://localhost:3100/loki/api/v1/query_range" \
-     --data-urlencode 'query={service_name="lab-app"}' \
-     --data-urlencode 'limit=50' | python3 -m json.tool
-   ```
-
-### Expected Results
-
-The query returns 21 log entries for stream `{service_name="lab-app"}`.
-Twenty entries have `level="info"` with `message="request completed"`.
-One entry has `level="error"` with
-`message="payment gateway timeout"`. Confirm the `authorization` field
-is absent from every returned entry, including the error entry that
-originally carried it, proving the redaction transform ran before the
-Loki sink.
-
-### Negative Test
-
-Query specifically for the field that should have been redacted, and
-confirm it returns no matches, demonstrating the redaction is enforced
-rather than merely omitted from a display:
+**Objective:** Emit and query machine-parseable logs.
 
 ```bash
-curl -s -G "http://localhost:3100/loki/api/v1/query_range" \
-  --data-urlencode 'query={service_name="lab-app"} | json | authorization != ""' \
-  --data-urlencode 'limit=50' | python3 -m json.tool
+# Structured (JSON) log line the app emits:
+echo '{"ts":"2026-07-25T09:00:00Z","level":"error","service":"checkout","trace_id":"abc123","msg":"payment declined","user_tier":"gold"}'
+# Query in Loki with field extraction:
+curl -s 'http://localhost:3100/loki/api/v1/query_range' --data-urlencode \
+  'query={service="checkout"} | json | level="error"' | python3 -c "import json,sys; print('matched streams:', len(json.load(sys.stdin)['data']['result']))"
 ```
 
-Confirm the `result` array is empty. Then temporarily comment out the
-`del(.authorization)` line in `vector.toml`, restart Vector
-(`docker compose restart vector`), re-run `emit-logs.sh`, and confirm the
-same query now returns the previously-redacted line with the
-`authorization` value present — demonstrating the negative case: the
-pipeline does not protect sensitive fields on its own, the transform
-does, and removing the transform reintroduces the exposure.
+**Expected result:** the JSON log parses into queryable fields (`level`, `trace_id`, `user_tier`) so
+you can filter and group on them — structured logging makes logs *data*, not prose: you filter by
+field, join to traces by `trace_id`, and aggregate, none of which free-text logs allow reliably.
 
-### Cleanup
+**Negative test:** emit free-text logs (`ERROR: payment declined for gold user`); extracting fields
+needs brittle regex and breaks when the format changes — structured (JSON/logfmt) logging is what
+makes logs queryable at scale.
+
+**Cleanup:** none.
+
+### Lab 4.2 — LogQL queries (Topic: Log querying)
+
+**Objective:** Filter, parse, and aggregate logs.
 
 ```bash
-cd ~/log-lab
-docker compose down -v
-cd ~
-rm -rf ~/log-lab
+# Filter + rate of errors per service over 5m:
+curl -s 'http://localhost:3100/loki/api/v1/query_range' --data-urlencode \
+  'query=sum by (service) (rate({env="prod"} | json | level="error" [5m]))' | python3 -m json.tool | head
+# Extract a value and aggregate (e.g. count by user_tier):
+curl -s 'http://localhost:3100/loki/api/v1/query_range' --data-urlencode \
+  'query=sum by (user_tier) (count_over_time({service="checkout"} | json | level="error" [5m]))' | python3 -m json.tool | head
 ```
+
+**Expected result:** an error rate per service and a breakdown by `user_tier` — LogQL mirrors PromQL:
+a stream selector (`{}`), pipeline filters/parsers (`| json | level="error"`), and metric functions
+(`rate`, `count_over_time`) turn logs into time series you can graph and alert on.
+
+**Negative test:** grep across raw log files on each host to answer "error rate by tier"; it does not
+aggregate across hosts or over time — a log system with LogQL is what makes logs queryable like
+metrics.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.3 — Log-derived metrics (Topic: Log metrics)
+
+**Objective:** Turn a log pattern into a metric/alert.
+
+```yaml
+# Loki ruler: alert when the log-derived error rate is high (metrics from logs)
+groups:
+- name: log-alerts
+  rules:
+  - alert: CheckoutLogErrorsHigh
+    expr: sum(rate({service="checkout"} | json | level="error" [5m])) > 5
+    for: 5m
+    labels: { severity: warning }
+    annotations: { summary: "Checkout error-log rate > 5/s" }
+```
+
+**Expected result:** a metric and alert derived from log content, without instrumenting the app for
+that specific metric — log-derived metrics capture signals that only appear in logs (specific error
+strings, events with no dedicated metric), bridging logs into the alerting/SLO world.
+
+**Negative test:** require a code change to emit a metric for every loggable condition; you cannot
+instrument everything in advance — deriving metrics from existing logs covers the long tail without
+new instrumentation.
+
+**Cleanup:** remove the lab rule.
+
+### Lab 4.4 — Retention and tiering (Topic: Retention)
+
+**Objective:** Bound log cost with a retention policy.
+
+```yaml
+# Loki retention: keep recent logs hot, expire the rest (per-tenant/stream possible)
+limits_config:
+  retention_period: 720h          # 30 days default
+compactor:
+  retention_enabled: true
+# Longer retention for audit/security streams via per-stream retention rules; archive to object storage.
+```
+
+**Expected result:** logs expire after the retention window (30 days here), with longer retention for
+audit/security streams and cheap object-storage archival for the rest — logs are the highest-volume
+signal, so a tiered retention policy (hot recent, archived old, expired past compliance need) is what
+keeps cost bounded.
+
+**Negative test:** retain all logs indefinitely on hot storage; cost grows without limit and queries
+slow — retention/tiering matched to actual query and compliance needs is what makes logging
+sustainable.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

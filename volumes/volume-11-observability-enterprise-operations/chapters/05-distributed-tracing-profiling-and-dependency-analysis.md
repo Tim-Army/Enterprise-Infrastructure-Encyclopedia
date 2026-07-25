@@ -446,185 +446,98 @@ spec:
 
 ## Hands-On Lab
 
-**Objective:** Run a local trace pipeline with tail-based sampling
-policies, generate both routine and error/slow traces, and verify that
-sampling policy correctly retains high-value traces while discarding
-routine ones at the configured baseline rate.
+This chapter carries a topic-level walkthrough lab for **each tracing and profiling skill** —
+distributed traces and context propagation, trace querying, span-based service dependency analysis,
+and continuous profiling. Labs use Grafana Tempo (and Pyroscope). Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 5.1–5.4** — an OTel-instrumented multi-service app (the OpenTelemetry
+demo works), Grafana Tempo, and optionally Pyroscope. **Cost:** none.
 
-- Docker Engine and Docker Compose v2.
-- `curl` and a POSIX shell.
-- Approximately 1.5 GB of free memory for the lab stack.
+### Lab 5.1 — A distributed trace and context propagation (Topic: Tracing)
 
-### Procedure
+**Objective:** Follow one request across services.
 
-1. Create the lab directory and a Collector configuration implementing
-   tail sampling: retain all errors and all traces over 800ms, sample
-   10% of everything else:
-
-   ```bash
-   mkdir -p ~/trace-lab && cd ~/trace-lab
-   cat > otel-config.yaml <<'EOF'
-   receivers:
-     otlp:
-       protocols:
-         grpc:
-           endpoint: 0.0.0.0:4317
-         http:
-           endpoint: 0.0.0.0:4318
-   processors:
-     tail_sampling:
-       decision_wait: 5s
-       num_traces: 10000
-       policies:
-         - name: keep-errors
-           type: status_code
-           status_code:
-             status_codes: [ERROR]
-         - name: keep-slow
-           type: latency
-           latency:
-             threshold_ms: 800
-         - name: baseline-sample
-           type: probabilistic
-           probabilistic:
-             sampling_percentage: 10
-     batch:
-       timeout: 2s
-   exporters:
-     otlp/jaeger:
-       endpoint: jaeger:4317
-       tls:
-         insecure: true
-     debug:
-       verbosity: basic
-   service:
-     pipelines:
-       traces:
-         receivers: [otlp]
-         processors: [tail_sampling, batch]
-         exporters: [otlp/jaeger, debug]
-     telemetry:
-       metrics:
-         level: detailed
-         address: 0.0.0.0:8888
-   EOF
-   ```
-
-2. Create the Compose file with the Collector and Jaeger:
-
-   ```bash
-   cat > docker-compose.yaml <<'EOF'
-   services:
-     otel-collector:
-       image: otel/opentelemetry-collector-contrib:0.116.0
-       command: ["--config=/etc/otel/config.yaml"]
-       volumes:
-         - ./otel-config.yaml:/etc/otel/config.yaml
-       ports:
-         - "4317:4317"
-         - "4318:4318"
-         - "8888:8888"
-     jaeger:
-       image: jaegertracing/all-in-one:1.63.0
-       environment:
-         - COLLECTOR_OTLP_ENABLED=true
-       ports:
-         - "16686:16686"
-         - "4319:4317"
-   EOF
-   docker compose up -d
-   ```
-
-3. Create a script that sends 100 synthetic traces: 90 fast/successful,
-   5 slow (over the 800ms threshold), and 5 errors, so the expected
-   retention count can be verified precisely:
-
-   ```bash
-   cat > send-traces.py <<'EOF'
-   import json
-   import random
-   import time
-   import urllib.request
-
-   def send(trace_id, duration_ms, status_code):
-       start = 1_700_000_000_000_000_000
-       end = start + duration_ms * 1_000_000
-       span = {
-           "resourceSpans": [{
-               "resource": {"attributes": [{"key": "service.name", "value": {"stringValue": "lab-app"}}]},
-               "scopeSpans": [{"spans": [{
-                   "traceId": trace_id, "spanId": trace_id[:16], "name": "lab-op",
-                   "kind": 2, "startTimeUnixNano": str(start), "endTimeUnixNano": str(end),
-                   "status": {"code": status_code},
-               }]}],
-           }]
-       }
-       req = urllib.request.Request(
-           "http://localhost:4318/v1/traces",
-           data=json.dumps(span).encode(),
-           headers={"Content-Type": "application/json"},
-       )
-       urllib.request.urlopen(req).read()
-
-   for i in range(90):
-       send(f"{i:032x}", 50, 0)       # fast, OK
-   for i in range(5):
-       send(f"{900+i:032x}", 1200, 0)  # slow, OK -> kept by latency policy
-   for i in range(5):
-       send(f"{950+i:032x}", 50, 2)    # fast, ERROR -> kept by status_code policy
-       time.sleep(0.01)
-   EOF
-   python3 send-traces.py
-   sleep 8  # allow decision_wait plus export
-   ```
-
-### Expected Results
-
-Open `http://localhost:16686`, select service `lab-app`, set the lookback
-window to the last 15 minutes, and search with no additional filters.
-Confirm the total number of retained traces is approximately 19-20: all
-5 slow traces, all 5 error traces, and roughly 9 (10% of 90, allowing for
-sampling variance) fast/successful traces. Confirm searching with
-`Tags: error=true` returns exactly the 5 error traces, and confirm at
-least one returned trace has a duration over 800ms.
-
-### Negative Test
-
-Confirm the baseline sampling is actually discarding most routine
-traffic, not accidentally retaining everything (a common tail-sampling
-misconfiguration where the probabilistic policy is unreachable because
-an earlier policy's logic is inverted). Count the fast/successful traces
-specifically:
-
-```bash
-curl -s "http://localhost:16686/api/traces?service=lab-app&limit=200" \
-  | python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-fast_ok = [t for t in data['data'] if all(
-    not any(tag['key']=='error' for tag in s.get('tags', []))
-    for s in t['spans']
-)]
-print(f'fast/successful traces retained: {len(fast_ok)}')
-"
+```text
+# Generate a request that crosses services (frontend -> checkout -> payment). In Grafana Explore
+#   (Tempo), open the trace and confirm:
+#   - a single trace_id spans all services (context propagated via W3C traceparent headers)
+#   - each span shows its service, operation, duration, and parent/child relationship
+#   - the critical path (which span dominates the total latency) is visible
 ```
 
-Confirm the count is well under 90 (roughly 5-15, consistent with a 10%
-sample of 90), not close to 90 — a count near 90 would indicate the
-`baseline-sample` policy is not actually being applied and every trace
-is being retained regardless of sampling percentage, defeating the cost
-control this chapter's Design Considerations section describes.
+**Expected result:** one trace shows the full request path with per-span timing, so the slow service
+is obvious — distributed tracing reconstructs a single request's journey across services, which
+metrics (per-service aggregates) cannot; the propagated `trace_id` is what stitches the spans
+together.
 
-### Cleanup
+**Negative test:** debug a slow cross-service request from per-service latency dashboards; you see
+each service's average but not *this* request's path — only the trace shows where this specific
+request spent its time.
 
-```bash
-cd ~/trace-lab
-docker compose down -v
-cd ~
-rm -rf ~/trace-lab
+**Cleanup:** none.
+
+### Lab 5.2 — Query traces by attribute (Topic: Trace analysis)
+
+**Objective:** Find the traces that matter with TraceQL.
+
+```text
+# Grafana Tempo (TraceQL): find slow error traces for a service
+#   { service.name = "checkout" && status = error && duration > 500ms }
+# Confirm the returned traces and open one to see the failing span and its attributes/logs.
 ```
+
+**Expected result:** TraceQL returns only the slow, errored checkout traces, and opening one shows
+the failing span with its attributes and linked logs — trace querying lets you select the exact
+failures (slow + errored + a specific service) out of millions of traces, turning tracing from
+"browse one trace" into "query the population."
+
+**Negative test:** rely on tail-based sampling that dropped the error traces (Lab 2.4 keeps them);
+you cannot query what was not stored — sampling policy must retain the traces you will need to query
+(errors, slow).
+
+**Cleanup:** none.
+
+### Lab 5.3 — Service dependency and span metrics (Topic: Dependency analysis)
+
+**Objective:** Derive a service map and RED metrics from spans.
+
+```text
+# Enable the Collector's spanmetrics connector to derive RED metrics per service/operation from
+#   spans, and Tempo's service-graph. In Grafana:
+#   - view the service dependency graph (who calls whom, with request rate + error rate on edges)
+#   - confirm span-derived rate/error/duration metrics per operation
+```
+
+**Expected result:** a live service dependency graph with per-edge rate/error/latency, generated
+from spans — span-derived metrics and the service graph reveal the actual runtime topology and where
+errors originate/propagate, which no static architecture diagram keeps current.
+
+**Negative test:** maintain a hand-drawn architecture diagram as the source of truth for
+dependencies; it drifts from reality as services change — the span-derived service graph is generated
+from real traffic and stays current.
+
+**Cleanup:** none.
+
+### Lab 5.4 — Continuous profiling and latency analysis (Topic: Profiling)
+
+**Objective:** Find *why* a span is slow, in code.
+
+```text
+# With Pyroscope (or OTel profiling): correlate a slow trace to a CPU/allocation profile.
+#   - open the slow trace (Lab 5.1), then jump to the profile for that service/time window
+#   - read the flame graph to find the function consuming the time
+```
+
+**Expected result:** the flame graph shows the specific function/allocation responsible for the
+latency inside the slow span — continuous profiling is the fourth signal: traces localize slowness to
+a *span*, profiling localizes it to a *line of code*, closing the last gap in root-cause analysis.
+
+**Negative test:** stop at "the checkout span is slow" without profiling; you know *where* but not
+*why* — profiling connects the slow span to the code path, so the fix is targeted rather than
+guessed.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

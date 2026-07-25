@@ -460,152 +460,102 @@ print('Right-sizing check passed.')
 
 ## Hands-On Lab
 
-**Objective:** Run a local load test against a sample service using a
-realistic traffic model, identify its saturation point from latency
-degradation, and validate a right-sizing check against observed p95
-resource usage, including a negative test for a mismatched traffic
-model.
+This chapter carries a topic-level walkthrough lab for **each capacity, performance, and cost skill**
+— saturation/headroom metrics, the USE performance method, forecasting, and cost-aware operations.
+Labs use PromQL against resource metrics. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 8.1–8.4** — Prometheus with node/container/service resource metrics
+(node_exporter/cAdvisor), and `curl`. **Cost:** none.
 
-- Docker Engine and Docker Compose v2.
-- Python 3.11+ with `pip` available locally (for the load generator).
-- `curl` and a POSIX shell.
+### Lab 8.1 — Saturation and headroom (Topic: Capacity metrics)
 
-### Procedure
-
-1. Create the lab directory and a sample service that becomes
-   non-linearly slower as concurrency increases past a deliberate
-   saturation point (simulating a bounded worker pool):
-
-   ```bash
-   mkdir -p ~/capacity-lab && cd ~/capacity-lab
-   cat > app.py <<'EOF'
-   import threading
-   import time
-   from http.server import BaseHTTPRequestHandler, HTTPServer
-
-   MAX_WORKERS = 8
-   semaphore = threading.Semaphore(MAX_WORKERS)
-   in_flight = 0
-   lock = threading.Lock()
-
-   class Handler(BaseHTTPRequestHandler):
-       def do_GET(self):
-           global in_flight
-           acquired = semaphore.acquire(timeout=2)
-           with lock:
-               in_flight += 1
-           start = time.time()
-           if acquired:
-               time.sleep(0.05)  # base work
-           else:
-               time.sleep(0.05 * 6)  # queued/degraded path
-           duration = time.time() - start
-           with lock:
-               in_flight -= 1
-           if acquired:
-               semaphore.release()
-           self.send_response(200)
-           self.send_header("X-Duration-Ms", str(int(duration * 1000)))
-           self.end_headers()
-           self.wfile.write(b"ok")
-
-       def log_message(self, fmt, *args):
-           return
-
-   HTTPServer(("0.0.0.0", 8091), Handler).serve_forever()
-   EOF
-   python3 app.py &
-   echo $! > app.pid
-   sleep 1
-   ```
-
-2. Create a load generator that ramps concurrency in stages and records
-   average latency per stage, producing the throughput-versus-latency
-   curve described in the Theory section:
-
-   ```bash
-   cat > loadtest.py <<'EOF'
-   import concurrent.futures
-   import statistics
-   import time
-   import urllib.request
-
-   def one_request():
-       start = time.time()
-       urllib.request.urlopen("http://localhost:8091/").read()
-       return time.time() - start
-
-   for concurrency in [2, 4, 8, 12, 16, 24]:
-       latencies = []
-       with concurrent.futures.ThreadPoolExecutor(max_workers=concurrency) as ex:
-           futures = [ex.submit(one_request) for _ in range(concurrency * 5)]
-           for f in concurrent.futures.as_completed(futures):
-               latencies.append(f.result())
-       avg_ms = statistics.mean(latencies) * 1000
-       print(f"concurrency={concurrency:3d}  avg_latency_ms={avg_ms:7.1f}")
-   EOF
-   python3 loadtest.py
-   ```
-
-### Expected Results
-
-The output shows average latency staying close to roughly 50-70ms at
-concurrency 2, 4, and 8 (within the `MAX_WORKERS=8` capacity), then
-increasing sharply — to roughly 150-300ms or more — at concurrency 12,
-16, and 24, as requests exceed the worker pool and fall into the
-degraded path. This inflection point, between concurrency 8 and 12, is
-the saturation point: confirm your output shows a clear non-linear jump
-in that range rather than a smooth, gradual increase, demonstrating the
-load test successfully located a real capacity boundary rather than
-producing an inconclusive result.
-
-### Negative Test
-
-Re-run the load test with a traffic model that does not reflect the
-service's actual bottleneck — extremely low concurrency that never
-approaches the worker pool limit — and confirm it fails to reveal any
-saturation point at all, demonstrating why a load test's traffic model
-must actually exercise the resource under evaluation:
+**Objective:** Measure how close a resource is to its limit.
 
 ```bash
-cat > loadtest-shallow.py <<'EOF'
-import concurrent.futures, statistics, time, urllib.request
-
-def one_request():
-    start = time.time()
-    urllib.request.urlopen("http://localhost:8091/").read()
-    return time.time() - start
-
-for concurrency in [1, 2, 3]:
-    latencies = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=concurrency) as ex:
-        futures = [ex.submit(one_request) for _ in range(concurrency * 5)]
-        for f in concurrent.futures.as_completed(futures):
-            latencies.append(f.result())
-    avg_ms = statistics.mean(latencies) * 1000
-    print(f"concurrency={concurrency:3d}  avg_latency_ms={avg_ms:7.1f}")
-EOF
-python3 loadtest-shallow.py
+# CPU headroom (1 - utilization):
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode \
+  'query=1 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m]))' | python3 -c "import json,sys; r=json.load(sys.stdin)['data']['result']; print('CPU util:', float(r[0]['value'][1]) if r else 'n/a')"
+# Memory saturation (working set vs limit for a container):
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode \
+  'query=max by (pod) (container_memory_working_set_bytes / container_spec_memory_limit_bytes)' | python3 -m json.tool | head
+# Queue/run-queue saturation is the leading indicator of contention.
 ```
 
-Confirm the output shows flat, roughly 50-70ms latency across all three
-concurrency levels with no degradation — correctly demonstrating that
-this shallow test never reached the service's real saturation point
-(concurrency 8-12) and would produce a false-confidence "the service
-handles load fine" conclusion if it were the only test run, which is
-precisely the traffic-model risk described in the Validation and
-Troubleshooting section.
+**Expected result:** utilization and saturation figures per resource, showing remaining headroom —
+capacity operations track **saturation** (how full, and the queueing that precedes exhaustion), not
+just utilization; saturation is the leading indicator that a resource is about to become a
+bottleneck.
 
-### Cleanup
+**Negative test:** watch only average CPU% and call 60% "fine"; a saturated queue or a single hot
+pod at its memory limit causes user-facing latency while the average looks healthy — saturation and
+per-entity limits reveal what averages hide.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.2 — Performance analysis with USE (Topic: Performance)
+
+**Objective:** Localize a performance bottleneck systematically.
 
 ```bash
-cd ~/capacity-lab
-kill "$(cat app.pid)" 2>/dev/null || true
-cd ~
-rm -rf ~/capacity-lab
+# USE across resources for a service under load — for each: Utilization, Saturation, Errors:
+#   CPU:    rate(node_cpu_seconds_total{mode!="idle"}[5m])         (U) ; runqueue length (S)
+#   Memory: working_set/limit (U) ; page faults / OOM (S/E)
+#   Disk:   rate(node_disk_io_time_seconds_total[5m]) (U) ; iowait (S)
+#   Net:    rate(node_network_transmit_bytes_total[5m]) (U) ; drops (S/E)
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode 'query=rate(node_disk_io_time_seconds_total[5m])' | python3 -m json.tool | head
 ```
+
+**Expected result:** a USE profile pointing at the constrained resource (e.g. disk at 95% utilization
+with rising iowait) — the USE method checks Utilization, Saturation, and Errors for every resource in
+turn, so a performance problem is localized to the actual bottleneck rather than guessed.
+
+**Negative test:** scale up CPU because a service is slow, when the bottleneck is disk I/O; the extra
+CPU does nothing and cost rises — USE finds the *actual* constrained resource before you spend on the
+wrong one.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.3 — Forecasting and capacity planning (Topic: Capacity planning)
+
+**Objective:** Project when a resource runs out.
+
+```bash
+# Linear forecast: predict disk-full time from the recent trend
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode \
+  'query=predict_linear(node_filesystem_avail_bytes{mountpoint="/"}[6h], 7*24*3600) < 0' | python3 -m json.tool | head
+```
+
+**Expected result:** `predict_linear` projects the filesystem trend forward a week and flags whether
+it will hit zero — capacity planning uses trend forecasting to act *before* exhaustion (order
+hardware, scale out, clean up), converting reactive firefighting into planned provisioning.
+
+**Negative test:** wait for a disk-full or OOM alert to add capacity; you are now in an incident with
+no lead time — forecasting on the trend gives the lead time to provision calmly ahead of the wall.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.4 — Cost-aware operations (Topic: Cost / FinOps)
+
+**Objective:** Tie resource use to cost per unit of work.
+
+```bash
+# Unit economics: cost per request (or per customer). Approximate with resource-hours x price:
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode \
+  'query=sum(rate(container_cpu_usage_seconds_total{service="checkout"}[1h])) / sum(rate(http_requests_total{service="checkout"}[1h]))' | python3 -c "import json,sys; r=json.load(sys.stdin)['data']['result']; print('CPU-seconds per request:', float(r[0]['value'][1]) if r else 'n/a')"
+# Multiply resource-per-request by the provider's unit price for a cost-per-request figure.
+```
+
+**Expected result:** resource consumed per request (→ cost per request when multiplied by unit
+price), so efficiency is measurable — cost-aware operations expresses spend as **unit economics**
+(cost per request/customer/transaction), which reveals whether an optimization actually improved
+efficiency and where waste is.
+
+**Negative test:** track only the total cloud bill; it rises with traffic and you cannot tell
+efficiency from growth — cost *per unit of work* is what separates "we grew" from "we got wasteful,"
+and directs optimization.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

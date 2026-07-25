@@ -392,181 +392,116 @@ processors:
 
 ## Hands-On Lab
 
-**Objective:** Deploy an OpenTelemetry Collector locally, instrument a
-sample application, and verify telemetry flows end to end to local
-Prometheus and Jaeger backends, including a backpressure negative test.
+This chapter carries a topic-level walkthrough lab for **each telemetry-pipeline skill** — OpenTelemetry
+instrumentation, the Collector pipeline, signal correlation, and sampling/cardinality control. Every
+step is a runnable config/command. Each ends **`**Lab verified by:** *pending*`** until a human runs
+it.
 
-### Prerequisites
+**Shared prerequisites for Labs 2.1–2.4** — a lab app to instrument (or the OpenTelemetry demo), the
+OpenTelemetry Collector, and a metrics/trace backend (Prometheus + Tempo). **Cost:** none.
 
-- Docker Engine and Docker Compose v2 installed locally.
-- `curl` and a POSIX shell.
-- Approximately 2 GB of free memory for the lab stack.
+### Lab 2.1 — Instrument an application with OpenTelemetry (Topic: Instrumentation)
 
-### Procedure
+**Objective:** Emit a metric and a trace from application code.
 
-1. Create a lab directory and a Docker Compose file defining the
-   Collector, Prometheus, and Jaeger:
-
-   ```bash
-   mkdir -p ~/otel-lab && cd ~/otel-lab
-   cat > docker-compose.yaml <<'EOF'
-   services:
-     otel-collector:
-       image: otel/opentelemetry-collector-contrib:0.116.0
-       command: ["--config=/etc/otel/config.yaml"]
-       volumes:
-         - ./otel-config.yaml:/etc/otel/config.yaml
-       ports:
-         - "4317:4317"   # OTLP gRPC
-         - "4318:4318"   # OTLP HTTP
-         - "8888:8888"   # Collector self-telemetry
-     prometheus:
-       image: prom/prometheus:v3.0.1
-       volumes:
-         - ./prometheus.yaml:/etc/prometheus/prometheus.yaml
-       command: ["--config.file=/etc/prometheus/prometheus.yaml"]
-       ports:
-         - "9090:9090"
-     jaeger:
-       image: jaegertracing/all-in-one:1.63.0
-       environment:
-         - COLLECTOR_OTLP_ENABLED=true
-       ports:
-         - "16686:16686"  # UI
-         - "4319:4317"    # OTLP gRPC (mapped to avoid host port clash)
-   EOF
-   ```
-
-2. Create the Collector configuration, exporting metrics for Prometheus to
-   scrape and traces to Jaeger:
-
-   ```bash
-   cat > otel-config.yaml <<'EOF'
-   receivers:
-     otlp:
-       protocols:
-         grpc:
-           endpoint: 0.0.0.0:4317
-         http:
-           endpoint: 0.0.0.0:4318
-   processors:
-     batch:
-       timeout: 5s
-   exporters:
-     prometheus:
-       endpoint: 0.0.0.0:9464
-     otlp/jaeger:
-       endpoint: jaeger:4317
-       tls:
-         insecure: true
-   service:
-     pipelines:
-       traces:
-         receivers: [otlp]
-         processors: [batch]
-         exporters: [otlp/jaeger]
-       metrics:
-         receivers: [otlp]
-         processors: [batch]
-         exporters: [prometheus]
-     telemetry:
-       metrics:
-         level: detailed
-         address: 0.0.0.0:8888
-   EOF
-   ```
-
-3. Create a minimal Prometheus scrape configuration targeting the
-   Collector's own Prometheus exporter endpoint and its self-telemetry:
-
-   ```bash
-   cat > prometheus.yaml <<'EOF'
-   scrape_configs:
-     - job_name: otel-collector-self
-       static_configs:
-         - targets: ["otel-collector:8888"]
-     - job_name: app-metrics
-       static_configs:
-         - targets: ["otel-collector:9464"]
-   EOF
-   ```
-
-   Add port `9464:9464` to the `otel-collector` service in
-   `docker-compose.yaml` so Prometheus can reach it (edit the file to add
-   this line under the existing `ports:` list).
-
-4. Start the stack:
-
-   ```bash
-   docker compose up -d
-   docker compose ps
-   ```
-
-5. Send a synthetic trace and metric using `curl` against the OTLP HTTP
-   receiver (a minimal hand-built OTLP/JSON payload):
-
-   ```bash
-   curl -s -X POST http://localhost:4318/v1/traces \
-     -H "Content-Type: application/json" \
-     -d '{
-       "resourceSpans": [{
-         "resource": {"attributes": [{"key":"service.name","value":{"stringValue":"lab-app"}}]},
-         "scopeSpans": [{
-           "spans": [{
-             "traceId": "5b8aa5a2d2c872e8321cf37308d69df2",
-             "spanId": "051581bf3cb55c13",
-             "name": "lab-test-span",
-             "kind": 2,
-             "startTimeUnixNano": "1700000000000000000",
-             "endTimeUnixNano": "1700000000500000000"
-           }]
-         }]
-       }]
-     }'
-   ```
-
-### Expected Results
-
-Open `http://localhost:16686` (Jaeger UI), select service `lab-app`, and
-confirm `lab-test-span` appears in the search results. Open
-`http://localhost:9090` (Prometheus) and query `otelcol_receiver_accepted_spans_total`;
-confirm the counter is at least `1`, confirming the Collector accepted and
-processed the synthetic trace end to end.
-
-### Negative Test
-
-Stop the Jaeger container to simulate a backend outage, then send another
-trace and confirm the Collector does not error to the sender (OTLP accepts
-the request as long as its own receiver and queue accept it):
-
-```bash
-docker compose stop jaeger
-curl -s -o /dev/null -w "%{http_code}\n" -X POST http://localhost:4318/v1/traces \
-  -H "Content-Type: application/json" \
-  -d '{"resourceSpans":[]}'
+```python
+# Python example (otel SDK): a counter + a span
+from opentelemetry import metrics, trace
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+meter = metrics.get_meter("checkout")
+orders = meter.create_counter("orders_total")
+tracer = trace.get_tracer("checkout")
+with tracer.start_as_current_span("place_order"):
+    orders.add(1, {"result": "ok"})
+# Run with: OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317 python app.py
 ```
 
-Confirm the HTTP status is `200`. Then query the Collector's self-
-telemetry for queue growth:
+**Expected result:** the app exports an `orders_total` metric and a `place_order` span over OTLP to
+the Collector — OpenTelemetry is the vendor-neutral instrumentation standard, so one SDK/API emits
+metrics, traces, and logs to any compatible backend, avoiding per-vendor agents.
 
-```bash
-curl -s http://localhost:8888/metrics | grep otelcol_exporter_queue_size
+**Negative test:** hard-code a vendor-specific agent/SDK into the app; switching backends means
+re-instrumenting everything — OTel's vendor-neutral API is what keeps instrumentation portable.
+
+**Cleanup:** none.
+
+### Lab 2.2 — The OpenTelemetry Collector pipeline (Topic: Pipelines)
+
+**Objective:** Route telemetry through receivers, processors, and exporters.
+
+```yaml
+# otel-collector.yaml
+receivers:
+  otlp: { protocols: { grpc: { endpoint: 0.0.0.0:4317 } } }
+processors:
+  batch: {}
+  memory_limiter: { check_interval: 1s, limit_percentage: 80 }
+exporters:
+  prometheus: { endpoint: 0.0.0.0:8889 }
+  otlp/tempo: { endpoint: tempo:4317, tls: { insecure: true } }
+service:
+  pipelines:
+    metrics: { receivers: [otlp], processors: [memory_limiter, batch], exporters: [prometheus] }
+    traces:  { receivers: [otlp], processors: [memory_limiter, batch], exporters: [otlp/tempo] }
 ```
 
-Confirm the queue size for the `otlp/jaeger` exporter is nonzero and
-growing with each additional send while Jaeger is stopped, demonstrating
-the buffering-under-backpressure behavior described in this chapter. Bring
-Jaeger back with `docker compose start jaeger` and confirm the queue
-drains (returns toward zero) within the configured retry interval.
+**Expected result:** metrics flow to Prometheus and traces to Tempo through one Collector, with
+batching and memory limiting — the Collector decouples apps from backends (apps send to the
+Collector, the Collector fans out), so you change backends/processing centrally without touching
+apps.
 
-### Cleanup
+**Negative test:** export directly from every app to every backend; changing a backend means
+reconfiguring every app, and there is no central place to batch/filter/enrich — the Collector is the
+control point that avoids that.
 
-```bash
-cd ~/otel-lab
-docker compose down -v
-cd ~
-rm -rf ~/otel-lab
+**Cleanup:** stop the lab Collector.
+
+### Lab 2.3 — Correlate metrics, logs, and traces (Topic: Signal correlation)
+
+**Objective:** Link the three signals by trace and exemplar.
+
+```text
+# Ensure the pipeline propagates correlation IDs:
+#   - logs include trace_id/span_id (structured logging with the active span context)
+#   - metrics carry exemplars (a sample metric point links to a trace_id)
+#   - traces carry service.name and resource attributes matching metric/log labels
+# In Grafana: click a spike on a metric exemplar -> jump to the trace -> jump to that trace's logs.
 ```
+
+**Expected result:** a single trace_id ties a metric spike to its exact trace and that trace's logs,
+so you pivot metric→trace→log in one click — correlation is what collapses "which of a thousand
+requests was slow" into one, turning three separate data stores into one investigation.
+
+**Negative test:** collect metrics, logs, and traces with no shared IDs; you cannot connect a metric
+spike to the specific trace/log that caused it — correlation IDs (trace_id in logs, exemplars on
+metrics) are the linkage that makes the pillars work together.
+
+**Cleanup:** none.
+
+### Lab 2.4 — Sampling and cardinality control (Topic: Data volume)
+
+**Objective:** Control telemetry cost without losing signal.
+
+```yaml
+# Tail-based sampling (keep all errors + slow traces, sample the rest) in the Collector:
+processors:
+  tail_sampling:
+    policies:
+      - { name: errors, type: status_code, status_code: { status_codes: [ERROR] } }
+      - { name: slow, type: latency, latency: { threshold_ms: 500 } }
+      - { name: sample-rest, type: probabilistic, probabilistic: { sampling_percentage: 10 } }
+```
+
+**Expected result:** all error and slow traces are kept while normal traces are sampled to 10%, and
+high-cardinality labels are dropped/aggregated — telemetry volume (and cost) is dominated by traces
+and label cardinality, so tail-sampling and cardinality limits keep the signal (errors, slow paths)
+while cutting the noise.
+
+**Negative test:** keep 100% of traces and every high-cardinality label (user_id, request_id) as a
+metric dimension; storage and cost explode and Prometheus struggles — sampling and cardinality
+control are what make observability affordable at scale.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

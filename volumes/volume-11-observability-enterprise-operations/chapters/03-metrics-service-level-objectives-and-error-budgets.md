@@ -472,182 +472,109 @@ with a single PromQL expression:
 
 ## Hands-On Lab
 
-**Objective:** Instrument a sample HTTP service with a Prometheus
-histogram, run Prometheus locally, compute an availability and a latency
-SLI with PromQL, and validate a multi-window burn-rate alert firing
-condition, including a negative test against a healthy baseline.
+This chapter carries a topic-level walkthrough lab for **each metrics-and-SLO skill** — Prometheus
+metric types, PromQL, SLI/SLO definition with error-budget math, and multi-window multi-burn-rate
+alerting. This is the analytical core of the volume. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 3.1–3.4** — a Prometheus scraping a lab service that exposes
+`http_requests_total` and `http_request_duration_seconds` histograms, and `curl`. **Cost:** none.
 
-- Docker Engine and Docker Compose v2.
-- `curl` and a POSIX shell.
-- Approximately 1 GB of free memory for the lab stack.
+### Lab 3.1 — Prometheus metric types (Topic: Metrics)
 
-### Procedure
-
-1. Create the lab directory and a minimal instrumented service using the
-   Prometheus Python client's built-in test server (no application code
-   beyond a few lines is required for this lab):
-
-   ```bash
-   mkdir -p ~/slo-lab && cd ~/slo-lab
-   cat > app.py <<'EOF'
-   import random
-   import time
-   from http.server import BaseHTTPRequestHandler, HTTPServer
-   from prometheus_client import Counter, Histogram, start_http_server
-
-   REQUESTS = Counter(
-       "http_server_request_duration_seconds_count",
-       "Total requests",
-       ["service", "http_response_status_code"],
-   )
-   LATENCY = Histogram(
-       "http_server_request_duration_seconds",
-       "Request duration",
-       ["service"],
-       buckets=[0.05, 0.1, 0.3, 0.5, 1.0, 2.5],
-   )
-
-   class Handler(BaseHTTPRequestHandler):
-       def do_GET(self):
-           start = time.time()
-           # Simulate occasional errors and occasional slow requests.
-           status = 500 if random.random() < 0.02 else 200
-           delay = 0.4 if random.random() < 0.05 else 0.05
-           time.sleep(delay)
-           LATENCY.labels(service="lab-app").observe(time.time() - start)
-           REQUESTS.labels(service="lab-app", http_response_status_code=str(status)).inc()
-           self.send_response(status)
-           self.end_headers()
-           self.wfile.write(b"ok")
-
-       def log_message(self, fmt, *args):
-           return
-
-   if __name__ == "__main__":
-       start_http_server(9500)  # /metrics on :9500
-       HTTPServer(("0.0.0.0", 8090), Handler).serve_forever()
-   EOF
-   ```
-
-2. Create a Dockerfile for the app and a Prometheus configuration:
-
-   ```bash
-   cat > Dockerfile <<'EOF'
-   FROM python:3.13-slim
-   RUN pip install prometheus_client==0.21.1
-   COPY app.py /app.py
-   EXPOSE 8090 9500
-   CMD ["python", "/app.py"]
-   EOF
-
-   cat > prometheus.yaml <<'EOF'
-   global:
-     scrape_interval: 15s
-     evaluation_interval: 15s
-   scrape_configs:
-     - job_name: lab-app
-       static_configs:
-         - targets: ["lab-app:9500"]
-   rule_files:
-     - /etc/prometheus/slo-rules.yaml
-   EOF
-   ```
-
-3. Create a recording-and-alerting rule file implementing a simplified
-   single-window burn-rate check (kept to one window for lab clarity; the
-   Design section above covers the full multi-window pattern):
-
-   ```bash
-   cat > slo-rules.yaml <<'EOF'
-   groups:
-     - name: lab-app-availability-slo
-       rules:
-         - record: slo:sli_error:ratio_rate5m
-           expr: |
-             sum(rate(http_server_request_duration_seconds_count{service="lab-app",http_response_status_code="500"}[5m]))
-             /
-             sum(rate(http_server_request_duration_seconds_count{service="lab-app"}[5m]))
-         - alert: LabAppAvailabilitySLOBurn
-           expr: slo:sli_error:ratio_rate5m > (14.4 * 0.001)
-           for: 1m
-           labels:
-             severity: page
-           annotations:
-             summary: "lab-app burning availability error budget fast"
-   EOF
-   ```
-
-4. Create the Compose file and start the stack:
-
-   ```bash
-   cat > docker-compose.yaml <<'EOF'
-   services:
-     lab-app:
-       build: .
-       ports:
-         - "8090:8090"
-         - "9500:9500"
-     prometheus:
-       image: prom/prometheus:v3.0.1
-       volumes:
-         - ./prometheus.yaml:/etc/prometheus/prometheus.yaml
-         - ./slo-rules.yaml:/etc/prometheus/slo-rules.yaml
-       ports:
-         - "9090:9090"
-   EOF
-   docker compose up -d --build
-   ```
-
-5. Generate load against the sample service for at least five minutes so
-   the `rate()` windows have enough data:
-
-   ```bash
-   for i in $(seq 1 600); do curl -s -o /dev/null http://localhost:8090/; sleep 0.5; done &
-   ```
-
-### Expected Results
-
-After roughly two minutes of sustained load, open
-`http://localhost:9090/graph`, query `slo:sli_error:ratio_rate5m`, and
-confirm it returns a value near `0.02` (matching the simulated 2% error
-injection rate in `app.py`). Query
-`histogram_quantile(0.99, sum(rate(http_server_request_duration_seconds_bucket{service="lab-app"}[5m])) by (le))`
-and confirm it returns a value consistent with the simulated 5% slow-tail
-injection (roughly 0.4-0.5 seconds). Open the Alerts tab and confirm
-`LabAppAvailabilitySLOBurn` is in a `firing` state, since a 2% sustained
-error rate exceeds the `14.4 × 0.1% = 1.44%` page threshold used in this
-lab's simplified single-window rule.
-
-### Negative Test
-
-Stop the load generator, edit `app.py` to set the error probability to
-`0.0005` (well under the 0.1% SLO threshold), rebuild, and restart:
+**Objective:** Distinguish counter, gauge, and histogram.
 
 ```bash
-kill %1 2>/dev/null || true
-sed -i.bak 's/random.random() < 0.02/random.random() < 0.0005/' app.py
-docker compose up -d --build lab-app
-for i in $(seq 1 600); do curl -s -o /dev/null http://localhost:8090/; sleep 0.5; done &
+# Counter (monotonic; use rate()): total requests
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode 'query=http_requests_total' | python3 -m json.tool | head
+# Gauge (up/down): current memory
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode 'query=process_resident_memory_bytes' | python3 -m json.tool | head
+# Histogram (buckets; use histogram_quantile): request duration
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode 'query=http_request_duration_seconds_bucket' | python3 -c "import json,sys; print('buckets:', len(json.load(sys.stdin)['data']['result']))"
 ```
 
-Wait five minutes, then re-query `slo:sli_error:ratio_rate5m` in
-Prometheus and confirm it now reports a value near `0.0005`, well under
-the `0.0144` burn-rate threshold, and confirm `LabAppAvailabilitySLOBurn`
-returns to `inactive`. This demonstrates the alert correctly
-distinguishes a genuine fast-burn condition from normal, budget-compliant
-operation rather than firing on any nonzero error rate.
+**Expected result:** a counter (ever-increasing, meaningful only as a rate), a gauge (a current
+value), and a histogram (bucketed observations for percentiles) — choosing the right metric type is
+foundational, because you `rate()` a counter, read a gauge directly, and `histogram_quantile()` a
+histogram.
 
-### Cleanup
+**Negative test:** read a counter's raw value as if it were meaningful (it just grows since process
+start); only its `rate()` over a window is useful — misusing the type gives nonsense numbers.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.2 — PromQL: rate, aggregation, quantiles (Topic: PromQL)
+
+**Objective:** Compute the golden signals in PromQL.
 
 ```bash
-kill %1 2>/dev/null || true
-cd ~/slo-lab
-docker compose down -v
-cd ~
-rm -rf ~/slo-lab
+# Request rate by status:
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode 'query=sum by (status) (rate(http_requests_total[5m]))' | python3 -m json.tool | head
+# p99 latency from the histogram:
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode 'query=histogram_quantile(0.99, sum by (le) (rate(http_request_duration_seconds_bucket[5m])))' | python3 -c "import json,sys; r=json.load(sys.stdin)['data']['result']; print('p99 s:', r[0]['value'][1] if r else 'n/a')"
 ```
+
+**Expected result:** per-status request rates and a p99 latency — PromQL's `rate()` (per-second
+average over a window), `sum by (...)` (aggregation), and `histogram_quantile()` (percentiles from
+buckets) are the core operations behind every SLI and dashboard.
+
+**Negative test:** compute an average latency (`sum/count`) and call it your SLO; an average hides
+the tail that users feel — percentiles from the histogram (p95/p99) are what represent user
+experience.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.3 — Define an SLI/SLO and error budget (Topic: SLOs)
+
+**Objective:** Turn an SLI into an SLO with an error budget.
+
+```bash
+# SLI: availability = good requests / total requests, over 30 days
+curl -s 'http://localhost:9090/api/v1/query' --data-urlencode \
+  'query=sum(rate(http_requests_total{status!~"5.."}[30d])) / sum(rate(http_requests_total[30d]))' | \
+  python3 -c "import json,sys; r=json.load(sys.stdin)['data']['result']; sli=float(r[0]['value'][1]) if r else 0; print(f'SLI={sli:.5f}  SLO=0.999  error_budget_left={(sli-0.999)/(1-0.999)*100:.1f}% of budget consumed-check')"
+```
+
+**Expected result:** the measured availability SLI, compared to a 99.9% SLO, yielding the remaining
+**error budget** (0.1% of requests may fail per 30 days) — an SLO makes reliability a *number* with a
+budget, so you can decide objectively whether to ship features (budget remaining) or freeze and
+stabilize (budget exhausted).
+
+**Negative test:** target "100% availability" or no SLO at all; 100% is impossible and un-budgeted
+reliability means every incident is a crisis with no agreed threshold — the SLO + error budget is
+what makes reliability a managed trade-off, not an absolute.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.4 — Multi-window, multi-burn-rate alerting (Topic: SLO alerting)
+
+**Objective:** Alert on budget burn, not on every blip.
+
+```yaml
+# Prometheus rule: page when burning budget fast over BOTH a long and short window
+groups:
+- name: slo-burn
+  rules:
+  - alert: CheckoutErrorBudgetFastBurn
+    expr: |
+      (sum(rate(http_requests_total{status=~"5.."}[1h])) / sum(rate(http_requests_total[1h]))) > (14.4 * 0.001)
+      and
+      (sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))) > (14.4 * 0.001)
+    for: 2m
+    labels: { severity: page }
+    annotations: { summary: "Checkout burning 30-day error budget >14x" }
+```
+
+**Expected result:** the alert fires only when the error rate exceeds the budget burn threshold over
+*both* a long (1h) and short (5m) window — multi-window multi-burn-rate alerting pages on fast budget
+burn (real, sustained problems) while ignoring brief blips, cutting false pages without missing real
+ones.
+
+**Negative test:** alert on a single short window or a static error-count threshold; you get paged on
+every transient spike (noise) or miss a slow burn that quietly exhausts the budget — the
+two-window burn-rate design is what makes SLO alerts both sensitive and quiet.
+
+**Cleanup:** remove the lab rule.
 
 ## Lab Verification
 
