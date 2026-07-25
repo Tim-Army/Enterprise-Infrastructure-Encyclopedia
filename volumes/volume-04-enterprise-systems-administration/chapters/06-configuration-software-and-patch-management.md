@@ -364,104 +364,105 @@ sudo systemctl enable --now config-drift-check.timer
 
 ## Hands-On Lab
 
-**Objective:** Enforce a package and configuration-file baseline on a
-single Linux VM with an idempotent Ansible playbook, prove idempotency and
-drift correction, and demonstrate the negative test of a non-idempotent
-task.
+This chapter carries a topic-level walkthrough lab for **each configuration-and-patch skill** —
+configuration management, software deployment, patch management, and drift/compliance — cross-platform.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 6.1–6.4** — a Linux host, a Windows host where noted, and Ansible for
+the config-management lab. **Cost:** none.
 
-- One Linux VM (RHEL-family or Debian-family, 2 vCPU / 2 GB RAM) with
-  `sudo` access.
-- Ansible installed on the same VM (`sudo dnf install -y ansible-core` or
-  `sudo apt install -y ansible`) — this lab runs Ansible against
-  `localhost` so no second VM or SSH setup is required.
+### Lab 6.1 — Configuration management (Topic: Configuration management)
 
-### Procedure
+**Objective:** Enforce desired state with a config-management tool.
 
-1. Create a minimal inventory and playbook:
-
-   ```bash
-   mkdir -p ~/lab-ansible
-   cat > ~/lab-ansible/baseline.yml <<'EOF'
-   ---
-   - name: Lab baseline
-     hosts: localhost
-     connection: local
-     become: true
-     tasks:
-       - name: Ensure lab marker file exists with expected content
-         ansible.builtin.copy:
-           dest: /etc/lab-baseline.conf
-           content: "managed_by=ansible\nbaseline_version=1\n"
-           mode: '0644'
-   EOF
-   ```
-
-2. Run in check mode first and review the plan:
-
-   ```bash
-   ansible-playbook ~/lab-ansible/baseline.yml --check --diff
-   ```
-
-   **Expected result:** the diff shows the file will be created; no
-   changes are actually applied yet (`changed=1` in check mode, file does
-   not yet exist).
-
-3. Apply for real, then run again immediately to prove idempotency:
-
-   ```bash
-   ansible-playbook ~/lab-ansible/baseline.yml
-   ansible-playbook ~/lab-ansible/baseline.yml
-   ```
-
-   **Expected result:** the first run reports `changed=1`; the second run
-   reports `changed=0`, proving the task is idempotent.
-
-4. Simulate configuration drift by editing the file out of band, then
-   reconcile it:
-
-   ```bash
-   sudo sed -i 's/baseline_version=1/baseline_version=TAMPERED/' /etc/lab-baseline.conf
-   cat /etc/lab-baseline.conf
-
-   ansible-playbook ~/lab-ansible/baseline.yml
-   cat /etc/lab-baseline.conf
-   ```
-
-   **Expected result:** after the drift edit, the file shows
-   `TAMPERED`; after re-running the playbook, it is restored to
-   `baseline_version=1`.
-
-### Negative Test
-
-Add a deliberately non-idempotent task to a copy of the playbook, then
-prove it fails the idempotency expectation a real baseline playbook must
-meet:
-
-```bash
-cp ~/lab-ansible/baseline.yml ~/lab-ansible/bad-baseline.yml
-cat >> ~/lab-ansible/bad-baseline.yml <<'EOF'
-      - name: Non-idempotent shell append (anti-pattern, for the negative test)
-        ansible.builtin.shell: echo "run at $(date)" >> /etc/lab-baseline.conf
-EOF
-
-ansible-playbook ~/lab-ansible/bad-baseline.yml
-ansible-playbook ~/lab-ansible/bad-baseline.yml
+```yaml
+# Ansible converges both Linux and Windows to a declared state (idempotently):
+- hosts: all
+  tasks:
+    - name: Ensure NTP package present (Linux)
+      ansible.builtin.package: { name: chrony, state: present }
+      when: ansible_os_family != "Windows"
+    - name: Ensure a Windows feature (Windows)
+      ansible.windows.win_feature: { name: Telnet-Client, state: present }
+      when: ansible_os_family == "Windows"
 ```
 
-**Expected result:** both runs report `changed=1` for the shell task,
-and `/etc/lab-baseline.conf` grows a new timestamped line each time —
-demonstrating exactly the anti-pattern the Design Considerations section
-warns against, and why raw `shell`/`command` tasks need an explicit
-`changed_when` guard or a proper idempotent module instead.
+**Expected result:** the same playbook converges Linux (package) and Windows (feature) to a declared
+state idempotently — configuration management (Ansible/Puppet/DSC) enforces a *desired state* across
+platforms from version-controlled code, so servers are consistent and drift is corrected rather than
+hand-fixed.
 
-### Cleanup
+**Negative test:** configure servers by hand or with one-off scripts; they drift apart and no source
+of truth exists — declarative config management keeps the fleet convergent to a defined state.
+
+**Cleanup:** revert lab-only state.
+
+### Lab 6.2 — Software deployment (Topic: Software distribution)
+
+**Objective:** Deploy software at scale from a managed source.
 
 ```bash
-sudo rm -f /etc/lab-baseline.conf
-rm -rf ~/lab-ansible
+# Linux: internal repo/mirror serves approved packages
+grep -rl "baseurl\|Types:" /etc/apt/sources.list* /etc/yum.repos.d/ 2>/dev/null | head
 ```
+
+```powershell
+# Windows: winget / MSI from a managed source (or SCCM/Intune in enterprise)
+winget install --id Microsoft.PowerShell --source winget --accept-package-agreements 2>$null
+```
+
+**Expected result:** software installed from a managed/approved source (internal repo, winget, or
+enterprise SCCM/Intune) — enterprise software deployment pulls from *controlled* sources so versions
+are approved, consistent, and auditable, not downloaded ad-hoc from the internet.
+
+**Negative test:** let each admin download and install software from arbitrary web sources; versions
+diverge and supply-chain risk rises — a managed source/repo controls what is deployed.
+
+**Cleanup:** none.
+
+### Lab 6.3 — Patch management (Topic: Patching)
+
+**Objective:** Apply and verify security patches.
+
+```bash
+# Linux: apply security updates (automate with unattended-upgrades / dnf-automatic)
+sudo apt-get -s upgrade 2>/dev/null | grep -i security | head || \
+  sudo dnf updateinfo list security 2>/dev/null | head
+```
+
+```powershell
+# Windows: query/apply updates (WSUS/Intune manage this centrally)
+Get-HotFix | Sort-Object InstalledOn -Descending | Select-Object -First 5 HotFixID,InstalledOn
+```
+
+**Expected result:** available security updates (Linux) and installed hotfixes (Windows) — patch
+management is a core security discipline: identify, test, stage, and apply patches on a cadence, with
+tooling (unattended-upgrades/WSUS/Intune) automating it and reporting compliance.
+
+**Negative test:** patch reactively only after an incident; known-vulnerable systems stay exposed for
+weeks — a regular, automated patch cycle closes the window between disclosure and remediation.
+
+**Cleanup:** none (read-only in simulation mode).
+
+### Lab 6.4 — Drift detection and compliance (Topic: Compliance)
+
+**Objective:** Detect configuration/patch non-compliance.
+
+```bash
+# Config-management check mode reports drift without changing anything:
+ansible-playbook site.yml --check --diff 2>/dev/null | grep -E "changed:|ok:" | head || \
+  echo "(--check reports what WOULD change = drift from desired state)"
+```
+
+**Expected result:** the check run reports resources that differ from the declared state (drift) —
+compliance combines config-management check-mode (config drift) with patch/hardening scanning (CIS,
+Chapter 08) to prove the fleet matches policy, and to catch the hosts that have drifted before they
+cause an incident or audit finding.
+
+**Negative test:** assume enforced-once configuration stays compliant; manual changes and failed
+patches drift silently — periodic drift/compliance scanning is what surfaces non-compliant hosts.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

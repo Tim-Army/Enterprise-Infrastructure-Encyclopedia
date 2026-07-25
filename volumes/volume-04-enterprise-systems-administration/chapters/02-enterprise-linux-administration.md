@@ -294,125 +294,93 @@ sudo systemctl restart systemd-journald
 
 ## Hands-On Lab
 
-**Objective:** Provision a service account, confine it with a scoped
-`systemd` unit and `sudo` rule, extend its storage with LVM, and validate
-enforcement — all on a single lab VM.
+This chapter carries a topic-level walkthrough lab for **each enterprise-Linux-administration skill** —
+accounts, services, packages, and logs — framed distribution-neutrally (RHEL-family and Debian-family).
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 2.1–2.4** — a Linux host with `sudo` (any mainstream distribution).
+**Cost:** none.
 
-- One enterprise Linux VM (RHEL-family or Debian-family, 2 vCPU / 2 GB RAM)
-  with an additional unpartitioned virtual disk attached as `/dev/sdb`
-  (8 GB or larger) and LVM already in use for the root volume group
-  (default in most distribution installers).
-- `sudo` access.
+### Lab 2.1 — Users, groups, and privilege (Topic: Account management)
 
-### Procedure
-
-1. Create the service account and group:
-
-   ```bash
-   sudo groupadd --system labsvc
-   sudo useradd --system --gid labsvc --shell /usr/sbin/nologin \
-     --home-dir /var/lib/labsvc --create-home labsvc
-   ```
-
-2. Create a data directory and set ownership:
-
-   ```bash
-   sudo mkdir -p /var/lib/labsvc/data
-   sudo chown -R labsvc:labsvc /var/lib/labsvc
-   sudo chmod 750 /var/lib/labsvc
-   ```
-
-3. Create a `systemd` service and timer that write a timestamp file every
-   minute:
-
-   ```bash
-   sudo tee /etc/systemd/system/labsvc-heartbeat.service <<'EOF'
-   [Unit]
-   Description=Lab heartbeat writer
-
-   [Service]
-   Type=oneshot
-   User=labsvc
-   Group=labsvc
-   ExecStart=/bin/sh -c 'date > /var/lib/labsvc/data/heartbeat.txt'
-   EOF
-
-   sudo tee /etc/systemd/system/labsvc-heartbeat.timer <<'EOF'
-   [Unit]
-   Description=Run labsvc heartbeat every minute
-
-   [Timer]
-   OnCalendar=*-*-* *:*:00
-   Persistent=true
-
-   [Install]
-   WantedBy=timers.target
-   EOF
-
-   sudo systemctl daemon-reload
-   sudo systemctl enable --now labsvc-heartbeat.timer
-   ```
-
-4. Wait at least 60 seconds, then confirm the timer fired:
-
-   ```bash
-   systemctl list-timers labsvc-heartbeat.timer
-   cat /var/lib/labsvc/data/heartbeat.txt
-   ```
-
-   **Expected result:** `list-timers` shows a recent `LAST` run, and
-   `heartbeat.txt` contains a current timestamp.
-
-5. Extend storage for the growing data directory using the attached disk:
-
-   ```bash
-   sudo pvcreate /dev/sdb
-   sudo vgextend "$(sudo vgs --noheadings -o vg_name | tr -d ' ' | head -1)" /dev/sdb
-   sudo lvextend -L +2G "/dev/$(sudo lvs --noheadings -o vg_name,lv_name | awk '{print $1"/"$2}' | grep -i root)"
-   sudo xfs_growfs / 2>/dev/null || sudo resize2fs "$(findmnt -n -o SOURCE /)"
-   ```
-
-   **Expected result:** `df -hT /` shows increased available space
-   compared to before this step.
-
-6. Grant a non-root administrative group scoped rights to manage only this
-   timer:
-
-   ```bash
-   sudo groupadd labops || true
-   sudo tee /etc/sudoers.d/20-labops-heartbeat <<'EOF'
-   %labops ALL=(root) NOPASSWD: /usr/bin/systemctl restart labsvc-heartbeat.timer, \
-                                 /usr/bin/systemctl status labsvc-heartbeat.timer
-   EOF
-   sudo visudo -c
-   ```
-
-   **Expected result:** `visudo -c` reports the file as syntactically
-   valid.
-
-### Negative Test
-
-As a non-root, non-`labops` user (or by running `sudo -l` after removing
-your own account from `labops`), attempt to restart the timer:
-`sudo systemctl restart labsvc-heartbeat.timer`. The command should be
-refused with a "not allowed" message, proving the `sudo` rule is scoped
-to the `labops` group rather than globally permitted. Then add your test
-user to `labops` (`sudo usermod -aG labops <user>`, then re-login) and
-confirm the same command now succeeds.
-
-### Cleanup
+**Objective:** Create an account and grant scoped privilege.
 
 ```bash
-sudo systemctl disable --now labsvc-heartbeat.timer
-sudo rm -f /etc/systemd/system/labsvc-heartbeat.service \
-           /etc/systemd/system/labsvc-heartbeat.timer
-sudo systemctl daemon-reload
-sudo rm -f /etc/sudoers.d/20-labops-heartbeat
-sudo userdel -r labsvc
-sudo groupdel labops 2>/dev/null || true
+sudo useradd -m -s /bin/bash svcops
+sudo passwd svcops
+sudo usermod -aG "$(getent group sudo >/dev/null && echo sudo || echo wheel)" svcops   # sudo group (Debian) / wheel (RHEL)
+id svcops ; sudo chage -M 90 svcops
 ```
+
+**Expected result:** `svcops` exists with a home directory, admin-group membership (distro-dependent:
+`sudo` vs `wheel`), and password aging — account management (`useradd`/`usermod`/`chage`) is a daily
+sysadmin task, and the admin group differs by distro family, which cross-platform administrators must
+know.
+
+**Negative test:** add a user to `wheel` on a Debian system expecting sudo; Debian uses the `sudo`
+group — the privileged group name is distribution-specific, so verify it rather than assuming.
+
+**Cleanup:** `sudo userdel -r svcops`.
+
+### Lab 2.2 — Service management with systemd (Topic: Services)
+
+**Objective:** Manage a service uniformly across distros.
+
+```bash
+sudo systemctl enable --now sshd 2>/dev/null || sudo systemctl enable --now ssh
+systemctl status ssh* --no-pager | grep -E "Active|Loaded" | head
+systemctl list-unit-files --state=enabled | head
+```
+
+**Expected result:** the SSH service is active and enabled at boot — `systemd` is the common service
+manager across modern distributions, so `systemctl enable --now`/`status`/`list-unit-files` work
+uniformly, though the unit name may differ (`sshd` vs `ssh`).
+
+**Negative test:** use legacy `service`/`chkconfig` habits on a systemd host and expect boot
+persistence; those are shims — `systemctl enable` is what sets the boot state on modern distros.
+
+**Cleanup:** none (leave SSH enabled).
+
+### Lab 2.3 — Package management (Topic: Software management)
+
+**Objective:** Install software with the distro's package manager.
+
+```bash
+if command -v dnf >/dev/null; then sudo dnf install -y tree; \
+elif command -v apt >/dev/null; then sudo apt update && sudo apt install -y tree; \
+elif command -v zypper >/dev/null; then sudo zypper -n install tree; fi
+tree --version ; (rpm -q tree 2>/dev/null || dpkg -l tree 2>/dev/null | tail -1)
+```
+
+**Expected result:** `tree` installs via whichever package manager the distro uses (`dnf`/`apt`/
+`zypper`) — enterprise Linux estates are multi-distro, so administrators must handle the RPM
+(`dnf`/`zypper`/`rpm`) and DEB (`apt`/`dpkg`) worlds, and configuration management (Chapter 06)
+abstracts this.
+
+**Negative test:** run `apt` commands on an RPM-based host (or vice versa); the command is absent —
+the package manager is distro-family-specific, which multi-distro administration must account for.
+
+**Cleanup:** `sudo dnf remove -y tree 2>/dev/null || sudo apt remove -y tree 2>/dev/null || true`.
+
+### Lab 2.4 — Logs with journald (Topic: Logging)
+
+**Objective:** Read and filter the system journal.
+
+```bash
+journalctl -p err --since "-1 day" --no-pager | tail
+journalctl -u ssh* --since "-1 hour" --no-pager | tail
+journalctl -b -1 --no-pager 2>/dev/null | tail -3 || echo "(no prior boot persisted)"
+```
+
+**Expected result:** error-level events, per-unit logs, and (if persisted) a prior boot's log —
+`journalctl` gives a unified, filterable log across services on systemd distros; filtering by
+priority (`-p`), unit (`-u`), and boot (`-b`) is the core log-analysis skill for troubleshooting
+(Chapter 09).
+
+**Negative test:** grep scattered `/var/log/*` files by hand for a cross-service event; formats differ
+and correlation is hard — `journalctl` provides one queryable, structured journal.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

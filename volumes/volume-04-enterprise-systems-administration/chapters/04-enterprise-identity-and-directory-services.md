@@ -326,112 +326,92 @@ repadmin /showrepl * /csv | ConvertFrom-Csv |
 
 ## Hands-On Lab
 
-**Objective:** Join a Linux host to an existing Active Directory domain,
-restrict interactive login to a specific group, apply a Group Policy
-setting to a Windows server in the same OU, and validate both.
+This chapter carries a topic-level walkthrough lab for **each identity-and-directory skill** — the
+directory model, Active Directory administration, Linux domain integration, and Kerberos SSO. Labs
+span Windows (AD) and Linux (SSSD). Each ends **`**Lab verified by:** *pending*`** until a human runs
+it.
 
-### Prerequisites
+**Shared prerequisites for Labs 4.1–4.4** — an Active Directory domain controller (PowerShell with
+the AD module) and a Linux host to domain-join. **Cost:** none.
 
-- A functioning Active Directory domain with at least one domain
-  controller (this lab assumes `example.com`; substitute your lab
-  domain).
-- One Linux VM not yet joined to the domain, with DNS pointed at the
-  domain's DNS servers and network connectivity to a domain controller.
-- One Windows Server VM already domain-joined, located in (or moved to)
-  an OU you control, such as `OU=Windows,OU=Servers`.
-- An AD account with permission to join computers to the domain
-  (`svc-joiner` in the examples), and RSAT AD DS/Group Policy tools
-  available on an administrative workstation.
+### Lab 4.1 — The directory model (Topic: Directory services)
 
-### Procedure
-
-1. On the Linux VM, install the required packages and discover the
-   domain:
-
-   ```bash
-   sudo dnf install -y realmd sssd adcli krb5-workstation oddjob-mkhomedir
-   sudo realm discover example.com
-   ```
-
-   **Expected result:** output shows `example.com` with
-   `type: kerberos` and `server-software: active-directory`.
-
-2. Join the domain:
-
-   ```bash
-   sudo realm join --user=svc-joiner example.com
-   ```
-
-   **Expected result:** the command completes without error; a computer
-   object for this host now exists in AD (verify with
-   `Get-ADComputer <hostname>` from an administrative workstation).
-
-3. Restrict interactive login to a specific group:
-
-   ```bash
-   sudo realm permit -g 'linux-admins@example.com'
-   ```
-
-4. Confirm identity resolution and authentication:
-
-   ```bash
-   id 'jdoe@example.com'
-   kinit 'jdoe@example.com'
-   klist
-   ```
-
-   **Expected result:** `id` resolves UID/GID information from AD, and
-   `klist` shows a valid Kerberos ticket for `jdoe@EXAMPLE.COM`.
-
-5. On an administrative workstation, create a GPO and link it to the OU
-   containing the Windows Server VM:
-
-   ```powershell
-   New-GPO -Name 'Lab Baseline' |
-       New-GPLink -Target 'OU=Windows,OU=Servers,DC=example,DC=com'
-
-   Set-GPRegistryValue -Name 'Lab Baseline' `
-       -Key 'HKLM\Software\Policies\Microsoft\Windows\Control Panel\Desktop' `
-       -ValueName 'InactivityTimeoutSecs' -Type DWord -Value 900
-   ```
-
-6. On the Windows Server VM, force policy refresh and confirm
-   application:
-
-   ```powershell
-   gpupdate /force
-   gpresult /r
-   ```
-
-   **Expected result:** `Lab Baseline` appears under "Applied Group
-   Policy Objects."
-
-### Negative Test
-
-Attempt to log in interactively to the Linux VM as an AD user who is
-**not** a member of `linux-admins` (for example, over SSH with password
-authentication, or `su - otheruser@example.com` if using a shared
-console). The login should be refused, confirming `realm permit -g`
-correctly restricts access rather than merely documenting an intended
-restriction. Then confirm `jdoe@example.com` (a member of
-`linux-admins`) can log in successfully.
-
-### Cleanup
-
-```bash
-# On the Linux VM: leave the domain and remove SSSD state.
-sudo realm leave example.com
-sudo rm -rf /var/lib/sss/db/*
-```
+**Objective:** Read the hierarchical structure of a directory.
 
 ```powershell
-# From an administrative workstation: remove the GPO link and the GPO,
-# and remove the stale Linux computer object if it was not cleaned up
-# automatically by realm leave.
-Remove-GPLink -Name 'Lab Baseline' -Target 'OU=Windows,OU=Servers,DC=example,DC=com'
-Remove-GPO -Name 'Lab Baseline'
-Get-ADComputer -Filter "Name -eq '<linux-hostname>'" | Remove-ADObject -Recursive -Confirm:$true
+Get-ADDomain | Select-Object DNSRoot,NetBIOSName,DistinguishedName
+Get-ADOrganizationalUnit -Filter * | Select-Object Name,DistinguishedName | Select-Object -First 10
 ```
+
+**Expected result:** the domain's DN and its OU hierarchy — a directory (AD/LDAP) is a hierarchical
+database of objects (users, groups, computers) organized into Organizational Units by
+distinguished name; the structure is what delegation, group policy, and search scope are built on.
+
+**Negative test:** manage identity as flat local accounts per server; there is no central structure,
+delegation, or policy — a directory provides the hierarchy that makes enterprise identity manageable.
+
+**Cleanup:** none (read-only).
+
+### Lab 4.2 — Active Directory administration (Topic: AD administration)
+
+**Objective:** Create and place a user with group membership.
+
+```powershell
+New-ADUser -Name "Ops User" -SamAccountName "opsuser" -Path "OU=Staff,DC=lab,DC=example,DC=com" `
+  -AccountPassword (Read-Host -AsSecureString "Password") -Enabled $true
+Add-ADGroupMember -Identity "Server Operators" -Members "opsuser"
+Get-ADUser opsuser -Properties MemberOf | Select-Object SamAccountName,Enabled,MemberOf
+```
+
+**Expected result:** a domain user created in the right OU with group membership — AD administration
+(`New-ADUser`/`Add-ADGroupMember`) manages identity centrally, so one account works across every
+domain-joined system and access is granted by group membership, not per-server accounts.
+
+**Negative test:** create the same person as separate local accounts on ten servers; a password change
+or offboarding means editing all ten — a single directory account is managed and revoked once.
+
+**Cleanup:** `Remove-ADUser opsuser`.
+
+### Lab 4.3 — Linux domain integration (Topic: Cross-platform identity)
+
+**Objective:** Join a Linux host to the directory.
+
+```bash
+sudo realm discover lab.example.com
+sudo realm join -U administrator lab.example.com
+id opsuser@lab.example.com        # domain user resolvable on the Linux host
+sudo realm list | grep -E "domain-name|configured"
+```
+
+**Expected result:** the Linux host joins the AD domain and resolves domain users via SSSD — Linux
+integrates with AD (`realm`/`sssd`) so the same directory identity authenticates on both Windows and
+Linux, giving one identity source across a mixed estate.
+
+**Negative test:** maintain separate Linux (`/etc/passwd`) and Windows (AD) identities for the same
+people; you double the account management and lose single sign-on — directory integration unifies
+identity across platforms.
+
+**Cleanup:** `sudo realm leave lab.example.com` if joined only for the lab.
+
+### Lab 4.4 — Kerberos and single sign-on (Topic: Authentication/SSO)
+
+**Objective:** Obtain and inspect a Kerberos ticket.
+
+```bash
+kinit opsuser@LAB.EXAMPLE.COM        # authenticate to the KDC, get a TGT
+klist                                 # show the ticket cache (TGT + service tickets)
+# SSH/service access then uses service tickets from the TGT — no repeated password prompts.
+```
+
+**Expected result:** a Ticket-Granting Ticket in the cache, from which service tickets are issued —
+Kerberos is the authentication protocol behind AD SSO: authenticate once to the KDC for a TGT, then
+get per-service tickets without re-entering the password, which is what makes domain SSO work.
+
+**Negative test:** rely on password authentication to each service separately; users re-enter
+credentials constantly and passwords traverse more systems — Kerberos SSO authenticates once and
+issues tickets, reducing both friction and credential exposure.
+
+**Cleanup:** `kdestroy` to clear the ticket cache.
 
 ## Lab Verification
 

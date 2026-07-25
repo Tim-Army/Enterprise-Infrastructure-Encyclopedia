@@ -268,117 +268,93 @@ Get-WinEvent -FilterHashtable @{
 
 ## Hands-On Lab
 
-**Objective:** Install a Windows Server role remotely, configure a
-scheduled task under a scoped identity, harden WinRM, and validate
-enforcement — using PowerShell Remoting end to end.
+This chapter carries a topic-level walkthrough lab for **each Windows Server administration skill** —
+PowerShell fundamentals, roles/features, local accounts and services, and event logs. Labs use
+PowerShell. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 3.1–3.4** — a Windows Server host (2019/2022/2025) with an
+administrative PowerShell session. **Cost:** none.
 
-- One Windows Server VM (Server Core or Desktop Experience, this baseline
-  targets the current Windows Server LTSC release) reachable from an
-  administrator workstation running PowerShell 7.4+.
-- A local administrator account on the target server (a domain is not
-  required for this lab; gMSA steps are described in [Chapter 04](04-enterprise-identity-and-directory-services.md)'s lab
-  once Active Directory is introduced).
-- WinRM enabled on the target (`Enable-PSRemoting -Force`, run once at the
-  console or via existing remote access).
+### Lab 3.1 — PowerShell fundamentals (Topic: PowerShell)
 
-### Procedure
-
-1. From your workstation, confirm remoting connectivity to the target:
-
-   ```powershell
-   Test-WSMan -ComputerName winsrv-lab
-   ```
-
-   **Expected result:** the command returns WSMan identity information
-   without error.
-
-2. Install the File Server role remotely:
-
-   ```powershell
-   Install-WindowsFeature -ComputerName winsrv-lab `
-       -Name FS-FileServer -IncludeManagementTools
-   ```
-
-   **Expected result:** `Success` is `True` in the returned object.
-
-3. Create a local folder and share it, using `Invoke-Command` to run the
-   commands on the target:
-
-   ```powershell
-   Invoke-Command -ComputerName winsrv-lab -ScriptBlock {
-       New-Item -Path 'C:\LabShare' -ItemType Directory -Force
-       New-SmbShare -Name 'LabShare' -Path 'C:\LabShare' -FullAccess 'Administrators'
-   }
-   ```
-
-   **Expected result:** the SMB share object is returned with
-   `ShareState` equal to `Online`.
-
-4. Register a scheduled task on the target that writes a heartbeat file
-   every minute:
-
-   ```powershell
-   Invoke-Command -ComputerName winsrv-lab -ScriptBlock {
-       $action  = New-ScheduledTaskAction -Execute 'powershell.exe' `
-           -Argument '-NoProfile -Command "Get-Date | Out-File C:\LabShare\heartbeat.txt"'
-       $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) `
-           -RepetitionInterval (New-TimeSpan -Minutes 1) `
-           -RepetitionDuration (New-TimeSpan -Hours 1)
-       Register-ScheduledTask -TaskName 'LabHeartbeat' -Action $action `
-           -Trigger $trigger -User 'SYSTEM' -RunLevel Limited
-   }
-   ```
-
-5. Wait at least 90 seconds, then confirm the task executed:
-
-   ```powershell
-   Invoke-Command -ComputerName winsrv-lab -ScriptBlock {
-       Get-ScheduledTaskInfo -TaskName 'LabHeartbeat'
-       Get-Content 'C:\LabShare\heartbeat.txt'
-   }
-   ```
-
-   **Expected result:** `LastTaskResult` is `0`, and `heartbeat.txt`
-   contains a recent timestamp.
-
-6. Harden the WinRM listener by disabling Basic authentication:
-
-   ```powershell
-   Invoke-Command -ComputerName winsrv-lab -ScriptBlock {
-       Set-Item WSMan:\localhost\Service\Auth\Basic -Value $false
-       Set-Item WSMan:\localhost\Service\AllowUnencrypted -Value $false
-   }
-   ```
-
-### Negative Test
-
-From your workstation, attempt Basic authentication against the target
-explicitly:
+**Objective:** Query system state with the object pipeline.
 
 ```powershell
-$cred = Get-Credential 'winsrv-lab\labuser'
-Invoke-Command -ComputerName winsrv-lab -Authentication Basic `
-    -Credential $cred -ScriptBlock { hostname }
+Get-Service | Where-Object Status -eq 'Running' | Select-Object Name,DisplayName | Sort-Object Name | Select-Object -First 10
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 5 Name,CPU,WS
+Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,LastBootUpTime
 ```
 
-**Expected result:** the connection is rejected because Basic
-authentication was disabled in step 6, confirming the hardening control
-is enforced. A subsequent attempt using default (Kerberos/Negotiate)
-authentication with a valid domain or local administrator credential
-should succeed.
+**Expected result:** running services, top CPU processes, and OS info returned as *objects* you can
+filter/sort/select — PowerShell's object pipeline (not text) is the foundation of Windows
+administration: `Get-*` cmdlets return objects, and `Where-Object`/`Select-Object`/`Sort-Object`
+compose queries without text parsing.
 
-### Cleanup
+**Negative test:** parse `Get-Service` output as text with string operations; you fight formatting —
+PowerShell passes structured objects, so filter on properties (`Where-Object Status -eq 'Running'`),
+not text.
+
+**Cleanup:** none (read-only).
+
+### Lab 3.2 — Roles and features (Topic: Server roles)
+
+**Objective:** Install a server role programmatically.
 
 ```powershell
-Invoke-Command -ComputerName winsrv-lab -ScriptBlock {
-    Unregister-ScheduledTask -TaskName 'LabHeartbeat' -Confirm:$false
-    Remove-SmbShare -Name 'LabShare' -Force
-    Remove-Item -Path 'C:\LabShare' -Recurse -Force
-}
-Uninstall-WindowsFeature -ComputerName winsrv-lab -Name FS-FileServer
+Get-WindowsFeature | Where-Object InstallState -eq 'Installed' | Select-Object Name | Select-Object -First 10
+Install-WindowsFeature -Name Web-Server -IncludeManagementTools    # example: IIS
+Get-WindowsFeature Web-Server | Select-Object Name,InstallState
 ```
+
+**Expected result:** the installed features listed and IIS installed via `Install-WindowsFeature` —
+Windows Server capability is delivered as **roles and features** installed declaratively with
+`Install-WindowsFeature` (scriptable/idempotent), the Windows analogue of installing packages on
+Linux.
+
+**Negative test:** install roles by clicking through Server Manager on many servers; it does not scale
+— `Install-WindowsFeature` in a script deploys the same role identically across the fleet.
+
+**Cleanup:** `Uninstall-WindowsFeature -Name Web-Server` if installed only for the lab.
+
+### Lab 3.3 — Local accounts and services (Topic: Accounts and services)
+
+**Objective:** Manage a local account and a service.
+
+```powershell
+New-LocalUser -Name "svcops" -Password (Read-Host -AsSecureString "Password") -PasswordNeverExpires:$false
+Add-LocalGroupMember -Group "Administrators" -Member "svcops"
+Set-Service -Name "Spooler" -StartupType Manual ; Get-Service Spooler | Select Name,Status,StartType
+```
+
+**Expected result:** a local user created, added to a group, and a service's start type changed —
+account and service management (`New-LocalUser`/`Add-LocalGroupMember`/`Set-Service`) are core Windows
+admin tasks; in a domain these move to Active Directory (Chapter 04), but local management remains for
+standalone servers.
+
+**Negative test:** grant a service account `Administrators` when it needs only specific rights;
+over-privileged service accounts are a common attack path — scope local group membership to least
+privilege.
+
+**Cleanup:** `Remove-LocalUser -Name "svcops"`; restore the Spooler start type.
+
+### Lab 3.4 — Event logs (Topic: Windows logging)
+
+**Objective:** Investigate system events.
+
+```powershell
+Get-WinEvent -LogName System -MaxEvents 20 | Where-Object LevelDisplayName -in 'Error','Warning' |
+  Select-Object TimeCreated,Id,LevelDisplayName,Message | Format-Table -Wrap
+Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 5   # failed logons
+```
+
+**Expected result:** recent system errors/warnings and failed-logon (4625) security events — the
+Windows Event Log is the equivalent of the Linux journal; `Get-WinEvent` with filters (log name, level,
+event ID) is how you investigate faults and security events on Windows.
+
+**Negative test:** scroll the Event Viewer GUI to find a specific event across thousands; it is slow —
+`Get-WinEvent -FilterHashtable` queries by log/level/ID precisely, the scalable approach.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

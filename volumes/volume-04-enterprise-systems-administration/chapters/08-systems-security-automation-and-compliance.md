@@ -317,117 +317,109 @@ sudo systemctl enable --now compliance-scan.timer
 
 ## Hands-On Lab
 
-**Objective:** Run an OpenSCAP baseline scan against a Linux VM,
-remediate a specific finding through an idempotent Ansible task, re-scan
-to confirm improvement, and prove a targeted re-scan catches a
-deliberately reintroduced regression.
+This chapter carries a topic-level walkthrough lab for **each security-and-compliance skill** —
+hardening baselines, access control, security automation, and audit/compliance — cross-platform. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 8.1–8.4** — a Linux host (`sudo`) and a Windows host where noted.
+**Cost:** none.
 
-- One Linux VM (RHEL-family recommended for full `scap-security-guide`
-  profile coverage; 2 vCPU / 2 GB RAM) with `sudo` access.
-- `ansible-core` installed locally (as in Chapter 06's lab), running
-  against `localhost`.
-- Console or out-of-band access to the VM independent of SSH, in case a
-  remediation step affects SSH access.
+### Lab 8.1 — Hardening baselines (Topic: Hardening)
 
-### Procedure
-
-1. Install SCAP tooling and content:
-
-   ```bash
-   sudo dnf install -y openscap-scanner scap-security-guide ansible-core
-   ```
-
-2. Run a baseline scan and record the initial result count:
-
-   ```bash
-   sudo mkdir -p /var/log/scap
-   sudo oscap xccdf eval \
-     --profile xccdf_org.ssgproject.content_profile_cis \
-     --results /var/log/scap/baseline-results.xml \
-     --report /var/log/scap/baseline-report.html \
-     /usr/share/xml/scap/ssg/content/ssg-rhel10-ds.xml || true
-
-   grep -c 'result>fail' /var/log/scap/baseline-results.xml
-   ```
-
-   **Expected result:** a nonzero count of `fail` results — a fresh lab
-   VM will not pass every CIS rule out of the box. Record this number.
-
-3. Remediate the root SSH login finding with an idempotent Ansible task:
-
-   ```bash
-   cat > ~/harden-ssh.yml <<'EOF'
-   ---
-   - name: Harden sshd
-     hosts: localhost
-     connection: local
-     become: true
-     tasks:
-       - name: Disable direct root SSH login
-         ansible.builtin.lineinfile:
-           path: /etc/ssh/sshd_config
-           regexp: '^#?PermitRootLogin'
-           line: 'PermitRootLogin no'
-         notify: reload sshd
-     handlers:
-       - name: reload sshd
-         ansible.builtin.service:
-           name: sshd
-           state: reloaded
-   EOF
-
-   ansible-playbook ~/harden-ssh.yml
-   sudo sshd -t && echo "sshd config syntax OK"
-   ```
-
-   **Expected result:** the playbook reports `changed=1`, and
-   `sshd -t` confirms the resulting configuration is syntactically valid.
-
-4. Re-scan and confirm the specific finding now passes:
-
-   ```bash
-   sudo oscap xccdf eval \
-     --profile xccdf_org.ssgproject.content_profile_cis \
-     --results /var/log/scap/rescan-results.xml \
-     /usr/share/xml/scap/ssg/content/ssg-rhel10-ds.xml || true
-
-   grep -A2 'permit_root_login' /var/log/scap/rescan-results.xml | grep result
-   ```
-
-   **Expected result:** the rule ID related to root SSH login now shows
-   `pass` where the baseline scan in step 2 showed `fail`.
-
-### Negative Test
-
-Deliberately reintroduce the finding and confirm a targeted re-scan
-catches the regression, demonstrating why the automation feedback loop
-must include re-scanning rather than trusting a one-time remediation:
+**Objective:** Assess a host against a security benchmark.
 
 ```bash
-sudo sed -i 's/^PermitRootLogin no/PermitRootLogin yes/' /etc/ssh/sshd_config
-sudo systemctl reload sshd
-
-sudo oscap xccdf eval \
-  --profile xccdf_org.ssgproject.content_profile_cis \
-  --results /var/log/scap/regression-results.xml \
-  /usr/share/xml/scap/ssg/content/ssg-rhel10-ds.xml || true
-
-grep -A2 'permit_root_login' /var/log/scap/regression-results.xml | grep result
+# Linux: scan against a CIS/STIG profile (OpenSCAP) or a quick audit (Lynis)
+sudo lynis audit system --quick 2>/dev/null | grep -E "Hardening index|Warning" | head || \
+  echo "OpenSCAP: oscap xccdf eval --profile cis ... grades against the benchmark"
 ```
 
-**Expected result:** the same rule ID now shows `fail` again, confirming
-the scan detects the manually reintroduced drift. Re-run
-`ansible-playbook ~/harden-ssh.yml` to restore the hardened state.
+```powershell
+# Windows: baseline via Security Compliance Toolkit / secedit analysis
+secedit /export /cfg C:\baseline.inf 2>$null; Get-Content C:\baseline.inf | Select-String "PasswordLength"
+```
 
-### Cleanup
+**Expected result:** a hardening score/report against a recognized benchmark (CIS/STIG) — hardening
+reduces attack surface by disabling unneeded services and enforcing secure settings, measured against
+a standard baseline so compliance is provable, not assumed.
+
+**Negative test:** deploy servers with vendor defaults and no benchmark; unnecessary services and weak
+settings remain — a hardening pass against CIS/STIG closes the well-known exposures.
+
+**Cleanup:** `rm -f C:\baseline.inf` on Windows if created.
+
+### Lab 8.2 — Access control and least privilege (Topic: Authorization)
+
+**Objective:** Grant only the privileges a role requires.
 
 ```bash
-ansible-playbook ~/harden-ssh.yml
-rm -f ~/harden-ssh.yml
-sudo rm -rf /var/log/scap
+# Linux: scoped sudo via a drop-in (not blanket root)
+echo '%dbadmin ALL=(ALL) /usr/bin/systemctl restart postgresql' | sudo tee /etc/sudoers.d/dbadmin
+sudo visudo -cf /etc/sudoers.d/dbadmin
 ```
+
+```powershell
+# Windows: delegate specific rights / groups rather than Domain Admins
+Get-ADGroupMember "Domain Admins" | Select Name   # audit: should be minimal
+```
+
+**Expected result:** a dbadmin role that can restart only PostgreSQL (not full root), and a minimal
+Domain Admins membership — least privilege grants each role only the specific rights it needs, so a
+compromised account cannot do more than its function; over-privileged accounts are a top attack path.
+
+**Negative test:** give operators full sudo/Domain Admin "for convenience"; any compromise becomes
+total — scoped privileges (specific sudo commands, delegated rights) contain the blast radius.
+
+**Cleanup:** `sudo rm -f /etc/sudoers.d/dbadmin`.
+
+### Lab 8.3 — Security automation (Topic: Automation)
+
+**Objective:** Enforce security config as code.
+
+```yaml
+# Ansible enforces a security control fleet-wide (idempotent, auditable):
+- hosts: all
+  become: true
+  tasks:
+    - name: Disable root SSH login (Linux)
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PermitRootLogin'
+        line: 'PermitRootLogin no'
+      notify: restart sshd
+      when: ansible_os_family != "Windows"
+```
+
+**Expected result:** the security control (no root SSH) is enforced across the fleet from code and
+re-applied on drift — security automation makes controls consistent and self-healing: the policy is
+version-controlled, applied everywhere, and drift is corrected, rather than configured by hand and
+forgotten.
+
+**Negative test:** apply security settings by hand on each host; they drift, some hosts are missed,
+and there is no audit trail — automation applies the control uniformly and provably.
+
+**Cleanup:** revert lab-only changes.
+
+### Lab 8.4 — Audit and compliance (Topic: Compliance)
+
+**Objective:** Produce evidence of the security posture.
+
+```bash
+# Linux: auditd records security-relevant events for compliance/forensics
+sudo auditctl -w /etc/passwd -p wa -k identity 2>/dev/null && sudo ausearch -k identity 2>/dev/null | tail -3 || \
+  echo "auditd watches sensitive files; compliance = benchmark scan results + audit logs + access reviews"
+```
+
+**Expected result:** an audit rule recording changes to sensitive files, feeding the compliance
+evidence trail — compliance combines benchmark scan results (Lab 8.1), audit logs (who changed what),
+and periodic access reviews into provable evidence that the fleet meets policy, which auditors and
+frameworks require.
+
+**Negative test:** claim compliance with no audit logging, scans, or access reviews; you cannot prove
+the posture and an audit fails — compliance is evidence-based, produced by continuous auditing and
+scanning.
+
+**Cleanup:** `sudo auditctl -W /etc/passwd -p wa -k identity 2>/dev/null; true`.
 
 ## Lab Verification
 

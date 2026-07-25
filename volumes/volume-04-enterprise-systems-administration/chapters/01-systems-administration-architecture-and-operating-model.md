@@ -323,128 +323,98 @@ ISO 27001, PCI DSS) require evidence of.
 
 ## Hands-On Lab
 
-**Objective:** Build a minimal bastion-mediated access pattern and an
-inventory-drift check, using two Linux virtual machines, that demonstrates
-the management-plane pattern described in this chapter.
+This chapter carries a topic-level walkthrough lab for **each element of the systems-administration
+operating model** — the administrative model, cross-platform inventory, standardization, and change/
+access discipline. This volume is cross-platform, so labs span Linux and Windows. Each ends **`**Lab
+verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 1.1–1.4** — a Linux host (CLI) and, where noted, a Windows Server
+(PowerShell). **Cost:** none.
 
-- Two Linux VMs (RHEL- or Debian-family; a 2 vCPU / 2 GB RAM VM is
-  sufficient for each): `bastion01` and `web01`, on the same private
-  network, reachable from your workstation.
-- SSH key pair generated on your administrator workstation.
-- `sudo` access on both VMs.
+### Lab 1.1 — The administrative operating model (Topic: Operating model)
 
-### Procedure
+**Objective:** Define roles, least privilege, and runbooks for a service.
 
-1. On your workstation, generate a dedicated key for this exercise:
+```text
+# For a managed service, write down:
+#   - roles: who administers, who operates, who audits (separation of duties)
+#   - access: least-privilege accounts (no shared root/Administrator), break-glass procedure
+#   - runbooks: the documented procedures for routine + emergency tasks
+#   - change: how changes are proposed, reviewed, and recorded
+```
 
-   ```bash
-   ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_lab -C "lab-bastion-access"
-   ```
+**Expected result:** an operating model naming roles, least-privilege access, runbooks, and change
+process — systems administration at scale is a *discipline*, not ad-hoc fixes: defined roles,
+least-privilege access, and documented runbooks make operations repeatable, auditable, and safe.
 
-2. Copy the public key to `bastion01` only:
+**Negative test:** run everything as shared root/Administrator with tribal knowledge and no runbooks;
+access is un-attributable and procedures live in one person's head — the operating model is what makes
+administration sustainable and auditable.
 
-   ```bash
-   ssh-copy-id -i ~/.ssh/id_ed25519_lab.pub admin@bastion01
-   ```
+**Cleanup:** none.
 
-3. From `bastion01`, copy the same public key to `web01` (simulating a
-   management-plane host that brokers access to the workload plane):
+### Lab 1.2 — Cross-platform inventory (Topic: Inventory)
 
-   ```bash
-   ssh bastion01
-   ssh-copy-id -i ~/.ssh/id_ed25519_lab.pub admin@web01
-   exit
-   ```
-
-4. On your workstation, add a `ProxyJump` entry so that `web01` is only
-   reachable through `bastion01`:
-
-   ```bash
-   cat >> ~/.ssh/config <<'EOF'
-   Host bastion01
-       HostName bastion01
-       User admin
-       IdentityFile ~/.ssh/id_ed25519_lab
-
-   Host web01
-       HostName web01
-       User admin
-       ProxyJump bastion01
-       IdentityFile ~/.ssh/id_ed25519_lab
-   EOF
-   ```
-
-5. Confirm mediated access works:
-
-   ```bash
-   ssh web01 'hostname; whoami'
-   ```
-
-   **Expected result:** the command returns `web01`'s hostname and `admin`,
-   proving the connection was proxied through `bastion01`.
-
-6. On `web01`, restrict SSH to only accept connections originating from
-   `bastion01`'s IP address (adjust the address for your lab network):
-
-   ```bash
-   ssh web01
-   sudo tee -a /etc/hosts.allow <<'EOF'
-   sshd: 10.0.0.10
-   EOF
-   sudo tee -a /etc/hosts.deny <<'EOF'
-   sshd: ALL
-   EOF
-   exit
-   ```
-
-7. Build a one-line inventory-drift check that compares a static inventory
-   file to hosts that actually respond, simulating the CMDB reconciliation
-   described in Validation and Troubleshooting:
-
-   ```bash
-   cat > inventory.txt <<'EOF'
-   web01
-   web02
-   EOF
-
-   while read -r host; do
-     if ssh -o ConnectTimeout=3 "$host" true 2>/dev/null; then
-       echo "OK: $host reachable"
-     else
-       echo "DRIFT: $host in inventory but unreachable"
-     fi
-   done < inventory.txt
-   ```
-
-   **Expected result:** `OK: web01 reachable` and
-   `DRIFT: web02 in inventory but unreachable` (since `web02` does not
-   exist in this lab), demonstrating how drift is detected.
-
-### Negative Test
-
-From your workstation, attempt to connect to `web01` directly, bypassing
-the bastion, by temporarily removing the `ProxyJump` line from the SSH
-config (or using `ssh -o ProxyJump=none web01`). Because step 6 restricted
-`sshd` on `web01` to only `bastion01`'s address, the direct connection
-should time out or be refused, confirming the management-plane control is
-enforced at the network layer rather than by convention alone.
-
-### Cleanup
+**Objective:** Capture a host's identity on either platform.
 
 ```bash
-# On web01 and bastion01: remove the lab key from authorized_keys.
-ssh bastion01 "sed -i '/lab-bastion-access/d' ~/.ssh/authorized_keys"
-ssh web01 "sed -i '/lab-bastion-access/d' ~/.ssh/authorized_keys"
-
-# On web01: revert the hosts.allow/hosts.deny changes.
-ssh web01 'sudo sed -i "/sshd: 10.0.0.10/d" /etc/hosts.allow; \
-            sudo sed -i "/sshd: ALL/d" /etc/hosts.deny'
-
-# On your workstation: remove the lab SSH config block and key.
-rm -f ~/.ssh/id_ed25519_lab ~/.ssh/id_ed25519_lab.pub inventory.txt
+# Linux:
+hostnamectl ; uname -a ; cat /etc/os-release | grep PRETTY
 ```
+
+```powershell
+# Windows (PowerShell):
+Get-ComputerInfo -Property CsName,OsName,OsVersion,OsArchitecture
+```
+
+**Expected result:** each host reports its name, OS, and version — an accurate inventory (OS,
+version, role, owner) is the foundation of administration: you cannot patch, secure, or troubleshoot
+what you have not inventoried, and cross-platform estates need consistent facts from both Linux and
+Windows.
+
+**Negative test:** manage an estate with no inventory; you miss unpatched or unknown hosts — an
+authoritative inventory (ideally automated) is the prerequisite for every other discipline.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.3 — Standardization and baselines (Topic: Standardization)
+
+**Objective:** Reason about golden images and configuration baselines.
+
+```text
+# Define the standard build for a server role (web/app/db):
+#   - a golden image / base install with the org's hardening + agents pre-applied
+#   - a configuration baseline (packages, settings, users) enforced by config management
+#   - a naming/tagging convention so every host is identifiable and grouped
+```
+
+**Expected result:** a standard build and enforced baseline per role — standardization (golden images plus
+config-management-enforced baselines) makes hosts consistent, so they are predictable to operate,
+patch, and troubleshoot; each snowflake host is a liability.
+
+**Negative test:** build each server by hand differently; troubleshooting and patching become
+per-host guesswork — a standard baseline makes the fleet uniform and manageable.
+
+**Cleanup:** none.
+
+### Lab 1.4 — Change and access discipline (Topic: Governance)
+
+**Objective:** Ensure changes are attributable and access is controlled.
+
+```bash
+# Linux: named admins escalate via sudo (logged), no direct root login
+grep -E "PermitRootLogin" /etc/ssh/sshd_config
+sudo grep -h "sudo:" /var/log/auth.log 2>/dev/null | tail -3 || journalctl _COMM=sudo -n3 --no-pager
+```
+
+**Expected result:** root login is disabled and privileged actions run via named, logged sudo — change
+and access discipline means every privileged action is attributable (named accounts, logged
+escalation) and changes are reviewed/recorded, so an audit can reconstruct who did what.
+
+**Negative test:** allow shared privileged logins with no logging; when something breaks you cannot
+tell who changed what — named accounts with logged escalation are what make actions attributable.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

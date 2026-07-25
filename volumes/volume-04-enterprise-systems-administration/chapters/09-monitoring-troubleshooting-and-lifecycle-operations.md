@@ -355,110 +355,106 @@ Invoke-RestMethod -Method Patch -Uri 'https://cmdb.example.internal/api/ci/web-l
 
 ## Hands-On Lab
 
-**Objective:** Build a disk-usage health-check job that logs at a
-distinguishable severity, forward only that severity to a mock collector
-using `rsyslog`, and prove both the positive (alert fires and is
-forwarded) and negative (no alert when the threshold is not met) cases —
-demonstrating the log-centralization pattern from this chapter on a
-single Linux VM.
+This chapter closes the volume with **monitoring, troubleshooting, and lifecycle operations** — plus a
+cross-platform operations Design Exercise. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 9.1–9.4** — a Linux host and a Windows host where noted. **Cost:**
+none.
 
-- One Linux VM (RHEL-family or Debian-family, 2 vCPU / 2 GB RAM) with
-  `rsyslog` installed and running (default on most enterprise Linux
-  installs) and `sudo` access.
-- `nc` (netcat) available for the mock collector
-  (`sudo dnf install -y nmap-ncat` or `sudo apt install -y netcat-
-  openbsd`).
+### Lab 9.1 — Monitoring (Topic: Monitoring)
 
-### Procedure
-
-1. Start a mock collector listening on UDP 2514 in a dedicated terminal
-   session (leave this running for the rest of the lab):
-
-   ```bash
-   nc -ul 2514
-   ```
-
-2. In a second session, configure `rsyslog` to forward `local0.crit`
-   messages to the mock collector:
-
-   ```bash
-   sudo tee /etc/rsyslog.d/60-forward-critical.conf <<'EOF'
-   local0.crit    action(type="omfwd" target="127.0.0.1" port="2514" protocol="udp")
-   EOF
-   sudo systemctl restart rsyslog
-   ```
-
-3. Send a manual test message and confirm it reaches the mock collector:
-
-   ```bash
-   logger -p local0.crit "lab test: manual critical message"
-   ```
-
-   **Expected result:** the message appears in the `nc` terminal from
-   step 1 within a few seconds, confirming the forwarding rule works.
-
-4. Create the health-check script with an intentionally low threshold so
-   it is guaranteed to trigger, and a timer to run it:
-
-   ```bash
-   sudo tee /usr/local/bin/disk-healthcheck.sh <<'EOF'
-   #!/bin/bash
-   threshold=1
-   usage=$(df -h / | awk 'NR==2 {gsub("%","",$5); print $5}')
-   if [ "$usage" -ge "$threshold" ]; then
-       logger -p local0.crit "disk-healthcheck: / at ${usage}% (threshold ${threshold}%)"
-   else
-       logger -p local0.info "disk-healthcheck: / at ${usage}% (OK)"
-   fi
-   EOF
-   sudo chmod +x /usr/local/bin/disk-healthcheck.sh
-
-   sudo tee /etc/systemd/system/disk-healthcheck.service <<'EOF'
-   [Unit]
-   Description=Disk health check
-
-   [Service]
-   Type=oneshot
-   ExecStart=/usr/local/bin/disk-healthcheck.sh
-   EOF
-
-   sudo systemctl start disk-healthcheck.service
-   ```
-
-   **Expected result:** because the threshold (1%) is guaranteed to be
-   exceeded by real disk usage, a `disk-healthcheck: / at NN% (threshold
-   1%)` message appears in the `nc` terminal within a few seconds.
-
-### Negative Test
-
-Raise the threshold to a value real usage cannot plausibly reach, re-run
-the check, and confirm no alert is forwarded — proving the forwarding
-rule fires on the `crit` severity specifically, not on every invocation
-of the script:
+**Objective:** Watch system health across platforms.
 
 ```bash
-sudo sed -i 's/threshold=1/threshold=99/' /usr/local/bin/disk-healthcheck.sh
-sudo systemctl start disk-healthcheck.service
-sudo tail -n1 /var/log/messages 2>/dev/null || journalctl -t logger -n1
+# Linux: instantaneous health + what a monitoring agent collects
+uptime ; free -h | head -2 ; df -h --total | tail -1
+vmstat 1 3 | tail -3        # CPU/memory/io pressure over a few samples
 ```
 
-**Expected result:** the `nc` terminal receives no new message (the
-script now logs at `local0.info`, which the forwarding rule does not
-match), while the local log (via `journalctl` or `/var/log/messages`)
-still shows the informational "(OK)" entry — confirming severity-based
-filtering, not the absence of any logging at all.
+```powershell
+# Windows: performance counters (a monitoring agent scrapes these)
+Get-Counter '\Processor(_Total)\% Processor Time','\Memory\Available MBytes' -SampleInterval 1 -MaxSamples 3
+```
 
-### Cleanup
+**Expected result:** live CPU/memory/disk/IO health on each platform — monitoring collects these
+signals continuously (via agents feeding a system like the one in Volume XI) so degradation is caught
+early; the same resource metrics (USE) apply on Linux and Windows.
+
+**Negative test:** check health only when users complain; a slow leak or filling disk is caught late —
+continuous monitoring with alerting surfaces it before the outage.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.2 — Structured troubleshooting (Topic: Troubleshooting)
+
+**Objective:** Diagnose a service failure methodically.
 
 ```bash
-# Stop the mock collector with Ctrl+C in its terminal, then:
-sudo rm -f /etc/rsyslog.d/60-forward-critical.conf
-sudo systemctl restart rsyslog
-sudo rm -f /etc/systemd/system/disk-healthcheck.service /usr/local/bin/disk-healthcheck.sh
-sudo systemctl daemon-reload
+# Work the layers: is the service running? -> its logs -> its dependencies -> the resource
+systemctl status <svc> --no-pager | head
+journalctl -u <svc> --since "-30 min" --no-pager | tail
+ss -tlnp | grep <port> ; df -h ; free -h | head -2   # is it listening? disk/mem exhausted?
 ```
+
+**Expected result:** the fault localized — service stopped, a logged error, a missing dependency, or a
+resource exhaustion — a structured method (service state → logs → dependencies → resources) finds the
+cause instead of guessing, the same discipline whether on Linux (`systemctl`/`journalctl`) or Windows
+(`Get-Service`/`Get-WinEvent`).
+
+**Negative test:** restart the service repeatedly hoping it sticks; the logs name the cause (a full
+disk, a bad config, a down dependency) that a restart will not fix — read the evidence first.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.3 — Log and event analysis (Topic: Log analysis)
+
+**Objective:** Find the signal across the system's logs.
+
+```bash
+# Linux: correlate errors around an incident window
+journalctl --since "09:00" --until "09:15" -p warning --no-pager | tail -20
+```
+
+```powershell
+# Windows: pull errors/warnings across logs in a time window
+Get-WinEvent -FilterHashtable @{LogName='System','Application'; Level=1,2; StartTime=(Get-Date).AddHours(-1)} -MaxEvents 20 |
+  Select TimeCreated,Id,LevelDisplayName,Message
+```
+
+**Expected result:** the warnings/errors across the system in the incident window — log/event analysis
+correlates events by time and severity to reconstruct what happened; both platforms provide unified,
+filterable logs (journald / Event Log) for this, and central log aggregation (Volume XI) scales it
+across the fleet.
+
+**Negative test:** investigate an incident from one service's log alone; the root cause may be in a
+dependency or the OS — correlating across logs in the time window reveals the sequence.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.4 — Design Exercise: a cross-platform operations model (Topic: Synthesis)
+
+**Objective:** Design the operating model for a mixed Linux/Windows estate.
+
+> **Scenario.** You run 400 servers (60% Linux, 40% Windows Server) across data center and cloud.
+> Design consistent administration: identity, standardized builds, configuration/patch management,
+> storage/backup, security/compliance, and monitoring/operations — with a small team.
+
+Work through and **write down**: the operating model and least-privilege access (Ch01); unified
+identity (AD + Linux integration, Ch04); standardized builds and config/patch management as code
+across both OSes (Ch06); storage and tested backups (Ch07); hardening baselines, security automation,
+and compliance evidence (Ch08); and monitoring, troubleshooting runbooks, and lifecycle (Ch09). State
+how cross-platform automation keeps the small team effective.
+
+**Expected result:** a written operating model where both platforms are managed by the same
+disciplines — unified identity, config/patch-as-code, tested backups, enforced hardening, and unified
+monitoring — so a small team runs a large mixed estate consistently rather than per-host and per-OS.
+
+**Negative test:** manage Linux and Windows as two disconnected silos with separate identity, tooling,
+and processes; the team doubles its effort and consistency suffers — a unified operating model with
+cross-platform automation is what scales administration.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 

@@ -306,107 +306,102 @@ New-FsrmQuota -Path 'D:\AppData' -Size 100GB -SoftLimit `
 
 ## Hands-On Lab
 
-**Objective:** Export an NFSv4 share restricted to a specific client
-subnet, mount it from a second Linux VM, apply an XFS project quota to
-the exported directory, and validate both the access restriction and the
-quota.
+This chapter carries a topic-level walkthrough lab for **each storage-and-data skill** — volumes and
+filesystems, network file services, backup/restore, and quotas/permissions — cross-platform. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 7.1–7.4** — a Linux host with a spare disk and `lvm2`, a Windows host
+where noted, and `sudo`. **Safety:** disk operations destroy data — use lab disks. **Cost:** none.
 
-- Two Linux VMs on the same private subnet: `nfs01` (server) and
-  `nfsclient01` (client), both RHEL-family or Debian-family, 2 vCPU / 2 GB
-  RAM each.
-- `sudo` access on both VMs.
-- `nfs01` has an XFS filesystem mounted at `/data` with the `pquota`
-  mount option enabled (add `pquota` to the relevant `/etc/fstab` entry
-  and remount, or format a scratch logical volume as XFS specifically for
-  this lab if `/data` cannot be remounted).
+### Lab 7.1 — Volumes and filesystems (Topic: Local storage)
 
-### Procedure
-
-1. On `nfs01`, install NFS server packages and create the export
-   directory:
-
-   ```bash
-   sudo dnf install -y nfs-utils
-   sudo mkdir -p /data/labexport
-   sudo chmod 755 /data/labexport
-   echo "lab file from nfs01" | sudo tee /data/labexport/hello.txt
-   ```
-
-2. Export the directory restricted to `nfsclient01`'s subnet only
-   (adjust the CIDR to your lab network):
-
-   ```bash
-   sudo tee -a /etc/exports <<'EOF'
-   /data/labexport 10.20.30.0/24(rw,sync,no_subtree_check)
-   EOF
-   sudo exportfs -ra
-   sudo systemctl enable --now nfs-server
-   ```
-
-3. On `nfsclient01`, mount the export and confirm access:
-
-   ```bash
-   sudo dnf install -y nfs-utils
-   sudo mkdir -p /mnt/labexport
-   sudo mount -t nfs4 nfs01:/data/labexport /mnt/labexport
-   cat /mnt/labexport/hello.txt
-   ```
-
-   **Expected result:** the command prints `lab file from nfs01`,
-   confirming the mount succeeded and the export is readable.
-
-4. On `nfs01`, apply an XFS project quota of 10 MiB to the exported
-   directory:
-
-   ```bash
-   echo "200:/data/labexport" | sudo tee -a /etc/projects
-   echo "labexport:200" | sudo tee -a /etc/projid
-   sudo xfs_quota -x -c 'project -s labexport' /data
-   sudo xfs_quota -x -c 'limit -p bhard=10m labexport' /data
-   ```
-
-5. From `nfsclient01`, exceed the quota and confirm enforcement:
-
-   ```bash
-   dd if=/dev/zero of=/mnt/labexport/fillfile bs=1M count=15 2>&1 | tail -3
-   ```
-
-   **Expected result:** the write fails partway with a "Disk quota
-   exceeded" error once the 10 MiB project limit is reached, confirmed by
-   `sudo xfs_quota -x -c 'report -p' /data` on `nfs01` showing usage at
-   the hard limit.
-
-### Negative Test
-
-From a third host **outside** the `10.20.30.0/24` subnet permitted in
-step 2 (or by temporarily changing `nfsclient01`'s IP outside that range
-if a third host is unavailable), attempt:
+**Objective:** Create resizable storage on each platform.
 
 ```bash
-showmount -e nfs01
-sudo mount -t nfs4 nfs01:/data/labexport /mnt/labexport
+# Linux (LVM + filesystem):
+sudo pvcreate /dev/vdb && sudo vgcreate datavg /dev/vdb
+sudo lvcreate -L 2G -n datalv datavg && sudo mkfs.xfs /dev/datavg/datalv
+sudo mkdir -p /data && sudo mount /dev/datavg/datalv /data && df -h /data
 ```
 
-**Expected result:** the mount is refused (permission denied or no
-route, depending on firewall configuration), confirming the export's
-subnet restriction is enforced by the NFS server, not merely documented
-as an intended restriction.
+```powershell
+# Windows (Storage Spaces / NTFS): New-Volume / Format-Volume on a pool
+Get-Disk | Where-Object PartitionStyle -eq 'RAW' | Select Number,Size
+```
 
-### Cleanup
+**Expected result:** a mounted, resizable filesystem (LVM/XFS on Linux; Storage Spaces/NTFS on
+Windows) — enterprise storage uses an abstraction layer (LVM / Storage Spaces) over raw disks so
+volumes can grow, mirror, and span devices without reformatting, unlike fixed partitions.
+
+**Negative test:** put data on a raw fixed partition; growing it later means backup/repartition/
+restore — an LVM/Storage-Spaces volume resizes online.
+
+**Cleanup:** `sudo umount /data; sudo lvremove -y /dev/datavg/datalv; sudo vgremove -y datavg; sudo pvremove /dev/vdb`.
+
+### Lab 7.2 — Network file services (Topic: Shared storage)
+
+**Objective:** Share a filesystem over the network.
 
 ```bash
-# On nfsclient01:
-sudo umount /mnt/labexport
-sudo rmdir /mnt/labexport
-
-# On nfs01:
-sudo sed -i '/labexport/d' /etc/exports /etc/projects /etc/projid
-sudo exportfs -ra
-sudo xfs_quota -x -c 'limit -p bhard=0 labexport' /data
-sudo rm -rf /data/labexport
+# Linux NFS export:
+echo "/data 192.168.0.0/24(rw,sync,no_subtree_check)" | sudo tee -a /etc/exports
+sudo exportfs -ra && showmount -e localhost
 ```
+
+```powershell
+# Windows SMB share:
+New-SmbShare -Name "Data" -Path "C:\Data" -FullAccess "Domain Admins" -ReadAccess "Everyone"
+Get-SmbShare Data
+```
+
+**Expected result:** a filesystem shared via NFS (Linux/Unix) or SMB (Windows) with access controls —
+network file services provide shared storage across hosts; NFS is the Unix-world standard and SMB the
+Windows standard, and cross-platform estates often serve both.
+
+**Negative test:** export a share to everyone read-write with no host/user restriction; any client can
+alter the data — NFS export options and SMB permissions must scope access to intended clients/users.
+
+**Cleanup:** remove the export/share line and re-export/`Remove-SmbShare Data`.
+
+### Lab 7.3 — Backup and restore (Topic: Data protection)
+
+**Objective:** Back up data and prove a restore.
+
+```bash
+# Linux: a consistent, verifiable backup
+sudo tar -czf /backup/data-$(date +%F).tar.gz -C /data . && ls -lh /backup/
+# Restore-test into a scratch dir and verify:
+mkdir -p /tmp/restore && tar -xzf /backup/data-*.tar.gz -C /tmp/restore && ls /tmp/restore | head
+```
+
+**Expected result:** a dated backup archive and a verified restore — backup is only real if the
+*restore* works, so a tested restore (not just a successful backup job) is the discipline; enterprise
+backups add scheduling, offsite/immutable copies, and retention (3-2-1).
+
+**Negative test:** run backups but never test a restore; the first real recovery discovers the backups
+are unusable — an untested backup is not a backup, so restore-testing is mandatory.
+
+**Cleanup:** `rm -rf /tmp/restore /backup/data-*.tar.gz`.
+
+### Lab 7.4 — Quotas and permissions (Topic: Access and limits)
+
+**Objective:** Control who can use storage and how much.
+
+```bash
+# Linux: POSIX permissions + a shared setgid dir (and quotas where enabled)
+sudo mkdir -p /data/team && sudo chown root:staff /data/team && sudo chmod 2770 /data/team
+ls -ld /data/team
+# xfs_quota / setquota enforce per-user/group space limits where configured.
+```
+
+**Expected result:** a group-owned shared directory with setgid (and, where enabled, per-user/group
+quotas) — storage governance combines **permissions** (who can access) with **quotas** (how much they
+can use), preventing both unauthorized access and one user filling shared storage.
+
+**Negative test:** share storage with no quotas; one user or a runaway process fills the volume and
+everyone's writes fail — quotas bound each consumer's usage.
+
+**Cleanup:** `sudo rm -rf /data/team`.
 
 ## Lab Verification
 

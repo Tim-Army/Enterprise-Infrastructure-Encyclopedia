@@ -364,110 +364,107 @@ Register-ScheduledTask -TaskName 'NightlyReconcile' -Action $action `
 
 ## Hands-On Lab
 
-**Objective:** Constrain a CPU-bound workload with a `systemd`
-resource-controlled service, observe the limit under load, and prevent a
-scheduled job from overlapping itself with `flock` — demonstrating both
-resource control and overlap prevention on a single Linux VM.
+This chapter carries a topic-level walkthrough lab for **each compute-and-service skill** — process
+management, service control, resource limits, and scheduled tasks — cross-platform. Each ends **`**Lab
+verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 5.1–5.4** — a Linux host and, where noted, a Windows host. **Cost:**
+none.
 
-- One Linux VM (RHEL-family or Debian-family, 2 vCPU / 2 GB RAM minimum
-  so throttling is observable against a real second core).
-- `sudo` access.
+### Lab 5.1 — Process management (Topic: Processes)
 
-### Procedure
-
-1. Create a resource-bounded service that burns CPU in a tight loop:
-
-   ```bash
-   sudo tee /usr/local/bin/cpu-burn.sh <<'EOF'
-   #!/bin/bash
-   while :; do :; done
-   EOF
-   sudo chmod +x /usr/local/bin/cpu-burn.sh
-
-   sudo tee /etc/systemd/system/cpu-burn.service <<'EOF'
-   [Unit]
-   Description=Lab CPU burn (resource-bounded)
-
-   [Service]
-   ExecStart=/usr/local/bin/cpu-burn.sh
-   CPUQuota=50%
-   EOF
-
-   sudo systemctl daemon-reload
-   sudo systemctl start cpu-burn.service
-   ```
-
-2. Observe the bounded CPU consumption for about 15 seconds:
-
-   ```bash
-   systemd-cgtop -n 3 -b | grep cpu-burn
-   ```
-
-   **Expected result:** CPU usage for `cpu-burn.service` stabilizes at
-   approximately 50% of one core, not 100%.
-
-3. Stop the bounded run:
-
-   ```bash
-   sudo systemctl stop cpu-burn.service
-   ```
-
-4. Remove the quota and confirm unbounded consumption (this is the
-   negative test — proving the limit in step 2 was actually enforced, not
-   coincidental):
-
-   ```bash
-   sudo systemctl set-property cpu-burn.service CPUQuota=
-   sudo systemctl start cpu-burn.service
-   systemd-cgtop -n 3 -b | grep cpu-burn
-   sudo systemctl stop cpu-burn.service
-   ```
-
-   **Expected result:** CPU usage now approaches 100% of one core,
-   confirming the earlier 50% figure came from `CPUQuota=`, not from the
-   workload's own behavior.
-
-5. Build an overlap-safe scheduled job and prove the lock works:
-
-   ```bash
-   sudo tee /usr/local/bin/slow-job.sh <<'EOF'
-   #!/bin/bash
-   echo "$(date): slow-job started" >> /var/log/slow-job.log
-   sleep 20
-   echo "$(date): slow-job finished" >> /var/log/slow-job.log
-   EOF
-   sudo chmod +x /usr/local/bin/slow-job.sh
-
-   # Launch two overlapping attempts back to back, each guarded by flock.
-   flock -n /var/lock/slow-job.lock /usr/local/bin/slow-job.sh &
-   sleep 1
-   flock -n /var/lock/slow-job.lock /usr/local/bin/slow-job.sh || \
-     echo "Second invocation correctly refused: lock held"
-   wait
-   ```
-
-   **Expected result:** the console prints
-   `Second invocation correctly refused: lock held`, and
-   `/var/log/slow-job.log` shows only one `started`/`finished` pair for
-   that window.
-
-### Negative Test
-
-Step 4 above is this lab's primary negative test: removing `CPUQuota=`
-and confirming CPU consumption rises to (approximately) 100% proves the
-50% figure observed in step 2 was the result of the configured limit
-rather than an unrelated ceiling (such as a single-vCPU VM).
-
-### Cleanup
+**Objective:** Inspect and control processes on both platforms.
 
 ```bash
-sudo systemctl disable --now cpu-burn.service
-sudo rm -f /etc/systemd/system/cpu-burn.service /usr/local/bin/cpu-burn.sh
-sudo systemctl daemon-reload
-sudo rm -f /usr/local/bin/slow-job.sh /var/log/slow-job.log /var/lock/slow-job.lock
+# Linux:
+ps -eo pid,ppid,%cpu,%mem,comm --sort=-%cpu | head -6
+kill -TERM <pid>          # graceful; -KILL only as last resort
 ```
+
+```powershell
+# Windows:
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 5 Id,ProcessName,CPU
+Stop-Process -Id <id> -Force:$false     # graceful stop
+```
+
+**Expected result:** the top resource-consuming processes and controlled termination on each platform
+— process management (list by resource, signal/stop gracefully) is a universal admin task; both
+platforms distinguish graceful termination (SIGTERM / Stop-Process) from forced kill.
+
+**Negative test:** force-kill (`-KILL`/`-Force`) a database process to "free resources"; you risk data
+corruption — a graceful stop lets the process clean up, so force is the last resort.
+
+**Cleanup:** none.
+
+### Lab 5.2 — Service management (Topic: Services)
+
+**Objective:** Control a service's runtime and boot state.
+
+```bash
+# Linux (systemd):
+sudo systemctl restart chronyd 2>/dev/null || sudo systemctl restart systemd-timesyncd
+systemctl is-active,is-enabled chronyd 2>/dev/null || true
+```
+
+```powershell
+# Windows:
+Restart-Service -Name W32Time ; Set-Service -Name W32Time -StartupType Automatic
+Get-Service W32Time | Select Name,Status,StartType
+```
+
+**Expected result:** the service restarts and its boot state is set on each platform — service
+management separates *running now* from *starts at boot* on both systemd (`is-active`/`is-enabled`)
+and Windows (`Status`/`StartType`); administrators must set both deliberately.
+
+**Negative test:** start a service manually without setting it to start at boot; it is gone after a
+reboot — the boot/startup state (`enable`/`Automatic`) is separate from the current run state.
+
+**Cleanup:** none.
+
+### Lab 5.3 — Resource limits (Topic: Resource control)
+
+**Objective:** Constrain a process's resource use.
+
+```bash
+# Linux: per-shell limits + cgroup-based service limits
+ulimit -a | grep -E "open files|max user processes"
+sudo systemctl set-property chronyd.service MemoryMax=256M 2>/dev/null && systemctl show chronyd -p MemoryMax
+```
+
+**Expected result:** the shell's ulimits and a cgroup memory cap on a service — resource control
+(ulimits, systemd cgroup limits on Linux; Job Objects/quotas on Windows) prevents one process from
+starving the host, protecting other workloads and the system itself.
+
+**Negative test:** run a memory-leaking process with no limit; it consumes all RAM and the OOM killer
+takes down other services — a resource cap contains the damage to the offending process.
+
+**Cleanup:** `sudo systemctl set-property chronyd.service MemoryMax=infinity 2>/dev/null; true`.
+
+### Lab 5.4 — Scheduled tasks (Topic: Scheduling)
+
+**Objective:** Schedule recurring work on each platform.
+
+```bash
+# Linux: cron / systemd timer
+echo '0 2 * * * root /usr/local/bin/nightly.sh' | sudo tee /etc/cron.d/nightly
+systemctl list-timers --no-pager | head
+```
+
+```powershell
+# Windows: Task Scheduler
+Register-ScheduledTask -TaskName "Nightly" -Trigger (New-ScheduledTaskTrigger -Daily -At 2am) `
+  -Action (New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-File C:\ops\nightly.ps1")
+```
+
+**Expected result:** a nightly job scheduled via cron/systemd-timer (Linux) or Task Scheduler
+(Windows) — scheduled tasks automate recurring maintenance (backups, cleanup, reports) on both
+platforms, and the mechanisms differ but the discipline (schedule it, do not rely on remembering) is
+the same.
+
+**Negative test:** rely on an admin to run nightly maintenance manually; it is skipped on holidays and
+busy days — a scheduler guarantees it runs.
+
+**Cleanup:** `sudo rm -f /etc/cron.d/nightly` / `Unregister-ScheduledTask -TaskName "Nightly"`.
 
 ## Lab Verification
 
