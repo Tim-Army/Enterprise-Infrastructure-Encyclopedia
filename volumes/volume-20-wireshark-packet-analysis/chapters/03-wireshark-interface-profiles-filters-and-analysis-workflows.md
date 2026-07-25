@@ -275,70 +275,97 @@ automatically generates the underlying stream-index filter
 
 ## Hands-On Lab
 
-**Objective:** Create a dedicated analysis profile, apply and save a
-display filter, add a coloring rule and a custom column, and use Follow
-Stream to read a reassembled conversation.
+This chapter carries a topic-level walkthrough lab for **WCA-101 Domain 3.0 (capture and
+display filters, 12%) and Domain 4.0 (configure/adapt the interface, 5%)** — display
+filters, capture-vs-display filtering, profiles/columns/coloring, and advanced filter
+expressions. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 3.1–3.4** — Wireshark/`tshark` installed and a sample
+capture with mixed protocols (`sample.pcapng` below). **Cost:** none.
 
-- Wireshark installed with capture rights configured ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
-- A capture containing at least one TCP conversation with visible
-  application data (an HTTP request is sufficient); the `lab01-baseline`
-  capture from [Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md) or a fresh short capture both work.
+### Lab 3.1 — Display filters (Topic: Display filtering)
 
-**Steps**
+**Objective:** Filter a loaded capture down to what matters.
 
-1. Open Wireshark and create a new profile named `Lab03-Analysis`
-   (**Edit > Configuration Profiles > +**), then confirm it is active in
-   the status bar.
-2. Open a capture file containing at least one TCP conversation:
+```bash
+tshark -r sample.pcapng -Y "dns" | head
+tshark -r sample.pcapng -Y "ip.addr == 192.168.1.10 && tcp.port == 80" | head
+tshark -r sample.pcapng -Y "http.request.method == \"GET\"" -T fields -e http.host -e http.request.uri | head
+```
 
-   ```bash
-   tshark -i <INTERFACE_NUMBER> -a duration:20 -w lab03-capture.pcapng
-   ```
+**Expected result:** each display filter narrows the loaded packets non-destructively — `dns`
+shows only DNS, the compound filter shows one host's web traffic, and the last extracts GET
+hosts/URIs — display filters use protocol.field syntax and never alter the underlying file.
 
-   Open `lab03-capture.pcapng` in the Wireshark GUI.
-3. In the filter bar, enter and apply:
+**Negative test:** type a capture-filter expression (`tcp port 80`) into a display-filter
+context; it is rejected as invalid syntax — capture filters (BPF) and display filters
+(protocol.field) are different languages for different stages.
 
-   ```text
-   tcp.flags.syn==1 && tcp.flags.ack==0
-   ```
+**Cleanup:** none (read-only).
 
-   **Expected result:** only TCP SYN packets (connection attempts) are
-   shown; the filter bar background is green.
-4. Save this filter as a filter button: drag the filter bar text to the
-   filter button toolbar, or use **Analyze > Display Filters > +**, name it
-   `SYN Attempts`.
-5. Add a coloring rule named `Retransmissions` with filter
-   `tcp.analysis.retransmission` and a distinct background color
-   (**View > Coloring Rules > +**).
-6. Add a custom column titled `TCP Delta` using field `tcp.time_delta`
-   (**Edit > Preferences > Appearance > Columns > +**).
-7. Clear the filter bar, right-click any packet belonging to a TCP
-   conversation with visible payload, and choose **Follow > TCP Stream**.
+### Lab 3.2 — Capture filters versus display filters (Topic: Two filter languages)
 
-   **Expected result:** a new window shows the reassembled conversation
-   with client and server data in distinct colors, and the main window's
-   filter bar now shows `tcp.stream==<N>`.
-8. **Negative test:** In the filter bar, enter a deliberately misspelled
-   field name:
+**Objective:** See the difference between filtering at capture and at display.
 
-   ```text
-   tcp.flagz.syn==1
-   ```
+```bash
+# Capture filter (BPF) — decides what is stored:
+dumpcap -i any -f "udp port 53" -c 20 -w /tmp/dns.pcapng
+# Display filter (protocol.field) — decides what is shown from a stored file:
+tshark -r /tmp/dns.pcapng -Y "dns.flags.response == 1"
+```
 
-   **Expected result:** the filter bar turns red/pink and the filter does
-   not apply, demonstrating Wireshark's syntax validation rejecting an
-   invalid field name rather than silently matching nothing.
-9. **Cleanup:** Close the Follow Stream window, clear the filter bar, and
-   remove the lab capture:
+**Expected result:** the capture filter stored only UDP/53; the display filter then showed
+only the DNS *responses* within it — capture filters are coarse and permanent (data not
+captured is gone), display filters are rich and reversible (all captured data remains
+available).
 
-   ```bash
-   rm -f lab03-capture.pcapng
-   ```
+**Negative test:** expect to display-filter for a protocol you excluded with a capture
+filter; it is not in the file to show — once a capture filter drops traffic, no display
+filter can recover it.
 
-   Optionally remove the lab profile via **Edit > Configuration Profiles >
-   Lab03-Analysis > -**.
+**Cleanup:** `rm /tmp/dns.pcapng`.
+
+### Lab 3.3 — Profiles, columns, and coloring rules (Topic: Interface configuration)
+
+**Objective:** Adapt the interface to a task with a profile.
+
+```text
+# Wireshark GUI: Edit > Configuration Profiles > New ("TCP-Perf").
+#   Add custom columns (e.g. tcp.analysis.ack_rtt, tcp.window_size_value).
+#   Add a coloring rule: filter "tcp.analysis.retransmission" -> red background.
+#   Switch profiles from the status-bar bottom-right.
+```
+
+**Expected result:** the profile shows RTT and window columns and paints retransmissions red,
+so problems are visible at a glance — profiles let one Wireshark install carry purpose-built
+layouts (TCP performance, security, VoIP) you switch between per task.
+
+**Negative test:** analyze every scenario with the default columns and no coloring; you scroll
+past the anomalies that a task-specific profile would highlight — the interface is a diagnostic
+tool, and configuring it is Domain 4.0's point.
+
+**Cleanup:** delete the lab profile if created only for the exercise.
+
+### Lab 3.4 — Advanced filter expressions (Topic: Filter operators)
+
+**Objective:** Build filters with comparison, membership, and pattern operators.
+
+```bash
+tshark -r sample.pcapng -Y "tcp.flags.syn == 1 && tcp.flags.ack == 0"   # SYN (connection starts)
+tshark -r sample.pcapng -Y "tcp.port in {80 443 8080}"                    # membership set
+tshark -r sample.pcapng -Y "http.host contains \"example\""              # substring
+tshark -r sample.pcapng -Y "dns.qry.name matches \"\\\\.ru$\""           # regex
+```
+
+**Expected result:** SYN-only packets (new connections), traffic on a set of ports,
+substring host matches, and regex domain matches — display filters support comparison
+(`==`,`>`), logical (`&&`,`||`,`!`), membership (`in {}`), `contains`, and `matches`
+(regex), enough to express nearly any question about a capture.
+
+**Negative test:** use `=` instead of `==` for equality; the filter fails to compile — the
+operator grammar is exact, and the expression bar flags an invalid filter before applying it.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

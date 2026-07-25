@@ -306,91 +306,89 @@ tshark -r capture.pcapng -Y "dns.flags.response==1" -T fields -e dns.flags.rcode
 
 ## Hands-On Lab
 
-**Objective:** Capture and analyze a DHCP DORA exchange and a DNS
-resolution sequence, including IPv6 Neighbor Discovery if a dual-stack
-segment is available.
+This chapter carries a topic-level walkthrough lab for **each protocol in the second half of
+WCA-101 Domain 5.0** — IPv6, ICMPv6/NDP, UDP with DHCP, and DNS. Every step is a runnable
+`tshark` analysis. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 5.1–5.4** — `tshark` and captures containing IPv6, DHCP, and
+DNS traffic (SampleCaptures wiki has each). **Cost:** none.
 
-- Wireshark and `tshark` installed with capture rights ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
-- A network segment providing DHCP; administrative ability to release/renew
-  the local DHCP lease.
+### Lab 5.1 — IPv6 header and extension headers (Topic: IPv6)
 
-**Steps**
+**Objective:** Read the IPv6 header and its next-header chain.
 
-1. Start a capture scoped to DHCP and DNS:
+```bash
+tshark -r v6.pcapng -Y "ipv6" -T fields -e ipv6.src -e ipv6.dst -e ipv6.nxt -e ipv6.hlim -c 20
+```
 
-   ```bash
-   tshark -i <INTERFACE_NUMBER> -f "udp port 67 or udp port 68 or port 53" \
-     -w lab05.pcapng &
-   ```
+**Expected result:** 128-bit source/destination, the Next Header value (chaining to TCP/UDP/
+ICMPv6 or an extension header), and the Hop Limit — IPv6 replaces IPv4's variable header and
+fragmentation with a fixed header plus an extension-header chain, which `ipv6.nxt` lets you
+walk.
 
-2. Force a DHCP lease renewal to generate a DORA exchange:
+**Negative test:** apply IPv4 assumptions (checksum, in-router fragmentation) to IPv6; IPv6
+has no header checksum and routers do not fragment — reading the actual header prevents
+carrying over IPv4-only expectations.
 
-   ```bash
-   # Linux
-   sudo dhclient -r && sudo dhclient
+**Cleanup:** none (read-only).
 
-   # macOS
-   sudo ipconfig set en0 DHCP
+### Lab 5.2 — ICMPv6 and Neighbor Discovery (Topic: ICMPv6/NDP)
 
-   # Windows (PowerShell, run as Administrator)
-   ipconfig /release
-   ipconfig /renew
-   ```
+**Objective:** Identify NDP, the IPv6 replacement for ARP.
 
-3. Generate a DNS resolution:
+```bash
+tshark -r v6.pcapng -Y "icmpv6" -T fields -e icmpv6.type -e ipv6.src -e ipv6.dst | head
+# 133 RS, 134 RA, 135 NS, 136 NA:
+tshark -r v6.pcapng -Y "icmpv6.type == 135 || icmpv6.type == 136" | head
+```
 
-   ```bash
-   nslookup example.com     # or: dig example.com
-   ```
+**Expected result:** Router Solicitation/Advertisement (133/134) and Neighbor Solicitation/
+Advertisement (135/136) — in IPv6, ICMPv6 Neighbor Discovery does address resolution and
+router discovery that ARP and DHCP did in IPv4, so these types are where L2/L3 IPv6
+onboarding lives.
 
-4. Stop the capture:
+**Negative test:** look for ARP in an IPv6-only capture to troubleshoot address resolution;
+there is none — IPv6 uses ICMPv6 NS/NA, so you must filter on `icmpv6`, not `arp`.
 
-   ```bash
-   kill %1
-   ```
+**Cleanup:** none (read-only).
 
-5. Open `lab05.pcapng` and confirm the full DORA exchange:
+### Lab 5.3 — UDP and DHCP (Topic: UDP/DHCP)
 
-   ```text
-   dhcp
-   ```
+**Objective:** Read UDP and trace the DHCP DORA exchange.
 
-   **Expected result:** four DHCP messages in order — Discover, Offer,
-   Request, Ack — each from the expected source (client broadcasts,
-   single consistent server address in Offer and Ack).
+```bash
+tshark -r dhcp.pcapng -Y "udp" -T fields -e udp.srcport -e udp.dstport -e udp.length -c 10
+tshark -r dhcp.pcapng -Y "dhcp" -T fields -e dhcp.option.dhcp -e ip.src -e ip.dst
+```
 
-6. Confirm the DNS query/response pair:
+**Expected result:** connectionless UDP datagrams (no handshake, no retransmission), and the
+DHCP Discover→Offer→Request→Ack (DORA) sequence via the message-type option — UDP is the
+lightweight transport DHCP/DNS/VoIP ride on, and DORA is how a host obtains its IPv4 lease.
 
-   ```text
-   dns.qry.name == "example.com"
-   ```
+**Negative test:** expect UDP to recover a lost DHCP packet automatically; it will not (UDP is
+unreliable), so a dropped Offer just stalls until the client re-Discovers — the absence of the
+next DORA step is the diagnostic signal.
 
-   **Expected result:** one query (`dns.flags.response==0`) and one
-   response (`dns.flags.response==1`) with `dns.flags.rcode==0` and at
-   least one answer record.
+**Cleanup:** none (read-only).
 
-7. **Negative test:** Query a domain guaranteed not to resolve, capturing
-   the same way, and confirm the response code:
+### Lab 5.4 — DNS analysis (Topic: DNS)
 
-   ```bash
-   nslookup this-domain-should-not-exist-lab05.invalid
-   ```
+**Objective:** Match queries to responses and spot resolution failures.
 
-   ```text
-   dns.qry.name contains "lab05" && dns.flags.rcode == 3
-   ```
+```bash
+tshark -r dns.pcapng -Y "dns" -T fields -e dns.qry.name -e dns.flags.response -e dns.flags.rcode -c 20
+tshark -r dns.pcapng -Y "dns.flags.rcode != 0 && dns.flags.response == 1"   # errors (NXDOMAIN etc.)
+```
 
-   **Expected result:** the response matches with `rcode==3` (NXDOMAIN),
-   confirming the filter correctly distinguishes a failed resolution from
-   the successful one captured in step 6.
+**Expected result:** query names paired with responses, and any non-zero rcode (3 = NXDOMAIN,
+2 = ServFail) — DNS ties a query to its response by transaction ID, and the rcode tells you
+whether resolution succeeded, failed, or the name does not exist.
 
-8. **Cleanup:** Remove the lab capture:
+**Negative test:** blame "the network" for a slow site when the capture shows DNS ServFail or
+a query with no response; the failure is name resolution, not connectivity — the DNS view
+distinguishes them in seconds.
 
-   ```bash
-   rm -f lab05.pcapng
-   ```
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

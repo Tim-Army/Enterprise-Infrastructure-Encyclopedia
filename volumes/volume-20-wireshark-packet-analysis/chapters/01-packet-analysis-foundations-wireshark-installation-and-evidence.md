@@ -300,73 +300,95 @@ evidentiary use — file hashes, covered next.
 
 ## Hands-On Lab
 
-**Objective:** Install Wireshark and `tshark` with non-administrative
-capture rights, take a short baseline capture, and produce a hashed,
-documented evidence-handling record for it.
+This chapter carries a topic-level walkthrough lab for **each foundational skill in WCA-101
+Domain 1.0 (utilize key features of Wireshark)** — installation, first capture, the packet
+model, and evidence integrity. Wireshark is free and its CLI tools (`tshark`, `capinfos`,
+`dumpcap`) make every step runnable and verifiable. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 1.1–1.4** — a host where you can install Wireshark (which
+includes `tshark`, `dumpcap`, `capinfos`, `editcap`), permission to capture on an
+interface, and a sample capture (from the Wireshark SampleCaptures wiki) for read-only
+steps. **Cost:** none — the toolchain is free and open source.
 
-- A workstation running Windows, macOS, or Linux with local administrative
-  access for the one-time installation step.
-- Network connectivity sufficient to generate a small amount of traffic
-  (a web request is enough).
+### Lab 1.1 — Install and verify the toolchain (Topic: Key features)
 
-**Steps**
+**Objective:** Confirm Wireshark and its CLI companions are installed.
 
-1. Install Wireshark using the platform-specific procedure in
-   Implementation and Automation, above, and configure non-administrative
-   capture access (Npcap unrestricted, ChmodBPF `access_bpf` group, or
-   Linux `wireshark` group + capabilities).
-2. Confirm capture rights without elevation:
+```bash
+wireshark --version | head -1
+tshark -v | head -1
+capinfos --version | head -1
+```
 
-   ```bash
-   tshark -D
-   ```
+**Expected result:** each prints a version banner (e.g. `Wireshark 4.x.x`) — the GUI and the
+CLI tools ship together, so `tshark` (capture/analysis), `capinfos` (file metadata), `editcap`
+and `mergecap` (file surgery) are all present alongside the GUI.
 
-   **Expected result:** a numbered interface list is returned without a
-   permission error and without requiring `sudo`/Administrator.
+**Negative test:** run `tshark -D` as an unprivileged user with no capture permission; it
+lists no interfaces or errors — capture requires privilege (or membership in the
+`wireshark`/packet-capture group), which is a setup step, not an analysis one.
 
-3. Take a short, scoped baseline capture while generating a small amount of
-   traffic (for example, browsing to one site):
+**Cleanup:** none.
 
-   ```bash
-   tshark -i <INTERFACE_NUMBER> -a duration:30 -w lab01-baseline.pcapng
-   ```
+### Lab 1.2 — First capture and the packet model (Topic: Capture and dissection)
 
-4. Inspect the capture's summary metadata:
+**Objective:** Capture a few packets and read the three-layer model.
 
-   ```bash
-   capinfos lab01-baseline.pcapng
-   ```
+```bash
+tshark -i any -c 10 -w /tmp/first.pcapng     # capture 10 packets
+tshark -r /tmp/first.pcapng                   # summary: No. Time Source Dest Proto Length Info
+tshark -r /tmp/first.pcapng -c 1 -V | head -40  # full dissection of packet 1 (all layers)
+```
 
-   **Expected result:** `capinfos` reports a pcapng file, a packet count
-   greater than zero, and a capture duration close to 30 seconds.
+**Expected result:** the summary shows one line per packet (the GUI's packet-list pane), and
+`-V` expands one packet into its layered dissection (the details pane): frame → Ethernet →
+IP → transport → application — the same tree the GUI draws, proving Wireshark dissects each
+encapsulation layer.
 
-5. Hash the capture and record the evidence metadata:
+**Negative test:** open a truncated/garbage file with `tshark -r`; it reports a bad file
+format rather than inventing packets — the dissectors parse real structure, they do not
+guess.
 
-   ```bash
-   sha256sum lab01-baseline.pcapng > lab01-baseline.pcapng.sha256
-   date -u +"%Y-%m-%dT%H:%M:%SZ" > lab01-baseline.collected-at.txt
-   ```
+**Cleanup:** `rm /tmp/first.pcapng`.
 
-6. **Negative test:** Attempt a capture without the configured group
-   membership or Npcap permission (for example, from a second, unmodified
-   user account) and confirm it is denied:
+### Lab 1.3 — Capture metadata and evidence integrity (Topic: Evidence handling)
 
-   ```bash
-   tshark -i <INTERFACE_NUMBER> -c 5
-   ```
+**Objective:** Record a capture's fingerprint for chain-of-custody.
 
-   **Expected result:** a permission-denied error, demonstrating that
-   capture rights are correctly scoped to the intended group rather than
-   open to every local account.
+```bash
+capinfos -A /tmp/first.pcapng 2>/dev/null || capinfos /tmp/first.pcapng
+sha256sum /tmp/first.pcapng
+```
 
-7. **Cleanup:** Remove the lab capture and its evidence artifacts once the
-   exercise is reviewed:
+**Expected result:** `capinfos` reports packet count, capture duration, byte totals, and file
+hashes; `sha256sum` gives a digest you record so the evidence file can later be proven
+unaltered — packet captures are evidence, and their integrity is established by hashing at
+collection time.
 
-   ```bash
-   rm -f lab01-baseline.pcapng lab01-baseline.pcapng.sha256 lab01-baseline.collected-at.txt
-   ```
+**Negative test:** edit a single byte of the capture and re-hash; the SHA-256 changes
+entirely — that sensitivity is exactly what makes the hash a tamper-evidence seal.
+
+**Cleanup:** none (retain the hash record).
+
+### Lab 1.4 — Time references and columns (Topic: Interface fundamentals)
+
+**Objective:** Read packet timing the way analysis depends on it.
+
+```bash
+tshark -r sample.pcapng -t r -c 20                    # relative time from first packet
+tshark -r sample.pcapng -T fields -e frame.time_delta -e ip.src -e ip.dst -c 20
+```
+
+**Expected result:** `-t r` shows time relative to the capture start, and `frame.time_delta`
+shows the gap between packets — timing is the backbone of performance analysis (RTT, gaps,
+retransmission delays), so choosing the right time display is a core skill, not cosmetic.
+
+**Negative test:** analyze a latency problem with the time column set to absolute wall-clock;
+inter-packet deltas are hard to see — the time reference must match the question (relative for
+sequence, delta for gaps).
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

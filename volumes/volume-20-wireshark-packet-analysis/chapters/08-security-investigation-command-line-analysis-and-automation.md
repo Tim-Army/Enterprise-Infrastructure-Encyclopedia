@@ -269,95 +269,118 @@ segments rather than requiring a manual review pass.
 
 ## Hands-On Lab
 
-**Objective:** Build a `tshark`-based port-scan detection script, run it
-against a captured scan, export findings to CSV, and sanitize the capture
-before a simulated hand-off.
+This chapter carries a topic-level walkthrough lab for **command-line analysis, statistics,
+capture-file surgery, security investigation, and automation** — the scale-up skills behind
+Domain 6.0 troubleshooting and real fieldwork. All steps are runnable `tshark`/`editcap`/
+`mergecap` commands. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.5** — `tshark`, `editcap`, `mergecap`, `capinfos`, and
+a set of captures (including one suspicious/infection capture from malware-traffic-analysis.net
+for Lab 8.4). **Cost:** none.
 
-- Wireshark and `tshark` installed with capture rights ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
-- `nmap` or an equivalent scanning tool, run only against a host the
-  analyst owns or is explicitly authorized to scan (for example, a lab VM
-  on an isolated segment).
+### Lab 8.1 — tshark field extraction (Topic: Command-line analysis)
 
-**Steps**
+**Objective:** Pull structured fields for scripting and reporting.
 
-1. Start a capture scoped to the lab target:
+```bash
+tshark -r cap.pcapng -T fields -E header=y -E separator=, \
+  -e frame.time_epoch -e ip.src -e ip.dst -e _ws.col.Protocol -e frame.len | head
+```
 
-   ```bash
-   tshark -i <INTERFACE_NUMBER> -f "host <LAB_TARGET_IP>" -w lab08.pcapng &
-   ```
+**Expected result:** CSV rows of timestamp, addresses, protocol, and length — `tshark -T
+fields` turns packets into columnar data you can pipe into `awk`/`sort`/`uniq` or a spreadsheet,
+scaling analysis beyond what clicking through the GUI allows.
 
-2. Run an authorized TCP SYN scan against the lab target:
+**Negative test:** eyeball a million-packet capture in the GUI to find the top talkers; it is
+impractical — field extraction plus shell tools (or the statistics in Lab 8.2) is how you
+analyze at scale.
 
-   ```bash
-   nmap -sS -p 1-200 <LAB_TARGET_IP>
-   ```
+**Cleanup:** none (read-only).
 
-3. Stop the capture:
+### Lab 8.2 — Statistics: conversations, endpoints, protocol hierarchy (Topic: Statistics)
 
-   ```bash
-   kill %1
-   ```
+**Objective:** Summarize a capture without reading every packet.
 
-4. Run the port-scan detection one-liner against the capture:
+```bash
+tshark -r cap.pcapng -q -z io,phs                 # protocol hierarchy (what is in the file)
+tshark -r cap.pcapng -q -z conv,ip                # top IP conversations by bytes
+tshark -r cap.pcapng -q -z endpoints,ip           # busiest endpoints
+```
 
-   ```bash
-   tshark -r lab08.pcapng -Y "tcp.flags.syn==1 && tcp.flags.ack==0" \
-     -T fields -e ip.src -e tcp.dstport \
-     | awk '{print $1}' | sort | uniq -c | sort -rn
-   ```
+**Expected result:** the protocol hierarchy (share of each protocol), the biggest IP
+conversations, and the busiest endpoints — these built-in statistics profile a capture in
+seconds, pointing you at the top talkers and dominant protocols before you filter down.
 
-   **Expected result:** the scanning host's IP address appears with a
-   count near or above 200, matching the scanned port range — clearly
-   distinguishable from any legitimate low-count traffic in the same
-   capture.
+**Negative test:** start filtering blindly without a protocol-hierarchy view; you may chase a
+protocol that is 0.1% of the traffic while missing the 80% that matters — the statistics tell
+you where to look first.
 
-5. Export the matched SYN attempts to CSV:
+**Cleanup:** none (read-only).
 
-   ```bash
-   tshark -r lab08.pcapng -Y "tcp.flags.syn==1 && tcp.flags.ack==0" \
-     -T fields -E header=y -E separator=, \
-     -e frame.time -e ip.src -e ip.dst -e tcp.dstport \
-     > lab08-syn-attempts.csv
-   wc -l lab08-syn-attempts.csv
-   ```
+### Lab 8.3 — Capture-file surgery: editcap and mergecap (Topic: File manipulation)
 
-   **Expected result:** a CSV file with a header row and one row per SYN
-   attempt.
+**Objective:** Split, merge, slice, and sanitize captures.
 
-6. Sanitize the capture by removing all traffic except the connections
-   that actually completed a handshake, simulating a hand-off that
-   excludes raw scan noise:
+```bash
+editcap -c 5000 big.pcapng chunk.pcapng                          # split into 5000-packet chunks
+mergecap -w merged.pcapng a.pcapng b.pcapng                      # merge, sorted by time
+editcap -A "2026-07-24 09:00:00" -B "2026-07-24 09:05:00" big.pcapng window.pcapng   # time slice
+editcap -d dedup.pcapng clean.pcapng                             # remove duplicate packets
+```
 
-   ```bash
-   tshark -r lab08.pcapng -Y "tcp.flags.syn==1 && tcp.flags.ack==1" \
-     -w lab08-sanitized.pcapng
-   capinfos lab08.pcapng lab08-sanitized.pcapng
-   ```
+**Expected result:** manageable chunks, a time-ordered merge, a five-minute window, and a
+de-duplicated file — `editcap`/`mergecap` are the file-surgery tools that make huge or
+multi-source captures workable and shareable (including trimming to just the relevant window).
 
-   **Expected result:** `capinfos` shows a markedly lower packet count in
-   `lab08-sanitized.pcapng` than in the original, confirming the scan
-   noise was excluded while any real completed connections remain.
+**Negative test:** email a 4 GB capture to share a 10-second event; it is unusable — slice to
+the window with `editcap -A/-B` and share kilobytes, not gigabytes.
 
-7. **Negative test:** Run the same detection one-liner against the
-   sanitized file:
+**Cleanup:** `rm chunk*.pcapng merged.pcapng window.pcapng clean.pcapng`.
 
-   ```bash
-   tshark -r lab08-sanitized.pcapng -Y "tcp.flags.syn==1 && tcp.flags.ack==0" \
-     -T fields -e ip.src | sort | uniq -c | sort -rn
-   ```
+### Lab 8.4 — Security investigation (Topic: Threat hunting)
 
-   **Expected result:** no scan-pattern match (the half-open SYNs were
-   excluded by the sanitization filter in step 6), confirming the
-   detection script correctly reports nothing on traffic that no longer
-   contains the pattern.
+**Objective:** Find malicious patterns in a suspicious capture.
 
-8. **Cleanup:** Remove all lab artifacts:
+```bash
+# Beaconing: regular-interval connections to one destination
+tshark -r infection.pcapng -Y "tcp.flags.syn==1 && tcp.flags.ack==0" \
+  -T fields -e frame.time_relative -e ip.dst | sort -k2 | uniq -c -f1 | sort -rn | head
+# Suspicious HTTP / user-agents and hosts
+tshark -r infection.pcapng -Y "http.request" -T fields -e http.host -e http.user_agent | sort | uniq -c | sort -rn | head
+# Data exfiltration: large outbound flows
+tshark -r infection.pcapng -q -z conv,ip | sort -k7 -rn | head
+```
 
-   ```bash
-   rm -f lab08.pcapng lab08-sanitized.pcapng lab08-syn-attempts.csv
-   ```
+**Expected result:** repeated fixed-interval SYNs to one host (C2 beaconing), anomalous
+hosts/user-agents, and oversized outbound conversations (exfiltration) — packet analysis is a
+core investigation skill, and these patterns are how an infection shows up in the capture.
+
+**Negative test:** rely on payload signatures alone for an encrypted C2 channel; you miss it —
+the *behavioral* patterns (beacon interval, flow volume, rare destinations) are visible in the
+capture even when payloads are not.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.5 — Automation (Topic: Automation)
+
+**Objective:** Turn a repeated analysis into a scripted pipeline.
+
+```bash
+# A reusable one-liner: top DNS names queried, across every capture in a directory
+for f in captures/*.pcapng; do
+  tshark -r "$f" -Y "dns.flags.response==0" -T fields -e dns.qry.name
+done | sort | uniq -c | sort -rn | head
+```
+
+**Expected result:** a ranked list of queried domains across a whole directory of captures,
+produced by one scripted pipeline — because `tshark` is a CLI tool, recurring analyses
+(daily DNS top-N, retransmission counts, TLS versions in use) become cron-able scripts rather
+than manual GUI work.
+
+**Negative test:** repeat a manual GUI analysis daily by hand; it does not scale and drifts
+between runs — scripting `tshark` makes the analysis repeatable, fast, and consistent.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

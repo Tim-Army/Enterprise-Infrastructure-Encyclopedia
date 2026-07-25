@@ -308,94 +308,118 @@ tshark -r capture.pcapng -Y "tcp.analysis.retransmission" -T fields -e tcp.strea
 
 ## Hands-On Lab
 
-**Objective:** Capture a TCP connection carrying enough data to observe
-handshake options, measure RTT, and induce a controlled loss event to
-observe Wireshark's retransmission analysis.
+This chapter is the **highest-value chapter for WCA-101**: TCP is scored at **17% on its own**
+within Domain 5.0, and TCP troubleshooting anchors Domain 6.0 (20%). It carries a lab for
+each core TCP behavior — handshake/options, retransmissions, flow control, teardown/reset,
+and performance — all runnable `tshark` analyses using Wireshark's TCP expert filters. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.5** — `tshark` and a capture of a real TCP session,
+ideally one with some loss (generate one by throttling/interrupting a download). **Cost:**
+none.
 
-- Wireshark and `tshark` installed with capture rights ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
-- Ability to transfer a moderately sized file (10+ MB) over TCP to a
-  reachable host (an internal file server or any HTTPS download works).
-- Optional: administrative ability to introduce artificial packet loss
-  (Linux `tc netem`) for the negative test; the lab is still valid without
-  it, using naturally occurring loss/RTT variance instead.
+### Lab 6.1 — The three-way handshake and TCP options (Topic: TCP setup)
 
-**Steps**
+**Objective:** Read connection establishment and negotiated options.
 
-1. Start a capture scoped to the transfer's destination:
+```bash
+tshark -r tcp.pcapng -Y "tcp.flags.syn == 1" \
+  -T fields -e ip.src -e ip.dst -e tcp.flags.syn -e tcp.flags.ack \
+  -e tcp.options.mss_val -e tcp.options.wscale.shift -c 6
+```
 
-   ```bash
-   tshark -i <INTERFACE_NUMBER> -f "host <DESTINATION_IP>" -w lab06.pcapng &
-   ```
+**Expected result:** SYN, SYN-ACK, then the client's ACK, with MSS and window-scale options
+in the SYNs — the handshake negotiates the sequence numbers and options (MSS, window scaling,
+SACK-permitted) that govern the whole connection; options only present in the SYNs bind both
+ends for the session's life.
 
-2. Transfer a file of at least 10 MB to or from the destination host (for
-   example, `curl -O <URL>` for an HTTPS download, or `scp` to an internal
-   host), then stop the capture:
+**Negative test:** expect window scaling to apply when only one side offered it in its SYN;
+scaling requires both SYNs to carry the option — a one-sided offer means no scaling, capping
+throughput on high-BDP paths.
 
-   ```bash
-   kill %1
-   ```
+**Cleanup:** none (read-only).
 
-3. Open `lab06.pcapng`, filter to the transfer's stream, and confirm the
-   handshake options:
+### Lab 6.2 — Retransmissions and duplicate ACKs (Topic: TCP reliability)
 
-   ```text
-   tcp.flags.syn==1
-   ```
+**Objective:** Identify loss recovery in the capture.
 
-   **Expected result:** a SYN and SYN-ACK pair whose Options nodes both
-   show Window Scale and SACK Permitted.
+```bash
+tshark -r tcp.pcapng -Y "tcp.analysis.retransmission || tcp.analysis.fast_retransmission" \
+  -T fields -e frame.number -e ip.src -e tcp.seq -e tcp.analysis.rto | head
+tshark -r tcp.pcapng -Y "tcp.analysis.duplicate_ack" -T fields -e frame.number -e tcp.analysis.duplicate_ack_num | head
+```
 
-4. Check the throughput and RTT graphs:
+**Expected result:** retransmitted segments and the duplicate ACKs that triggered fast
+retransmit — Wireshark's `tcp.analysis.*` expert fields flag loss recovery directly; three
+duplicate ACKs driving a fast retransmit is the classic packet-loss signature, and the RTO
+field shows timeout-based recovery.
 
-   ```text
-   Statistics > TCP Stream Graphs > Round Trip Time  (select the transfer's stream)
-   Statistics > TCP Stream Graphs > Throughput
-   ```
+**Negative test:** read raw sequence numbers by hand to find loss; you will miss it — the
+`tcp.analysis` expert layer is what makes retransmission and dup-ACK patterns visible at a
+glance, and it is what the exam expects you to use.
 
-   **Expected result:** an RTT plot with a value consistent with the
-   destination's network distance, and a throughput plot showing the bulk
-   of the transfer.
+**Cleanup:** none (read-only).
 
-5. Check for any retransmissions that occurred naturally:
+### Lab 6.3 — Window size and flow control (Topic: TCP flow control)
 
-   ```text
-   tcp.stream==<N> && tcp.analysis.retransmission
-   ```
+**Objective:** Detect receiver-side flow-control stalls.
 
-   Record the count (zero is an acceptable, valid result on a clean local
-   network).
+```bash
+tshark -r tcp.pcapng -Y "tcp.analysis.zero_window || tcp.analysis.window_full" \
+  -T fields -e frame.number -e ip.src -e tcp.window_size_value | head
+tshark -r tcp.pcapng -Y "tcp.analysis.window_update" -T fields -e frame.number | head
+```
 
-6. **Negative test (with `tc netem`, Linux only):** Introduce 2% loss on
-   the capture interface, repeat the transfer, and confirm retransmissions
-   now appear:
+**Expected result:** zero-window events (the receiver's buffer is full, advertising window 0)
+and the later window updates that reopen the flow — TCP flow control is the receiver
+throttling the sender via the advertised window; a zero window is the receiver, not the
+network, stalling the transfer.
 
-   ```bash
-   sudo tc qdisc add dev <INTERFACE_NAME> root netem loss 2%
-   tshark -i <INTERFACE_NUMBER> -f "host <DESTINATION_IP>" -w lab06-loss.pcapng &
-   curl -O <URL>
-   kill %1
-   sudo tc qdisc del dev <INTERFACE_NAME> root netem
-   ```
+**Negative test:** blame the network or the sender for a stall that the capture shows as a
+receiver zero-window; adding bandwidth changes nothing — the receiving application is not
+draining its socket, which only the window view reveals.
 
-   ```text
-   tcp.analysis.retransmission
-   ```
+**Cleanup:** none (read-only).
 
-   **Expected result:** a nonzero retransmission count in
-   `lab06-loss.pcapng`, contrasted with the baseline capture — demonstrating
-   that the expert-flag analysis correctly detects induced loss. If `tc
-   netem` is unavailable, treat any retransmissions already observed in
-   step 5 as the comparison point instead.
+### Lab 6.4 — Connection teardown and resets (Topic: TCP teardown)
 
-7. **Cleanup:** Remove the lab captures and confirm no `netem` qdisc is
-   left applied:
+**Objective:** Distinguish graceful close from abortive reset.
 
-   ```bash
-   rm -f lab06.pcapng lab06-loss.pcapng
-   sudo tc qdisc show dev <INTERFACE_NAME>
-   ```
+```bash
+tshark -r tcp.pcapng -Y "tcp.flags.fin == 1" -T fields -e frame.number -e ip.src -e ip.dst | head
+tshark -r tcp.pcapng -Y "tcp.flags.reset == 1" -T fields -e frame.number -e ip.src -e ip.dst | head
+```
+
+**Expected result:** FIN/ACK exchanges (graceful four-way close) versus RST packets (abortive
+termination) — a FIN is an orderly shutdown, while a RST is an abrupt abort (port closed,
+application crash, or policy drop), so which one ended a connection tells you *how* it died.
+
+**Negative test:** treat a mid-transfer RST as a normal close; it is an abort that usually
+means the application or a firewall killed the connection — FIN and RST are different failure
+stories, and conflating them hides the cause.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.5 — TCP performance: RTT, throughput, and expert info (Topic: TCP performance)
+
+**Objective:** Quantify a connection's performance from the capture.
+
+```bash
+tshark -r tcp.pcapng -q -z conv,tcp                       # per-conversation bytes/duration
+tshark -r tcp.pcapng -Y "tcp" -T fields -e tcp.analysis.ack_rtt | sort -n | tail    # worst RTTs
+tshark -r tcp.pcapng -q -z expert                         # aggregated expert warnings/notes
+```
+
+**Expected result:** the TCP conversation table (bytes, duration → throughput), the largest
+ACK RTTs, and the expert summary counting retransmissions/zero-windows/resets — together these
+turn "it feels slow" into measured RTT, throughput, and a ranked list of protocol problems,
+which is the Domain 6.0 troubleshooting deliverable.
+
+**Negative test:** report "the network is slow" with no numbers; the conversation and expert
+views give measured throughput and a specific fault (loss, zero window, high RTT) — measurement
+replaces speculation.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

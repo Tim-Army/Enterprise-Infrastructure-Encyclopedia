@@ -296,77 +296,96 @@ daemon (`rpcapd`) on the target host.
 
 ## Hands-On Lab
 
-**Objective:** Configure a storage-bounded ring-buffer capture with a
-capture filter, verify rotation behavior, and confirm that unwanted
-traffic is excluded at capture time.
+This chapter carries a topic-level walkthrough lab for **each method in WCA-101 Domain 2.0
+(methods of capturing traffic)** — file capture, ring buffers, capture-time filtering, and
+capture placement. `dumpcap` is the dedicated capture engine; these labs use it and
+`tshark`. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.4** — a host with capture privilege on a live
+interface, and disk space for capture files. **Cost:** none.
 
-- Completion of [Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)'s installation and non-administrative capture
-  configuration.
-- At least 200 MB of free disk space in a working directory.
+### Lab 2.1 — Capture to a file with dumpcap (Topic: File capture)
 
-**Steps**
+**Objective:** Use the low-overhead capture engine to write a file.
 
-1. Create a working directory for the lab capture:
+```bash
+tshark -D                                   # list capturable interfaces
+dumpcap -i any -c 200 -w /tmp/cap.pcapng     # capture 200 packets with the capture engine
+capinfos -c /tmp/cap.pcapng                  # confirm the packet count
+```
 
-   ```bash
-   mkdir -p ~/lab02-capture && cd ~/lab02-capture
-   ```
+**Expected result:** `dumpcap` writes exactly 200 packets, confirmed by `capinfos -c` —
+`dumpcap` is the minimal-overhead capture process (Wireshark and `tshark` use it internally),
+so for long or high-rate captures you run `dumpcap` directly to avoid dropping packets to
+dissection overhead.
 
-2. Identify the active capture interface:
+**Negative test:** run a live capture in the full Wireshark GUI on a saturated 10G link; the
+dissection/UI load can cause drops that `dumpcap` alone would not — capture with `dumpcap`,
+analyze afterward.
 
-   ```bash
-   tshark -D
-   ```
+**Cleanup:** `rm /tmp/cap.pcapng`.
 
-3. Start a ring-buffer capture bounded to five 2 MB files, with a capture
-   filter that excludes SSH management traffic:
+### Lab 2.2 — Ring-buffer capture for long runs (Topic: Continuous capture)
 
-   ```bash
-   dumpcap -i <INTERFACE_NUMBER> -f "not port 22" \
-     -b filesize:2000 -b files:5 -w lab02.pcapng
-   ```
+**Objective:** Capture continuously into a bounded set of rotating files.
 
-4. While the capture runs, generate enough traffic to force at least one
-   rotation (for example, download a multi-megabyte file or browse several
-   pages), then stop `dumpcap` with `Ctrl+C` after at least two rotation
-   files appear:
+```bash
+dumpcap -i any -b filesize:10240 -b files:5 -w /tmp/ring.pcapng
+# filesize is in kB; rotates through 5 files of ~10 MB, overwriting the oldest.
+# Stop with Ctrl-C, then:
+ls -1 /tmp/ring_*.pcapng
+```
 
-   ```bash
-   ls -la lab02_*.pcapng
-   ```
+**Expected result:** capture rotates through five ~10 MB files, reusing the oldest so disk
+use stays bounded while recent history is always retained — ring buffers are how you leave a
+capture running for days waiting for an intermittent fault without filling the disk.
 
-   **Expected result:** multiple sequentially timestamped files, and no
-   more than five present at once (older files are deleted as new ones are
-   written once the ring fills).
+**Negative test:** capture an intermittent nightly fault to a single unbounded file; it either
+fills the disk or you stop it before the event — a ring buffer is what keeps a bounded,
+always-recent window for rare events.
 
-5. Confirm the capture filter excluded SSH traffic even though the SSH
-   session used to run these commands (if remote) was active throughout:
+**Cleanup:** `rm /tmp/ring_*.pcapng`.
 
-   ```bash
-   tshark -r lab02_00001_*.pcapng -Y "tcp.port==22"
-   ```
+### Lab 2.3 — Capture filters (BPF) at capture time (Topic: Capture filtering)
 
-   **Expected result:** no output — port 22 traffic was never captured,
-   because the BPF capture filter discarded it before it reached disk.
+**Objective:** Reduce volume at the source with a BPF capture filter.
 
-6. **Negative test:** Attempt the same filter check for a protocol that was
-   *not* excluded (for example, DNS):
+```bash
+dumpcap -i any -f "tcp port 443" -c 100 -w /tmp/https.pcapng
+tshark -r /tmp/https.pcapng -T fields -e tcp.port -c 5
+```
 
-   ```bash
-   tshark -r lab02_00001_*.pcapng -Y "dns"
-   ```
+**Expected result:** only TCP/443 traffic is written to disk; unmatched traffic is never
+captured — a **capture filter** (BPF syntax) discards traffic before it is stored, essential
+on busy links where capturing everything is impractical.
 
-   **Expected result:** DNS packets appear if any were generated during the
-   capture window, confirming the capture filter's exclusion was specific
-   to port 22 rather than accidentally broad.
+**Negative test:** capture everything and plan to filter later on a very busy link; the file
+is enormous and may drop packets under load — capture filtering at the source is what keeps
+the file tractable, at the cost of discarding what you did not pre-select.
 
-7. **Cleanup:** Remove the lab capture files:
+**Cleanup:** `rm /tmp/https.pcapng`.
 
-   ```bash
-   cd ~ && rm -rf ~/lab02-capture
-   ```
+### Lab 2.4 — Capture placement: TAP vs SPAN (Topic: Capture points)
+
+**Objective:** Reason about where the capture sees traffic.
+
+```bash
+# Capture at the host NIC (endpoint view):
+dumpcap -i any -c 50 -w /tmp/host.pcapng
+capinfos -c /tmp/host.pcapng
+# Compare conceptually to a TAP or switch SPAN capture of the same conversation.
+```
+
+**Expected result:** the host capture sees only its own traffic; a **SPAN/mirror** sees a
+switch port's traffic (but can drop under oversubscription and may omit errors), and a **TAP**
+sees the full, error-inclusive link passively — placement decides what is (and is not) in
+your file, which is the first question to ask of any capture.
+
+**Negative test:** diagnose a two-server problem from a capture taken on your laptop; you see
+neither server's traffic — the capture point must sit where the traffic of interest actually
+flows.
+
+**Cleanup:** `rm /tmp/host.pcapng`.
 
 ## Lab Verification
 

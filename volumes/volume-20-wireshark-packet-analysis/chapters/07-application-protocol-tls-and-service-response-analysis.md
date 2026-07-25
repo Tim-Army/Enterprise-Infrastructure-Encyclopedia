@@ -291,85 +291,94 @@ tshark -r capture.pcapng -o "tls.keylog_file:tls-keys.log" \
 
 ## Hands-On Lab
 
-**Objective:** Capture an HTTPS session with a session-key log enabled,
-decrypt it in Wireshark, and measure the underlying HTTP response time.
+This chapter carries a topic-level walkthrough lab for **application-layer analysis in
+Domains 5.0 and 6.0** — HTTP, the TLS handshake, TLS decryption, and service response time.
+Every step is a runnable `tshark` analysis. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.4** — `tshark`, an HTTP/TLS capture, and (for Lab 7.3)
+a TLS key-log file captured with `SSLKEYLOGFILE` set while browsing. **Cost:** none.
 
-- Wireshark and `tshark` installed with capture rights ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
-- A TLS-capable client that honors `SSLKEYLOGFILE` (most Chromium- and
-  Firefox-based browsers, and `curl` built against a compatible TLS
-  library).
-- Network access to an HTTPS site for the lab request.
+### Lab 7.1 — HTTP request/response analysis (Topic: HTTP)
 
-**Steps**
+**Objective:** Match requests to responses and read status.
 
-1. Set the key log environment variable and start the capture:
+```bash
+tshark -r web.pcapng -Y "http.request" -T fields -e http.host -e http.request.method -e http.request.uri | head
+tshark -r web.pcapng -Y "http.response" -T fields -e http.response.code -e http.time | head
+```
 
-   ```bash
-   export SSLKEYLOGFILE=~/lab07-tls-keys.log
-   rm -f ~/lab07-tls-keys.log
-   tshark -i <INTERFACE_NUMBER> -f "tcp port 443" -w lab07.pcapng &
-   ```
+**Expected result:** requests (host/method/URI) and responses (status code and `http.time`,
+the request-to-response delay) — HTTP pairs each response to its request, and the status code
+plus `http.time` tell you whether the server answered, how, and how quickly.
 
-2. Generate an HTTPS request using the instrumented client (browser
-   navigation to an HTTPS site, or `curl` if built with key-log support):
+**Negative test:** conclude a page is broken from 404s that are only missing favicons while the
+main document returned 200; reading each request/response pair (not just counting errors)
+distinguishes a real failure from benign noise.
 
-   ```bash
-   curl -o /dev/null -s -w "%{http_code}\n" https://example.com/
-   ```
+**Cleanup:** none (read-only).
 
-3. Stop the capture:
+### Lab 7.2 — TLS handshake analysis (Topic: TLS)
 
-   ```bash
-   kill %1
-   ```
+**Objective:** Read the TLS handshake without decrypting payload.
 
-4. Confirm the key log file was populated:
+```bash
+tshark -r tls.pcapng -Y "tls.handshake.type == 1" \
+  -T fields -e tls.handshake.version -e tls.handshake.extensions_server_name    # ClientHello + SNI
+tshark -r tls.pcapng -Y "tls.handshake.type == 2" -T fields -e tls.handshake.version    # ServerHello
+```
 
-   ```bash
-   wc -l ~/lab07-tls-keys.log
-   ```
+**Expected result:** the ClientHello (offered versions, cipher suites, and the SNI naming the
+target host) and the ServerHello (the chosen version/cipher) — even fully encrypted, the TLS
+handshake is in cleartext, so you can see who is being contacted (SNI) and what crypto was
+negotiated, which is central to both analysis and security triage.
 
-   **Expected result:** at least one line, typically beginning with
-   `CLIENT_HANDSHAKE_TRAFFIC_SECRET` or `CLIENT_RANDOM` depending on TLS
-   version.
+**Negative test:** expect to read application data from a TLS session without keys; only the
+handshake metadata is visible — the payload stays encrypted, so SNI/version/cipher is what you
+analyze until you have decryption (Lab 7.3).
 
-5. Open `lab07.pcapng` in Wireshark and configure the key log path
-   (**Edit > Preferences > Protocols > TLS > (Pre)-Master-Secret log
-   filename**), pointing to `~/lab07-tls-keys.log`.
-6. Apply the filter:
+**Cleanup:** none (read-only).
 
-   ```text
-   http
-   ```
+### Lab 7.3 — TLS decryption with a key-log file (Topic: TLS decryption)
 
-   **Expected result:** decrypted HTTP request/response frames appear
-   (rather than only opaque `Application Data` records), confirming
-   successful decryption.
-7. Check the response timing:
+**Objective:** Decrypt TLS using session keys you legitimately captured.
 
-   ```text
-   http.time
-   ```
+```bash
+# Capture keys while browsing (client side you control):
+#   export SSLKEYLOGFILE=/tmp/keys.log ; then run the browser and capture tls.pcapng
+tshark -r tls.pcapng -o tls.keylog_file:/tmp/keys.log -Y "http2 || http" \
+  -T fields -e http.request.uri -e http2.header.value | head
+```
 
-   **Expected result:** the matched response shows a populated
-   `http.time` value in the Packet Detail pane under the HTTP layer.
-8. **Negative test:** Clear the TLS key log preference
-   (**Edit > Preferences > Protocols > TLS**, clear the filename field),
-   reload the capture, and re-apply the `http` filter.
+**Expected result:** with the key-log file, `tshark` decrypts the session and shows the
+application data (HTTP/2 requests) inside TLS — key-log decryption works because you captured
+the ephemeral session keys from a client you control; without them the same capture is opaque.
 
-   **Expected result:** no HTTP-layer matches — the same
-   `Application Data` records now dissect only as encrypted TLS, confirming
-   that decryption genuinely depended on the configured key log rather
-   than some other mechanism.
-9. **Cleanup:** Remove the lab capture and the key log file, and unset the
-   environment variable:
+**Negative test:** try to decrypt a third party's TLS with no keys and no server private key;
+you cannot — TLS decryption requires either the session keys (key-log) or the server's private
+key (RSA only, non-PFS), by design.
 
-   ```bash
-   rm -f lab07.pcapng ~/lab07-tls-keys.log
-   unset SSLKEYLOGFILE
-   ```
+**Cleanup:** `rm /tmp/keys.log` (session keys are sensitive — do not retain).
+
+### Lab 7.4 — Service response time (Topic: Application troubleshooting)
+
+**Objective:** Measure where time goes in a slow transaction.
+
+```bash
+tshark -r web.pcapng -Y "http.time > 1" -T fields -e ip.dst -e http.request.uri -e http.time
+tshark -r web.pcapng -q -z conv,tcp | sort -k7 -n | tail    # slowest/biggest conversations
+```
+
+**Expected result:** the requests whose server response time exceeded a second, and the
+heaviest TCP conversations — separating network time (TCP RTT/retransmits from Chapter 06)
+from server think-time (`http.time`) tells you whether a slow service is the network or the
+application, the key troubleshooting split.
+
+**Negative test:** escalate "the app is slow" to the network team when `http.time` shows the
+server taking seconds to respond while TCP RTT is a millisecond; the capture assigns the delay
+to the server, not the network — measuring both halves prevents mis-routing the ticket.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

@@ -218,116 +218,97 @@ echo "${fields[$RANDOM % ${#fields[@]}]}"
 
 ## Hands-On Lab
 
-**Objective:** Execute an integrated capstone investigation combining
-capture engineering, GUI/CLI workflow, protocol analysis across Chapters
-04–07, and [Chapter 08](08-security-investigation-command-line-analysis-and-automation.md)'s security/automation techniques against one
-realistic capture scenario, then produce a short professional analysis
-report.
+This chapter closes the volume with **WCA-101 readiness and a capstone** — a domain-weighted
+self-check, an integrative investigation that exercises every domain, and a written
+**Analysis Exercise** that captures a repeatable methodology. All steps are runnable
+`tshark` work. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 9.1–9.3** — `tshark` and a rich, realistic capture that
+contains a genuine problem (a throttled/broken transfer or an infection capture from
+malware-traffic-analysis.net). **Cost:** none.
 
-- Completion of Chapters 01–08 and their individual labs.
-- Wireshark and `tshark` installed with capture rights.
-- A lab environment (a VM or isolated segment) where the analyst can
-  generate DHCP, DNS, HTTPS, and at least one authorized port scan without
-  affecting production systems.
+### Lab 9.1 — Domain-weighted readiness self-check (Topic: Exam readiness)
 
-**Scenario:** A lab host is reported as "slow to reach the internet and
-occasionally unreachable." Investigate using only what the capture
-reveals, following the domain sequence from Design Considerations.
+**Objective:** Prove hands-on coverage of each WCA-101 domain, weighted by exam value.
 
-**Steps**
+```bash
+# 5.0 Protocols 43% (TCP 17%) — the highest-value skills:
+tshark -r cap.pcapng -q -z io,phs                                 # protocols present (D5)
+tshark -r cap.pcapng -Y "tcp.analysis.flags" -q -z expert         # TCP problems (D5 TCP + D6)
+# 3.0 Filters 12% / 2.0 Capture 10% / 1.0 Features 10% / 4.0 Interface 5%:
+tshark -r cap.pcapng -Y "tcp.port in {80 443}" -c 5               # display filter (D3)
+capinfos cap.pcapng                                               # capture features/metadata (D1/D2)
+```
 
-1. Start a bounded ring-buffer capture on the lab segment ([Chapter 02](02-enterprise-capture-engineering-taps-mirrors-and-ring-buffers.md)),
-   scoped to the lab host:
+**Expected result:** you can demonstrate each domain against a real capture — protocol
+identification and TCP analysis (the 43%/17% core), filtering, capture handling, and file
+features — confirming your practice is weighted the way the exam is, not spread evenly.
 
-   ```bash
-   dumpcap -i <INTERFACE_NUMBER> -f "host <LAB_HOST_IP>" \
-     -b filesize:51200 -b files:5 -w capstone.pcapng
-   ```
+**Negative test:** study all six domains equally; you under-invest in TCP (17% alone) and
+protocols (43%) while over-investing in the 5% interface domain — the weights are an
+instruction about where to spend time.
 
-2. On the lab host, reproduce the reported symptoms: renew the DHCP
-   lease, resolve a DNS name, make an HTTPS request, and (from an
-   authorized scanning host) run a brief port scan against the lab host to
-   simulate the "occasionally unreachable" report:
+**Cleanup:** none (read-only).
 
-   ```bash
-   # On the lab host
-   sudo dhclient -r && sudo dhclient        # or platform equivalent, Chapter 05
-   nslookup example.com
-   curl -o /dev/null -s -w "%{http_code}\n" https://example.com/
+### Lab 9.2 — Capstone investigation: triage a real problem (Topic: Integrative analysis)
 
-   # From an authorized scanning host, Chapter 08
-   nmap -sS -p 1-100 <LAB_HOST_IP>
-   ```
+**Objective:** Work one capture end-to-end, from profile to root cause, using every layer.
 
-3. Stop the capture:
+```bash
+# 1. Profile the capture:
+tshark -r case.pcapng -q -z io,phs
+tshark -r case.pcapng -q -z conv,ip | sort -k7 -rn | head
+# 2. Follow the suspect conversation down the stack:
+tshark -r case.pcapng -q -z expert                                # protocol-level problems
+tshark -r case.pcapng -Y "tcp.analysis.retransmission || tcp.analysis.zero_window" | head
+tshark -r case.pcapng -Y "tls.handshake.type==1" -T fields -e tls.handshake.extensions_server_name | head
+tshark -r case.pcapng -Y "dns.flags.rcode != 0 && dns.flags.response==1" | head
+```
 
-   ```bash
-   pkill -f "dumpcap -i"
-   ```
+**Expected result:** you localize the fault — e.g. retransmissions pointing to loss, a
+zero-window pointing to a stalled receiver, a DNS ServFail pointing to resolution, or an
+anomalous SNI/beacon pointing to compromise — by working top statistics → conversation →
+protocol layers in order, which is exactly the reasoning the WCA-101 troubleshooting domain
+rewards.
 
-4. Open the resulting file(s) in Wireshark, start with Statistics >
-   Protocol Hierarchy and Statistics > Conversations ([Chapter 03](03-wireshark-interface-profiles-filters-and-analysis-workflows.md)) to form
-   an initial picture before writing any filter.
-5. Confirm the DHCP DORA exchange completed successfully ([Chapter 05](05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md)):
+**Negative test:** jump straight to the packet you suspect without profiling; you anchor on a
+guess and miss the dominant problem the protocol-hierarchy and expert views would have named
+first — profile before you dive.
 
-   ```text
-   dhcp
-   ```
+**Cleanup:** none (read-only).
 
-6. Confirm DNS resolution succeeded with `rcode==0` ([Chapter 05](05-ipv6-icmpv6-udp-dhcp-and-dns-analysis.md)):
+### Lab 9.3 — Analysis Exercise: a repeatable methodology (Topic: Synthesis)
 
-   ```text
-   dns.qry.name=="example.com"
-   ```
+**Objective:** Write down the method so any capture yields a defensible conclusion — the
+analyst's real deliverable, not a single command.
 
-7. Confirm the TLS handshake completed and check for any retransmissions
-   during the HTTPS exchange (Chapters 06–07):
+> **Scenario.** A user reports "the application is slow and sometimes fails." You are handed a
+> capture from a TAP near the client and asked for a root-cause answer, not a guess.
 
-   ```text
-   tls.handshake.type==1 || tls.handshake.type==2
-   tcp.analysis.retransmission
-   ```
+Work through and **write down** your method:
 
-8. Identify the scan using the [Chapter 08](08-security-investigation-command-line-analysis-and-automation.md) detection one-liner:
+1. **Establish the capture's validity** — capture point, time window, drops (`capinfos`), and
+   an evidence hash (Chapter 01).
+2. **Profile** — protocol hierarchy, top conversations, expert summary (what dominates,
+   what is broken).
+3. **Isolate** — filter to the affected client/server conversation.
+4. **Descend the stack** — DNS resolved? TCP handshake clean? Retransmissions / zero window /
+   resets? TLS negotiated? `http.time` vs TCP RTT (network vs server)?
+5. **Attribute** — assign the delay/failure to a specific layer and party (network loss,
+   receiver flow control, server think-time, name resolution, or security event).
+6. **Report** — the evidence (filters + counts + RTT/throughput numbers) that supports the
+   conclusion, so it is reproducible by someone else.
 
-   ```bash
-   tshark -r capstone_00001_*.pcapng \
-     -Y "tcp.flags.syn==1 && tcp.flags.ack==0" \
-     -T fields -e ip.src -e tcp.dstport \
-     | awk '{print $1}' | sort | uniq -c | sort -rn
-   ```
+**Expected result:** a written methodology that turns any capture into a layered,
+evidence-backed root cause — the difference between an analyst who *guesses* and one who
+*proves*, which is what both the exam and real incident response reward.
 
-   **Expected result:** the scanning host's address appears with a high
-   distinct-port count, explaining the "occasionally unreachable" report
-   as scan-driven connection attempts rather than a genuine outage.
+**Negative test:** conclude "it's the network" without descending the stack; if `http.time`
+shows server think-time and TCP RTT is a millisecond, that conclusion is wrong and the method
+would have caught it — the discipline of the method is what prevents the confident wrong
+answer.
 
-9. Write a short analysis report (plain text or Markdown) summarizing, in
-   order: capture scope and duration, DHCP/DNS/TLS findings (each working
-   as expected or not), the identified scan source and its likely
-   explanation for the reported symptom, and a recommendation.
-10. **Negative test:** Re-run the step 8 detection command against only
-    the DHCP/DNS/HTTPS portion of the capture by filtering out the
-    scanning host's traffic first:
-
-    ```bash
-    tshark -r capstone_00001_*.pcapng -Y "not ip.addr==<SCAN_HOST_IP>" \
-      -w capstone-no-scan.pcapng
-    tshark -r capstone-no-scan.pcapng \
-      -Y "tcp.flags.syn==1 && tcp.flags.ack==0" \
-      -T fields -e ip.src | sort | uniq -c | sort -rn
-    ```
-
-    **Expected result:** no high-count scan signature remains, confirming
-    the detection in step 8 was correctly attributable to the scanning
-    host and not an artifact of the DHCP/DNS/HTTPS traffic itself.
-11. **Cleanup:** Remove all capstone capture files and the report draft
-    once reviewed:
-
-    ```bash
-    rm -f capstone_*.pcapng capstone-no-scan.pcapng
-    ```
+**Cleanup:** none (methodology artifact).
 
 ## Lab Verification
 

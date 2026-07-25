@@ -290,96 +290,92 @@ icmp.type==11 || icmp.type==0 || icmp.type==8
 
 ## Hands-On Lab
 
-**Objective:** Capture and analyze an ARP exchange, a ping (ICMP echo)
-sequence, and a traceroute, and build display filters that isolate each.
+This chapter carries a topic-level walkthrough lab for **each Layer-2/3 protocol in WCA-101
+Domain 5.0 (identify and explain common protocols, 43%)** — Ethernet, ARP, IPv4, and
+ICMPv4. Every step is a runnable `tshark` display-filter analysis. Each ends **`**Lab
+verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.4** — `tshark` and a capture containing local LAN
+traffic (`lan.pcapng`); the Wireshark SampleCaptures wiki has per-protocol examples.
+**Cost:** none.
 
-- Wireshark and `tshark` installed with capture rights ([Chapter 01](01-packet-analysis-foundations-wireshark-installation-and-evidence.md)).
-- Network connectivity to a local gateway and a public or internal host
-  reachable via multiple hops.
+### Lab 4.1 — Ethernet frame analysis (Topic: Ethernet)
 
-**Steps**
+**Objective:** Read the Ethernet header and identify frame types.
 
-1. Start a capture scoped to ARP and ICMP:
+```bash
+tshark -r lan.pcapng -T fields -e eth.src -e eth.dst -e eth.type -c 20
+tshark -r lan.pcapng -Y "eth.dst == ff:ff:ff:ff:ff:ff" | head    # broadcast frames
+```
 
-   ```bash
-   tshark -i <INTERFACE_NUMBER> -f "arp or icmp" -w lab04.pcapng &
-   ```
+**Expected result:** source/destination MACs and the EtherType (0x0800 IPv4, 0x0806 ARP,
+0x86dd IPv6), plus the broadcast frames — the Ethernet header's addressing and EtherType are
+how the frame is delivered on the segment and demultiplexed to the right L3 protocol.
 
-2. Force a fresh ARP resolution and generate ICMP traffic:
+**Negative test:** assume a frame to `ff:ff:ff:ff:ff:ff` is unicast; it is a broadcast every
+host on the segment processes — the destination MAC's form (unicast/multicast/broadcast)
+determines the delivery scope.
 
-   ```bash
-   # Linux
-   ip neigh flush all
-   ping -c 4 <GATEWAY_IP>
+**Cleanup:** none (read-only).
 
-   # macOS
-   sudo arp -a -d
-   ping -c 4 <GATEWAY_IP>
+### Lab 4.2 — ARP analysis (Topic: ARP)
 
-   # Windows (PowerShell, run as Administrator)
-   arp -d *
-   ping -n 4 <GATEWAY_IP>
-   ```
+**Objective:** Follow address resolution and spot ARP anomalies.
 
-3. Run a traceroute to a multi-hop destination, then stop the capture:
+```bash
+tshark -r lan.pcapng -Y "arp" -T fields -e arp.opcode -e arp.src.proto_ipv4 -e arp.dst.proto_ipv4 | head
+tshark -r lan.pcapng -Y "arp.duplicate-address-detected" | head    # Wireshark flags dup IPs
+```
 
-   ```bash
-   traceroute 8.8.8.8      # Linux/macOS
-   tracert 8.8.8.8          # Windows
-   ```
+**Expected result:** ARP requests (opcode 1, "who has") and replies (opcode 2, "is at") map
+IPs to MACs; Wireshark's `arp.duplicate-address-detected` flags two MACs claiming one IP — a
+misconfiguration or ARP-spoofing signal — showing how ARP both resolves addresses and reveals
+L2 attacks.
 
-   ```bash
-   # Stop the background tshark capture
-   kill %1
-   ```
+**Negative test:** ignore a burst of gratuitous ARPs re-mapping the gateway IP to a new MAC;
+that is the classic ARP-spoofing man-in-the-middle pattern — ARP has no authentication, so the
+capture is where you catch it.
 
-4. Open `lab04.pcapng` and confirm the ARP exchange:
+**Cleanup:** none (read-only).
 
-   ```text
-   arp
-   ```
+### Lab 4.3 — IPv4 header and fragmentation (Topic: IPv4)
 
-   **Expected result:** one ARP request (broadcast) followed by one ARP
-   reply (unicast) resolving the gateway's MAC address.
+**Objective:** Read the IPv4 header and identify fragmentation.
 
-5. Isolate the ping sequence:
+```bash
+tshark -r lan.pcapng -Y "ip" -T fields -e ip.src -e ip.dst -e ip.ttl -e ip.len -c 20
+tshark -r lan.pcapng -Y "ip.flags.mf == 1 || ip.frag_offset > 0" | head   # fragments
+```
 
-   ```text
-   icmp.type==8 || icmp.type==0
-   ```
+**Expected result:** source/destination, TTL (hop budget / rough OS fingerprint), and total
+length per packet, plus any fragments (More-Fragments flag set or non-zero offset) — the IPv4
+header carries routing, lifetime, and fragmentation state that explain path and MTU behavior.
 
-   **Expected result:** matched pairs of Echo Request/Echo Reply, four of
-   each if the `-c 4`/`-n 4` count was used.
+**Negative test:** blame an application for failures actually caused by fragmentation black-
+holing (fragments dropped by a firewall); only the `ip.flags`/`ip.frag_offset` view reveals
+it — fragmentation problems are invisible above L3.
 
-6. Isolate the traceroute hop ladder:
+**Cleanup:** none (read-only).
 
-   ```text
-   icmp.type==11 || (icmp.type==0 && ip.src==8.8.8.8)
-   ```
+### Lab 4.4 — ICMPv4 analysis (Topic: ICMPv4)
 
-   **Expected result:** a sequence of Time Exceeded responses from
-   increasing hop addresses, ending in an Echo Reply (or Destination
-   Unreachable, depending on probe type) from the final destination.
+**Objective:** Interpret ICMP control messages.
 
-7. **Negative test:** Filter for a TTL value guaranteed not to appear in
-   this lab's traffic:
+```bash
+tshark -r lan.pcapng -Y "icmp" -T fields -e icmp.type -e icmp.code -e ip.src -e ip.dst | head
+tshark -r lan.pcapng -Y "icmp.type == 3" -T fields -e icmp.code -e ip.src   # destination unreachable
+```
 
-   ```text
-   ip.ttl == 1 && icmp.type == 8
-   ```
+**Expected result:** echo request/reply (types 8/0), destination unreachable (type 3, with a
+code such as 3 = port unreachable or 4 = fragmentation-needed), and TTL-exceeded (type 11) —
+ICMP carries the network's error and diagnostic signaling, so these types are the network
+telling you why traffic failed.
 
-   **Expected result:** no packets match — a TTL of 1 was never used as
-   the *original* Echo Request TTL in this capture, confirming the filter
-   correctly returns an empty result rather than matching unrelated
-   traffic.
+**Negative test:** overlook an ICMP type 3 code 4 (fragmentation needed, DF set) while chasing
+an application timeout; that ICMP *is* the root cause (a PMTU black hole) — reading ICMP is
+often the fastest path to the real fault.
 
-8. **Cleanup:** Remove the lab capture:
-
-   ```bash
-   rm -f lab04.pcapng
-   ```
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 
