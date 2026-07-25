@@ -489,164 +489,130 @@ kubectl describe databaseclaim order-db -n payments
 
 ## Hands-On Lab
 
-**Objective:** Build a minimal platform CRD and controller (using a
-lightweight shell-based reconciliation loop to avoid a Go toolchain
-dependency), submit a self-service claim as an application team would,
-observe reconciliation, enforce a tenant ResourceQuota, and confirm quota
-correctly blocks an over-limit claim as a negative test.
+This chapter carries a topic-level walkthrough lab for **each platform-engineering building
+block** — CRDs and the operator pattern, Crossplane composites, golden paths, and
+multi-tenancy — the discipline of building a platform *product*. Every step is a runnable
+command. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 8.1–8.4** — a cluster with `kubectl`, and Crossplane installed
+for Lab 8.2. **Cost:** none beyond cloud charges if Crossplane provisions real cloud
+resources.
 
-- A `kind` cluster running Kubernetes 1.31.x.
-- `kubectl` and `jq` installed locally. No Go toolchain is required; the
-  lab's "operator" is a deliberately simplified `bash` reconciliation
-  loop to keep the lab dependency-free while still demonstrating the
-  watch-and-reconcile contract.
+### Lab 8.1 — Custom Resource Definitions and the operator pattern (Topic: Extending the API)
 
-### Procedure
-
-1. Create the cluster and install the `WebService` CRD.
-
-   ```bash
-   kind create cluster --name platform-lab --image kindest/node:v1.31.4
-   cat > webservice-crd.yaml <<'EOF'
-   apiVersion: apiextensions.k8s.io/v1
-   kind: CustomResourceDefinition
-   metadata:
-     name: webservices.platform.example.internal
-   spec:
-     group: platform.example.internal
-     names: { kind: WebService, plural: webservices, singular: webservice }
-     scope: Namespaced
-     versions:
-       - name: v1alpha1
-         served: true
-         storage: true
-         schema:
-           openAPIV3Schema:
-             type: object
-             properties:
-               spec:
-                 type: object
-                 required: ["image", "replicas"]
-                 properties:
-                   image: { type: string }
-                   replicas: { type: integer, minimum: 1 }
-               status:
-                 type: object
-                 properties:
-                   ready: { type: boolean }
-         subresources:
-           status: {}
-   EOF
-   kubectl apply -f webservice-crd.yaml
-   kubectl create namespace team-payments
-   ```
-
-2. Run a minimal reconciliation loop in the background that watches
-   `WebService` objects and creates a matching Deployment — standing in
-   for a compiled operator to keep the lab dependency-free.
-
-   ```bash
-   cat > reconcile.sh <<'EOF'
-   #!/bin/bash
-   while true; do
-     for ns in $(kubectl get webservices -A -o jsonpath='{range .items[*]}{.metadata.namespace} {.metadata.name}{"\n"}{end}'); do :; done
-     kubectl get webservices -A -o json | jq -c '.items[]' | while read -r item; do
-       ns=$(echo "$item" | jq -r '.metadata.namespace')
-       name=$(echo "$item" | jq -r '.metadata.name')
-       image=$(echo "$item" | jq -r '.spec.image')
-       replicas=$(echo "$item" | jq -r '.spec.replicas')
-       kubectl create deployment "$name" --image="$image" --replicas="$replicas" -n "$ns" \
-         --dry-run=client -o yaml | kubectl apply -f - >/dev/null
-       kubectl patch webservice "$name" -n "$ns" --type=merge --subresource=status \
-         -p '{"status":{"ready":true}}' >/dev/null 2>&1
-     done
-     sleep 5
-   done
-   EOF
-   chmod +x reconcile.sh
-   ./reconcile.sh &
-   ```
-
-3. Submit a self-service claim as an application team would.
-
-   ```bash
-   cat > claim.yaml <<'EOF'
-   apiVersion: platform.example.internal/v1alpha1
-   kind: WebService
-   metadata:
-     name: hello-service
-     namespace: team-payments
-   spec:
-     image: registry.k8s.io/e2e-test-images/agnhost:2.53
-     replicas: 2
-   EOF
-   kubectl apply -f claim.yaml
-   sleep 8
-   kubectl get webservice hello-service -n team-payments -o jsonpath='{.status}'
-   kubectl get deployment hello-service -n team-payments
-   ```
-
-   **Expected result:** the `WebService` status reports
-   `{"ready":true}` and a matching Deployment with 2 replicas exists —
-   the reconciliation loop translated the narrow self-service claim into
-   a running workload, the same contract a real operator implements.
-
-4. Apply a tenant-scoped ResourceQuota.
-
-   ```bash
-   kubectl apply -n team-payments -f - <<'EOF'
-   apiVersion: v1
-   kind: ResourceQuota
-   metadata:
-     name: tenant-quota
-   spec:
-     hard:
-       pods: "3"
-   EOF
-   ```
-
-### Negative test
-
-5. Submit a second claim that would exceed the tenant's pod quota once
-   reconciled, and confirm the platform's guardrail — not the
-   reconciliation loop itself — blocks it.
-
-   ```bash
-   cat > claim-oversized.yaml <<'EOF'
-   apiVersion: platform.example.internal/v1alpha1
-   kind: WebService
-   metadata:
-     name: oversized-service
-     namespace: team-payments
-   spec:
-     image: registry.k8s.io/e2e-test-images/agnhost:2.53
-     replicas: 5
-   EOF
-   kubectl apply -f claim-oversized.yaml
-   sleep 8
-   kubectl get deployment oversized-service -n team-payments
-   kubectl get events -n team-payments --field-selector reason=FailedCreate
-   ```
-
-   **Expected result:** the Deployment is created but its ReplicaSet
-   cannot bring all 5 pods up — events show
-   `exceeded quota: tenant-quota, requested: pods=1, used: pods=3, limited: pods=3`
-   once the existing `hello-service` pods plus new pods would cross the
-   `pods: "3"` ceiling, demonstrating that tenant isolation is enforced
-   by the shared ResourceQuota regardless of what the self-service claim
-   requested.
-
-### Cleanup
+**Objective:** Add a new resource kind to the Kubernetes API.
 
 ```bash
-kill %1 2>/dev/null   # stop the reconciliation loop background job
-kubectl delete namespace team-payments
-kubectl delete crd webservices.platform.example.internal
-kind delete cluster --name platform-lab
-rm -f webservice-crd.yaml reconcile.sh claim.yaml claim-oversized.yaml
+kubectl apply -f - <<'EOF'
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata: {name: widgets.platform.example.com}
+spec:
+  group: platform.example.com
+  scope: Namespaced
+  names: {plural: widgets, singular: widget, kind: Widget}
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema: {openAPIV3Schema: {type: object, properties: {spec: {type: object,
+      properties: {size: {type: string}}}}}}
+EOF
+kubectl apply -f - <<'EOF'
+apiVersion: platform.example.com/v1
+kind: Widget
+metadata: {name: w1, namespace: default}
+spec: {size: large}
+EOF
+kubectl get widgets
 ```
+
+**Expected result:** `Widget` becomes a first-class API resource and `w1` is created —
+CRDs extend the Kubernetes API with your own kinds, and an **operator** (a controller watching
+that CRD) then reconciles the desired state, the pattern behind databases-as-a-service,
+cert-manager, and most platform abstractions.
+
+**Negative test:** create a `Widget` before applying the CRD; the API rejects an unknown kind —
+the CRD must register the type before any instance can exist.
+
+**Cleanup:** `kubectl delete widget w1; kubectl delete crd widgets.platform.example.com`.
+
+### Lab 8.2 — Crossplane composite resources (Topic: Infrastructure composition)
+
+**Objective:** Offer a self-service cloud resource as a Kubernetes API.
+
+```bash
+# With Crossplane + a provider (e.g. provider-aws) installed and configured:
+kubectl get providers
+kubectl explain compositeresourcedefinition | head
+# Apply an XRD + Composition (platform-authored), then a developer claims it:
+kubectl apply -f claim-bucket.yaml       # kind: Bucket (your XRD), spec: {region: us-east-1}
+kubectl get bucket && kubectl get managed
+```
+
+**Expected result:** a developer's simple `Bucket` claim triggers Crossplane to provision the
+real cloud resource via the provider — Crossplane turns cloud infrastructure into Kubernetes
+APIs, so the platform team publishes an opinionated abstraction (the Composition) and
+developers self-serve without touching cloud consoles.
+
+**Negative test:** hand developers raw cloud IAM/console access instead of a composed claim;
+they provision inconsistently and off-policy — the composition is what encodes the platform's
+guardrails into a self-service API.
+
+**Cleanup:** delete the claim (`kubectl delete bucket <name>`) so Crossplane deprovisions the
+cloud resource.
+
+### Lab 8.3 — Golden paths and self-service (Topic: Platform products)
+
+**Objective:** Provide a paved-road template a developer can consume.
+
+```text
+# In a developer portal (e.g. Backstage) or a templating tool, publish a "New Service"
+#   golden path that scaffolds: repo + CI pipeline + Helm chart + Argo CD Application +
+#   namespace with quotas/RBAC. A developer runs the template and gets a deployable service.
+# Verify the generated Argo CD Application syncs and the service comes up.
+```
+
+**Expected result:** one self-service action scaffolds a production-ready service wired to the
+platform's CI/CD, security, and observability defaults — a golden path is the platform's
+*product*: the fastest route to production is also the compliant, well-instrumented one.
+
+**Negative test:** publish documentation instead of an executable template; each team
+reinvents CI/security/observability differently and inconsistently — a golden path encodes the
+right way as the easy way, which docs alone cannot.
+
+**Cleanup:** remove any scaffolded lab repo/resources.
+
+### Lab 8.4 — Multi-tenancy: namespaces, quotas, and isolation (Topic: Multi-tenancy)
+
+**Objective:** Give a tenant a bounded, isolated slice of the cluster.
+
+```bash
+kubectl create namespace tenant-a
+kubectl apply -f - <<'EOF'
+apiVersion: v1
+kind: ResourceQuota
+metadata: {name: quota, namespace: tenant-a}
+spec: {hard: {requests.cpu: "4", requests.memory: 8Gi, pods: "20"}}
+EOF
+kubectl apply -f - <<'EOF'
+apiVersion: v1
+kind: LimitRange
+metadata: {name: defaults, namespace: tenant-a}
+spec: {limits: [{type: Container, default: {cpu: 500m, memory: 256Mi}, defaultRequest: {cpu: 100m, memory: 128Mi}}]}
+EOF
+kubectl describe resourcequota quota -n tenant-a
+```
+
+**Expected result:** `tenant-a` is capped at its quota and containers get default requests/
+limits from the LimitRange — namespaces plus ResourceQuota, LimitRange, RBAC, and NetworkPolicy
+give a tenant a bounded, isolated slice so one team cannot starve or reach into another.
+
+**Negative test:** run tenants in a shared namespace with no quotas; one team's runaway
+workload starves the others and RBAC cannot separate them — the namespace boundary plus quotas
+is the unit of multi-tenant isolation.
+
+**Cleanup:** `kubectl delete namespace tenant-a`.
 
 ## Lab Verification
 

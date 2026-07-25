@@ -317,127 +317,105 @@ when the failure is below the pod abstraction, at the runtime or image layer.
 
 ## Hands-On Lab
 
-**Objective:** Build a minimal non-root image, run a local OCI-compliant
-registry, push/pull/scan/sign the image, and verify a tampering scenario is
-detectable.
+This chapter carries a topic-level walkthrough lab for **each container fundamental** —
+kernel isolation primitives, OCI image building, registries, and runtimes. Volume VIII is
+vendor-neutral, so these labs map to the concepts every container certification (KCNA,
+CKA/CKAD/CKS) assumes; every step is a runnable `podman`/`docker` command. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 1.1–1.4** — a Linux host with `podman` (or Docker) and
+access to a public registry (e.g. `quay.io`, `registry.access.redhat.com`, Docker Hub).
+**Cost:** none.
 
-- Docker Engine 25.x+ or Podman 5.x with `buildx`/native multi-arch support.
-- `trivy`, `syft`, and `cosign` CLIs installed locally.
-- `jq` installed.
-- Network access to pull `gcr.io/distroless/static-debian12` and
-  `registry:2` on first run.
+### Lab 1.1 — Kernel isolation: namespaces and cgroups (Topic: Container primitives)
 
-### Procedure
-
-1. Create a working directory and a minimal application.
-
-   ```bash
-   mkdir -p ~/labs/oci-image && cd ~/labs/oci-image
-   cat > main.go <<'EOF'
-   package main
-
-   import ("fmt"; "net/http")
-
-   func main() {
-       http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-           fmt.Fprintln(w, "hello from a distroless container")
-       })
-       http.ListenAndServe(":8080", nil)
-   }
-   EOF
-   cat > go.mod <<'EOF'
-   module app
-   go 1.23
-   EOF
-   ```
-
-2. Write the multi-stage Dockerfile from the Implementation section above
-   into `Dockerfile` in the same directory.
-
-3. Start a local, unauthenticated OCI registry for the lab.
-
-   ```bash
-   docker run -d --name lab-registry -p 5000:5000 registry:2
-   ```
-
-4. Build and push the image to the local registry.
-
-   ```bash
-   docker build -t localhost:5000/app:1.0.0 .
-   docker push localhost:5000/app:1.0.0
-   ```
-
-   **Expected result:** the push completes and reports a manifest digest,
-   for example `1.0.0: digest: sha256:... size: 528`.
-
-5. Verify the image runs as a non-root user and exposes the app.
-
-   ```bash
-   docker run -d --name app-test -p 8080:8080 localhost:5000/app:1.0.0
-   curl -s http://localhost:8080/
-   docker inspect app-test --format '{{.Config.User}}'
-   ```
-
-   **Expected result:** curl returns the hello message; `Config.User`
-   reports `nonroot` (or its numeric UID), not empty/root.
-
-6. Generate an SBOM and scan the pushed image.
-
-   ```bash
-   syft localhost:5000/app:1.0.0 -o table
-   trivy image --severity HIGH,CRITICAL localhost:5000/app:1.0.0
-   ```
-
-   **Expected result:** Trivy reports the distroless base's minimal package
-   set with few or no HIGH/CRITICAL findings, demonstrating the attack
-   surface reduction from Chapter 01's Design Considerations.
-
-7. Sign the pushed digest with cosign, using a local key pair for a
-   registry that has no OIDC issuer configured in this lab.
-
-   ```bash
-   cosign generate-key-pair
-   DIGEST=$(docker inspect localhost:5000/app:1.0.0 --format '{{index .RepoDigests 0}}' 2>/dev/null || \
-     crane digest localhost:5000/app:1.0.0)
-   cosign sign --key cosign.key localhost:5000/app@$(crane digest localhost:5000/app:1.0.0)
-   ```
-
-8. Verify the signature.
-
-   ```bash
-   cosign verify --key cosign.pub localhost:5000/app@$(crane digest localhost:5000/app:1.0.0)
-   ```
-
-   **Expected result:** cosign prints the verified claims and exits 0.
-
-### Negative test
-
-9. Push a modified image under the same tag, then attempt to verify the
-   *original* signature against the *new* digest to confirm tampering is
-   detected.
-
-   ```bash
-   echo "# tampered" >> Dockerfile
-   docker build -t localhost:5000/app:1.0.0 .
-   docker push localhost:5000/app:1.0.0
-   cosign verify --key cosign.pub localhost:5000/app@$(crane digest localhost:5000/app:1.0.0)
-   ```
-
-   **Expected result:** verification fails with `no matching signatures`
-   because the tampered image's digest was never signed — the tag moved,
-   but the digest it now points to has no valid signature. This is the
-   mechanism that makes digest-pinned, signature-verified deployments safe
-   against a compromised or mistakenly overwritten tag.
-
-### Cleanup
+**Objective:** Observe the isolation that makes a container a container.
 
 ```bash
-docker rm -f app-test lab-registry
-docker rmi localhost:5000/app:1.0.0
-rm -f cosign.key cosign.pub app-1.0.0.sbom.json
+podman run -d --name iso --memory 128m busybox sleep 600
+podman inspect iso --format '{{.HostConfig.Memory}}'          # cgroup memory limit (bytes)
+podman exec iso ps aux                                        # its own PID namespace: PID 1 = sleep
+sudo lsns -p "$(podman inspect iso --format '{{.State.Pid}}')" 2>/dev/null | head
 ```
+
+**Expected result:** the container sees only its own processes (PID 1 is `sleep`), has a
+128 MB cgroup memory cap, and `lsns` shows separate namespaces — a container is just a host
+process isolated by **namespaces** (what it can see) and **cgroups** (what it can use), not a
+virtual machine.
+
+**Negative test:** run `--memory 128m` and then a workload that allocates 512 MB inside; the
+cgroup OOM-kills it — the memory limit is enforced by the kernel, not advisory.
+
+**Cleanup:** `podman rm -f iso`.
+
+### Lab 1.2 — Build an OCI image (Topic: Images)
+
+**Objective:** Build a small, multi-stage image from a Containerfile.
+
+```bash
+mkdir -p ~/img && cd ~/img
+cat > Containerfile <<'EOF'
+FROM golang:1.22 AS build
+WORKDIR /src
+RUN echo 'package main; func main(){println("hi")}' > main.go && go build -o /app main.go
+FROM registry.access.redhat.com/ubi9/ubi-micro
+COPY --from=build /app /app
+ENTRYPOINT ["/app"]
+EOF
+podman build -t localhost/hello:1.0 .
+podman run --rm localhost/hello:1.0
+podman image inspect localhost/hello:1.0 --format '{{.Size}}'
+```
+
+**Expected result:** a tiny final image (a static binary on `ubi-micro`, not the full Go
+toolchain) that prints `hi` — multi-stage builds keep build tooling out of the runtime image,
+which is smaller, faster to pull, and has less attack surface.
+
+**Negative test:** collapse to a single stage `FROM golang:1.22`; the image is hundreds of MB
+and ships a compiler into production — the multi-stage split is what makes it lean and secure.
+
+**Cleanup:** `podman rmi localhost/hello:1.0; rm -rf ~/img`.
+
+### Lab 1.3 — Registries, tags, and digests (Topic: Registries)
+
+**Objective:** Push an image and pin it by immutable digest.
+
+```bash
+podman tag localhost/hello:1.0 quay.io/<you>/hello:1.0    # (after: podman login quay.io)
+podman push quay.io/<you>/hello:1.0
+podman inspect quay.io/<you>/hello:1.0 --format '{{index .RepoDigests 0}}'
+podman pull quay.io/<you>/hello@sha256:<digest>            # pin by digest, not tag
+```
+
+**Expected result:** the image pushes to the registry and can be pulled by its `sha256`
+digest — tags are mutable (`:1.0` can be overwritten), but a **digest** names exact content,
+so production deployments pin digests for reproducibility and supply-chain integrity.
+
+**Negative test:** deploy `:latest` to production and let someone re-push it; your running
+version silently changes on the next pull — pinning a digest is what prevents that drift.
+
+**Cleanup:** remove the pushed tag from the registry if lab-only.
+
+### Lab 1.4 — Runtimes and the OCI stack (Topic: Runtimes)
+
+**Objective:** See the layered runtime beneath a container.
+
+```bash
+podman info --format '{{.Host.OCIRuntime.Name}}'     # e.g. crun or runc
+podman run --rm --runtime crun busybox true && echo "ran under crun"
+podman info --format '{{.Store.GraphDriverName}}'    # e.g. overlay
+```
+
+**Expected result:** the high-level engine (`podman`) delegates to an OCI runtime (`crun`/
+`runc`) that actually creates the container, over an overlay storage driver — the OCI
+runtime/image specs are why images and runtimes are interchangeable across Podman, Docker,
+containerd, and Kubernetes' CRI.
+
+**Negative test:** assume Docker-specific behavior is universal; a non-OCI assumption breaks
+on containerd/CRI-O under Kubernetes — building to the OCI specs is what keeps images portable
+across the whole stack.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

@@ -409,171 +409,107 @@ kubectl logs -n kube-system deployment/cluster-autoscaler --tail=100
 
 ## Hands-On Lab
 
-**Objective:** Deploy a workload with defined QoS, enforce anti-affinity
-and a PodDisruptionBudget, drive horizontal scaling under load, and
-observe a drain being correctly blocked by the PDB.
+This chapter carries a topic-level walkthrough lab for **each workload and scheduling skill** —
+Deployments and rollouts, scheduling controls, resources/QoS, and autoscaling with probes —
+the CKA/CKAD workload core. Every step is a runnable `kubectl` command. Each ends **`**Lab
+verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 3.1–3.4** — a working cluster, `kubectl`, and (for Lab 3.4)
+the metrics-server installed. Work in a scratch namespace: `kubectl create ns lab && kubectl
+config set-context --current --namespace=lab`. **Cost:** none.
 
-- A running Kubernetes 1.31.x cluster (`kind` is sufficient) with at least
-  three worker nodes.
-- `kubectl` matching the cluster's minor version, and `hey` or `curl`
-  available locally to generate load.
-- `metrics-server` installed in the cluster (required for HPA in this
-  lab).
+### Lab 3.1 — Deployments and rolling updates (Topic: Workloads)
 
-### Procedure
-
-1. Create a three-worker `kind` cluster and install `metrics-server`
-   (with the `--kubelet-insecure-tls` patch `kind` clusters require).
-
-   ```bash
-   cat > kind-config.yaml <<'EOF'
-   kind: Cluster
-   apiVersion: kind.x-k8s.io/v1alpha4
-   nodes:
-     - role: control-plane
-     - role: worker
-     - role: worker
-     - role: worker
-   EOF
-   kind create cluster --name workloads-lab --config kind-config.yaml --image kindest/node:v1.31.4
-
-   kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-   kubectl patch deployment metrics-server -n kube-system --type='json' \
-     -p='[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
-   kubectl wait --for=condition=available --timeout=120s deployment/metrics-server -n kube-system
-   ```
-
-2. Deploy a workload with requests/limits, required anti-affinity, and a
-   PodDisruptionBudget.
-
-   ```bash
-   kubectl create namespace workloads-lab
-   cat > app.yaml <<'EOF'
-   apiVersion: apps/v1
-   kind: Deployment
-   metadata:
-     name: demo-api
-     namespace: workloads-lab
-   spec:
-     replicas: 3
-     selector:
-       matchLabels: { app: demo-api }
-     template:
-       metadata:
-         labels: { app: demo-api }
-       spec:
-         affinity:
-           podAntiAffinity:
-             requiredDuringSchedulingIgnoredDuringExecution:
-               - labelSelector: { matchLabels: { app: demo-api } }
-                 topologyKey: kubernetes.io/hostname
-         containers:
-           - name: demo-api
-             image: registry.k8s.io/e2e-test-images/agnhost:2.53
-             args: ["netexec", "--http-port=8080"]
-             resources:
-               requests: { cpu: "100m", memory: "64Mi" }
-               limits: { cpu: "200m", memory: "64Mi" }
-             ports: [{ containerPort: 8080 }]
-   ---
-   apiVersion: v1
-   kind: Service
-   metadata:
-     name: demo-api
-     namespace: workloads-lab
-   spec:
-     selector: { app: demo-api }
-     ports: [{ port: 80, targetPort: 8080 }]
-   ---
-   apiVersion: policy/v1
-   kind: PodDisruptionBudget
-   metadata:
-     name: demo-api
-     namespace: workloads-lab
-   spec:
-     minAvailable: 2
-     selector:
-       matchLabels: { app: demo-api }
-   EOF
-   kubectl apply -f app.yaml
-   kubectl rollout status deployment/demo-api -n workloads-lab
-   ```
-
-   **Expected result:** three `Running` pods, each on a different node
-   (confirm with `kubectl get pods -n workloads-lab -o wide`), because the
-   required anti-affinity rule leaves the scheduler no other option.
-
-3. Apply an HPA and confirm it reads live metrics.
-
-   ```bash
-   kubectl autoscale deployment demo-api -n workloads-lab \
-     --cpu-percent=50 --min=3 --max=8
-   kubectl get hpa -n workloads-lab -w
-   ```
-
-   **Expected result:** within a minute, the HPA row shows a numeric
-   `TARGETS` value (for example `1%/50%`) instead of `<unknown>`,
-   confirming metrics-server is being read successfully. Press Ctrl+C once
-   confirmed.
-
-4. Generate load against the Service and observe scale-out.
-
-   ```bash
-   kubectl run load-generator -n workloads-lab --rm -it --restart=Never \
-     --image=busybox:1.36 -- /bin/sh -c \
-     "while true; do wget -q -O- http://demo-api.workloads-lab.svc.cluster.local/; done"
-   ```
-
-   In a second terminal, watch replica count climb:
-
-   ```bash
-   kubectl get hpa -n workloads-lab demo-api -w
-   ```
-
-   **Expected result:** `REPLICAS` increases beyond 3 as CPU utilization
-   crosses the 50% target. Stop the load generator with Ctrl+C in its
-   terminal once you observe at least one scale-out event, then Ctrl+C the
-   watch.
-
-### Negative test
-
-5. Attempt to drain a node holding a `demo-api` pod while only three
-   replicas exist, and observe the PDB blocking eviction below the
-   `minAvailable` floor.
-
-   ```bash
-   NODE=$(kubectl get pod -n workloads-lab -l app=demo-api \
-     -o jsonpath='{.items[0].spec.nodeName}')
-   kubectl drain "$NODE" --ignore-daemonsets --delete-emptydir-data --timeout=30s
-   ```
-
-   **Expected result:** the drain reports an eviction error referencing
-   `Cannot evict pod as it would violate the pod's disruption budget`
-   once removing that pod would drop available replicas below
-   `minAvailable: 2` and the deployment cannot immediately reschedule a
-   replacement onto the (now cordoned) node. Confirm the node was cordoned
-   but the pod remains:
-
-   ```bash
-   kubectl get nodes
-   kubectl get pods -n workloads-lab -o wide
-   ```
-
-6. Uncordon the node to restore normal scheduling.
-
-   ```bash
-   kubectl uncordon "$NODE"
-   ```
-
-### Cleanup
+**Objective:** Deploy, scale, update, and roll back.
 
 ```bash
-kubectl delete namespace workloads-lab
-kind delete cluster --name workloads-lab
-rm -f kind-config.yaml app.yaml
+kubectl create deployment web --image=nginx:1.25 --replicas=3
+kubectl rollout status deployment/web
+kubectl set image deployment/web nginx=nginx:1.27
+kubectl rollout history deployment/web
+kubectl rollout undo deployment/web        # roll back to the previous revision
+kubectl get pods -l app=web
 ```
+
+**Expected result:** three replicas run, the image update rolls out pod-by-pod (no downtime),
+and `rollout undo` reverts it — a Deployment manages a ReplicaSet and performs controlled
+rolling updates with revision history, the standard way to run stateless workloads.
+
+**Negative test:** `kubectl delete pod` one of the pods; the Deployment immediately recreates
+it — the controller reconciles actual state to the declared replica count, so deleting a pod
+does not reduce the workload.
+
+**Cleanup:** `kubectl delete deployment web`.
+
+### Lab 3.2 — Scheduling: taints, tolerations, and affinity (Topic: Scheduling)
+
+**Objective:** Control which nodes a Pod may land on.
+
+```bash
+kubectl taint nodes <node> tier=gpu:NoSchedule
+kubectl label nodes <node> disktype=ssd
+kubectl run pinned --image=nginx --overrides='
+{"spec":{"tolerations":[{"key":"tier","value":"gpu","effect":"NoSchedule"}],
+ "nodeSelector":{"disktype":"ssd"}}}'
+kubectl get pod pinned -o wide
+```
+
+**Expected result:** the Pod schedules onto the tainted/labeled node because it *tolerates*
+the taint and *selects* the label — taints repel Pods that lack a matching toleration, while
+nodeSelector/affinity attracts Pods to labeled nodes; together they place workloads
+deliberately.
+
+**Negative test:** run a plain Pod with no toleration; it will not schedule onto the tainted
+node (stays `Pending` if that is the only node) — the taint blocks it, which is exactly its
+purpose (e.g. reserving GPU nodes).
+
+**Cleanup:** `kubectl delete pod pinned; kubectl taint nodes <node> tier=gpu:NoSchedule-;
+kubectl label nodes <node> disktype-`.
+
+### Lab 3.3 — Resource requests, limits, and QoS (Topic: Capacity)
+
+**Objective:** Size a workload and observe its QoS class.
+
+```bash
+kubectl run sized --image=nginx --overrides='
+{"spec":{"containers":[{"name":"sized","image":"nginx",
+ "resources":{"requests":{"cpu":"100m","memory":"64Mi"},
+              "limits":{"cpu":"200m","memory":"128Mi"}}}]}}'
+kubectl get pod sized -o jsonpath='{.status.qosClass}{"\n"}'
+kubectl describe node <node> | sed -n '/Allocated resources/,/Events/p'
+```
+
+**Expected result:** the Pod reports QoS class `Burstable` (requests < limits), and the node's
+allocated-resources view reflects the request — **requests** drive scheduling and reservation,
+**limits** cap usage; equal requests/limits give `Guaranteed`, none gives `BestEffort`.
+
+**Negative test:** run a Pod with no requests/limits (`BestEffort`); under node memory pressure
+it is the first evicted — requests are what protect a workload from eviction.
+
+**Cleanup:** `kubectl delete pod sized`.
+
+### Lab 3.4 — Autoscaling and health probes (Topic: Scaling and health)
+
+**Objective:** Add probes and a Horizontal Pod Autoscaler.
+
+```bash
+kubectl create deployment api --image=registry.k8s.io/hpa-example
+kubectl set resources deployment/api --requests=cpu=200m
+kubectl autoscale deployment api --cpu-percent=50 --min=1 --max=5
+kubectl get hpa api
+# probes (add to the pod spec): livenessProbe/readinessProbe httpGet path/port
+kubectl patch deployment api --type='json' -p='[{"op":"add","path":"/spec/template/spec/containers/0/readinessProbe","value":{"httpGet":{"path":"/","port":80},"initialDelaySeconds":3,"periodSeconds":5}}]'
+```
+
+**Expected result:** the HPA tracks CPU against the 50% target and scales replicas between 1
+and 5; the readiness probe gates traffic until the container is ready — probes decide health/
+readiness and the HPA decides count, so the workload self-heals and self-sizes.
+
+**Negative test:** create an HPA with no resource *requests* on the pods; it cannot compute
+utilization and does not scale — the HPA needs requests as the denominator for its percentage
+target.
+
+**Cleanup:** `kubectl delete deployment api; kubectl delete hpa api`.
 
 ## Lab Verification
 

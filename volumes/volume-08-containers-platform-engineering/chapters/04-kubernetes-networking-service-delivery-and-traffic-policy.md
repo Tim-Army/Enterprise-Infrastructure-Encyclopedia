@@ -419,121 +419,117 @@ kubectl run curl-test -n payments --rm -it --restart=Never --image=curlimages/cu
 
 ## Hands-On Lab
 
-**Objective:** Deploy two workloads in the same namespace, confirm they
-can reach each other with no policy in place, apply a default-deny
-baseline with explicit allows, and prove the deny is actually enforced
-with a negative test.
+This chapter carries a topic-level walkthrough lab for **each networking skill** — Services,
+DNS/service discovery, Ingress, and NetworkPolicy — the CKA/CKS networking core. Every step
+is a runnable `kubectl` command. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 4.1–4.4** — a cluster with a CNI, `kubectl`, an ingress
+controller (e.g. ingress-nginx) for Lab 4.3, and a NetworkPolicy-capable CNI (Calico/Cilium)
+for Lab 4.4. Work in namespace `lab`. **Cost:** none.
 
-- A `kind` cluster whose CNI enforces `NetworkPolicy`. Default `kindnet`
-  does **not** enforce NetworkPolicy, so this lab installs Calico.
-- `kubectl` matching the 1.31.x baseline.
+### Lab 4.1 — Services and their types (Topic: Service delivery)
 
-### Procedure
-
-1. Create a cluster with the default CNI disabled, then install Calico so
-   NetworkPolicy is actually enforced.
-
-   ```bash
-   cat > kind-config.yaml <<'EOF'
-   kind: Cluster
-   apiVersion: kind.x-k8s.io/v1alpha4
-   networking:
-     disableDefaultCNI: true
-   nodes:
-     - role: control-plane
-     - role: worker
-   EOF
-   kind create cluster --name netpol-lab --config kind-config.yaml --image kindest/node:v1.31.4
-   kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml
-   kubectl wait --for=condition=Ready pods -l k8s-app=calico-node -n kube-system --timeout=180s
-   ```
-
-2. Deploy a client and a server pod plus a Service for the server.
-
-   ```bash
-   kubectl create namespace netpol-lab
-   kubectl run server -n netpol-lab --image=registry.k8s.io/e2e-test-images/agnhost:2.53 \
-     --labels="app=server" -- netexec --http-port=8080
-   kubectl expose pod server -n netpol-lab --port=80 --target-port=8080
-   kubectl run client -n netpol-lab --image=curlimages/curl:8.10.1 \
-     --labels="app=client" --command -- sleep infinity
-   kubectl wait --for=condition=Ready pod/server pod/client -n netpol-lab --timeout=60s
-   ```
-
-3. Confirm open connectivity before any policy exists.
-
-   ```bash
-   kubectl exec -n netpol-lab client -- curl -s -o /dev/null -w '%{http_code}\n' http://server
-   ```
-
-   **Expected result:** `200`.
-
-4. Apply a default-deny-all policy for the namespace.
-
-   ```bash
-   cat > default-deny.yaml <<'EOF'
-   apiVersion: networking.k8s.io/v1
-   kind: NetworkPolicy
-   metadata:
-     name: default-deny-all
-     namespace: netpol-lab
-   spec:
-     podSelector: {}
-     policyTypes: ["Ingress", "Egress"]
-   EOF
-   kubectl apply -f default-deny.yaml
-   ```
-
-### Negative test
-
-5. Re-test connectivity and confirm it now fails.
-
-   ```bash
-   kubectl exec -n netpol-lab client -- curl -s -m 5 -o /dev/null -w '%{http_code}\n' http://server || echo "connection blocked as expected"
-   ```
-
-   **Expected result:** the `curl` call times out and the command exits
-   non-zero, printing `connection blocked as expected` — the default-deny
-   policy is now enforced by Calico.
-
-6. Add a scoped allow rule for exactly `client -> server` on port 8080 and
-   confirm connectivity is restored for that path only.
-
-   ```bash
-   cat > allow-client-to-server.yaml <<'EOF'
-   apiVersion: networking.k8s.io/v1
-   kind: NetworkPolicy
-   metadata:
-     name: allow-client-to-server
-     namespace: netpol-lab
-   spec:
-     podSelector:
-       matchLabels: { app: server }
-     policyTypes: ["Ingress"]
-     ingress:
-       - from:
-           - podSelector: { matchLabels: { app: client } }
-         ports:
-           - protocol: TCP
-             port: 8080
-   EOF
-   kubectl apply -f allow-client-to-server.yaml
-   kubectl exec -n netpol-lab client -- curl -s -o /dev/null -w '%{http_code}\n' http://server
-   ```
-
-   **Expected result:** `200` — connectivity is restored for the
-   explicitly allowed path, while any other pod that might be added to
-   the namespace remains denied by default.
-
-### Cleanup
+**Objective:** Expose a Deployment and read the endpoints.
 
 ```bash
-kubectl delete namespace netpol-lab
-kind delete cluster --name netpol-lab
-rm -f kind-config.yaml default-deny.yaml allow-client-to-server.yaml
+kubectl create deployment web --image=nginx --replicas=2
+kubectl expose deployment web --port=80 --target-port=80        # ClusterIP (default)
+kubectl get svc web -o wide
+kubectl get endpointslices -l kubernetes.io/service-name=web
+kubectl expose deployment web --name=web-np --port=80 --type=NodePort
 ```
+
+**Expected result:** the ClusterIP Service load-balances to the two pod endpoints, and the
+NodePort variant also exposes a node port — a Service is a stable virtual IP/name in front of
+a changing set of pod IPs (tracked in EndpointSlices); ClusterIP is internal, NodePort/
+LoadBalancer expose externally.
+
+**Negative test:** point a Service's selector at a label no pod has; the Service has zero
+endpoints and connections hang/refuse — the selector-to-pod-label match is what wires a
+Service to its backends.
+
+**Cleanup:** `kubectl delete deployment web; kubectl delete svc web web-np`.
+
+### Lab 4.2 — Cluster DNS and service discovery (Topic: DNS)
+
+**Objective:** Resolve Services by name inside the cluster.
+
+```bash
+kubectl create deployment web --image=nginx && kubectl expose deployment web --port=80
+kubectl run probe --image=busybox --restart=Never -it --rm -- \
+  sh -c "nslookup web.lab.svc.cluster.local; wget -qO- http://web.lab.svc.cluster.local | head -1"
+```
+
+**Expected result:** `nslookup` resolves `web.lab.svc.cluster.local` to the ClusterIP and the
+`wget` reaches nginx — CoreDNS gives every Service a DNS name (`<svc>.<ns>.svc.cluster.local`),
+so workloads discover each other by name, not by hard-coded IP.
+
+**Negative test:** address a Service by a pod's IP instead of the Service name; when that pod
+is replaced the IP changes and the caller breaks — the Service DNS name is the stable
+contract.
+
+**Cleanup:** `kubectl delete deployment web; kubectl delete svc web`.
+
+### Lab 4.3 — Ingress (Topic: External traffic)
+
+**Objective:** Route external HTTP to a Service by host/path.
+
+```bash
+kubectl create deployment web --image=nginx && kubectl expose deployment web --port=80
+kubectl create ingress web --rule="demo.example.com/*=web:80"
+kubectl get ingress web
+curl -s -H "Host: demo.example.com" http://<ingress-controller-ip>/ | head -1
+```
+
+**Expected result:** the Ingress controller routes requests for `demo.example.com` to the
+`web` Service — Ingress provides host/path-based HTTP(S) routing and TLS termination at the
+edge, consolidating many Services behind one external entry point (unlike a LoadBalancer per
+Service).
+
+**Negative test:** create an Ingress object with no ingress controller installed; nothing
+routes — the Ingress resource is only a rule set, and a controller must be running to
+implement it.
+
+**Cleanup:** `kubectl delete ingress web; kubectl delete deployment web; kubectl delete svc web`.
+
+### Lab 4.4 — NetworkPolicy (Topic: Traffic policy)
+
+**Objective:** Default-deny a namespace and allow only intended traffic.
+
+```bash
+kubectl label ns lab team=lab --overwrite
+kubectl apply -f - <<'EOF'
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: default-deny, namespace: lab}
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+EOF
+kubectl apply -f - <<'EOF'
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: allow-web, namespace: lab}
+spec:
+  podSelector: {matchLabels: {app: web}}
+  policyTypes: [Ingress]
+  ingress:
+  - from: [{podSelector: {matchLabels: {role: client}}}]
+    ports: [{port: 80}]
+EOF
+kubectl get netpol -n lab
+```
+
+**Expected result:** with `default-deny` in place, no ingress reaches pods except what
+`allow-web` explicitly permits (clients labeled `role=client` to `app=web` on port 80) —
+NetworkPolicy is default-allow until a policy selects a pod, then default-deny; the pattern is
+deny-all first, then allow the intended flows.
+
+**Negative test:** apply the policies on a CNI that does not enforce NetworkPolicy (e.g. plain
+flannel); traffic flows regardless — enforcement requires a policy-capable CNI (Calico/Cilium).
+
+**Cleanup:** `kubectl delete netpol default-deny allow-web -n lab`.
 
 ## Lab Verification
 

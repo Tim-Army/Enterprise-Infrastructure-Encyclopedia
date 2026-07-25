@@ -460,163 +460,117 @@ kubectl describe analysisrun -n payments -l rollout=checkout-api
 
 ## Hands-On Lab
 
-**Objective:** Deploy an application through Argo CD from a local Git
-repository, observe automatic sync, trigger self-healing against manual
-drift, and confirm sync failure when the deployed image fails a signature
-policy as a negative test.
+This chapter carries a topic-level walkthrough lab for **each cloud-native delivery skill** —
+Helm packaging, GitOps with Argo CD, and software-supply-chain security. Every step is a
+runnable command. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 7.1–7.4** — a cluster with `kubectl` and `helm`, Argo CD
+installed for Lab 7.2, and `cosign`/`syft` for Lab 7.3. **Cost:** none.
 
-- A `kind` cluster running Kubernetes 1.31.x with Argo CD installed.
-- `git`, `kubectl`, and the `argocd` CLI installed locally.
-- A local bare Git repository is sufficient — no external Git hosting
-  required.
+### Lab 7.1 — Package and deploy with Helm (Topic: Packaging)
 
-### Procedure
-
-1. Create the cluster and install Argo CD.
-
-   ```bash
-   kind create cluster --name gitops-lab --image kindest/node:v1.31.4
-   kubectl create namespace argocd
-   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.13.0/manifests/install.yaml
-   kubectl wait --for=condition=available --timeout=300s deployment/argocd-server -n argocd
-   ```
-
-2. Create a local Git repository holding a minimal manifest set, and
-   serve it over the local filesystem (Argo CD supports `file://` for lab
-   use via a lightweight local Git HTTP daemon).
-
-   ```bash
-   mkdir -p ~/labs/gitops-repo/app && cd ~/labs/gitops-repo
-   cat > app/deployment.yaml <<'EOF'
-   apiVersion: apps/v1
-   kind: Deployment
-   metadata:
-     name: demo-api
-     namespace: gitops-lab
-   spec:
-     replicas: 2
-     selector: { matchLabels: { app: demo-api } }
-     template:
-       metadata: { labels: { app: demo-api } }
-       spec:
-         containers:
-           - name: demo-api
-             image: registry.k8s.io/e2e-test-images/agnhost:2.53
-             args: ["netexec", "--http-port=8080"]
-   EOF
-   git init -q && git add -A && git commit -q -m "initial manifest"
-   git daemon --base-path=.. --export-all --reuseaddr --informative-errors --verbose &
-   ```
-
-3. Register the Application in Argo CD, pointing at the local `git://`
-   repository, with automated sync and self-heal enabled.
-
-   ```bash
-   kubectl create namespace gitops-lab
-   cat > application.yaml <<'EOF'
-   apiVersion: argoproj.io/v1alpha1
-   kind: Application
-   metadata:
-     name: demo-api
-     namespace: argocd
-   spec:
-     project: default
-     source:
-       repoURL: git://host.docker.internal/gitops-repo
-       targetRevision: HEAD
-       path: app
-     destination:
-       server: https://kubernetes.default.svc
-       namespace: gitops-lab
-     syncPolicy:
-       automated: { prune: true, selfHeal: true }
-   EOF
-   kubectl apply -f application.yaml
-   kubectl get application demo-api -n argocd -w
-   ```
-
-   **Expected result:** `SYNC STATUS` reaches `Synced` and
-   `HEALTH STATUS` reaches `Healthy` within about a minute. Press Ctrl+C
-   once confirmed.
-
-4. Confirm the deployment exists in the cluster exactly as declared in
-   Git.
-
-   ```bash
-   kubectl get deployment demo-api -n gitops-lab
-   ```
-
-5. Introduce manual drift directly against the cluster, bypassing Git,
-   and observe self-healing revert it.
-
-   ```bash
-   kubectl scale deployment demo-api -n gitops-lab --replicas=5
-   sleep 30
-   kubectl get deployment demo-api -n gitops-lab
-   ```
-
-   **Expected result:** replica count returns to `2` — the value
-   declared in Git — without any manual intervention, demonstrating
-   self-healing reconciliation.
-
-### Negative test
-
-6. Apply a Kyverno signature-verification policy requiring all images in
-   `gitops-lab` to carry a valid cosign signature, then push a change to
-   Git referencing an unsigned image, and confirm the resulting pod is
-   blocked at admission even though Argo CD reports the sync itself as
-   applied.
-
-   ```bash
-   kubectl apply -f https://raw.githubusercontent.com/kyverno/kyverno/main/config/install-latest-testing.yaml
-   kubectl wait --for=condition=available --timeout=180s deployment/kyverno-admission-controller -n kyverno
-
-   cat > policy.yaml <<'EOF'
-   apiVersion: kyverno.io/v1
-   kind: ClusterPolicy
-   metadata:
-     name: require-signed-images-lab
-   spec:
-     validationFailureAction: Enforce
-     rules:
-       - name: verify-signature
-         match:
-           any:
-             - resources: { kinds: ["Pod"], namespaces: ["gitops-lab"] }
-         verifyImages:
-           - imageReferences: ["registry.k8s.io/*"]
-             attestors:
-               - entries:
-                   - keyless:
-                       subject: "https://this-signer-does-not-exist.example/build"
-                       issuer: "https://token.actions.githubusercontent.com"
-   EOF
-   kubectl apply -f policy.yaml
-
-   kubectl rollout restart deployment/demo-api -n gitops-lab
-   kubectl get events -n gitops-lab --field-selector reason=FailedCreate
-   ```
-
-   **Expected result:** the restart's new ReplicaSet fails to create pods,
-   and the event log shows a Kyverno admission rejection referencing
-   `image verification failed` — because the deployed image was never
-   signed by the (deliberately impossible) required identity. Argo CD's
-   Application still shows the manifest as synced, illustrating that
-   GitOps sync success and admission-time policy enforcement are
-   independent controls.
-
-### Cleanup
+**Objective:** Template and install a versioned release.
 
 ```bash
-kubectl delete application demo-api -n argocd
-kubectl delete namespace gitops-lab
-kubectl delete clusterpolicy require-signed-images-lab
-kill %1 2>/dev/null   # stop the git daemon background job
-kind delete cluster --name gitops-lab
-rm -rf ~/labs/gitops-repo
+helm create demo
+helm lint demo
+helm install web ./demo --set replicaCount=2
+helm list
+helm template web ./demo | grep -A2 "kind: Deployment" | head
+helm upgrade web ./demo --set replicaCount=3 && helm history web
 ```
+
+**Expected result:** the chart lints, installs as release `web`, and `helm template` shows the
+rendered manifests; `upgrade`/`history` track revisions — Helm packages a set of manifests as a
+versioned, parameterized chart, so an application plus its config ships and rolls back as one
+unit.
+
+**Negative test:** apply raw per-environment manifests by hand instead of a parameterized
+chart; they drift and there is no atomic rollback — Helm's release/revision model is what makes
+deploys repeatable and reversible.
+
+**Cleanup:** `helm uninstall web; rm -rf demo`.
+
+### Lab 7.2 — GitOps with Argo CD (Topic: GitOps)
+
+**Objective:** Drive cluster state from a Git repository.
+
+```bash
+kubectl apply -f - <<'EOF'
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: {name: guestbook, namespace: argocd}
+spec:
+  project: default
+  source: {repoURL: https://github.com/argoproj/argocd-example-apps, path: guestbook, targetRevision: HEAD}
+  destination: {server: https://kubernetes.default.svc, namespace: guestbook}
+  syncPolicy: {automated: {prune: true, selfHeal: true}}
+EOF
+kubectl -n argocd get applications guestbook
+```
+
+**Expected result:** Argo CD syncs the cluster to match the Git repo, and `selfHeal` reverts
+any manual drift — GitOps makes Git the single source of truth: you change the repo, and a
+controller reconciles the cluster, giving auditability and automatic drift correction.
+
+**Negative test:** `kubectl edit` a resource Argo CD manages; `selfHeal` reverts it to the
+Git-declared state — with GitOps, the cluster is changed by committing to Git, not by editing
+live objects.
+
+**Cleanup:** `kubectl delete application guestbook -n argocd`.
+
+### Lab 7.3 — Software supply chain: signing and SBOM (Topic: Supply chain security)
+
+**Objective:** Sign an image and generate its bill of materials.
+
+```bash
+cosign generate-key-pair                                   # creates cosign.key / cosign.pub
+cosign sign --key cosign.key quay.io/<you>/hello:1.0
+cosign verify --key cosign.pub quay.io/<you>/hello:1.0 | head
+syft quay.io/<you>/hello:1.0 -o spdx-json > sbom.json      # software bill of materials
+```
+
+**Expected result:** the image is signed and the signature verifies against the public key,
+and an SBOM lists its components — supply-chain security proves an image's *provenance*
+(who built/signed it) and its *contents* (SBOM), so admission can later reject unsigned or
+vulnerable images.
+
+**Negative test:** deploy images with no signature verification; a tampered or typosquatted
+image runs unnoticed — signature verification at admission is what blocks unverified
+provenance.
+
+**Cleanup:** `rm -f cosign.key cosign.pub sbom.json`.
+
+### Lab 7.4 — Enforce provenance at admission (Topic: Delivery security)
+
+**Objective:** Require signed images before they run.
+
+```bash
+# With a policy engine (Kyverno) that supports image verification:
+kubectl apply -f - <<'EOF'
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata: {name: verify-images}
+spec:
+  validationFailureAction: Enforce
+  rules:
+  - name: check-signature
+    match: {any: [{resources: {kinds: ["Pod"]}}]}
+    verifyImages:
+    - imageReferences: ["quay.io/<you>/*"]
+      attestors: [{entries: [{keys: {publicKeys: "<contents of cosign.pub>"}}]}]
+EOF
+kubectl run unsigned --image=quay.io/<you>/untrusted:latest   # expected: rejected
+```
+
+**Expected result:** pods using unsigned images from the covered repo are **rejected** at
+admission, while signed ones are admitted — combining signing (Lab 7.3) with an admission
+verification policy closes the loop, so only provenance-verified images reach the cluster.
+
+**Negative test:** sign images but never enforce verification at admission; unsigned images
+still run — signing without enforcement is documentation, not a control.
+
+**Cleanup:** `kubectl delete clusterpolicy verify-images`.
 
 ## Lab Verification
 

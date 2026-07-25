@@ -318,126 +318,109 @@ sudo journalctl -u kubelet -f --no-pager
 
 ## Hands-On Lab
 
-**Objective:** Build a multi-node cluster with `kind` (which bootstraps
-each node with `kubeadm` internally), inspect control-plane static pods and
-etcd health, take and verify an etcd snapshot, and observe cluster behavior
-under a simulated node loss.
+This chapter carries a topic-level walkthrough lab for **each cluster-lifecycle skill** —
+the component model, bootstrap, etcd backup/restore, and upgrades — the CKA operational core.
+Every step is a runnable `kubectl`/`kubeadm`/`etcdctl` command. Each ends **`**Lab verified
+by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 2.1–2.4** — a Kubernetes cluster you can operate (a
+`kubeadm` cluster for the lifecycle labs, or `kind`/`minikube` for the read-only ones),
+`kubectl` configured, and root on a control-plane node for etcd/upgrade labs. **Cost:** none
+beyond lab VMs.
 
-- Docker Engine running locally.
-- `kind` v0.24+, `kubectl` matching the 1.31.x baseline, `etcdctl` v3.5+
-  installed locally (or run it via `kubectl exec` against the etcd static
-  pod as shown below, which requires no local `etcdctl`).
+### Lab 2.1 — Read the cluster component model (Topic: Architecture)
 
-### Procedure
-
-1. Define a three-node cluster (one control plane, two workers) and create
-   it.
-
-   ```bash
-   cat > kind-config.yaml <<'EOF'
-   kind: Cluster
-   apiVersion: kind.x-k8s.io/v1alpha4
-   nodes:
-     - role: control-plane
-     - role: worker
-     - role: worker
-   EOF
-   kind create cluster --name lifecycle-lab --config kind-config.yaml --image kindest/node:v1.31.4
-   ```
-
-2. Confirm all nodes are `Ready` and identify the control-plane node's
-   static pods.
-
-   ```bash
-   kubectl get nodes -o wide
-   kubectl get pods -n kube-system -o wide
-   ```
-
-   **Expected result:** three `Ready` nodes; `etcd-lifecycle-lab-control-plane`,
-   `kube-apiserver-lifecycle-lab-control-plane`,
-   `kube-scheduler-...`, and `kube-controller-manager-...` pods running.
-
-3. Read the static pod manifest directly from the control-plane container
-   (kind runs each "node" as a container).
-
-   ```bash
-   docker exec lifecycle-lab-control-plane cat /etc/kubernetes/manifests/kube-apiserver.yaml | head -20
-   ```
-
-4. Check etcd cluster health via `kubectl exec` into the etcd static pod.
-
-   ```bash
-   kubectl exec -n kube-system etcd-lifecycle-lab-control-plane -- etcdctl \
-     --endpoints=https://127.0.0.1:2379 \
-     --cacert=/etc/kubernetes/pki/etcd/ca.crt \
-     --cert=/etc/kubernetes/pki/etcd/server.crt \
-     --key=/etc/kubernetes/pki/etcd/server.key \
-     endpoint health -w table
-   ```
-
-   **Expected result:** a table reporting the single etcd endpoint as
-   healthy with a measured latency.
-
-5. Take an etcd snapshot and verify it.
-
-   ```bash
-   kubectl exec -n kube-system etcd-lifecycle-lab-control-plane -- etcdctl \
-     --endpoints=https://127.0.0.1:2379 \
-     --cacert=/etc/kubernetes/pki/etcd/ca.crt \
-     --cert=/etc/kubernetes/pki/etcd/server.crt \
-     --key=/etc/kubernetes/pki/etcd/server.key \
-     snapshot save /var/lib/etcd-snapshot.db
-
-   kubectl exec -n kube-system etcd-lifecycle-lab-control-plane -- etcdctl \
-     snapshot status /var/lib/etcd-snapshot.db -w table
-   ```
-
-   **Expected result:** `snapshot status` reports a hash, revision, total
-   keys, and size — confirming the snapshot is structurally valid.
-
-6. Deploy a trivial workload so there is observable state to protect.
-
-   ```bash
-   kubectl create deployment hello --image=registry.k8s.io/e2e-test-images/agnhost:2.53 -- /agnhost netexec --http-port=8080
-   kubectl rollout status deployment/hello
-   ```
-
-### Negative test
-
-7. Simulate a worker node failure by stopping its container, and observe
-   how the control plane reacts within its default `node-monitor-grace-period`.
-
-   ```bash
-   docker stop lifecycle-lab-worker
-   kubectl get nodes -w
-   ```
-
-   **Expected result:** the stopped node transitions to `NotReady` after
-   roughly 40 seconds (the default `node-monitor-grace-period`), and after
-   the pod eviction timeout, any pods scheduled there are marked for
-   eviction and rescheduled onto the remaining worker if the workload's
-   controller (ReplicaSet/Deployment) demands a replica count greater than
-   zero. Press Ctrl+C once you observe the `NotReady` transition.
-
-8. Restore the node and confirm the cluster self-heals.
-
-   ```bash
-   docker start lifecycle-lab-worker
-   kubectl get nodes -w
-   ```
-
-   **Expected result:** the node returns to `Ready` within roughly a
-   minute as kubelet re-registers.
-
-### Cleanup
+**Objective:** Identify control-plane and node components and their health.
 
 ```bash
-kubectl delete deployment hello
-kind delete cluster --name lifecycle-lab
-rm -f kind-config.yaml
+kubectl get nodes -o wide
+kubectl get pods -n kube-system
+kubectl get --raw='/healthz?verbose' 2>/dev/null | head
+kubectl -n kube-system get pods -l tier=control-plane 2>/dev/null || \
+  kubectl -n kube-system get pods | grep -E 'apiserver|scheduler|controller|etcd'
 ```
+
+**Expected result:** the nodes are `Ready`, and kube-system runs the control plane
+(`kube-apiserver`, `kube-scheduler`, `kube-controller-manager`, `etcd`) plus per-node kubelet/
+kube-proxy/CNI — every request flows through the API server to etcd, and the controllers/
+scheduler reconcile desired state, which is the model every later chapter builds on.
+
+**Negative test:** expect workloads to schedule while the scheduler pod is crash-looping; new
+Pods stay `Pending` — each control-plane component has a distinct job, and losing one degrades
+a specific function.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.2 — Bootstrap and join (Topic: Cluster lifecycle)
+
+**Objective:** Initialize a control plane and join a worker.
+
+```bash
+# Control plane:
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+mkdir -p ~/.kube && sudo cp /etc/kubernetes/admin.conf ~/.kube/config && sudo chown "$(id -u):$(id -g)" ~/.kube/config
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+# Worker (run the printed join command):
+#   sudo kubeadm join <cp-ip>:6443 --token <t> --discovery-token-ca-cert-hash sha256:<h>
+kubectl get nodes
+```
+
+**Expected result:** `kubeadm init` stands up the control plane, a CNI makes nodes `Ready`,
+and the worker joins — `kubeadm` is the reference bootstrap; a cluster is not usable until a
+CNI is installed (nodes stay `NotReady` without one).
+
+**Negative test:** skip installing a CNI; nodes stay `NotReady` and Pods never get IPs —
+networking is a required add-on, not built in.
+
+**Cleanup:** `kubeadm reset` on lab nodes to tear the cluster down.
+
+### Lab 2.3 — etcd backup and restore (Topic: State management)
+
+**Objective:** Snapshot and restore the cluster's state store.
+
+```bash
+sudo ETCDCTL_API=3 etcdctl \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key \
+  snapshot save /var/backups/etcd-snapshot.db
+sudo ETCDCTL_API=3 etcdctl snapshot status /var/backups/etcd-snapshot.db --write-out=table
+```
+
+**Expected result:** a snapshot file whose status shows the revision/key count — etcd holds
+*all* cluster state, so its backup is the single most important disaster-recovery artifact;
+restore replays it into a fresh data directory (`snapshot restore`) and points the etcd
+static pod at it.
+
+**Negative test:** rely on redeploying manifests instead of an etcd backup for DR; you lose
+everything not in Git (secrets, dynamic objects, CRs) — the etcd snapshot is the authoritative
+recovery point.
+
+**Cleanup:** `sudo rm -f /var/backups/etcd-snapshot.db` if lab-only.
+
+### Lab 2.4 — Cluster upgrade (Topic: Lifecycle operations)
+
+**Objective:** Upgrade the control plane one minor version safely.
+
+```bash
+kubectl version --short 2>/dev/null; kubectl get nodes
+sudo kubeadm upgrade plan
+# Follow the plan for the target version, one minor at a time:
+#   sudo kubeadm upgrade apply v1.3x.y
+kubectl drain <node> --ignore-daemonsets --delete-emptydir-data      # before upgrading a node's kubelet
+# ... upgrade kubelet/kubeadm on the node ...
+kubectl uncordon <node>
+```
+
+**Expected result:** `kubeadm upgrade plan` shows the safe target, and draining moves
+workloads off a node before its kubelet is upgraded — Kubernetes supports upgrading one minor
+version at a time, and draining is what makes a rolling node upgrade non-disruptive.
+
+**Negative test:** skip a minor version (e.g. 1.30 → 1.32 in one jump); `kubeadm` refuses —
+the supported path is sequential minor upgrades, control plane before nodes.
+
+**Cleanup:** `kubectl uncordon` any cordoned nodes.
 
 ## Lab Verification
 

@@ -424,171 +424,113 @@ curl -s 'http://localhost:9090/api/v1/query?query=ALERTS{alertname="CheckoutAPIE
 
 ## Hands-On Lab
 
-**Objective:** Install the Prometheus stack, deploy an instrumented
-workload, define and alert on an SLO burn rate, run a scoped chaos
-experiment while observing the PodDisruptionBudget respond, and confirm
-an over-broad chaos selector is correctly blocked as a negative test.
+This chapter closes the volume with **observability, reliability, and fleet lifecycle** — and
+a **Design Exercise** synthesizing the whole platform. Every operational step is runnable;
+the capstone is a written design. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 9.1–9.4** — a cluster with `kubectl`, the metrics-server (Lab
+9.1), and a Prometheus/monitoring stack for full metrics. Work in namespace `lab`. **Cost:**
+none.
 
-- A `kind` cluster running Kubernetes 1.31.x with at least two worker
-  nodes.
-- `helm`, `kubectl`, and `jq` installed locally.
-- Network access to pull the `kube-prometheus-stack` and `chaos-mesh`
-  Helm charts on first run.
+### Lab 9.1 — Metrics and resource visibility (Topic: Observability)
 
-### Procedure
-
-1. Create the cluster and install the Prometheus stack.
-
-   ```bash
-   kind create cluster --name observability-lab --image kindest/node:v1.31.4
-   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-   helm repo update
-   helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
-     --namespace monitoring --create-namespace \
-     --set prometheus.prometheusSpec.retention=1d \
-     --wait --timeout 5m
-   ```
-
-2. Deploy a workload with a PodDisruptionBudget, matching [Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md)'s
-   pattern, that Prometheus can observe.
-
-   ```bash
-   kubectl create namespace observability-lab
-   cat > app.yaml <<'EOF'
-   apiVersion: apps/v1
-   kind: Deployment
-   metadata:
-     name: demo-api
-     namespace: observability-lab
-   spec:
-     replicas: 3
-     selector: { matchLabels: { app: demo-api } }
-     template:
-       metadata: { labels: { app: demo-api } }
-       spec:
-         containers:
-           - name: demo-api
-             image: registry.k8s.io/e2e-test-images/agnhost:2.53
-             args: ["netexec", "--http-port=8080"]
-   ---
-   apiVersion: policy/v1
-   kind: PodDisruptionBudget
-   metadata:
-     name: demo-api
-     namespace: observability-lab
-   spec:
-     minAvailable: 2
-     selector: { matchLabels: { app: demo-api } }
-   EOF
-   kubectl apply -f app.yaml
-   kubectl rollout status deployment/demo-api -n observability-lab
-   ```
-
-3. Confirm `kube-state-metrics` is reporting this Deployment's state
-   through Prometheus.
-
-   ```bash
-   kubectl port-forward -n monitoring svc/kube-prometheus-stack-prometheus 9090:9090 &
-   sleep 3
-   curl -s 'http://localhost:9090/api/v1/query?query=kube_deployment_status_replicas{namespace="observability-lab"}' | jq '.data.result'
-   ```
-
-   **Expected result:** a result showing `demo-api` with a value of `3`,
-   confirming kube-state-metrics is exposing object state, not resource
-   usage, for this workload.
-
-4. Install Chaos Mesh and run a tightly scoped pod-kill experiment
-   against exactly one `demo-api` pod.
-
-   ```bash
-   helm repo add chaos-mesh https://charts.chaos-mesh.org
-   helm upgrade --install chaos-mesh chaos-mesh/chaos-mesh \
-     --namespace chaos-mesh --create-namespace \
-     --set chaosDaemon.runtime=containerd \
-     --set chaosDaemon.socketPath=/run/containerd/containerd.sock \
-     --wait --timeout 5m
-
-   cat > pod-kill.yaml <<'EOF'
-   apiVersion: chaos-mesh.org/v1alpha1
-   kind: PodChaos
-   metadata:
-     name: demo-api-kill-one
-     namespace: observability-lab
-   spec:
-     action: pod-kill
-     mode: one
-     duration: "10s"
-     selector:
-       namespaces: ["observability-lab"]
-       labelSelectors: { app: demo-api }
-   EOF
-   kubectl apply -f pod-kill.yaml
-   kubectl get pods -n observability-lab -w
-   ```
-
-   **Expected result:** exactly one `demo-api` pod terminates and a
-   replacement is scheduled within seconds; total pod count never drops
-   below 2 at any observed instant, consistent with the
-   `minAvailable: 2` PodDisruptionBudget. Press Ctrl+C once you observe
-   the replacement pod reach `Running`.
-
-### Negative test
-
-5. Attempt an experiment with an over-broad selector matching *all*
-   `demo-api` pods simultaneously (`mode: all`) and confirm the
-   PodDisruptionBudget still prevents the platform's own eviction paths
-   from taking the workload fully offline, while directly observing that
-   an unscoped chaos action can still momentarily violate `minAvailable`
-   through force-kill (not eviction) — which is exactly why the Design
-   Considerations section requires a narrow `selector`/`mode` rather than
-   relying on the PDB alone.
-
-   ```bash
-   cat > pod-kill-all.yaml <<'EOF'
-   apiVersion: chaos-mesh.org/v1alpha1
-   kind: PodChaos
-   metadata:
-     name: demo-api-kill-all
-     namespace: observability-lab
-   spec:
-     action: pod-kill
-     mode: all
-     duration: "10s"
-     selector:
-       namespaces: ["observability-lab"]
-       labelSelectors: { app: demo-api }
-   EOF
-   kubectl apply -f pod-kill-all.yaml
-   kubectl get pods -n observability-lab -w
-   ```
-
-   **Expected result:** all three `demo-api` pods are force-killed nearly
-   simultaneously, briefly dropping available replicas to 0 despite the
-   `minAvailable: 2` PDB — because `PodChaos` kills pods directly rather
-   than going through the API server's eviction subresource that PDBs
-   govern, PDBs protect against *voluntary, eviction-based* disruption
-   ([Chapter 03](03-kubernetes-workloads-scheduling-and-capacity.md)) and do not protect against this kind of direct chaos
-   action. This is the intended lesson: confirm it by deleting the
-   overly broad experiment immediately and comparing recovery time to
-   step 4's scoped version.
-
-   ```bash
-   kubectl delete -f pod-kill-all.yaml
-   ```
-
-### Cleanup
+**Objective:** Read live resource usage across the cluster.
 
 ```bash
-kubectl delete namespace observability-lab
-helm uninstall chaos-mesh -n chaos-mesh
-helm uninstall kube-prometheus-stack -n monitoring
-kubectl delete namespace chaos-mesh monitoring
-kill %1 2>/dev/null   # stop the port-forward background job
-kind delete cluster --name observability-lab
-rm -f app.yaml pod-kill.yaml pod-kill-all.yaml
+kubectl top nodes
+kubectl top pods -A --sort-by=memory | head
+kubectl get --raw /metrics 2>/dev/null | grep -E '^apiserver_request_total' | head
 ```
+
+**Expected result:** per-node and per-pod CPU/memory (from metrics-server) and raw API-server
+metrics (for Prometheus) — the metrics pipeline (metrics-server for `kubectl top` and HPA,
+Prometheus for history/alerting) is what turns a running cluster into an observable one.
+
+**Negative test:** run `kubectl top` with no metrics-server installed; it errors with "Metrics
+API not available" — `top` and the HPA both depend on the metrics pipeline being present.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.2 — Logs and events for troubleshooting (Topic: Observability)
+
+**Objective:** Trace a failing workload through logs and events.
+
+```bash
+kubectl run bad --image=busybox --restart=Never -- sh -c "echo starting; exit 1"
+kubectl get pod bad -o wide
+kubectl describe pod bad | sed -n '/Events/,$p'
+kubectl logs bad
+```
+
+**Expected result:** the Pod enters `Error`/`CrashLoopBackOff`, `describe` shows the events
+(pull, start, back-off), and `logs` shows the container's own output — logs plus events plus
+status are the three sources you correlate to explain any workload failure; centralized logging
+(Loki/EFK) scales this across the fleet.
+
+**Negative test:** judge a crash from Pod status alone; `Error` does not say *why* — the
+container `logs` and the `Events` are where the cause is, so always read both.
+
+**Cleanup:** `kubectl delete pod bad`.
+
+### Lab 9.3 — Reliability: disruption budgets (Topic: Reliability)
+
+**Objective:** Protect availability during voluntary disruptions.
+
+```bash
+kubectl create deployment web --image=nginx --replicas=3
+kubectl apply -f - <<'EOF'
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata: {name: web-pdb, namespace: lab}
+spec: {minAvailable: 2, selector: {matchLabels: {app: web}}}
+EOF
+kubectl drain <node-with-web-pods> --ignore-daemonsets --delete-emptydir-data --dry-run=server 2>&1 | head
+```
+
+**Expected result:** the PDB requires at least 2 of 3 replicas stay up, so a `drain` (node
+maintenance) evicts pods only as far as the budget allows — a PodDisruptionBudget protects
+availability during *voluntary* disruptions (upgrades, drains), complementing replicas and
+anti-affinity.
+
+**Negative test:** drain nodes during an upgrade with no PDB; all replicas can be evicted at
+once and the service goes down mid-maintenance — the PDB is what bounds concurrent voluntary
+disruption.
+
+**Cleanup:** `kubectl delete deployment web; kubectl delete pdb web-pdb -n lab`.
+
+### Lab 9.4 — Design Exercise: a platform product across a fleet (Topic: Synthesis)
+
+**Objective:** Produce a defensible platform design — the platform-engineering deliverable,
+not a config dump.
+
+> **Scenario.** You operate Kubernetes for 40 product teams across 6 clusters (2 regions, plus
+> dev/stage/prod). Teams must self-serve services safely; the platform must be secure,
+> observable, cost-bounded, and upgradable without downtime.
+
+Work through and **write down**:
+
+1. **Cluster topology & lifecycle** — how many clusters and why; the upgrade strategy (Ch02)
+   that keeps prod available (surge nodes, drains + PDBs, one minor at a time).
+2. **Tenancy & isolation** — namespace-per-team vs cluster-per-team; ResourceQuota/LimitRange,
+   RBAC, and NetworkPolicy defaults (Ch04, Ch06, Ch08).
+3. **Delivery** — GitOps (Argo CD) as the single source of truth, Helm packaging, and the
+   golden path that scaffolds a compliant service (Ch07, Ch08).
+4. **Security** — Pod Security Admission + policy-as-code, signed-image admission, and
+   least-privilege service accounts (Ch06, Ch07).
+5. **Observability & reliability** — metrics/logs/traces, SLOs, PDBs, and autoscaling
+   (Ch03, Ch09).
+6. **Cost & capacity** — requests/limits discipline, quotas, and right-sizing across the fleet.
+
+**Expected result:** a written design naming topology, tenancy model, delivery and security
+guardrails, and observability — a platform *product* where the paved road is secure,
+observable, and cost-aware by default, which is what platform engineering is judged on.
+
+**Negative test:** hand every team cluster-admin on a shared cluster with no quotas, policy, or
+GitOps; it works briefly, then drifts into an unsecured, unobservable, unbounded mess — the
+guardrails (tenancy, policy, GitOps, observability) are the platform's actual value.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 

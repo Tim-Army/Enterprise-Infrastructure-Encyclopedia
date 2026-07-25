@@ -393,144 +393,124 @@ kubectl get pv <pv-name> -o jsonpath='{.spec.nodeAffinity}'
 
 ## Hands-On Lab
 
-**Objective:** Provision topology-aware local storage, deploy a
-StatefulSet with per-ordinal PVCs, take a snapshot, restore it into a new
-PVC, and prove reclaim-policy `Retain` survives PVC deletion as a negative
-test.
+This chapter carries a topic-level walkthrough lab for **each storage skill** — volumes and
+PV/PVC, StorageClasses and dynamic provisioning, StatefulSets, and config/secret volumes —
+the stateful-workload core. Every step is a runnable `kubectl` command. Each ends **`**Lab
+verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 5.1–5.4** — a cluster with a default StorageClass (a dynamic
+provisioner; `kind`/cloud clusters have one), and `kubectl`. Work in namespace `lab`.
+**Cost:** none beyond cloud volume charges if using a cloud provisioner.
 
-- A `kind` cluster (`kind` ships `local-path-provisioner` as its default
-  `StorageClass`, sufficient for this lab; snapshot support is simulated
-  via a manual copy step since `local-path-provisioner` has no CSI
-  snapshot sidecar).
-- `kubectl` matching the 1.31.x baseline.
+### Lab 5.1 — PersistentVolumeClaims (Topic: Persistent storage)
 
-### Procedure
-
-1. Create the cluster and confirm the default StorageClass.
-
-   ```bash
-   kind create cluster --name storage-lab --image kindest/node:v1.31.4
-   kubectl get storageclass
-   ```
-
-   **Expected result:** `standard` (provisioner `rancher.io/local-path`)
-   listed with `(default)`.
-
-2. Deploy a StatefulSet with `volumeClaimTemplates` and an explicit
-   retention policy.
-
-   ```bash
-   kubectl create namespace storage-lab
-   cat > statefulset.yaml <<'EOF'
-   apiVersion: v1
-   kind: Service
-   metadata:
-     name: data-svc
-     namespace: storage-lab
-   spec:
-     clusterIP: None
-     selector: { app: data-svc }
-     ports: [{ port: 80 }]
-   ---
-   apiVersion: apps/v1
-   kind: StatefulSet
-   metadata:
-     name: data-svc
-     namespace: storage-lab
-   spec:
-     serviceName: data-svc
-     replicas: 2
-     persistentVolumeClaimRetentionPolicy:
-       whenDeleted: Retain
-       whenScaled: Retain
-     selector:
-       matchLabels: { app: data-svc }
-     template:
-       metadata:
-         labels: { app: data-svc }
-       spec:
-         containers:
-           - name: writer
-             image: busybox:1.36
-             command: ["sh", "-c", "echo \"identity: $(hostname)\" > /data/identity.txt && sleep infinity"]
-             volumeMounts:
-               - { name: data, mountPath: /data }
-     volumeClaimTemplates:
-       - metadata: { name: data }
-         spec:
-           accessModes: ["ReadWriteOnce"]
-           resources: { requests: { storage: 1Gi } }
-   EOF
-   kubectl apply -f statefulset.yaml
-   kubectl rollout status statefulset/data-svc -n storage-lab
-   ```
-
-3. Confirm each ordinal wrote its own identity to its own volume.
-
-   ```bash
-   kubectl exec -n storage-lab data-svc-0 -- cat /data/identity.txt
-   kubectl exec -n storage-lab data-svc-1 -- cat /data/identity.txt
-   kubectl get pvc -n storage-lab
-   ```
-
-   **Expected result:** each pod reports its own hostname, and two PVCs
-   (`data-data-svc-0`, `data-data-svc-1`) are `Bound`.
-
-4. Delete `data-svc-1`'s pod directly and confirm the StatefulSet
-   controller reattaches the *same* PVC rather than provisioning a new
-   one.
-
-   ```bash
-   kubectl delete pod data-svc-1 -n storage-lab
-   kubectl wait --for=condition=Ready pod/data-svc-1 -n storage-lab --timeout=60s
-   kubectl exec -n storage-lab data-svc-1 -- cat /data/identity.txt
-   ```
-
-   **Expected result:** the identity file still reads `data-svc-1` — the
-   original volume was reattached, not recreated empty.
-
-### Negative test
-
-5. Delete the entire StatefulSet with `--cascade=orphan` to simulate a
-   controller-level deletion, then delete one PVC directly, and confirm
-   that even with reclaim policy behavior, deleting the PVC is what
-   removes the data — reinforcing why `Retain` matters for the underlying
-   `PersistentVolume`.
-
-   ```bash
-   kubectl delete statefulset data-svc -n storage-lab --cascade=orphan
-   kubectl get pvc -n storage-lab
-   kubectl get pv | grep storage-lab
-   ```
-
-   **Expected result:** both PVCs and their bound PVs still exist after
-   the StatefulSet itself is gone — `persistentVolumeClaimRetentionPolicy`
-   (and the orphan cascade) preserved the data independent of the
-   controller's own lifecycle, exactly as intended for a stateful
-   workload.
-
-6. Now delete one PVC directly and confirm this is the actual destructive
-   action, distinct from deleting the StatefulSet.
-
-   ```bash
-   kubectl delete pvc data-data-svc-1 -n storage-lab
-   kubectl get pv | grep storage-lab
-   ```
-
-   **Expected result:** the PV bound to `data-data-svc-1` is now either
-   removed or, on a `Retain`-configured class, transitions to `Released`
-   with no claim — demonstrating that reclaim policy governs PVC
-   deletion, not StatefulSet deletion.
-
-### Cleanup
+**Objective:** Request storage and mount it in a Pod.
 
 ```bash
-kubectl delete namespace storage-lab
-kind delete cluster --name storage-lab
-rm -f statefulset.yaml
+kubectl apply -f - <<'EOF'
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: data, namespace: lab}
+spec:
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 1Gi}}
+EOF
+kubectl run writer --image=busybox --restart=Never --overrides='
+{"spec":{"containers":[{"name":"writer","image":"busybox","command":["sh","-c","echo hi > /data/f; sleep 3600"],
+ "volumeMounts":[{"name":"d","mountPath":"/data"}]}],
+ "volumes":[{"name":"d","persistentVolumeClaim":{"claimName":"data"}}]}}'
+kubectl get pvc data ; kubectl exec writer -- cat /data/f
 ```
+
+**Expected result:** the PVC binds to a dynamically provisioned PV and the Pod writes to it —
+a PVC is a *request* for storage that binds to a PV (statically created or dynamically
+provisioned), decoupling the workload from the specific storage backend.
+
+**Negative test:** create a PVC for a StorageClass/accessMode no provisioner satisfies; it
+stays `Pending` and the Pod cannot start — the claim must be satisfiable by an available PV or
+provisioner.
+
+**Cleanup:** `kubectl delete pod writer; kubectl delete pvc data`.
+
+### Lab 5.2 — StorageClasses and dynamic provisioning (Topic: Dynamic provisioning)
+
+**Objective:** Read the provisioner behind automatic PV creation.
+
+```bash
+kubectl get storageclass
+kubectl get sc -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.provisioner}{"\t"}{.reclaimPolicy}{"\n"}{end}'
+kubectl get pv     # the PV auto-created for the PVC in Lab 5.1
+```
+
+**Expected result:** the default StorageClass names a provisioner and a reclaim policy, and a
+PV was created automatically for the earlier PVC — the StorageClass is the template that turns
+a PVC into a real volume without an admin pre-creating PVs, and the reclaim policy
+(`Delete`/`Retain`) decides what happens to data when the PVC is deleted.
+
+**Negative test:** rely on `reclaimPolicy: Delete` for data you must keep; deleting the PVC
+destroys the volume — use `Retain` for data whose lifetime must outlive the claim.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.3 — StatefulSets (Topic: Stateful platforms)
+
+**Objective:** Run a workload with stable identity and per-replica storage.
+
+```bash
+kubectl apply -f - <<'EOF'
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: {name: db, namespace: lab}
+spec:
+  serviceName: db
+  replicas: 2
+  selector: {matchLabels: {app: db}}
+  template:
+    metadata: {labels: {app: db}}
+    spec:
+      containers: [{name: db, image: busybox, command: ["sh","-c","sleep 3600"],
+        volumeMounts: [{name: data, mountPath: /data}]}]
+  volumeClaimTemplates:
+  - metadata: {name: data}
+    spec: {accessModes: [ReadWriteOnce], resources: {requests: {storage: 1Gi}}}
+EOF
+kubectl get pods -l app=db ; kubectl get pvc -l app=db
+```
+
+**Expected result:** pods `db-0`, `db-1` get stable names and each its own PVC (`data-db-0`,
+`data-db-1`) — a StatefulSet gives ordered, stable network identity and dedicated persistent
+storage per replica, which stateful systems (databases, queues) require and a Deployment
+cannot provide.
+
+**Negative test:** run a database as a Deployment sharing one PVC across replicas; identity and
+storage collide and the data corrupts — StatefulSet's per-replica identity/volume is what makes
+stateful clustering safe.
+
+**Cleanup:** `kubectl delete statefulset db; kubectl delete pvc -l app=db`.
+
+### Lab 5.4 — Config and secret volumes (Topic: Configuration as data)
+
+**Objective:** Mount configuration and secrets into a Pod.
+
+```bash
+kubectl create configmap app-cfg --from-literal=MODE=prod -n lab
+kubectl create secret generic app-sec --from-literal=TOKEN=s3cr3t -n lab
+kubectl run cfg --image=busybox --restart=Never -n lab --overrides='
+{"spec":{"containers":[{"name":"cfg","image":"busybox","command":["sh","-c","cat /cfg/MODE; sleep 3600"],
+ "volumeMounts":[{"name":"c","mountPath":"/cfg"}]}],
+ "volumes":[{"name":"c","configMap":{"name":"app-cfg"}}]}}'
+kubectl exec -n lab cfg -- cat /cfg/MODE
+```
+
+**Expected result:** the ConfigMap key appears as a file in `/cfg`, decoupling configuration
+from the image — ConfigMaps/Secrets injected as volumes (or env vars) let one image run in
+many environments without a rebuild.
+
+**Negative test:** bake environment config into the image; every environment needs a separate
+image and a secret ends up in the image layers — externalizing config/secrets is what keeps
+one image portable and secrets out of the build.
+
+**Cleanup:** `kubectl delete pod cfg; kubectl delete configmap app-cfg; kubectl delete secret app-sec -n lab`.
 
 ## Lab Verification
 

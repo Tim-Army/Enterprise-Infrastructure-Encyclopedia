@@ -475,187 +475,127 @@ kubectl logs -n kyverno deploy/kyverno-admission-controller --tail=50
 
 ## Hands-On Lab
 
-**Objective:** Build a least-privilege ServiceAccount, prove RBAC denies
-unauthorized access, roll out Pod Security admission from audit to
-enforce, and confirm a native `ValidatingAdmissionPolicy` blocks a
-non-compliant pod as a negative test.
+This chapter carries a topic-level walkthrough lab for **each security skill** — RBAC,
+service-account identity, Pod security, and policy-as-code — the CKS core. Every step is a
+runnable `kubectl` command. Each ends **`**Lab verified by:** *pending*`** until a human runs
+it.
 
-### Prerequisites
+**Shared prerequisites for Labs 6.1–6.4** — a cluster with `kubectl` admin access, and (for
+Lab 6.4) a policy engine such as Kyverno installed. Work in namespace `lab`. **Cost:** none.
 
-- A `kind` cluster running Kubernetes 1.31.x (`ValidatingAdmissionPolicy`
-  requires 1.30+; the API is GA at the 1.31.x baseline with no feature
-  gate required).
-- `kubectl` matching the cluster's minor version.
+### Lab 6.1 — Role-based access control (Topic: RBAC)
 
-### Procedure
-
-1. Create the cluster and a lab namespace.
-
-   ```bash
-   kind create cluster --name identity-lab --image kindest/node:v1.31.4
-   kubectl create namespace identity-lab
-   ```
-
-2. Create a least-privilege ServiceAccount that can only read ConfigMaps.
-
-   ```bash
-   cat > rbac.yaml <<'EOF'
-   apiVersion: v1
-   kind: ServiceAccount
-   metadata:
-     name: reader
-     namespace: identity-lab
-   ---
-   apiVersion: rbac.authorization.k8s.io/v1
-   kind: Role
-   metadata:
-     name: configmap-reader
-     namespace: identity-lab
-   rules:
-     - apiGroups: [""]
-       resources: ["configmaps"]
-       verbs: ["get", "list", "watch"]
-   ---
-   apiVersion: rbac.authorization.k8s.io/v1
-   kind: RoleBinding
-   metadata:
-     name: configmap-reader
-     namespace: identity-lab
-   subjects:
-     - kind: ServiceAccount
-       name: reader
-       namespace: identity-lab
-   roleRef:
-     kind: Role
-     name: configmap-reader
-     apiGroup: rbac.authorization.k8s.io
-   EOF
-   kubectl apply -f rbac.yaml
-   ```
-
-3. Confirm the ServiceAccount can read ConfigMaps but not Secrets.
-
-   ```bash
-   kubectl auth can-i list configmaps --as=system:serviceaccount:identity-lab:reader -n identity-lab
-   kubectl auth can-i list secrets --as=system:serviceaccount:identity-lab:reader -n identity-lab
-   ```
-
-   **Expected result:** `yes` for ConfigMaps, `no` for Secrets — RBAC is
-   enforcing exactly the narrow grant defined.
-
-4. Label the namespace for Pod Security admission in audit/warn mode
-   first, deploy a deliberately non-compliant pod, and confirm it is
-   created but flagged rather than blocked.
-
-   ```bash
-   kubectl label namespace identity-lab \
-     pod-security.kubernetes.io/audit=restricted \
-     pod-security.kubernetes.io/warn=restricted --overwrite
-
-   kubectl run noncompliant --image=busybox:1.36 -n identity-lab \
-     --command -- sleep infinity
-   kubectl get pod noncompliant -n identity-lab
-   ```
-
-   **Expected result:** the `kubectl run` command prints a warning
-   referencing `restricted` requirements (root user, missing seccomp
-   profile), but the pod is still created because `enforce` was not set.
-
-5. Raise `enforce` to `restricted` and confirm a new non-compliant pod is
-   now rejected outright.
-
-   ```bash
-   kubectl label namespace identity-lab \
-     pod-security.kubernetes.io/enforce=restricted --overwrite
-   kubectl run noncompliant-2 --image=busybox:1.36 -n identity-lab \
-     --command -- sleep infinity
-   ```
-
-   **Expected result:** the command fails with an error referencing the
-   `restricted` Pod Security Standard, confirming `enforce` now blocks
-   what `audit`/`warn` only flagged.
-
-### Negative test
-
-6. Apply a `ValidatingAdmissionPolicy` requiring every pod to declare a
-   memory limit, then attempt to create a compliant pod that satisfies
-   Pod Security admission but omits the limit, and confirm CEL-based
-   admission rejects it independently of the Pod Security controls
-   already in place.
-
-   ```bash
-   cat > vap.yaml <<'EOF'
-   apiVersion: admissionregistration.k8s.io/v1
-   kind: ValidatingAdmissionPolicy
-   metadata:
-     name: require-memory-limit
-   spec:
-     failurePolicy: Fail
-     matchConstraints:
-       resourceRules:
-         - apiGroups: [""]
-           apiVersions: ["v1"]
-           operations: ["CREATE"]
-           resources: ["pods"]
-     validations:
-       - expression: >
-           object.spec.containers.all(c, has(c.resources) &&
-           has(c.resources.limits) && has(c.resources.limits.memory))
-         message: "Every container must declare a memory limit."
-   ---
-   apiVersion: admissionregistration.k8s.io/v1
-   kind: ValidatingAdmissionPolicyBinding
-   metadata:
-     name: require-memory-limit-binding
-   spec:
-     policyName: require-memory-limit
-     validationActions: ["Deny"]
-     matchResources:
-       namespaceSelector:
-         matchLabels:
-           kubernetes.io/metadata.name: identity-lab
-   EOF
-   kubectl apply -f vap.yaml
-
-   cat > no-limit-pod.yaml <<'EOF'
-   apiVersion: v1
-   kind: Pod
-   metadata:
-     name: no-limit-pod
-     namespace: identity-lab
-   spec:
-     securityContext:
-       runAsNonRoot: true
-       seccompProfile: { type: RuntimeDefault }
-     containers:
-       - name: app
-         image: busybox:1.36
-         command: ["sleep", "infinity"]
-         securityContext:
-           allowPrivilegeEscalation: false
-           capabilities: { drop: ["ALL"] }
-         resources:
-           requests: { memory: "32Mi" }
-   EOF
-   kubectl apply -f no-limit-pod.yaml
-   ```
-
-   **Expected result:** the API server rejects the pod with a message
-   citing `require-memory-limit` and "Every container must declare a
-   memory limit" — the pod satisfies `restricted` Pod Security admission
-   entirely (non-root, dropped capabilities, seccomp) yet is still
-   blocked by the independent CEL policy, demonstrating that admission
-   controls compose rather than substitute for one another.
-
-### Cleanup
+**Objective:** Grant a scoped permission and verify it with `auth can-i`.
 
 ```bash
-kubectl delete namespace identity-lab
-kubectl delete validatingadmissionpolicybinding require-memory-limit-binding
-kubectl delete validatingadmissionpolicy require-memory-limit
-kind delete cluster --name identity-lab
-rm -f rbac.yaml vap.yaml no-limit-pod.yaml
+kubectl create role pod-reader --verb=get,list,watch --resource=pods -n lab
+kubectl create serviceaccount viewer -n lab
+kubectl create rolebinding viewer-read --role=pod-reader --serviceaccount=lab:viewer -n lab
+kubectl auth can-i list pods --as=system:serviceaccount:lab:viewer -n lab      # yes
+kubectl auth can-i delete pods --as=system:serviceaccount:lab:viewer -n lab    # no
 ```
+
+**Expected result:** the service account can `list pods` but not `delete` them; `auth can-i`
+confirms both — RBAC binds subjects (users/groups/service accounts) to Roles (namespaced) or
+ClusterRoles (cluster-wide) via bindings, and least privilege means granting only the verbs/
+resources actually needed.
+
+**Negative test:** bind a subject to `cluster-admin` "to make it work"; it can now do anything
+cluster-wide — over-broad bindings are the most common RBAC mistake, and `auth can-i` is how
+you audit for them.
+
+**Cleanup:** `kubectl delete rolebinding viewer-read; kubectl delete role pod-reader; kubectl
+delete sa viewer -n lab`.
+
+### Lab 6.2 — Service-account identity and tokens (Topic: Workload identity)
+
+**Objective:** Give a workload its own identity and inspect its token.
+
+```bash
+kubectl create serviceaccount app -n lab
+kubectl run app --image=nginx -n lab --overrides='{"spec":{"serviceAccountName":"app"}}'
+kubectl exec -n lab app -- cat /var/run/secrets/kubernetes.io/serviceaccount/namespace
+kubectl create token app -n lab --duration=10m | cut -c1-20    # short-lived bound token
+```
+
+**Expected result:** the Pod runs as the `app` service account, sees its namespace via the
+mounted token, and `create token` issues a short-lived, audience-bound token — modern
+Kubernetes uses projected, time-bound service-account tokens (not permanent secrets), so a
+leaked token expires.
+
+**Negative test:** run every workload under the `default` service account with broad RBAC; a
+compromised pod inherits those rights — give each workload its own least-privilege service
+account instead.
+
+**Cleanup:** `kubectl delete pod app; kubectl delete sa app -n lab`.
+
+### Lab 6.3 — Pod security context and admission (Topic: Pod security)
+
+**Objective:** Harden a Pod and enforce a namespace security standard.
+
+```bash
+kubectl label ns lab pod-security.kubernetes.io/enforce=restricted --overwrite
+kubectl apply -f - <<'EOF'
+apiVersion: v1
+kind: Pod
+metadata: {name: hardened, namespace: lab}
+spec:
+  securityContext: {runAsNonRoot: true, seccompProfile: {type: RuntimeDefault}}
+  containers:
+  - name: app
+    image: nginx
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities: {drop: ["ALL"]}
+      runAsNonRoot: true
+EOF
+kubectl get pod hardened -n lab
+```
+
+**Expected result:** the hardened Pod is admitted under the `restricted` Pod Security Standard
+(non-root, no privilege escalation, all capabilities dropped, seccomp on) — Pod Security
+Admission enforces baseline/restricted profiles per namespace by label, and the securityContext
+is where the hardening is declared.
+
+**Negative test:** apply a privileged Pod (`privileged: true` or root) to the `restricted`
+namespace; admission **rejects** it — the enforce label blocks non-compliant pods at creation,
+not after the fact.
+
+**Cleanup:** `kubectl delete pod hardened -n lab; kubectl label ns lab
+pod-security.kubernetes.io/enforce-`.
+
+### Lab 6.4 — Policy as code (Topic: Admission policy)
+
+**Objective:** Enforce an organizational rule with a policy engine.
+
+```bash
+# With Kyverno installed, require that every pod sets a non-root securityContext:
+kubectl apply -f - <<'EOF'
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata: {name: require-run-as-non-root}
+spec:
+  validationFailureAction: Enforce
+  rules:
+  - name: check-non-root
+    match: {any: [{resources: {kinds: ["Pod"]}}]}
+    validate:
+      message: "Pods must set runAsNonRoot=true"
+      pattern: {spec: {containers: [{securityContext: {runAsNonRoot: true}}]}}
+EOF
+kubectl run rooted --image=nginx -n lab      # expected: blocked by the policy
+```
+
+**Expected result:** the policy is admitted cluster-wide, and a Pod without
+`runAsNonRoot: true` is **rejected** at admission with the policy message — policy-as-code
+(Kyverno/Gatekeeper) enforces organizational and compliance rules consistently across every
+namespace, beyond what built-in RBAC/PSA cover.
+
+**Negative test:** rely on documentation/code review to keep pods non-root; someone eventually
+ships a root pod — an admission policy enforces it mechanically at the API server, so the rule
+cannot be bypassed.
+
+**Cleanup:** `kubectl delete clusterpolicy require-run-as-non-root`.
 
 ## Lab Verification
 
