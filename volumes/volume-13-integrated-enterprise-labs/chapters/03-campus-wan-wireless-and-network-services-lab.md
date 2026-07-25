@@ -257,116 +257,95 @@ Install-ADDSDomainController -DomainName "corp.meridian.example" `
 
 ## Hands-On Lab
 
-**Objective:** Cut over from the [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) ad hoc gateway to a resilient
-Catalyst core/WAN/wireless build, extend the directory to `BR1`, and prove
-HSRP failover and OSPF adjacency both behave as designed.
+This chapter's labs build the **integrated network fabric** — campus/WAN segmentation, routing,
+wireless, and network services — connecting the environment, drawing on Volumes II, III, and VII.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 3.1–3.4** — the core services from Chapter 02, and switching/routing
+capability (physical, virtual, or via Linux bridges/FRR). **Cost:** none.
 
-- [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) complete, with `dc01`/`dc02`/`linux01` healthy and the
-  `ch02-baseline` snapshot available.
-- Two Catalyst 9000-series (or equivalent virtual/CML) switches for the
-  core pair, one access switch, two WAN-capable routers, and a Catalyst
-  9800 WLC or equivalent — physical, nested, or modeled per [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md)'s
-  Design Considerations.
-- Comfort with Cisco IOS XE CLI at the level of [Volume III](../../volume-03-cisco-enterprise-networking/README.md), Chapters
-  01–02.
+### Lab 3.1 — Segmented campus network (Topic: Segmentation)
 
-**Steps**
+**Objective:** Separate the environment's traffic classes into VLANs.
 
-1. Restore or confirm the `ch02-baseline` snapshot across `dc01`, `dc02`,
-   `linux01`, and `ctrl01`.
+```bash
+# Create the segment VLANs the environment uses (server, user, mgmt, guest) on a VLAN-aware bridge:
+sudo ip link add link eth0 name eth0.10 type vlan id 10   # management
+sudo ip link add link eth0 name eth0.20 type vlan id 20   # servers
+bridge vlan show 2>/dev/null | head
+```
 
-2. Cable and provision `sw-core01`, `sw-core02`, and `sw-acc01`; trunk all
-   HQ VLANs (110, 120, 130, 140, 150, 151, 199) between them.
+**Expected result:** the environment's traffic is segmented into purpose VLANs (management, servers,
+users, guest) — segmentation (Volume II/X) contains failure and attack blast radius and enforces
+policy between classes, the network foundation the security labs (Chapter 07) build zero-trust on.
 
-3. Configure HSRP on both core switches for every HQ VLAN's SVI using the
-   configuration in Implementation and Automation, with `sw-core01` at
-   priority 110 (active) and `sw-core02` at priority 90 (standby).
+**Negative test:** run all services on one flat network; a compromise or broadcast storm affects
+everything and the security labs have no segmentation to enforce — segmented VLANs are the substrate
+for policy.
 
-4. **Expected result — HSRP state.**
+**Cleanup:** `sudo ip link del eth0.10; sudo ip link del eth0.20`.
 
-   ```bash
-   ./evidence.sh "ssh admin@sw-core01 'show standby brief'"
-   ```
+### Lab 3.2 — Inter-segment routing (Topic: Routing)
 
-   Every group must show `sw-core01` as `Active` and `sw-core02` as
-   `Standby`.
+**Objective:** Route between segments with policy.
 
-5. Provision `rtr-hq01` and `rtr-br101`, cable the WAN transit link
-   between them, and configure OSPF and the IPsec tunnel per
-   Implementation and Automation.
+```bash
+sudo sysctl -w net.ipv4.ip_forward=1
+ip route show
+# Dynamic routing (FRR/OSPF, Vol II) or static routes connect the segments; policy at the L3 boundary.
+sudo vtysh -c 'show ip route' 2>/dev/null | head || echo "(routes connect server/user/mgmt segments)"
+```
 
-6. **Expected result — OSPF and IPsec.**
+**Expected result:** the segments are routed with the L3 boundary as the policy enforcement point —
+inter-VLAN routing connects the environment while the L3 boundary is where security policy (Chapter
+07) between classes is enforced, integrating networking and security design.
 
-   ```bash
-   ./evidence.sh "ssh admin@rtr-hq01 'show ip ospf neighbor; show crypto isakmp sa; show crypto ipsec sa'"
-   ```
+**Negative test:** route all segments openly with no policy; segmentation provides no security benefit
+— the routed boundary must carry policy, or the VLANs are just cosmetic.
 
-   The OSPF neighbor state must be `FULL`, and both the ISAKMP and IPsec
-   SAs must be established.
+**Cleanup:** `sudo sysctl -w net.ipv4.ip_forward=0` if lab-only.
 
-7. Repoint the DNS forwarder on `dc01` and `dc02` to `rtr-hq01`
-   (`10.13.10.2`) per Implementation and Automation, then confirm
-   external resolution still works from `linux01`:
+### Lab 3.3 — Wireless access integrated with identity (Topic: Wireless)
 
-   ```bash
-   ./evidence.sh "ssh linux01 'dig +short example.com'"
-   ```
+**Objective:** Onboard wireless clients into the same identity/segmentation.
 
-8. Provision `sw-br101`, configure DHCP relay toward `dc01`/`dc02`, and
-   confirm a BR1 test client obtains a lease.
+```text
+# Configure the WLAN (Vol II) so clients:
+#   - authenticate via 802.1X against the directory (Ch02) — same identity as wired
+#   - land in the correct VLAN/segment (Ch03) per role (corporate/guest)
+# Verify a client authenticates with a domain account and is placed in the right segment.
+```
 
-9. Promote `dc-br101` as a read-only domain controller in the `BR1` site
-   using the command in Implementation and Automation.
+**Expected result:** wireless clients authenticate with directory identity (802.1X) and inherit the
+wired segmentation — integrated wireless is not a separate island: it uses the same identity (Chapter
+02) and segmentation (this chapter), so a user's access is consistent whether wired or wireless.
 
-10. **Expected result — RODC replication.**
+**Negative test:** run wireless with a separate PSK and its own flat VLAN; clients bypass the
+environment's identity and segmentation model — integrated 802.1X + role-based VLAN keeps wireless
+consistent with the rest.
 
-    ```bash
-    ./evidence.sh "ssh administrator@dc-br101.corp.meridian.example \
-      'repadmin /replsummary'"
-    ```
+**Cleanup:** none.
 
-    Must show successful inbound replication from `dc01`.
+### Lab 3.4 — Network services validation (Topic: Integration validation)
 
-11. Deploy `wlc01`, join at least one access point, and configure two
-    SSIDs: `MERIDIAN-CORP` mapped to VLAN 120 and `MERIDIAN-GUEST` mapped
-    to VLAN 140. Confirm a wireless client on each SSID receives an
-    address from the correct VLAN's DHCP scope.
+**Objective:** Confirm end-to-end reachability across the fabric.
 
-12. Take a snapshot/configuration backup of every device introduced in
-    this chapter, labeled `ch03-baseline`.
+```bash
+# From a client segment, reach a server-segment service through the routed, segmented fabric:
+ping -c2 <server-in-vlan20>
+getent hosts app.lab.example.com && curl -sI http://app.lab.example.com | head -1
+traceroute -n <server-in-vlan20> | head
+```
 
-13. **Negative test:** Fail the HSRP active core switch to confirm
-    transparent gateway failover:
+**Expected result:** a client in one segment resolves and reaches a service in another through the
+routed fabric, with the path visible — validating end-to-end (DNS + routing + segmentation + service)
+confirms the network fabric actually connects the environment, the prerequisite for the
+virtualization, cloud, and application labs that follow.
 
-    ```bash
-    ./evidence.sh "ssh admin@sw-core01 'shutdown vlan 110'"
-    ./evidence.sh "ssh linux01 'ip route get 8.8.8.8'"
-    ./evidence.sh "ssh admin@sw-core02 'show standby brief'"
-    ```
+**Negative test:** assume the fabric works because links are up; a missing route, wrong VLAN, or DNS
+gap breaks end-to-end reachability — the integrated validation (name → route → reach) proves it.
 
-    **Expected result:** `sw-core02` transitions to `Active` for every
-    group within the standby timer window, and `linux01` continues
-    routing through the same `10.13.10.1` gateway address without any
-    local reconfiguration — the outage should be visible only as a brief
-    pause in connectivity, not a routing change on the endpoint.
-
-14. **Recovery:** Re-enable the VLAN 110 SVI on `sw-core01`, confirm
-    `standby 110 preempt` returns it to `Active` (since it holds the
-    higher priority), and re-verify `show standby brief` on both
-    switches.
-
-15. **Cleanup:** No teardown — this chapter's build is retained for
-    [Chapter 04](04-virtualization-storage-and-data-protection-lab.md) onward. Back up every device configuration into
-    `~/vol13-lab/configs/`, commit, and retake the `ch03-baseline`
-    snapshot/backup if state changed during the negative test:
-
-    ```bash
-    cd ~/vol13-lab
-    git add configs/ topology.yml
-    git commit -m "Chapter 03: campus, WAN, wireless, and network services"
-    ```
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

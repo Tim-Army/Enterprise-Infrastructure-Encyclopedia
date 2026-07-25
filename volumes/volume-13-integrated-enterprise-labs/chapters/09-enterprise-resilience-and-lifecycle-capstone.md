@@ -280,177 +280,106 @@ ansible-playbook decommission.yml --tags network,security,observability,identity
 
 ## Hands-On Lab
 
-**Objective:** Run a full HQ site-failure chaos exercise against the
-complete reference lab, execute disaster recovery through the
-BR1-replicated domain controller, fail back cleanly, and then
-decommission every system this volume built, in dependency order, with
-verified data sanitization.
+This chapter is the **enterprise-resilience and lifecycle capstone** — it exercises the entire
+integrated environment (Volumes I–XII) against disaster and through its full lifecycle. It closes with
+a synthesis **Design Exercise**. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 9.1–9.4** — the complete integrated environment from Chapters 02–08.
+**Cost:** none beyond lab resources.
 
-- Chapters 01–08 complete, with every system healthy and each chapter's
-  own completion checklist satisfied.
-- Full administrative access to every system in the reference lab —
-  this is the only chapter that touches the entire environment at once.
-- A block of uninterrupted lab time; unlike earlier chapters, this
-  exercise should not be run in fragments, since the mid-exercise state
-  (HQ down, BR1 carrying the load) is not one you want to leave
-  unattended.
+### Lab 9.1 — Resilience validation (Topic: Resilience)
 
-**Steps**
+**Objective:** Prove the environment survives component failures.
 
-1. Confirm the `ch08-baseline` state across every system in the
-   environment.
+```text
+# Inject failures and confirm the environment keeps serving (chaos-style, controlled):
+#   - kill a redundant service instance -> load balancer/HA keeps the service up (Ch04, Ch05)
+#   - fail a network path -> routing/redundancy reconverges (Ch03)
+#   - fail a storage node -> RAID/FTT rebuilds, no data loss (Ch04)
+# Confirm SLOs hold (Ch08) throughout.
+```
 
-2. Complete the business impact analysis table in Theory and Architecture
-   for this specific environment if any tier or target has drifted since
-   the table above was drafted, and record it in
-   `~/vol13-lab/bia.yml`.
+**Expected result:** each single-component failure is absorbed with the service staying within SLO —
+resilience is a property of the *whole* design (redundancy at network, compute, storage, and service
+layers, Volumes II–VI), and validating it with controlled failures proves the integration actually
+tolerates faults rather than assuming it.
 
-3. Take a full-environment snapshot or backup, labeled `ch09-pre-chaos`,
-   across every host and network device — this is the point every phase
-   of this exercise can roll back to if the abort condition is triggered.
+**Negative test:** assume redundancy works without testing; a misconfigured HA pair or insufficient
+capacity only reveals itself in a real outage — controlled failure injection proves resilience in
+advance.
 
-4. **Chaos exercise:** Run the outage simulation:
+**Cleanup:** restore failed components; confirm health returns to green.
 
-   ```bash
-   ./evidence.sh "./simulate-hq-outage.sh"
-   ```
+### Lab 9.2 — Disaster recovery (Topic: DR)
 
-5. **Expected result — confirmed outage.** From `BR1`:
+**Objective:** Recover the environment at a second site.
 
-   ```bash
-   ./evidence.sh "ssh admin@rtr-br101 'ping -c 3 10.13.70.1; show ip ospf neighbor'"
-   ```
+```text
+# Execute a DR scenario (Vol VI/XII): "primary site lost." Recover using:
+#   - backups/replication (Ch04) restored at the DR site
+#   - the environment rebuilt from IaC (Ch06) where faster than restore
+#   - identity/DNS/network re-established (Ch02-03)
+# Measure against RPO (data loss) and RTO (time) targets.
+```
 
-   The HQ-side WAN peer must be unreachable and the OSPF neighbor must be
-   down before proceeding to recovery.
+**Expected result:** the environment is recovered at the DR site within the RTO, with data loss within
+the RPO — disaster recovery integrates backups (Chapter 04), IaC rebuild (Chapter 06), and the core
+services (Chapters 02–03); a tested DR run measured against RPO/RTO is the only proof the organization
+can actually recover.
 
-6. **Confirm the known limitation.** Attempt a directory write against
-   the `BR1` RODC alone:
+**Negative test:** have a DR *plan* on paper that has never been executed; the first real disaster
+finds the gaps (missing backups, un-coded infrastructure, stale runbooks) — a tested DR run is what makes
+recovery real.
 
-   ```bash
-   ./evidence.sh "ssh administrator@dc-br101.corp.meridian.example \
-     'Set-ADAccountPassword -Identity testuser -Reset' || true"
-   ```
+**Cleanup:** tear down the DR-test environment.
 
-   **Expected result:** The operation fails or refers to a writable DC
-   that is currently unreachable — document this as the confirmed
-   limitation, not a step to work around in place.
+### Lab 9.3 — Lifecycle operations (Topic: Lifecycle)
 
-7. **Disaster recovery failover:** Recover the replicated `dc02` image at
-   `esxi-br101` and seize FSMO roles onto it, using the commands in
-   Implementation and Automation.
+**Objective:** Operate the environment through change over time.
 
-8. **Expected result — FSMO seizure complete.**
+```text
+# Run the ongoing lifecycle (Vol XII): patch/upgrade a component through the pipeline (Ch06) with
+#   progressive delivery and SLO gates (Ch08); decommission a retired service cleanly (Ch06);
+#   right-size capacity from observability data (Ch08).
+echo "provision -> operate/patch (gated) -> scale/right-size -> decommission -- all as code"
+```
 
-   ```bash
-   ./evidence.sh "ssh administrator@dc02.corp.meridian.example 'netdom query fsmo'"
-   ```
+**Expected result:** components are patched through gated progressive delivery, retired services
+decommissioned cleanly as code, and capacity right-sized from data — lifecycle management (Volume XII)
+keeps the integrated environment current, correctly-sized, and free of orphaned resources across its
+whole life, not just at build time.
 
-   All five FSMO roles must show as held by the recovered `dc02` copy.
+**Negative test:** build the environment and then operate it ad-hoc (manual patches, no
+decommissioning, guessed capacity); it degrades, drifts, and accretes orphaned resources — managed
+lifecycle keeps it healthy over time.
 
-9. Repoint `BR1`'s DHCP relay and `dc-br101`'s replication partner to the
-   recovered `dc02`, then confirm BR1-only identity operations now
-   succeed:
+**Cleanup:** none.
 
-   ```bash
-   ./evidence.sh "ssh administrator@dc02.corp.meridian.example \
-     'Set-ADAccountPassword -Identity testuser -Reset'"
-   ```
+### Lab 9.4 — Capstone Design Exercise: the whole environment (Topic: Synthesis)
 
-10. Rebuild a minimal Kubernetes control plane at `BR1` using [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md)'s
-    automation, and record the elapsed time from step 4 to a working
-    control plane as this exercise's measured RTO:
+**Objective:** Present and defend the complete integrated design — the volume's culminating deliverable.
 
-    ```bash
-    ./evidence.sh "terraform apply -var-file=environments/br1-emergency.tfvars \
-      -target=module.k8s_control_plane_br1"
-    ```
+> **Scenario.** Present the reference environment you built (Chapters 01–09) as a coherent enterprise
+> platform to a review board, and defend it end to end.
 
-11. **Expected result — RTO/RPO measured.** Compare the elapsed recovery
-    time and the age of the last good replication point against the
-    targets in the BIA table, and record both, including any tier that
-    missed its target.
+Work through and **write down**, tracing each to its source volume: lab-engineering discipline (Ch01);
+identity/DNS/time core services (Ch02); the segmented, routed, wireless network fabric (Ch03);
+virtualization, storage, and data protection (Ch04); hybrid cloud and Kubernetes platform (Ch05);
+infrastructure-as-code and automated delivery (Ch06); zero-trust security, detection, and IR (Ch07);
+unified observability and incident operations (Ch08); and resilience, DR, and lifecycle (Ch09). For
+each layer, state the requirement it serves and the trade-offs made.
 
-12. **Failback:** Once satisfied the exercise's findings are fully
-    captured, power `HQ` systems back on. Before allowing `dc01` back into
-    replication, check for a USN rollback condition per Validation and
-    Troubleshooting:
+**Expected result:** a defensible, coherent design where every layer integrates with the others —
+identity underpins security, networking carries segmentation, IaC rebuilds everything, observability
+drives operations, and resilience/DR/lifecycle keep it running — demonstrating mastery of the whole
+encyclopedia, which is exactly what this capstone volume exists to prove.
 
-    ```bash
-    ./evidence.sh "ssh administrator@dc01.corp.meridian.example \
-      'dcdiag /test:CheckSDRefDom'"
-    ```
+**Negative test:** present the environment as a pile of independently-configured technologies with no
+integration story; it is not a *platform*, just tools — the integration (each layer serving and
+depending on the others) is the deliverable this volume assesses.
 
-13. Run the metadata cleanup procedure from Implementation and Automation
-    to remove `dc01`'s stale FSMO claims, then confirm a single,
-    consistent view of role ownership:
-
-    ```bash
-    ./evidence.sh "ssh administrator@dc02.corp.meridian.example 'netdom query fsmo'"
-    ```
-
-    **Expected result:** Exactly one authoritative answer, with no
-    conflicting claims from `dc01`.
-
-14. Decommission the emergency `BR1` control plane rebuilt in step 10 now
-    that HQ's original platform is available again, and confirm
-    `meridian-web` and the hybrid cluster are healthy against the
-    original topology.
-
-15. **Full lifecycle decommission.** Working in reverse-dependency order,
-    tear down every system this volume built:
-
-    | Order | Scope | Mechanism |
-    | --- | --- | --- |
-    | 1 | Kubernetes workloads and cluster (Ch. 05) | `terraform destroy -target=module.k8s_cluster` |
-    | 2 | `CLOUD1` landing zone (Ch. 05) | `terraform destroy -target=module.cloud1_landing_zone` |
-    | 3 | vSphere VMs, cluster, ESXi hosts, `bkp01` (Ch. 04) | `terraform destroy -target=module.hq_vsphere_cluster` |
-    | 4 | WAN, campus, wireless devices (Ch. 03) | `ansible-playbook decommission.yml --tags network` |
-    | 5 | Security and observability tooling: `siem01`, `obs01` (Ch. 07–08) | `ansible-playbook decommission.yml --tags security,observability` |
-    | 6 | Automation/CI: `git01`, `vault01` (Ch. 06) | `ansible-playbook decommission.yml --tags automation` |
-    | 7 | Identity: `dc-br101`, `dc02`, `dc01` (Ch. 02–03) | Domain controller demotion, last |
-
-    ```bash
-    ./evidence.sh "terraform destroy -target=module.k8s_cluster -auto-approve"
-    ./evidence.sh "terraform destroy -target=module.cloud1_landing_zone -auto-approve"
-    ./evidence.sh "terraform destroy -target=module.hq_vsphere_cluster -auto-approve"
-    ./evidence.sh "ansible-playbook decommission.yml --tags network,security,observability,automation"
-    ./evidence.sh "ssh administrator@dc-br101.corp.meridian.example \
-      'Uninstall-ADDSDomainController -Force -RemoveDnsDelegation'"
-    ./evidence.sh "ssh administrator@dc02.corp.meridian.example \
-      'Uninstall-ADDSDomainController -Force -LastDomainControllerInDomain -RemoveDnsDelegation'"
-    ```
-
-16. **Expected result — clean removal.** After the last domain controller
-    is demoted, confirm no residual DNS records or computer objects
-    remain:
-
-    ```bash
-    ./evidence.sh "nslookup corp.meridian.example || echo 'domain retired as expected'"
-    ```
-
-17. Sanitize every disk that held domain, security, or configuration data
-    per NIST SP 800-88, matching the category to the medium (for example,
-    a cryptographic erase or full-disk overwrite for VM storage before the
-    underlying datastore or cloud volume is released).
-
-18. **Cleanup:** Confirm the cloud provider's own resource inventory shows
-    nothing remaining from `CLOUD1` (checking directly, not only via
-    Terraform state), revoke every credential and secret issued across
-    this volume, and finalize the evidence bundle:
-
-    ```bash
-    ./evidence.sh "sha256sum -c ~/lab-evidence/manifest.sha256"
-    cd ~/vol13-lab
-    git add topology.yml bia.yml
-    git commit -m "Chapter 09: resilience exercise, DR failover, and full decommission"
-    ```
-
-    **Expected result:** Every checksum in the manifest verifies, giving
-    a complete, tamper-evident record of every chapter's evidence from
-    [Chapter 01](01-lab-engineering-safety-reproducibility-and-evidence.md) through this capstone.
+**Cleanup:** none (the capstone design is the artifact); tear down the reference environment when the
+exercise is complete.
 
 ## Lab Verification
 

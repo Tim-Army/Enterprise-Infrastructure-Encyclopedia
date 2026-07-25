@@ -223,110 +223,97 @@ action: alert
 
 ## Hands-On Lab
 
-**Objective:** Deploy 802.1X and default-deny microsegmentation between
-HQ's user and core-services VLANs, stand up `siem01` with a tuned
-detection rule, then run a full detect-contain-eradicate-recover cycle
-against a simulated intrusion.
+This chapter's labs secure the integrated environment with **zero-trust segmentation, detection, and
+incident response**, drawing on Volumes X, XV, XIX, and XXV. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.4** — the environment from Chapters 02–06, and security tooling
+(firewall/segmentation, a SIEM/detection stack). **Cost:** none beyond lab resources.
 
-- [Chapter 06](06-infrastructure-as-code-and-automated-delivery-lab.md) complete, with the automation pipeline and `vault01`
-  available for secret storage.
-- A RADIUS-capable directory role (Windows NPS on `dc01`) and 802.1X
-  support on the access switch from [Chapter 03](03-campus-wan-wireless-and-network-services-lab.md).
-- Familiarity with basic offensive tooling for controlled lab use only
-  (this chapter simulates an attack against infrastructure you own; never
-  point these techniques at anything outside this lab).
+### Lab 7.1 — Zero-trust segmentation (Topic: Segmentation)
 
-**Steps**
+**Objective:** Enforce least-privilege access between the environment's segments.
 
-1. Restore or confirm the `ch06-baseline` state.
+```bash
+# Default-deny between segments (Ch03), allow only intended flows, keyed on identity (Ch02):
+sudo nft add table inet zt 2>/dev/null
+sudo nft 'add chain inet zt forward { type filter hook forward priority 0 ; policy drop ; }'
+sudo nft add rule inet zt forward ct state established,related accept
+# allow: user-segment -> app:443 only; everything else denied
+sudo nft add rule inet zt forward ip saddr 192.168.20.0/24 tcp dport 443 accept
+```
 
-2. Configure the NPS/RADIUS role on `dc01` and 802.1X on `sw-acc01`'s
-   client-facing ports per Implementation and Automation. Confirm
-   `linux01` still authenticates successfully to the network port before
-   proceeding.
+**Expected result:** inter-segment traffic is default-deny with only intended flows permitted — zero
+trust (Volume X) builds on the segmentation (Chapter 03) and identity (Chapter 02) to enforce
+least-privilege access between every part of the environment, containing lateral movement.
 
-3. Apply the default-deny VLAN ACL between VLAN 120 and VLAN 110 on
-   `sw-core01`/`sw-core02`.
+**Negative test:** allow open traffic between segments; a compromise in one (e.g. a user workstation)
+reaches the whole environment — default-deny with explicit allows is what contains lateral movement.
 
-4. **Expected result — ACL enforcement.**
+**Cleanup:** `sudo nft delete table inet zt`.
 
-   ```bash
-   ./evidence.sh "nc -zv -w2 10.13.10.11 3389 || true"
-   ./evidence.sh "kinit svc-domainjoin"
-   ```
+### Lab 7.2 — Detection engineering (Topic: Detection)
 
-   The RDP probe must fail; Kerberos authentication must still succeed.
+**Objective:** Detect malicious activity across the environment.
 
-5. Deploy `siem01`, configure log forwarding from `dc01`, `dc02`,
-   `sw-core01`, `sw-core02`, `rtr-hq01`, `ctrl01`, and `linux01`.
+```bash
+# Ship logs from every integrated component (Ch02-06) to the SIEM, and write a detection:
+#   e.g. brute force = >10 failed auths from one source in 5m (Vol X, Ch06 detection labs)
+grep "Failed password" /var/log/auth.log 2>/dev/null | grep -oE 'from [0-9.]+' | sort | uniq -c | awk '$1>10{print "ALERT",$0}'
+```
 
-6. Measure the baseline Kerberos authentication failure rate over a
-   representative period, then deploy the detection rule from
-   Implementation and Automation with a threshold above that baseline.
+**Expected result:** a detection fires on a brute-force pattern in the aggregated logs — detection
+engineering (Volume X) correlates telemetry from across the integrated environment (identity, network,
+hosts, cloud) so an attack is visible wherever it touches, which requires the unified observability
+(Chapter 08) to work.
 
-7. **Expected result — telemetry flowing.**
+**Negative test:** monitor each component's logs in isolation; a multi-stage attack that crosses
+identity → network → host is never correlated — detection needs the aggregated, cross-component
+telemetry.
 
-   ```bash
-   ./evidence.sh "curl -s http://siem01:9200/_cat/indices?v | grep -E 'winlog|syslog'"
-   ```
+**Cleanup:** none.
 
-   Indices for both Windows and syslog sources must show recent event
-   counts greater than zero.
+### Lab 7.3 — Incident response (Topic: IR)
 
-8. Take a snapshot of `siem01`'s rule configuration and the switch/RADIUS
-   configuration state, labeled `ch07-baseline`.
+**Objective:** Contain and investigate a simulated compromise.
 
-9. Provision `atk01` on its isolated segment, then attach it to VLAN 120
-   for the negative test only.
+```text
+# Run the IR lifecycle (Vol X) against the environment for a simulated compromised host:
+#   Identify (detection, Lab 7.2) -> Contain (isolate the host via segmentation policy, Lab 7.1)
+#   -> Eradicate (rebuild from code, Ch06) -> Recover -> Lessons (blameless postmortem)
+echo "detect -> contain (segment) -> eradicate (rebuild from IaC) -> recover -> learn"
+```
 
-10. **Negative test:** From `atk01`, simulate a Kerberos pre-authentication
-    brute-force attempt against `dc01`:
+**Expected result:** the compromised host is isolated by segmentation policy, eradicated by rebuilding
+from code, and recovered — integrated IR ties detection (Lab 7.2), segmentation containment (Lab 7.1),
+and IaC rebuild (Chapter 06) into one response, which is far faster than ad-hoc remediation.
 
-    ```bash
-    ./evidence.sh "for i in $(seq 1 15); do \
-      kinit baduser@CORP.MERIDIAN.EXAMPLE 2>/dev/null; done || true"
-    ```
+**Negative test:** respond to a compromise by manually cleaning the host in place; you may miss
+persistence and cannot be sure it is clean — containment plus rebuild-from-known-good-code is the
+trustworthy eradication.
 
-    **Expected result — detection.** Within the rule's evaluation window,
-    `siem01` raises a `kerberos-preauth-bruteforce` alert naming `atk01`'s
-    address and the targeted account pattern:
+**Cleanup:** restore the isolated host after the exercise.
 
-    ```bash
-    ./evidence.sh "curl -s http://siem01:9200/alerts/_search?q=rule:kerberos-preauth-bruteforce"
-    ```
+### Lab 7.4 — Security validation (Topic: Assurance)
 
-11. **Contain:** Administratively shut the switch port `atk01` is
-    connected to:
+**Objective:** Confirm the controls actually work.
 
-    ```bash
-    ./evidence.sh "ssh admin@sw-acc01 'interface GigabitEthernet1/0/15 ; shutdown'"
-    ```
+```bash
+# Emulate a technique and confirm the environment detects/contains it (purple team, Vol X):
+logger -p auth.warning "Failed password for invalid user attacker from 203.0.113.9"
+sleep 1; journalctl -p warning --since "-1 min" 2>/dev/null | grep -q "Failed password" && echo "DETECTION VALIDATED" || echo "GAP"
+```
 
-    **Expected result:** `atk01` immediately loses all network
-    connectivity, including any connection an attacker might already have
-    established — confirm with a failed ping from `ctrl01` to `atk01`.
+**Expected result:** the emulated technique produces a detectable signal, validating the control
+(or exposing a gap) — security assurance (Volume X) proves the integrated detection/segmentation
+controls work against real techniques, rather than assuming the tools deployed across the environment
+are effective.
 
-12. **Eradicate and recover:** Confirm no lateral movement succeeded
-    (`repadmin /replsummary` on `dc01`/`dc02` shows no unexpected changes,
-    no new domain accounts were created), then remove `atk01` from the
-    network entirely rather than merely leaving its port shut down.
+**Negative test:** assume the security controls work because they are deployed; many silently break
+(a log source moved, a rule disabled) — emulating the technique and confirming detection is the only
+proof of current coverage.
 
-13. Assemble the incident timeline from the evidence captured in steps
-    10–12, in `~/lab-evidence/manifest.sha256` order, as the deliverable
-    for this exercise.
-
-14. **Cleanup:** Decommission `atk01` (delete the VM; it has no ongoing
-    purpose in this volume). Re-enable the switch port for future use.
-    Retain `siem01`, the 802.1X configuration, and the VLAN ACL for
-    [Chapter 08](08-observability-operations-and-major-incident-lab.md). Commit the updated topology and detection rule:
-
-    ```bash
-    cd ~/vol13-lab
-    git add topology.yml
-    git commit -m "Chapter 07: zero trust, detection, and incident response"
-    ```
+**Cleanup:** none.
 
 ## Lab Verification
 

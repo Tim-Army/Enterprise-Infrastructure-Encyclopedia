@@ -248,132 +248,93 @@ sudo systemctl enable --now sssd
 
 ## Hands-On Lab
 
-**Objective:** Build the two-node `corp.meridian.example` Active Directory
-forest, layered time hierarchy, DHCP failover pair, and a domain-joined
-Linux validation client, then prove the directory survives a single domain
-controller failure.
+This chapter's labs stand up the **integrated core services** — identity, DNS, time, and DHCP —
+working together as the foundation every later chapter depends on, drawing on Volumes II, IV, and X.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.4** — the reference environment from Chapter 01, a directory
+server (AD/LDAP), and Linux/Windows members. **Cost:** none.
 
-- The Chapter 01 lab scaffold (`~/vol13-lab/topology.yml`, `evidence.sh`)
-  and the `ch01-baseline` snapshot, restored as this chapter's starting
-  point.
-- Capacity for two Windows Server VMs and one Linux VM in addition to
-  `ctrl01` (4 vCPU/8 GB RAM recommended for each domain controller).
-- Familiarity with Windows Server administration and Linux administration
-  at the level of Volume IV, Chapters 02–03.
+### Lab 2.1 — Directory-backed identity (Topic: Integrated identity)
 
-**Steps**
+**Objective:** Establish one identity source for the whole environment.
 
-1. Restore the `ch01-baseline` snapshot (or confirm `ctrl01` still matches
-   it) so this chapter starts from the known-clean scaffold.
+```bash
+# Stand up the directory (Volume IV), then join a Linux and a Windows member to it:
+sudo realm join -U administrator lab.example.com          # Linux -> AD (Vol IV)
+id alice@lab.example.com                                   # domain user resolves cross-platform
+```
 
-2. Provision `dc01` (10.13.10.11/24, VLAN 110) and `dc02`
-   (10.13.10.12/24, VLAN 110) as Windows Server VMs, and `linux01`
-   (10.13.20.21/24, VLAN 120) as a Linux VM, per the addressing table
-   above.
+**Expected result:** a single directory authenticates users on both Linux and Windows members — the
+integrated environment uses **one identity source** (Volume IV), so every later service (VMs, cloud,
+apps) authenticates the same accounts, which is what makes access consistent and revocable across the
+whole stack.
 
-3. Promote `dc01` as the forest root using the `Install-ADDSForest` command
-   in Implementation and Automation. Reboot and confirm logon as
-   `CORP\Administrator` succeeds before continuing.
+**Negative test:** give each service its own local accounts; access sprawls and offboarding misses
+systems — the shared directory is the single point of identity truth for the integration.
 
-4. Take a snapshot named `ch02-dc01-promoted` before joining `dc02` — this
-   is the cheapest point to roll back to if the second promotion goes
-   wrong.
+**Cleanup:** revert lab-only joins.
 
-5. Join and promote `dc02` as an additional domain controller and global
-   catalog using the second `Install-ADDSDomainController` command.
+### Lab 2.2 — Integrated DNS (Topic: Name resolution)
 
-6. **Expected result — replication.** From `ctrl01`, over the lab
-   router's existing routing:
+**Objective:** Make every component resolvable by name.
 
-   ```bash
-   ./evidence.sh "ssh administrator@dc01.corp.meridian.example \
-     'repadmin /replsummary && dcdiag /q'"
-   ```
+```bash
+# The directory-integrated DNS (Vol II/IV) resolves hosts, services (SRV), and reverse:
+dig +short dc01.lab.example.com A
+dig +short -t SRV _ldap._tcp.lab.example.com
+dig +short -x 192.168.10.10
+```
 
-   `repadmin /replsummary` must show 0 failures; `dcdiag /q` should return
-   no failed test lines.
+**Expected result:** forward, SRV (service-location), and reverse records resolve — DNS is the
+connective tissue of the environment: directory service-location (SRV), host resolution, and reverse
+records let every component find every other by name, which every later chapter's services assume.
 
-7. Configure DNS forwarding and the time hierarchy on both DCs using the
-   commands in Implementation and Automation.
+**Negative test:** run the environment on IP addresses with no DNS; directory location fails,
+certificates (name-based) break, and troubleshooting is opaque — integrated DNS is a hard dependency,
+not optional.
 
-8. **Expected result — time convergence.** Capture and confirm offsets are
-   within a few hundred milliseconds:
+**Cleanup:** none (DNS is foundational).
 
-   ```bash
-   ./evidence.sh "ssh administrator@dc01.corp.meridian.example 'w32tm /monitor'"
-   ```
+### Lab 2.3 — Time synchronization (Topic: Time)
 
-9. Configure the VLAN 120 DHCP scope and load-balance failover between
-   `dc01` and `dc02` using the commands in Implementation and Automation.
+**Objective:** Synchronize the whole environment's clocks.
 
-10. **Expected result — failover health.**
+```bash
+chronyc sources -v | head        # Linux members sync to the environment's NTP source
+chronyc tracking | grep -E "Stratum|System time"
+# Windows members sync via the domain hierarchy (w32time from the PDC emulator).
+```
 
-    ```bash
-    ./evidence.sh "ssh administrator@dc01.corp.meridian.example \
-      'Get-DhcpServerv4Failover'"
-    ```
+**Expected result:** all members synchronized to a common time source — accurate, synchronized time is
+required for Kerberos (5-minute skew limit), log correlation across the environment (Volume XI), and
+certificate validation; it is the quiet dependency behind identity, security, and observability.
 
-    Must report `LOAD BALANCE` mode and `Normal` state before proceeding.
+**Negative test:** let clocks drift; Kerberos auth fails, cross-service logs do not correlate, and TLS
+validation breaks — synchronized time is a prerequisite for the integrated identity and observability
+labs.
 
-11. Join `linux01` to the domain using the `realm join` command in
-    Implementation and Automation, then validate the full chain:
+**Cleanup:** none (keep time sync).
 
-    ```bash
-    ./evidence.sh "ssh linux01 'realm list && id CORP\\\\svc-domainjoin@corp.meridian.example && kinit svc-domainjoin && klist'"
-    ```
+### Lab 2.4 — DHCP and dynamic host onboarding (Topic: Core services)
 
-    **Expected result:** `realm list` shows `corp.meridian.example` as
-    `configured`, `id` resolves the domain account, and `kinit`/`klist`
-    show a valid ticket-granting ticket — proof that DNS SRV lookup,
-    Kerberos, and LDAP are all functioning from a non-Windows client.
+**Objective:** Onboard hosts automatically into the environment.
 
-12. Take a snapshot named `ch02-baseline` capturing this fully validated
-    state.
+```bash
+# A host boots, gets an address + gateway + DNS via DHCP, registers in DNS, and can join the domain:
+sudo dhclient -v eth0 2>&1 | grep -iE "DHCPACK|bound"
+ip addr show eth0 | grep inet ; cat /etc/resolv.conf | grep nameserver
+```
 
-13. **Negative test:** Power off `dc01` to simulate an unplanned domain
-    controller failure:
+**Expected result:** a new host receives address, gateway, and DNS via DHCP, then can resolve and join
+the environment — DHCP + DNS + directory together give **zero-touch onboarding**: a host boots, is
+addressed, becomes resolvable, and joins the identity domain, the integrated foundation for scaling
+the environment.
 
-    ```bash
-    ./evidence.sh "ssh linux01 'kdestroy && kinit svc-domainjoin && klist'"
-    ```
+**Negative test:** address every host statically by hand; onboarding does not scale and errors creep
+in — DHCP with DNS registration automates host onboarding into the integrated services.
 
-    **Expected result:** Kerberos authentication still succeeds — `dc02`
-    answered the KDC request. Confirm DHCP failover also held:
-
-    ```bash
-    ./evidence.sh "ssh administrator@dc02.corp.meridian.example \
-      'Get-DhcpServerv4Failover; Get-DhcpServerv4Scope'"
-    ```
-
-    DHCP failover state should now report a degraded partner but continue
-    leasing from `dc02` alone.
-
-14. **Recovery:** Power `dc01` back on. Wait for it to rejoin, then confirm
-    replication and failover both re-converge:
-
-    ```bash
-    ./evidence.sh "ssh administrator@dc01.corp.meridian.example \
-      'repadmin /replsummary'"
-    ./evidence.sh "ssh administrator@dc01.corp.meridian.example \
-      'Get-DhcpServerv4Failover'"
-    ```
-
-    Both commands must report a healthy state again — `Normal`
-    communication and 0 replication failures — before this chapter is
-    considered complete.
-
-15. **Cleanup:** Retake the `ch02-baseline` snapshot on all three new VMs
-    if any state changed during the negative test, so Chapter 03 starts
-    from a known-good identity layer. Append the new hostnames to
-    `~/vol13-lab/topology.yml` and commit:
-
-    ```bash
-    cd ~/vol13-lab
-    git add topology.yml
-    git commit -m "Chapter 02: identity, DNS, time, and core services"
-    ```
+**Cleanup:** none.
 
 ## Lab Verification
 

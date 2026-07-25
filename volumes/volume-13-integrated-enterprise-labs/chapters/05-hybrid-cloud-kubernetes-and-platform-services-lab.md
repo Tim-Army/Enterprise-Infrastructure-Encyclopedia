@@ -236,112 +236,95 @@ spec:
 
 ## Hands-On Lab
 
-**Objective:** Build the `CLOUD1` landing zone, connect it to `HQ` over a
-VPN, form one Kubernetes cluster spanning both locations, deploy a
-topology-aware sample workload, and confirm the cluster degrades safely
-when the hybrid link fails.
+This chapter's labs extend the environment into **hybrid cloud, Kubernetes, and platform services**,
+drawing on Volumes VII, VIII, and XVII/XXXIII/XXXIV. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 5.1–5.4** — the on-prem environment from Chapters 02–04, a cloud
+account, and a Kubernetes cluster. **Cost:** cloud-provider charges apply to the cloud labs — use a
+small scope.
 
-- [Chapter 04](04-virtualization-storage-and-data-protection-lab.md) complete, with `rtr-hq01` and the `HQ-Cluster` healthy.
-- A cloud account/subscription scoped for lab use only, with the
-  landing-zone guardrails from [Volume VII, Chapter 02](../../volume-07-cloud-infrastructure/chapters/02-landing-zones-resource-organization-and-guardrails.md) understood.
-- Comfort with `kubectl` and basic Kubernetes manifests at the level of
-  [Volume VIII, Chapter 02](../../volume-08-containers-platform-engineering/chapters/02-kubernetes-architecture-and-cluster-lifecycle.md).
+### Lab 5.1 — Hybrid connectivity (Topic: Hybrid cloud)
 
-**Steps**
+**Objective:** Connect the on-prem environment to cloud.
 
-1. Restore or confirm the `ch04-baseline` state.
+```text
+# Establish hybrid connectivity (Vol VII): site-to-site VPN or private interconnect from the
+#   on-prem network (Ch03) to a cloud VPC/VNet, with routing and DNS resolution both ways.
+# Verify: an on-prem host reaches a cloud workload by private IP and by name.
+```
 
-2. Create the `CLOUD1` landing zone: a dedicated account/project, the
-   `10.13.90.0/24` VPC subnet, baseline guardrails (restricted default
-   network ACL, mandatory tagging policy), and `cloud-vpgw01` as the VPN
-   attachment point.
+**Expected result:** on-prem and cloud are one routed, name-resolvable network — hybrid connectivity
+(Volume VII) extends the environment's fabric (Chapter 03) and identity/DNS (Chapter 02) into cloud, so
+workloads span both consistently rather than as disconnected islands.
 
-3. Extend `rtr-hq01`'s crypto map with the `CLOUD1` peer per Implementation
-   and Automation.
+**Negative test:** connect to cloud with a different addressing/DNS/identity model than on-prem;
+workloads cannot resolve or authenticate across the boundary — hybrid must extend the existing fabric
+and services, not fork them.
 
-4. **Expected result — cloud VPN.**
+**Cleanup:** tear down lab-only cloud connectivity to stop charges.
 
-   ```bash
-   ./evidence.sh "ssh admin@rtr-hq01 'show crypto ipsec sa peer 203.0.113.10'"
-   ```
+### Lab 5.2 — Kubernetes platform (Topic: Container platform)
 
-   Must show an established SA before continuing.
+**Objective:** Run containerized workloads on the environment.
 
-5. Provision `k8s-cp01` and `k8s-wk01` as VMs on the `HQ-Cluster`, and
-   `k8s-wk02` as a compute instance inside the `CLOUD1` VPC.
+```bash
+# Deploy a workload to the cluster (Vol VIII), integrated with the environment's DNS/identity:
+kubectl create deployment app --image=nginx --replicas=2
+kubectl expose deployment app --port=80
+kubectl get pods,svc -o wide | head
+```
 
-6. Initialize the control plane on `k8s-cp01` and join both workers per
-   Implementation and Automation, labeling each by zone immediately.
+**Expected result:** a containerized app runs on Kubernetes, reachable via the environment's networking
+and DNS — the Kubernetes platform (Volume VIII) hosts cloud-native workloads alongside the VMs, and
+integrates with the environment's networking, identity, and observability rather than as a silo.
 
-7. **Expected result — cluster formed.**
+**Negative test:** run the cluster with its own isolated identity, networking, and monitoring; it
+becomes an unmanaged island — integrated platform services share the environment's identity, network,
+and observability.
 
-   ```bash
-   ./evidence.sh "kubectl get nodes -L topology.kubernetes.io/zone"
-   ```
+**Cleanup:** `kubectl delete deployment app; kubectl delete svc app`.
 
-   All three nodes must show `Ready` with the correct zone label.
+### Lab 5.3 — Platform services and self-service (Topic: Platform services)
 
-8. Deploy an in-cluster container registry and ingress controller as
-   platform services, then deploy `meridian-web` with the topology spread
-   constraint from Implementation and Automation.
+**Objective:** Offer a paved-road service to consumers.
 
-9. **Expected result — spread and reachability.**
+```text
+# Publish a golden path (Vol VIII/IX): a template that provisions a service wired to the
+#   environment's CI/CD, DNS, identity, and monitoring. A developer requests it and gets a
+#   deployable, compliant service.
+echo "self-service golden path -> compliant service integrated with the whole environment"
+```
 
-   ```bash
-   ./evidence.sh "kubectl get pods -o wide -l app=meridian-web"
-   ./evidence.sh "curl -s http://<ingress-address>/ | head -n 5"
-   ```
+**Expected result:** a self-service golden path provisions services pre-integrated with the
+environment's CI/CD, identity, DNS, and observability — platform services (Volume VIII) make the fast
+path also the compliant, integrated path, so consumers get correctly-wired services without bespoke
+setup.
 
-   Replicas must be present on both `hq`- and `cloud1`-zoned nodes, and
-   the `curl` must succeed regardless of which pod answers.
+**Negative test:** hand teams raw cloud/cluster access with no golden path; each wires services
+differently and inconsistently — the golden path encodes the integration as the default.
 
-10. Take a snapshot/state export labeled `ch05-baseline` (cluster
-    manifests exported via `kubectl get all -A -o yaml`, plus cloud
-    landing-zone configuration export).
+**Cleanup:** remove lab-only scaffolded resources.
 
-11. **Negative test:** Fail the cloud VPN tunnel to simulate a hybrid link
-    outage:
+### Lab 5.4 — Cross-environment application (Topic: Integration)
 
-    ```bash
-    ./evidence.sh "ssh admin@rtr-hq01 'no crypto map MERIDIAN-MAP 20'"
-    ./evidence.sh "kubectl get nodes -L topology.kubernetes.io/zone"
-    ```
+**Objective:** Run an app that spans on-prem and cloud.
 
-    **Expected result:** Within the node-heartbeat timeout, `k8s-wk02`
-    transitions to `NotReady`. On-premises nodes (`k8s-cp01`, `k8s-wk01`)
-    remain `Ready`, and the Kubernetes control plane keeps responding to
-    `kubectl` commands throughout — because it never depended on the VPN.
+```bash
+# An app with an on-prem database (Ch04) and cloud-hosted frontend (Lab 5.2), tied by hybrid
+#   connectivity (Lab 5.1), identity (Ch02), and DNS. Verify the frontend reaches the backend.
+curl -sI http://frontend.lab.example.com 2>/dev/null | head -1 || echo "(frontend -> on-prem DB over hybrid link)"
+```
 
-12. Confirm workload continuity:
+**Expected result:** a single application spans cloud (frontend) and on-prem (database), connected by
+the integrated fabric, identity, and DNS — this proves the environment is genuinely *integrated*: a
+workload uses on-prem and cloud together as one system, the goal the whole volume builds toward.
 
-    ```bash
-    ./evidence.sh "kubectl get pods -o wide -l app=meridian-web"
-    ./evidence.sh "curl -s http://<ingress-address>/ | head -n 5"
-    ```
+**Negative test:** build the cross-environment app assuming flat connectivity and shared identity that
+were never established; it fails at the boundary — the integration (Chapters 02–05) is the
+prerequisite for a spanning application.
 
-    **Expected result:** Pods that were on `k8s-wk02` are rescheduled
-    (once their grace period expires) onto `k8s-wk01`, and `meridian-web`
-    continues answering requests throughout — degraded scheduling
-    flexibility, not an outage.
-
-13. **Recovery:** Restore the crypto map entry on `rtr-hq01`, confirm the
-    tunnel re-establishes, and confirm `k8s-wk02` returns to `Ready`:
-
-    ```bash
-    ./evidence.sh "ssh admin@rtr-hq01 'crypto map MERIDIAN-MAP 20 ipsec-isakmp'"
-    ./evidence.sh "kubectl get nodes -L topology.kubernetes.io/zone"
-    ```
-
-14. **Cleanup:** No teardown — the cluster and landing zone are retained
-    for Chapters 06–09. Commit the updated topology record:
-
-    ```bash
-    cd ~/vol13-lab
-    git add topology.yml
-    git commit -m "Chapter 05: hybrid cloud, Kubernetes, and platform services"
-    ```
+**Cleanup:** remove lab-only app components.
 
 ## Lab Verification
 

@@ -215,136 +215,91 @@ New-VIReplication -VM dc02 -TargetVIServer esxi-br101.corp.meridian.example `
 
 ## Hands-On Lab
 
-**Objective:** Build the HQ vSphere cluster, migrate the existing lab VMs
-into it, validate HA by simulating a host failure, and prove a backup can
-actually be restored.
+This chapter's labs add the **virtualization, storage, and data-protection** layer to the
+environment, drawing on Volumes V, VI, and XXVI. Each ends **`**Lab verified by:** *pending*`** until a
+human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.4** — the network fabric and identity from Chapters 02–03, and a
+virtualization host (KVM/Proxmox/ESXi) with storage. **Cost:** none beyond lab resources.
 
-- Chapter 03 complete, with campus, WAN, and identity services healthy.
-- Capacity for two nested ESXi hosts, a vCenter Server Appliance, a vSAN
-  witness appliance, a backup repository VM, and one BR1 ESXi host — the
-  heaviest resource requirement in the volume so far; consult Chapter 01's
-  Design Considerations on nested virtualization before provisioning.
-- Familiarity with PowerCLI or the equivalent vSphere automation tooling.
+### Lab 4.1 — Virtualized workloads on the fabric (Topic: Virtualization)
 
-**Steps**
+**Objective:** Run the environment's services as VMs on the integrated network.
 
-1. Restore or confirm the `ch03-baseline` state across all systems built
-   so far.
+```bash
+# Provision a VM attached to a segment VLAN (Ch03), joined to the domain (Ch02):
+#   virt-install / qm create ... --net0 bridge=vmbr0,tag=20   (server segment)
+virsh list --all 2>/dev/null | head || qm list 2>/dev/null | head
+```
 
-2. Provision `esxi-a01`, `esxi-a02`, and `vsan-witness01`, and deploy
-   `vcsa01` per the addressing table above. On the parent hypervisor, set
-   Promiscuous Mode and Forged Transmits to Accept on every port group
-   these nested hosts use.
+**Expected result:** VMs run the environment's services, placed on the correct segment and joined to
+the directory — virtualization (Volumes V/XXVI) hosts the integrated services densely and flexibly,
+and each VM inherits the network segmentation and identity established in the prior chapters.
 
-3. Create the `HQ-Cluster`, add both hosts, and enable vSAN with the
-   witness appliance using the commands in Implementation and Automation.
+**Negative test:** place VMs on a default/flat virtual network ignoring the segmentation plan; they
+bypass the environment's network policy — VM NICs must attach to the correct segment VLAN to stay
+consistent with the fabric.
 
-4. **Expected result — cluster health.**
+**Cleanup:** destroy lab-only VMs.
 
-   ```bash
-   ./evidence.sh "govc cluster.info HQ-Cluster"
-   ```
+### Lab 4.2 — Shared storage for the environment (Topic: Storage)
 
-   Both hosts must show `connected`, and vSAN health must report no
-   errors.
+**Objective:** Provide resilient shared storage to the workloads.
 
-5. Enable HA with admission control (`HAFailoverLevel 1`) and DRS in fully
-   automated mode.
+```bash
+# A resilient datastore (LVM/ZFS/vSAN, Vol VI/XXVI) backs the VMs; network storage (NFS/SMB) for data:
+df -h --total | tail -1
+showmount -e <nas> 2>/dev/null | head || echo "(NFS/SMB shares serve app data across the environment)"
+```
 
-6. Migrate `dc01`, `dc02`, `ctrl01`, and `linux01` into the cluster using
-   the `Move-VM` command in Implementation and Automation.
+**Expected result:** VMs sit on a resilient datastore and application data on shared network storage —
+integrated storage (Volume VI) gives the environment fault-tolerant capacity with the right resilience
+(RAID/FTT) per workload, decoupling data from any single host.
 
-7. **Expected result — connectivity after migration.**
+**Negative test:** run stateful services on a single host's local disk with no redundancy or shared
+storage; a host loss takes the data with it — resilient shared storage is what lets workloads survive
+host failure and migrate.
 
-   ```bash
-   ./evidence.sh "ssh linux01 'kinit svc-domainjoin && klist'"
-   ```
+**Cleanup:** none.
 
-   Domain authentication must still succeed after migration — if it does
-   not, suspect the nested networking defect described in Theory and
-   Architecture before anything else.
+### Lab 4.3 — Data protection (Topic: Backup)
 
-8. Provision `bkp01`, install `govc`, and deploy the `vm-backup.sh` script
-   from Implementation and Automation. Run it once against `dc02`:
+**Objective:** Protect the environment's data with tested backups.
 
-   ```bash
-   ./evidence.sh "./vm-backup.sh dc02"
-   ```
+```bash
+# Scheduled backups of VMs + data (Vol VI/XXVI), with a verified restore:
+#   vzdump / veeam / restic ... to an offsite/immutable target (3-2-1)
+echo "backup -> offsite/immutable copy -> scheduled -> TEST RESTORE (the only proof that matters)"
+```
 
-9. **Expected result — backup artifact.**
+**Expected result:** the environment's VMs and data have scheduled, offsite/immutable backups and a
+tested restore — data protection (Volume VI) layered on top of storage resilience covers what RAID/FTT
+cannot: corruption, deletion, ransomware, and site loss; the tested restore is the proof.
 
-   ```bash
-   ./evidence.sh "ls -la /backup/dc02/ && govc export.ovf -vm dc02 -verify /backup/dc02/latest"
-   ```
+**Negative test:** rely on storage redundancy as "backup"; ransomware or deletion is faithfully
+mirrored to every copy — a separate, tested, offline backup is what makes the environment recoverable.
 
-   The export directory must be non-empty and the manifest must verify.
+**Cleanup:** remove lab-only backup artifacts.
 
-10. Provision `esxi-br101` and configure vSphere Replication for `dc02`
-    per Implementation and Automation.
+### Lab 4.4 — Live migration and availability (Topic: Availability)
 
-11. **Expected result — replication sync.**
+**Objective:** Move a running workload without downtime.
 
-    ```bash
-    ./evidence.sh "govc replication.info dc02"
-    ```
+```bash
+# With shared storage (Lab 4.2), migrate a running VM between hosts:
+#   virsh migrate --live <vm> qemu+ssh://host2/system   (or vMotion / qm migrate)
+echo "shared storage + clustering enables live migration -> host maintenance with zero VM downtime"
+```
 
-    Must show a completed sync within the configured RPO window.
+**Expected result:** a running VM migrates between hosts with no downtime — live migration (enabled by
+shared storage + clustering, Volumes V/XXVI) lets you patch/maintain hosts without disrupting the
+environment's services, integrating virtualization and availability design.
 
-12. Take a snapshot of the vCenter/cluster configuration state (export
-    the cluster and VM inventory list) labeled `ch04-baseline`.
+**Negative test:** attempt live migration with VMs on host-local storage; there is no shared copy to
+migrate to, so it fails or requires downtime — shared storage is the prerequisite for non-disruptive
+mobility.
 
-13. **Negative test:** Simulate an `esxi-a01` host failure while it is
-    running at least one migrated VM:
-
-    ```bash
-    ./evidence.sh "govc host.maintenance.enter esxi-a01 -timeout 1s || true"
-    ./evidence.sh "ssh admin@esxi-a01 'reboot -f'"
-    ```
-
-    **Expected result:** vSphere HA detects the host as unreachable and
-    restarts its VMs on `esxi-a02` within a few minutes. Confirm:
-
-    ```bash
-    ./evidence.sh "govc vm.info dc01 | grep Host"
-    ```
-
-    `dc01` (or whichever VM was on `esxi-a01`) should now show
-    `esxi-a02` as its running host.
-
-14. **Recovery:** Once `esxi-a01` finishes rebooting, confirm it rejoins
-    the cluster and vSAN resynchronizes:
-
-    ```bash
-    ./evidence.sh "govc cluster.info HQ-Cluster"
-    ```
-
-    Both hosts must show `connected` and vSAN health must return to
-    green before continuing.
-
-15. **Restore test:** Deliberately corrupt a non-critical file on `dc02`,
-    then restore from the `bkp01` export taken in step 8 to a temporary
-    VM name and confirm the file is intact:
-
-    ```bash
-    ./evidence.sh "govc import.ovf -name dc02-restore-test /backup/dc02/latest"
-    ```
-
-    **Expected result:** The restored VM boots and the file matches its
-    pre-corruption state. Delete `dc02-restore-test` once confirmed —
-    leaving a stray restored domain controller copy running would create
-    a USN rollback risk in Active Directory.
-
-16. **Cleanup:** Remove the `dc02-restore-test` VM entirely. Retain the
-    cluster, migrated VMs, `bkp01`, and `esxi-br101` for later chapters.
-    Commit the updated topology record:
-
-    ```bash
-    cd ~/vol13-lab
-    git add topology.yml
-    git commit -m "Chapter 04: virtualization, storage, and data protection"
-    ```
+**Cleanup:** none.
 
 ## Lab Verification
 

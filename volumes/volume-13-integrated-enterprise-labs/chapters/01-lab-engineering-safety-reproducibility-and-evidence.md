@@ -256,140 +256,97 @@ wraps expected-result checks in it so the checkpoint has a saved artifact.
 
 ## Hands-On Lab
 
-**Objective:** Stand up the Volume XIII reference lab scaffold — the
-topology manifest, the evidence-capture pipeline, isolation verification,
-and a tested snapshot/rollback cycle — that every later chapter in this
-volume builds on.
+Volume XIII integrates Volumes I–XII into one continuous reference environment. This chapter's labs
+establish the **lab-engineering discipline** — safety, reproducibility, and evidence — that every
+later integrated lab depends on. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 1.1–1.4** — a hypervisor or cloud account for the reference
+environment, `git`, and Terraform/Ansible (Volumes I, IX). **Cost:** none beyond lab resources.
 
-- A hypervisor or nested-virtualization host capable of running at least one
-  Linux VM (used here as `ctrl01`), consistent with the workstation
-  practices in [Volume I, Chapter 01](../../volume-01-enterprise-engineering-foundations/chapters/01-building-the-enterprise-developer-workstation.md).
-- Familiarity with basic Git operations ([Volume I, Chapter 02](../../volume-01-enterprise-engineering-foundations/chapters/02-repository-architecture.md)) and shell
-  scripting.
-- Administrative access to whatever router/firewall sits at the edge of the
-  lab network segment, sufficient to confirm routing/NAT behavior.
+### Lab 1.1 — Reproducible environment definition (Topic: Reproducibility)
 
-**Steps**
+**Objective:** Define the reference environment as code, not by hand.
 
-1. Provision `ctrl01`, a small Linux VM (2 vCPU/4 GB RAM is sufficient for
-   this chapter) attached to a virtual network you control, and assign it
-   `10.13.10.30/24` on VLAN 110 per the addressing plan above.
+```bash
+mkdir -p ~/lab-env && cd ~/lab-env && git init -q
+cat > topology.md <<'EOF'
+# Reference environment (built across Ch02-09)
+identity/dns/ntp (Ch02) | network fabric (Ch03) | virtualization+storage (Ch04)
+cloud/k8s (Ch05) | IaC/CI (Ch06) | security (Ch07) | observability (Ch08) | resilience (Ch09)
+EOF
+git add -A && git commit -qm "lab: define reference topology"
+```
 
-2. Create the lab evidence directory and the wrapper script:
+**Expected result:** the environment's definition and topology are version-controlled from the start —
+integrated labs must be **reproducible**: the whole environment is defined as code (Volume I/IX), so
+it can be rebuilt identically after a mistake, which is what makes destructive experimentation safe.
 
-   ```bash
-   mkdir -p ~/lab-evidence
-   mkdir -p ~/vol13-lab && cd ~/vol13-lab
-   cat > evidence.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -euo pipefail
-   EVID_DIR="${EVID_DIR:-$HOME/lab-evidence}"
-   mkdir -p "${EVID_DIR}"
-   ts="$(date -u +%Y%m%dT%H%M%SZ)"
-   slug="$(echo "$1" | tr -c 'a-zA-Z0-9' '-' | sed 's/-\+/-/g' | cut -c1-40)"
-   out="${EVID_DIR}/${ts}_${slug}.log"
-   {
-     echo "# command: $*"
-     echo "# started (UTC): ${ts}"
-     echo "---"
-     eval "$@" 2>&1
-     echo "---"
-   } | tee "${out}"
-   sha256sum "${out}" >> "${EVID_DIR}/manifest.sha256"
-   echo "Evidence written: ${out}"
-   EOF
-   chmod +x evidence.sh
-   ```
+**Negative test:** build the reference environment by hand with no code/topology record; a mistake
+means rebuilding from memory — a code-defined environment can be rebuilt on demand.
 
-3. Create the topology manifest shown in Implementation and Automation as
-   `topology.yml` in the same directory.
+**Cleanup:** none (this repo is the environment's source of truth).
 
-4. Initialize version control for the lab scaffold itself:
+### Lab 1.2 — Safe experimentation with snapshots (Topic: Safety)
 
-   ```bash
-   git init
-   git add topology.yml evidence.sh
-   git commit -m "Volume XIII reference lab: topology manifest and evidence pipeline"
-   ```
+**Objective:** Make every change reversible before you make it.
 
-5. **Expected result — evidence pipeline.** Confirm the wrapper works and
-   produces a checksummed artifact:
+```bash
+# Before any risky change, snapshot the affected VM(s) (hypervisor-specific):
+#   virsh snapshot-create-as <vm> pre-change     # libvirt/KVM
+#   qm snapshot <vmid> pre-change                # Proxmox (Volume XXVI)
+echo "snapshot taken -> change -> verify -> keep or 'snapshot-revert' to roll back"
+```
 
-   ```bash
-   ./evidence.sh "hostnamectl && ip -brief addr show"
-   cat ~/lab-evidence/manifest.sha256
-   ```
+**Expected result:** a pre-change snapshot exists so any change can be instantly reverted — safety in
+an integrated lab means every risky step is reversible (snapshots, backups, IaC rebuild), so you can
+experiment aggressively and recover in seconds rather than fearing every change.
 
-   The log file must contain the command output, and `manifest.sha256` must
-   contain one new line referencing that file.
+**Negative test:** make a risky change to the shared environment with no snapshot/backup; a mistake
+cascades across the integrated services and recovery is slow — the snapshot is the undo button.
 
-6. **Expected result — isolation.** From `ctrl01`, confirm the lab supernet
-   does not leak toward a real destination and that the illustrative cloud
-   edge resolves only inside the lab:
+**Cleanup:** delete pre-change snapshots once a change is confirmed good.
 
-   ```bash
-   ./evidence.sh "traceroute -m 5 1.1.1.1 || true"
-   ./evidence.sh "ping -c 2 203.0.113.1 || true"
-   ```
+### Lab 1.3 — Evidence capture (Topic: Evidence)
 
-   The first command's captured hops must never show a `10.13.x.x` address
-   after leaving `ctrl01`; the second must fail to route anywhere outside
-   the lab (no reply expected yet — nothing is listening there until
-   [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md)), confirming the address is not accidentally reachable on the
-   real internet.
+**Objective:** Record verifiable evidence of each lab's outcome.
 
-7. Take a hypervisor-level snapshot of `ctrl01` named `ch01-baseline`.
+```bash
+cd ~/lab-env && mkdir -p evidence
+{ date -u; echo "lab: baseline"; uname -a; } > evidence/ch01-baseline.txt
+sha256sum evidence/ch01-baseline.txt >> evidence/manifest.sha256
+cat evidence/manifest.sha256
+```
 
-8. Make a trivial, identifiable change and verify rollback:
+**Expected result:** timestamped, hashed evidence of the lab's state — capturing evidence (command
+output, config, hashes) makes results verifiable and auditable, and turns each integrated lab into a
+record you (or an assessor) can confirm was actually completed, not just claimed.
 
-   ```bash
-   ./evidence.sh "echo 'temporary-marker' | sudo tee /etc/lab-marker"
-   ```
+**Negative test:** claim a lab "worked" with no captured output/evidence; there is nothing to verify or
+troubleshoot against later — evidence capture is what makes the `Lab verified by` sign-off meaningful.
 
-   Revert to the `ch01-baseline` snapshot using your hypervisor's UI or CLI,
-   then confirm the marker is gone:
+**Cleanup:** none (retain evidence).
 
-   ```bash
-   ./evidence.sh "test -f /etc/lab-marker && echo PRESENT || echo ABSENT"
-   ```
+### Lab 1.4 — The teardown and rebuild loop (Topic: Lifecycle discipline)
 
-   **Expected result:** `ABSENT`. If the file is still present, the
-   snapshot did not actually revert `ctrl01` — stop and fix snapshot/rollback
-   before proceeding to [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md), since every later chapter's negative
-   test depends on this mechanism working.
+**Objective:** Prove the environment can be destroyed and rebuilt from code.
 
-9. **Negative test:** Intentionally attempt to route lab traffic where it
-   should not go — add a static route on `ctrl01` pointing the [RFC 5737](https://www.rfc-editor.org/rfc/rfc5737)
-   `203.0.113.0/24` range at your real default gateway instead of the lab
-   router, then repeat the ping from step 6:
+```bash
+cd ~/lab-env
+# The whole environment provisions from IaC (Volume IX): terraform apply / ansible-playbook site.yml
+# Prove the loop: destroy a component and rebuild it from code, confirming identical state.
+echo "break -> rebuild-from-code -> re-verify == the loop every chapter's lab relies on"
+```
 
-   ```bash
-   sudo ip route add 203.0.113.0/24 via <your-real-gateway>
-   ./evidence.sh "ping -c 2 203.0.113.1 || true"
-   ```
+**Expected result:** any component can be torn down and rebuilt identically from code — the
+break/rebuild loop (Volumes IX, XIV, XXVI) is the core lab-engineering skill: because the environment
+is code-defined and evidence-verified, you learn by breaking and fixing, confident you can always
+return to a known-good state.
 
-   **Expected result:** The ping still fails to reach anything (because
-   `203.0.113.0/24` is not announced on the real internet either), but the
-   exercise confirms you know how to detect and remove an incorrect route.
-   Remove it immediately:
+**Negative test:** treat the reference environment as precious and never practice teardown/rebuild;
+the first real failure finds the rebuild path untested — practicing the loop is what makes recovery
+reliable.
 
-   ```bash
-   sudo ip route del 203.0.113.0/24 via <your-real-gateway>
-   ```
-
-10. **Cleanup:** This chapter's scaffold is retained for the rest of the
-    volume, so there is no teardown here — instead, confirm the artifacts
-    that must survive into [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md):
-
-    ```bash
-    ls ~/vol13-lab/topology.yml ~/vol13-lab/evidence.sh
-    git -C ~/vol13-lab log --oneline
-    ```
-
-    Retake the `ch01-baseline` snapshot if any state changed since step 7,
-    so [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) starts from a known-clean point.
+**Cleanup:** none (the loop is the intended practice).
 
 ## Lab Verification
 

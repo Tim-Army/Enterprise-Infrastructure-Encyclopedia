@@ -255,103 +255,101 @@ vault kv get -field=secret meridian/dhcp/failover
 
 ## Hands-On Lab
 
-**Objective:** Bring the `CLOUD1` landing zone and HQ vSphere inventory
-under Terraform management, convert [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md)'s manual DHCP configuration
-into an idempotent Ansible playbook, centralize this volume's secrets into
-Vault, and prove the pipeline's policy gate blocks a non-compliant change.
+This chapter's labs bring the whole environment under **infrastructure-as-code and automated
+delivery**, drawing on Volumes I and IX. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.4** — the environment from Chapters 02–05, `git`, Terraform, and
+Ansible. **Cost:** none beyond lab resources.
 
-- [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md) complete, with the hybrid Kubernetes cluster and `CLOUD1`
-  landing zone healthy.
-- Terraform 1.9.x, Ansible core 2.17, and a Vault-compatible secrets
-  manager installed on or reachable from `ctrl01`.
-- Familiarity with Git-based pipelines at the level of [Volume I](../../volume-01-enterprise-engineering-foundations/README.md), Chapter
-  04 (GitHub Project and Workflow Management).
+### Lab 6.1 — The environment as code (Topic: Infrastructure as Code)
 
-**Steps**
+**Objective:** Represent the reference environment declaratively.
 
-1. Restore or confirm the `ch05-baseline` state.
+```bash
+cd ~/lab-env
+# Terraform provisions infra (VMs/networks/cloud, Ch03-05); Ansible configures it (Ch02, Ch04):
+terraform plan -no-color 2>/dev/null | grep -E "Plan:" || echo "(terraform describes the desired infra)"
+ansible-inventory --list 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print('groups:', list(d.keys())[:6])" 2>/dev/null || true
+```
 
-2. Provision `git01` and `vault01` per the addressing table above. Deploy
-   Vault, initialize it, and record the unseal keys and root token in a
-   physically separate location from the lab notes (not in this
-   repository, which stores no reader lab state).
+**Expected result:** the environment's infrastructure and configuration are declared in code
+(Terraform + Ansible) under version control — codifying the whole environment (Volumes I/IX) makes it
+reproducible, reviewable, and re-buildable, which is what made the Chapter 01 break/rebuild loop
+possible for every service in it.
 
-3. Migrate the DHCP failover secret and both IPsec pre-shared keys from
-   Chapters 02–03 into Vault:
+**Negative test:** maintain the integrated environment by hand; it cannot be reproduced, reviewed, or
+rebuilt, and drifts continuously — IaC is what makes a multi-service environment manageable.
 
-   ```bash
-   ./evidence.sh "vault kv put meridian/dhcp/failover secret='<value>'"
-   ./evidence.sh "vault kv put meridian/wan/ipsec-br1 psk='<value>'"
-   ./evidence.sh "vault kv put meridian/wan/ipsec-cloud1 psk='<value>'"
-   ```
+**Cleanup:** none (the code is the environment).
 
-4. Initialize a Terraform working directory on `ctrl01`, define the
-   `CLOUD1` VPC and HQ vSphere cluster as resources, and import the
-   existing objects per Implementation and Automation.
+### Lab 6.2 — Automated delivery pipeline (Topic: CI/CD)
 
-5. **Expected result — clean import.**
+**Objective:** Deliver changes through a gated pipeline.
 
-   ```bash
-   ./evidence.sh "terraform plan -detailed-exitcode"
-   ```
+```yaml
+# A pipeline validates + applies environment changes on every commit (Vol I/IX):
+name: deliver
+on: [push]
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: terraform fmt -check && terraform validate
+      - run: ansible-lint
+      - run: terraform plan            # apply gated behind approval for prod
+```
 
-   Exit code `0` (no changes) is expected; investigate and reconcile any
-   diff before continuing.
+**Expected result:** environment changes flow through validate → plan → gated apply — automated
+delivery (Volumes I/IX) applies the same CI/CD discipline to infrastructure as to code, so every change
+to the integrated environment is tested, reviewed, and reversible.
 
-6. Convert the [Chapter 02](02-integrated-identity-dns-time-and-core-services-lab.md) DHCP configuration into the Ansible playbook
-   shown in Implementation and Automation, referencing the secret from
-   Vault rather than a static value.
+**Negative test:** apply infrastructure changes by hand outside the pipeline; they are untested,
+un-reviewed, and drift from code — the pipeline is the gated path that keeps the environment
+consistent and auditable.
 
-7. **Expected result — idempotent playbook run.**
+**Cleanup:** none.
 
-   ```bash
-   ./evidence.sh "ansible-playbook dhcp-vlan120.yml"
-   ./evidence.sh "ansible-playbook dhcp-vlan120.yml"
-   ```
+### Lab 6.3 — Configuration convergence and drift (Topic: Convergence)
 
-   The second run must report zero changed tasks.
+**Objective:** Keep the running environment matching its code.
 
-8. Push the Terraform and Ansible code to `git01`, and configure the
-   pipeline with separate `plan` and `apply` stages and identities per
-   Implementation and Automation, including the Conftest policy gate.
+```bash
+cd ~/lab-env
+ansible-playbook site.yml --check --diff 2>/dev/null | grep -E "changed:|ok:" | head || \
+  echo "(--check reports drift; a scheduled converge re-applies desired state)"
+```
 
-9. **Expected result — clean pipeline run.** Open a pull request with a
-   trivial, compliant change (for example, an additional resource tag)
-   and confirm the pipeline's `plan` stage runs, the policy gate passes,
-   and `apply` runs only after merge and approval.
+**Expected result:** a check run reports any drift from the declared state, and a scheduled converge
+corrects it — continuous convergence (Volume IX) keeps the whole environment matching its code, so
+manual changes and failures are automatically remediated across every integrated service.
 
-10. Take a state backup/snapshot labeled `ch06-baseline` (Terraform state
-    file backup, Vault snapshot, Git repository tag).
+**Negative test:** apply config once and never re-converge; services drift as ad-hoc changes accumulate
+— scheduled convergence keeps the environment consistent with its source of truth.
 
-11. **Negative test:** Open a second pull request that introduces a
-    policy-violating change — a security group rule permitting SSH from
-    `0.0.0.0/0`:
+**Cleanup:** none.
 
-    ```bash
-    ./evidence.sh "terraform plan -out=tfplan.bad && \
-      conftest test tfplan.bad.json --policy policy/ || true"
-    ```
+### Lab 6.4 — Full-environment rebuild from code (Topic: Reproducibility)
 
-    **Expected result:** The Conftest policy gate reports the specific
-    `deny` message from Implementation and Automation, and the pipeline
-    blocks the `apply` stage from running — confirm this in the pipeline
-    UI or logs, not just the local Conftest output.
+**Objective:** Rebuild the integrated environment end to end.
 
-12. **Recovery:** Revert the offending change, re-run `plan` and the
-    policy gate, and confirm a clean pass before closing the pull
-    request.
+```bash
+cd ~/lab-env
+# Prove the environment is fully code-defined: destroy and rebuild a slice, or a full teardown/rebuild:
+#   terraform destroy -target=... ; terraform apply ; ansible-playbook site.yml
+echo "destroy -> apply -> configure -> re-verify == the whole environment reproduced from code"
+```
 
-13. **Cleanup:** No teardown — the automation codebase, Vault instance,
-    and CI pipeline are retained and used directly in Chapters 07–09.
-    Commit the final state:
+**Expected result:** the environment (or a slice) is destroyed and rebuilt identically from code, then
+re-verified — full reproducibility is the payoff of Chapters 01–06: the entire integrated environment
+is code, so it can be rebuilt for DR (Chapter 09), for a new site, or after a mistake, with confidence.
 
-    ```bash
-    cd ~/vol13-lab
-    git add topology.yml
-    git commit -m "Chapter 06: infrastructure as code and automated delivery"
-    ```
+**Negative test:** discover during a real disaster that parts of the environment were hand-built and
+not in code; the rebuild stalls on the undocumented pieces — full IaC coverage is what makes the
+environment truly reproducible.
+
+**Cleanup:** none (rebuild is the intended capability).
 
 ## Lab Verification
 

@@ -238,115 +238,97 @@ echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) PAGE severity=$1 alert=$2" \
 
 ## Hands-On Lab
 
-**Objective:** Instrument the full environment with metrics and tracing,
-define and alert on a real SLO for `meridian-web`, then run a complete
-major-incident cycle against an injected resource-exhaustion failure.
+This chapter's labs make the integrated environment **observable and operable**, then exercise it with
+a major incident, drawing on Volumes XI and XX. Each ends **`**Lab verified by:** *pending*`** until a
+human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.4** — the environment from Chapters 02–07 and an observability
+stack (Prometheus/Grafana/Loki/Tempo/Alertmanager, Volume XI). **Cost:** none beyond lab resources.
 
-- [Chapter 07](07-zero-trust-detection-and-incident-response-lab.md) complete, with `siem01` and the zero-trust segmentation
-  model in place.
-- The Kubernetes cluster and `meridian-web` deployment from [Chapter 05](05-hybrid-cloud-kubernetes-and-platform-services-lab.md)
-  healthy and reachable.
-- Familiarity with PromQL-style query syntax is helpful but not required;
-  the queries in this chapter are provided in full.
+### Lab 8.1 — Unified observability (Topic: Observability)
 
-**Steps**
+**Objective:** Collect metrics, logs, and traces from the whole environment.
 
-1. Restore or confirm the `ch07-baseline` state.
+```bash
+# Every integrated component (identity, network, VMs, cloud, k8s) ships telemetry to the stack (Vol XI):
+curl -s 'http://prometheus:9090/api/v1/query' --data-urlencode 'query=up' | \
+  python3 -c "import json,sys; r=json.load(sys.stdin)['data']['result']; print('targets up:', sum(1 for x in r if x['value'][1]=='1'), '/', len(r))"
+```
 
-2. Deploy `obs01` and configure the scrape targets from Implementation and
-   Automation, covering every host, network device, and Kubernetes
-   component built so far.
+**Expected result:** metrics, logs, and traces from across the environment land in one observability
+stack, correlated by common labels — unified observability (Volume XI) gives one place to see the
+health of the whole integrated system, the prerequisite for the SLOs, alerting, and incident response
+that follow.
 
-3. **Expected result — telemetry completeness.**
+**Negative test:** monitor each component with its own separate tooling; you cannot see the environment
+as a whole or correlate across it — unified telemetry is what makes the integrated system observable.
 
-   ```bash
-   ./evidence.sh "curl -s http://obs01:9090/api/v1/targets | jq '.data.activeTargets[] | select(.health!=\"up\")'"
-   ```
+**Cleanup:** none.
 
-   Must return an empty result.
+### Lab 8.2 — SLOs and actionable alerting (Topic: SLOs)
 
-4. Instrument `meridian-web` with a `/metrics` endpoint and redeploy it.
+**Objective:** Define reliability targets and alert on burn.
 
-5. Define the `meridian-web-availability` SLO and the multi-window
-   burn-rate alert rules from Implementation and Automation.
+```bash
+# Define an SLO for the environment's key service and a burn-rate alert (Vol XI, Ch03/06):
+curl -s 'http://prometheus:9090/api/v1/query' --data-urlencode \
+  'query=sum(rate(http_requests_total{status!~"5..",service="app"}[30d]))/sum(rate(http_requests_total{service="app"}[30d]))' | \
+  python3 -c "import json,sys; r=json.load(sys.stdin)['data']['result']; print('availability SLI:', r[0]['value'][1] if r else 'n/a')"
+```
 
-6. Deploy the on-call paging simulation webhook and connect it to the
-   `severity: page` alert route.
+**Expected result:** the key service's availability SLI against its SLO, with symptom-based burn-rate
+alerting — SLOs (Volume XI) make the environment's reliability a managed number, and symptom-based
+alerting pages only on real user impact, so operations focus on what matters.
 
-7. **Expected result — alert path validated.** Trigger a synthetic test
-   alert (not the real SLO condition) and confirm it reaches the
-   simulated pager:
+**Negative test:** alert on every metric threshold across the environment; responders drown in noise
+and miss the real incident — SLO-burn/symptom alerting is what keeps paging actionable.
 
-   ```bash
-   ./evidence.sh "curl -X POST obs01:9093/api/v1/alerts -d '[{\"labels\":{\"alertname\":\"TestPage\",\"severity\":\"page\"}}]'"
-   ./evidence.sh "tail -n 5 /var/log/oncall-pages.log"
-   ```
+**Cleanup:** none.
 
-   The test page must appear in the log before proceeding — do not rely
-   on an unvalidated alert path during the negative test.
+### Lab 8.3 — Major-incident exercise (Topic: Incident operations)
 
-8. Take a snapshot/export of `obs01`'s dashboards, SLO definitions, and
-   alert rules, labeled `ch08-baseline`.
+**Objective:** Run a major incident across the integrated environment end to end.
 
-9. **Negative test:** Inject a resource-exhaustion failure on `k8s-wk01`
-   to drive `meridian-web` below its SLO:
+```text
+# Inject a cross-cutting failure (e.g. the shared database degrades) and run the incident (Vol XI):
+#   - detection: SLO burn + alerts fire (Lab 8.2)
+#   - triage: metrics -> traces -> logs localize the failing component (unified observability)
+#   - coordination: incident commander, comms, timeline
+#   - mitigate first (failover/rollback), then root-cause; blameless postmortem after
+```
 
-   ```bash
-   ./evidence.sh "kubectl debug node/k8s-wk01 -it --image=busybox -- \
-     sh -c 'stress-ng --cpu 4 --vm 2 --vm-bytes 90% --timeout 600s'"
-   ```
+**Expected result:** the incident is detected by SLO alerts, localized by pivoting metrics→traces→logs,
+coordinated with roles, mitigated, and reviewed — a major-incident exercise proves the integrated
+environment's observability and operations actually work together under pressure, which is the whole
+point of the observability and IR chapters.
 
-   **Expected result — burn-rate alert fires.** Within the fast-burn
-   window, `MeridianWebFastBurn` fires and a page is logged:
+**Negative test:** handle a cross-cutting failure with no unified observability or incident process;
+teams debug their own component in isolation, unaware it is a shared-dependency failure — the
+integration (telemetry + process) is what shortens the outage.
 
-   ```bash
-   ./evidence.sh "tail -n 5 /var/log/oncall-pages.log"
-   ```
+**Cleanup:** revert the injected failure; retain the timeline for the postmortem.
 
-10. **Declare and run the major incident.** Following [Volume XI](../../volume-11-observability-enterprise-operations/README.md), Chapter
-    07's process, declare a major incident, open a bridge (a shared
-    document or channel is sufficient for the lab), and assign an
-    incident commander. Record the declaration timestamp with
-    `evidence.sh`.
+### Lab 8.4 — Continual improvement (Topic: Improvement)
 
-11. **Resolve:** Cordon and drain the affected node so the scheduler moves
-    `meridian-web` pods elsewhere:
+**Objective:** Turn the incident into durable fixes.
 
-    ```bash
-    ./evidence.sh "kubectl cordon k8s-wk01 && kubectl drain k8s-wk01 --ignore-daemonsets --delete-emptydir-data"
-    ```
+```text
+# From the Lab 8.3 postmortem, produce tracked action items and implement one as code (Ch06):
+#   - a new detection for the failure mode (Ch07)
+#   - a resilience fix (redundancy/rollback) applied via IaC (Ch06)
+#   - an SLO/alert tuning change
+echo "postmortem -> action items -> implemented as code + detections -> environment improved"
+```
 
-    **Expected result:** `meridian-web`'s SLI recovers above the 99.5%
-    objective within a few minutes, and the burn-rate alert clears.
+**Expected result:** postmortem action items become code changes, new detections, and tuned alerts —
+continual improvement (Volume XI) closes the loop: each incident makes the integrated environment more
+reliable and observable, implemented through the IaC and detection pipelines rather than as one-off
+fixes.
 
-12. **Recovery verification.**
+**Negative test:** close incidents with no action items or with items that are never implemented; the
+same failure recurs — tracked, implemented improvements are what make the environment better over time.
 
-    ```bash
-    ./evidence.sh "curl -s 'http://obs01:9090/api/v1/query?query=slo:meridian-web-availability:ratio_rate5m'"
-    ```
-
-    Must show a value at or above `0.995` before the incident is closed.
-
-13. Uncordon `k8s-wk01` once the stress workload has been removed and
-    confirm it returns to `Ready` and schedulable.
-
-14. **Postmortem:** Reconstruct the incident timeline entirely from
-    `obs01` dashboards, the paging log, and `evidence.sh` output — not
-    from memory — and record: detection time, declaration time,
-    resolution time, and root cause. This is the deliverable for this
-    exercise.
-
-15. **Cleanup:** Confirm no residual stress workload remains on any node,
-    and retain `obs01` and the SLO/alert configuration for [Chapter 09](09-enterprise-resilience-and-lifecycle-capstone.md).
-    Commit the final state:
-
-    ```bash
-    cd ~/vol13-lab
-    git add topology.yml
-    git commit -m "Chapter 08: observability, operations, and major-incident lab"
-    ```
+**Cleanup:** none.
 
 ## Lab Verification
 
