@@ -323,116 +323,94 @@ drop-in for every build.
 
 ## Hands-On Lab
 
-**Objective:** Simulate the offline-repository workflow end to end
-without requiring an actual air-gapped network or a Windows DRM
-installation, by building a minimal local "export," verifying its
-transfer integrity, hosting it internally, and registering it in OME as a
-custom catalog.
+This chapter carries a topic-level walkthrough lab for **each air-gapped-update task under "Server
+Maintenance"** — building an offline repository, hosting it, pointing OME at it, and validating an
+air-gapped update. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.4** — a workstation with **Dell Repository Manager (DRM)**
+and internet access (outside the air gap), a file share (HTTP/CIFS/NFS) reachable by OME inside the
+air gap, and a deployed OME appliance with onboarded servers. **Cost:** none.
 
-- The OME appliance from earlier chapters' labs.
-- A lab host (can be the same workstation used for other labs) with
-  Python 3.11+ and `requests` installed.
-- No internet access is required for this lab's core exercise, which is
-  the point — it demonstrates the disconnected consumption path, using a
-  synthetic catalog structure in place of a real DRM export so the
-  exercise is reproducible without Dell tooling.
+### Lab 7.1 — Build an offline repository with DRM (Topic: Offline repository)
 
-**Steps**
+**Objective:** Export a validated catalog + DUPs for the air gap.
 
-1. Build a minimal synthetic catalog directory standing in for a DRM
-   export's structure:
+```text
+# On an internet-connected workstation, in Dell Repository Manager (DRM):
+#   - create a repository scoped to your models (e.g. R760, R660)
+#   - base it on the Dell online catalog
+#   - export the deployment repository (catalog XML + Dell Update Packages) to a folder
+```
 
-   ```bash
-   mkdir -p /tmp/drm-export/packages
-   cat > /tmp/drm-export/Catalog.xml <<'EOF'
-   <?xml version="1.0"?>
-   <Catalog>
-     <SoftwareComponent Component="BIOS" Model="Lab-PowerEdge-Simulated"
-                         Version="2.15.0" Severity="Recommended"
-                         Path="packages/BIOS_LAB_2.15.0.EXE"/>
-   </Catalog>
-   EOF
-   echo "placeholder DUP content for lab purposes only" > \
-     /tmp/drm-export/packages/BIOS_LAB_2.15.0.EXE
-   ```
+**Expected result:** a self-contained folder with a catalog file and the DUPs for your models —
+DRM curates exactly the firmware your fleet needs into a portable repository, so an air-gapped OME
+can update from Dell-validated content without any internet access.
 
-   **Expected result:** a directory tree with a catalog index file and
-   one placeholder package file, structurally analogous to a real DRM
-   export (a real export's `Catalog.xml` is far more detailed; this is a
-   deliberately minimal stand-in for lab reproducibility).
-2. Generate and verify a transfer-integrity manifest, simulating the
-   source and destination sides of an air-gap transfer:
+**Negative test:** copy random individual DUPs into a folder without DRM's catalog; OME has no
+version reference and cannot evaluate compliance — the exported **catalog** is what makes the
+offline content usable as a baseline.
 
-   ```bash
-   cd /tmp/drm-export
-   find . -type f -exec sha256sum {} \; > ../drm-export.sha256
-   cd /tmp
-   sha256sum -c drm-export.sha256
-   ```
+**Cleanup:** none (retain the repository for the update).
 
-   **Expected result:** every file reports `OK`.
-3. **Negative test:** corrupt one file and re-verify:
+### Lab 7.2 — Host the offline catalog (Topic: Repository hosting)
 
-   ```bash
-   echo "tampered" >> /tmp/drm-export/packages/BIOS_LAB_2.15.0.EXE
-   cd /tmp && sha256sum -c drm-export.sha256
-   ```
+**Objective:** Make the repository reachable inside the air gap.
 
-   **Expected result:** the checksum check reports a `FAILED` entry for
-   the modified file, demonstrating that the verification step correctly
-   detects transfer corruption or tampering. Restore the file before
-   continuing:
+```bash
+# Transfer the DRM export across the air gap, then host it on a share OME can reach:
+#   HTTP (example): serve the folder
+cd /srv/dell-repo && python3 -m http.server 8080 &     # or a real web server / CIFS / NFS
+curl -sI http://<repo-host>:8080/catalog.xml | head -1  # confirm it is served
+```
 
-   ```bash
-   echo "placeholder DUP content for lab purposes only" > \
-     /tmp/drm-export/packages/BIOS_LAB_2.15.0.EXE
-   ```
+**Expected result:** the catalog and DUPs are reachable over HTTP/CIFS/NFS from inside the air gap
+— OME consumes an offline catalog from a network share, so the repository must be hosted on a
+path the appliance can reach on the isolated network.
 
-4. Host the (now verified) export over HTTP from the lab host:
+**Negative test:** leave the repository on the DRM workstation outside the air gap; OME cannot
+reach it — the content must be transferred in and hosted on the isolated network.
 
-   ```bash
-   cd /tmp/drm-export && python3 -m http.server 8080 --bind 0.0.0.0
-   ```
+**Cleanup:** stop the lab web server (`kill %1`).
 
-   Leave this running in its own terminal for the remainder of the lab.
-5. From another terminal, confirm the OME appliance's network can reach
-   this host and port (adjust for any firewall between the appliance and
-   your lab host):
+### Lab 7.3 — Point OME at the offline catalog (Topic: Offline catalogs)
 
-   ```bash
-   curl -sI http://<lab-host-ip>:8080/Catalog.xml
-   ```
+**Objective:** Register the air-gapped repository as a catalog.
 
-   **Expected result:** an HTTP 200 response.
-6. Register the hosted export as a custom catalog using the
-   `ome_add_custom_catalog.py` script from Implementation and Automation:
+```text
+# Console: Configuration > Firmware/Driver Compliance > Catalog Management > Add
+#   > catalog source = "Network Path" > enter the share URL/UNC and credentials.
+#   Validate that OME downloads/parses the offline catalog, then build a baseline from it.
+```
 
-   ```bash
-   python3 ome_add_custom_catalog.py <appliance-ip> admin '<password>' \
-     lab-offline-catalog "http://<lab-host-ip>:8080/Catalog.xml"
-   ```
+**Expected result:** OME registers the offline catalog and evaluates baselines against it, exactly
+as with the online catalog — the update model (catalog → baseline → compliance → update) is
+identical; only the catalog *source* changes for an air-gapped fleet.
 
-   **Expected result:** the script reports a registered custom catalog.
-   Because this lab uses a synthetic, minimal catalog rather than a real
-   DRM export, OME may report parsing warnings or zero usable packages
-   when it attempts to fully process the catalog — the objective of this
-   lab is validating the registration and transfer-integrity workflow,
-   not producing a usable compliance baseline from placeholder data.
-7. In the OME console or via `GET /api/UpdateService/Catalogs`, confirm
-   the `lab-offline-catalog` entry is present and its source correctly
-   reflects the lab host's HTTP address.
+**Negative test:** enter the network path with wrong credentials or an unreachable host; catalog
+validation fails — the offline catalog must be reachable and authenticated like any other source.
 
-**Cleanup**
+**Cleanup:** remove the lab offline catalog if created only for the exercise.
 
-- Stop the `http.server` process (Ctrl+C).
-- Delete the `lab-offline-catalog` custom catalog from OME.
-- Remove the lab files:
+### Lab 7.4 — Air-gapped update and validation (Topic: Air-gapped updates)
 
-  ```bash
-  rm -rf /tmp/drm-export /tmp/drm-export.sha256
-  ```
+**Objective:** Update from the offline catalog and prove it worked without internet.
+
+```bash
+# Console: build a baseline on the offline catalog, run compliance, and update a canary
+#   from the air-gapped DUPs. Then confirm via the API that the job succeeded:
+curl -sk -H "X-Auth-Token: $TOKEN" "https://<ome-ip>/api/JobService/Jobs?\$filter=JobType/Name eq 'Firmware_Task'" 2>/dev/null | \
+  python3 -c "import json,sys; [print(j['JobName'], j['LastRunStatus']['Name']) for j in json.load(sys.stdin)['value'][:5]]"
+```
+
+**Expected result:** the canary updates from the offline DUPs and the firmware job reports success
+with no outbound internet — this proves the air-gapped workflow end to end: DRM export → transfer
+→ host → offline catalog → baseline → update, entirely inside the isolated network.
+
+**Negative test:** assume the air-gapped fleet will "just get updates"; with no DRM pipeline it
+falls behind on critical firmware — an isolated network needs the deliberate DRM offline workflow
+to stay current.
+
+**Cleanup:** none (leave the canary at the updated firmware).
 
 ## Lab Verification
 

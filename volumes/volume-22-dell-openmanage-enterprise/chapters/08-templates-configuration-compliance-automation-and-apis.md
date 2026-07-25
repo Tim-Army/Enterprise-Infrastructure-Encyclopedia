@@ -359,74 +359,100 @@ result sets client-side.
 
 ## Hands-On Lab
 
-**Objective:** Capture a configuration template from a reference device,
-prune a device-unique attribute, run compliance evaluation against a
-target group, and validate the results — using a compliance-only
-workflow so the lab does not risk making an unreviewed configuration
-change to a live device.
+This chapter carries a topic-level walkthrough lab for **each configuration-automation task under
+the "Server Management" domain** — configuration templates, configuration compliance, the REST
+API, and higher-level automation. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.4** — a deployed OME appliance with **Advanced licensing**
+(templates/compliance are licensed features), onboarded PowerEdge servers, `curl`/`python3`, and
+optionally Ansible with the `dellemc.openmanage` collection. **Cost:** none beyond licensing.
 
-- The OME appliance with an OpenManage Enterprise Advanced (or Advanced
-  Plus) license imported ([Chapter 2](02-identity-licensing-security-and-administrative-control.md)) — this lab's core functionality is
-  unavailable without it.
-- At least one onboarded, iDRAC-managed reference device (a real or
-  virtual PowerEdge/iDRAC target, consistent with [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s hardware
-  requirement).
-- Python 3.11+ with `requests` installed.
+### Lab 8.1 — Capture a configuration template (Topic: Templates)
 
-**Steps**
+**Objective:** Extract a golden server's configuration as a reusable template.
 
-1. Confirm license status permits template operations
-   (`GET /api/ApplicationService/License` or the equivalent resource for
-   your build); stop and resolve licensing before proceeding if this
-   check fails.
-2. Capture a template from your reference device using the
-   `ome_capture_template.py` script from Implementation and Automation:
+```text
+# Console: Configuration > Templates > Create > "From a reference device".
+#   Select a correctly-configured server; OME captures its BIOS, iDRAC, RAID, and NIC
+#   settings (a Server Configuration Profile) into a named template.
+```
 
-   ```bash
-   python3 ome_capture_template.py <appliance-ip> admin '<password>' \
-     <reference-device-id> lab-config-template
-   ```
+**Expected result:** a template holding the reference server's BIOS/iDRAC/RAID/NIC configuration —
+a configuration template is a golden **Server Configuration Profile** you deploy to make many
+servers identical, eliminating per-server manual BIOS/iDRAC setup.
 
-   **Expected result:** the script reports a submitted capture job; poll
-   it ([Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)'s job-query pattern) until it completes successfully.
-3. Retrieve the template's attribute list using the `AttributeDetails`
-   endpoint shown in Implementation and Automation, and identify at least
-   one device-unique attribute (a static IP-adjacent iDRAC network
-   setting is a representative example).
-4. Mark that attribute as ignored using the `PUT AttributeDetails`
-   pattern shown above.
-5. **Expected result:** re-querying `AttributeDetails` shows the
-   attribute's `IsIgnored` flag set to `true`, confirming the prune took
-   effect.
-6. Run configuration compliance evaluation against your [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) device
-   group using the `check_config_compliance` function, and poll its
-   associated job to completion.
-7. Retrieve compliance detail using `get_compliance_detail` and confirm
-   the pruned attribute from step 4 does **not** appear as a source of
-   reported drift for any device, while other, non-pruned attributes are
-   evaluated normally.
-8. **Negative test:** attempt to run configuration compliance evaluation
-   against a template ID that does not exist:
+**Negative test:** configure each new server's BIOS/RAID/iDRAC by hand; they drift and onboarding
+is slow — a captured template makes deployment consistent and repeatable.
 
-   ```bash
-   curl -sk -X POST "https://<appliance-ip>/api/TemplateService/Templates(999999)/Actions/TemplateService.CheckConfigurationCompliance" \
-     -H "X-Auth-Token: <token>" -H "Content-Type: application/json" -d '{}'
-   ```
+**Cleanup:** delete the lab template if created only for the exercise.
 
-   **Expected result:** an HTTP 4xx error, confirming the API rejects
-   evaluation against a nonexistent template rather than silently
-   succeeding.
+### Lab 8.2 — Configuration compliance baseline (Topic: Configuration compliance)
 
-**Cleanup**
+**Objective:** Detect drift from the golden configuration.
 
-- Delete the `lab-config-template` template from OME if it is not needed
-  for later exercises.
-- No device configuration was changed during this lab, since it used
-  compliance-only evaluation rather than deployment — confirm this by
-  reviewing the reference device's configuration is unchanged from before
-  the lab began.
+```text
+# Console: Configuration > Configuration Compliance > Create Baseline from the template (Lab 8.1),
+#   associated with a device group. Run compliance; review Compliant / Non-Compliant per device,
+#   with the specific attributes that drifted.
+```
+
+**Expected result:** a per-device compliance view showing which BIOS/iDRAC attributes differ from
+the template — configuration compliance is the config analogue of firmware compliance: it detects
+drift from the golden profile and lets you remediate back to it, so servers stay uniform over time.
+
+**Negative test:** deploy a template once and never check compliance; manual changes and
+replacements drift silently — the compliance baseline is what surfaces configuration drift after
+deployment.
+
+**Cleanup:** delete the lab configuration baseline.
+
+### Lab 8.3 — REST API automation (Topic: APIs)
+
+**Objective:** Authenticate and drive OME programmatically.
+
+```bash
+# 1. Authenticate -> the X-Auth-Token comes back in the RESPONSE HEADER:
+TOKEN=$(curl -sk -D - -o /dev/null -X POST https://<ome-ip>/api/SessionService/Sessions \
+  -H "Content-Type: application/json" \
+  -d '{"UserName":"admin","Password":"<password>","SessionType":"API"}' \
+  | awk '/X-Auth-Token/ {print $2}' | tr -d '\r')
+# 2. Use the token on every subsequent call:
+curl -sk -H "X-Auth-Token: $TOKEN" https://<ome-ip>/api/DeviceService/Devices | \
+  python3 -c "import json,sys; print('devices:', len(json.load(sys.stdin)['value']))"
+```
+
+**Expected result:** `SessionService/Sessions` returns an `X-Auth-Token` header, and subsequent
+calls carrying that header list devices — OME exposes a full REST API (devices, jobs, catalogs,
+templates, baselines), so every console action is automatable; the session token is passed in the
+`X-Auth-Token` header on each request.
+
+**Negative test:** call `/api/DeviceService/Devices` with no `X-Auth-Token` header; it returns 401
+— the API is authenticated per request via the session token, not open.
+
+**Cleanup:** the session token expires; no cleanup needed.
+
+### Lab 8.4 — Higher-level automation (Topic: Automation)
+
+**Objective:** Manage OME from an automation tool.
+
+```text
+# With Ansible + the dellemc.openmanage collection (or the OME PowerShell module):
+#   - ome_device_info: inventory devices
+#   - ome_firmware: apply a baseline update
+#   - ome_template / ome_configuration_compliance_baseline: manage config
+# Run a playbook that inventories devices and reports firmware compliance, idempotently.
+```
+
+**Expected result:** the playbook drives OME (inventory, compliance, updates) as code, idempotently
+— automation tooling wraps the REST API so fleet operations live in version-controlled playbooks,
+integrating OME into the same IaC/GitOps workflow as the rest of the infrastructure.
+
+**Negative test:** script one-off `curl` calls with hard-coded tokens and no idempotence; they are
+brittle and unauditable — a supported Ansible/PowerShell module gives idempotent, reviewable
+automation.
+
+**Cleanup:** revert any lab-only changes made by the playbook.
 
 ## Lab Verification
 

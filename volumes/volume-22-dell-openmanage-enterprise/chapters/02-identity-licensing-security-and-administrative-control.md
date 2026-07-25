@@ -375,102 +375,105 @@ indefinitely long default.
 
 ## Hands-On Lab
 
-**Objective:** Create a least-privilege, scoped local account through the
-REST API, confirm it can authenticate, and confirm through a negative test
-that its restricted role correctly denies an administrative action.
+This chapter carries a topic-level walkthrough lab for **each identity-and-security task under
+the "System Administration" domain** — local users and RBAC, directory integration, TLS
+certificates, and licensing. OME is console-driven with REST-API support; each lab pairs the two.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.4** — a deployed OME appliance with admin access, a
+browser, `curl`, and (for Lab 2.2) an AD/LDAP directory. **Cost:** none.
 
-- The OME appliance deployed and configured in [Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)'s lab, reachable
-  from your workstation, with the `admin` account and its password.
-- Python 3.11+ with `requests` installed on your workstation.
-- No production directory service or CA is required; this lab uses local
-  accounts and a lab-generated certificate only.
+### Lab 2.1 — Local users and role-based access (Topic: RBAC)
 
-**Steps**
+**Objective:** Create a scoped operator account.
 
-1. Log in to the console as `admin` and open the security settings
-   screen. Note the current certificate is still the appliance's factory
-   self-signed certificate.
-2. Generate a lab-only CA-signed certificate to practice the replacement
-   workflow without needing an enterprise CA:
+```text
+# Console: Application Settings > Users > Add.
+#   Create a user with the "Device Manager" role (operate, not administer),
+#   and scope it to a device group (e.g. only "Lab-Servers").
+```
 
-   ```bash
-   # Create a minimal local CA and issue a certificate for the appliance.
-   openssl req -x509 -newkey rsa:2048 -keyout lab-ca.key -out lab-ca.crt \
-     -days 365 -nodes -subj "/CN=Lab-OME-CA"
-   openssl req -newkey rsa:2048 -keyout ome-appliance.key -out ome-appliance.csr \
-     -nodes -subj "/CN=ome-lab.example.local"
-   openssl x509 -req -in ome-appliance.csr -CA lab-ca.crt -CAkey lab-ca.key \
-     -CAcreateserial -out ome-appliance.crt -days 365
-   ```
+Verify over the API:
 
-   **Expected result:** three files are produced —
-   `ome-appliance.crt`, `ome-appliance.key`, and `lab-ca.crt` — suitable
-   for upload as the appliance's server certificate and trust anchor in a
-   non-production lab.
-3. From the console, create an empty static device group named
-   `lab-scope-test` (device group creation is covered in depth in Chapter
-   3; for this lab, an empty group is sufficient).
-4. Confirm the built-in role names available on your appliance from
-   **Application Settings → Users → Roles** (or the equivalent screen for
-   your build), and note the name of the least-privileged non-Viewer
-   operational role.
-5. Run the account-creation script from the Implementation and Automation
-   section, targeting the `lab-scope-test` group and a Viewer-tier role:
+```bash
+curl -sk -H "X-Auth-Token: $TOKEN" https://<ome-ip>/api/AccountService/Accounts | \
+  python3 -c "import json,sys; [print(a['UserName'], a['RoleId']) for a in json.load(sys.stdin)['value']]"
+```
 
-   ```bash
-   python3 ome_create_scoped_user.py <appliance-ip> admin '<admin-password>' \
-     labviewer 'LabViewer#2026' Viewer lab-scope-test
-   ```
+**Expected result:** the operator can act on its assigned group but cannot change appliance
+settings or reach other groups — OME RBAC combines a **role** (Administrator / Device Manager /
+Viewer) with a **scope** (which device groups), so least privilege limits both what an operator
+can do and which devices it touches.
 
-   **Expected result:** the script reports a created account with the
-   assigned role.
-6. Authenticate as the new account directly against the session endpoint
-   and confirm it receives a valid token:
+**Negative test:** give every operator the Administrator role with global scope; any one can
+push firmware fleet-wide or change appliance security — role + scope is what contains that.
 
-   ```bash
-   curl -sk -X POST https://<appliance-ip>/api/SessionService/Sessions \
-     -H "Content-Type: application/json" \
-     -d '{"UserName":"labviewer","Password":"LabViewer#2026","SessionType":"API"}' \
-     -D -
-   ```
+**Cleanup:** delete the lab user.
 
-   **Expected result:** an HTTP 201 response with an `X-Auth-Token`
-   header present.
-7. **Negative test:** using the `labviewer` account's token, attempt to
-   create a second local account — an action a Viewer-tier role should not
-   be permitted to perform:
+### Lab 2.2 — Directory integration (Topic: Centralized identity)
 
-   ```bash
-   curl -sk -X POST https://<appliance-ip>/api/AccountService/Accounts \
-     -H "X-Auth-Token: <token-from-step-6>" \
-     -H "Content-Type: application/json" \
-     -d '{"UserName":"shouldfail","Password":"NoAccess#2026","RoleId":"1"}'
-   ```
+**Objective:** Authenticate OME users against AD/LDAP.
 
-   **Expected result:** an HTTP 403 (Forbidden) response, confirming the
-   Viewer-tier role is correctly denied user-administration rights rather
-   than silently succeeding.
-8. In the console, intentionally fail the `labviewer` login three times
-   with a wrong password, then confirm the account shows a locked state
-   in the user administration screen, validating the lockout policy is
-   active.
+```text
+# Console: Application Settings > Users > Directory Services > Add.
+#   Add the AD/LDAP server, bind account, and base DN; import a directory group and
+#   map it to an OME role + scope. Log in as a directory user and confirm the mapping.
+```
 
-**Cleanup**
+**Expected result:** directory users log in with central credentials and receive the mapped role/
+scope — directory integration centralizes identity so onboarding/offboarding and group membership
+in AD drive OME access, rather than maintaining local accounts per appliance.
 
-- Log in as `admin`, unlock and then delete the `labviewer` account.
-- Delete the `lab-scope-test` device group.
-- Remove the lab certificate material from your workstation:
+**Negative test:** manage OME access only with local accounts across several appliances; you lose
+central revocation and per-person attribution — directory-backed groups make access consistent and
+auditable.
 
-  ```bash
-  rm -f lab-ca.key lab-ca.crt lab-ca.srl ome-appliance.key ome-appliance.csr ome-appliance.crt
-  ```
+**Cleanup:** remove the imported directory group/mapping if lab-only.
 
-- If you uploaded the lab certificate to the appliance's console for
-  practice, restore the factory self-signed certificate or plan to
-  replace it with a real CA-issued certificate before any further use of
-  this appliance.
+### Lab 2.3 — Replace the TLS certificate (Topic: Login security)
+
+**Objective:** Install a trusted certificate on the console.
+
+```text
+# Console: Application Settings > Security > Certificates.
+#   Generate a CSR, have your CA sign it, and upload the signed cert + chain.
+```
+
+Verify the served certificate:
+
+```bash
+openssl s_client -connect <ome-ip>:443 </dev/null 2>/dev/null | openssl x509 -noout -issuer -subject -dates
+```
+
+**Expected result:** the console serves the CA-signed certificate (not the self-signed default),
+so browsers and API clients trust it without warnings — a management console handles credentials
+and drives firmware, so its TLS identity must be trusted, not clicked-through.
+
+**Negative test:** leave the default self-signed certificate and train users to click through the
+warning; that habit hides a real man-in-the-middle — a properly signed certificate removes the
+warning so a genuine one stands out.
+
+**Cleanup:** none (keep the trusted certificate).
+
+### Lab 2.4 — Licensing tiers (Topic: Licensing)
+
+**Objective:** Confirm which features the installed license unlocks.
+
+```bash
+curl -sk -H "X-Auth-Token: $TOKEN" https://<ome-ip>/api/ApplicationService/Console/Configuration 2>/dev/null | head
+# Console: Application Settings > Licenses -> review applied device licenses and entitlements
+```
+
+**Expected result:** the license state shows which advanced features (configuration templates,
+compliance, advanced automation) are entitled — OME's base is free, while **OpenManage Enterprise
+Advanced/Advanced+** licenses (applied per device, typically iDRAC Enterprise/Datacenter) unlock
+templates, configuration compliance, and deeper automation used in later chapters.
+
+**Negative test:** expect to deploy configuration templates or run configuration compliance with
+only base licensing; those features are gated — the per-device advanced license (this lab) is what
+enables Chapter 08's template/compliance work.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

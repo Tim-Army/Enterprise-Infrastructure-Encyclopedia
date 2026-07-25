@@ -345,84 +345,96 @@ with different `device_ids` lists and a validation gate between them.
 
 ## Hands-On Lab
 
-**Objective:** Create a baseline against a catalog, run a compliance
-report, and walk through the update-job submission and validation
-workflow, using the read-only compliance evaluation path so the lab is
-safe to run against any onboarded device without applying an actual
-firmware change.
+This chapter carries a topic-level walkthrough lab for **each step of the firmware
+catalog→baseline→compliance→update model** — the "Server Maintenance" domain and OME's signature
+capability. Each lab pairs the console with `curl`. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 5.1–5.4** — a deployed OME appliance with PowerEdge servers
+onboarded (updates need real Dell hardware/DUPs), API credentials, and access to a catalog source
+(online in Chapter 06, offline in Chapter 07). **Cost:** none.
 
-- The OME appliance with at least one onboarded, iDRAC-managed device
-  (this lab requires a real or virtual PowerEdge/iDRAC target, since
-  firmware compliance evaluation depends on iDRAC-sourced component
-  inventory that the SNMP-based lab target from [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) cannot supply;
-  if no PowerEdge hardware is available, read through the steps and
-  substitute the sample JSON response shown in step 4 to complete the
-  exercise conceptually).
-- A reachable Dell online catalog ([Chapter 6](06-connected-online-repositories-and-update-workflows.md)) or a previously imported
-  catalog reference.
-- Python 3.11+ with `requests` installed.
+### Lab 5.1 — Create a firmware/driver catalog (Topic: Catalogs)
 
-**Steps**
+**Objective:** Define the source of "known-good" firmware versions.
 
-1. Confirm at least one catalog is present on the appliance
-   (`GET /api/UpdateService/Catalogs`); if none exists, complete Chapter
-   6's connected-catalog setup first.
-2. Create a baseline using the `ome_create_baseline.py` script from
-   Implementation and Automation, targeting your device group from
-   [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) and the catalog identified in step 1:
+```text
+# Console: Configuration > Firmware/Driver Compliance > Catalog Management > Add.
+#   Choose the source: Dell online catalog (downloads.dell.com) or a local/offline catalog
+#   (Dell Repository Manager share, Chapter 07). Name and save it.
+```
 
-   ```bash
-   python3 ome_create_baseline.py <appliance-ip> admin '<password>' \
-     <catalog-id> <group-id> lab-firmware-baseline
-   ```
+**Expected result:** a catalog appears listing the firmware/driver versions Dell publishes for
+your models — a **catalog** is the reference of validated versions; every baseline and compliance
+check measures the fleet *against* a catalog, so the catalog is the foundation of the update
+model.
 
-   **Expected result:** the script reports a created baseline.
-3. Trigger compliance evaluation using the `CheckBaselineCompliance`
-   action shown in Implementation and Automation, then poll the
-   associated job ([Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)'s job-query pattern) until it completes.
-4. Retrieve and review the per-device compliance report:
+**Negative test:** update servers to random individually-downloaded DUPs with no catalog; you lose
+the validated version set and cross-component compatibility — the catalog is Dell's tested baseline
+of versions.
 
-   ```bash
-   curl -sk "https://<appliance-ip>/api/UpdateService/Baselines(<baseline-id>)/DeviceComplianceReports" \
-     -H "X-Auth-Token: <token>" | jq .
-   ```
+**Cleanup:** delete the lab catalog if created only for the exercise.
 
-   **Expected result:** a JSON payload listing each in-scope device's
-   overall and per-component compliance status.
-5. Identify one non-compliant device and one specific non-compliant
-   component from the report output, and record its severity
-   classification (Critical, Recommended, or Optional).
-6. **Negative test:** attempt to run compliance evaluation against a
-   baseline ID that does not exist:
+### Lab 5.2 — Create a firmware baseline (Topic: Baselines)
 
-   ```bash
-   curl -sk -X POST "https://<appliance-ip>/api/UpdateService/Baselines(999999)/Actions/UpdateService.CheckBaselineCompliance" \
-     -H "X-Auth-Token: <token>" -H "Content-Type: application/json" -d '{}'
-   ```
+**Objective:** Bind a catalog to a device group as the compliance target.
 
-   **Expected result:** an HTTP 4xx error response, confirming the API
-   correctly rejects a request against a non-existent baseline rather
-   than silently succeeding.
-7. If you have an explicit, approved maintenance window and are working
-   against a genuine lab device where a reboot is acceptable, submit an
-   update job using the `run_update` function from Implementation and
-   Automation against the single non-compliant device identified in
-   step 5. Otherwise, skip execution and instead document the exact API call
-   you would run, including its target device ID and baseline ID, as the
-   deliverable for this step.
-8. If you executed step 7, poll the job to completion, then force an
-   inventory refresh and re-run compliance evaluation to confirm the
-   previously non-compliant component now reports compliant.
+```text
+# Console: Configuration > Firmware/Driver Compliance > Create Baseline.
+#   Associate the catalog (Lab 5.1) with a device group (e.g. dynamic group "Prod-R760").
+#   Save; OME evaluates the group against the catalog.
+```
 
-**Cleanup**
+**Expected result:** a baseline linking the catalog to the group, which OME evaluates for
+compliance — a **baseline** says "these devices should match this catalog," turning a version list
+into an enforceable target scoped to the right servers.
 
-- Delete the `lab-firmware-baseline` baseline created in step 2 if it is
-  not needed for later chapters.
-- If an update job was submitted in step 7, confirm the target device
-  returned to a healthy, reachable state before continuing to other labs
-  in this volume.
+**Negative test:** create a catalog but no baseline; nothing is evaluated and no compliance is
+reported — the baseline is what applies the catalog to actual devices.
+
+**Cleanup:** delete the lab baseline.
+
+### Lab 5.3 — Compliance check (Topic: Compliance)
+
+**Objective:** See which devices/components are non-compliant.
+
+```bash
+curl -sk -H "X-Auth-Token: $TOKEN" https://<ome-ip>/api/UpdateService/Baselines 2>/dev/null | \
+  python3 -c "import json,sys; [print(b['Name'], b.get('ComplianceSummary',{})) for b in json.load(sys.stdin)['value']]"
+# Console: the baseline shows per-device compliance: Compliant / Downgrade / Critical (update needed)
+```
+
+**Expected result:** a per-device, per-component compliance report (Compliant / update-available /
+downgrade) against the baseline — compliance is the *gap analysis*: it shows exactly which
+firmware/driver on which server differs from the catalog, which drives the update plan without
+touching anything yet.
+
+**Negative test:** plan an update from assumption rather than a compliance report; you patch what
+is already current and miss what is actually behind — the compliance check is the authoritative
+list of what needs updating.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.4 — Orchestrated update job (Topic: Updates)
+
+**Objective:** Remediate non-compliant firmware safely.
+
+```text
+# Console: from the baseline's non-compliant view, select devices > Make Compliant / Update.
+#   Choose the delivery: stage to next reboot vs. immediate; schedule a maintenance window;
+#   roll out to a canary device first, then the group. Monitor the update job to completion.
+```
+
+**Expected result:** OME pushes the catalog's DUPs to the selected devices (via iDRAC), staging or
+applying per the schedule, and reports the job result — update orchestration applies the
+compliance remediation as a controlled, scheduled, staged job rather than manual per-server DUP
+runs.
+
+**Negative test:** update an entire production group at once with no canary or maintenance window;
+a bad firmware batch takes the whole group down together — stage to a canary and a window first,
+then widen.
+
+**Cleanup:** none (leave devices at the compliant firmware).
 
 ## Lab Verification
 

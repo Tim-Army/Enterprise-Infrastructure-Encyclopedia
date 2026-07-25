@@ -485,78 +485,104 @@ shifted slightly across OME releases as the API surface has grown.
 
 ## Hands-On Lab
 
-**Objective:** Deploy the OME virtual appliance in a lab hypervisor
-environment, complete text-console network bootstrap and the browser-based
-first-run wizard, and validate appliance health from both the GUI and the
-REST API.
+This chapter carries a topic-level walkthrough lab for **each deployment task under the Dell
+PowerEdge "Server Management" domain** — appliance deployment, first-run configuration,
+architectural positioning, and health verification. OpenManage Enterprise (OME) is driven from
+its web console and a full REST API; these labs pair the console path with `curl` verification.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 1.1–1.4** — a hypervisor (ESXi/Hyper-V/KVM) for the OME virtual
+appliance, an admin workstation with a browser and `curl`, and (where no PowerEdge hardware
+exists) an SNMP-managed Linux host as a stand-in device. **Cost:** none (OME is a free download;
+advanced features need a license).
 
-- A lab hypervisor (VMware Workstation/ESXi, Hyper-V, or KVM) with at
-  least 4 vCPUs, 16 GB RAM, and 200 GB of datastore free, and a virtual
-  network/port group the lab VM can reach.
-- The OME 4.7.x appliance image for your hypervisor, downloaded from a
-  Dell-authorized source.
-- A workstation on the same network as the lab port group, with a modern
-  browser and Python 3.11+ with the `requests` package installed
-  (`pip install requests`).
-- No production credentials or production network connectivity are
-  required for this lab.
+### Lab 1.1 — Deploy the OME virtual appliance (Topic: Deployment)
 
-**Steps**
+**Objective:** Import and size the OME appliance.
 
-1. Import the appliance image into your hypervisor and attach its virtual
-   NIC to the lab network/port group. Allocate at least the minimum sized
-   profile (4 vCPU / 16 GB RAM) and power on the VM.
-2. Open the VM's console and complete the text-based network bootstrap:
-   assign a static IPv4 address, subnet mask, gateway, hostname, and DNS
-   server reachable from your lab network.
-3. From your workstation browser, navigate to
-   `https://<appliance-ip>/`. **Expected result:** a certificate warning
-   (self-signed certificate) followed by the OME first-run setup wizard.
-4. Complete the wizard: accept the EULA, set a new `admin` password
-   meeting the complexity requirements shown, configure your lab's time
-   zone and an NTP server reachable from the appliance (a public NTP pool
-   address is sufficient in a lab with internet egress). Skip proxy and
-   license import for this lab.
-5. Log in to the console with the new `admin` password. **Expected
-   result:** the OME home dashboard loads with zero managed devices and no
-   active alerts.
-6. From your workstation, save the `ome_bootstrap_check.py` script from
-   the Implementation and Automation section and run it:
+```text
+# Download the OME OVF (VMware) / VHD (Hyper-V) / qcow2 (KVM) from dell.com and deploy it.
+# Size to the fleet per Dell's guidance (e.g. baseline 8 vCPU / 16 GB RAM / 250 GB for a
+#   mid-size fleet; scale RAM/disk with device count and retention).
+# Power on and note the DHCP/console IP for first-run setup (Lab 1.2).
+```
 
-   ```bash
-   python3 ome_bootstrap_check.py <appliance-ip> admin '<your-new-password>'
-   ```
+**Expected result:** the OME appliance boots and presents a console IP — OME ships as a
+pre-built virtual appliance (no OS install), so deployment is import + size; correct sizing to
+device count and data retention is what keeps discovery, inventory, and updates responsive.
 
-   **Expected result:** the script prints the appliance version and
-   product name, confirming the REST API is reachable and the session
-   token workflow succeeds.
-7. **Negative test:** re-run the script with an intentionally wrong
-   password:
+**Negative test:** under-size the appliance for a large fleet (default RAM, small disk); inventory
+and update jobs slow and the database fills — appliance sizing must follow the managed-device
+count, not the default minimum.
 
-   ```bash
-   python3 ome_bootstrap_check.py <appliance-ip> admin 'WrongPassword123!'
-   ```
+**Cleanup:** power off/remove the appliance if deployed only for the lab.
 
-   **Expected result:** the script raises an HTTP error from
-   `resp.raise_for_status()` (typically a 401) and exits non-zero,
-   demonstrating that the session endpoint correctly rejects invalid
-   credentials rather than silently issuing a token.
-8. In the GUI, confirm the appliance's reported time matches your
-   workstation's time within a few seconds — this validates the NTP
-   configuration from step 4 took effect.
+### Lab 1.2 — First-run setup wizard (Topic: First configuration)
 
-**Cleanup**
+**Objective:** Complete initial network, time, and admin configuration.
 
-- If this appliance will be reused for later chapters' labs in this
-  volume, leave it running and skip the steps below.
-- Otherwise, power off and delete the lab VM from the hypervisor, and
-  remove the downloaded appliance image if disk space is constrained:
+```text
+# Browse to https://<ome-ip> and complete the setup wizard:
+#   - set a static IP / hostname / DNS, and NTP time source
+#   - set the admin password and accept the EULA
+#   - confirm the console reaches the dashboard
+```
 
-  ```bash
-  rm -f ~/Downloads/OME-4.7.x.ova
-  ```
+Then verify the appliance version over the API:
+
+```bash
+curl -sk https://<ome-ip>/api/ApplicationService/Version | python3 -m json.tool | head
+```
+
+**Expected result:** the wizard completes to the dashboard and the API returns the appliance
+version — first-run establishes identity (network/time) and the admin credential; accurate NTP
+time is a prerequisite for correct alert/job timestamps and certificate validation.
+
+**Negative test:** leave the appliance on DHCP with no reserved address; a lease change moves the
+console and breaks device-to-OME callbacks and integrations — a static/reserved address is
+required for a management appliance.
+
+**Cleanup:** none (keep the configured appliance).
+
+### Lab 1.3 — Position OME vs iDRAC vs OME-Modular (Topic: Architecture)
+
+**Objective:** Map the management layers to their scope.
+
+```text
+# Record which tool owns which scope:
+#   iDRAC            -> per-server out-of-band controller (one server)
+#   OME-Modular      -> chassis manager (MX7000 modular infrastructure)
+#   OpenManage Ent.  -> fleet console (many servers/chassis, one pane)
+# Confirm OME manages devices *through* their iDRACs (it does not replace them).
+```
+
+**Expected result:** a clear layering — iDRAC per server, OME-Modular per chassis, OME across the
+fleet — OME is the fleet-level console that discovers and orchestrates servers via their iDRACs,
+so understanding the boundary prevents doing per-server work where fleet automation belongs.
+
+**Negative test:** try to do fleet-wide firmware compliance by logging into each iDRAC; it does
+not scale — OME exists precisely to drive those per-server controllers from one console.
+
+**Cleanup:** none.
+
+### Lab 1.4 — Verify appliance health and services (Topic: Operational readiness)
+
+**Objective:** Confirm the appliance is healthy before onboarding devices.
+
+```bash
+# Authenticate (see Lab 8.3 for the full flow) and read appliance health:
+curl -sk https://<ome-ip>/api/ApplicationService/Network | python3 -m json.tool | head
+# Console: Application Settings -> confirm services running, disk/DB usage healthy
+```
+
+**Expected result:** network/service/health endpoints report a healthy appliance — verifying the
+appliance's own health (services, disk, database) before onboarding devices ensures discovery and
+inventory have a stable platform, and gives a baseline for later troubleshooting (Chapter 09).
+
+**Negative test:** begin discovering hundreds of devices onto an appliance already low on disk or
+with a stopped service; jobs fail unpredictably — confirm appliance health first.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

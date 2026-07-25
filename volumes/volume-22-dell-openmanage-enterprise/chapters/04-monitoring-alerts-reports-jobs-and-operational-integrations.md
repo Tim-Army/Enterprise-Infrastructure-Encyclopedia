@@ -353,78 +353,95 @@ unreachable relay.
 
 ## Hands-On Lab
 
-**Objective:** Configure an alert policy that forwards test alerts to a
-local syslog listener, generate a qualifying test event, confirm delivery,
-and validate the job engine's execution history for the underlying
-operations.
+This chapter carries a topic-level walkthrough lab for **each task under the "Server Monitoring"
+domain** — health roll-up, alert policies, custom reports, and the job engine with integrations.
+Each lab pairs the console with `curl`. Each ends **`**Lab verified by:** *pending*`** until a
+human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.4** — a deployed OME appliance with devices onboarded
+(Chapter 03), API credentials, and (for Lab 4.4) an SMTP/syslog target. **Cost:** none.
 
-- The OME appliance and at least one onboarded device from the [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md)
-  lab (the SNMP-discovered lab Linux host is sufficient).
-- A syslog listener reachable from the OME appliance. This lab uses a
-  simple Python UDP listener on your workstation or lab host rather than
-  a full SIEM, keeping the exercise reproducible without external
-  infrastructure.
-- Python 3.11+ with `requests` installed.
+### Lab 4.1 — Health roll-up and dashboard (Topic: Health status)
 
-**Steps**
+**Objective:** Read fleet health at a glance and drill into a device.
 
-1. On your lab listener host, start a minimal syslog receiver:
+```bash
+curl -sk -H "X-Auth-Token: $TOKEN" https://<ome-ip>/api/DeviceService/Devices 2>/dev/null | \
+  python3 -c "import json,sys; d=json.load(sys.stdin)['value']; from collections import Counter; print(Counter(x['Status'] for x in d))"
+# Console: Home dashboard -> health donut; click a Critical device to drill into its subsystem
+```
 
-   ```python
-   # syslog_listener.py
-   import socketserver
+**Expected result:** a count of devices by health status and the dashboard donut, which drills down to a
+failing subsystem — OME rolls per-device subsystem health (via iDRAC) up to a fleet view, so one
+console shows where attention is needed and each critical device links to the failing component.
 
-   class Handler(socketserver.BaseRequestHandler):
-       def handle(self):
-           data = self.request[0].decode(errors="replace")
-           print(f"[{self.client_address[0]}] {data.strip()}")
+**Negative test:** monitor each server by logging into its iDRAC separately; you have no fleet
+view and miss a pattern (e.g. a bad firmware batch) — the roll-up is what surfaces fleet-wide
+health trends.
 
-   with socketserver.UDPServer(("0.0.0.0", 5514), Handler) as server:
-       print("Listening for syslog on UDP/5514 ...")
-       server.serve_forever()
-   ```
+**Cleanup:** none (read-only).
 
-   Run it with `python3 syslog_listener.py`. **Expected result:** the
-   listener prints a startup message and waits for traffic.
-2. In the OME console (or using the script in Implementation and
-   Automation, pointed at your listener host's IP and port 5514 instead
-   of 514 to avoid requiring root/administrator privileges on the
-   listener host), create an alert policy scoped to the lab device group
-   from [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md), matching Warning-and-above severity across all
-   categories, with a syslog forwarding action targeting your listener.
-3. Confirm the policy is enabled and visible in the alert policy list.
-4. Generate a qualifying test event. If your console build offers a
-   built-in "generate test alert" action, use it targeting the lab
-   device; otherwise, force an event by temporarily stopping the SNMP
-   agent on the lab host from [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) (`sudo systemctl stop snmpd`) and
-   forcing an inventory/health refresh so OME detects the device as
-   unreachable.
-5. **Expected result:** within a few minutes, a line appears in the
-   syslog listener's output corresponding to the alert, and the same
-   event appears in the OME console's alert log.
-6. Query the job engine for the job associated with the health/inventory
-   refresh from step 4 using the `JobService/Jobs` endpoint shown in
-   Implementation and Automation, and retrieve its execution history.
-   **Expected result:** the job's execution history shows a status
-   consistent with the device becoming unreachable.
-7. **Negative test:** create a second alert policy identical to the
-   first but scoped to Critical-only severity, and re-run the same test
-   event (a stopped SNMP agent typically registers below Critical
-   severity). **Expected result:** no new line appears in the syslog
-   listener for this second policy, confirming severity filtering
-   correctly suppresses a non-matching event rather than forwarding
-   everything regardless of policy scope.
-8. Restart the SNMP agent on the lab host (`sudo systemctl start snmpd`)
-   and force another inventory refresh to restore its status to Normal.
+### Lab 4.2 — Alert policies and the alert pipeline (Topic: Alert pipeline)
 
-**Cleanup**
+**Objective:** Route a specific alert to an action.
 
-- Delete both alert policies created during the lab from the OME console.
-- Stop the syslog listener script (Ctrl+C).
-- Confirm the lab device's health status has returned to Normal before
-  proceeding to later chapters' labs.
+```text
+# Console: Alerts > Alert Policies > Create.
+#   Match: category = Critical, on group "Lab-Servers"
+#   Action: send email + forward SNMP trap/syslog to the SOC
+#   Trigger a test alert (or a real event) and confirm the policy fired.
+```
+
+**Expected result:** matching critical alerts trigger the email/forward action while others are
+suppressed — the alert pipeline receives events (SNMP traps, Redfish events), matches them against
+policies (severity, device, category), and routes to actions (email, forward, script, ignore), so
+the right people are notified about the right events.
+
+**Negative test:** forward every alert with no policy filtering; recipients get flooded and
+ignore them (alert fatigue) — policies scope which alerts matter and where they go.
+
+**Cleanup:** delete the lab alert policy.
+
+### Lab 4.3 — Custom reports (Topic: Reporting)
+
+**Objective:** Build a report that answers a fleet question.
+
+```text
+# Console: Monitor > Reports > Create.
+#   Report: warranty expiry (or firmware version) by device group; select columns; run;
+#   schedule email delivery. Export to CSV.
+```
+
+**Expected result:** a runnable, schedulable report (e.g. warranties expiring in 90 days, or
+firmware versions across the fleet) exportable to CSV — reporting turns OME's inventory into
+answers stakeholders need (compliance, warranty, capacity) without manual data gathering.
+
+**Negative test:** answer "which servers are out of warranty?" by checking each device by hand; it
+does not scale and goes stale — a scheduled report keeps the answer current automatically.
+
+**Cleanup:** delete the lab report.
+
+### Lab 4.4 — Job engine and integrations (Topic: Jobs and integrations)
+
+**Objective:** Read the job engine and confirm an outbound integration.
+
+```bash
+curl -sk -H "X-Auth-Token: $TOKEN" https://<ome-ip>/api/JobService/Jobs 2>/dev/null | \
+  python3 -c "import json,sys; [print(j['JobName'], j['LastRunStatus']['Name']) for j in json.load(sys.stdin)['value'][:8]]"
+# Console: Application Settings > Console and Plugins / Alerts > configure SMTP, syslog,
+#   and SupportAssist; send a test to confirm delivery.
+```
+
+**Expected result:** the job list shows discovery/inventory/update jobs and their status, and the
+SMTP/syslog/SupportAssist test arrives — the **job engine** runs all asynchronous work
+(discovery, inventory, updates, config), and integrations push OME's telemetry to email, SIEM
+(syslog), and Dell support (SupportAssist).
+
+**Negative test:** run OME with no syslog/SupportAssist integration; alerts stay trapped in the
+console and Dell has no telemetry for proactive support — integrations connect OME to the wider
+operations and support ecosystem.
+
+**Cleanup:** revert any test integration config if lab-only.
 
 ## Lab Verification
 

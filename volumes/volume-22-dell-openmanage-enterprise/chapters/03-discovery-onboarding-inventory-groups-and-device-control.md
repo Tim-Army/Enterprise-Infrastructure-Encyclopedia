@@ -382,80 +382,97 @@ before the next automatic cycle.
 
 ## Hands-On Lab
 
-**Objective:** Discover a device over SNMP, onboard it, place it into
-both a static and a dynamic group, run an inventory refresh, and exercise
-a device-control action, without requiring physical Dell hardware.
+This chapter carries a topic-level walkthrough lab for **each onboarding task under the "System
+Administration" domain** — discovery by device class, credential profiles, groups, and inventory/
+control. Each lab pairs the console with `curl`; where no PowerEdge exists, an SNMP-managed Linux
+host stands in. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 3.1–3.4** — a deployed OME appliance, at least one manageable
+device (a PowerEdge iDRAC, or an SNMP-enabled Linux host as a stand-in), and API credentials.
+**Cost:** none.
 
-- The OME appliance from [Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)/2's labs, reachable from your
-  workstation, with an account holding at least Device Manager-tier
-  rights.
-- A Linux host (a lab VM is sufficient) on the same network as the OME
-  appliance, with `net-snmp` installed and an SNMP daemon configured with
-  a read-only community string — this lab host stands in for a
-  third-party SNMP-manageable device so the exercise does not depend on
-  owning a physical PowerEdge server.
-- Python 3.11+ with `requests` installed on your workstation.
+### Lab 3.1 — Discovery by device class (Topic: Discovery)
 
-**Steps**
+**Objective:** Discover a device with the right protocol.
 
-1. On the lab Linux host, install and enable a minimal SNMP agent:
+```text
+# Console: Configuration > Discovery > Create.
+#   Choose the protocol for the device class:
+#     Servers (iDRAC)        -> Redfish / WS-Man
+#     Chassis (OME-Modular)  -> Redfish
+#     Network/other          -> SNMP
+#     (lab stand-in)         -> SNMP against the Linux host
+#   Enter the IP range + credentials, run the discovery job, and confirm the device appears.
+```
 
-   ```bash
-   sudo apt-get update && sudo apt-get install -y snmpd
-   sudo sed -i 's/^agentAddress.*/agentAddress udp:161,udp6:[::1]:161/' /etc/snmp/snmpd.conf
-   echo 'rocommunity labpublic default' | sudo tee -a /etc/snmp/snmpd.conf
-   sudo systemctl restart snmpd
-   ```
+**Expected result:** the device is discovered and listed under All Devices with its type
+identified — OME discovers each device class with a protocol appropriate to it (Redfish/WS-Man for
+iDRAC, SNMP for network gear), so choosing the right protocol per class is the first onboarding
+decision.
 
-   **Expected result:** `snmpwalk -v2c -c labpublic <lab-host-ip> system`
-   run from another host returns system description output, confirming
-   the agent is reachable.
-2. In the OME console, create an SNMP discovery credential profile using
-   community string `labpublic`, then create and run a discovery job
-   targeting the lab host's single IP address with the SNMP protocol
-   selected.
-3. **Expected result:** the discovery job completes and the lab host
-   appears in the discovered-device results; onboard it into managed
-   inventory.
-4. Create a static group named `lab-snmp-devices` and add the onboarded
-   lab host to it through the console or the `AddMemberDevices` API call
-   shown in Implementation and Automation.
-5. Create a dynamic group filtered on device type or discovery protocol
-   equal to SNMP (exact filter field names depend on your build), and
-   confirm the lab host's membership appears automatically without being
-   manually added.
-6. Force an out-of-cycle inventory refresh against the lab host using the
-   `RefreshInventory` action shown above, and confirm in the console that
-   the device's last-inventoried timestamp updates.
-7. **Negative test:** create a second discovery job against the same lab
-   host IP address using an intentionally wrong SNMP community string.
-   **Expected result:** the discovery job completes but reports the
-   target as unauthenticated/unidentified rather than onboarding it,
-   demonstrating that network reachability alone does not produce a
-   managed device.
-8. Attempt a device-control power action against the lab host through the
-   API. **Expected result:** the action fails or is rejected, since a
-   generic SNMP-discovered Linux host does not expose the out-of-band
-   power-control interface that a real iDRAC-managed PowerEdge would —
-   this illustrates the inventory/control fidelity gap between SNMP and
-   native iDRAC discovery described in this chapter's theory section.
+**Negative test:** discover an iDRAC using SNMP only; OME sees a generic device with shallow data
+and cannot drive firmware/config — the protocol must match the device class to unlock full
+management.
 
-**Cleanup**
+**Cleanup:** delete the lab discovery job / remove the discovered device if lab-only.
 
-- In the OME console, remove the lab host from managed inventory and
-  delete the `lab-snmp-devices` static group and the dynamic group
-  created in step 5.
-- Delete the discovery credential profile and both discovery jobs created
-  during the lab.
-- On the lab Linux host, disable and remove the SNMP agent if it is not
-  needed for later chapters:
+### Lab 3.2 — Credential profiles and the discovery job (Topic: Onboarding)
 
-  ```bash
-  sudo systemctl disable --now snmpd
-  sudo apt-get remove -y snmpd
-  ```
+**Objective:** Reuse a credential set across discoveries.
+
+```bash
+# Verify the discovery job's result over the API:
+curl -sk -H "X-Auth-Token: $TOKEN" "https://<ome-ip>/api/JobService/Jobs?\$filter=JobType/Name eq 'Discovery_Task'" 2>/dev/null | \
+  python3 -c "import json,sys; [print(j['JobName'], j['LastRunStatus']['Name']) for j in json.load(sys.stdin)['value']]"
+```
+
+**Expected result:** the discovery job reports success and the credential profile it used —
+credential profiles centralize the (iDRAC/SNMP/OS) credentials a discovery needs, so many
+discovery jobs reuse one managed secret rather than embedding credentials each time.
+
+**Negative test:** embed device credentials ad-hoc in each discovery with no profile; rotating a
+password means editing every job — a reusable credential profile is updated once.
+
+**Cleanup:** none (read-only) / remove the lab credential profile if created only for the lab.
+
+### Lab 3.3 — Static and dynamic groups (Topic: Grouping)
+
+**Objective:** Organize devices for scoped operations.
+
+```text
+# Console: Devices > Create Group.
+#   - Static group "Lab-Servers": add chosen devices manually.
+#   - Dynamic (query) group "Prod-R760": rule = Model contains "R760" -> membership auto-updates.
+```
+
+**Expected result:** the static group holds the devices you added, and the dynamic group
+auto-populates from its query rule — groups are the unit that policies, baselines, reports, and
+RBAC scope target, and **dynamic** groups keep membership current as inventory changes without
+manual edits.
+
+**Negative test:** target firmware baselines at individually-selected devices instead of a group;
+new servers are silently left out of compliance — a dynamic group includes them automatically.
+
+**Cleanup:** delete the lab groups.
+
+### Lab 3.4 — Inventory and device control (Topic: Device control)
+
+**Objective:** Collect inventory and run a control action.
+
+```bash
+curl -sk -H "X-Auth-Token: $TOKEN" https://<ome-ip>/api/DeviceService/Devices 2>/dev/null | \
+  python3 -c "import json,sys; [print(d['DeviceName'], d['Model'], d['DeviceServiceTag']) for d in json.load(sys.stdin)['value'][:5]]"
+# Console: Devices > select a device > Control > (Power Cycle / Refresh Inventory)
+```
+
+**Expected result:** the API lists devices with model/service-tag inventory, and a control action
+(power cycle, refresh inventory) runs as a job — OME collects deep hardware/firmware inventory and
+issues control actions (power, LED, refresh) fleet-wide through the devices' controllers.
+
+**Negative test:** rely on stale inventory to plan an update; a since-replaced component is
+mis-targeted — refresh inventory before acting so decisions reflect the current hardware.
+
+**Cleanup:** none (read-only inventory; power actions on lab devices only).
 
 ## Lab Verification
 

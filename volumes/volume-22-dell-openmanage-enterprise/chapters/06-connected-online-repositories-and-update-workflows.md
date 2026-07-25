@@ -334,70 +334,99 @@ def reevaluate_dependent_baselines(session, host, catalog_id):
 
 ## Hands-On Lab
 
-**Objective:** Validate outbound catalog connectivity independently,
-configure or confirm the connected catalog source, trigger a manual
-refresh, and observe its effect on a dependent baseline's compliance
-evaluation.
+This chapter carries a topic-level walkthrough lab for **each connected-update task under "Server
+Maintenance"** — online catalogs, scheduled refresh, SupportAssist-connected updates, and staged
+rollout. Each lab pairs the console with `curl`. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.4** — a deployed OME appliance with outbound access to
+`downloads.dell.com` (directly or via proxy), onboarded PowerEdge servers, and API credentials.
+**Cost:** none. Chapter 07 covers the air-gapped alternative.
 
-- The OME appliance from earlier chapters' labs, with outbound internet
-  access (direct or via a reachable proxy) for this specific lab — this
-  is the one lab in the volume that requires real internet egress from
-  the appliance, since it exercises the connected catalog path by
-  definition.
-- The `lab-firmware-baseline` baseline from [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s lab, or a newly
-  created one following the same pattern.
-- Python 3.11+ with `requests` installed.
+### Lab 6.1 — Online Dell catalog (Topic: Connected catalogs)
 
-**Steps**
+**Objective:** Use Dell's live online catalog as the version source.
 
-1. From a workstation sharing the appliance's egress path, validate
-   direct reachability:
+```text
+# Console: Configuration > Firmware/Driver Compliance > Catalog Management > Add
+#   > "Latest component firmware versions on Dell.com" (online).
+#   If behind a proxy: Application Settings > Network > Proxy, then validate the catalog downloads.
+```
 
-   ```bash
-   curl -sI https://downloads.dell.com/ --max-time 15
-   ```
+**Expected result:** OME pulls the current validated catalog directly from Dell — the online
+catalog always reflects Dell's latest tested versions with no manual downloads, so baselines stay
+current automatically; a proxy is the only extra step in a filtered network.
 
-   **Expected result:** a response (2xx or 3xx) rather than a timeout or
-   connection error.
-2. In the OME console (or via `GET /api/UpdateService/Catalogs`), confirm
-   a connected (online) catalog is configured. If none exists, create one
-   pointing at Dell's hosted PowerEdge catalog source through the
-   console's catalog management screen, since initial catalog-source
-   creation is most reliably done through the guided console workflow.
-3. Note the catalog's current "last refreshed" timestamp before
-   proceeding.
-4. Trigger a manual refresh using the `RefreshCatalog` action shown in
-   Implementation and Automation, and poll its job to completion using
-   [Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)'s job-query pattern.
-5. **Expected result:** the job completes successfully, and the catalog's
-   "last refreshed" timestamp advances past the value recorded in step 3.
-6. Re-run compliance evaluation on the `lab-firmware-baseline` baseline
-   ([Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s `CheckBaselineCompliance` action) and confirm it completes
-   without error, referencing the newly refreshed catalog content.
-7. **Negative test:** using the `ome_set_proxy.py` script from
-   Implementation and Automation, deliberately set the proxy configuration
-   to an unreachable host (for example, `192.0.2.1`, a reserved
-   documentation-only address guaranteed not to respond), then attempt
-   another catalog refresh.
+**Negative test:** point OME at the online catalog with outbound HTTPS blocked and no proxy; the
+catalog fails to download — connected updates need reachability to `downloads.dell.com` (or the
+Chapter 07 offline path).
 
-   **Expected result:** the refresh job fails with a connectivity-related
-   error, demonstrating that catalog refresh genuinely depends on working
-   egress rather than succeeding from cached state.
-8. Restore the correct proxy configuration (or disable the proxy if your
-   lab environment uses direct egress) and confirm a subsequent refresh
-   succeeds again.
+**Cleanup:** none (keep the online catalog if desired).
 
-**Cleanup**
+### Lab 6.2 — Scheduled catalog refresh (Topic: Update currency)
 
-- Confirm the appliance's proxy configuration is restored to its correct
-  production/lab value from step 8 before ending the lab — leaving the
-  unreachable proxy address in place will silently break every later
-  chapter's catalog-dependent exercises.
-- No other cleanup is required; the connected catalog itself is expected
-  to remain configured for use in [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s baseline exercises and
-  later chapters.
+**Objective:** Keep the catalog and compliance current automatically.
+
+```text
+# Console: on the online catalog, set an Update Schedule (e.g. weekly) so OME re-downloads
+#   the catalog and re-evaluates baselines without manual action.
+```
+
+Verify the schedule via the job engine:
+
+```bash
+curl -sk -H "X-Auth-Token: $TOKEN" "https://<ome-ip>/api/JobService/Jobs?\$filter=JobType/Name eq 'Catalog_Refresh_Task'" 2>/dev/null | head
+```
+
+**Expected result:** a recurring catalog-refresh job keeps the catalog and compliance results
+current — scheduling the refresh means new Dell firmware releases show up as compliance gaps
+automatically, so you learn what needs updating without checking manually.
+
+**Negative test:** load a catalog once and never refresh it; months later your "baseline" is stale
+and misses critical firmware fixes — a scheduled refresh keeps the reference current.
+
+**Cleanup:** remove the lab schedule if created only for the exercise.
+
+### Lab 6.3 — SupportAssist-connected updates (Topic: Connected support)
+
+**Objective:** Link OME to Dell for proactive, connected maintenance.
+
+```text
+# Console: Application Settings > Console and Plugins / SupportAssist Enterprise integration.
+#   Register the appliance, confirm connectivity, and enable automated case creation for
+#   hardware faults and connected firmware recommendations.
+```
+
+**Expected result:** OME reports telemetry to Dell and can auto-open support cases and surface
+firmware recommendations — SupportAssist connects the fleet to Dell for proactive/predictive
+support (automatic case creation, parts dispatch, tailored update guidance) beyond manual catalog
+management.
+
+**Negative test:** run disconnected with no SupportAssist; a predicted disk failure generates no
+proactive case and you react only after the outage — the connected integration is what enables
+proactive support.
+
+**Cleanup:** deregister SupportAssist if enabled only for the lab.
+
+### Lab 6.4 — Staged rollout workflow (Topic: Update workflow)
+
+**Objective:** Roll updates through rings, not all at once.
+
+```text
+# Define rollout rings by group: canary (1-2 servers) -> ring 1 (non-critical) -> ring 2 (prod).
+#   Update the canary, validate (health, workload), then promote to ring 1, then ring 2, each
+#   in its own maintenance window.
+```
+
+**Expected result:** each ring updates and is validated before the next, so a bad update is caught
+on the canary — a staged rollout limits blast radius: the canary and rings turn a risky fleet-wide
+change into a validated, progressive one.
+
+**Negative test:** push a new firmware release to all production servers the day it lands; an
+undiscovered regression takes the fleet down together — ringed rollout with validation gates is
+what prevents that.
+
+**Cleanup:** none (leave devices at validated firmware).
 
 ## Lab Verification
 

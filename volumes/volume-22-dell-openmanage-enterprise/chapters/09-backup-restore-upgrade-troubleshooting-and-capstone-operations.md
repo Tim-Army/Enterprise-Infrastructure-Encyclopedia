@@ -338,112 +338,113 @@ window timing immediately before initiating it.
 
 ## Hands-On Lab
 
-**Objective:** Perform a capstone exercise that exercises discovery,
-monitoring, firmware compliance, and appliance operational hygiene
-together as a single scripted workflow, producing a before/after
-operational snapshot consistent with a real pre-change validation
-practice — and separately walk through the appliance backup
-configuration screens to establish (without requiring a second appliance
-for a full restore test) a validated backup destination.
+This chapter closes the volume with **appliance lifecycle and troubleshooting** — the
+"Troubleshooting" domain — and a **Design Exercise** capstone synthesizing OME fleet management.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 9.1–9.4** — a deployed OME appliance with devices onboarded, a
+backup share, and API credentials. **Cost:** none.
 
-- The OME appliance and lab devices established across this volume's
-  earlier chapters (the SNMP-discovered Linux lab host from [Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md) at
-  minimum; a real or virtual iDRAC-managed device if you completed the
-  optional hardware-dependent portions of Chapters 5 and 8).
-- A network share (a lab NFS or CIFS export is sufficient — a single
-  lab-purpose Linux host running an NFS export works well) reachable from
-  the OME appliance, to serve as the backup destination.
-- Python 3.11+ with `requests` installed.
+### Lab 9.1 — Appliance backup and restore (Topic: Backup and restore)
 
-**Steps**
+**Objective:** Protect the appliance's configuration and data.
 
-1. Configure a lab NFS export to serve as the backup destination target,
-   for example on a lab Linux host:
+```text
+# Console: Application Settings > Console and Extensions / Backup.
+#   Configure a scheduled backup to a network share (config + database).
+#   Then validate recoverability by restoring to a fresh appliance in a lab and confirming
+#   devices, groups, baselines, and users return.
+```
 
-   ```bash
-   sudo mkdir -p /srv/ome-backup
-   echo "/srv/ome-backup <ome-appliance-ip>(rw,sync,no_subtree_check,no_root_squash)" \
-     | sudo tee -a /etc/exports
-   sudo exportfs -ra
-   ```
+**Expected result:** a scheduled backup lands on the share, and a test restore brings back devices,
+groups, baselines, and users — the OME database holds all onboarding, grouping, baseline, and
+policy state, so a tested backup/restore is the appliance's disaster-recovery guarantee.
 
-   **Expected result:** `showmount -e <lab-host-ip>` run from another
-   host shows `/srv/ome-backup` exported to the appliance's address.
-2. In the OME console's application settings, configure the backup
-   destination to point at this share, and confirm the appliance reports
-   the share as reachable (a connectivity validation step is typically
-   part of this configuration screen).
-3. Trigger an on-demand backup and monitor it to completion in the
-   console.
-4. **Expected result:** a backup file appears in `/srv/ome-backup` on the
-   lab host after the job completes:
+**Negative test:** run OME with no backups; losing the appliance means re-discovering the entire
+fleet and rebuilding every group, baseline, and policy by hand — the backup preserves all that
+state.
 
-   ```bash
-   ls -lh /srv/ome-backup
-   ```
+**Cleanup:** remove the lab restore appliance if created only for the test.
 
-5. Run the `ome_pre_change_snapshot.py` script from Implementation and
-   Automation and save its output:
+### Lab 9.2 — Appliance upgrade (Topic: Lifecycle)
 
-   ```bash
-   python3 ome_pre_change_snapshot.py <appliance-ip> admin '<password>' \
-     > pre-change-snapshot.json
-   ```
+**Objective:** Upgrade OME safely.
 
-6. Exercise a representative cross-chapter operational sequence: force an
-   inventory refresh on your lab device(s) ([Chapter 3](03-discovery-onboarding-inventory-groups-and-device-control.md)), confirm no new
-   unexpected alerts appear in the alert log ([Chapter 4](04-monitoring-alerts-reports-jobs-and-operational-integrations.md)), and if you
-   completed [Chapter 5](05-firmware-and-driver-catalogs-baselines-compliance-and-updates.md)'s optional hardware-dependent steps, re-run
-   compliance evaluation on `lab-firmware-baseline`.
-7. Run the snapshot script again and compare:
+```bash
+curl -sk -H "X-Auth-Token: $TOKEN" https://<ome-ip>/api/ApplicationService/Version | \
+  python3 -c "import json,sys; print('current:', json.load(sys.stdin).get('Version'))"
+# Console: Application Settings > Console and Extensions > Update Console.
+#   Take a backup first (Lab 9.1), review the release notes/compatibility, then apply the update.
+```
 
-   ```bash
-   python3 ome_pre_change_snapshot.py <appliance-ip> admin '<password>' \
-     > post-change-snapshot.json
-   diff pre-change-snapshot.json post-change-snapshot.json
-   ```
+**Expected result:** OME reports its version and upgrades to the target from an online or uploaded
+package, backup-first — appliance upgrades follow the supported path (backup → check release notes
+→ update console), and a pre-upgrade backup is the rollback if an upgrade misbehaves.
 
-   **Expected result:** the diff shows only the changes attributable to
-   the operations performed in step 6 (for example, an updated job
-   count), with no unexplained changes in device health counts —
-   confirming the operational sequence behaved as expected.
-8. **Negative test:** attempt to authenticate the snapshot script with an
-   intentionally invalid password:
+**Negative test:** upgrade with no backup and no release-note review; if the upgrade fails or a
+plugin is incompatible, there is no clean rollback — the pre-upgrade backup is what makes the
+change reversible.
 
-   ```bash
-   python3 ome_pre_change_snapshot.py <appliance-ip> admin 'WrongPassword123!'
-   ```
+**Cleanup:** none.
 
-   **Expected result:** the script fails with an HTTP error from the
-   session endpoint, consistent with [Chapter 1](01-architecture-requirements-deployment-and-first-configuration.md)'s original bootstrap
-   validation lab, confirming this final capstone script correctly
-   depends on the same authentication discipline established at the very
-   start of the volume.
+### Lab 9.3 — Structured troubleshooting (Topic: Troubleshooting)
 
-**Cleanup**
+**Objective:** Diagnose a common failure by layer.
 
-- Remove the on-demand backup file from the lab share if it is not
-  needed further, and remove the NFS export from the lab host:
+```bash
+# A discovery/update failure: work from credentials -> connectivity -> job logs.
+curl -sk -H "X-Auth-Token: $TOKEN" "https://<ome-ip>/api/JobService/Jobs?\$filter=LastRunStatus/Name eq 'Failed'" 2>/dev/null | \
+  python3 -c "import json,sys; [print(j['JobName'], j['Id']) for j in json.load(sys.stdin)['value'][:5]]"
+# Then fetch the failed job's execution detail for the root cause:
+curl -sk -H "X-Auth-Token: $TOKEN" "https://<ome-ip>/api/JobService/Jobs(<Id>)/ExecutionHistories" 2>/dev/null | head
+# Console: Monitor > Jobs > failed job > view execution details / download appliance logs
+```
 
-  ```bash
-  sudo sed -i '\|/srv/ome-backup|d' /etc/exports
-  sudo exportfs -ra
-  ```
+**Expected result:** the failed job and its execution detail point to the cause (bad credential,
+unreachable iDRAC, protocol mismatch) — structured troubleshooting works the layers in order
+(credentials → network/protocol → job execution log), and OME's job execution history is where the
+specific error lives.
 
-- Remove the snapshot JSON files from your workstation if not needed for
-  reference:
+**Negative test:** re-run a failing discovery repeatedly without reading the job's execution log;
+you repeat the same failure — the execution detail names the cause (e.g. "invalid credentials"),
+which guessing does not.
 
-  ```bash
-  rm -f pre-change-snapshot.json post-change-snapshot.json
-  ```
+**Cleanup:** none (read-only).
 
-- If any lab devices, groups, baselines, templates, or alert policies
-  created across this volume's chapters are no longer needed, remove them
-  from the appliance to leave it in a clean state, or retain the
-  appliance as a standing lab environment for further study at your
-  discretion.
+### Lab 9.4 — Capstone Design Exercise: OME fleet management (Topic: Synthesis)
+
+**Objective:** Produce a defensible OME operations design — the deliverable, not a click-path.
+
+> **Scenario.** Manage 800 PowerEdge servers across two data centers (one internet-connected, one
+> air-gapped) plus regional edge sites: consistent configuration, current firmware, proactive
+> monitoring, delegated operations, and disaster recovery.
+
+Work through and **write down**:
+
+1. **Deploy & scope** — appliance placement/sizing and HA considerations; static/reserved
+   addressing (Ch01).
+2. **Identity & delegation** — directory-integrated RBAC with roles + group scope, TLS, and
+   licensing tiers for template/compliance features (Ch02).
+3. **Onboard & organize** — discovery protocols per class, credential profiles, and **dynamic
+   groups** that keep membership current (Ch03).
+4. **Firmware currency** — online catalog + scheduled refresh for the connected DC (Ch06), and the
+   DRM offline pipeline for the air-gapped DC (Ch07), both driving baseline compliance (Ch05),
+   rolled out through canary/rings.
+5. **Configuration** — golden templates and configuration-compliance baselines to hold servers
+   uniform (Ch08).
+6. **Operate & recover** — health roll-up, alert policies, reports, SupportAssist; scheduled
+   backups and a tested restore/upgrade path (Ch04, Ch09).
+
+**Expected result:** a written design where a mixed connected/air-gapped fleet is discovered,
+grouped dynamically, held to firmware and configuration baselines, monitored and delegated safely,
+and recoverable — the operational deliverable the PowerEdge management domains build toward.
+
+**Negative test:** manage 800 servers by logging into individual iDRACs, with ad-hoc firmware and
+no templates, groups, backups, or DRM pipeline; it does not scale, drifts immediately, and the
+air-gapped DC falls behind — OME's catalog/baseline/template/group model is what makes the fleet
+operable.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 
