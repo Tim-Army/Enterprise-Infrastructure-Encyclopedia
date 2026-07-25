@@ -296,73 +296,105 @@ data-plane visibility loss and enforcement-capability loss:
 
 ## Hands-On Lab
 
-**Objective.** Establish a resource-metric baseline, simulate a
-performance-degradation scenario and diagnose it using the layered model,
-and perform a validated backup/restore drill.
+This chapter carries a topic-level walkthrough lab for **each theme of troubleshooting,
+performance, and resilience** — the FSCE boot-camp topics of architectural scoping,
+virtual-device performance tuning, network-configuration considerations, Enterprise
+Manager configuration, and high availability. These are CLI and Console diagnostic
+walkthroughs. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.4** — a Forescout deployment (ideally an EM plus
+two appliances for HA), appliance CLI access, and the Console. **Cost:** none beyond lab
+resources.
 
-- The lab appliance and Console from Chapters 1–5, with policies from
-  earlier labs in place.
-- Access to appliance resource-metric views (or equivalent host-level
-  metrics if using a virtual lab appliance monitored externally).
-- Permission to trigger and restore a configuration backup, and, ideally,
-  a second non-production appliance or instance to restore onto (a
-  duplicate lab deployment is acceptable; if unavailable, document the
-  restore procedure as a dry run against the same instance's backup
-  history instead).
+### Lab 6.1 — The layered diagnostic model (Topic: Troubleshooting)
 
-**Procedure**
+**Objective:** Work a problem from the outside in — service, then plugin, then policy.
 
-1. Record baseline CPU, memory, and disk metrics for the lab appliance
-   during idle/normal operation.
-2. Temporarily increase active-scan intensity/concurrency on the lab
-   subnet (or, if lab scale is too small to observe a real effect,
-   document the expected relationship and the specific setting that would
-   be adjusted in a larger environment) and observe the resulting metric
-   change relative to baseline.
-3. Using the layered diagnostic model, write a short diagnostic log
-   entry as if investigating "Console feels slow" starting from network
-   delivery and working down — noting at each layer what you checked and
-   what you would conclude if that layer were the fault.
-4. Revert the scan intensity change and confirm metrics return toward
-   baseline.
-5. Trigger a configuration backup (reuse the [Chapter 4](04-host-management-administration-inventory-and-reporting.md) lab's backup step
-   if still valid, or take a fresh one) and record its completion
-   timestamp and size.
-6. Restore the backup — onto a second instance if available, or as a
-   documented dry-run procedure against the same instance otherwise — and
-   validate functional correctness afterward by confirming at least one
-   policy and one custom property from earlier labs are present and
-   correctly configured post-restore.
-7. **Negative test.** Deliberately point a plugin at an invalid or
-   revoked credential (for example, temporarily changing the Switch
-   plugin's SNMP community string in the plugin configuration only,
-   without changing it on the switch) and confirm the plugin layer
-   surfaces a clear authentication/connectivity failure distinct from a
-   network-delivery failure — then revert the credential and confirm
-   recovery.
+```text
+fsctl status                 # 1. is the platform service healthy?
+fstool version               # 2. confirm version/build across the deployment
+# 3. Console: Options > Plugins — is the relevant plugin Running and configured?
+# 4. Console: Policy > Policy Action Log — did the action fire, and what did it return?
+# 5. HPS logs and per-plugin logs for property-resolution failures.
+fstool debug                 # 6. raise component log verbosity for a live repro
+# 7. Generate a Tech-Support bundle (Console Tools, or the Tech-Support plugin) to escalate.
+#    Note: CounterACT logs timestamp in Epoch time — convert when correlating.
+```
 
-**Expected Results**
+**Expected result:** you isolate a fault to a layer — service down, plugin stopped/
+misconfigured, property unresolved, or policy mis-ordered — instead of guessing; the
+layered model (service → plugin → property → policy), the **Policy Action Log**,
+`fstool debug`, and the **Tech-Support** bundle are the FSAA/FSCE systematic-troubleshooting
+toolset.
 
-- The scan-intensity change produces an observable (or documented,
-  if lab-scale limited) resource-metric effect, and reverting it returns
-  metrics toward baseline.
-- The layered diagnostic write-up correctly separates network delivery,
-  appliance health, plugin, property/policy, and downstream/integration
-  checks.
-- The backup restores successfully and is functionally validated against
-  at least one known policy and property, not just a completion status.
-- The negative test produces a clearly attributable plugin-layer failure
-  and clean recovery after the credential is reverted.
+**Negative test:** start by rewriting the policy when the real fault is a stopped plugin;
+you "fix" symptoms while the property still never resolves — diagnose bottom-up before
+changing policy.
 
-**Cleanup**
+**Cleanup:** none (read-only diagnostics).
 
-- Confirm scan intensity settings are restored to their pre-lab values.
-- Confirm the Switch plugin credential is restored to its correct,
-  working value.
-- Remove or archive the restored duplicate instance if one was created
-  only for this lab's restore drill.
+### Lab 6.2 — Virtual appliance performance tuning (Topic: Performance and scoping)
+
+**Objective:** Check appliance load against its scoped capacity.
+
+```text
+fstool ifcount               # traffic volume the monitor interface is handling
+fsctl status                 # service/resource health
+# Console: review the appliance's monitored host count and CPU/memory indicators
+#   against the sizing for its model/VM profile.
+```
+
+**Expected result:** a picture of monitored hosts, traffic rate, and resource headroom you
+can compare to the appliance's rated capacity — FSCE "architectural scoping" means sizing
+appliances (and VM vCPU/RAM) to the host count and traffic they actually see, and tuning
+before they saturate.
+
+**Negative test:** load one appliance far beyond its rated host/traffic capacity to save
+hardware; discovery lags and enforcement slows — scoping to real load, not wishful
+consolidation, is what keeps the deployment responsive.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.3 — Network configuration considerations (Topic: Network integration)
+
+**Objective:** Verify the monitor/response channels and switch integration are correct.
+
+```text
+fstool ifcount               # confirm the monitor (SPAN) interface sees traffic
+# Console: Options > Channels — confirm the monitor and response interfaces/VLANs.
+#   Options > Switch plugin — confirm SNMP/CLI reachability to managed switches.
+```
+
+**Expected result:** the monitor channel sees the intended VLANs and the response channel
+can act on them, with the Switch plugin reaching each switch — Forescout's visibility and
+control depend on correct channel and switch integration; wrong VLAN tagging or an
+unreachable switch is a common root cause.
+
+**Negative test:** span only a subset of VLANs but expect visibility across all of them;
+the un-spanned VLANs are invisible — the monitor channel must carry every VLAN you intend
+to see.
+
+**Cleanup:** none (read-only unless you corrected a real misconfiguration).
+
+### Lab 6.4 — Enterprise Manager and appliance resilience (Topic: High availability / DR)
+
+**Objective:** Confirm HA/failover state and a recovery path.
+
+```text
+fstool oneach fstool version    # EM reaches every appliance (management-plane health)
+# Console: Tools > Appliances — confirm HA pairing/failover status where configured,
+#   and confirm a current configuration backup exists (Chapter 04) for DR.
+```
+
+**Expected result:** the EM manages every appliance, HA-paired appliances show a healthy
+active/standby relationship, and a restorable backup exists — resilience is an EM that
+survives an appliance loss plus a tested restore path, not just redundant hardware.
+
+**Negative test:** rely on a single EM with no backup and no HA; losing it loses central
+management and enforcement coordination — an EM failure without a recovery plan is a
+single point of failure this lab exists to expose.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

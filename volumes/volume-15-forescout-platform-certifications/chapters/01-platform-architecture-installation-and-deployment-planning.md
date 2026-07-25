@@ -308,69 +308,99 @@ licensed 8.5.x build.
 
 ## Hands-On Lab
 
-**Objective.** Stand up passive visibility on a lab appliance and validate
-that host discovery and basic classification work end to end before any
-control policy is introduced.
+This chapter carries a topic-level walkthrough lab for **each major theme of platform
+architecture and deployment** — mapped in the volume README's chapter outline. Because
+Forescout publishes no weighted blueprint (the course is the syllabus), the labs cover
+the chapter's own topics: appliance/EM/Console roles, capability-module licensing,
+discovery, and the EM–appliance channel. Forescout is Console-driven, so each lab pairs
+the Console (GUI) path with the appliance CLI (`fstool`/`fsctl`) for verification. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 1.1–1.4** — a Forescout deployment (a physical or
+virtual Appliance, an Enterprise Manager, and the Console) on a current release, SSH/
+console access to the appliance CLI, and a SPAN/monitor port or switch integration for
+discovery. **Cost:** none beyond lab resources.
 
-- A lab or trial Forescout virtual appliance already deployed and licensed
-  for eyeSight, with Console/EM access.
-- A lab switch capable of configuring a SPAN/mirror session (or a hub/tap if
-  no manageable switch is available).
-- At least three test endpoints on the mirrored segment with distinct
-  device types (for example, a Windows VM, a Linux VM, and a phone or IoT
-  simulator) so classification differences are observable.
-- Administrative access to the lab switch CLI.
+### Lab 1.1 — Read the appliance and Console architecture (Topic: Component roles)
 
-**Procedure**
+**Objective:** Confirm the appliance role, version, and service state.
 
-1. On the lab switch, configure a SPAN session sourcing the VLAN or ports
-   the test endpoints live on, destined to the appliance's monitor
-   interface:
+```text
+fstool version
+fsctl status
+```
 
-   ```text
-   monitor session 1 source interface GigabitEthernet1/0/1 - 3
-   monitor session 1 destination interface GigabitEthernet1/0/10
-   ```
+**Expected result:** `fstool version` prints the Forescout platform version and build,
+and `fsctl status` shows the platform service running — the appliance does
+discovery/enforcement, the Enterprise Manager centrally manages many appliances, and the
+Console is the operator UI that connects to the EM (or a standalone appliance).
 
-2. In the Console, confirm the appliance's monitor interface is enabled and
-   bound correctly, then open the asset inventory view.
-3. Generate traffic from each test endpoint (a DHCP renewal, a web browse,
-   a ping to another host on the segment) to accelerate fingerprinting.
-4. Within a few minutes, confirm all three test endpoints appear in the
-   inventory with at minimum a MAC address, an IP address, and a
-   provisional classification (function/OS guess).
-5. Open one endpoint's host record and review which plugin/data source
-   populated each property — this confirms you understand the
-   property-to-source mapping used throughout later chapters.
-6. Enable active scanning scoped only to the lab subnet, and re-observe the
-   same three hosts; note which properties become more specific (for
-   example, OS version detail) after the active scan runs.
-7. **Negative test.** Temporarily shut down the SPAN destination interface
-   on the switch (`shutdown` on the destination interface configuration) and
-   confirm in the Console that the appliance reports the monitor interface
-   as down and that no new host activity registers, demonstrating the
-   platform's dependency on a correctly delivered mirror feed. Re-enable
-   the interface afterward and confirm hosts resume updating.
+**Negative test:** try to operate the deployment by pointing the Console at an appliance
+that is EM-managed; it directs you to the EM — in a managed deployment the EM is the
+single management plane, not each appliance.
 
-**Expected Results**
+**Cleanup:** none (read-only).
 
-- All three test endpoints are visible in the inventory with populated MAC,
-  IP, and provisional classification properties.
-- Property source attribution is visible and matches the plugins enabled in
-  this lab (passive fingerprinting and, after step 6, active scan).
-- The negative test clearly demonstrates loss of visibility when the SPAN
-  feed is interrupted, and recovery once it is restored.
+### Lab 1.2 — Inspect capability-module licensing (Topic: Licensing)
 
-**Cleanup**
+**Objective:** Read which capability modules are licensed.
 
-- Disable active scanning if the lab subnet will be reused for a shared
-  purpose, to avoid unexpected scan traffic later.
-- Remove the SPAN session from the switch if the interfaces are needed for
-  another lab (`no monitor session 1`).
-- Leave the appliance's base configuration in place; it is reused in later
-  chapters' labs.
+```text
+fstool license
+```
+
+**Expected result:** the licensing summary (per-device Flexx or legacy) and the entitled
+capability modules — **eyeSight** (visibility), **eyeControl** (NAC/control),
+**eyeSegment** (segmentation), **eyeExtend** (integrations), and **eyeInspect** (OT) —
+each module unlocks the features the later chapters use.
+
+**Negative test:** expect to run control actions with only an eyeSight (visibility)
+entitlement; enforcement requires eyeControl — the license, not just the config, gates
+capability.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.3 — Enable a discovery mechanism (Topic: Discovery)
+
+**Objective:** Configure a discovery source and confirm hosts populate.
+
+```text
+# Console: Options > Discovery (and the relevant plugin, e.g. the Switch plugin
+#   via SNMP, or a monitored/SPAN interface for passive discovery). Apply, then:
+#   Asset Inventory > confirm new hosts appear with IP, MAC, and initial properties.
+fstool ifcount        # verify the monitoring interface is seeing traffic
+```
+
+**Expected result:** the Asset Inventory begins listing discovered endpoints with IP/MAC
+and resolved properties; `fstool ifcount` shows packet counts climbing on the monitor
+interface — Forescout discovers agentlessly through passive traffic inspection, active
+probes, DHCP fingerprinting, and switch/SNMP polling.
+
+**Negative test:** rely on active scanning alone in a segmented network the appliance
+cannot route to; those segments stay invisible — discovery coverage depends on the
+appliance seeing (or reaching) each segment, which is a deployment-planning decision.
+
+**Cleanup:** disable the lab discovery source if it was added only for this exercise.
+
+### Lab 1.4 — Verify the Enterprise Manager–appliance channel (Topic: Deployment topology)
+
+**Objective:** Confirm a managed appliance is connected to the EM.
+
+```text
+# On the Enterprise Manager Console: Tools > Appliances (or Options > CounterACT
+#   Devices) — confirm each appliance shows Connected/Up.
+fstool oneach fstool version    # run from the EM: version across every managed appliance
+```
+
+**Expected result:** every managed appliance reports Connected and returns its version
+via `fstool oneach` — the EM–appliance channel is what lets one Console manage a
+distributed deployment and share host state across appliances.
+
+**Negative test:** place an appliance where a firewall blocks the EM management channel;
+it never joins the deployment and its discovered hosts are not centrally visible — the
+management channel must be open end to end.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

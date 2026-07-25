@@ -312,70 +312,104 @@ licensed 8.5.x build.
 
 ## Hands-On Lab
 
-**Objective.** Build a compliance policy with a grace period and a paired
-control policy staged through monitor mode, then validate both the
-enforcement and re-admission paths.
+This chapter carries a topic-level walkthrough lab for **each theme of the policy model —
+clarification, compliance, and control** — which maps directly to the FSCA course's
+Policy Overview, Classification/Clarification, Compliance, and Control lessons. The
+Policy Manager is a Console workflow, so these are Console walkthroughs. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 3.1–3.4** — a Forescout deployment with the Console, an
+eyeControl entitlement (for the control lab), discovered hosts, and a lab switch/VLAN
+you may safely manipulate. **Cost:** none beyond lab resources.
 
-- The lab appliance and Console from Chapters 1–2, with at least one
-  classified test endpoint.
-- A custom property (reuse `Lab Asset Owner` from [Chapter 2](02-console-plugins-properties-and-asset-classification.md), or create a
-  new boolean property named `Lab Agent Running`) that you can toggle
-  manually to simulate a compliance state change.
-- Console access with permission to create and enable policies.
-- A lab switch port or VLAN designated as a harmless "remediation" target
-  (no production dependency) for the control action.
+### Lab 3.1 — The rule/condition/action policy model (Topic: Policy Overview)
 
-**Procedure**
+**Objective:** Build a policy with a scope, a sub-rule condition, and an action.
 
-1. Set the `Lab Agent Running` custom property to `true` on your test
-   endpoint to represent an initial compliant state.
-2. Author a compliance policy rule: `IF Lab Agent Running = false THEN
-   set Compliance Status = "Non-Compliant: Lab" with a 10-minute grace
-   period`. Use a short grace period so the lab is practical to run in one
-   session.
-3. Author a control policy rule in **monitor mode**: `IF Compliance
-   Status = "Non-Compliant: Lab" AND grace period expired THEN VLAN
-   reassignment to the lab remediation VLAN`.
-4. Toggle `Lab Agent Running` to `false` on the test endpoint and confirm
-   the compliance policy sets `Compliance Status` to `Non-Compliant: Lab`.
-5. Wait for the grace period to expire and confirm the control policy's
-   monitor-mode log shows the action it *would* have taken, without the
-   endpoint's actual VLAN changing.
-6. Switch the control policy from monitor mode to live enforcement, reset
-   `Lab Agent Running` to `false` again (or force re-evaluation), and
-   confirm the test endpoint is actually reassigned to the lab
-   remediation VLAN this time.
-7. Set `Lab Agent Running` back to `true` and confirm the re-admission
-   path returns the endpoint to its original VLAN within one policy
-   re-evaluation cycle.
-8. **Negative test.** Add the test endpoint to an exclusion group, force
-   `Lab Agent Running` to `false` again, and confirm the control policy
-   does **not** act on the excluded host despite matching the compliance
-   condition — this validates that your exclusion-group logic actually
-   takes precedence, which is the same safety mechanism production
-   deployments rely on to protect sensitive hosts.
+```text
+# Console: Policy > Add. Set the main rule (scope, e.g. "IP range = lab subnet").
+#   Add a sub-rule: Condition = a resolved property (e.g. Operating System = Windows);
+#   Action = a benign action (e.g. add to group "Windows-Hosts" or send a notification).
+#   Apply, then watch the policy evaluate and populate the sub-rule's matched hosts.
+```
 
-**Expected Results**
+**Expected result:** hosts in scope are evaluated top-down through the sub-rules and the
+first matching sub-rule's action fires — every Forescout policy is scope → conditions →
+actions, evaluated in order, which is the mental model the whole platform runs on.
 
-- The compliance policy correctly transitions `Compliance Status` after
-  the grace period, and the control policy's monitor-mode log accurately
-  previews the action before live enforcement is enabled.
-- Live enforcement correctly reassigns the VLAN, and the re-admission
-  condition correctly reverses it once the underlying property is
-  restored.
-- The negative test confirms the exclusion group prevents enforcement
-  against a protected host.
+**Negative test:** put a broad catch-all sub-rule above a specific one; the specific rule
+never matches — sub-rule order decides the outcome, exactly like a firewall rule base.
 
-**Cleanup**
+**Cleanup:** disable/delete the lab policy and remove the `Windows-Hosts` group if
+created for the lab.
 
-- Disable or delete the lab compliance and control policy rules if they
-  should not persist.
-- Remove the test endpoint from the exclusion group and confirm its VLAN
-  assignment is back to its original state.
-- Leave `Lab Agent Running` in place if later chapter labs may reuse it;
-  otherwise remove it.
+### Lab 3.2 — Clarification policy (Topic: Clarification)
+
+**Objective:** Use a clarification policy to resolve a host's management capability.
+
+```text
+# Console: build a policy scoped to a Classification group (e.g. "Windows") whose
+#   sub-rules test manageability — is the Host Property Scanner able to log in (via
+#   AD/domain credentials or SecureConnector)? Add actions that request the missing
+#   information (e.g. resolve logged-on user, installed software).
+```
+
+**Expected result:** hosts move from "classified" to "clarified" as the platform
+determines *how* it can manage each one (agentless via domain credentials, via
+SecureConnector, or not at all) — clarification turns "what is this device" into "what
+can I do to it," which every downstream compliance/control policy depends on.
+
+**Negative test:** skip clarification and write a compliance check that needs deep
+inspection on hosts you cannot authenticate to; the check returns "unknown," not
+"compliant" or "not compliant" — manageability must be established first.
+
+**Cleanup:** disable the lab clarification policy.
+
+### Lab 3.3 — Compliance policy with a grace period (Topic: Compliance)
+
+**Objective:** Assess endpoint compliance and allow a remediation grace period.
+
+```text
+# Console: build a compliance policy (e.g. "Antivirus running AND up to date AND
+#   disk encryption on"). For the non-compliant sub-rule, configure a grace period
+#   before escalation and a remediation action (e.g. start AV, notify user).
+#   Apply and review the Compliant / Non-Compliant / Grace sub-rule counts.
+```
+
+**Expected result:** endpoints sort into compliant, non-compliant, and in-grace buckets;
+non-compliant hosts get a remediation attempt and a grace window before enforcement —
+compliance policy encodes the organization's endpoint posture and gives users a chance to
+self-correct before control acts.
+
+**Negative test:** enforce a hard block the instant a host is non-compliant with no grace
+or remediation; a transient state (AV mid-update) locks out a legitimate user — the grace
+period is what prevents brittle, disruptive enforcement.
+
+**Cleanup:** set the policy's actions to audit-only or disable it.
+
+### Lab 3.4 — Staged control actions (Topic: Control)
+
+**Objective:** Apply graduated enforcement — the real Forescout control actions.
+
+```text
+# Console: on the non-compliant sub-rule from Lab 3.3, stage control actions in order:
+#   1. Notify (HTTP notification / email to the user)
+#   2. Limit    (assign an ACL, or move the host to a restricted/quarantine VLAN)
+#   3. Enforce  (DNS Enforcement, Virtual Firewall, or guest registration redirect;
+#                ActiveResponse for automated response)
+#   Apply to a single lab host first and confirm each stage takes effect.
+```
+
+**Expected result:** the lab host is notified, then limited (ACL/VLAN), then fully
+enforced — Forescout control actions run from soft (notify) to hard (VLAN/ACL/DNS
+Enforcement/guest registration), so enforcement is proportionate and reversible.
+
+**Negative test:** apply a VLAN-reassignment or block action fleet-wide without testing on
+one host; a misscoped policy can quarantine production en masse — always stage control on
+a single host and widen scope only after verifying.
+
+**Cleanup:** remove the control actions (return the host to its production VLAN/ACL) and
+disable the lab policy; confirm the host regains normal access.
 
 ## Lab Verification
 

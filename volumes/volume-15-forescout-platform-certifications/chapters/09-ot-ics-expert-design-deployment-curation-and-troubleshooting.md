@@ -318,73 +318,117 @@ physical safety consequences, not only an access-disruption consequence:
 
 ## Hands-On Lab
 
-**Objective.** Extend [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md)'s single-zone lab into a two-zone
-topology with a curation pass and a behavioral-baseline alerting rule,
-without enabling any control action.
+This chapter carries a topic-level walkthrough lab for **each theme of expert OT/ICS work
+with eyeInspect** — multi-site sensor topology design, asset curation, OT threat detection,
+and the conservative path to OT control — mapped to the FSCE: OT/ICS track. It opens with a
+**Design Exercise** (the expert deliverable) and follows with Command Center walkthroughs.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 9.1–9.4** — a multi-sensor eyeInspect deployment reporting
+to a Command Center, a lab OT segment or replayed captures, and (for Lab 9.4) awareness of
+the IT/OT boundary where the enterprise Forescout platform can enforce. **Cost:** none
+beyond lab resources. **Safety:** all steps are passive; stage any control only at the
+IT/OT boundary, never on the process network.
 
-- The lab sensor/capture setup, PLC simulator, and Purdue-model diagram
-  from [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md)'s lab.
-- A second simulated zone (a second PLC simulator instance, or a second
-  VLAN/segment on the lab switch representing a distinct cell/area zone)
-  with its own SPAN session to a second sensor or capture point.
-- A simple spreadsheet or text file to serve as the "asset register"
-  enrichment source for the curation exercise.
+### Lab 9.1 — Design Exercise: multi-site OT sensor topology (Topic: OT design)
 
-**Procedure**
+**Objective:** Produce a defensible multi-site OT monitoring design, not a config dump.
 
-1. Extend the [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md) Purdue-model diagram to include the second
-   simulated zone, labeled distinctly (for example, "Line 2 Cell
-   Controllers" alongside the original "Line 1 Cell Controllers").
-2. Configure the second zone's SPAN session and confirm passive
-   visibility of its simulated PLC traffic, following the same procedure
-   validated in [Chapter 8](08-ot-ics-associate-architecture-sensors-and-asset-visibility.md).
-3. Create a simple asset register entry (make, approximate model,
-   installation date) for each simulated PLC in your text file/
-   spreadsheet, representing the engineering-source enrichment data
-   curation draws on.
-4. Perform a curation pass: compare each sensor-observed asset record
-   against your asset register, and note any discrepancy (for example, an
-   asset visible on the network with no corresponding register entry, or
-   vice versa) as a curation finding.
-5. Define a simple behavioral baseline for one zone (for example, "reads
-   only, no write/program-download operations expected during normal
-   lab operation") and then generate a deliberate write or
-   program-download-style operation from the simulator to represent an
-   anomalous event.
-6. Confirm the anomalous operation is distinguishable from the baseline
-   in your sensor or capture data (either through an actual alerting rule
-   if your lab tool supports one, or by manually reviewing the capture
-   against your documented baseline).
-7. **Negative test.** Attempt to correlate the anomalous operation
-   against a "change ticket" you deliberately do not create, and confirm
-   your documented process would correctly escalate it as unapproved
-   (unmatched to any change record) — then create a matching change
-   record after the fact and confirm the same operation would now
-   correlate as approved, demonstrating the escalation logic's
-   dependency on timely change-management data.
+> **Scenario.** A utility runs 1 central SOC and 12 remote substations/plants, each with
+> its own Level 0–2 process network and a Level 3 site network, connected back to a
+> corporate IT/OT DMZ. They need full OT visibility, threat detection, and eventual
+> boundary control — with zero disruption to the process network.
 
-**Expected Results**
+Work through and **write down**:
 
-- Both zones are independently visible with correctly attributed
-  traffic, and the extended Purdue diagram accurately reflects the
-  two-zone topology.
-- The curation pass produces at least one documented discrepancy finding
-  between sensor-observed assets and the asset register.
-- The anomalous write/program-download operation is distinguishable from
-  the defined baseline.
-- The negative test demonstrates correct escalation behavior for an
-  unmatched operation and correct correlation once a matching change
-  record exists.
+1. **Sensor placement per site** — which SPAN/TAP points at Levels 1, 2, and 3, and a
+   boundary sensor at the IT/OT DMZ (Level 3.5).
+2. **Aggregation** — one central Command Center vs. regional collectors; bandwidth for
+   sensor-to-CC telemetry over the WAN.
+3. **Redundancy** — sensor and CC resilience; what visibility is lost if a site link drops.
+4. **Data handling** — where captures/alerts live, and OT data-sovereignty constraints.
+5. **Control boundary** — where enforcement is *allowed* (the IT/OT DMZ via the enterprise
+   platform) and where it is forbidden (the process network).
 
-**Cleanup**
+**Expected result:** a written design naming per-site sensor placement, aggregation
+topology, redundancy, and an explicit control boundary — the FSCE: OT/ICS deliverable, where
+the safety-driven *why* (never disrupt the process) governs every choice.
 
-- Remove the second zone's SPAN session if the switch interfaces are
-  needed elsewhere.
-- Stop both PLC/protocol traffic simulators.
-- Retain the curation findings, asset register, and updated Purdue
-  diagram as artifacts for this chapter's design synthesis deliverable.
+**Negative test:** design OT control actions on the Level 1 process network for "faster
+response"; an errant block could stop a physical process — the expert design confines
+enforcement to the IT/OT boundary.
+
+**Cleanup:** none (design artifact).
+
+### Lab 9.2 — Asset curation (Topic: Asset curation)
+
+**Objective:** Refine the passive inventory into a trustworthy asset database.
+
+```text
+# Command Center: Asset Inventory —
+#   - merge duplicate asset entries (same device seen via multiple addresses/sensors)
+#   - correct/enrich roles and labels (PLC vs HMI vs engineering workstation)
+#   - assign assets to the correct site/zone and Purdue level
+#   - flag unknown/unexpected assets for investigation
+```
+
+**Expected result:** a curated inventory with deduplicated, correctly labeled, zone-assigned
+assets — curation turns raw passive discovery into an authoritative asset database that
+detection and reporting can trust; an inventory that has not been curated produces noisy, low-confidence
+alerts.
+
+**Negative test:** run threat detection on an inventory that has not been curated, full of duplicates and
+mislabels; every benign change looks anomalous and analysts drown in false positives —
+curation is the prerequisite for meaningful detection.
+
+**Cleanup:** none (keep the curation; it is the intended state).
+
+### Lab 9.3 — OT threat detection (Topic: Threat detection)
+
+**Objective:** Baseline normal OT behavior and alert on a meaningful deviation.
+
+```text
+# Command Center: enable behavioral baselining and relevant checks/policies, then
+#   observe alerts for, e.g.:
+#   - a new/unauthorized asset appearing on the process network
+#   - an engineering action (PLC program upload/download) outside a maintenance window
+#   - an unexpected communication (a new master talking to a controller)
+```
+
+**Expected result:** eyeInspect raises prioritized alerts on deviations from the OT baseline
+— a new device, an out-of-window controller program change, an unexpected master/slave
+relationship — the changes that matter in an environment where "normal" is far more static
+than IT.
+
+**Negative test:** port IT alerting thresholds directly into OT; OT's low-variance traffic
+makes IT-tuned rules either miss subtle control-plane attacks or flood on benign polling —
+detection must be tuned to the OT baseline.
+
+**Cleanup:** revert lab-only checks; keep production baselines.
+
+### Lab 9.4 — Staged path to OT control (Topic: OT control)
+
+**Objective:** Plan boundary enforcement without touching the process network.
+
+```text
+# Design + (where safe) stage at the IT/OT boundary only:
+#   1. Visibility  -> confirmed (Chapters 08, 9.2)
+#   2. Detection   -> confirmed (9.3)
+#   3. Alert-to-action -> integrate eyeInspect alerts to the SOC/enterprise Forescout
+#      platform so the IT/OT DMZ can quarantine a compromised IT-side host.
+#   Do NOT configure active control on Level 0-2 process assets.
+```
+
+**Expected result:** a staged plan where control is exercised only at the IT/OT boundary —
+e.g. the enterprise Forescout platform quarantines a compromised jump host in the DMZ on an
+eyeInspect alert — while the process network remains observe-only; OT control is deliberately
+conservative because availability and safety outrank containment.
+
+**Negative test:** deploy automated blocking onto the process network the way you would in
+IT; a false positive can halt production or trip a safety system — the staged, boundary-only
+approach is the OT-appropriate control model.
+
+**Cleanup:** none (design/staging artifact; no process-network control configured).
 
 ## Lab Verification
 

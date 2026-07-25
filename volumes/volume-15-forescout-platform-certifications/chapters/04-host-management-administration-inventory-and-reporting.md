@@ -283,63 +283,94 @@ Console access or query skill:
 
 ## Hands-On Lab
 
-**Objective.** Build a role-scoped read-only user view, a dynamic
-operational group, and a scheduled report, then validate scope
-restriction and backup/restore behavior.
+This chapter carries a topic-level walkthrough lab for **each theme of host management,
+administration, inventory, and reporting** — which maps to the FSCA course's Host
+Management, Administration, and Inventory/Assets/Reporting/Dashboard lessons. These are
+Console and CLI operator tasks. Each ends **`**Lab verified by:** *pending*`** until a
+human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.4** — a Forescout deployment with the Console,
+discovered hosts, and appliance CLI access. **Cost:** none beyond lab resources.
 
-- The lab appliance and Console from Chapters 1–3, with policies and
-  properties from earlier labs still in place (or recreated).
-- Console administrative access sufficient to create roles, users, groups,
-  and reports.
-- A second Console account (or the ability to create one) to validate
-  scope restriction from a non-administrator perspective.
+### Lab 4.1 — Inventory groups and tags (Topic: Inventory and Assets)
 
-**Procedure**
+**Objective:** Organize hosts with groups and confirm they drive policy scope.
 
-1. Create a read-only custom role scoped only to a single lab group or
-   site, and assign it to a second test user account.
-2. Log in (or use a second session) as the test user and confirm the
-   inventory view shows only the scoped population — hosts outside the
-   scope should not be visible.
-3. Build a dynamic group defined by a property condition using data from
-   earlier labs (for example, `Compliance Status = "Non-Compliant: Lab"`
-   from [Chapter 3](03-clarification-compliance-and-control-policies.md)), and confirm membership updates automatically as you
-   toggle the underlying property.
-4. Build and run an on-demand report scoped to that dynamic group,
-   exporting Host, Function, and Compliance Status fields.
-5. Schedule the same report to run on a short recurring interval
-   appropriate for the lab session (or simulate scheduling if the
-   environment only supports longer minimum intervals) and confirm
-   delivery to a test mailbox or export location.
-6. Trigger a configuration backup from the Enterprise Manager and confirm
-   it completes successfully and is retrievable from its storage
-   location.
-7. **Negative test.** Attempt, from the scoped read-only test account, to
-   modify a policy or a host property outside its granted permissions and
-   confirm the platform denies the action — this validates that RBAC
-   scope restriction is enforced, not merely cosmetic in the inventory
-   view.
+```text
+# Console: Asset Inventory > create a group (e.g. "Finance-Endpoints"). Add hosts
+#   manually or via a policy action that assigns membership. Then use the group as
+#   the scope of a policy or the filter of a report.
+```
 
-**Expected Results**
+**Expected result:** the group populates and can be referenced as a policy scope or
+report filter — groups and tags are the organizing layer that lets one deployment apply
+different policy and reporting to different populations (finance, guests, IoT, servers).
 
-- The scoped test account sees only its permitted population and cannot
-  perform write actions.
-- The dynamic group and report correctly reflect underlying property
-  changes without manual membership maintenance.
-- The configuration backup completes and is retrievable.
-- The negative test confirms RBAC write restrictions are enforced.
+**Negative test:** scope enforcement to "all hosts" instead of a group; the action hits
+populations it was never meant for — groups are what keep policy blast-radius controlled.
 
-**Cleanup**
+**Cleanup:** delete the lab group.
 
-- Remove or disable the test user account and custom role if they should
-  not persist.
-- Delete the lab dynamic group and report definitions if they were
-  created only for this exercise, or leave them if later labs may reuse
-  them.
-- Retain the configuration backup taken in step 6 as a general good
-  practice, or delete it if lab storage is constrained.
+### Lab 4.2 — Console RBAC and user management (Topic: Administration — console users)
+
+**Objective:** Create a scoped Console operator role.
+
+```text
+# Console: Options > Console User Profiles (User Management). Create a user with a
+#   role granting read/operate on a limited set of groups or functions (e.g. a
+#   help-desk role that can view inventory and run a remediation action but cannot
+#   edit policies). Log in as that user and confirm the boundary.
+```
+
+**Expected result:** the scoped user sees and does only what the role permits — Console
+RBAC enforces least privilege so operators, auditors, and administrators each get an
+appropriate slice of a shared deployment.
+
+**Negative test:** give every operator full administrator rights; any one can rewrite
+enforcement policy or export the full asset inventory — role scoping is what prevents
+that.
+
+**Cleanup:** delete the lab user/role.
+
+### Lab 4.3 — Platform administration: backup and updates (Topic: Administration — maintenance)
+
+**Objective:** Take a configuration backup and check update state — the operator safety net.
+
+```text
+# Console: Tools > Backup (or Options > for scheduled backups) to export the
+#   configuration; note the backup file/location. Then check component/plugin
+#   update status.
+fsctl status        # confirm services healthy before/after maintenance
+```
+
+**Expected result:** a stored configuration backup you could restore, and a clear view of
+component/plugin versions and available updates — backups before changes and controlled
+updates are the core administration discipline for a Forescout deployment.
+
+**Negative test:** apply a major component update with no backup and no maintenance
+window; if it misbehaves there is nothing to restore and enforcement may disrupt users —
+the backup is what makes the change reversible.
+
+**Cleanup:** none (keep the backup; remove it later if lab-only).
+
+### Lab 4.4 — Dashboards and reports (Topic: Reporting and Dashboard)
+
+**Objective:** Build a report that communicates a security outcome.
+
+```text
+# Console: Reports > create a report (e.g. "Compliance by Department" or "Devices by
+#   Classification"). Scope it to a group from Lab 4.1, run it, and schedule delivery.
+#   Add a matching Dashboard widget for at-a-glance status.
+```
+
+**Expected result:** a runnable, schedulable report and a live dashboard widget that turn
+raw visibility into something a manager or auditor can read — reporting is how a
+deployment demonstrates value and compliance, not just enforces it.
+
+**Negative test:** present raw Asset Inventory exports as the security report; stakeholders
+cannot read thousands of rows — a scoped, aggregated report is what communicates outcome.
+
+**Cleanup:** delete the lab report/dashboard widget.
 
 ## Lab Verification
 

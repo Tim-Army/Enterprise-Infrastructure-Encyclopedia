@@ -279,72 +279,133 @@ monolithic rule.
 
 ## Hands-On Lab
 
-**Objective.** Simulate an inbound enrichment integration using a custom
-property, build a policy that consumes it to trigger a simulated outbound
-action, and validate closed-loop behavior.
+This chapter carries a topic-level walkthrough lab for **each theme of advanced policy,
+integrations, and business outcomes** — the FSCP/FSCE enterprise material. The FSCE
+course frames these as building policies from scratch to control unknown/unmanaged
+devices, the **Layered Policy Flow Diagram**, eyeExtend orchestration (e.g. Splunk),
+segmentation, and complex guest registration. These are Console and integration
+walkthroughs. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 5.1–5.4** — a Forescout deployment with eyeControl and
+eyeExtend entitlements, the Console, a reachable SIEM/ITSM (e.g. a Splunk instance) for
+the integration lab, and a lab switch for control. **Cost:** none beyond lab resources.
 
-- The lab appliance and Console from Chapters 1–4, with the exclusion
-  group and compliance/control policies from [Chapter 3](03-clarification-compliance-and-control-policies.md) available for
-  reuse.
-- Console access with permission to create custom properties, policies,
-  and (if available in the lab license) a test eyeExtend module
-  connection; where no live third-party system is available, this lab
-  substitutes a custom property and a notification action to model the
-  integration pattern safely.
-- A test mailbox or accessible log destination to observe the simulated
-  outbound action.
+### Lab 5.1 — Build an advanced policy from scratch (Topic: Policy best practices)
 
-**Procedure**
+**Objective:** Author a multi-sub-rule policy to control unknown/unmanaged devices, then
+audit it against the Layered Policy Flow Diagram.
 
-1. Create a custom property named `Lab Vulnerability Severity` (string
-   type, values `None`/`Medium`/`Critical`) to stand in for an imported
-   vulnerability-scanner property, and set it to `None` on your test
-   endpoint.
-2. Author a policy rule: `IF Lab Vulnerability Severity = "Critical" AND
-   Host NOT IN group "Exclusion - Managed Exceptions" THEN set
-   Compliance Status = "Non-Compliant: Critical CVE" AND action: notify
-   (simulated ITSM ticket) to the test mailbox`.
-3. Set `Lab Vulnerability Severity` to `Critical` on the test endpoint
-   and confirm the policy fires, updating `Compliance Status` and
-   delivering the notification.
-4. Simulate the closed-loop remediation step by setting `Lab
-   Vulnerability Severity` back to `None`, and author (or extend) a
-   second rule that clears `Compliance Status` and sends a
-   "resolved" notification when the severity property returns to `None`.
-5. Confirm the resolved notification is delivered and `Compliance
-   Status` correctly clears, completing the simulated closed loop.
-6. If a lab eyeExtend module or eyeSegment license is available, repeat
-   steps 1–5 using the real integration in place of the simulated
-   property, and compare the observed latency and data fidelity against
-   the simulation.
-7. **Negative test.** Add the test endpoint to the `Exclusion - Managed
-   Exceptions` group (reused from [Chapter 3](03-clarification-compliance-and-control-policies.md)), set `Lab Vulnerability
-   Severity` to `Critical` again, and confirm the policy does **not**
-   escalate the excluded host — demonstrating that integration-triggered
-   policies respect the same exclusion-group safeguard as directly
-   authored control policies.
+```text
+# Console: build a policy scoped to a segment. Order sub-rules deliberately:
+#   1. Known & managed        -> tag "Managed"
+#   2. Known & unmanaged      -> clarification / SecureConnector prompt
+#   3. Unknown / unclassified -> restrict + investigate
+#   Walk the evaluation top-down and confirm each host lands in exactly one sub-rule.
+```
 
-**Expected Results**
+**Expected result:** every host resolves into one sub-rule in the intended order, mirroring
+the Layered Policy Flow Diagram (classification → clarification → compliance → control) —
+building policy deliberately, most-specific first, is the FSCE best practice that prevents
+the "policy mistakes" the exam asks you to identify.
 
-- The simulated inbound property correctly drives a policy action, and
-  the simulated outbound notification is delivered.
-- The closed-loop clearing rule correctly reverses the compliance state
-  and delivers a resolved notification once the underlying property
-  clears.
-- The negative test confirms the exclusion group protects the endpoint
-  from integration-triggered escalation.
+**Negative test:** place the "unknown" catch-all above the specific managed rule; managed
+hosts get swept into the restrictive branch — mis-ordered sub-rules are the classic policy
+mistake the Layered Policy Flow Diagram exists to prevent.
 
-**Cleanup**
+**Cleanup:** disable/delete the lab policy and any tags/groups it created.
 
-- Remove the test endpoint from the exclusion group if it was added only
-  for this lab and is not otherwise expected to remain excluded.
-- Delete or disable the `Lab Vulnerability Severity` property and its
-  associated policy rules if they should not persist.
-- If a real eyeExtend module was used for step 6, confirm any test data
-  it created in the external system is cleaned up or clearly marked as
-  lab data.
+### Lab 5.2 — eyeExtend orchestration with a SIEM (Topic: Integrations)
+
+**Objective:** Send Forescout context to a SIEM (e.g. Splunk) and act on returned intel.
+
+```text
+# Console: Options > Plugins (eyeExtend/Connect) — configure the Splunk module with the
+#   SIEM host, HEC token/credentials, and Apply. Build a policy action that sends host
+#   context on an event, and (optionally) an action that consumes a Splunk notable back
+#   into a Forescout property to trigger control. Confirm events arrive in Splunk.
+```
+
+**Expected result:** Forescout host/event context appears in the SIEM, and a returned
+signal can drive a Forescout property/action — eyeExtend/ControlFabric is how visibility
+becomes orchestration: Forescout sees the device, the SIEM/EDR/ITSM adds context, and
+Forescout enforces the coordinated response. The same eyeExtend/plugin model integrates
+McAfee ePO, Microsoft SCCM, 802.1X, and VPN/Wireless controllers — each enriches host
+properties or extends control.
+
+**Negative test:** integrate the SIEM but write no policy that acts on its returned intel;
+you get logging without orchestration — the value is the closed loop (context in →
+enforcement out), not one-way export.
+
+**Cleanup:** disable the integration action and, if lab-only, the eyeExtend module config.
+
+### Lab 5.3 — eyeSegment segmentation modeling (Topic: Segmentation)
+
+**Objective:** Model an intended segmentation policy and compare it to observed traffic.
+
+```text
+# Console/eyeSegment: define logical zones (e.g. "Users", "Servers", "OT", "Guest").
+#   Draw an intended matrix (which zones may talk to which). Overlay observed traffic
+#   and identify violations (flows that should not exist).
+```
+
+**Expected result:** a zone-to-zone matrix showing intended vs. actual traffic, with
+violations highlighted — eyeSegment lets you design and validate segmentation from real
+traffic before enforcing it, so you tighten policy without breaking legitimate flows.
+
+**Negative test:** enforce a segmentation rule that has never been compared to observed
+traffic; you block flows a business process depends on — model against real traffic first,
+enforce second.
+
+**Cleanup:** remove the lab zones/matrix if created only for the exercise.
+
+### Lab 5.4 — Complex guest registration (Topic: Guest registration)
+
+**Objective:** Register guests through a captive portal with scoped traffic control.
+
+```text
+# Console: build a guest policy — unknown device on the guest segment -> redirect to the
+#   HTTP registration/captive portal -> on registration, grant limited access (guest VLAN
+#   + ACL permitting internet only). Sponsor approval optional. Test with a lab endpoint.
+```
+
+**Expected result:** an unregistered guest is redirected to the portal, registers, and
+receives internet-only access on the guest segment — guest registration combines a
+registration feature (the portal) with a traffic-control mechanism (VLAN/ACL), a named
+FSCE competency.
+
+**Negative test:** grant registered guests the same VLAN/ACL as corporate hosts; guests
+reach internal resources — registration without a scoped traffic-control mechanism is not
+guest *isolation*.
+
+**Cleanup:** disable the guest policy and return the lab endpoint to its normal segment.
+
+### Lab 5.5 — Advanced Threat Protection (Topic: Threat protection)
+
+**Objective:** Stage the platform's active-response controls and tune them — the FSAA
+Advanced Threat Protection module — against a single lab host.
+
+```text
+# Console: Threat Protection / policy actions. On a lab host exhibiting a scripted
+#   port-scan or worm-like pattern, stage in order:
+#   1. Manual Blocking / Virtual Firewall  -> drop the host's offending traffic (review
+#      the Blocking Log to confirm the block)
+#   2. ActiveResponse                       -> automatically respond to scanning behavior
+#   3. Enterprise Lockdown                  -> broad containment, for a confirmed incident
+#   Use the Threat Protection Tuning Wizard to set port-scan categories/thresholds so
+#   benign scanners (vuln scanners, monitoring) are excluded.
+```
+
+**Expected result:** the offending host is contained by the Virtual Firewall, the Blocking
+Log records the action, ActiveResponse reacts to scan behavior automatically, and tuning
+excludes known-good scanners — Advanced Threat Protection turns Forescout from visibility
+into active network defense, with tuning to avoid blocking legitimate traffic.
+
+**Negative test:** enable ActiveResponse/Enterprise Lockdown without running the Tuning
+Wizard; an authorized vulnerability scanner trips the port-scan detection and is contained —
+untuned threat protection blocks legitimate security tooling, which is why the wizard exists.
+
+**Cleanup:** release the block on the lab host (Blocking Log), disable Enterprise Lockdown,
+and revert lab-only ActiveResponse/tuning changes.
 
 ## Lab Verification
 

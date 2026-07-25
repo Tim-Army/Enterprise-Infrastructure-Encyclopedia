@@ -302,76 +302,107 @@ covered in depth in [Chapter 9](09-ot-ics-expert-design-deployment-curation-and-
 
 ## Hands-On Lab
 
-**Objective.** Plan and validate a passive OT sensor placement against a
-simulated Purdue-model network segment, and confirm protocol visibility
-without any active technique.
+This chapter carries a topic-level walkthrough lab for **each theme of OT/ICS visibility
+with Forescout eyeInspect** — Purdue-aligned sensor placement, passive sensor deployment,
+industrial-protocol deep packet inspection, and OT asset inventory — mapped to the FSCA:
+OT/ICS track. eyeInspect is driven from its sensor and **Command Center** web UI, so these
+are UI-primary walkthroughs. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.4** — a Forescout eyeInspect sensor (physical or
+virtual) connected to a SPAN/TAP that mirrors OT traffic, the eyeInspect Command Center,
+and a lab OT segment (or a captured/replayed ICS traffic sample). **Cost:** none beyond
+lab resources. **Safety:** eyeInspect is passive — never inject traffic into a production
+OT network.
 
-- A lab or trial eyeInspect sensor (physical or virtual), or a general
-  network-analysis tool substituting for it if a licensed lab sensor is
-  unavailable — see the note in step 2 below for how to adapt the lab
-  accordingly.
-- A simulated OT segment: at minimum a PLC simulator or an industrial
-  protocol traffic generator capable of producing Modbus TCP traffic
-  (widely available as open lab/training tools), connected to a lab
-  switch capable of a SPAN/mirror session.
-- A documented (even if simplified) Purdue-model diagram of the lab
-  topology showing where the simulated PLC, an HMI or engineering
-  workstation simulator, and the sensor's monitor point sit.
+### Lab 8.1 — Purdue model and sensor placement (Topic: OT architecture)
 
-**Procedure**
+**Objective:** Map the OT network to Purdue levels and place sensors accordingly.
 
-1. Draw or annotate the lab's Purdue-model diagram, labeling the
-   simulated PLC as Level 1, the HMI/engineering workstation simulator as
-   Level 2, and the sensor's planned monitor point at the boundary
-   between them.
-2. Configure a SPAN session on the lab switch sourcing the traffic
-   between the PLC simulator and the HMI/engineering workstation
-   simulator, destined to the sensor's monitor interface. If a licensed
-   eyeInspect sensor is unavailable, substitute a general packet-capture
-   tool at the same monitor point and manually inspect Modbus function
-   codes in the capture as a substitute for automated dissection.
-3. Generate representative Modbus traffic from the simulator (read
-   holding registers, write single coil operations) between the two
-   simulated endpoints.
-4. Confirm the sensor (or packet capture) observes the traffic and
-   correctly identifies the protocol and, where the tool supports it, the
-   specific function codes used.
-5. Confirm the sensor's monitor interface is configured receive-only and
-   review its configuration to verify no active probing capability is
-   enabled.
-6. Document the observed asset behavior (which endpoint issues read
-   operations, which responds, at what approximate frequency) as a
-   miniature asset-behavior baseline.
-7. **Negative test.** Disconnect or shut down the SPAN destination
-   interface on the switch and confirm the sensor (or capture tool)
-   immediately loses visibility of the simulated PLC traffic, with no
-   compensating active technique attempting to reach the PLC directly —
-   demonstrating that OT visibility, correctly configured, degrades to
-   silence rather than falling back to an active technique when passive
-   delivery is interrupted. Re-enable the SPAN session afterward and
-   confirm visibility resumes.
+```text
+# On paper/whiteboard then in Command Center's site model, identify:
+#   Level 0/1  field devices, PLCs/RTUs        -> sensor on the process/control SPAN
+#   Level 2    HMIs, SCADA supervisory          -> sensor on the supervisory SPAN
+#   Level 3    site operations / historians      -> sensor at the site aggregation
+#   Level 3.5  IT/OT DMZ                          -> sensor at the boundary
+# Confirm each sensor's monitored segment matches its Purdue level.
+```
 
-**Expected Results**
+**Expected result:** each sensor is placed where it can passively see the traffic of its
+Purdue level, with the IT/OT boundary (Level 3.5 DMZ) explicitly monitored — OT visibility
+depends on SPAN/TAP placement aligned to the Purdue model, because sensors only see what is
+mirrored to them.
 
-- The Purdue-model diagram correctly places the simulated assets and the
-  sensor's monitor point.
-- The sensor or capture tool correctly observes and identifies Modbus
-  traffic and function-code-level detail between the simulated PLC and
-  HMI/engineering workstation.
-- The monitor interface is confirmed passive/receive-only.
-- The negative test confirms visibility loss on SPAN interruption with no
-  active fallback behavior, and confirms recovery once SPAN is restored.
+**Negative test:** place a single sensor at the enterprise edge and expect Level 1 PLC
+visibility; controller traffic never crosses to where the sensor sees it — sensor placement
+must follow the Purdue levels you intend to observe.
 
-**Cleanup**
+**Cleanup:** none (design/placement exercise).
 
-- Remove the lab SPAN session if the switch interfaces are needed
-  elsewhere (`no monitor session <ID>` on Cisco IOS-style switches).
-- Stop the PLC/protocol traffic simulator if it will not be reused in
-  [Chapter 9](09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md)'s lab.
-- Retain the annotated Purdue-model diagram; [Chapter 9](09-ot-ics-expert-design-deployment-curation-and-troubleshooting.md)'s lab builds on
-  it.
+### Lab 8.2 — Deploy a passive sensor to Command Center (Topic: Sensor deployment)
+
+**Objective:** Bring a sensor online and confirm it reports to the Command Center.
+
+```text
+# Sensor UI: configure the monitoring interface (promiscuous, connected to SPAN/TAP)
+#   and the management interface (to reach the Command Center). Register the sensor to
+#   the Command Center. Then in Command Center:
+#   - confirm the sensor shows Connected/Active
+#   - confirm packets/assets are being observed (rising counts)
+```
+
+**Expected result:** the sensor registers to the Command Center and its monitored-traffic
+and discovered-asset counts climb — Command Center aggregates many passive sensors into one
+OT visibility plane, exactly as the Enterprise Manager does for IT appliances.
+
+**Negative test:** connect the sensor's monitoring NIC to an access port instead of a
+SPAN/TAP; it sees only its own broadcast domain and discovers almost nothing — passive DPI
+requires a mirror of the target traffic.
+
+**Cleanup:** deregister the lab sensor if it was added only for the exercise.
+
+### Lab 8.3 — Industrial-protocol deep packet inspection (Topic: Protocol visibility)
+
+**Objective:** Confirm eyeInspect parses OT protocols and extracts control semantics.
+
+```text
+# In Command Center, with OT traffic flowing (or a replayed capture), open the traffic/
+#   protocol view and confirm parsed protocols and their semantics, e.g.:
+#   Modbus (function codes, register reads/writes), DNP3, EtherNet/IP (CIP),
+#   Siemens S7, IEC 60870-5-104, IEC 61850 (GOOSE/MMS), BACnet, PROFINET, OPC.
+```
+
+**Expected result:** the Command Center shows parsed industrial protocols with
+control-level detail (e.g. a Modbus *write* to a coil, an S7 program upload) — eyeInspect's
+DPI reads OT protocols deeply enough to distinguish a read from a write to a controller,
+which is the basis for OT threat detection.
+
+**Negative test:** treat OT flows as generic TCP/IP and alert only on IPs/ports; you miss a
+malicious *write* to a PLC that rides normal-looking traffic — protocol-aware DPI is what
+sees the dangerous control action.
+
+**Cleanup:** none (read-only).
+
+### Lab 8.4 — OT asset inventory and network map (Topic: Asset visibility)
+
+**Objective:** Read the passively built OT asset inventory and communication map.
+
+```text
+# Command Center: Asset Inventory — review discovered assets with vendor, model,
+#   firmware/OS, role (PLC/HMI/engineering workstation), and Purdue level.
+#   Network Map — review who-talks-to-whom across the OT segments.
+```
+
+**Expected result:** a passively built inventory (vendor/model/firmware/role) and a
+communication map of the OT network — all without polling or scanning the fragile devices —
+which is the associate-level OT deliverable: know every asset and every conversation before
+attempting any detection or control.
+
+**Negative test:** actively scan OT devices to speed up inventory; legacy PLCs can fault or
+drop under active probing — OT inventory must be passive, which is exactly why eyeInspect
+listens rather than scans.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

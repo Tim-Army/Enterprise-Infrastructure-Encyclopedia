@@ -3,7 +3,7 @@
 > Agentless device visibility, classification, compliance, and control on
 > the Forescout Platform, from first appliance deployment through
 > API-driven automation and OT/ICS-specific sensor design — mapped to the
-> FSCA, FSCP, FSCE, FSCA: OT/ICS, and FSCE: OT/ICS certification tracks.
+> FSCA, FSAA, FSCP, FSCE, FSCA: OT/ICS, and FSCE: OT/ICS certification tracks.
 
 ## Overview
 
@@ -66,10 +66,12 @@ cleanup instructions.
 This volume aligns to the Forescout Technologies certification and
 training paths recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md): FSCA,
-FSCP, FSCE, FSCA: OT/ICS, and FSCE: OT/ICS. Chapters 1–4 map most
-directly to FSCA-level foundational domains, Chapters 5–7 to FSCP/FSCE
-enterprise domains, and Chapters 8–9 to the OT/ICS-specific FSCA and FSCE
-tracks. This volume describes blueprint domains and points to the
+FSAA, FSCP, FSCE, FSCA: OT/ICS, and FSCE: OT/ICS. Chapters 1–4 map most
+directly to FSCA-level foundational domains, Chapters 5–7 to the
+FSAA/FSCP/FSCE advanced and enterprise domains (advanced administration,
+plugin tuning, notifications, threat protection, and troubleshooting),
+and Chapters 8–9 to the OT/ICS-specific FSCA and FSCE tracks. This volume
+describes blueprint domains and points to the
 official Forescout training catalog; it does not reproduce proprietary
 exam questions or licensed courseware. Always confirm the current
 blueprint against Forescout's official certification page before using
@@ -80,6 +82,7 @@ this volume for exam preparation.
 | Certification | Level | Course | Exam | Prerequisite |
 | --- | --- | --- | --- | --- |
 | FSCA | Associate | Four days, instruction plus hands-on labs | 120 minutes, online | None |
+| FSAA | Advanced Administrator | Four-day advanced course, six core modules plus optional integration modules | Certification following the course | FSCA required |
 | FSCP | Professional | Instructor-led or eLearning | Mixed question types, including applied scenarios | FSCA-level knowledge |
 | FSCE | Expert | Five-day boot camp, closing with three classroom days | Eight hours, proctored, lab-based | FSCA required before attending |
 | FSCA: OT/ICS | Associate, OT track | Instructor-led or eLearning | Online | None stated |
@@ -127,6 +130,17 @@ access to a lab or non-production deployment.
 | 3 | Classification, compliance, and control policies | 03 |
 | 4 | Host management, administration, inventory, reporting | 04 |
 | 5–6 | Consolidation: build policies end to end in a lab, then break them | 01–04 |
+
+**FSAA (Advanced Administrator) — three to four weeks**, after FSCA. The
+four-day advanced course centers on plugin/HPS tuning, notification
+customization, advanced threat protection, and systematic troubleshooting.
+
+| Week | Focus | Chapters |
+| --- | --- | --- |
+| 1 | Plugin and HPS tuning, remote inspection, SecureConnector, user directory | 02, 05 |
+| 2 | Advanced policy conditions/tools/actions; notification and redirection customization | 03, 05 |
+| 3 | Advanced Threat Protection: Virtual Firewall, ActiveResponse, Enterprise Lockdown, tuning | 05 |
+| 4 | Systematic troubleshooting: `fstool debug`, Policy Action Log, HPS logs, Tech-Support | 06 |
 
 **FSCP — three to four weeks**, taken while FSCA material is current.
 

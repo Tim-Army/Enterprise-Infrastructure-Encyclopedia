@@ -261,61 +261,100 @@ workflow that resolves low-confidence classifications).
 
 ## Hands-On Lab
 
-**Objective.** Configure a custom property, author a basic classification
-policy, and validate classification coverage using an inventory view.
+This chapter carries a topic-level walkthrough lab for **each theme of the Console,
+plugins, properties, and classification** — mapped in the volume README's chapter
+outline. The Console is Forescout's primary interface, so these labs are Console
+walkthroughs with CLI verification. Each ends **`**Lab verified by:** *pending*`** until
+a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.4** — a Forescout deployment with the Console
+connected and at least a handful of discovered hosts in the Asset Inventory. **Cost:**
+none beyond lab resources.
 
-- The lab appliance and Console from [Chapter 1](01-platform-architecture-installation-and-deployment-planning.md)'s lab, with passive
-  visibility already validated.
-- At least one test endpoint whose `Function` property is currently
-  unclassified or generic.
-- Console access with permission to create properties and policies.
+### Lab 2.1 — Navigate the Console functional areas (Topic: Console layout)
 
-**Procedure**
+**Objective:** Locate the four working areas an operator uses daily.
 
-1. In the Console, review the current property set on your unclassified
-   test endpoint and note which properties are already populated (MAC, IP,
-   open ports, DHCP data) versus empty.
-2. Create a custom property named `Lab Asset Owner` (string type, manually
-   editable) and set its value on the test endpoint to your name or team,
-   confirming it appears alongside built-in properties on the host record.
-3. Author a classification policy rule that sets `Function` based on a
-   condition your test endpoint matches (for example, an open-port or
-   DHCP-vendor-class condition specific to that device type).
-4. Apply the policy and trigger re-evaluation (many deployments
-   re-evaluate on a schedule or on demand from the policy view); confirm
-   the test endpoint's `Function` property updates to the value your rule
-   set.
-5. Build an inventory view/group filtered to `Function` equals the value
-   you set, and confirm the test endpoint appears while unrelated hosts do
-   not.
-6. **Negative test.** Temporarily broaden your classification rule's
-   condition to something deliberately too generic (for example, matching
-   only on a single common open port with no other condition), reapply it,
-   and observe that it now incorrectly matches at least one other host on
-   the segment. This demonstrates why rule specificity and ordering matter.
-   Revert the rule to its specific form afterward.
+```text
+# In the Console, open in turn:
+#   - Asset Inventory   (hosts and their resolved properties)
+#   - Policy            (Policy Manager: policies, rules, actions)
+#   - Dashboard         (visualizations and NAC status)
+#   - Reports           (scheduled/on-demand reporting)
+```
 
-**Expected Results**
+**Expected result:** each area opens and reflects live deployment data — the Asset
+Inventory is where visibility lands, the Policy Manager is where logic is built, and
+Dashboards/Reports are where outcomes are communicated; fluency here is the foundation
+the FSCE lab exam assumes.
 
-- The custom property is visible and correctly scoped to the test
-  endpoint.
-- The classification policy correctly sets `Function` on the intended
-  endpoint under the specific rule, and the inventory view correctly
-  filters on it.
-- The negative test visibly demonstrates over-broad-rule misclassification
-  and is reverted cleanly.
+**Negative test:** try to change enforcement from the Asset Inventory; actions are
+authored in the Policy Manager — the inventory shows state, policies change it.
 
-**Cleanup**
+**Cleanup:** none (read-only navigation).
 
-- Delete or disable the lab classification policy rule if it should not
-  persist beyond the lab.
-- Remove the `Lab Asset Owner` custom property and its value, or leave it
-  in place if subsequent chapter labs will reuse it (later labs in this
-  volume assume it may still exist but do not require it).
-- Remove the temporary inventory view if it was created only for this
-  exercise.
+### Lab 2.2 — Manage a plugin (Topic: Plugin architecture)
+
+**Objective:** Confirm a plugin is installed, running, and configured.
+
+```text
+# Console: Options > Plugins (Modules). Select a plugin (e.g. HPS Inspection Engine,
+#   Switch, or a specific integration), confirm Status = Running/Installed, open its
+#   configuration, and Apply.
+fsctl status        # verify the platform service is up so plugins are active
+```
+
+**Expected result:** the plugin shows Running and its configuration is editable — plugins
+are how Forescout resolves properties and takes actions (endpoint inspection, switch
+control, integrations); the set of installed plugins defines what the platform can see
+and do.
+
+**Negative test:** write a policy that depends on a property resolved by a plugin that is
+stopped or not installed; the property never resolves and the policy cannot match — the
+plugin must be running for its properties to exist.
+
+**Cleanup:** revert any plugin config changed only for the lab.
+
+### Lab 2.3 — Read built-in versus custom properties (Topic: Properties)
+
+**Objective:** Inspect a host's properties and note their source.
+
+```text
+# Console: Asset Inventory > select a host > Profile/Details. Review resolved
+#   properties (e.g. Network Function, Operating System, Switch Port, Compliance).
+#   Note which are built-in (plugin-resolved) vs custom (defined in your deployment).
+```
+
+**Expected result:** the host shows a mix of built-in properties (resolved by plugins)
+and any custom properties your deployment defines — properties are the atoms policies
+evaluate; understanding a property's source explains why it did (or did not) resolve.
+
+**Negative test:** build policy logic on a property that only resolves after an active
+scan, for hosts you only see passively; the property is blank and the rule misfires — a
+property's resolution method must match how you actually see the host.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.4 — Read the classification engine and confidence (Topic: Classification)
+
+**Objective:** Confirm how a device is classified and with what confidence.
+
+```text
+# Console: Asset Inventory > select a device > review Function / OS / Vendor and Model.
+#   Open the classification details to see the confidence level and the evidence
+#   (properties) that drove the classification.
+```
+
+**Expected result:** the device carries a Function/OS/Vendor-Model classification with a
+confidence indicator and the supporting evidence — the Device Classification Engine
+fuses many properties into an identity, and confidence tells you how much to trust an
+automated decision made on it.
+
+**Negative test:** enforce a strict control on devices classified with low confidence;
+you risk acting on a misidentified device — gate strong actions on high-confidence
+classification (or add clarification first, Chapter 03).
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

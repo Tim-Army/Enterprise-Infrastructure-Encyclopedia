@@ -303,73 +303,121 @@ certification-level design questions.
 
 ## Hands-On Lab
 
-**Objective.** Build and test a scoped, idempotent API-driven
-reconciliation script against the lab inventory, then complete a written
-capstone design document synthesizing the volume.
+This chapter carries a topic-level walkthrough lab for **each theme of expert automation
+and API governance**, and closes with a **Design Exercise** that synthesizes the
+enterprise track the way the FSCE boot camp does — Statement of Work, architectural
+scoping, and deployment goals. The Web API labs are `curl` walkthroughs; each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.4** — a Forescout deployment with the **Web API**
+(eyeExtend Connect) module installed and enabled, a Web API service account, a client
+host whose IP is on the module's allowed-clients list, and `curl`. **Cost:** none beyond
+lab resources.
 
-- The lab appliance and Console from Chapters 1–6, with API access
-  enabled and a scoped credential issued (read-only for the first part of
-  this lab).
-- A scripting environment capable of making authenticated HTTPS requests
-  (a shell with `curl`, or a Python environment with an HTTP client
-  library).
-- A small authoritative reference file (a CSV with two or three lab host
-  MAC addresses and an expected property value) to reconcile against.
+### Lab 7.1 — Authenticate to the Web API (Topic: Web API access)
 
-**Procedure**
+**Objective:** Obtain a token and list hosts.
 
-1. Issue a read-only-scoped API credential and confirm it can query the
-   inventory for hosts matching a filter (for example, `Compliance
-   Status != Compliant`), reusing data from earlier chapter labs.
-2. Write a short reconciliation script that reads your reference CSV,
-   queries the API for each listed host's current property value, and
-   prints a discrepancy report (no writes yet).
-3. Run the script and confirm it correctly identifies at least one
-   discrepancy (introduce one deliberately if your lab data already
-   matches).
-4. Re-issue the credential with write scope for a single custom property
-   (for example, `Lab Asset Owner` from [Chapter 2](02-console-plugins-properties-and-asset-classification.md)), and extend the script
-   to correct only that specific discrepancy, idempotently (running it
-   twice should produce the same end state, not a duplicated or additive
-   change).
-5. Run the extended script twice in succession and confirm the second run
-   makes no additional changes — validating idempotency.
-6. Review the API audit log (or the equivalent action history) and
-   confirm both runs are attributable to the scoped credential you
-   issued.
-7. **Negative test.** Attempt to use the same credential to call an API
-   operation outside its granted scope (for example, attempting to modify
-   a control policy with a credential scoped only for the one custom
-   property) and confirm the platform denies the call — validating that
-   API scope enforcement, not just documentation, constrains the
-   automation.
-8. Complete the capstone design document described in the Implementation
-   and Automation section above, covering all seven synthesis steps for
-   the multi-site PCI scenario, and cross-reference each design decision
-   to the chapter and section it draws from.
+```bash
+# 1. Log in — returns a token in the response body:
+TOKEN=$(curl -sk -X POST "https://EM.example.com/api/login" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=webapi_user&password=<password>")
+# 2. Use the token on subsequent calls (Authorization header, HAL+JSON):
+curl -sk "https://EM.example.com/api/hosts" \
+  -H "Authorization: $TOKEN" \
+  -H "Accept: application/hal+json" | head -40
+```
 
-**Expected Results**
+**Expected result:** `/api/login` returns a token string, and `/api/hosts` returns the
+managed-host list as `application/hal+json` — the Forescout Web API is token-authenticated:
+log in once, then pass the token in the `Authorization` header on every request.
 
-- The reconciliation script correctly identifies and, after scope
-  expansion, corrects the deliberate discrepancy, and is demonstrably
-  idempotent on a second run.
-- The audit trail correctly attributes both runs to the scoped
-  credential.
-- The negative test confirms scope enforcement blocks an out-of-scope
-  call.
-- The capstone design document addresses all seven synthesis steps with
-  explicit cross-references to supporting chapters.
+**Negative test:** call `/api/hosts` with no `Authorization` header (or an expired token);
+the API returns 401/403 — the token, not network reachability, authorizes each call.
 
-**Cleanup**
+**Cleanup:** none (read-only); tokens expire on their own.
 
-- Revoke or reduce the write-scoped API credential back to read-only (or
-  delete it) if it should not persist beyond this lab.
-- Revert any property values changed by the script to their prior lab
-  state if subsequent review of this volume will be repeated.
-- Archive the capstone design document as the volume's completion
-  artifact.
+### Lab 7.2 — Read and update host state via the API (Topic: API automation)
+
+**Objective:** Query one host, then set a host property/field through the API.
+
+```bash
+# Read a single host by IP:
+curl -sk "https://EM.example.com/api/hosts/ip/10.20.30.40" \
+  -H "Authorization: $TOKEN" -H "Accept: application/hal+json"
+# Update a custom host field (Data Exchange), e.g. tag it from an external system:
+curl -sk -X POST "https://EM.example.com/api/hosts/10.20.30.40/fields/custom_tag" \
+  -H "Authorization: $TOKEN" -H "Content-Type: application/json" \
+  -d '{"value":"quarantine-review"}'
+```
+
+**Expected result:** the read returns the host's resolved properties, and the update sets a
+custom field that a policy can then evaluate — the API lets an external system (SOAR, CMDB,
+ticketing) drive Forescout properties, which in turn drive policy and control.
+
+**Negative test:** write to a built-in, plugin-resolved property expecting it to stick; the
+plugin overwrites it on next resolution — external systems should drive **custom** fields,
+not fight the platform's own property resolution.
+
+**Cleanup:** clear the custom field/tag set during the lab.
+
+### Lab 7.3 — Web API governance (Topic: API governance)
+
+**Objective:** Constrain who and what can call the API.
+
+```text
+# Console: Options > Web API (module config):
+#   - restrict the allowed Client IPs to the automation host(s) only
+#   - use a dedicated, least-privilege service account (not an admin)
+#   - review the module/audit log for API calls
+```
+
+**Expected result:** only the allow-listed automation hosts can reach the API, using a
+scoped service account, with calls recorded — API governance treats the API as an
+enforcement surface: least privilege, source restriction, and auditability, not an
+open management backdoor.
+
+**Negative test:** enable the Web API with a broad client range and an admin-equivalent
+account; any host on that range can drive enforcement platform-wide — unrestricted API
+access is a control-plane risk.
+
+**Cleanup:** revert any lab-only client-IP or account changes.
+
+### Lab 7.4 — Capstone Design Exercise: multi-site deployment (Topic: Synthesis)
+
+**Objective:** Produce a defensible deployment design — the FSCE consultant mindset — not
+a config dump.
+
+> **Scenario.** An enterprise has 1 data center, 4 campuses, and 30 branch sites, mixing
+> Windows/macOS/Linux endpoints, printers/IoT, and a small OT cell. They need agentless
+> visibility everywhere, compliance enforcement on managed endpoints, guest registration at
+> campuses, SIEM orchestration (Splunk), and no production outages during rollout.
+
+Work through and **write down**:
+
+1. **Statement of Work / goals** — what "done" means, and the measurable outcomes
+   (visibility %, compliance %, guest onboarding time).
+2. **Architectural scoping** — appliance count/placement and EM topology; where L2 vs L3
+   integration applies; VM sizing vs monitored host count and traffic (Chapter 06).
+3. **Channels & integration** — monitor/response channels per site; Switch plugin reach;
+   SecureConnector where agentless inspection is insufficient.
+4. **Policy architecture** — the Layered Policy Flow (classification → clarification →
+   compliance → control), staged from audit to enforce; guest registration at campuses.
+5. **Orchestration** — the eyeExtend Splunk integration and the closed-loop actions it
+   drives.
+6. **Rollout** — audit-only first, single-site pilot, staged enforcement, and the
+   rollback path if a control action misbehaves.
+
+**Expected result:** a written design naming appliance placement, scoping rationale,
+policy layering, integration, and a safe rollout — the deliverable the FSCE lab and a real
+engagement both grade, where *why* matters as much as *what*.
+
+**Negative test:** jump to enforcement fleet-wide on day one with no audit phase or pilot;
+a scoping or policy error becomes an outage — the staged, audit-first rollout is the design
+choice that makes the deployment safe.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 
