@@ -290,91 +290,103 @@ the purpose of this exercise, so each relevant group is set explicitly.
 
 ## Hands-On Lab
 
-**Objective:** Log into a factory-default FortiGate as an operator,
-explore the GUI and CLI in read-only fashion, review the Security Fabric
-topology and Security Rating, and create and validate a least-privilege
-operator account — leaving the device in a clean state for [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)'s
-formal deployment.
+This chapter carries a topic-level walkthrough lab for **each theme of NSE 3 (Security
+Fabric fundamentals and day-to-day FortiGate operator tasks)** — mapped in the volume
+README's coverage tables. Every command is a real FortiOS 7.6 CLI/GUI action; each lab
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 3.1–3.4** — a FortiGate (VM or hardware) on FortiOS
+7.6 with admin access by HTTPS GUI and SSH CLI, and a client behind it. **Cost:** none
+beyond lab resources.
 
-- A FortiGate-VM64 evaluation instance (or an equivalent lab/hardware
-  FortiGate) in its factory-default state, running FortiOS 7.6.x, deployed
-  under a hypervisor of your choice with console access available. Chapter
-  04 covers full deployment mechanics; for this chapter, initial power-on
-  and console reachability are sufficient.
-- A workstation able to reach the device's default management IP
-  (`192.168.1.99/24` unless the platform's factory default differs) or
-  console access via the hypervisor console/serial redirection.
+### Lab 3.1 — First login and system inventory (Topic: FortiGate operator basics)
 
-**Steps**
+**Objective:** Log in and read the appliance's identity and health.
 
-1. Connect to the device via console (or its default network IP) and log
-   in as `admin` with an empty password. Immediately set a new
-   administrator password when prompted.
+```text
+get system status
+get system performance status
+```
 
-   **Expected result:** Login succeeds and the CLI prompt reflects the
-   device's default hostname.
+**Expected result:** `get system status` prints the model, serial, firmware
+(`v7.6.x`), and license/FortiGuard state; `performance status` shows CPU, memory, and
+session counts — the operator's first orientation on any FortiGate.
 
-2. Run the read-only status commands:
+**Negative test:** skip reading firmware/license state and troubleshoot blindly; an
+expired FortiGuard contract silently stops signature updates, which this check reveals.
 
-   ```text
-   FGT-LAB-01 # get system status
-   FGT-LAB-01 # get system performance status
-   FGT-LAB-01 # get hardware status
-   ```
+**Cleanup:** none (read-only).
 
-   **Expected result:** Output showing FortiOS build/version, serial
-   number, and current CPU/memory/session figures with no configuration
-   changes made.
+### Lab 3.2 — Build and read the Security Fabric (Topic: Security Fabric fundamentals)
 
-3. Log into the GUI (`https://<device-ip>`) using the same administrator
-   account and navigate to **Dashboard**, then **Security Fabric >
-   Physical Topology** and **Security Fabric > Security Rating**.
+**Objective:** Enable Fabric on the root FortiGate and read the topology.
 
-   **Expected result:** The topology view shows the single local device;
-   Security Rating shows a low initial score with a list of findings tied
-   to the device's unlicensed, unhardened factory-default state.
+```text
+config system csf
+    set status enable
+    set group-name "Lab-Fabric"
+    set configuration-sync default
+end
+diagnose sys csf global | head -20
+```
 
-4. Record at least three Security Rating findings and the specific
-   configuration change each one recommends, for comparison against
-   [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)'s hardening steps.
+**Expected result:** the FortiGate becomes the Fabric root; `diagnose sys csf global`
+lists the Fabric group and any joined members — the Security Fabric stitches
+FortiGate, FortiSwitch, FortiAP, and FortiAnalyzer into one topology with shared
+telemetry and a Security Rating.
 
-5. In the CLI, create the least-privilege operator profile and account
-   exactly as shown in Implementation and Automation.
+**Negative test:** join a downstream device without a matching group name/authorization
+on the root; it never appears in the topology — Fabric membership is authorized, not
+automatic.
 
-6. Log out and log back in (in a separate session or browser profile) as
-   `operator1`.
+**Cleanup:**
 
-7. **Negative test:** As `operator1`, attempt a configuration write, for
-   example:
+```text
+config system csf
+    set status disable
+end
+```
 
-   ```text
-   FGT-LAB-01 # config system interface
-   FGT-LAB-01 (interface) # edit port1
-   ```
+### Lab 3.3 — FortiView and logging (Topic: Monitoring and logging)
 
-   **Expected result:** FortiOS denies the write attempt with a
-   permission error, while `get system status` and other read commands
-   continue to succeed under the same session.
+**Objective:** Enable logging and read live sessions in FortiView.
 
-8. **Cleanup:** Log back in as the original `admin` account and remove the
-   lab-created operator account and profile so the device returns to a
-   clean baseline for [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md):
+```text
+config log memory setting
+    set status enable
+end
+diagnose sys session stat
+get system session-info full 2>/dev/null | head -20
+```
 
-   ```text
-   FGT-LAB-01 # config system admin
-   FGT-LAB-01 (admin) # delete operator1
-   FGT-LAB-01 (admin) # end
-   FGT-LAB-01 # config system accprofile
-   FGT-LAB-01 (accprofile) # delete operator-readonly
-   FGT-LAB-01 (accprofile) # end
-   ```
+**Expected result:** session statistics (setup rate, active session count) and, in the
+GUI, **FortiView → Sources/Destinations** populating with live traffic — the operator's
+window into who is talking to what, backed by memory or disk logs (or FortiAnalyzer).
 
-**Expected result:** `show system admin` (or the GUI's administrator list)
-no longer shows `operator1`, and `show system accprofile` no longer shows
-`operator-readonly`. The device retains only its new `admin` password from
-step 1, ready for [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)'s licensing and hardening.
+**Negative test:** rely on FortiView with all logging disabled; the panes stay empty —
+FortiView renders logged data, so logging must be on for a policy or globally.
+
+**Cleanup:** none (leave logging enabled; it is expected in operation).
+
+### Lab 3.4 — Back up and restore configuration (Topic: Operator lifecycle tasks)
+
+**Objective:** Take a config backup — the operator's safety net before any change.
+
+```text
+execute backup config flash pre-change
+execute revision list config
+```
+
+**Expected result:** a stored configuration revision listed by `execute revision list
+config`, timestamped and labeled — you can restore it with `execute restore config
+flash <id>` if a change misfires; taking a backup before edits is the core operator
+discipline.
+
+**Negative test:** make a sweeping policy change with no backup and no revision; there
+is nothing to roll back to when connectivity breaks — the backup is what makes the
+change reversible.
+
+**Cleanup:** none (keep the revision).
 
 ## Lab Verification
 

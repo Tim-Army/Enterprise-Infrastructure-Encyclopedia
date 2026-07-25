@@ -274,64 +274,73 @@ budget request against a named, unaddressed kill-chain stage.
 
 ## Hands-On Lab
 
-**Objective:** Build a technology-to-risk inventory for a defined scenario
-organization and validate it against a public threat intelligence source —
-no FortiGate hardware or lab appliance is required for this chapter.
+This chapter carries a topic-level walkthrough lab for **each theme of NSE 2 (Threat
+Landscape, Security Technologies, and the Fortinet Portfolio)** — mapped in the volume
+README's coverage tables. Labs use a FortiGate (VM or hardware) and host tools. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.3** — a FortiGate running FortiOS 7.6 reachable
+by GUI/CLI, and a management workstation. **Cost:** none beyond lab resources.
 
-- A text editor and the ability to write YAML.
-- Internet access to a public threat intelligence resource (for example, a
-  vendor's published threat landscape report or a public threat map).
+### Lab 2.1 — The threat landscape and the kill chain (Topic: Threat Landscape)
 
-**Scenario:** A 400-employee organization with a single headquarters site,
-two remote branch offices, a hybrid workforce, and a customer-facing web
-application hosted in a public cloud provider.
+**Objective:** Map observed activity to the intrusion kill-chain stages.
 
-**Steps**
+```text
+diagnose sys top
+execute log filter category 0
+execute log display
+```
 
-1. List every technology category from the Theory and Architecture table
-   and mark each as deployed, partially deployed, or not deployed for the
-   scenario organization, using your own reasonable assumptions for a
-   typical organization of this size.
+**Expected result:** log events you can classify against the kill chain
+(reconnaissance → weaponization → delivery → exploitation → installation → C2 →
+actions) — NSE 2 frames modern threats (ransomware, phishing, supply-chain, insider)
+as stages a layered defense interrupts.
 
-2. For each category marked not deployed, identify which kill-chain
-   stage(s) remain uncovered as a result.
+**Negative test:** treat a single alert as the whole attack; the kill chain shows an
+intrusion is a sequence — blocking any stage disrupts it, which is why defense is
+layered.
 
-3. Consult a current public threat intelligence source (a vendor threat
-   landscape report or public threat map) and identify one currently
-   prominent attack technique (for example, a specific initial-access
-   vector or a specific ransomware family's delivery method).
+**Cleanup:** none (read-only).
 
-4. Map that current technique against your inventory: does an existing
-   deployed category interrupt it, or does it exploit one of the gaps
-   identified in step 2?
+### Lab 2.2 — Security technologies (Topic: Security Technologies)
 
-5. Write the findings as a `security-technology-inventory.yaml` file
-   following the format shown in Implementation and Automation, including
-   a `coverage_notes` field that references the specific technique
-   identified in step 3 for any category you mark as a gap.
+**Objective:** Read the security technologies a FortiGate integrates.
 
-6. **Negative test:** Deliberately mark the web application firewall
-   category as "deployed: true" without a corresponding enforcement point
-   in front of the scenario's public-cloud-hosted customer application
-   (i.e., claim coverage that does not actually exist), then re-read your
-   own inventory as if you were an independent reviewer — confirm you can
-   identify the unsupported claim from the coverage notes alone. This
-   demonstrates why coverage notes must describe actual enforcement, not
-   just product ownership.
+```text
+get system status | grep -iE "Virus-DB|IPS-DB|AppCtrl|version"
+diagnose autoupdate versions | head -30
+```
 
-7. Correct the negative-test entry to accurately reflect the gap.
+**Expected result:** the AV, IPS, application-control, and web-filter engines/DBs
+with versions — NSE 2 introduces the technology set (firewall, IPS, antivirus,
+sandbox, web/DNS filtering, VPN, NAC, SIEM) that the Fortinet portfolio delivers as
+integrated functions, not point products.
 
-**Expected result:** A version-controllable YAML inventory with at least
-eight technology categories, each with an accurate deployment status and a
-coverage note tied to a real, current threat technique for at least one gap
-entry.
+**Negative test:** assume separate appliances for each function; the FortiGate
+consolidates many into one NGFW — the consolidation is the platform's premise.
 
-**Cleanup**
+**Cleanup:** none (read-only).
 
-- No system changes to revert; retain the inventory file as a reference
-  artifact for [Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md)'s Security Fabric mapping exercise.
+### Lab 2.3 — The Fortinet Security Fabric portfolio (Topic: Fortinet Portfolio)
+
+**Objective:** Identify the Security Fabric products and their roles.
+
+```text
+get system status | grep -i "Model"
+diagnose sys fortiguard-service status 2>/dev/null | head
+```
+
+**Expected result:** the FortiGate model and its FortiGuard service linkage — the
+**Security Fabric** connects FortiGate (NGFW), FortiSwitch/FortiAP (secure LAN edge),
+FortiAnalyzer/FortiManager (management/analytics), FortiClient/EMS (endpoint),
+FortiSASE (edge), and specialized products (FortiWeb, FortiMail, FortiSandbox), all
+driven by FortiGuard threat intelligence.
+
+**Negative test:** deploy point products from many vendors and lose the Fabric's
+shared telemetry and coordinated response — integration is the portfolio's value.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

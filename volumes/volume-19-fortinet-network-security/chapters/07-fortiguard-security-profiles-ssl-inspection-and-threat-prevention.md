@@ -344,85 +344,218 @@ infrastructure.
 
 ## Hands-On Lab
 
-**Objective:** Build antivirus, IPS, web filtering, and application
-control profiles plus a full SSL deep-inspection profile, attach them to
-an existing outbound policy, verify blocking behavior against a safe test
-file and a known test category, and validate the client certificate trust
-requirement — including a negative test exempting one category.
+This chapter carries a topic-level walkthrough lab for **each task under the NSE 4
+objective *Content Inspection* (25–30% — the largest single objective of the FortiOS
+7.6 Administrator exam)** — mapped in the volume README's coverage tables. Every command
+is a real FortiOS 7.6 CLI action; each lab ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.7** — a FortiGate on FortiOS 7.6 with a valid
+FortiGuard subscription, a client behind it, and a permit policy from LAN to WAN to
+attach profiles to. **Cost:** none beyond lab resources.
 
-- FGT-LAB-01 with the firewall policies from [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md).
-- A LAN test client able to browse the internet through FGT-LAB-01 and
-  install the FortiGate's deep-inspection CA certificate for this lab.
-- Access to the EICAR standard antivirus test file (a widely published,
-  harmless string used specifically to validate AV detection without
-  using real malware) for the AV verification step.
+### Lab 7.1 — SSL/SSH deep inspection (Topic: SSL inspection)
 
-**Steps**
+**Objective:** Apply deep-inspection so encrypted flows can be scanned.
 
-1. Create the `AV-Standard`, `IPS-Standard`, `WebFilter-Standard`, and
-   `AppCtrl-Standard` profiles as shown in Implementation and Automation.
+```text
+config firewall ssl-ssh-profile
+    edit deep-lab
+        set comment "Lab deep inspection"
+        config https
+            set ports 443
+            set status deep-inspection
+        end
+    next
+end
+```
 
-2. Create the `Certificate-Inspection` and `Full-Deep-Inspection` SSL
-   inspection profiles.
+**Expected result:** a deep-inspection profile that decrypts, inspects, and re-encrypts
+HTTPS — without it, AV/IPS/web-filter see only ciphertext. The FortiGate CA certificate
+must be trusted by clients or browsers warn.
 
-3. Attach `AV-Standard`, `IPS-Standard`, `WebFilter-Standard`,
-   `AppCtrl-Standard`, and `Certificate-Inspection` to the
-   `LAN-to-WAN-Outbound` policy from [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md), with `logtraffic all`
-   enabled.
+**Negative test:** attach only `certificate-inspection` (SNI/cert view) and expect the
+antivirus engine to catch malware inside a TLS download; it cannot see the payload —
+only deep inspection exposes encrypted content.
 
-4. From the LAN test client, attempt to download the EICAR test file over
-   HTTP.
+**Cleanup:**
 
-   **Expected result:** The download is blocked and a FortiGuard block
-   page (or connection reset) is returned; confirm the corresponding log
-   entry shows `AV-Standard` as the blocking profile.
+```text
+config firewall ssl-ssh-profile
+    delete deep-lab
+end
+```
 
-5. Attempt to browse to a site in a category configured for blocking in
-   `WebFilter-Standard` (a FortiGuard test/demo category page is
-   appropriate for this validation).
+### Lab 7.2 — Web filtering (Topic: Web filter)
 
-   **Expected result:** A FortiGuard category block page is displayed;
-   confirm the log entry shows the matched category.
+**Objective:** Block a FortiGuard URL category.
 
-6. Switch the policy's `ssl-ssh-profile` to `Full-Deep-Inspection`, and
-   without installing the FortiGate's CA certificate on the test client
-   yet, attempt to browse to any HTTPS site.
+```text
+config webfilter profile
+    edit block-malicious
+        config ftgd-wf
+            config filters
+                edit 1
+                    set category 26
+                    set action block
+                next
+            end
+        end
+    next
+end
+diagnose test application urlfilter 3 2>/dev/null | head
+```
 
-   **Expected result:** The browser reports a certificate trust
-   error/warning, demonstrating the trust-distribution requirement
-   described in Theory and Architecture.
+**Expected result:** requests to sites FortiGuard rates as category 26 (Malicious
+Websites) are blocked with a replacement page; the web filter enforces acceptable-use
+and threat categories against the live FortiGuard rating service.
 
-7. Export the FortiGate's deep-inspection CA certificate
-   (**System > Certificates**, or `execute vpn certificate ca export`) and
-   install it in the test client's trusted root certificate store.
+**Negative test:** block by category but attach the profile to a policy using only
+certificate inspection over HTTPS; full-URL and content checks degrade — deep
+inspection (Lab 7.1) is what lets web filtering see the full URL and page.
 
-8. Re-attempt HTTPS browsing.
+**Cleanup:** delete the `block-malicious` profile.
 
-   **Expected result:** The certificate warning no longer appears, and
-   AV/IPS logs now show visibility into HTTPS-delivered content that
-   `Certificate-Inspection` could not previously inspect.
+### Lab 7.3 — DNS filtering (Topic: DNS filter)
 
-9. **Negative test:** Add a filter entry to `WebFilter-Standard`
-   explicitly allowing (rather than blocking) the previously blocked test
-   category, apply the change, and re-attempt step 5's browse test.
+**Objective:** Block malicious domains at resolution time.
 
-   **Expected result:** The site is now reachable, confirming the
-   override took effect and demonstrating the exception mechanism
-   referenced in Design Considerations. Revert the override afterward.
+```text
+config dnsfilter profile
+    edit dns-guard
+        config ftgd-dns
+            config filters
+                edit 1
+                    set category 26
+                    set action block
+                next
+            end
+        end
+        set block-botnet enable
+    next
+end
+```
 
-**Cleanup**
+**Expected result:** DNS lookups for malicious/botnet domains are redirected to a
+block IP before a connection is ever attempted — DNS filtering stops threats one layer
+earlier than web filtering and catches non-HTTP protocols.
 
-- Revert the `LAN-to-WAN-Outbound` policy's `ssl-ssh-profile` back to
-  `Certificate-Inspection` to avoid breaking other labs (notably
-  [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)'s SSL VPN and [Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md)'s SD-WAN and REST API examples,
-  which do not require deep inspection and should not incur its
-  performance cost by default).
-- Remove the temporary web filter override added in step 9 if not already
-  reverted.
-- Optionally uninstall the FortiGate CA certificate from the test
-  client if it will not be used again in later chapters.
+**Negative test:** rely on web filtering alone for a non-web C2 channel; it evades an
+HTTP-only control — DNS filtering covers name resolution across all protocols.
+
+**Cleanup:** delete the `dns-guard` profile.
+
+### Lab 7.4 — Application control (Topic: Application control)
+
+**Objective:** Block a peer-to-peer application category regardless of port.
+
+```text
+config application list
+    edit appctrl-lab
+        config entries
+            edit 1
+                set category 6
+                set action block
+            next
+        end
+    next
+end
+diagnose test application ipsmonitor 2>/dev/null | head
+```
+
+**Expected result:** applications FortiGuard classifies in category 6 (P2P) are blocked
+even when they hop ports or ride over 443 — application control identifies apps by
+signature/behavior, not port number.
+
+**Negative test:** try to block P2P with a port-based firewall service; modern apps use
+dynamic ports and TLS to evade it — signature-based application control is what
+identifies them.
+
+**Cleanup:** delete the `appctrl-lab` list.
+
+### Lab 7.5 — Antivirus (Topic: Antivirus)
+
+**Objective:** Scan traffic with antivirus and verify with EICAR.
+
+```text
+config antivirus profile
+    edit av-lab
+        set feature-set flow
+        config http
+            set av-scan enable
+        end
+    next
+end
+# From a client behind an AV-enabled policy:
+#   curl http://www.eicar.org/download/eicar.com.txt
+```
+
+**Expected result:** the EICAR test file (a harmless standard AV test string) is
+blocked with a virus replacement message; the antivirus engine scans HTTP/HTTPS/FTP/
+SMTP/etc. against FortiGuard signatures (and optionally FortiSandbox).
+
+**Negative test:** download EICAR over HTTPS with only certificate inspection; AV never
+sees the payload and it passes — AV inside TLS requires deep inspection (Lab 7.1).
+
+**Cleanup:** delete the `av-lab` profile.
+
+### Lab 7.6 — Intrusion prevention (Topic: IPS)
+
+**Objective:** Attach an IPS sensor to block known exploits.
+
+```text
+config ips sensor
+    edit ips-lab
+        config entries
+            edit 1
+                set severity high critical
+                set status enable
+                set action block
+            next
+        end
+    next
+end
+diagnose ips signature status 2>/dev/null | head
+```
+
+**Expected result:** the sensor blocks traffic matching high/critical FortiGuard IPS
+signatures; `diagnose ips` shows the engine loaded — IPS detects and blocks exploit
+attempts against known vulnerabilities in real time.
+
+**Negative test:** set the sensor action to `monitor` (log only) and expect exploits to
+be stopped; they are recorded but pass — the `block` action is what enforces IPS.
+
+**Cleanup:** delete the `ips-lab` sensor.
+
+### Lab 7.7 — Assemble and attach a profile group (Topic: Security profiles on a policy)
+
+**Objective:** Bind the inspection profiles to a firewall policy.
+
+```text
+config firewall policy
+    edit 1
+        set utm-status enable
+        set ssl-ssh-profile deep-lab
+        set av-profile av-lab
+        set webfilter-profile block-malicious
+        set dnsfilter-profile dns-guard
+        set application-list appctrl-lab
+        set ips-sensor ips-lab
+        set logtraffic all
+    next
+end
+diagnose firewall iprope list 100004 2>/dev/null | head
+```
+
+**Expected result:** one policy now applies SSL inspection, AV, web/DNS filtering,
+application control, and IPS to matching traffic — the UTM profile set is applied
+**per policy**, so different flows get different inspection depth.
+
+**Negative test:** enable `utm-status` but attach no profiles; nothing is inspected —
+the profiles, not the flag alone, perform the content inspection.
+
+**Cleanup:** set `utm-status disable` on the policy and remove the profile references,
+or delete the test policy.
 
 ## Lab Verification
 

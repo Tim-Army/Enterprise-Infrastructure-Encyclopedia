@@ -114,12 +114,127 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-FortiWeb VM in front of a lab web app: tune a protection profile in
-detection mode against real requests, then enable blocking with a
-false-positive control. In a cloud account (or runbook against the
-admin guides): insert a FortiGate VM with an SDN connector, prove
-traffic is inspected (routing verified), and onboard the account to
-FortiCNAPP with inventory verification.
+This chapter carries a topic-level walkthrough lab for **each key product of the Cloud
+Security track (NSE 5–7)** — FortiWeb, FortiMail, FortiADC, FortiGate-VM in public cloud,
+and FortiCNAPP/FortiDDoS — mapped in the volume README's coverage tables. Every lab gives
+concrete, verifiable steps and ends **`**Lab verified by:** *pending*`** until a human runs
+it.
+
+**Shared prerequisites for Labs 13.1–13.5** — the relevant product (FortiWeb, FortiMail,
+FortiADC as VM or hardware; a cloud account for FortiGate-VM), a web/mail backend to
+protect, and a client. **Cost:** cloud-marketplace BYOL/PAYG charges apply only to Lab
+13.4 if you deploy in a real cloud account — the on-prem labs are free.
+
+### Lab 13.1 — FortiWeb WAF policy (Topic: FortiWeb)
+
+**Objective:** Front a web app with a WAF in reverse-proxy mode.
+
+```text
+# On FortiWeb: create a Server Pool -> Virtual Server -> Server Policy, then verify:
+diagnose policy total-detail-list 2>/dev/null | head
+# From a client, send a benign request and an obvious SQLi probe:
+#   curl "http://<vip>/product?id=1"
+#   curl "http://<vip>/product?id=1' OR '1'='1"
+```
+
+**Expected result:** the benign request passes; the SQL-injection probe is blocked and
+logged by the WAF signature/anomaly engine — FortiWeb protects web apps against OWASP
+Top-10 attacks, bots, and API abuse that a network firewall does not inspect at layer 7.
+
+**Negative test:** deploy FortiWeb in pass-through with the policy in "alert only"; the
+SQLi is logged but delivered to the app — the policy action must be `block`/`deny` to
+enforce.
+
+**Cleanup:** remove the lab server policy.
+
+### Lab 13.2 — FortiMail antispam and antimalware (Topic: FortiMail)
+
+**Objective:** Filter inbound mail in gateway mode.
+
+```text
+# On FortiMail (gateway mode): set the protected domain and an inbound recipient policy
+#   with antispam + antivirus profiles, then send a test message.
+diagnose system top 2>/dev/null | head
+# Send an EICAR attachment and a GTUBE spam-test message; confirm both are caught.
+```
+
+**Expected result:** the GTUBE spam-test string is quarantined/rejected and the EICAR
+attachment is stripped — FortiMail secures the email vector (spam, phishing, malware, and
+outbound DLP) that is the top initial-access route for attackers.
+
+**Negative test:** MX-route mail straight to the server, bypassing FortiMail; none of the
+filtering applies — FortiMail must sit in the mail flow (MX/relay) to inspect.
+
+**Cleanup:** remove the lab protected-domain and policy.
+
+### Lab 13.3 — FortiADC application delivery (Topic: FortiADC)
+
+**Objective:** Load-balance a web pool with a health check.
+
+```text
+# On FortiADC: create Real Servers -> Real Server Pool (with an HTTP health check)
+#   -> Virtual Server, then verify:
+diagnose load-balance real-server list 2>/dev/null | head
+# Stop one backend and confirm traffic shifts to the healthy member.
+```
+
+**Expected result:** requests distribute across healthy backends by the chosen algorithm,
+and a failed backend is removed from rotation by the health check — FortiADC delivers
+availability, SSL offload, and L7 optimization alongside security.
+
+**Negative test:** configure the pool with no health check; when a backend dies the ADC
+keeps sending it traffic and users get errors — the health check is what makes load
+balancing resilient.
+
+**Cleanup:** remove the lab virtual server and pool.
+
+### Lab 13.4 — FortiGate-VM in public cloud (Topic: Cloud FortiGate — AWS/Azure/GCP)
+
+**Objective:** Confirm a cloud-deployed FortiGate-VM's licensing and SDN connector.
+
+```text
+get system status | grep -iE "License|VM"
+config system sdn-connector
+    edit aws-sdn
+        set type aws
+        set use-metadata-iam enable
+    next
+end
+diagnose sys sdn-connector status 2>/dev/null | head
+```
+
+**Expected result:** the FortiGate-VM reports a valid cloud license (BYOL or PAYG) and the
+SDN connector pulls dynamic address objects from the cloud (instances by tag/security
+group) — cloud FortiGate secures north-south and east-west traffic with objects that track
+cloud changes automatically.
+
+**Negative test:** write static IP policies for auto-scaling cloud workloads; addresses
+churn and policies break — SDN-connector dynamic objects are what keep policy correct as
+the cloud changes.
+
+**Cleanup:** delete the `aws-sdn` connector if lab-only.
+
+### Lab 13.5 — Cloud posture and DDoS: FortiCNAPP and FortiDDoS (Topic: FortiCNAPP / FortiDDoS)
+
+**Objective:** Read a cloud posture finding and a DDoS mitigation baseline.
+
+```text
+# FortiCNAPP (Lacework FortiCNAPP): review a compliance finding
+#   (e.g. a public S3 bucket / over-permissive IAM) and its remediation guidance.
+# FortiDDoS: confirm the appliance has learned a traffic baseline, then:
+diagnose ddos setting 2>/dev/null | head
+```
+
+**Expected result:** FortiCNAPP surfaces misconfigurations and risky IAM across cloud
+accounts (CSPM/CWPP), and FortiDDoS shows a learned per-service baseline it uses to
+distinguish attack floods from legitimate spikes — cloud security spans posture and
+volumetric defense, not just the firewall.
+
+**Negative test:** set FortiDDoS thresholds manually without letting it learn a baseline;
+it either misses attacks or blocks legitimate bursts — behavioral baselining is what makes
+mitigation accurate.
+
+**Cleanup:** none (read-only review).
 
 ## Lab Verification
 

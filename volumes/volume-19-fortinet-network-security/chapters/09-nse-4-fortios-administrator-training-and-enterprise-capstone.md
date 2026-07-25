@@ -331,89 +331,110 @@ and working through layers in order avoids chasing the wrong control.
 
 ## Hands-On Lab
 
-**Objective:** Execute a full end-to-end validation pass across the
-capstone architecture built across Chapters 04–08, configure and test
-configuration backup/restore, and diagnose and correct a deliberately
-introduced misconfiguration using the layered troubleshooting decision
-tree — then perform full lab environment cleanup and decommissioning.
+This chapter is the **NSE 4 (FortiOS 7.6 Administrator) capstone** — integrative
+walkthroughs that combine the five exam objectives (Deployment & System Config, Firewall
+Policies & Auth, Content Inspection, Routing, VPNs) into an end-to-end build, plus a
+self-check that maps your running configuration back to the published objectives. Each
+lab ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 9.1–9.3** — a FortiGate on FortiOS 7.6 with WAN + LAN,
+a valid FortiGuard subscription, a client host, and a peer for the tunnel. **Cost:**
+none beyond lab resources.
 
-- FGT-LAB-01 and FGT-LAB-02 with every configuration element from
-  Chapters 04–08 in place: hardening, interfaces/routing/NAT/VDOMs/HA,
-  firewall policy/authentication/VPN, security profiles/SSL inspection,
-  and SD-WAN/central management/automation.
-- TFTP or equivalent external storage reachable at `10.10.10.20` for the
-  backup export step.
+### Lab 9.1 — End-to-end secured-edge build (Capstone: all five objectives)
 
-**Steps**
+**Objective:** Stand up a protected edge that exercises every NSE 4 objective at once.
 
-1. Run the full end-to-end validation checklist from Implementation and
-   Automation and record the output of each command as a dated baseline.
+```text
+# 1. Deployment: interfaces + default route (Objective: Deployment & System Config)
+config router static
+    edit 1
+        set gateway 203.0.113.1
+        set device port1
+    next
+end
+# 2. Content Inspection: deep-inspection + AV + IPS + web filter (Objective: Content Inspection)
+#    (profiles deep-lab / av-lab / ips-lab / block-malicious from Chapter 07)
+# 3. Firewall policy with authentication (Objective: Firewall Policies & Auth)
+config firewall policy
+    edit 1
+        set name secured-lan-egress
+        set srcintf port2
+        set dstintf port1
+        set srcaddr all
+        set dstaddr all
+        set action accept
+        set schedule always
+        set service HTTP HTTPS DNS
+        set groups staff
+        set nat enable
+        set utm-status enable
+        set ssl-ssh-profile deep-lab
+        set av-profile av-lab
+        set ips-sensor ips-lab
+        set webfilter-profile block-malicious
+        set logtraffic all
+    next
+end
+# 4. Routing verification (Objective: Routing)
+get router info routing-table all
+# 5. VPN reachability (Objective: VPNs)
+diagnose vpn tunnel list
+```
 
-   **Expected result:** Licensing valid, HA cluster formed with a single
-   primary, expected routes present, both SD-WAN members healthy, VPN
-   tunnel and SSL VPN sessions reachable if currently connected, and no
-   unexpectedly high CPU/session figures.
+**Expected result:** authenticated LAN users egress with full UTM inspection, the
+routing table shows the default and any tunnel routes, and the IPsec tunnel is `up` —
+one policy path demonstrates all five objectives working together.
 
-2. Export a configuration backup to TFTP storage and confirm the file is
-   received:
+**Negative test:** enable `utm-status` but forget `set groups staff`; unauthenticated
+users match and bypass identity control — every objective's control must be present for
+the edge to be genuinely secured.
 
-   ```text
-   FGT-LAB-01 # execute backup config tftp capstone-baseline.conf 10.10.10.20
-   ```
+**Cleanup:** delete policy 1 and revert lab routing/tunnels.
 
-3. Configure the `Config-Change` automation stitch from Implementation and
-   Automation, then make a trivial, reversible configuration change (add a
-   comment to an address object) and confirm an automatic backup file
-   appears on the TFTP server as a result.
+### Lab 9.2 — Security Fabric and Security Rating (Capstone: Fabric integration)
 
-4. **Negative test / deliberate misconfiguration:** Introduce a specific,
-   realistic misconfiguration without documenting it in advance to a lab
-   partner if working in a team setting — for example, change the
-   `WAN1-POOL` IP pool's `startip`/`endip` range to overlap with an address
-   already in active use elsewhere in the topology, or reorder a firewall
-   policy so a broad rule shadows a more specific one created in
-   [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md).
+**Objective:** Read the Security Rating to find configuration gaps.
 
-5. Observe the resulting symptom (a specific traffic flow now fails or
-   behaves unexpectedly) and work through the layered troubleshooting
-   decision tree from Validation and Troubleshooting, step by step,
-   documenting which layer you checked and what you found at each step
-   until you identify the actual root cause.
+```text
+config system csf
+    set status enable
+    set group-name "Lab-Fabric"
+end
+diagnose sys csf global | head
+execute security-rating run 2>/dev/null || echo "run Security Rating from GUI: Security Fabric > Security Rating"
+```
 
-   **Expected result:** The decision tree leads to correct root-cause
-   identification without needing to guess; document how many layers were
-   checked before the fault was found.
+**Expected result:** the Security Rating audits the Fabric against Fortinet and industry
+best practices (admin hardening, unused policies, missing inspection) and scores it —
+the operator's built-in gap analysis after a build.
 
-6. Correct the misconfiguration and confirm the affected traffic flow
-   returns to expected behavior using the same validation commands from
-   step 1.
+**Negative test:** treat a green policy list as "secure" without running the rating;
+gaps like clear-text admin or uninspected policies stay invisible — the rating is what
+surfaces them.
 
-7. Restore the step 2 configuration backup as a final validation of the
-   recovery path itself:
+**Cleanup:** `set status disable` under `config system csf` if lab-only.
 
-   ```text
-   FGT-LAB-01 # execute restore config tftp capstone-baseline.conf 10.10.10.20
-   ```
+### Lab 9.3 — Exam-readiness self-check (Capstone: objective mapping)
 
-   **Expected result:** The device reboots or reloads its configuration
-   and returns to the exact state captured in step 2; re-run the
-   validation checklist to confirm.
+**Objective:** Confirm your configuration touches every NSE 4 objective and weight.
 
-**Cleanup**
+```text
+get firewall policy | grep -c edit          # Firewall Policies & Auth (20–25%)
+get firewall ssl-ssh-profile | grep -c edit # Content Inspection (25–30%)
+get vpn ipsec phase1-interface | grep -c edit  # VPNs (10–15%)
+get router static | grep -c edit            # Routing (10–15%)
+get system interface | grep -c edit         # Deployment & System Config (20–25%)
+```
 
-- If this lab environment is being decommissioned rather than retained:
-  disable HA on both members (`config system ha` `set mode standalone`
-  `end`), remove VDOMs back to single-VDOM mode if desired, deregister
-  from FortiManager (`config system central-management` `set type none`
-  `end`), revoke API tokens, and either power off the VM instances or
-  reset them to a documented clean-slate snapshot.
-- If the environment will be retained for further study or as a personal
-  reference lab, retain the final validated configuration and the TFTP
-  backup file as the documented baseline, and record the FortiCare
-  evaluation license expiration date so the lab's licensing state does
-  not silently lapse unnoticed.
+**Expected result:** a non-zero count in each category, proving you have built and can
+explain at least one artifact per objective — the exam samples across all five weighted
+areas, so hands-on coverage of each is the readiness bar.
+
+**Negative test:** study only Content Inspection because it is the largest slice; the
+other 70–75% of the exam is untouched — the weights guide emphasis, not exclusion.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

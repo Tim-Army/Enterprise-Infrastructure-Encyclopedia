@@ -110,10 +110,64 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Build your Fortinet certification map: pick a track, list its NSE 4→8
-chain from this chapter, pull each exam's current page from Fortinet
-Training Institute, and produce a one-page dated plan (levels, exams,
-prerequisites, recert term). Verify every exam is live the same day.
+This chapter orients you in the **restored Network Security Expert (NSE) program**
+(effective 15 July 2026): NSE 1–3 foundational, NSE 4 associate (FortiOS Administrator),
+NSE 5–7 across four professional **tracks** (Secure Networking, Security Operations,
+Cloud Security, SASE), and NSE 8 expert. The labs are planning/orientation exercises
+using the live Fortinet Training Institute catalog and your own FortiGate. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 10.1–10.2** — a browser for the Fortinet Training
+Institute site and a FortiGate for the inventory step. **Cost:** none.
+
+### Lab 10.1 — Map the NSE certification program (Topic: Program structure)
+
+**Objective:** Lay out the NSE levels and where each exam sits.
+
+```text
+# On the Fortinet Training Institute catalog, record for each level:
+#   NSE 1  Cybersecurity awareness            (foundational, self-paced)
+#   NSE 2  Threat landscape + portfolio        (foundational, self-paced)
+#   NSE 3  Security Fabric + product operator  (foundational, self-paced)
+#   NSE 4  FortiOS 7.6 Administrator           (associate, proctored exam)
+#   NSE 5  Track specialist  (four tracks)     (professional, proctored)
+#   NSE 6  Track professional (four tracks)    (professional, proctored)
+#   NSE 7  Track expert      (four tracks)     (professional, proctored)
+#   NSE 8  Expert practical  (Core + Specialization)
+```
+
+**Expected result:** a one-page ladder from awareness (NSE 1) to expert practical
+(NSE 8), with NSE 4 as the pivot where hands-on FortiOS competence is proven and the
+four tracks branch — the structure the rest of this volume follows chapter by chapter.
+
+**Negative test:** assume the tracks start at NSE 4; they branch at NSE 5 — NSE 4 is a
+single common associate exam that all four tracks build on.
+
+**Cleanup:** none.
+
+### Lab 10.2 — Choose a track and build a study plan (Topic: Track selection)
+
+**Objective:** Match your role to a track and inventory the gear you can practice on.
+
+```text
+# Decide the track from your job function:
+#   Secure Networking  -> firewall/switch/AP/SD-WAN engineers   (Chapter 11)
+#   Security Operations -> SOC / detection & response analysts    (Chapter 12)
+#   Cloud Security     -> app/cloud/email security engineers     (Chapter 13)
+#   SASE               -> remote-access / edge / SD-WAN teams     (Chapter 14)
+# Then inventory what you can lab on:
+get system status | grep -i Model
+diagnose sys fortiguard-service status 2>/dev/null | head
+```
+
+**Expected result:** a chosen track aligned to your daily work and a list of the
+products you already have to practice on — the plan that makes the NSE 5–7 chapters
+(11–14) actionable rather than abstract.
+
+**Negative test:** pick a track by prestige rather than role; you will study products you
+never touch and retain little — track choice should follow the systems you operate.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

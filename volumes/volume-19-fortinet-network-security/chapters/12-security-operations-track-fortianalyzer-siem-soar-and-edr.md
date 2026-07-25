@@ -110,13 +110,132 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-In a Fortinet SOC lab (FortiAnalyzer VM + FortiGate VM, plus the free
-NSE self-paced labs where available; else runbook): forward FortiGate
-logs to FortiAnalyzer, build one FortiView-based investigation of a
-seeded incident, and design a FortiSOAR playbook that auto-blocks a
-malicious IP at the FortiGate and gates host isolation behind an
-analyst task. Test against a true positive and a false-positive
-control.
+This chapter carries a topic-level walkthrough lab for **each key product of the Security
+Operations track (NSE 5–7)** — FortiAnalyzer, FortiSIEM, FortiSOAR, FortiEDR,
+FortiSandbox, and FortiNDR — mapped in the volume README's coverage tables. The products
+are SOC platforms driven by GUI, CLI, and API; each lab gives concrete, verifiable steps
+and ends **`**Lab verified by:** *pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 12.1–12.5** — a FortiGate sending logs, plus the relevant
+SOC product (FortiAnalyzer, FortiSIEM, FortiSOAR, FortiEDR/FortiSandbox, FortiNDR) as VM
+or hardware, reachable on the management network. **Cost:** none beyond lab resources.
+
+### Lab 12.1 — FortiAnalyzer log analytics (Topic: FortiAnalyzer)
+
+**Objective:** Register the FortiGate and confirm logs are indexed for analytics.
+
+```text
+# On FortiGate: point logging at FortiAnalyzer
+config log fortianalyzer setting
+    set status enable
+    set server 10.0.0.242
+    set upload-option realtime
+end
+diagnose test application miglogd 6
+# On FortiAnalyzer:
+diagnose test application oftpd 3     # ADOM/device registration status
+```
+
+**Expected result:** the FortiGate appears as a registered device on FortiAnalyzer and
+logs flow in real time; FortiView, reports, and FortiAI analytics populate — FortiAnalyzer
+is the SOC's log store, correlation, and reporting hub.
+
+**Negative test:** enable FortiAnalyzer logging but leave the device unauthorized on the
+analyzer; logs are refused and analytics stay empty — device registration must be accepted.
+
+**Cleanup:** disable the FortiAnalyzer log setting if lab-only.
+
+### Lab 12.2 — FortiSIEM correlation (Topic: FortiSIEM)
+
+**Objective:** Confirm event ingestion and a correlation rule firing.
+
+```text
+# On FortiSIEM: add the FortiGate as a monitored device (discovery via SNMP/syslog), then:
+#   Analytics > run a search:  eventType = "FortiGate-Traffic" AND action = "deny"
+#   Confirm a built-in rule (e.g. "Excessive Denied Connections") triggers an incident.
+phStatus                 # FortiSIEM CLI: verify all backend processes are up
+```
+
+**Expected result:** FortiSIEM ingests and parses FortiGate events, and a correlation
+rule raises an incident when the pattern (many denies from one source) is met — SIEM turns
+raw multi-source events into prioritized incidents with context.
+
+**Negative test:** rely on a single log source for correlation; cross-source rules (auth +
+traffic + endpoint) cannot fire — SIEM's value is correlating across the whole estate.
+
+**Cleanup:** none (read-only analytics).
+
+### Lab 12.3 — FortiSOAR playbook (Topic: FortiSOAR)
+
+**Objective:** Run a playbook that enriches and responds to an alert.
+
+```text
+# On FortiSOAR: open a sample "Phishing Email" alert, then run a playbook that:
+#   1. extracts IOCs (URL, sender, attachment hash)
+#   2. enriches via FortiGuard / threat-intel connector
+#   3. on a malicious verdict, blocks the URL on FortiGate and closes the alert
+# Verify in the playbook execution log that each step returned success.
+```
+
+**Expected result:** the playbook auto-enriches the alert, reaches a verdict, and pushes a
+block to the FortiGate — SOAR codifies analyst runbooks so response is consistent and fast,
+with the human approving high-impact steps.
+
+**Negative test:** automate a destructive containment step with no approval gate; a
+false-positive playbook run disrupts production — high-impact actions need a human-approval
+task in the playbook.
+
+**Cleanup:** revert any test block pushed to the FortiGate.
+
+### Lab 12.4 — Endpoint detection with FortiEDR and FortiSandbox (Topic: FortiEDR / FortiSandbox)
+
+**Objective:** Detonate a suspicious file and read the verdict chain.
+
+```text
+# On FortiGate: forward suspicious files to FortiSandbox
+config antivirus profile
+    edit av-lab
+        config http
+            set av-scan enable
+        end
+        set analytics-db enable
+    next
+end
+config system fortisandbox
+    set status enable
+    set server 10.0.0.243
+end
+diagnose test application quarantined-files 2>/dev/null | head
+```
+
+**Expected result:** unknown files are submitted to FortiSandbox for detonation; a
+malicious verdict feeds back to block future instances, while FortiEDR catches the
+behavior on the endpoint itself — layered detection across network and host.
+
+**Negative test:** rely only on signature AV for a zero-day; it has no signature and passes
+— sandbox detonation and EDR behavior analysis are what catch the unknown.
+
+**Cleanup:** disable the FortiSandbox integration if lab-only.
+
+### Lab 12.5 — Network detection with FortiNDR (Topic: FortiNDR)
+
+**Objective:** Confirm FortiNDR is analyzing mirrored traffic for anomalies.
+
+```text
+# Mirror traffic to FortiNDR (SPAN or FortiGate mirror), then on FortiNDR:
+#   Dashboard > confirm flows are being classified by the neural-network engine
+#   Review a detected anomaly (e.g. beaconing / lateral movement) with its evidence
+diagnose netdetector status 2>/dev/null | head
+```
+
+**Expected result:** FortiNDR classifies mirrored traffic and surfaces behavior-based
+detections (C2 beaconing, lateral movement, data exfiltration) that signature tools miss —
+NDR adds the network-behavior layer to the SOC's detection coverage.
+
+**Negative test:** feed FortiNDR no mirrored traffic and expect detections; with nothing to
+analyze the dashboard is empty — NDR requires a traffic feed (SPAN/mirror) to work.
+
+**Cleanup:** remove the mirror configuration if lab-only.
 
 ## Lab Verification
 

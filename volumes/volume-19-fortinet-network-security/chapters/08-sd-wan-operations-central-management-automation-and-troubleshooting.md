@@ -340,103 +340,186 @@ events before enabling the `ban-ip` action against production traffic.
 
 ## Hands-On Lab
 
-**Objective:** Configure an SD-WAN zone with two members and an SLA-based
-rule, validate path selection and failover with a deliberate WAN1 outage,
-register the device to a (lab or simulated) FortiManager, and call the
-REST API to retrieve system status.
+This chapter carries a topic-level walkthrough lab for **each task under SD-WAN, central
+management, automation, and troubleshooting** — the operational half of the NSE 4
+*Routing* objective plus the day-two skills the exam expects — mapped in the volume
+README's coverage tables. Every command is a real FortiOS 7.6 CLI action; each lab ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.5** — a FortiGate on FortiOS 7.6 with two WAN
+interfaces (for SD-WAN), FortiGuard reachability, and admin access. **Cost:** none
+beyond lab resources.
 
-- FGT-LAB-01 with the WAN2 interface (`port6`) cabled/connected and
-  reachable to a second upstream gateway (`198.51.100.1` in this lab's
-  addressing scheme), in addition to the existing WAN1 (`port1`).
-- Optional: a lab or evaluation FortiManager instance reachable at
-  `172.16.99.20` for the central management portion; if unavailable,
-  complete the registration CLI steps and document the expected
-  authorization step conceptually instead.
-- An API administrator account and token created via
-  `config system api-user` for the REST API portion.
+### Lab 8.1 — SD-WAN zones and members (Topic: SD-WAN setup)
 
-**Steps**
+**Objective:** Create an SD-WAN with two underlay members.
 
-1. Configure the `virtual-wan-link` SD-WAN zone, both members, and the
-   `Internet` health-check exactly as shown in Implementation and
-   Automation.
+```text
+config system sdwan
+    set status enable
+    config zone
+        edit virtual-wan-link
+        next
+    end
+    config members
+        edit 1
+            set interface port1
+            set zone virtual-wan-link
+            set gateway 203.0.113.1
+        next
+        edit 2
+            set interface port4
+            set zone virtual-wan-link
+            set gateway 198.51.100.1
+        next
+    end
+end
+diagnose sys sdwan member
+```
 
-2. Verify health-check status:
+**Expected result:** `port1` and `port4` join the SD-WAN zone; `diagnose sys sdwan
+member` lists both as sequence members — SD-WAN abstracts multiple underlays into one
+logical egress the rules steer over.
 
-   ```text
-   FGT-LAB-01 # diagnose sys sdwan health-check status
-   ```
+**Negative test:** reference `port1` in a normal static route while it is an SD-WAN
+member; FortiOS steers via SD-WAN rules instead — membership changes how egress is
+selected.
 
-   **Expected result:** Both members report current latency, jitter, and
-   packet-loss figures within the configured SLA thresholds.
+**Cleanup:** `set status disable` under `config system sdwan` after the later labs.
 
-3. Create the `Critical-Apps` SD-WAN rule and confirm current path
-   selection:
+### Lab 8.2 — Performance SLA and health checks (Topic: SD-WAN SLA)
 
-   ```text
-   FGT-LAB-01 # diagnose sys sdwan service
-   ```
+**Objective:** Measure link health with an active SLA probe.
 
-   **Expected result:** Traffic matching the rule shows member 1
-   (`port1`/WAN1) as the currently selected path.
+```text
+config system sdwan
+    config health-check
+        edit fgd-ping
+            set server 208.91.112.53
+            set members 1 2
+            set protocol ping
+            config sla
+                edit 1
+                    set latency-threshold 150
+                    set packetloss-threshold 3
+                next
+            end
+        next
+    end
+end
+diagnose sys sdwan health-check
+```
 
-4. **Negative test:** Administratively bring down `port1` to simulate a
-   WAN1 outage:
+**Expected result:** each member reports live latency, jitter, and packet loss, and an
+`in-sla`/`out-of-sla` state — the SLA is the signal SD-WAN rules use to keep sessions on
+links that meet the application's requirements.
 
-   ```text
-   FGT-LAB-01 # config system interface
-   FGT-LAB-01 (interface) # edit "port1"
-   FGT-LAB-01 (port1) # set status down
-   FGT-LAB-01 (port1) # next
-   FGT-LAB-01 (interface) # end
-   ```
+**Negative test:** build steering rules with no health-check; SD-WAN cannot tell a
+brown-out link from a healthy one and keeps sending traffic into loss — the SLA probe is
+what makes steering application-aware.
 
-   Re-check both commands from steps 2 and 3.
+**Cleanup:** removed with the SD-WAN block in Lab 8.1 cleanup.
 
-   **Expected result:** The health-check reports member 1 as failed/out
-   of SLA, and `Critical-Apps` now selects member 2 (`port6`/WAN2)
-   automatically, confirming failover.
+### Lab 8.3 — SD-WAN steering rules (Topic: SD-WAN rules)
 
-5. Restore `port1`:
+**Objective:** Steer an application over the best-quality member.
 
-   ```text
-   FGT-LAB-01 # config system interface
-   FGT-LAB-01 (interface) # edit "port1"
-   FGT-LAB-01 (port1) # set status up
-   FGT-LAB-01 (port1) # next
-   FGT-LAB-01 (interface) # end
-   ```
+```text
+config system sdwan
+    config service
+        edit 1
+            set name critical-apps
+            set mode sla
+            set dst all
+            config sla
+                edit fgd-ping
+                    set id 1
+                next
+            end
+            set priority-members 1 2
+        next
+    end
+end
+diagnose sys sdwan service
+```
 
-   **Expected result:** Health-check and SD-WAN rule selection return to
-   preferring member 1 once its SLA is met again.
+**Expected result:** `critical-apps` traffic prefers the member meeting the SLA and
+fails over to the next when it degrades; `diagnose sys sdwan service` shows the chosen
+member and order — rules translate link health into per-application path selection.
 
-6. Configure `config system central-management` pointing to the lab
-   FortiManager and complete the authorization step on the FortiManager
-   side (Device Manager > unauthorized devices).
+**Negative test:** set `mode manual` pinned to one member and pull that link; traffic
+is dropped instead of failing over — `mode sla` with priority members is what makes
+steering resilient.
 
-   **Expected result:** The device appears as managed and in-sync in
-   FortiManager's Device Manager.
+**Cleanup:** removed with the SD-WAN block in Lab 8.1 cleanup.
 
-7. Create an API administrator (`config system api-user`) scoped to a
-   read-only accprofile, generate its API token, and call the REST API:
+### Lab 8.4 — Central management and automation (Topic: FortiManager / automation stitches)
 
-   ```bash
-   curl -k -X GET "https://172.16.99.1/api/v2/monitor/system/status" \
-     -H "Authorization: Bearer <API_TOKEN>"
-   ```
+**Objective:** Enable FortiManager management and build an automation stitch.
 
-   **Expected result:** A JSON response containing the device's hostname,
-   serial number, and version, confirming API access is functioning.
+```text
+config system central-management
+    set type fortimanager
+    set fmg 10.0.0.240
+end
+config system automation-trigger
+    edit admin-login-trigger
+        set event-type event-log
+        set logid 32001
+    next
+end
+config system automation-action
+    edit notify-admins
+        set action-type email
+        set email-to soc@example.com
+        set email-subject "FortiGate admin login"
+    next
+end
+config system automation-stitch
+    edit login-alert
+        set trigger admin-login-trigger
+        set action notify-admins
+    next
+end
+```
 
-**Cleanup**
+**Expected result:** the FortiGate is registerable to FortiManager for centralized
+policy, and the stitch fires an email whenever an admin logs in — automation turns Fabric
+events into responses without an operator watching logs.
 
-- Leave the SD-WAN zone, health-check, and rule in place for [Chapter 09](09-nse-4-fortios-administrator-training-and-enterprise-capstone.md)'s
-  capstone. If the lab FortiManager instance is shared and temporary,
-  deregister the device (`config system central-management` `set type
-  none` `end`) after validation. Revoke or delete the lab API token if it
-  will not be reused.
+**Negative test:** define a trigger with no action (or vice versa); nothing happens —
+the stitch must bind a trigger to an action to automate.
+
+**Cleanup:** delete the stitch, action, and trigger; unset central-management if lab-only.
+
+### Lab 8.5 — Structured troubleshooting (Topic: Troubleshooting)
+
+**Objective:** Trace a flow end-to-end with debug flow.
+
+```text
+diagnose debug reset
+diagnose debug flow filter addr 10.10.10.20
+diagnose debug flow show function-name enable
+diagnose debug flow trace start 20
+diagnose debug enable
+# generate traffic from 10.10.10.20, then:
+diagnose debug disable
+```
+
+**Expected result:** a step-by-step trace showing the ingress interface, the matched
+policy, any NAT, the route lookup, and the egress interface — `diagnose debug flow` is
+the definitive tool for answering "why is this traffic allowed/denied/misrouted?"
+
+**Negative test:** guess at the cause by reading policies alone; `debug flow` shows the
+*actual* matched policy and route, which often differs from the assumed one — trace,
+don't guess.
+
+**Cleanup:**
+
+```text
+diagnose debug reset
+diagnose debug disable
+```
 
 ## Lab Verification
 

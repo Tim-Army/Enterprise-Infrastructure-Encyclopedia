@@ -114,12 +114,102 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Extend the Chapter 08 SD-WAN lab: add SLA-based steering across two
-links and prove failover; then (FortiSASE trial / free NSE labs, else
-runbook) define a ZTNA application with a posture requirement in
-FortiClient EMS, prove a compliant endpoint reaches it and a
-non-compliant one is denied, and confirm a roaming user transits the
-POP under the same policy.
+This chapter carries a topic-level walkthrough lab for **each key theme of the SASE track
+(NSE 5–7)** — FortiSASE onboarding, secure private access over SD-WAN, ZTNA through SASE,
+and FortiDLP — mapped in the volume README's coverage tables. FortiSASE is a
+cloud-delivered service driven from its portal plus the FortiGate/endpoint side; each lab
+gives concrete, verifiable steps and ends **`**Lab verified by:** *pending*`** until a
+human runs it.
+
+**Shared prerequisites for Labs 14.1–14.4** — a FortiSASE tenant, FortiClient on a test
+endpoint, and a FortiGate at the site (for private access). **Cost:** FortiSASE is a
+subscription service; use a trial/lab tenant.
+
+### Lab 14.1 — Onboard users to FortiSASE secure internet access (Topic: FortiSASE SIA)
+
+**Objective:** Enroll an endpoint and steer its internet traffic through FortiSASE.
+
+```text
+# In the FortiSASE portal: configure the SIA profile (web filter, AV, IPS, DLP),
+#   then deploy FortiClient with the SASE invitation code to the endpoint.
+# On the endpoint, after enrollment:
+#   - confirm FortiClient shows "SASE connected"
+#   - browse to a blocked category and confirm the FortiSASE block page appears
+```
+
+**Expected result:** the endpoint's internet traffic tunnels to the nearest FortiSASE PoP
+where the full security stack (web filter, AV, IPS, DLP) is applied — SASE moves inspection
+to the cloud edge so remote users get the same protection as on-net users.
+
+**Negative test:** deploy FortiClient without the SASE profile/invitation; traffic goes
+direct to internet uninspected — enrollment into the SASE tenant is what steers and
+protects it.
+
+**Cleanup:** remove the test endpoint from the tenant.
+
+### Lab 14.2 — Secure private access over SD-WAN (Topic: FortiSASE SPA)
+
+**Objective:** Connect FortiSASE to an on-prem app via an SD-WAN/IPsec hub.
+
+```text
+# In the FortiSASE portal: define a Secure Private Access connection (SD-WAN on-ramp)
+#   to the site FortiGate, publish an internal app subnet, then from an enrolled endpoint:
+#   - reach the internal app by its private address
+#   - confirm the session traverses FortiSASE -> hub FortiGate -> app
+diagnose vpn tunnel list 2>/dev/null | head   # on the hub FortiGate: SASE tunnel up
+```
+
+**Expected result:** remote users reach private applications through FortiSASE without a
+traditional full-tunnel VPN, and the hub FortiGate shows the SASE tunnel up — SPA delivers
+private-app access with per-app control instead of flat network access.
+
+**Negative test:** publish the app subnet but never bring up the SD-WAN on-ramp tunnel to
+the hub; the private app is unreachable — the SPA tunnel is the transport for private
+access.
+
+**Cleanup:** remove the published app and the lab SPA connection.
+
+### Lab 14.3 — ZTNA through FortiSASE (Topic: SASE + Zero Trust)
+
+**Objective:** Gate a private app on device posture, not just network reach.
+
+```text
+# In FortiSASE: enable ZTNA for the published app and set a posture tag
+#   (e.g. "AV running AND disk encrypted"). From the endpoint:
+#   - with posture satisfied: access is granted
+#   - break posture (stop AV) and retry: access is denied per-session
+```
+
+**Expected result:** access is granted only while the endpoint continuously satisfies the
+posture check, re-evaluated per session — SASE + ZTNA replaces "connected to the VPN =
+trusted" with continuous, posture-aware authorization.
+
+**Negative test:** grant a standing VPN tunnel instead of ZTNA; a compromised-but-connected
+device keeps its access — ZTNA's per-session posture check is what withdraws access when
+posture fails.
+
+**Cleanup:** revert the posture tag / ZTNA rule if lab-only.
+
+### Lab 14.4 — Data loss prevention with FortiDLP (Topic: FortiDLP)
+
+**Objective:** Detect and block sensitive-data egress from an enrolled endpoint.
+
+```text
+# In FortiSASE/FortiDLP: enable a DLP profile matching a sensitive pattern
+#   (e.g. credit-card / national-ID regex), then from the endpoint:
+#   - attempt to upload a file containing the pattern to a web app
+#   - confirm the transfer is blocked/logged with the matched policy
+```
+
+**Expected result:** the sensitive upload is blocked or logged with the triggering policy,
+across web, cloud-app, and endpoint channels — FortiDLP extends SASE from threat protection
+to protecting the organization's own data as it moves.
+
+**Negative test:** rely on web filtering to stop data exfiltration; category filtering does
+not inspect payload content for sensitive patterns — DLP content matching is what catches
+the data itself.
+
+**Cleanup:** disable the lab DLP profile.
 
 ## Lab Verification
 

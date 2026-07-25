@@ -296,68 +296,88 @@ training having been delivered.
 
 ## Hands-On Lab
 
-**Objective:** Perform a personal security hygiene self-audit, enable MFA
-on a test account, and analyze a sample phishing message for structural
-indicators — no FortiGate hardware or lab appliance is required for this
-chapter.
+This chapter carries a topic-level walkthrough lab for **each theme of NSE 1
+(Cybersecurity Awareness and Digital Safety)** — mapped in the volume README's
+coverage tables. NSE 1 is awareness-level, so the labs are hands-on demonstrations
+of the concepts using standard host tools. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 1.1–1.4** — a workstation with a browser, a
+terminal (`openssl`, `dig`), and a sample email file. **Cost:** none.
 
-- A password manager (any reputable option with a free tier is sufficient).
-- A test or personal email account that supports authenticator-app MFA.
-- A text editor to record findings.
+### Lab 1.1 — Recognize phishing and social engineering (Topic: Threats to the user)
 
-**Steps**
+**Objective:** Inspect an email's headers and links to spot a phishing attempt.
 
-1. Open your password manager's built-in security/breach report (or
-   equivalent free breach-check service) and record how many accounts show
-   reused or weak passwords.
+```bash
+grep -iE '^(From|Return-Path|Reply-To|Received-SPF|Authentication-Results):' sample.eml
+grep -oE 'https?://[^"]+' sample.eml | head
+```
 
-   **Expected result:** A count of reused/weak credentials, which most
-   users find is greater than zero on a first run.
+**Expected result:** a mismatch between the friendly `From` and the actual
+`Return-Path`/`Reply-To`, an SPF/DKIM `fail`, and links whose visible text differs
+from the real host — the classic phishing signals; verifying the sender domain and
+hovering links before clicking is the NSE 1 habit.
 
-2. Rotate the password for your single highest-value reused account
-   (typically the primary email account) to a unique, generated password
-   stored in the password manager.
+**Negative test:** trust the display name alone; it is attacker-controlled — the
+`Return-Path` and `Authentication-Results` are what reveal the forgery.
 
-3. Enable authenticator-app-based MFA on that same account, following the
-   provider's setup flow, and store the recovery codes in the password
-   manager's secure notes rather than as a plain text file.
+**Cleanup:** none.
 
-   **Expected result:** The account now requires a TOTP code or push
-   approval in addition to the password at sign-in; confirm this by signing
-   out and back in.
+### Lab 1.2 — Passwords and multi-factor authentication (Topic: Authentication hygiene)
 
-4. **Negative test:** Attempt to sign in to the account using only the
-   password, from a fresh browser session or private/incognito window.
+**Objective:** Reason about password strength and why MFA matters.
 
-   **Expected result:** Authentication is rejected or paused pending the
-   second factor — confirming MFA is actually enforced, not merely
-   available but optional.
+```bash
+echo -n "Summer2026!" | wc -c        # length
+python3 -c "import math; print('bits ~', round(math.log2(94**11)))"  # entropy of an 11-char printable
+```
 
-5. Locate or construct a sample phishing email (many mail providers keep a
-   "Junk"/"Spam" folder with real examples, or use a published awareness
-   training sample). Without clicking any link, identify and record:
-   - The sender's actual domain versus the displayed name.
-   - Whether hovering over the primary call-to-action link shows a
-     mismatched destination.
-   - Which social engineering lever (authority, urgency, fear, reciprocity)
-     the message uses.
+**Expected result:** even a "complex-looking" password has limited entropy and
+appears in breach corpora — so length + a manager + **MFA** (a second factor the
+attacker does not hold) is the defense; a stolen password alone should not grant
+access.
 
-6. Use the mail client's "report phishing" action on the sample message, or
-   describe the reporting path if the sample was not a real inbox item.
+**Negative test:** rely on password complexity rules alone; credential-stuffing
+from breaches defeats them — MFA is what stops a valid-but-stolen password.
 
-   **Expected result:** A completed written analysis identifying at least
-   three structural indicators, independent of the specific brand
-   impersonated.
+**Cleanup:** none.
 
-**Cleanup**
+### Lab 1.3 — Safe browsing and transport security (Topic: Protecting data in transit)
 
-- No system changes require reverting; MFA and the rotated password should
-  remain in place as a permanent security improvement rather than being
-  undone.
-- If a shared or lab email account was used for the phishing sample review,
-  delete the sample from the mailbox after analysis is recorded.
+**Objective:** Verify a site's TLS certificate and HTTPS.
+
+```bash
+openssl s_client -connect example.com:443 -servername example.com </dev/null 2>/dev/null \
+  | openssl x509 -noout -subject -issuer -dates
+```
+
+**Expected result:** a valid, in-date certificate from a trusted issuer matching the
+site name — HTTPS protects data in transit; a name mismatch, expired cert, or
+untrusted issuer is a warning to heed, not click through.
+
+**Negative test:** dismiss a browser certificate warning to reach a site; that is
+exactly the man-in-the-middle scenario the warning exists to stop.
+
+**Cleanup:** none.
+
+### Lab 1.4 — Malware, ransomware, and safe data habits (Topic: Protecting the endpoint and data)
+
+**Objective:** Verify a file's integrity and reason about backup/ransomware defense.
+
+```bash
+sha256sum installer.bin
+# compare to the publisher's published hash before running
+```
+
+**Expected result:** a hash matching the vendor's published value — verifying
+downloads before executing, keeping systems patched, and holding **offline/immutable
+backups** are the NSE 1 defenses against malware and ransomware.
+
+**Negative test:** run an executable from an unverified source or email attachment;
+that is the primary malware infection vector awareness training targets.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

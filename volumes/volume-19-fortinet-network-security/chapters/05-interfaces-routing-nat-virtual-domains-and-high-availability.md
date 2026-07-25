@@ -394,102 +394,247 @@ most common reason two devices fail to form a cluster.
 
 ## Hands-On Lab
 
-**Objective:** Configure interfaces, static and policy routing, a source
-NAT IP pool, and a destination NAT VIP; enable multi-VDOM mode and connect
-two VDOMs with an inter-VDOM link; then build and validate a two-member
-FGCP HA cluster, including a forced-failover negative test.
+This chapter carries a topic-level walkthrough lab for **each task under the NSE 4
+objectives *Routing* (10–15%) and the network-layer portion of *Deployment and System
+Configuration*** — mapped in the volume README's coverage tables. Every command is a
+real FortiOS 7.6 CLI action; each lab ends **`**Lab verified by:** *pending*`** until a
+human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 5.1–5.6** — a FortiGate on FortiOS 7.6 with at least
+two data interfaces, a client host, and (for HA) a second identical FortiGate.
+**Cost:** none beyond the appliances/VMs.
 
-- FGT-LAB-01 from [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md), licensed and hardened.
-- A second FortiGate-VM64 instance, `FGT-LAB-02`, deployed identically to
-  FGT-LAB-01 (same FortiOS build) but not yet configured, for the HA
-  portion of this lab.
-- At least four available virtual/physical interfaces per device: two data
-  interfaces already in use (`port1`/`port2` from prior chapters), plus
-  `port3` (DMZ), and `port4`/`port5` reserved for HA heartbeat.
+### Lab 5.1 — Interfaces, zones, and VLANs (Topic: Layer-2/3 interfaces)
 
-**Steps**
+**Objective:** Create a VLAN sub-interface and group interfaces into a zone.
 
-1. Configure `port1` (WAN), `port3` (DMZ), and a VLAN sub-interface
-   (`port2.20`) as shown in Implementation and Automation.
+```text
+config system interface
+    edit vlan100
+        set vdom root
+        set interface port2
+        set vlanid 100
+        set ip 10.100.0.1 255.255.255.0
+        set allowaccess ping
+    next
+end
+config system zone
+    edit trust
+        set interface port2 vlan100
+    next
+end
+```
 
-   **Expected result:** `get system interface physical` shows all
-   interfaces `up` with the assigned IP addresses.
+**Expected result:** `vlan100` appears tagged on `port2`, and the `trust` zone groups
+the members so one policy can reference the zone — VLANs segment L2 domains and zones
+simplify policy across many interfaces.
 
-2. Create the default static route and a policy route for DMZ-sourced
-   traffic, then verify:
+**Negative test:** reference `port2` directly in a policy after adding it to a zone;
+FortiOS rejects it — a zoned interface is addressed only through its zone.
 
-   ```text
-   FGT-LAB-01 # get router info routing-table all
-   FGT-LAB-01 # diagnose firewall proute list
-   ```
+**Cleanup:**
 
-3. Create the `LAN-SUBNET` and `DMZ-SUBNET` address objects and the
-   `WAN1-POOL` IP pool.
+```text
+config system zone
+    delete trust
+end
+config system interface
+    delete vlan100
+end
+```
 
-4. Create the `DMZ-WEB-VIP` virtual IP mapping `203.0.113.20:443` to
-   `10.10.20.50:443`, then confirm it is registered:
+### Lab 5.2 — Static routing and route selection (Topic: Static routes)
 
-   ```text
-   FGT-LAB-01 # diagnose firewall vip list
-   ```
+**Objective:** Add a static route and read how FortiOS chooses it.
 
-   **Expected result:** The VIP appears with the correct external and
-   mapped addresses; note that external reachability additionally requires
-   a firewall policy, completed in [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md).
+```text
+config router static
+    edit 10
+        set dst 192.168.50.0 255.255.255.0
+        set gateway 10.10.10.254
+        set device port2
+        set distance 10
+    next
+end
+get router info routing-table static
+diagnose ip route list | grep 192.168.50
+```
 
-5. Enable multi-VDOM mode, create `VDOM-CORP` and `VDOM-DMZ`, create the
-   `vlink-corp-dmz` inter-VDOM link, and reassign `port3` into
-   `VDOM-DMZ`.
+**Expected result:** the route appears in the routing table; FortiOS selects by longest
+prefix, then administrative distance, then priority — the deterministic order the exam
+tests.
 
-   **Expected result:** `config global` then `diagnose sys vd list` (or the
-   GUI's VDOM list) shows both VDOMs with their assigned interfaces.
+**Negative test:** add a second route to the same prefix with a higher distance and
+expect load-sharing; only the lower-distance route installs — equal distance (ECMP) is
+required to share.
 
-6. From within `VDOM-CORP`, add a static route pointing toward
-   `169.254.1.2` (the DMZ-side vlink address) for the `10.10.20.0/24`
-   destination, and confirm connectivity across the link:
+**Cleanup:**
 
-   ```text
-   FGT-LAB-01 # config vdom
-   FGT-LAB-01 (vdom) # edit VDOM-CORP
-   FGT-LAB-01 (VDOM-CORP) # execute ping 169.254.1.2
-   ```
+```text
+config router static
+    delete 10
+end
+```
 
-   **Expected result:** Ping succeeds across the inter-VDOM link.
+### Lab 5.3 — Source NAT (Topic: NAT)
 
-7. On both FGT-LAB-01 and FGT-LAB-02, configure FGCP HA exactly as shown
-   in Implementation and Automation (priority 200 on FGT-LAB-01, priority
-   100 on FGT-LAB-02), with heartbeat interfaces `port4` and `port5`
-   connected between the two devices.
+**Objective:** Configure outbound NAT with an IP pool.
 
-   **Expected result:** Within a few minutes, `diagnose sys ha status` on
-   both members shows a formed cluster with FGT-LAB-01 as primary
-   (higher priority) and FGT-LAB-02 as secondary.
+```text
+config firewall ippool
+    edit lan-snat
+        set type overload
+        set startip 203.0.113.20
+        set endip 203.0.113.20
+    next
+end
+config firewall policy
+    edit 10
+        set name lan-to-wan
+        set srcintf port2
+        set dstintf port1
+        set srcaddr all
+        set dstaddr all
+        set action accept
+        set schedule always
+        set service ALL
+        set nat enable
+        set ippool enable
+        set poolname lan-snat
+    next
+end
+diagnose firewall ippool list
+```
 
-8. Confirm configuration synchronization by making a trivial, reversible
-   change on the primary (for example, adding a comment to the `DMZ-WEB-VIP`
-   object) and confirming it appears on the secondary via
-   `show firewall vip` issued through the cluster's single management
-   session.
+**Expected result:** LAN traffic egresses translated to `203.0.113.20`; a session in
+`diagnose sys session list` shows the SNAT mapping — source NAT hides internal
+addressing behind a routable pool.
 
-9. **Negative test:** Disconnect (or administratively disable) both
-   heartbeat interfaces on the secondary member simultaneously, then check
-   `diagnose sys ha status` on each member independently.
+**Negative test:** enable `nat` but leave `ippool disable`; traffic uses the outgoing
+interface IP instead of the pool — the pool binding is what selects the translated
+address.
 
-   **Expected result:** Each member may report itself as primary
-   (split-brain) while heartbeat is down; reconnect the heartbeat
-   interfaces and confirm the cluster resynchronizes to a single primary
-   within a short interval, demonstrating both the failure mode and FGCP's
-   automatic recovery once heartbeat is restored.
+**Cleanup:**
 
-**Cleanup**
+```text
+config firewall policy
+    delete 10
+end
+config firewall ippool
+    delete lan-snat
+end
+```
 
-- Leave interfaces, routing, VDOMs, and the HA cluster in place; [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)
-  builds firewall policy and VPN configuration on top of this topology. If
-  a shared lab environment requires resetting to single-device state,
-  disable HA (`config system ha` `set mode standalone` `end`) on both
-  members before making further independent changes.
+### Lab 5.4 — Destination NAT with a VIP (Topic: Virtual IPs / DNAT)
+
+**Objective:** Publish an internal server with a Virtual IP.
+
+```text
+config firewall vip
+    edit web-vip
+        set extip 203.0.113.80
+        set extintf port1
+        set mappedip 10.10.10.50
+        set portforward enable
+        set extport 443
+        set mappedport 443
+    next
+end
+config firewall policy
+    edit 20
+        set name inbound-web
+        set srcintf port1
+        set dstintf port2
+        set srcaddr all
+        set dstaddr web-vip
+        set action accept
+        set schedule always
+        set service HTTPS
+    next
+end
+diagnose firewall vip realservers list 2>/dev/null | head
+```
+
+**Expected result:** external `203.0.113.80:443` maps to `10.10.10.50:443`; a policy
+referencing the VIP as destination admits the inbound flow — DNAT publishes an internal
+service on a public address.
+
+**Negative test:** create the VIP but write the policy with `dstaddr all`; the DNAT
+still occurs but every service is exposed, not just HTTPS — the VIP as `dstaddr` plus a
+tight service is what scopes exposure.
+
+**Cleanup:**
+
+```text
+config firewall policy
+    delete 20
+end
+config firewall vip
+    delete web-vip
+end
+```
+
+### Lab 5.5 — Virtual domains (VDOMs) (Topic: VDOMs)
+
+**Objective:** Enable multi-VDOM and create a tenant VDOM.
+
+```text
+config system global
+    set vdom-mode multi-vdom
+end
+config vdom
+    edit tenant-a
+    next
+end
+config global
+    get system status | grep -i "Virtual domain"
+end
+```
+
+**Expected result:** the FortiGate reports multi-VDOM enabled and `tenant-a` exists as
+an isolated virtual firewall with its own interfaces, policies, and routing table —
+VDOMs partition one appliance into independent security domains.
+
+**Negative test:** expect traffic to cross VDOMs automatically; it does not without an
+inter-VDOM link — isolation is the point, and inter-VDOM routing is explicit.
+
+**Cleanup:**
+
+```text
+config vdom
+    delete tenant-a
+end
+config system global
+    set vdom-mode no-vdom
+end
+```
+
+### Lab 5.6 — High availability (Topic: HA)
+
+**Objective:** Form an active-passive HA cluster.
+
+```text
+config system ha
+    set group-name LAB-HA
+    set mode a-p
+    set hbdev port3 50
+    set session-pickup enable
+    set override disable
+    set priority 200
+end
+get system ha status
+diagnose sys ha checksum cluster
+```
+
+**Expected result:** two FortiGates form a cluster; `get system ha status` shows a
+primary and secondary, and the checksum matches across members — active-passive HA
+gives stateful failover with session pickup so flows survive a device failure.
+
+**Negative test:** mismatch the `group-name` or heartbeat interface between units; they
+never form a cluster and both stay primary (split-brain) — matching HA parameters and a
+dedicated heartbeat link are mandatory.
+
+**Cleanup:** `set mode standalone` on the lab unit to leave the cluster.
 
 ## Lab Verification
 

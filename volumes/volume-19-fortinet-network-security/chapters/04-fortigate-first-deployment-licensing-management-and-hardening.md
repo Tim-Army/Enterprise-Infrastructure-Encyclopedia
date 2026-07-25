@@ -320,80 +320,191 @@ resistant) exercise, consistent with [Chapter 01](01-nse-1-cybersecurity-awarene
 
 ## Hands-On Lab
 
-**Objective:** Perform a complete first deployment of FGT-LAB-01: hostname,
-DNS/NTP, FortiCare registration and licensing, management interface
-configuration, and baseline hardening including trusted hosts and password
-policy.
+This chapter carries a topic-level walkthrough lab for **each task under the NSE 4
+objective *Deployment and System Configuration* (20–25% of the FortiOS 7.6
+Administrator exam)** — mapped in the volume README's coverage tables. Every command
+is a real FortiOS 7.6 CLI action; each lab ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.6** — a FortiGate (VM or hardware) on FortiOS
+7.6, console or GUI access, and internet reachability for FortiGuard. **Cost:** none
+beyond the appliance/VM.
 
-- FGT-LAB-01 from [Chapter 03](03-nse-3-security-fabric-and-fortigate-operator-foundations.md), reachable via console or its factory-default
-  management IP, with the `admin` password already set.
-- A free Fortinet Developer Network or FortiCare account for evaluation
-  registration.
-- Outbound internet reachability from the interface that will serve as the
-  device's egress path.
+### Lab 4.1 — Initial deployment: interfaces, DNS, and default route (Topic: Initial configuration)
 
-**Steps**
+**Objective:** Bring a FortiGate online with a WAN, a LAN, DNS, and a default route.
 
-1. Set hostname, timezone, DNS, and NTP as shown in Implementation and
-   Automation.
+```text
+config system interface
+    edit port1
+        set alias WAN
+        set mode static
+        set ip 203.0.113.2 255.255.255.0
+        set allowaccess ping https ssh
+    next
+    edit port2
+        set alias LAN
+        set ip 10.10.10.1 255.255.255.0
+        set allowaccess ping https
+    next
+end
+config system dns
+    set primary 208.91.112.53
+end
+config router static
+    edit 1
+        set gateway 203.0.113.1
+        set device port1
+    next
+end
+execute ping 208.91.112.53
+```
 
-   **Expected result:** `get system status` reflects the new hostname; `diagnose sys ntp status` shows a synchronized state within a few minutes.
+**Expected result:** both interfaces show addresses in `get system interface`, and the
+ping to the DNS server succeeds via the default route — the FortiGate is online with a
+WAN, a LAN, name resolution, and a gateway.
 
-2. Configure the management/LAN interface (`port2` in this lab) with a
-   static IP and restricted `allowaccess`.
+**Negative test:** omit the static default route and ping an internet host; it fails
+(`no route to destination`) — routing, not just an interface IP, is what reaches
+off-subnet.
 
-   **Expected result:** The GUI and SSH remain reachable from the
-   `10.10.10.0/24` subnet only.
+**Cleanup:** restore lab addressing, or `execute factoryreset` on a throwaway VM.
 
-3. Register the device with FortiCare (GUI **Dashboard > Licenses**, or the
-   FortiCare portal) using an evaluation or lab license, and confirm
-   activation:
+### Lab 4.2 — Licensing and FortiGuard registration (Topic: Licensing and FortiGuard)
 
-   ```text
-   FGT-LAB-01 # execute update-now
-   FGT-LAB-01 # diagnose autoupdate versions
-   ```
+**Objective:** Verify FortiGuard entitlement and force an update.
 
-   **Expected result:** FortiGuard content versions populate with current
-   dates rather than showing as unlicensed.
+```text
+get system status | grep -iE "License|Serial"
+diagnose fortiguard-service status 2>/dev/null | head
+execute update-now
+diagnose autoupdate versions | grep -iE "AV|IPS|version|expire" | head
+```
 
-4. Set a new, strong administrator password and enable the password
-   policy exactly as shown in Implementation and Automation.
+**Expected result:** a registered serial, contracts with future expiry, and current
+AV/IPS DB versions after `execute update-now` — FortiGuard licensing is what feeds
+antivirus, IPS, web-filter, and application-control signatures.
 
-5. Configure `trusthost1` for the `admin` account to the lab management
-   subnet only.
+**Negative test:** run security profiles with an expired FortiGuard contract; signature
+DBs stop updating and new threats pass — the license state (this lab) governs
+protection currency.
 
-6. **Negative test:** From a workstation or VM on a different subnet than
-   the one specified in `trusthost1` (or by temporarily adjusting your own
-   workstation's IP outside that range), attempt to reach the GUI or SSH.
+**Cleanup:** none (read-only / update).
 
-   **Expected result:** The connection is refused or times out, confirming
-   `trusthost` enforcement is active. Return your workstation to the
-   permitted subnet before continuing.
+### Lab 4.3 — Harden administrative access (Topic: Administrative access and hardening)
 
-7. Enable FortiToken (or `two-factor email` as a lab substitute) on the
-   `admin` account and confirm the next login prompts for the second
-   factor.
+**Objective:** Lock admin access to trusted hosts, drop HTTP, and shorten idle timeout.
 
-8. Run final validation:
+```text
+config system admin
+    edit admin
+        set trusthost1 10.10.10.0 255.255.255.0
+    next
+end
+config system global
+    set admin-https-redirect enable
+    set admin-scp enable
+    set admintimeout 5
+end
+config system interface
+    edit port1
+        unset allowaccess
+        set allowaccess ping https ssh
+    next
+end
+```
 
-   ```text
-   FGT-LAB-01 # get system status
-   FGT-LAB-01 # show system admin
-   FGT-LAB-01 # show system password-policy
-   ```
+**Expected result:** admin login is refused from any source outside `10.10.10.0/24`,
+plain HTTP admin is gone, and idle sessions expire in 5 minutes — the FortiOS hardening
+baseline for management-plane exposure.
 
-   **Expected result:** Output confirms hostname, licensing state, the
-   hardened `admin` account configuration, and an enabled password policy.
+**Negative test:** leave `allowaccess http telnet` on the WAN interface; the management
+plane is reachable in clear text from the internet — exactly what trusted-host + HTTPS
+hardening removes.
 
-**Cleanup**
+**Cleanup:** widen `trusthost1` back to your admin range if you locked yourself to a
+lab subnet.
 
-- This lab's changes are the intended persistent baseline for Chapters
-  05–09; no rollback is required. If the lab instance will be rebuilt from
-  scratch for a different purpose, record these settings so they can be
-  reapplied quickly.
+### Lab 4.4 — Firmware management (Topic: Firmware lifecycle)
+
+**Objective:** Read the firmware state and validate an upgrade path before applying.
+
+```text
+get system status | grep -i Version
+diagnose sys firmware upgrade-paths 2>/dev/null | head
+execute backup config flash pre-upgrade
+```
+
+**Expected result:** the running build, the supported upgrade path (FortiOS enforces
+stepping through intermediate releases), and a saved pre-upgrade config revision —
+firmware changes follow the vendor upgrade path and are always preceded by a backup.
+
+**Negative test:** jump several major versions in one step; the FortiGate rejects it or
+corrupts the config — skipping the documented upgrade path is unsupported.
+
+**Cleanup:** none (no actual upgrade performed).
+
+### Lab 4.5 — Operation mode and global settings (Topic: NAT vs transparent, system settings)
+
+**Objective:** Read the operation mode and set the hostname/timezone.
+
+```text
+get system settings | grep -i opmode
+config system global
+    set hostname LAB-FGT-01
+    set timezone 04
+end
+get system global | grep -iE "hostname|timezone"
+```
+
+**Expected result:** the mode reported as `nat` (routed, the default) — transparent
+mode makes the FortiGate a bump-in-the-wire L2 device — and the hostname/timezone
+applied, which timestamps every log correctly.
+
+**Negative test:** troubleshoot logs across sites with the timezone left at default;
+event correlation is off by hours — accurate time is a prerequisite for forensics.
+
+**Cleanup:** restore your lab hostname if changed.
+
+### Lab 4.6 — Admin profiles and role-based access (Topic: Administrative roles)
+
+**Objective:** Create a read-only admin profile and account.
+
+```text
+config system accprofile
+    edit read-only
+        set secfabgrp read
+        set ftviewgrp read
+        set sysgrp read
+        set fwgrp read
+        set loggrp read
+    next
+end
+config system admin
+    edit auditor
+        set accprofile read-only
+        set password <set-a-strong-password>
+    next
+end
+```
+
+**Expected result:** the `auditor` account can view configuration and logs but cannot
+change policy — least-privilege RBAC so operators, auditors, and admins get only the
+access their role needs.
+
+**Negative test:** give every operator the `super_admin` profile; any one of them can
+disable security or exfiltrate config — role separation is what this profile enforces.
+
+**Cleanup:**
+
+```text
+config system admin
+    delete auditor
+end
+config system accprofile
+    delete read-only
+end
+```
 
 ## Lab Verification
 

@@ -109,13 +109,75 @@ Knowledge checks:
 
 ## Hands-On Lab
 
-Run one full-length NSE 8-style mock on your strongest track's fabric
-(built on the Chapters 03–09 / Volume XXVI lab host): a partner or script seeds five
-faults across FortiGate, FortiManager/FortiAnalyzer, and the track's
-products, plus two build tasks; work the clock with the verification
-battery, journal every miss, and grade by outcomes. Produce the
-readiness verdict and, if ready, the core-then-specialization schedule
-inside the one-year window.
+This chapter is the **NSE 8 expert practical** — the top of the program, a two-module
+hands-on exam (a **Core** module plus a **Specialization**) that has candidates design,
+build, and troubleshoot an integrated Fortinet solution under time pressure. The labs are
+integrative (they assume fluency with every prior chapter) and close with a **Design
+Exercise** in place of a single command sequence. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
+
+**Shared prerequisites for Labs 15.1–15.2** — a multi-product lab: at least two FortiGates
+(HA + tunnel), FortiManager, FortiAnalyzer, and one track product (FortiWeb, FortiAP, or
+FortiSASE), all on current firmware. **Cost:** none beyond lab resources.
+
+### Lab 15.1 — Integrated build-and-break (Topic: NSE 8 Core practical)
+
+**Objective:** Build a Fabric-wide secured service, then diagnose an injected fault
+end-to-end.
+
+```text
+# Build: HA pair -> ADVPN hub-and-spoke -> UTM inspection -> FortiManager-managed policy
+#        -> FortiAnalyzer logging -> a published app behind ZTNA.
+# Then inject one fault (e.g. a phase-2 selector mismatch on a spoke) and diagnose:
+diagnose vpn tunnel list name <spoke>
+diagnose debug flow filter addr <app-ip>
+diagnose debug flow trace start 20
+diagnose debug enable
+get router info routing-table all
+diagnose sys ha status
+```
+
+**Expected result:** you locate the fault by following the packet — tunnel state → route
+→ policy match → NAT → inspection — and correct it so the service recovers, with
+FortiAnalyzer showing the restored flow. NSE 8 tests exactly this: integrate many products
+and troubleshoot the whole path under time pressure.
+
+**Negative test:** troubleshoot by changing several things at once; you lose track of which
+change fixed (or broke) what — expert practice is one hypothesis, one change, re-test, as
+`diagnose debug flow` guides you.
+
+**Cleanup:** revert the injected fault and tear down lab-only tunnels/policies.
+
+### Lab 15.2 — Design Exercise: multi-site secure architecture (Topic: NSE 8 design)
+
+**Objective:** Produce a defensible design, not a config dump — the NSE 8 design mindset.
+
+> **Scenario.** A retailer has 1 data center, 3 regional hubs, and 200 stores. Stores need
+> resilient internet + secure access to data-center apps; PCI traffic must be segmented and
+> inspected; the SOC needs unified visibility; remote admins need Zero-Trust access.
+
+Work through the design and **write down**:
+
+1. **Topology** — ADVPN hub-and-spoke over dual-underlay SD-WAN; where HA pairs sit
+   (data center, hubs) vs single units (stores); FortiManager ADOM layout for 200 stores.
+2. **Segmentation** — VDOMs or VLAN/zone segmentation for PCI vs general traffic; which
+   policies carry deep inspection and why.
+3. **Security services** — UTM profile strategy (deep inspection where PCI/data flows;
+   certificate inspection elsewhere for performance); IPS/AV/web/DNS placement.
+4. **Visibility** — FortiAnalyzer/FortiSIEM placement, log-rate sizing, ADOM per region.
+5. **Access** — ZTNA/FortiSASE for admins and remote staff; FortiAuthenticator for MFA.
+6. **Scale & lifecycle** — template-driven store provisioning, staged firmware upgrade
+   paths, and the failure modes you designed against (hub loss, underlay brown-out).
+
+**Expected result:** a written design that names the products, explains each trade-off
+(deep vs certificate inspection, VDOM vs zone, HA placement, ADOM structure), and shows how
+the pieces form one coherent Security Fabric — the deliverable NSE 8 actually grades.
+
+**Negative test:** submit a pile of CLI with no rationale; NSE 8 rewards *why* (segmentation
+model, inspection depth, scale strategy), and an unexplained config cannot be evaluated or
+maintained.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 

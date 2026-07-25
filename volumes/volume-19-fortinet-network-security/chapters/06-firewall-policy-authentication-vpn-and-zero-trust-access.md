@@ -406,99 +406,242 @@ this lab's scope and is addressed at a design level only in this chapter.
 
 ## Hands-On Lab
 
-**Objective:** Build outbound and inbound firewall policies completing
-[Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)'s NAT design, configure LDAP and local authentication with a
-user group, establish a site-to-site IPsec VPN to a second FortiGate peer,
-and configure SSL VPN remote access — including a deliberate pre-shared
-key mismatch as a negative test.
+This chapter carries a topic-level walkthrough lab for **each task under the NSE 4
+objectives *Firewall Policies and Authentication* (20–25%) and *VPNs* (10–15%)** —
+mapped in the volume README's coverage tables. Every command is a real FortiOS 7.6 CLI
+action; each lab ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.6** — a FortiGate on FortiOS 7.6 with a WAN and
+LAN interface, a client host, and (for the VPN labs) a peer FortiGate or a remote
+client. **Cost:** none beyond lab resources.
 
-- FGT-LAB-01 with the interfaces, routing, VDOMs, and address/pool objects
-  from [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md).
-- A second FortiGate (physical, VM, or FGT-LAB-02 repurposed from
-  [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)'s HA exercise if HA has been disabled) reachable at
-  `198.51.100.50`, representing "Branch02," configured with a mirrored
-  phase1/phase2 IPsec configuration pointing back to FGT-LAB-01.
-- An LDAP-compatible directory service reachable at `10.10.10.20` for the
-  authentication portion, or substitute local users only if a directory
-  service is not available in your lab.
+### Lab 6.1 — Firewall policy and policy order (Topic: Firewall policies)
 
-**Steps**
+**Objective:** Write an allow policy and observe top-down matching.
 
-1. Create the `HTTPS-8443` custom service object and the two firewall
-   policies (`LAN-to-WAN-Outbound`, `WAN-to-DMZ-WebVIP`) shown in
-   Implementation and Automation.
+```text
+config firewall policy
+    edit 1
+        set name allow-web
+        set srcintf port2
+        set dstintf port1
+        set srcaddr all
+        set dstaddr all
+        set action accept
+        set schedule always
+        set service HTTP HTTPS DNS
+        set nat enable
+        set logtraffic all
+    next
+end
+diagnose firewall iprope lookup 10.10.10.20 5000 8.8.8.8 443 6 port2
+```
 
-   **Expected result:** `diagnose firewall iprope show` confirms both
-   policies are present and reachable in the policy lookup order.
+**Expected result:** the lookup resolves to policy `1` and permits the flow; FortiOS
+evaluates policies **top-down and stops at the first match** — the implicit deny at the
+bottom drops everything unmatched.
 
-2. Confirm outbound NAT is functioning from a LAN client:
+**Negative test:** place a broad `deny all` above `allow-web`; the web policy is never
+reached and traffic is blocked — policy order, not just content, decides the outcome.
 
-   ```text
-   FGT-LAB-01 # execute ping-options source 10.10.10.50
-   FGT-LAB-01 # execute ping 8.8.8.8
-   ```
+**Cleanup:**
 
-   From an actual LAN client (not the FortiGate itself), confirm the
-   client's internet-bound traffic shows a translated source address in
-   the range `203.0.113.30–203.0.113.35` using a session list check:
+```text
+config firewall policy
+    delete 1
+end
+```
 
-   ```text
-   FGT-LAB-01 # get system session list | grep 10.10.10.50
-   ```
+### Lab 6.2 — Firewall objects: addresses, services, schedules (Topic: Firewall objects)
 
-3. Configure the local user, LDAP server, and `VPN-Users` group.
+**Objective:** Build reusable objects and reference them in a policy.
 
-4. Configure the site-to-site IPsec tunnel (`to-Branch02`) and its
-   mirrored bidirectional firewall policies, matching the peer
-   configuration on Branch02.
+```text
+config firewall address
+    edit web-servers
+        set subnet 10.10.10.48 255.255.255.240
+    next
+end
+config firewall service custom
+    edit APP-8443
+        set tcp-portrange 8443
+    next
+end
+config firewall schedule recurring
+    edit business-hours
+        set day monday tuesday wednesday thursday friday
+        set start 08:00
+        set end 18:00
+    next
+end
+```
 
-5. Verify tunnel establishment:
+**Expected result:** an address group, a custom service, and a time schedule usable by
+any policy — objects centralize definitions so a change propagates everywhere they are
+referenced.
 
-   ```text
-   FGT-LAB-01 # diagnose vpn tunnel list
-   ```
+**Negative test:** hard-code IPs and ports directly into dozens of policies; a subnet
+change means editing each one — objects exist precisely to avoid that.
 
-   **Expected result:** The tunnel shows an established phase1 and
-   phase2 security association.
+**Cleanup:** delete the three objects after use.
 
-6. **Negative test:** On FGT-LAB-01 only, temporarily change
-   `psksecret` on the `to-Branch02` phase1-interface to an incorrect
-   value, then attempt to bring the tunnel up (`diagnose vpn ike restart`
-   or trigger traffic toward the remote subnet).
+### Lab 6.3 — Firewall authentication (Topic: Authentication)
 
-   ```text
-   FGT-LAB-01 # diagnose debug application ike -1
-   FGT-LAB-01 # diagnose debug enable
-   ```
+**Objective:** Require user authentication on a policy via a local user group.
 
-   **Expected result:** IKE negotiation fails and debug output explicitly
-   reports a authentication/proposal failure, confirming the pre-shared
-   key mismatch is detectable rather than failing silently. Restore the
-   correct `psksecret` and confirm the tunnel re-establishes.
+```text
+config user local
+    edit alice
+        set type password
+        set passwd <strong-password>
+    next
+end
+config user group
+    edit staff
+        set member alice
+    next
+end
+config firewall policy
+    edit 5
+        set name auth-web
+        set srcintf port2
+        set dstintf port1
+        set srcaddr all
+        set dstaddr all
+        set action accept
+        set schedule always
+        set service HTTP HTTPS
+        set groups staff
+        set nat enable
+    next
+end
+diagnose firewall auth list
+```
 
-7. Configure SSL VPN settings, the `full-access` portal, the
-   authentication rule mapping `VPN-Users` to that portal, and the
-   `SSLVPN-to-LAN` firewall policy.
+**Expected result:** users hitting the policy are challenged; after login `diagnose
+firewall auth list` shows the authenticated session bound to `alice` — identity-based
+policy ties access to who the user is, not just their IP.
 
-8. Connect using FortiClient (or any compatible SSL VPN client) as a
-   member of `VPN-Users`, and confirm the session:
+**Negative test:** expect the policy to match before the user authenticates; unauth
+traffic falls through to the next policy or the implicit deny — the `groups` binding
+gates the match on successful auth.
 
-   ```text
-   FGT-LAB-01 # get vpn ssl monitor
-   ```
+**Cleanup:** delete policy 5, the group, and the user.
 
-   **Expected result:** The connected session appears with the assigned
-   tunnel IP from `SSLVPN_TUNNEL_ADDR1` and the authenticated username.
+### Lab 6.4 — Site-to-site IPsec VPN (Topic: IPsec VPN)
 
-**Cleanup**
+**Objective:** Build a route-based IPsec tunnel to a peer.
 
-- Leave firewall policies, authentication objects, and the SSL VPN
-  configuration in place for [Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md)'s security profile attachment. If
-  the site-to-site VPN peer was a temporary lab device not needed going
-  forward, disable (rather than delete) the `to-Branch02` phase1-interface
-  to preserve the configuration as a reference.
+```text
+config vpn ipsec phase1-interface
+    edit to-branch
+        set interface port1
+        set remote-gw 198.51.100.10
+        set proposal aes256-sha256
+        set psksecret <shared-key>
+    next
+end
+config vpn ipsec phase2-interface
+    edit to-branch-p2
+        set phase1name to-branch
+    next
+end
+config router static
+    edit 100
+        set dst 172.16.20.0 255.255.255.0
+        set device to-branch
+    next
+end
+diagnose vpn tunnel list name to-branch
+```
+
+**Expected result:** phase-1 and phase-2 negotiate, `diagnose vpn tunnel list` shows
+the tunnel `up` with SAs installed, and traffic to `172.16.20.0/24` routes over the
+virtual interface — a route-based IPsec tunnel connects two sites.
+
+**Negative test:** mismatch the pre-shared key or proposal between peers; phase-1 fails
+and the tunnel stays down — both ends must agree on authentication and encryption.
+
+**Cleanup:** delete the static route, phase-2, and phase-1.
+
+### Lab 6.5 — SSL VPN for remote access (Topic: SSL/dial-up VPN)
+
+**Objective:** Enable SSL VPN web/tunnel mode for remote users.
+
+```text
+config vpn ssl settings
+    set servercert Fortinet_Factory
+    set tunnel-ip-pools SSLVPN_TUNNEL_ADDR1
+    set port 10443
+    set source-interface port1
+end
+config firewall policy
+    edit 30
+        set name sslvpn-access
+        set srcintf ssl.root
+        set dstintf port2
+        set srcaddr all
+        set dstaddr all
+        set action accept
+        set schedule always
+        set service ALL
+        set groups staff
+    next
+end
+diagnose vpn ssl list
+```
+
+**Expected result:** remote users reach `https://<wan-ip>:10443`, authenticate, and get
+an IP from the tunnel pool; `diagnose vpn ssl list` shows the active session — SSL VPN
+gives clientless/tunnel remote access without a site-to-site peer.
+
+**Negative test:** enable SSL VPN settings but write no firewall policy from `ssl.root`;
+users authenticate but reach nothing — the policy is what authorizes traffic off the
+tunnel.
+
+**Cleanup:** delete policy 30 and disable SSL VPN settings.
+
+### Lab 6.6 — ZTNA access proxy (Topic: Zero Trust Network Access)
+
+**Objective:** Publish an internal app through a ZTNA access proxy.
+
+```text
+config firewall vip
+    edit ztna-web
+        set type access-proxy
+        set extip 203.0.113.90
+        set extintf port1
+        set server-type https
+        set extport 443
+    next
+end
+config firewall access-proxy
+    edit ztna-web
+        set vip ztna-web
+        config api-gateway
+            edit 1
+                config realservers
+                    edit 1
+                        set ip 10.10.10.50
+                        set port 443
+                    next
+                end
+            next
+        end
+    next
+end
+diagnose firewall access-proxy list 2>/dev/null | head
+```
+
+**Expected result:** the app is reached through the access proxy, which checks device
+posture (FortiClient EMS tags) and identity on every request — ZTNA replaces implicit
+VPN trust with per-session, posture-aware authorization.
+
+**Negative test:** treat ZTNA like a VPN and grant standing network access; that
+reintroduces the flat-trust model ZTNA exists to eliminate — access is per-session and
+re-evaluated.
+
+**Cleanup:** delete the access-proxy and the VIP.
 
 ## Lab Verification
 
