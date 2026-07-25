@@ -377,86 +377,95 @@ racadm get iDRAC.OS-BMC.OSInfo
 
 ## Hands-On Lab
 
-**Objective:** Use iDRAC Direct (or, if physical USB access is
-unavailable in your lab, thoroughly document the procedure as a
-walkthrough) for local access, mount a Virtual Media image from a network
-share, and boot to it via Virtual Console.
+This chapter carries a topic-level walkthrough lab for **each remote-presence task under the
+"System Administration" domain** — virtual console, virtual media, iDRAC Direct, and the iDRAC
+Service Module. Each pairs the GUI/RACADM path with verification. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 5.1–5.4** — a PowerEdge iDRAC 9/10 (virtual console/media need an
+Enterprise/Datacenter license), admin access, an OS ISO for Lab 5.2, and (Lab 5.4) OS access to
+install the iDRAC Service Module. **Cost:** none beyond licensing.
 
-- The lab server configured in Chapters 1 through 4, with physical access
-  for the iDRAC Direct portion of this lab (or willingness to complete
-  that step as a documented walkthrough if physical access is
-  unavailable).
-- A small ISO image suitable for a boot test (a lightweight Linux live
-  image is sufficient and avoids a lengthy install) hosted on an
-  HTTP(S) or CIFS/NFS share reachable from the lab iDRAC's management
-  network.
-- A laptop with a compatible USB port and cable for the iDRAC Direct
-  portion.
-- Python 3.11+ with `requests` installed for the scripted portion.
+### Lab 5.1 — Virtual console (Topic: Remote presence)
 
-**Steps**
+**Objective:** Reach the server's screen/keyboard remotely.
 
-1. Connect your laptop to the server's front iDRAC Direct port and
-   confirm a USB network adapter is detected. Browse to the documented
-   iDRAC Direct address and log in. **Expected result:** you reach the
-   same iDRAC login and dashboard as network access provides, confirming
-   this is the same controller reached over a different physical path.
-2. Disconnect the iDRAC Direct cable and reconnect over your normal
-   management network for the remainder of this lab.
-3. Launch Virtual Console from the GUI. **Expected result:** you see the
-   server's current console output (OS login prompt, BIOS setup, or POST,
-   depending on current host state).
-4. From your workstation, mount your test ISO as Virtual Media using the
-   `idrac_mount_and_boot.py` script from the Implementation and
-   Automation section:
+```bash
+racadm get iDRAC.VirtualConsole.Enable
+racadm set iDRAC.VirtualConsole.Enable Enabled
+racadm set iDRAC.VirtualConsole.MaxSessions 2
+# GUI: Dashboard > Virtual Console > Launch (HTML5) to see POST/BIOS/OS console remotely.
+```
 
-   ```bash
-   python3 idrac_mount_and_boot.py <idrac-ip> root '<password>' \
-     https://10.0.0.60/images/test-live.iso
-   ```
+**Expected result:** the virtual console launches to the live server screen (BIOS, boot, OS) with
+keyboard/mouse — virtual console is KVM-over-IP, letting you operate a server with no monitor as if
+at the rack, essential for OS install, BIOS entry, and out-of-band troubleshooting.
 
-   **Expected result:** the script completes without error; within a
-   short time, the Virtual Console window shows the server restarting and
-   booting from the mounted image rather than its normal boot device.
-5. Confirm virtual media state via RACADM:
+**Negative test:** try to fix a server stuck at a BIOS prompt over SSH-to-OS; there is no OS yet —
+virtual console is the only way to interact with pre-boot/hung states remotely.
 
-   ```bash
-   racadm get iDRAC.VirtualMedia
-   ```
+**Cleanup:** none (leave virtual console enabled).
 
-   **Expected result:** the CD/DVD virtual media slot reports as attached
-   with the mounted image path.
-6. **Negative test:** attempt to mount an image path that does not exist
-   on the share:
+### Lab 5.2 — Virtual media (Topic: Remote media)
 
-   ```bash
-   python3 idrac_mount_and_boot.py <idrac-ip> root '<password>' \
-     https://10.0.0.60/images/does-not-exist.iso
-   ```
+**Objective:** Boot from a remotely-attached ISO.
 
-   **Expected result:** the insert-media call fails with an error
-   (typically a Redfish extended-info error indicating the image could
-   not be retrieved), and the server does not boot from an empty/invalid
-   mount — confirming the mount step fails safely rather than booting to
-   an unpredictable state.
-7. Eject the virtual media and restore normal boot order:
+```bash
+racadm remoteimage -c -l //share/user:pass@/isos/ubuntu.iso    # attach an ISO as virtual media
+racadm remoteimage -s                                          # status
+racadm set iDRAC.ServerBoot.FirstBootDevice VCD-DVD            # boot once from virtual CD
+racadm serveraction powercycle
+```
 
-   ```bash
-   curl -s -k -u root:'<password>' -X POST \
-     -H "Content-Type: application/json" -d '{}' \
-     https://<idrac-ip>/redfish/v1/Managers/iDRAC.Embedded.1/VirtualMedia/CD/Actions/VirtualMedia.EjectMedia
-   racadm set iDRAC.ServerBoot.BootOnce Disabled
-   ```
+**Expected result:** the ISO attaches as a virtual optical drive and the server boots from it —
+virtual media presents a remote ISO/image to the server as local media, so you can install an OS or
+run diagnostics on a server anywhere without physically inserting media.
 
-**Cleanup**
+**Negative test:** plan an OS reinstall on a remote server with no virtual media/console; you must
+send someone to the rack with a USB stick — virtual media is what makes remote provisioning
+possible.
 
-- Confirm Virtual Media is ejected (step 7) so a subsequent normal reboot
-  does not unexpectedly boot to test media again.
-- Power the host back to its prior state (off, if it was off before this
-  lab; running its normal OS, if it was running one) to leave the lab
-  server in the same condition later chapters expect.
+**Cleanup:** `racadm remoteimage -d` (detach) and restore the normal boot order.
+
+### Lab 5.3 — iDRAC Direct and connection view (Topic: Local access)
+
+**Objective:** Use the front-panel USB management path.
+
+```bash
+racadm get iDRAC.OS-BMC          # OS-to-iDRAC pass-through state
+# iDRAC Direct: connect a laptop to the front micro-USB port -> browse to the iDRAC GUI locally,
+#   useful when the management network is down. Confirm the interface responds.
+racadm getsysinfo | grep -i "iDRAC"
+```
+
+**Expected result:** iDRAC Direct provides a laptop-to-front-USB path to the iDRAC GUI even with no
+management network — it is the local, at-the-rack access method for initial setup or when the
+out-of-band network is unreachable, complementing the network paths.
+
+**Negative test:** assume the only way to reach a network-isolated iDRAC is the LAN; iDRAC Direct
+(front USB) reaches it locally — knowing this path avoids a dead-end when the network is down.
+
+**Cleanup:** none.
+
+### Lab 5.4 — iDRAC Service Module (Topic: OS integration)
+
+**Objective:** Bridge the OS and iDRAC with iSM.
+
+```bash
+# In the OS (Linux example): install the iDRAC Service Module, then verify from iDRAC:
+#   sudo apt install dcism   (or the Dell iSM package for the distro)
+racadm get iDRAC.ServiceModule.ServiceModuleEnable
+racadm get iDRAC.ServiceModule           # OS info, in-band alerts, WMI/iSM features
+```
+
+**Expected result:** iSM is enabled and the iDRAC shows OS hostname/info and richer OS-level
+telemetry — the iDRAC Service Module runs in the OS to feed the iDRAC OS information, in-band alerts,
+auto-recovery, and single-command RACADM from the OS, deepening integration beyond pure out-of-band.
+
+**Negative test:** expect OS hostname/IP and in-band watchdog features in the iDRAC with no iSM
+installed; that data comes from the module — iSM is what bridges OS-level detail to the controller.
+
+**Cleanup:** leave iSM installed (it is beneficial in operation).
 
 ## Lab Verification
 

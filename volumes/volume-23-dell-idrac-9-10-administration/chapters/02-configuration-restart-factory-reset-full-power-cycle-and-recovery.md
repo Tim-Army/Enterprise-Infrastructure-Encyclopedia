@@ -339,92 +339,105 @@ some smart PDUs perform, which may not clear the same hardware states.
 
 ## Hands-On Lab
 
-**Objective:** Export a known-good iDRAC configuration baseline, perform a
-non-disruptive controller restart, and validate recovery behavior —
-without performing a factory reset or full power cycle against shared
-lab hardware, both of which carry real disruption risk and are described
-here as procedures to understand rather than to execute against equipment
-you do not control.
+This chapter carries a topic-level walkthrough lab for **each recovery task under the
+"Troubleshooting" domain** — iDRAC reset, server power control, configuration/factory reset, and
+part-replacement recovery. Every step is a runnable RACADM/Redfish action. Each ends **`**Lab
+verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.4** — a PowerEdge server with iDRAC 9/10 you can safely
+power-cycle (lab server, not production), admin credentials, and RACADM/`curl`. **Cost:** none.
 
-- Network access to a lab iDRAC (the unit configured in [Chapter 1](01-architecture-generations-licensing-and-first-access.md)'s lab is
-  suitable), with credentials from that chapter.
-- A network share (CIFS or NFS) reachable from the iDRAC, or willingness
-  to use local-file export/import via the GUI if no share is available.
-- An SSH client and, optionally, `curl` and Python 3.11+ with `requests`
-  for the Redfish variant.
-- **Safety note:** this lab intentionally stops short of factory reset and
-  full power cycle procedures. Those operations are explained in this
-  chapter for understanding and are appropriate to rehearse only against
-  hardware you are explicitly authorized to disrupt, ideally during a
-  planned maintenance window.
+### Lab 2.1 — Reset the iDRAC (Topic: Controller recovery)
 
-**Steps**
+**Objective:** Reboot the management controller without touching the host.
 
-1. Export the full iDRAC configuration to your network share:
+```bash
+racadm racreset soft
+# wait ~2 minutes for the iDRAC to come back, then:
+racadm getsysinfo | grep -i "iDRAC"
+```
 
-   ```bash
-   racadm systemconfig export -t xml -f lab-baseline.xml \
-     -l //<share-ip>/scp-share -u <svc-user> -p '<password>'
-   ```
+**Expected result:** the iDRAC reboots and returns while the **host keeps running** — `racadm
+racreset` restarts only the management controller (out-of-band), a safe first step for an
+unresponsive iDRAC that does not disrupt the running operating system.
 
-   **Expected result:** the command returns a job ID; poll it with
-   `racadm jobqueue view -i <job-id>` until it reports `Completed`.
-2. Confirm the exported file exists on the share and open it to identify
-   at least three `iDRAC.*` attribute values captured in the export
-   (for example, the current IPv4 address and NIC selection).
-3. Export only the iDRAC component group locally, without a network
-   share, as a comparison:
+**Negative test:** power-cycle the whole server to "fix" a hung iDRAC; you needlessly take down the
+running OS — an iDRAC reset (`racreset`) recovers the controller alone, so try it before any host
+action.
 
-   ```bash
-   racadm get -f idrac-only.xml -t xml -c idrac
-   ```
+**Cleanup:** none.
 
-   **Expected result:** a smaller XML document scoped to iDRAC settings
-   only, confirming component-group scoping works as described.
-4. Restart the iDRAC controller:
+### Lab 2.2 — Server power control (Topic: Power actions)
 
-   ```bash
-   racadm racreset soft
-   ```
+**Objective:** Control host power gracefully and forcibly.
 
-   **Expected result:** your SSH session drops; the GUI and API become
-   unreachable for roughly one to two minutes, then return to normal
-   without any change to host OS uptime (if an OS is installed and
-   running, confirm it never rebooted).
-5. Once the controller returns, log in again and confirm the
-   configuration is unchanged from before the restart — compare a known
-   attribute value (for example, the IPv4 address) against the baseline
-   exported in step 1.
-6. **Negative test:** attempt an SCP import targeting a component group
-   your lab hardware does not have (for example, importing a RAID
-   component group exported from a server with a PERC controller onto a
-   unit without one, if you have access to compare two different lab
-   units):
+```bash
+racadm serveraction powerstatus
+racadm serveraction graceshutdown        # ask the OS to shut down cleanly
+# racadm serveraction powerup             # power on
+# racadm serveraction powercycle          # forced cold reboot (last resort)
+```
 
-   ```bash
-   racadm systemconfig import -t xml -f lab-baseline.xml \
-     -l //<share-ip>/scp-share -u <svc-user> -p '<password>' \
-     --target raid
-   ```
+Redfish equivalent:
 
-   **Expected result:** the job reports a component-level failure for the
-   unsupported hardware rather than succeeding silently, demonstrating
-   that SCP import validates against actual present hardware. If you do
-   not have a second, dissimilar unit available, review a sample failure
-   message in Dell's SCP troubleshooting reference instead and note what
-   the expected failure signature looks like.
-7. Retain `lab-baseline.xml` for reuse in later chapters' labs in this
-   volume, where you will import specific component groups after making
-   deliberate configuration changes.
+```bash
+curl -sk -u root:<password> -X POST https://<idrac-ip>/redfish/v1/Systems/System.Embedded.1/Actions/ComputerSystem.Reset \
+  -H "Content-Type: application/json" -d '{"ResetType":"GracefulShutdown"}'
+```
 
-**Cleanup**
+**Expected result:** `graceshutdown` signals the OS to shut down cleanly; power status reflects the
+change — iDRAC power control offers graceful (OS-cooperative) and forced (`powercycle`/`hardreset`)
+actions, and the graceful path avoids data loss when the OS is responsive.
 
-- No destructive changes were made in this lab; no rollback is required.
-- If the network share used for export is a shared/temporary resource,
-  remove `lab-baseline.xml` and `idrac-only.xml` from it once you have
-  copied them to your own working storage for reuse.
+**Negative test:** use `powercycle` (forced) on a healthy running server; you risk filesystem
+damage and lost work — prefer `graceshutdown`/graceful restart, reserving forced actions for a hung
+host.
+
+**Cleanup:** power the server back to its intended state.
+
+### Lab 2.3 — Configuration and factory reset (Topic: Reset)
+
+**Objective:** Return the iDRAC to default configuration.
+
+```bash
+racadm get iDRAC.IPv4.Address              # note current config before resetting
+# Reset iDRAC config to defaults (keeps firmware), preserving/resetting network as chosen:
+racadm racresetcfg
+# Full factory default (iDRAC + optionally other components) is also available in the GUI:
+#   iDRAC Settings > Reset iDRAC to Default Settings / Lifecycle Controller > Factory Default
+```
+
+**Expected result:** `racresetcfg` clears iDRAC configuration back to defaults (users, network,
+settings) while keeping firmware — a configuration reset is the recovery for a mis-configured or
+being-repurposed controller; a full factory reset via the GUI/LC goes further to hardware defaults.
+
+**Negative test:** run `racresetcfg` on a remote production iDRAC without preserving the network
+settings; you lose management connectivity to it — understand which settings a reset clears
+(especially network) before running it remotely.
+
+**Cleanup:** reconfigure the iDRAC (network/users) after the lab reset.
+
+### Lab 2.4 — Part-replacement recovery (Topic: Hardware recovery)
+
+**Objective:** Reason through Easy Restore and part replacement.
+
+```bash
+racadm get LifecycleController.LCAttributes.PartConfigurationUpdate
+racadm get LifecycleController.LCAttributes.CollectSystemInventoryOnRestart
+# On motherboard/part replacement, the Lifecycle Controller's Easy Restore/Part Replacement
+#   restores service tag, config, and firmware to the new part automatically when enabled.
+```
+
+**Expected result:** the LC attributes show Part Configuration Update and inventory-on-restart
+enabled, so a replaced part (motherboard, NIC, PSU) is auto-configured to match the old one — the
+Lifecycle Controller stores system config/firmware and reapplies it on part replacement (Easy
+Restore), minimizing manual reconfiguration after hardware service.
+
+**Negative test:** replace a motherboard with Part Replacement disabled; the service tag and
+firmware/config do not carry over and must be restored by hand — the LC's Easy Restore is what
+automates recovery, but only if enabled beforehand.
+
+**Cleanup:** none (leave LC attributes enabled).
 
 ## Lab Verification
 

@@ -395,78 +395,96 @@ releases within both iDRAC9 and iDRAC10.
 
 ## Hands-On Lab
 
-**Objective:** Perform first access to a PowerEdge server's iDRAC over the
-network, validate its identity and firmware from both RACADM and Redfish,
-and confirm license state — producing a documented, validated baseline
-before any further configuration.
+This chapter carries a topic-level walkthrough lab for **each first-access task under the
+PowerEdge "Server Management" domain** — first login and licensing, generation identification,
+GUI/SSH access, and the Redfish API. iDRAC is driven by its web GUI, the **RACADM** CLI, and the
+**Redfish** REST API; these labs use all three. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 1.1–1.4** — a PowerEdge server with iDRAC 9 or 10 reachable on
+the management network, admin credentials, and a workstation with an SSH client, a browser, and
+`curl`. Where no hardware exists, Dell's iDRAC simulator or a lab server is required — iDRAC
+tasks are hardware-specific. **Cost:** none (base iDRAC is included; some features need iDRAC
+Enterprise/Datacenter licensing).
 
-- One PowerEdge server (physical, or an iDRAC-capable lab/virtual lab
-  environment) with iDRAC9 or iDRAC10, connected to AC power and to a
-  network segment reachable from your workstation.
-- The server's information tag or system documentation recording the
-  factory-default iDRAC username and password.
-- A workstation with a modern browser, an SSH client, and Python 3.11+
-  with the `requests` package installed (`pip install requests`).
-- No production credentials or production network connectivity are
-  required for this lab.
+### Lab 1.1 — First access and licensing (Topic: First access)
 
-**Steps**
+**Objective:** Log in, read system identity, and confirm the license.
 
-1. Record the service tag, iDRAC MAC address, and factory-default
-   username/password from the information tag before racking or powering
-   on the unit.
-2. Power the server on to standby and determine the iDRAC's assigned IP
-   address (LCD panel, DHCP lease table, or iDRAC Direct).
-3. Browse to `https://<idrac-ip>/`, accept the certificate warning, and
-   log in with the factory-default credentials. **Expected result:** the
-   iDRAC prompts you to change the password before proceeding further.
-4. Set a new password meeting the complexity requirements shown. **Expected
-   result:** you land on the iDRAC dashboard showing system health,
-   power state, and basic inventory.
-5. From your workstation, SSH to the iDRAC and run:
+```bash
+ssh <idrac-ip> -l root                      # default password on the service tag / factory label
+racadm getsysinfo | head -20
+racadm license view
+```
 
-   ```bash
-   ssh root@<idrac-ip>
-   racadm getsysinfo
-   racadm getversion
-   racadm get iDRAC.License
-   ```
+**Expected result:** `getsysinfo` prints the model, service tag, iDRAC/BIOS versions, and
+addresses; `license view` shows the installed license (Basic/Express/Enterprise/Datacenter) — the
+iDRAC is the out-of-band controller present on every PowerEdge, and the license tier gates
+advanced features (virtual console, lifecycle automation) used later.
 
-   **Expected result:** the service tag, iDRAC firmware version, and
-   current license tier print without error.
-6. Save the `idrac_first_boot_check.py` script from the Implementation and
-   Automation section and run it with your new credentials:
+**Negative test:** keep the factory-default iDRAC credentials in production; the management
+controller is trivially accessible — change the default password at first access (a first, and
+exam-relevant, hardening step).
 
-   ```bash
-   python3 idrac_first_boot_check.py <idrac-ip> root '<your-new-password>'
-   ```
+**Cleanup:** none (keep the changed password).
 
-   **Expected result:** the script prints the iDRAC model, firmware
-   version, service tag, and power state, confirming Redfish is reachable
-   and authenticated correctly.
-7. **Negative test:** re-run the script with the old factory-default
-   password:
+### Lab 1.2 — Identify the iDRAC generation (Topic: Generations)
 
-   ```bash
-   python3 idrac_first_boot_check.py <idrac-ip> root '<old-default-password>'
-   ```
+**Objective:** Determine iDRAC9 vs iDRAC10 and firmware level.
 
-   **Expected result:** the script raises an HTTP error from
-   `resp.raise_for_status()` (HTTP 401), confirming the old credential no
-   longer authenticates after the change in step 4.
-8. Document the service tag, iDRAC MAC address, iDRAC generation
-   (Model field), firmware version, and license tier in your bring-up
-   record.
+```bash
+racadm getversion
+racadm get iDRAC.Info
+```
 
-**Cleanup**
+**Expected result:** the iDRAC firmware version and generation, plus BIOS and Lifecycle Controller
+versions — iDRAC generations differ in UI, Redfish coverage, and features (iDRAC10 on the newest
+PowerEdge is the basis of the current Operate v2 training), so identifying the generation tells
+you which capabilities and syntax apply.
 
-- If this server will be used for later chapters' labs in this volume,
-  leave it racked, powered, and network-reachable, and retain the new
-  password securely for reuse.
-- Otherwise, no further cleanup is required — this lab makes no
-  destructive configuration changes.
+**Negative test:** apply an iDRAC9-only RACADM object path on iDRAC10 (or vice versa); some objects
+were renamed/added across generations — confirm the generation before scripting against it.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.3 — Web GUI and SSH access (Topic: Management interfaces)
+
+**Objective:** Confirm both interactive management paths.
+
+```bash
+# SSH (RACADM shell):
+ssh <idrac-ip> -l root -C "racadm getsysinfo | grep -i 'System Model'"
+# Web GUI: browse to https://<idrac-ip> and confirm the dashboard, then note where
+#   Virtual Console, Storage, and Firmware Update live for later chapters.
+```
+
+**Expected result:** the SSH one-shot returns the model and the GUI dashboard loads — iDRAC offers
+a full web GUI and an SSH-accessible RACADM shell (plus Redfish), so you can drive it interactively
+or by script; knowing where each function lives in the GUI is exam-relevant.
+
+**Negative test:** rely on the GUI alone for a fleet task; it does not scale — the CLI/API paths
+(RACADM, Redfish) are what make iDRAC automatable across many servers.
+
+**Cleanup:** none.
+
+### Lab 1.4 — First Redfish query (Topic: Redfish API)
+
+**Objective:** Read the standards-based management API.
+
+```bash
+curl -sk -u root:<password> https://<idrac-ip>/redfish/v1/ | python3 -m json.tool | head
+curl -sk -u root:<password> https://<idrac-ip>/redfish/v1/Systems/System.Embedded.1 | \
+  python3 -c "import json,sys; d=json.load(sys.stdin); print(d['Model'], d['PowerState'], d['Status'])"
+```
+
+**Expected result:** the Redfish service root lists resource collections, and the system resource
+returns model, power state, and health — Redfish is the DMTF-standard REST API iDRAC implements, so
+the same tooling works across vendors; it is the modern automation surface alongside RACADM.
+
+**Negative test:** call a Redfish resource with no/invalid credentials; it returns 401 — Redfish is
+authenticated per request (basic auth or a session token, Chapter 09), not open.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

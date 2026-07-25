@@ -354,100 +354,99 @@ if __name__ == "__main__":
 
 ## Hands-On Lab
 
-**Objective:** Enumerate storage controllers and physical disks, create
-and delete a test virtual disk, and configure a hot spare — using lab
-hardware or spare drives you are explicitly authorized to reconfigure,
-since virtual disk creation/deletion is destructive to any data present.
+This chapter carries a topic-level walkthrough lab for **each storage task under the "Server
+Management" domain** — storage inventory, RAID virtual-disk creation, the BOSS boot device, and
+array maintenance. Every step is a runnable RACADM action. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.4** — a PowerEdge iDRAC 9/10 with a PERC RAID controller and
+physical disks (and ideally a BOSS card), admin RACADM access. **Safety:** creating/deleting
+virtual disks destroys data — use lab hardware. **Cost:** none.
 
-- The lab server configured in Chapters 1 through 6, with a PERC
-  controller and at least four unused/spare physical disks (no existing
-  data you need to preserve on them) or a virtual lab environment that
-  simulates storage enumeration.
-- **Safety note:** confirm explicitly, before running any command in this
-  lab, that the physical disks or slots you target hold no data you need.
-  Virtual disk creation and deletion are effectively irreversible for any
-  existing data.
-- An SSH client and Python 3.11+ with `requests` installed.
+### Lab 7.1 — Storage inventory (Topic: Storage discovery)
 
-**Steps**
+**Objective:** Enumerate controllers, disks, and virtual disks.
 
-1. Enumerate available controllers and physical disks:
+```bash
+racadm storage get controllers
+racadm storage get pdisks -o | head -30
+racadm storage get vdisks -o
+```
 
-   ```bash
-   racadm storage get controllers
-   racadm storage get pdisks -o -c RAID.Integrated.1-1
-   ```
+**Expected result:** the PERC controller(s), physical disks (with size, type, state), and any
+existing virtual disks — iDRAC inventories the entire storage subsystem out-of-band, so you plan and
+verify RAID from the controller without booting into a controller BIOS.
 
-   **Expected result:** a list of physical disk IDs, states (should show
-   Ready or Online for available spares), and sizes.
-2. Create a RAID 1 test virtual disk using two confirmed-spare disks:
+**Negative test:** plan a RAID build from assumption about which disks are present; a since-pulled
+or failed disk mis-targets the build — inventory first so the configuration matches the actual
+hardware.
 
-   ```bash
-   racadm storage createvd:RAID.Integrated.1-1 \
-     -rl r1 \
-     -pdkey Disk.Bay.0:Enclosure.Internal.0-1:RAID.Integrated.1-1,Disk.Bay.1:Enclosure.Internal.0-1:RAID.Integrated.1-1 \
-     -name lab-test-vd
-   ```
+**Cleanup:** none (read-only).
 
-   **Expected result:** a job ID is returned; poll it with
-   `racadm jobqueue view -i <job-id>` until it reports `Completed`.
-3. Confirm the virtual disk exists and is healthy:
+### Lab 7.2 — Create a RAID virtual disk (Topic: RAID configuration)
 
-   ```bash
-   racadm storage get vdisks -o -c RAID.Integrated.1-1
-   ```
+**Objective:** Build and apply a virtual disk.
 
-   **Expected result:** `lab-test-vd` appears with state `Ready`/`Online`
-   and RAID level `RAID-1`.
-4. Assign a third spare disk as a dedicated hot spare for the test virtual
-   disk:
+```bash
+racadm storage createvd:RAID.Integrated.1-1 -rl r1 \
+  -pdkey:Disk.Bay.0:Enclosure.Internal.0-1:RAID.Integrated.1-1,Disk.Bay.1:Enclosure.Internal.0-1:RAID.Integrated.1-1
+racadm jobqueue create RAID.Integrated.1-1 -s TIME_NOW      # schedule the pending config as a job
+racadm jobqueue view
+```
 
-   ```bash
-   racadm storage hotspare:Disk.Bay.2:Enclosure.Internal.0-1:RAID.Integrated.1-1 \
-     -assign dedicated -vdkey Disk.Virtual.0:RAID.Integrated.1-1
-   ```
+**Expected result:** a pending RAID-1 virtual disk is created and applied by a config job — iDRAC
+stages storage changes as **pending**, then a job commits them (immediately or at next reboot),
+which is how RAID is built out-of-band and repeatably; RAID-1 mirrors two disks for redundancy.
 
-   **Expected result:** the disk's role changes to `Dedicated Hot Spare`
-   in subsequent `storage get pdisks` output.
-5. Run the `idrac_storage_health_check.py` script from the Implementation
-   and Automation section to confirm a clean bill of health:
+**Negative test:** create a single-disk RAID-0 for data you cannot lose; one disk failure destroys
+it — choose a redundant level (RAID-1/5/6/10) for data that must survive a drive failure.
 
-   ```bash
-   python3 idrac_storage_health_check.py <idrac-ip> root '<password>'
-   ```
+**Cleanup:** `racadm storage deletevd:Disk.Virtual.0:RAID.Integrated.1-1` + a job to apply, on lab
+hardware only.
 
-   **Expected result:** no drives are flagged, confirming a healthy
-   baseline before the negative test.
-6. **Negative test:** attempt to delete the virtual disk while
-   deliberately referencing an incorrect (non-existent) disk identifier,
-   to confirm the platform validates targets rather than silently
-   accepting an invalid one:
+### Lab 7.3 — BOSS boot device (Topic: Boot device)
 
-   ```bash
-   racadm storage deletevd:Disk.Virtual.99:RAID.Integrated.1-1
-   ```
+**Objective:** Inspect the boot-optimized storage.
 
-   **Expected result:** the command returns an error indicating the
-   target does not exist, rather than succeeding or silently no-op'ing.
-7. Delete the actual test virtual disk to complete the exercise:
+```bash
+racadm storage get controllers | grep -i BOSS
+racadm storage get vdisks -o | grep -iA3 BOSS 2>/dev/null || \
+  racadm get BIOS.BiosBootSettings
+```
 
-   ```bash
-   racadm storage deletevd:Disk.Virtual.0:RAID.Integrated.1-1
-   ```
+**Expected result:** the BOSS controller and its mirrored M.2 boot volume (or the boot settings) —
+the **BOSS** card provides a dedicated, mirrored M.2 device for the OS/hypervisor boot volume,
+separating boot media from the data RAID so data drives are fully available to workloads.
 
-   **Expected result:** the job completes and `lab-test-vd` no longer
-   appears in `storage get vdisks` output.
+**Negative test:** install the hypervisor onto the data array instead of BOSS; you consume data
+capacity and couple boot to data-array maintenance — BOSS exists to isolate the boot device.
 
-**Cleanup**
+**Cleanup:** none (read-only).
 
-- Release the hot spare assignment if it persisted past the virtual disk
-  deletion (`racadm storage get pdisks` to confirm current role; some
-  firmware automatically releases a dedicated spare when its associated
-  virtual disk is deleted, some do not).
-- Confirm all disks used in this lab return to an unassigned/Ready state
-  before considering the lab complete.
+### Lab 7.4 — Array maintenance (Topic: Storage maintenance)
+
+**Objective:** Handle a failed disk and hot spare.
+
+```bash
+racadm storage get pdisks -o | grep -iE "state|Failed|Online|Ready"
+# Assign a global hot spare so a rebuild starts automatically on failure:
+racadm storage hotspare:Disk.Bay.3:Enclosure.Internal.0-1:RAID.Integrated.1-1 -assign yes -type ghs
+racadm jobqueue create RAID.Integrated.1-1 -s TIME_NOW
+# Blink a drive's identify LED to locate it physically:
+racadm storage blink:Disk.Bay.0:Enclosure.Internal.0-1:RAID.Integrated.1-1
+```
+
+**Expected result:** a global hot spare is assigned (so a failed member auto-rebuilds) and a
+drive's LED blinks for physical identification — storage maintenance covers replacing failed disks,
+hot-spare policy, and locating drives; a hot spare shrinks the exposure window between failure and
+rebuild.
+
+**Negative test:** run a redundant array with no hot spare; after one disk fails the array is
+degraded until someone manually swaps a drive — a hot spare starts the rebuild immediately,
+narrowing the risk window.
+
+**Cleanup:** `racadm storage blink:... -stop` (stop the identify LED); reverse the lab hotspare assignment if
+needed.
 
 ## Lab Verification
 

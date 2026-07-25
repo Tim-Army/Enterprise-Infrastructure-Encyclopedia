@@ -379,90 +379,98 @@ racadm techsupreport collect -t idrac,raidcontroller,systeminfo \
 
 ## Hands-On Lab
 
-**Objective:** Configure an alert destination, trigger a test alert to
-validate the pipeline end to end, review the Lifecycle Log, and generate
-a Tech Support Report.
+This chapter carries a topic-level walkthrough lab for **each task under the "Server Monitoring"
+and "Troubleshooting" domains** — hardware health, power, thermal, and logs with support
+collection. Every step is a runnable RACADM/Redfish action. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.4** — a PowerEdge iDRAC 9/10 with admin access and
+RACADM/`curl`. **Cost:** none.
 
-- The lab server configured in Chapters 1 through 5, network-reachable.
-- A reachable destination for at least one alert channel: an SNMP trap
-  receiver, an SMTP relay, or an HTTP(S) endpoint capable of receiving a
-  Redfish event POST (a simple local listener script is sufficient for
-  this lab).
-- A network share (or local export via GUI) with adequate free space for
-  a TSR bundle.
-- Python 3.11+ with `requests` installed.
+### Lab 6.1 — Hardware health and sensors (Topic: Health monitoring)
 
-**Steps**
+**Objective:** Read overall and per-subsystem health.
 
-1. Configure an email alert destination (or SNMP, depending on what your
-   lab environment provides):
+```bash
+racadm getsensorinfo | head -30
+racadm get System.ServerOS
+curl -sk -u root:<password> https://<idrac-ip>/redfish/v1/Systems/System.Embedded.1 | \
+  python3 -c "import json,sys; d=json.load(sys.stdin); print('Health:', d['Status'])"
+```
 
-   ```bash
-   racadm set iDRAC.EmailAlert.1.Address lab-alerts@lab.example.com
-   racadm set iDRAC.EmailAlert.1.Enable Enabled
-   racadm set iDRAC.RemoteHosts.SMTPServerIPAddress <your-lab-smtp-relay>
-   ```
+**Expected result:** sensor readings (fans, temps, voltages, intrusion) and an overall health
+roll-up — iDRAC continuously monitors every subsystem and rolls it into a single health status, so
+one query tells you whether a server is OK or which component is degraded.
 
-2. Send a test alert:
+**Negative test:** judge server health from "it's powered on"; a predictive drive failure or a
+failed redundant PSU shows only in the sensor/health data — the monitoring readout is what surfaces
+degradation before an outage.
 
-   ```bash
-   racadm testemail -i 1
-   ```
+**Cleanup:** none (read-only).
 
-   **Expected result:** the configured destination receives a test
-   message within a few minutes, confirming the alerting pipeline works
-   end to end rather than only appearing correctly configured.
-3. Review the Lifecycle Log for the test-alert event you just generated:
+### Lab 6.2 — Power monitoring and capping (Topic: Power)
 
-   ```bash
-   racadm lclog view | tail -20
-   ```
+**Objective:** Read consumption and set a power cap.
 
-   **Expected result:** an entry corresponding to the test alert appears
-   with a recent timestamp, confirming Lifecycle Log capture of
-   administrative/alerting actions, not only hardware sensor events.
-4. Run the `idrac_recent_events.py` script from the Implementation and
-   Automation section:
+```bash
+racadm get System.Power
+racadm get System.Power.Cap
+racadm set System.Power.Cap.Enable Enabled
+racadm set System.Power.Cap.Watts 400
+racadm get System.Power.Cap.Watts
+```
 
-   ```bash
-   python3 idrac_recent_events.py <idrac-ip> root '<password>'
-   ```
+**Expected result:** current/peak power consumption and PSU redundancy, plus an enforced 400 W cap
+— iDRAC reports real-time power draw and can cap it, which protects circuits, enables rack-density
+planning, and supports data-center power budgeting.
 
-   **Expected result:** the script prints the recent entry count and
-   flags any Critical-severity entries (none expected in a healthy lab
-   unit, which is itself a useful confirmation).
-5. Generate a Tech Support Report scoped to iDRAC and system information
-   only (a smaller, faster bundle appropriate for this lab):
+**Negative test:** rack servers to a circuit's nameplate maximum with no power capping/monitoring;
+a load spike trips the breaker — power monitoring and caps are what keep draw within the circuit's
+safe budget.
 
-   ```bash
-   racadm techsupreport collect -t idrac,systeminfo \
-     -l //<share-ip>/tsr-share -u <svc-user> -p '<password>'
-   ```
+**Cleanup:** `racadm set System.Power.Cap.Enable Disabled` if set only for the lab.
 
-   **Expected result:** the job completes and a TSR bundle file appears
-   on the target share.
-6. **Negative test:** attempt `testemail` with the SMTP relay address
-   intentionally set to an unreachable address:
+### Lab 6.3 — Thermal monitoring (Topic: Thermal)
 
-   ```bash
-   racadm set iDRAC.RemoteHosts.SMTPServerIPAddress 10.0.0.254
-   racadm testemail -i 1
-   ```
+**Objective:** Read temperatures and fan/thermal policy.
 
-   **Expected result:** the test fails with a delivery error rather than
-   silently reporting success, confirming the pipeline surfaces delivery
-   failures rather than masking them. Restore the correct SMTP relay
-   address afterward.
+```bash
+racadm get System.ThermalSettings
+racadm getsensorinfo | grep -iE "temp|fan"
+curl -sk -u root:<password> https://<idrac-ip>/redfish/v1/Chassis/System.Embedded.1/Thermal | \
+  python3 -c "import json,sys; d=json.load(sys.stdin); print('fans:', len(d.get('Fans',[])), 'temps:', len(d.get('Temperatures',[])))"
+```
 
-**Cleanup**
+**Expected result:** inlet/component temperatures, fan speeds, and the thermal profile — iDRAC
+manages cooling automatically and exposes thermal telemetry; a rising inlet temperature or a failed
+fan is an early warning that thermal monitoring surfaces.
 
-- Restore the correct SMTP/alert destination address if you performed the
-  negative test.
-- Remove the TSR bundle from the shared location once you've reviewed it,
-  if the share is shared or temporary storage.
-- No other cleanup is required; this lab makes no destructive changes.
+**Negative test:** ignore thermal telemetry until a server throttles or shuts down on
+over-temperature; the fan failure or blocked airflow was visible earlier in the sensor data —
+thermal monitoring catches it before the protective shutdown.
+
+**Cleanup:** none (read-only).
+
+### Lab 6.4 — Logs and support collection (Topic: Troubleshooting)
+
+**Objective:** Read the event logs and gather a support bundle.
+
+```bash
+racadm getsel | tail -20                    # System Event Log (hardware events)
+racadm lclog view -c 10                      # Lifecycle Controller log (config/firmware history)
+racadm supportassist collect -t SysInfo      # (or: racadm techsupreport collect) support bundle
+```
+
+**Expected result:** recent hardware events (SEL), the Lifecycle Controller history (who changed
+what firmware/config and when), and a generated support bundle — the SEL and LC log are the primary
+troubleshooting evidence, and the support bundle (SupportAssist/TSR) packages logs+inventory for
+Dell support or your own analysis.
+
+**Negative test:** troubleshoot an intermittent fault from the current state alone; the SEL and LC
+log hold the *history* (a prior correctable-ECC storm, a firmware change) that explains it — the
+logs are where the timeline lives.
+
+**Cleanup:** remove the generated support bundle if lab-only.
 
 ## Lab Verification
 

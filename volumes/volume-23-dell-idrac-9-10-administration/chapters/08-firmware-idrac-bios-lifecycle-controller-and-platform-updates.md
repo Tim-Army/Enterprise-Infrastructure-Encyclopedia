@@ -346,100 +346,97 @@ intentionally block downgrade.
 
 ## Hands-On Lab
 
-**Objective:** Retrieve current firmware inventory, stage a firmware
-update for on-reset application, monitor it to completion, and exercise
-the rollback path — using a component and version pair appropriate for
-your lab hardware and low-risk to update (iDRAC firmware itself is a
-reasonable choice, since updating it does not require a host OS reboot).
+This chapter carries a topic-level walkthrough lab for **each task under the "Server Maintenance"
+domain** — firmware inventory, component updates, Lifecycle Controller rollback, and staged update
+jobs. Every step is a runnable RACADM/Redfish action. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.4** — a PowerEdge iDRAC 9/10 with admin access, Dell Update
+Packages (DUPs) or a catalog share, and RACADM/`curl`. **Safety:** firmware updates can reboot the
+host — use a lab server. **Cost:** none.
 
-- The lab server configured in Chapters 1 through 7, network-reachable,
-  with either internet egress to `downloads.dell.com` for the online
-  catalog path or a firmware image/local repository prepared in advance
-  for the offline path.
-- A specific firmware image (iDRAC firmware is recommended for this lab
-  given its lower disruption profile) downloaded from a Dell-authorized
-  source, or online catalog access.
-- Python 3.11+ with `requests` installed.
-- **Safety note:** avoid applying a downgrade to any firmware version
-  older than what's currently installed unless you have specifically
-  confirmed downgrade is supported for that component and firmware pair;
-  some updates are one-directional by design.
+### Lab 8.1 — Firmware inventory (Topic: Firmware currency)
 
-**Steps**
+**Objective:** Read installed firmware across components.
 
-1. Retrieve current firmware inventory and record the current iDRAC
-   firmware version:
+```bash
+racadm update viewinventory | head -30
+curl -sk -u root:<password> https://<idrac-ip>/redfish/v1/UpdateService/FirmwareInventory | \
+  python3 -c "import json,sys; print('components:', len(json.load(sys.stdin)['Members']))"
+```
 
-   ```bash
-   racadm swinventory | grep -A2 -i idrac
-   ```
+**Expected result:** installed versions for iDRAC, BIOS, PERC, NICs, PSUs, and more — the Lifecycle
+Controller maintains a complete firmware inventory, so you can compare every component against a
+catalog (Volume XXII) and know exactly what is behind.
 
-2. Stage the update using the `idrac_stage_update.py` script from the
-   Implementation and Automation section, referencing your prepared
-   image or repository URI:
+**Negative test:** track only the iDRAC/BIOS versions and ignore NIC/PERC/PSU firmware; a known
+firmware bug in an unpatched component causes intermittent faults — the full inventory is what makes
+component-level currency visible.
 
-   ```bash
-   python3 idrac_stage_update.py <idrac-ip> root '<password>' \
-     https://<repo-host>/firmware-repo/iDRAC_Firmware_XXXXX.EXE
-   ```
+**Cleanup:** none (read-only).
 
-   **Expected result:** the script reports a task URI and polls it,
-   showing `TaskState` progressing toward `Completed`. Because this is
-   iDRAC firmware, expect the controller to restart automatically as part
-   of applying the update — brief unreachability of the GUI/API is
-   expected, matching the behavior described in [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md) for a
-   controller restart.
-3. Once the controller returns, confirm the new firmware version:
+### Lab 8.2 — Update a component (Topic: Updates)
 
-   ```bash
-   racadm swinventory | grep -A2 -i idrac
-   ```
+**Objective:** Apply a Dell Update Package to firmware.
 
-   **Expected result:** the reported version matches the update applied
-   in step 2.
-4. Review the Lifecycle Log for the update event:
+```bash
+# From a network share (staged and applied by the Lifecycle Controller):
+racadm update -f BIOS_xxxx.EXE -l //share/user:pass@/dups -u -a TRUE
+# Or push a DUP directly, then watch the update job:
+racadm jobqueue view
+```
 
-   ```bash
-   racadm lclog view | tail -10
-   ```
+**Expected result:** the DUP is validated and applied (staged to next reboot or immediate), tracked
+as a job — iDRAC/LC apply signed **Dell Update Packages** out-of-band, so BIOS/firmware update
+without booting a vendor tool; the job model makes updates schedulable and auditable.
 
-   **Expected result:** an entry documenting the firmware update appears
-   with a timestamp matching step 2, reinforcing this chapter's
-   connection to [Chapter 6](06-hardware-health-power-thermal-logs-and-support.md)'s log guidance.
-5. **Negative test:** attempt to stage an update referencing a
-   non-existent image URI:
+**Negative test:** flash a mismatched or unsigned firmware image; the Lifecycle Controller rejects
+it — DUPs are model-validated and signed, which is why you update from Dell's packages/catalog, not
+arbitrary binaries.
 
-   ```bash
-   python3 idrac_stage_update.py <idrac-ip> root '<password>' \
-     https://<repo-host>/firmware-repo/does-not-exist.EXE
-   ```
+**Cleanup:** none (leave the component updated).
 
-   **Expected result:** the task reports an `Exception` state or the
-   initial POST itself fails with an error, confirming the update
-   pipeline validates image retrieval rather than silently accepting an
-   unreachable source.
-6. If the update applied in step 2 retained a rollback image, exercise
-   rollback to return to the prior version:
+### Lab 8.3 — Lifecycle Controller rollback (Topic: Firmware lifecycle)
 
-   ```bash
-   racadm rollback -t idrac
-   ```
+**Objective:** Revert a component to its previous firmware.
 
-   **Expected result:** either the rollback job completes successfully
-   and the controller returns to the pre-lab firmware version, or the
-   command reports no rollback image is available — both are valid,
-   informative outcomes per this chapter's Theory and Architecture
-   section; record which occurred.
+```bash
+racadm update viewinventory | grep -iA2 Rollback
+# Roll a component back to the LC-retained previous version (e.g. after a bad update):
+racadm rollback iDRAC.Embedded.1-1   2>/dev/null || \
+  echo "GUI: Maintenance > System Update > Rollback selects the previous version per component"
+```
 
-**Cleanup**
+**Expected result:** the component reverts to the Lifecycle-Controller-retained previous version —
+the LC keeps the prior firmware for each component, so a bad update is reversible without
+re-downloading; rollback is the safety net that makes firmware updates low-risk.
 
-- If rollback was performed in step 6, confirm the firmware version has
-  returned to its pre-lab state via `racadm swinventory`.
-- If rollback was not available or not performed, leave the updated
-  firmware in place — this is a supported, non-destructive end state for
-  the lab.
+**Negative test:** update firmware with no awareness of rollback; a regression seems to strand you
+on the bad version — the LC's retained previous image is exactly what you roll back to.
+
+**Cleanup:** none.
+
+### Lab 8.4 — Staged updates and the job queue (Topic: Update orchestration)
+
+**Objective:** Schedule updates to a maintenance window.
+
+```bash
+racadm jobqueue view
+# Stage an update to apply at the NEXT REBOOT rather than immediately:
+racadm update -f NIC_xxxx.EXE -l //share/dups --reboot FALSE
+racadm jobqueue view                              # shows the scheduled job pending reboot
+# Apply during the window:  racadm serveraction powercycle
+```
+
+**Expected result:** the update is queued as a job that applies at the next controlled reboot, not
+immediately — staging updates to the job queue lets you batch multiple component updates and apply
+them together in a single maintenance window, minimizing reboots and disruption.
+
+**Negative test:** apply each component update immediately with an individual reboot each; the
+server bounces repeatedly and the window drags — staging to the job queue applies them in one
+coordinated reboot.
+
+**Cleanup:** `racadm jobqueue delete -i <jobid>` for any lab-only pending job.
 
 ## Lab Verification
 

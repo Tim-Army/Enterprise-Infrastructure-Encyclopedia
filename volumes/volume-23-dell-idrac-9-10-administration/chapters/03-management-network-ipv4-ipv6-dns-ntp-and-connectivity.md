@@ -375,121 +375,97 @@ the address change has settled.
 
 ## Hands-On Lab
 
-**Objective:** Configure static IPv4 addressing, VLAN tagging (if your lab
-switch supports it), DNS registration, and NTP on a lab iDRAC, then
-validate connectivity and time synchronization from both RACADM and
-Redfish.
+This chapter carries a topic-level walkthrough lab for **each management-network task** — IPv4,
+IPv6, DNS, and NTP with connectivity verification. Every step is a runnable RACADM action. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 3.1–3.4** — a PowerEdge iDRAC 9/10 reachable by RACADM (SSH or
+`racadm -r`), admin credentials, and lab network details. **Safety:** changing the iDRAC's own IP
+can drop your session — have console/iDRAC-Direct access as a fallback. **Cost:** none.
 
-- The lab iDRAC configured in Chapters 1 and 2, with the SCP baseline
-  exported in [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md)'s lab retained for rollback.
-- A lab network segment with a known-good static IP range, a reachable
-  DNS server accepting dynamic updates (or write access to a test zone),
-  and a reachable NTP server.
-- Optionally, a lab switch port configurable as an 802.1Q trunk, to
-  exercise the VLAN tagging step; skip that step if unavailable and note
-  it as skipped.
-- An SSH client and `curl`.
+### Lab 3.1 — Static IPv4 addressing (Topic: IPv4)
 
-**Steps**
+**Objective:** Set a static management address.
 
-1. Confirm current NIC selection and IPv4 addressing mode:
+```bash
+racadm get iDRAC.IPv4
+racadm set iDRAC.IPv4.DHCPEnable Disabled
+racadm set iDRAC.IPv4.Address 192.168.50.20
+racadm set iDRAC.IPv4.Netmask 255.255.255.0
+racadm set iDRAC.IPv4.Gateway 192.168.50.1
+racadm get iDRAC.IPv4.Address
+```
 
-   ```bash
-   racadm get iDRAC.NIC.Selection
-   racadm get iDRAC.IPv4
-   ```
+**Expected result:** the iDRAC holds the static address/netmask/gateway with DHCP disabled — a
+management controller should have a stable, reserved address so it is always reachable and its
+callbacks/integrations do not break on a lease change.
 
-2. Change to a static IPv4 address within your lab's designated static
-   range:
+**Negative test:** leave the iDRAC on DHCP with no reservation; a lease change moves it and breaks
+DNS records, OME onboarding, and alert destinations — static/reserved addressing is the norm for
+out-of-band management.
 
-   ```bash
-   racadm set iDRAC.IPv4.DHCPEnable Disabled
-   racadm set iDRAC.IPv4.Address 10.20.30.40
-   racadm set iDRAC.IPv4.Netmask 255.255.255.0
-   racadm set iDRAC.IPv4.Gateway 10.20.30.1
-   ```
+**Cleanup:** restore the lab's intended addressing (or DHCP) if changed only for the exercise.
 
-   **Expected result:** your current session drops as the address changes;
-   reconnect at `10.20.30.40` to confirm the new address is active.
-3. Configure DNS registration:
+### Lab 3.2 — IPv6 addressing (Topic: IPv6)
 
-   ```bash
-   racadm set iDRAC.NIC.DNSRegister Enabled
-   racadm set iDRAC.NIC.DNSRacName idrac-lab-01
-   racadm set iDRAC.NIC.DNSDomainFromDHCP Disabled
-   racadm set iDRAC.NIC.DNSDomainName lab.example.com
-   ```
+**Objective:** Enable and read IPv6 management.
 
-   **Expected result:** within a few minutes, `idrac-lab-01.lab.example.com`
-   resolves to `10.20.30.40` from your workstation
-   (`dig idrac-lab-01.lab.example.com` or `nslookup`).
-4. Configure NTP:
+```bash
+racadm set iDRAC.IPv6.Enable Enabled
+racadm get iDRAC.IPv6
+racadm getsysinfo | grep -i "IPv6"
+```
 
-   ```bash
-   racadm set iDRAC.NTPConfigGroup.NTPEnable Enabled
-   racadm set iDRAC.NTPConfigGroup.NTP1 <your-lab-ntp-server>
-   ```
+**Expected result:** IPv6 is enabled and the iDRAC reports its IPv6 address (static or
+auto-assigned) — iDRAC supports dual-stack management, and enabling IPv6 lets the controller be
+managed over IPv6-only or dual-stack networks.
 
-   **Expected result:** `racadm get iDRAC.NTPConfigGroup` shows
-   `NTPEnable` as `Enabled` and your NTP server recorded; allow a few
-   minutes, then confirm iDRAC's reported time (visible on the GUI
-   dashboard or via `racadm get iDRAC.Time`) matches current time within a
-   few seconds.
-5. If your lab switch port supports trunking, tag iDRAC traffic onto a
-   test VLAN:
+**Negative test:** assume IPv4-only reachability on an IPv6-only management segment; the iDRAC is
+unreachable until IPv6 is enabled and addressed — match the controller's stack to the management
+network.
 
-   ```bash
-   racadm set iDRAC.NIC.VLanEnable Enabled
-   racadm set iDRAC.NIC.VLanID 200
-   ```
+**Cleanup:** `racadm set iDRAC.IPv6.Enable Disabled` if enabled only for the lab.
 
-   **Expected result:** if the switch port is correctly configured as a
-   trunk carrying VLAN 200, connectivity is retained (possibly requiring
-   your workstation to also reach VLAN 200); if the switch port is not so
-   configured, connectivity is lost, demonstrating the tagging/trunk
-   dependency described in this chapter. Revert with
-   `racadm set iDRAC.NIC.VLanEnable Disabled` if connectivity is lost and
-   you need to recover.
-6. Validate the full network state over Redfish:
+### Lab 3.3 — DNS configuration (Topic: DNS)
 
-   ```bash
-   curl -s -k -u root:'<password>' \
-     https://10.20.30.40/redfish/v1/Managers/iDRAC.Embedded.1/EthernetInterfaces/NIC.1 \
-     | python3 -m json.tool
-   ```
+**Objective:** Register the iDRAC in DNS.
 
-   **Expected result:** the response confirms the static IPv4 address,
-   subnet mask, and gateway configured in step 2.
-7. **Negative test:** intentionally set an incorrect gateway and confirm
-   the effect is scoped to routed (off-subnet) reachability rather than
-   local-subnet reachability:
+```bash
+racadm set iDRAC.IPv4.DNS1 192.168.50.1
+racadm set iDRAC.NIC.DNSRacName idrac-web01
+racadm set iDRAC.NIC.DNSDomainName lab.example.com
+racadm set iDRAC.NIC.DNSRegister Enabled
+racadm get iDRAC.NIC.DNSRacName
+```
 
-   ```bash
-   racadm set iDRAC.IPv4.Gateway 10.20.30.254
-   ```
+**Expected result:** the iDRAC has DNS servers and a registered hostname (`idrac-web01.lab.example.
+com`) — DNS registration lets operators and tools reach the iDRAC by name rather than a memorized
+IP, and is required for name-based certificates and integrations.
 
-   **Expected result:** the iDRAC remains reachable from your workstation
-   if it is on the same local subnet/VLAN, but any test from a different
-   subnet (or a `traceroute`/`tracert` from your workstation if routed)
-   shows failure, isolating the fault to the deliberately wrong gateway.
-   Restore the correct gateway afterward:
-   `racadm set iDRAC.IPv4.Gateway 10.20.30.1`.
+**Negative test:** manage dozens of iDRACs by IP with no DNS; a re-addressing breaks every
+bookmark and script — DNS names decouple access from the address.
 
-**Cleanup**
+**Cleanup:** revert the DNS name/registration if lab-only.
 
-- If continuing to later chapters' labs, leave the static IP, DNS
-  registration, and NTP configuration in place — [Chapter 4](04-identity-certificates-security-and-compliance.md) builds on a
-  network-reachable, time-synchronized baseline.
-- If this lab environment is shared or temporary, restore the SCP
-  baseline exported in [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md) to return to prior network settings:
+### Lab 3.4 — NTP and connectivity verification (Topic: Time and connectivity)
 
-  ```bash
-  racadm systemconfig import -t xml -f lab-baseline.xml \
-    -l //<share-ip>/scp-share -u <svc-user> -p '<password>' \
-    --target idrac
-  ```
+**Objective:** Synchronize time and confirm reachability.
+
+```bash
+racadm set iDRAC.NTPConfigGroup.NTP1 192.168.50.1
+racadm set iDRAC.NTPConfigGroup.NTPEnable Enabled
+racadm get iDRAC.Time
+racadm ping 192.168.50.1
+```
+
+**Expected result:** the iDRAC syncs time from NTP and `racadm ping` confirms gateway reachability
+— accurate time (NTP) is required for correct Lifecycle-Controller and SEL log timestamps and for
+certificate validation, and the built-in ping verifies management-network connectivity.
+
+**Negative test:** leave the iDRAC clock unsynchronized; log timestamps across the fleet do not
+correlate and certificate checks may fail — NTP keeps the controller's time trustworthy.
+
+**Cleanup:** none (leave NTP enabled).
 
 ## Lab Verification
 

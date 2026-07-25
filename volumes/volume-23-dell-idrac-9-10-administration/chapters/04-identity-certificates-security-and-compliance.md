@@ -374,107 +374,101 @@ administration until the erase job finishes.
 
 ## Hands-On Lab
 
-**Objective:** Create a scoped local user, generate and install a
-CA-signed (or lab-CA-signed) certificate, and confirm Secure Boot
-reporting — without performing System Lockdown Mode or System Erase
-against shared lab hardware, both of which are disruptive or irreversible
-and are explained in this chapter for understanding rather than routine
-lab execution.
+This chapter carries a topic-level walkthrough lab for **each task under the "System
+Administration" security domain** — local users, directory integration, TLS certificates, and
+security hardening. Every step is a runnable RACADM action. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.4** — a PowerEdge iDRAC 9/10 with admin RACADM access, and
+(for Lab 4.2) an AD/LDAP directory. **Cost:** none.
 
-- The lab iDRAC configured in Chapters 1 through 3, network-reachable and
-  time-synchronized.
-- Either access to an internal lab CA capable of signing a CSR, or
-  OpenSSL available to act as an ad hoc lab CA for this exercise.
-- An SSH client and `curl`.
-- **Safety note:** this lab does not include System Lockdown Mode or
-  System Erase. Both are described in this chapter for conceptual
-  understanding; rehearse them only against hardware you are explicitly
-  authorized to lock down or irreversibly wipe, and never against shared
-  or production lab equipment.
+### Lab 4.1 — Local users and privileges (Topic: Identity)
 
-**Steps**
+**Objective:** Create a scoped iDRAC user.
 
-1. Create a scoped local user with Operator-level access and Virtual
-   Console privilege only (no configuration privilege):
+```bash
+racadm set iDRAC.Users.3.UserName operator
+racadm set iDRAC.Users.3.Password '<strong-password>'
+racadm set iDRAC.Users.3.Privilege 0x00000001       # Login only (read-only-ish)
+racadm set iDRAC.Users.3.Enable Enabled
+racadm get iDRAC.Users.3
+```
 
-   ```bash
-   racadm set iDRAC.Users.4.UserName lab-operator
-   racadm set iDRAC.Users.4.Password 'LabOperator!2026'
-   racadm set iDRAC.Users.4.Enable Enabled
-   racadm set iDRAC.Users.4.Privilege 0x9
-   ```
+**Expected result:** user slot 3 is a login-only operator, distinct from the admin — iDRAC users
+carry a privilege bitmask (Login, Configure, Configure Users, Virtual Console, Virtual Media, etc.),
+so least privilege gives each operator only the rights their role needs.
 
-   Confirm the exact bitmask value for your firmware that grants login
-   plus Virtual Console access without configuration privilege, per the
-   RACADM CLI Guide's current privilege table.
-2. Log in as `lab-operator` in a separate browser session and confirm you
-   can view system health but cannot modify network settings ([Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)).
-   **Expected result:** configuration pages are visible but read-only or
-   inaccessible, confirming the scoped privilege took effect.
-3. Generate a CSR:
+**Negative test:** grant every user the full admin privilege (`0x1ff`); any one can reconfigure the
+controller, mount virtual media, and re-flash firmware — the privilege mask is what scopes them
+down.
 
-   ```bash
-   racadm sslcsrgen -g -f lab-idrac-csr.txt \
-     -commonname "idrac-lab-01.lab.example.com" \
-     -organizationname "Lab" -organizationunit "IT" \
-     -locality "Lab" -state "TX" -country "US"
-   ```
+**Cleanup:** `racadm set iDRAC.Users.3.Enable Disabled` (or clear the slot).
 
-4. Sign the CSR with your lab CA (or, for a self-contained exercise,
-   generate an ad hoc signing CA and sign it with OpenSSL):
+### Lab 4.2 — Directory integration (Topic: Centralized identity)
 
-   ```bash
-   openssl x509 -req -in lab-idrac-csr.txt -CA lab-ca.crt -CAkey lab-ca.key \
-     -CAcreateserial -out lab-idrac-signed.crt -days 365 -sha256
-   ```
+**Objective:** Authenticate iDRAC logins against a directory.
 
-5. Upload the signed certificate and restart the web server:
+```bash
+racadm set iDRAC.ActiveDirectory.Enable Enabled
+racadm set iDRAC.ActiveDirectory.DCLookupEnable Enabled
+racadm set iDRAC.ActiveDirectory.RacName idrac-web01
+# Map an AD role group to an iDRAC privilege level, then test a directory login.
+racadm get iDRAC.ActiveDirectory
+```
 
-   ```bash
-   racadm sslcertupload -t 1 -f lab-idrac-signed.crt
-   racadm racreset soft
-   ```
+**Expected result:** AD/LDAP is enabled and role groups map to iDRAC privileges — directory
+integration centralizes iDRAC access so administrators use their domain credentials and group
+membership drives privilege, rather than maintaining local accounts on every controller.
 
-   **Expected result:** after the controller restarts, browsing to the
-   iDRAC no longer presents the original self-signed certificate warning
-   (it may still warn if your lab CA's root is not trusted by your
-   browser — that is expected unless you also import the lab CA root into
-   your browser/OS trust store).
-6. Check Secure Boot status:
+**Negative test:** manage access with local accounts on hundreds of iDRACs; offboarding a person
+means editing each one — directory-backed access is revoked once, centrally.
 
-   ```bash
-   racadm get BIOS.SecureBootConfiguration
-   curl -s -k -u root:'<password>' \
-     https://<idrac-ip>/redfish/v1/Systems/System.Embedded.1/SecureBoot \
-     | python3 -m json.tool
-   ```
+**Cleanup:** `racadm set iDRAC.ActiveDirectory.Enable Disabled` if enabled only for the lab.
 
-   **Expected result:** both commands report consistent Secure Boot state
-   (Enabled or Disabled, matching your BIOS configuration).
-7. **Negative test:** attempt to log in as `lab-operator` and change a
-   network setting from [Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md):
+### Lab 4.3 — TLS certificate (Topic: Certificates)
 
-   ```bash
-   racadm -u lab-operator -p 'LabOperator!2026' set iDRAC.IPv4.Gateway 10.20.30.99
-   ```
+**Objective:** Replace the default self-signed certificate.
 
-   **Expected result:** the command fails with a permission-denied
-   response, confirming the scoped privilege from step 1 correctly
-   excludes configuration access.
+```bash
+racadm set iDRAC.Security.CsrCommonName idrac-web01.lab.example.com
+racadm sslcsrgen -g -f /tmp/idrac.csr        # generate a CSR
+# Have your CA sign /tmp/idrac.csr, then upload the signed cert:
+racadm sslcertupload -t 1 -f /tmp/idrac-signed.pem
+racadm sslcertdownload -t 1 -f /tmp/current.pem   # verify what is installed
+```
 
-**Cleanup**
+**Expected result:** the iDRAC serves a CA-signed certificate matching its DNS name — a management
+controller drives firmware and mounts media, so its TLS identity must be trusted (not self-signed),
+which also enables warning-free browser/API access.
 
-- Remove the lab user if it will not be reused:
+**Negative test:** leave the default self-signed cert and habitually click through the warning; a
+real man-in-the-middle looks identical — a properly signed cert removes the routine warning so a
+genuine one stands out.
 
-  ```bash
-  racadm set iDRAC.Users.4.Enable Disabled
-  ```
+**Cleanup:** none (keep the trusted certificate).
 
-- Retain the CA-signed certificate configuration if continuing to later
-  chapters; otherwise, no further cleanup is required since certificate
-  replacement is non-destructive.
+### Lab 4.4 — Security hardening and compliance (Topic: Security)
+
+**Objective:** Apply lockdown and stronger authentication controls.
+
+```bash
+racadm set iDRAC.Lockdown.SystemLockdown Enabled     # block config changes (iDRAC Enterprise+)
+racadm get iDRAC.Lockdown.SystemLockdown
+racadm set iDRAC.Security.LoginAttemptsBeforeLockout 3
+racadm set iDRAC.IPBlocking.BlockEnable Enabled
+```
+
+**Expected result:** System Lockdown Mode prevents accidental/unauthorized configuration and
+firmware changes, and IP-blocking/lockout resists brute force — iDRAC hardening (lockdown,
+login-attempt lockout, disabling unused services, enforcing TLS 1.2+) reduces the management
+plane's attack surface, a compliance-relevant baseline.
+
+**Negative test:** leave lockdown off and default login policies in place; a compromised or careless
+session can silently re-flash firmware or change boot order — lockdown and lockout are what protect
+the controller against that.
+
+**Cleanup:** `racadm set iDRAC.Lockdown.SystemLockdown Disabled` if you need to make further lab
+changes.
 
 ## Lab Verification
 

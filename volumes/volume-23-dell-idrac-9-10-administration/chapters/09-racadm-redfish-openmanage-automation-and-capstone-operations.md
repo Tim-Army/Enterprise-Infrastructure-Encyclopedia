@@ -365,103 +365,115 @@ collection has added coverage for newer iDRAC features.
 
 ## Hands-On Lab
 
-**Objective:** Execute an end-to-end provisioning runbook against a lab
-server — network configuration, identity hardening, storage baseline,
-firmware inventory check, and OS deployment via Virtual Media — combining
-techniques from every chapter in this volume into a single automated
-sequence, run first manually as a rehearsal, then as a scripted pass.
+This chapter closes the volume with **automation across RACADM, Redfish, and OpenManage** — the
+"Server Management" automation surface — and a **Design Exercise** capstone. Every operational step
+is runnable; the capstone is a written design. Each ends **`**Lab verified by:** *pending*`** until
+a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 9.1–9.4** — a PowerEdge iDRAC 9/10 with admin access, a file share
+for profiles, `curl`/`python3`, and optionally Ansible with `dellemc.openmanage`. **Cost:** none.
 
-- The lab server used throughout this volume's chapters, reset to a known
-  state (either the original [Chapter 1](01-architecture-generations-licensing-and-first-access.md) baseline, restored via the SCP
-  export from [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md), or left in its current state if you are
-  comfortable applying this capstone on top of it).
-- All prerequisites from Chapters 1 through 8: network reachability, a
-  test OS ISO on a reachable share, spare disks for storage
-  configuration, and a firmware image or online catalog access.
-- Python 3.11+ with `requests`, and optionally Ansible with the
-  `dellemc.openmanage` collection installed
-  (`ansible-galaxy collection install dellemc.openmanage`).
+### Lab 9.1 — Server Configuration Profiles with RACADM (Topic: Configuration as data)
 
-**Steps**
+**Objective:** Export a server's full configuration and re-apply it.
 
-1. Export a pre-capstone SCP baseline as your rollback point, following
-   [Chapter 2](02-configuration-restart-factory-reset-full-power-cycle-and-recovery.md)'s procedure:
+```bash
+# Export the Server Configuration Profile (BIOS + iDRAC + RAID + NIC) as data:
+racadm get -f scp-web01.xml -t xml -l //share/user:pass@/scp
+# Edit the file as needed, then import to another server to clone its configuration:
+racadm set -f scp-web01.xml -t xml -l //share/user:pass@/scp -b Graceful
+racadm jobqueue view
+```
 
-   ```bash
-   racadm systemconfig export -t xml -f pre-capstone-baseline.xml \
-     -l //<share-ip>/scp-share -u <svc-user> -p '<password>'
-   ```
+**Expected result:** a single XML/JSON profile capturing the whole server configuration, importable
+to clone another server — the **Server Configuration Profile (SCP)** turns a server's entire
+BIOS/iDRAC/RAID/NIC state into editable data, so RACADM can template and replicate configuration
+across a fleet.
 
-2. Confirm and, if needed, reapply network configuration from [Chapter 3](03-management-network-ipv4-ipv6-dns-ntp-and-connectivity.md)
-   (static IPv4, DNS registration, NTP) — this capstone assumes that
-   baseline is already correct from earlier labs; re-verify rather than
-   re-apply if unchanged.
-3. Confirm identity hardening from [Chapter 4](04-identity-certificates-security-and-compliance.md) is in place: a non-default
-   local password, a CA-signed (or lab-CA-signed) certificate installed.
-   **Expected result:** browsing to the iDRAC no longer shows the
-   original factory self-signed certificate warning.
-4. Confirm storage baseline from [Chapter 7](07-storage-arrays-boss-raid-configuration-and-maintenance.md): at minimum, run
-   `idrac_storage_health_check.py` and confirm a clean result before
-   proceeding.
+**Negative test:** configure each server's BIOS/RAID/iDRAC by hand; they drift and take hours each —
+an SCP captures a golden configuration once and applies it consistently.
 
-   ```bash
-   python3 idrac_storage_health_check.py <idrac-ip> root '<password>'
-   ```
+**Cleanup:** remove the lab SCP file if created only for the exercise.
 
-5. Confirm firmware inventory from [Chapter 8](08-firmware-idrac-bios-lifecycle-controller-and-platform-updates.md) and record current versions
-   as this capstone's firmware baseline:
+### Lab 9.2 — Redfish automation (Topic: Redfish API)
 
-   ```bash
-   racadm swinventory > capstone-firmware-baseline.txt
-   ```
+**Objective:** Drive iDRAC with a session-authenticated API call.
 
-6. Deploy a test OS using the Virtual Media pattern from [Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md):
+```bash
+# Create a Redfish session -> token comes back in the X-Auth-Token response header:
+TOKEN=$(curl -sk -D - -o /dev/null -X POST https://<idrac-ip>/redfish/v1/SessionService/Sessions \
+  -H "Content-Type: application/json" \
+  -d '{"UserName":"root","Password":"<password>"}' | awk '/X-Auth-Token/ {print $2}' | tr -d '\r')
+# Use the token to read the firmware inventory:
+curl -sk -H "X-Auth-Token: $TOKEN" https://<idrac-ip>/redfish/v1/UpdateService/FirmwareInventory | \
+  python3 -c "import json,sys; print('components:', len(json.load(sys.stdin)['Members']))"
+```
 
-   ```bash
-   python3 idrac_mount_and_boot.py <idrac-ip> root '<password>' \
-     https://<share-host>/images/test-os.iso
-   ```
+**Expected result:** the session returns an `X-Auth-Token` and subsequent calls use it — Redfish is
+the vendor-neutral automation API, so the same scripts manage iDRAC and non-Dell BMCs; session
+tokens (not repeated basic auth) are the efficient authentication for a sequence of calls.
 
-   **Expected result:** the server boots from the mounted image, visible
-   via Virtual Console, confirming the full chain — network, identity,
-   storage, firmware baseline, and remote media boot — functions
-   together as a coherent provisioning sequence.
-7. Confirm the Lifecycle Log captured this capstone's activity as a
-   single reviewable timeline:
+**Negative test:** open a new basic-auth connection for every one of hundreds of calls; it is slow
+and stresses the controller — a session token authenticates once for the whole workflow.
 
-   ```bash
-   racadm lclog view | tail -30
-   ```
+**Cleanup:** `curl -sk -H "X-Auth-Token: $TOKEN" -X DELETE https://<idrac-ip>/redfish/v1/SessionService/Sessions/<id>`.
 
-   **Expected result:** entries corresponding to each major step (network
-   changes if any were reapplied, the firmware inventory check, the
-   Virtual Media mount and boot) appear in chronological order, confirming
-   [Chapter 6](06-hardware-health-power-thermal-logs-and-support.md)'s log guidance holds up as a real audit trail across a
-   multi-step operation.
-8. **Negative test:** deliberately re-run step 6 with an unreachable
-   image URL, confirming the same fail-safe behavior validated in
-   [Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md)'s lab still holds when invoked as part of a larger sequence:
+### Lab 9.3 — OpenManage / Ansible integration (Topic: Fleet automation)
 
-   ```bash
-   python3 idrac_mount_and_boot.py <idrac-ip> root '<password>' \
-     https://<share-host>/images/does-not-exist.iso
-   ```
+**Objective:** Manage iDRAC from higher-level tooling.
 
-   **Expected result:** the mount fails cleanly with an error; the server
-   does not boot to an unpredictable state.
+```text
+# With Ansible + the dellemc.openmanage collection (over RACADM/Redfish):
+#   - idrac_firmware: apply firmware from a catalog
+#   - idrac_server_config_profile: export/import SCP
+#   - idrac_user / idrac_network: manage users and networking
+# Run an idempotent playbook that sets NTP + a user across a group of iDRACs, and re-run it.
+```
 
-**Cleanup**
+**Expected result:** the playbook configures many iDRACs idempotently (a second run makes no
+changes) — supported Ansible modules wrap RACADM/Redfish so iDRAC fleet operations live in
+version-controlled, idempotent playbooks, integrating servers into the same IaC workflow as the
+rest of the infrastructure (and OpenManage Enterprise, Volume XXII, for GUI-driven fleet work).
 
-- Eject any mounted Virtual Media and clear one-time boot overrides,
-  following [Chapter 5](05-idrac-direct-virtual-console-virtual-media-and-local-service.md)'s cleanup procedure.
-- If this lab server will be decommissioned or repurposed outside this
-  volume's labs, follow [Chapter 4](04-identity-certificates-security-and-compliance.md)'s System Erase guidance rather than
-  leaving lab configuration and test data in place.
-- If it will be reused, retain `pre-capstone-baseline.xml` and
-  `capstone-firmware-baseline.txt` as documented reference points for any
-  future troubleshooting.
+**Negative test:** loop shell `racadm -r` calls across a host list with no idempotence or error
+handling; it is brittle and unauditable — a supported module gives idempotent, reviewable fleet
+automation.
+
+**Cleanup:** revert any lab-only changes the playbook made.
+
+### Lab 9.4 — Capstone Design Exercise: iDRAC across a server estate (Topic: Synthesis)
+
+**Objective:** Produce a defensible iDRAC operations design — the deliverable, not a command list.
+
+> **Scenario.** Operate the out-of-band management of 1,000 PowerEdge servers (iDRAC 9 and 10)
+> across three sites: secure management access, consistent configuration, current firmware,
+> proactive monitoring, and fast recovery — with OpenManage Enterprise as the fleet console.
+
+Work through and **write down**:
+
+1. **Access & security** — dedicated management network with static/reserved addressing and DNS;
+   directory-integrated RBAC, CA-signed certs, System Lockdown, and login hardening (Ch03, Ch04).
+2. **Consistent config** — golden Server Configuration Profiles applied via RACADM/Ansible, and
+   config-compliance through OME (Ch09, Vol XXII Ch08).
+3. **Firmware currency** — catalog-driven updates staged to the job queue and rolled out in
+   maintenance windows, with LC rollback as the safety net (Ch08, Vol XXII Ch05–07).
+4. **Monitoring** — health/power/thermal telemetry and SEL/LC logs rolled up to OME, with
+   SupportAssist for proactive cases (Ch06, Vol XXII Ch04).
+5. **Remote operations** — virtual console/media for OS provisioning and pre-boot troubleshooting;
+   iDRAC Direct as the local fallback (Ch05).
+6. **Recovery** — iDRAC reset before host action, Easy Restore/Part Replacement, and documented
+   power/reset runbooks (Ch02).
+
+**Expected result:** a written design where 1,000 controllers are securely accessed,
+consistently configured, kept current, monitored, and recoverable — driven by RACADM/Redfish
+automation with OME as the fleet pane — the operational deliverable the PowerEdge domains build
+toward.
+
+**Negative test:** manage 1,000 iDRACs by logging into each GUI with local accounts, ad-hoc
+firmware, and no SCPs, automation, or fleet console; it does not scale, drifts, and is insecure —
+the automation (RACADM/Redfish/OME) and the security baseline are what make the estate operable.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 
