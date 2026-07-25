@@ -156,16 +156,68 @@ Knowledge checks:
    creates for a hybrid workforce?
 4. How does segmentation design reduce compliance audit burden?
 
-## Design Exercise
+## Design Exercises
 
-Take the financial-services brief (or a security-design scenario from
-your experience) and produce a security HLD: the trust model
-(zero-trust vs zoned) with justification; the segmentation design and
-where microsegmentation depth is/ isn't applied (tied to sensitivity);
-the enforcement topology (perimeter, fabric, identity, SASE) placed so
-protected traffic passes controls without hairpins; the compliance
-mapping (obligation → design element); and the encryption/audit design.
-State each as a decision-with-driver-and-cost and review both ways.
+These Design Exercises cover the CCDE **security design** topics — segmentation/zero-trust,
+perimeter and DDoS, and control-plane/infrastructure protection. Work each to a written design,
+stating every choice as a *decision → driver → cost* sentence. They share the chapter's **`**Lab
+verified by:** *pending*`** sign-off.
+
+### Design Exercise 7.1 — Segmentation and zero-trust (Topic: Segmentation design)
+
+> **Scenario.** After a breach that spread laterally, an enterprise mandates a zero-trust posture:
+> no implicit trust between segments, identity-driven access, and containment of any future
+> compromise.
+
+Design the security segmentation: the trust zones and their boundaries; **identity-driven,
+group-based policy** (who/what may reach what) enforced consistently across campus/DC/cloud; how
+east-west movement is contained (micro-segmentation); and how the design degrades safely if the
+policy plane is unavailable. State the operational cost of pervasive policy.
+
+**Expected result:** a design where access is default-deny and identity/group-driven, east-west
+traffic is inspected/segmented to contain lateral movement, and enforcement is consistent across
+domains — zero-trust is a design property (segmentation + identity + inspection), not a product.
+
+**Common mistake:** treating a perimeter firewall as "zero trust"; once inside, traffic is still
+flat, so a breach spreads — the design must contain east-west movement, which perimeter security
+alone does not.
+
+### Design Exercise 7.2 — Perimeter and DDoS design (Topic: Perimeter security)
+
+> **Scenario.** A public-facing service must survive volumetric and application-layer DDoS while
+> keeping legitimate users served, across a dual-ISP edge.
+
+Design the perimeter defense in depth: **where mitigation lives** (upstream/cloud scrubbing for
+volumetric, on-prem for application-layer), the order traffic traverses controls, how legitimate
+traffic is preserved during an attack, and the redundancy so the mitigation is not itself the single
+point of failure. State the trade-off (latency/cost of always-on scrubbing vs on-demand).
+
+**Expected result:** a layered mitigation where volumetric attacks are absorbed upstream (cloud/ISP
+scrubbing) before they reach the edge, application-layer defenses sit closer in, and the controls
+are themselves redundant — DDoS design is about *where* mitigation happens relative to link and
+device capacity.
+
+**Common mistake:** planning to mitigate a volumetric flood on the on-prem firewall; the access link
+saturates before the firewall can act — volumetric mitigation must happen upstream of the bottleneck
+link.
+
+### Design Exercise 7.3 — Control-plane and infrastructure protection (Topic: Infrastructure security)
+
+> **Scenario.** A core network must be hardened against control-plane attacks and misconfiguration:
+> routing protocol security, management-plane protection, and resilience to a compromised device.
+
+Design infrastructure protection: **routing security** (neighbor authentication, prefix/route
+filtering, RPKI at the edge, TTL security); control-plane policing/protection against resource
+exhaustion; management-plane hardening (OOB, AAA, least privilege); and how the design limits the
+blast radius of one compromised device. State the operational cost of the controls.
+
+**Expected result:** a hardened control/management plane — authenticated, filtered routing;
+control-plane policing; out-of-band, AAA-controlled management; and blast-radius containment — so a
+single compromised or misconfigured device cannot destabilize the network or hijack routing.
+
+**Common mistake:** securing hosts and the perimeter while leaving the routing and management planes
+unauthenticated and unfiltered; a spoofed adjacency or a leaked/hijacked prefix can reroute or
+black-hole traffic network-wide — infrastructure protection is a first-class design requirement.
 
 ## Lab Verification
 

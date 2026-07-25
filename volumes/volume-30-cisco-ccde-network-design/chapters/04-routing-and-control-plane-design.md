@@ -167,17 +167,85 @@ Knowledge checks:
    techniques make it safe?
 4. When is BFD + TI-LFA justified, and when is it over-design?
 
-## Design Exercise
+## Design Exercises
 
-Take the merger brief (or a routing-redesign scenario from your
-experience) and produce a control-plane HLD: the target routing
-architecture and protocol choice with justification; the IGP
-hierarchy and summarization boundaries (aligned to failure domains);
-the convergence design (detection + protection) sized to the stated
-requirement; and — explicitly — a redistribution plan showing every
-boundary with its loop-prevention mechanism. For any overlapping-
-address or multi-domain complication, state the interim and end-state
-handling. Review both directions against the brief.
+These Design Exercises cover the CCDE **routing and control-plane** design topics — IGP structure,
+BGP scaling, route control, and convergence. Work each to a written design, stating every choice as
+a *decision → driver → cost* sentence. They share the chapter's **`**Lab verified by:** *pending*`**
+sign-off.
+
+### Design Exercise 4.1 — IGP selection and hierarchy (Topic: IGP design)
+
+> **Scenario.** A national network of 300 routers across a core and 40 regional POPs needs fast
+> convergence and must scale for another decade. The team knows both OSPF and IS-IS.
+
+Design the IGP: **OSPF vs IS-IS** with a driver (scalability, simplicity, multi-topology, operator
+familiarity); the area/level hierarchy and where boundaries fall; the summarization strategy at
+those boundaries; and how the hierarchy bounds the size of any single flooding/SPF domain. State
+what the chosen structure costs in flexibility.
+
+**Expected result:** an IGP hierarchy whose area/level boundaries align with the topology and
+addressing so each domain stays small and summarization contains LSA/SPF scope — the IGP choice
+matters less than the *hierarchy*, which is what delivers scale and convergence.
+
+**Common mistake:** a single flat area/level "for simplicity"; it does not scale — flooding and SPF
+cost grow with the domain, so the design must partition into summarized hierarchies.
+
+### Design Exercise 4.2 — BGP scaling and policy (Topic: BGP design)
+
+> **Scenario.** The same network runs iBGP for internal reachability and eBGP to two upstreams.
+> iBGP full mesh is no longer viable at 300 routers, and policy must prefer one upstream for
+> outbound and control inbound traffic engineering.
+
+Design the BGP: **route reflectors vs confederations** for iBGP scaling (with the trade-offs:
+redundancy, path visibility, migration, complexity); RR placement/redundancy and cluster design;
+and the inbound/outbound policy (local-pref, AS-path prepend, MED, communities) that meets the
+traffic-engineering requirement.
+
+**Expected result:** an iBGP scaling design (typically redundant route reflectors) with a policy
+framework using communities for maintainable traffic engineering — BGP design is about scaling the
+control plane and expressing policy cleanly, and RR redundancy/placement determines path diversity.
+
+**Common mistake:** scaling iBGP with a partial mesh of static peerings, or encoding policy as
+per-neighbor one-offs; both become unmaintainable — RR/confederation plus community-based policy is
+the scalable, reviewable approach.
+
+### Design Exercise 4.3 — Redistribution and route control (Topic: Route control)
+
+> **Scenario.** A merger connects two routing domains (one OSPF, one EIGRP/IS-IS) at two points for
+> redundancy, and routes must flow both ways.
+
+Design the redistribution: the two mutual-redistribution points and the **loop/suboptimal-routing
+risk** they create; the controls (route tags to prevent re-injection, administrative distance,
+filtering, summarization) that prevent loops; and how you keep the domains loosely coupled rather
+than fully merged. State the operational cost of the boundary.
+
+**Expected result:** a controlled two-point redistribution using route tags and filtering to prevent
+loops and metric administrative-distance issues, with summarization to limit leakage — multipoint
+mutual redistribution is a classic loop source, and the tag/filter controls are the design that
+tames it.
+
+**Common mistake:** redistributing mutually at two points with no tags or filtering; routes
+re-inject across the boundary and form loops or black holes — the loop-prevention controls are the
+whole point of the design.
+
+### Design Exercise 4.4 — Convergence and fast reroute (Topic: Convergence design)
+
+> **Scenario.** A financial network requires sub-50 ms recovery for a subset of critical flows and
+> "good enough" recovery elsewhere, without destabilizing the control plane.
+
+Design convergence: where **fast mechanisms** (BFD, LFA/remote-LFA or TI-LFA with SR, tuned timers)
+are applied versus default timers; the trade-off between aggressive timers and control-plane
+stability/false failovers; and how topology (link/node redundancy, failure-domain size) sets the
+achievable floor. Scope the fast path to the critical flows.
+
+**Expected result:** a design applying fast-reroute (e.g. TI-LFA/BFD) selectively to the critical
+domain while keeping conservative timers elsewhere, recognizing that topology and failure-domain
+size, not just timers, bound convergence — sub-50 ms is a design outcome, not a knob.
+
+**Common mistake:** globally cranking timers to their minimum for speed; you invite flapping and
+control-plane instability that causes *more* outage — fast reroute is engineered where needed, with
+stability preserved elsewhere.
 
 ## Lab Verification
 

@@ -159,16 +159,66 @@ Knowledge checks:
 4. Name two capabilities that justify SD-WAN as a service platform
    rather than just cheaper transport.
 
-## Design Exercise
+## Design Exercises
 
-Take the media-distribution brief (or a service-design scenario from
-your experience) and produce a service HLD: the segmentation design
-matched to requirement granularity; an end-to-end QoS class model with
-trust boundaries and class sizing; a multicast design (if the
-application needs it) with RP redundancy; the SD-WAN/SD-Access decision
-tied to used capabilities; and the assurance design for any SLA. Write
-each as a decision-with-driver-and-cost and review against the brief
-both ways.
+These Design Exercises cover the CCDE **service design** topics — overlay/VPN services, SD-WAN, and
+multi-tenancy. Work each to a written design, stating every choice as a *decision → driver → cost*
+sentence. They share the chapter's **`**Lab verified by:** *pending*`** sign-off.
+
+### Design Exercise 6.1 — L3VPN / EVPN service design (Topic: VPN services)
+
+> **Scenario.** A service provider (or large enterprise acting as one) must offer isolated L3
+> connectivity to 200 tenants over a shared core, with per-tenant routing and the ability to add
+> tenants without touching the core.
+
+Design the VPN service: **MPLS L3VPN vs EVPN** as the technology with its driver; the PE/CE model
+and how tenant routes are kept isolated (VRFs, route-targets/route-distinguishers); how a new tenant
+is provisioned at the edge only; and the scaling limits (VRF/route counts, RR capacity). State the
+operational cost per tenant.
+
+**Expected result:** a VPN service where per-tenant isolation lives in edge VRFs with RT/RD-based
+import/export, the shared core is tenant-unaware, and adding a tenant is an edge-only operation —
+the service design's value is isolation plus edge-only provisioning at scale.
+
+**Common mistake:** carrying per-tenant state into the core (core must know every tenant); it does
+not scale and every tenant change touches the core — the design keeps tenant state at the edge.
+
+### Design Exercise 6.2 — SD-WAN service design (Topic: SD-WAN services)
+
+> **Scenario.** An enterprise wants a managed overlay service across 300 sites: centralized policy,
+> application-aware path selection, integrated security, and multi-cloud on-ramps.
+
+Design the SD-WAN service: the **overlay control/orchestration model** (controllers/orchestrator and
+their placement/redundancy); the policy model (application-aware routing, segmentation across the
+overlay); how transport independence and failover are achieved; and cloud/SaaS on-ramp integration.
+State the trade-off (centralized control simplicity vs controller dependency).
+
+**Expected result:** a service design with redundant, well-placed control/orchestration, a
+centralized application-aware policy model, transport-independent overlays with tested failover, and
+defined cloud on-ramps — SD-WAN's value is centralized policy and application-awareness, and the
+controller's resilience is the key risk to design around.
+
+**Common mistake:** designing the data plane thoroughly but treating the controller/orchestrator as
+an afterthought; its loss or a control-plane partition degrades policy for the whole overlay —
+control-plane placement and redundancy are central to the service design.
+
+### Design Exercise 6.3 — Multi-tenancy and segmentation service (Topic: Segmentation services)
+
+> **Scenario.** A shared enterprise fabric must serve corporate, OT/industrial, guest, and partner
+> traffic with strong isolation and per-segment policy, offered as an internal service.
+
+Design the segmentation service: the **macro-segmentation** model (VRFs/VNs for the top-level tenants)
+and **micro-segmentation** within them (group-based policy/SGTs); how policy is expressed and
+enforced consistently across campus/DC/WAN; and how a new segment is onboarded. State the trade-off
+between isolation strength and operational/policy complexity.
+
+**Expected result:** a two-tier segmentation service (macro VRF/VN isolation plus micro group-based
+policy) with a consistent, centrally-defined policy model — segmentation-as-a-service scales when the
+isolation is hierarchical and the policy is expressed by group/intent rather than per-ACL.
+
+**Common mistake:** implementing segmentation as sprawling per-device ACLs; it is unmaintainable and
+inconsistent across domains — a hierarchical, intent/group-based model is what makes segmentation a
+scalable service.
 
 ## Lab Verification
 

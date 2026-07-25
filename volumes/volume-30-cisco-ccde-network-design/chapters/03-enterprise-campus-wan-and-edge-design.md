@@ -163,17 +163,86 @@ Knowledge checks:
 4. Two WAN circuits are "redundant." What must you verify before
    believing it?
 
-## Design Exercise
+## Design Exercises
 
-Take the university brief (or a campus/WAN refresh from your
-experience) and produce an HLD: a module diagram (campus zones, WAN,
-internet edge) described in words or a simple sketch; the hierarchy
-depth chosen per zone with its justification; the segmentation
-approach and where fabric is/ isn't used; a summarizable addressing
-strategy with growth room; and the WAN transport decision tied to cost
-and resilience requirements. Write each major choice as a
-decision-with-driver-and-cost sentence, and review against the brief
-both ways.
+These Design Exercises cover the CCDE enterprise **campus, WAN, and edge** design topics. Work each
+to a written High-Level Design, stating every major choice as a *decision → driver → cost* sentence
+and reviewing against the brief both ways. They share the chapter's **`**Lab verified by:**
+*pending*`** sign-off.
+
+### Design Exercise 3.1 — Campus hierarchy and fabric (Topic: Campus design)
+
+> **Scenario.** A university refreshes a 12,000-port campus across eight buildings: mixed staff,
+> student, IoT, and guest devices; a mandate to segment these populations; and a five-year growth
+> allowance of 40%.
+
+Produce an HLD: a module diagram (campus zones, distribution/core, WAN, internet edge); the
+hierarchy depth per zone (two-tier collapsed core vs three-tier) with justification; the
+segmentation approach and **where a fabric (SD-Access/EVPN) is and is not warranted**; a
+summarizable addressing plan with growth room; and how wired/wireless converge.
+
+**Expected result:** a hierarchy and segmentation design justified by size, growth, and the
+segmentation mandate — a fabric where policy-based macro/micro-segmentation across many device
+classes earns its complexity, and simpler L2/L3 where it does not.
+
+**Common mistake:** deploying a fabric everywhere because it is modern; the added control-plane and
+operational complexity must be justified by a real segmentation/mobility requirement, not adopted by
+default.
+
+### Design Exercise 3.2 — WAN transport and resilience (Topic: WAN design)
+
+> **Scenario.** 60 branches connect to two data centers and cloud. Requirements: sub-second failover
+> for voice, internet-direct breakout for SaaS, and a 30% transport-cost reduction target.
+
+Design the WAN: transport mix (MPLS, internet, LTE/5G backup) per branch tier; **SD-WAN vs
+traditional routing** and what it buys against its cost; the path-selection and failover model that
+meets the voice SLA; and where local internet breakout is safe. Tie the transport choice to the
+cost-reduction and resilience drivers.
+
+**Expected result:** a transport and overlay design where SD-WAN's application-aware path selection
+and internet breakout are justified by the SaaS/cost/resilience requirements — the WAN decision is
+driven by cost, application SLAs, and resilience, each traded explicitly.
+
+**Common mistake:** keeping expensive MPLS everywhere "for reliability" while the requirement is
+cost reduction with a voice SLA; a hybrid with tested failover often meets the SLA at lower cost —
+the design must serve the stated cost driver.
+
+### Design Exercise 3.3 — Internet edge and DMZ (Topic: Edge design)
+
+> **Scenario.** An enterprise consolidates three internet edges into one hardened edge serving
+> inbound web services, outbound user traffic, and site-to-site/remote-access VPN, with a DDoS and
+> resilience requirement.
+
+Design the internet edge: the security zones (outside/DMZ/inside) and what lives in each; redundancy
+(dual ISP, BGP multihoming or a simpler model) and its failover behavior; DDoS mitigation placement;
+and how inbound services, outbound traffic, and VPN termination are separated. State the
+availability and blast-radius consequences.
+
+**Expected result:** a layered edge with clear zones, ISP redundancy sized to the availability
+requirement, and DDoS mitigation positioned before the assets it protects — the internet edge is a
+concentrated risk, so zoning and resilience are the primary design drivers.
+
+**Common mistake:** collapsing inbound services, user traffic, and VPN onto one undifferentiated
+edge; a compromise or overload in one then affects all — separation of function at the edge bounds
+the blast radius.
+
+### Design Exercise 3.4 — Addressing and summarization (Topic: Addressing strategy)
+
+> **Scenario.** Design the IPv4/IPv6 addressing for the multi-site enterprise above, anticipating
+> mergers, cloud, and 40% growth.
+
+Produce an addressing strategy: a hierarchical, summarizable allocation that aligns to the topology
+(so summarization boundaries match routing/failure domains); IPv6 alongside IPv4; room for growth
+and acquisitions; and how overlap with a future acquisition would be handled. Explain how the plan
+supports summarization and thus routing scalability.
+
+**Expected result:** a hierarchical addressing plan whose boundaries enable route summarization at
+the distribution/WAN edges, containing routing-table size and failure propagation — addressing is a
+design decision that determines routing scalability, not an afterthought.
+
+**Common mistake:** allocating addresses flatly or by first-come; without hierarchy you cannot
+summarize, so routing tables and failure domains grow unbounded — the addressing plan must be
+designed to summarize.
 
 ## Lab Verification
 

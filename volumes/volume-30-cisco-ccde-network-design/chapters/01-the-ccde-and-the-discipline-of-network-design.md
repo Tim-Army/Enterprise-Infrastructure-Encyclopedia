@@ -157,17 +157,76 @@ Knowledge checks:
 4. Why can the most advanced technology be the wrong design answer?
    Give a constraint that would make it so.
 
-## Design Exercise
+## Design Exercises
 
-Take the retailer brief fragment above (or a real brief from your own
-experience) and produce a one-page HLD reasoning document — not a
-solution diagram yet, but the analysis: list explicit requirements,
-implicit requirements, and constraints in three columns; then write
-three to five design-decision sentences, each of the form "I chose …
-because … accepting …." Do not reach for a product or a command.
-Finally, review your decisions against the brief in both directions
-and note any requirement without a decision, or any decision without a
-driver.
+The CCDE is a **design** certification: there are no devices to configure and no commands to
+run. In place of hands-on labs, this volume carries **topic-level Design Exercises** — scenario
+briefs that ask you to produce and defend a design, the way the eight-hour practical exam does.
+Work each one to a written deliverable, then review it against the brief both ways (does the
+design meet every requirement, and is every design choice traceable to a requirement?). Each
+chapter's exercises end with a shared **`**Lab verified by:** *pending*`** sign-off, marking the
+design as reviewed only once a human has worked it.
+
+**How to work a Design Exercise.** For every major choice, write one
+*decision → driver → cost* sentence: what you chose, which requirement/constraint drove it, and
+what it costs (money, complexity, risk, or a capability given up). A design with no stated costs
+is not a design — it is a wish list.
+
+### Design Exercise 1.1 — Turn a vague brief into requirements (Topic: Requirements)
+
+> **Scenario.** A CIO says: "Our network is old and slow, we're opening three sites next year,
+> and the board is worried about security. Fix it."
+
+Produce, in writing: **functional requirements** (what the network must do), **non-functional
+requirements** (availability, performance, scale, security targets — made measurable),
+**constraints** (budget, timeline, existing gear, skills), and the **assumptions** you must
+confirm. Rank them, and flag which are actually business drivers versus stated solutions.
+
+**Expected result:** a structured requirements set where every vague phrase ("old and slow",
+"worried about security") is converted into a testable requirement or an explicit question back
+to the business — CCDE design begins by eliciting and prioritizing requirements, because you
+cannot design to "fix it."
+
+**Common mistake:** jumping to technology ("we'll deploy SD-WAN and a next-gen firewall") before
+the requirements are pinned down; you may solve the wrong problem — requirements precede
+solutions, always.
+
+### Design Exercise 1.2 — Scope an HLD versus an LLD (Topic: Design deliverables)
+
+> **Scenario.** You are handed the requirements from Exercise 1.1 and asked "what will you
+> deliver, and in what order?"
+
+Define the **High-Level Design** (topology/modules, technology choices, addressing/segmentation
+strategy, resilience model — the *what and why*) and the **Low-Level Design** (specific
+device configs, interface/IP assignments, protocol parameters — the *how*), and state which
+decisions belong in each and why the HLD is agreed before the LLD begins.
+
+**Expected result:** a clear split where the HLD captures the design *decisions* and their
+drivers, and the LLD captures the *implementation* — the CCDE operates at the HLD level, where
+trade-offs live, and confusing the two (arguing timers before topology) is a classic error.
+
+**Common mistake:** designing at the LLD level first (picking OSPF timers before deciding the
+routing hierarchy); the big decisions that constrain everything else are made in the HLD.
+
+### Design Exercise 1.3 — Make a defensible trade-off (Topic: Decision discipline)
+
+> **Scenario.** Two valid designs meet the requirements: (A) a simpler single-vendor fabric that
+> costs more and locks you in; (B) a standards-based multi-vendor design that is cheaper but
+> more complex to operate.
+
+Write the trade-off analysis: the drivers each design serves, what each costs (capex/opex, risk,
+operational skill, lock-in, agility), the assumptions that would change the answer, and a
+**recommendation with its condition** ("choose A if operational simplicity and time-to-value
+outweigh lock-in; choose B if cost and vendor flexibility dominate").
+
+**Expected result:** a recommendation that names the deciding factor rather than declaring one
+option universally "best" — CCDE scenarios rarely have a single right answer; they have a
+best answer *given these requirements*, and your job is to make the reasoning explicit and
+defensible.
+
+**Common mistake:** asserting one option is "best practice" without tying it to the scenario's
+drivers; the same choice can be right in one context and wrong in another — the justification,
+not the choice, is what is graded.
 
 ## Lab Verification
 

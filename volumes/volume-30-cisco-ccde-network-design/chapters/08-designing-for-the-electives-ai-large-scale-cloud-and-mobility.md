@@ -177,17 +177,93 @@ Knowledge checks:
 4. What is the defining requirement of workforce-mobility design, and
    what architecture pattern meets it?
 
-## Design Exercise
+## Design Exercises
 
-Choose one elective matching your experience. Take a brief in that
-area (or one from your work) and produce an elective HLD *in the full
-five-domain frame*: business justification and sizing; the plane/
-network design specific to the elective (AI fabric, large-scale
-state-removal, cloud connectivity, or mobility access); the services
-and security design; and the operational/assurance design. Explicitly
-size the elective's signature cost driver (AI facilities, large-scale
-automation, cloud egress, mobility policy plane) to the real
-requirement. Review both directions.
+These Design Exercises cover the CCDE practical-exam **electives** — one Design Exercise per
+elective: AI infrastructure, large-scale networks, cloud connectivity, and mobility. Work each to a
+written design, stating every choice as a *decision → driver → cost* sentence. They share the
+chapter's **`**Lab verified by:** *pending*`** sign-off.
+
+### Design Exercise 8.1 — AI/ML data-center fabric (Topic: AI elective)
+
+> **Scenario.** Design the network for a GPU training cluster: hundreds of GPUs whose distributed
+> training generates intense, synchronized east-west "elephant" flows, and whose job completion time
+> is dominated by network tail latency and any packet loss.
+
+Design the AI fabric: a **non-blocking spine-leaf (Clos)** with the oversubscription target justified
+by the traffic pattern; the loss/latency strategy (lossless transport via RoCEv2 with PFC/ECN, or a
+scheduled fabric) and why loss is catastrophic for collective operations; load-balancing for large
+flows (per-packet/flowlet vs ECMP hashing limits); and isolation of the training network from
+general traffic. State the cost of lossless design.
+
+**Expected result:** a rail-optimized/non-blocking Clos with a congestion-control strategy (PFC/ECN
+or scheduled) that keeps the fabric effectively lossless, and load-balancing that avoids hashing a
+few elephant flows onto one link — AI-fabric design is dominated by tail latency and loss, not
+average utilization.
+
+**Common mistake:** designing the AI fabric like a general enterprise DC (oversubscribed, ECMP,
+tolerant of a little loss); synchronized collective flows collapse under hash polarization and PFC/
+loss, inflating job completion time — the traffic pattern demands a different design.
+
+### Design Exercise 8.2 — Large-scale network design (Topic: Large-scale elective)
+
+> **Scenario.** Design a network that must scale to tens of thousands of nodes/prefixes with
+> predictable convergence and bounded failure domains — beyond where a conventional hierarchy is
+> comfortable.
+
+Design for scale: the **hierarchy and summarization** that keeps any control-plane domain small; the
+choice of scaling technology (e.g. Segment Routing to reduce control-plane state and enable TE
+without RSVP/LDP, or BGP-only fabrics); how failure domains are bounded so a fault stays local; and
+the state/scale trade-offs (FIB/RIB size, flooding, churn). State what the scaling approach costs in
+complexity.
+
+**Expected result:** a design that scales by *minimizing and localizing control-plane state* —
+summarized hierarchy, Segment Routing or scalable BGP design, bounded failure domains — because at
+large scale the enemy is control-plane state and churn, not raw bandwidth.
+
+**Common mistake:** scaling by adding capacity/devices to a flat or lightly-summarized design;
+control-plane state, flooding, and convergence degrade super-linearly — large scale is a
+control-plane-state problem solved by hierarchy and summarization.
+
+### Design Exercise 8.3 — Cloud connectivity design (Topic: Cloud elective)
+
+> **Scenario.** An enterprise adopts two public clouds plus SaaS. Design hybrid/multi-cloud
+> connectivity: predictable performance to cloud workloads, consistent segmentation/security into
+> the cloud, and resilient, cost-aware transport.
+
+Design cloud connectivity: **private interconnect (Direct Connect/ExpressRoute/Interconnect) vs
+VPN-over-internet** per workload requirement; the redundancy and failover across providers/regions;
+how on-prem segmentation and policy extend into the cloud (consistent security posture); and the
+routing/traffic model (hub landing zone / transit) with its cost. State the trade-off between
+private-link performance and its cost.
+
+**Expected result:** a hybrid design using resilient private interconnects where performance/
+consistency demand it, VPN where it suffices, a transit/landing-zone routing model, and segmentation
+that extends consistently into the cloud — cloud connectivity is a design trade-off among
+performance, resilience, cost, and policy consistency.
+
+**Common mistake:** connecting to cloud with a single VPN tunnel and a different security model than
+on-prem; performance is unpredictable and the security posture is inconsistent — resilient transport
+and consistent segmentation are the design requirements.
+
+### Design Exercise 8.4 — Mobility and wireless design (Topic: Mobility elective)
+
+> **Scenario.** Design campus and remote wireless/mobility for high-density areas, seamless roaming,
+> IoT, and location services, integrated with the wired segmentation policy.
+
+Design mobility: the **WLAN architecture** (controller/fabric-integrated vs cloud-managed) with its
+driver; RF/capacity design for high density; the roaming model for seamless mobility; how wireless
+clients inherit the same identity/segmentation policy as wired; and IoT onboarding/isolation. State
+the trade-off between centralized control and distributed data-plane forwarding.
+
+**Expected result:** a wireless design where the WLAN architecture and RF plan meet the density/
+roaming requirements and clients are placed into the *same* identity-driven segmentation as wired —
+mobility design integrates with the campus security/segmentation model rather than being a separate
+island.
+
+**Common mistake:** designing wireless as a standalone overlay with its own separate policy; clients
+then bypass the wired segmentation model, and roaming/density are afterthoughts — wireless must
+inherit the unified policy and be RF/capacity-designed for the environment.
 
 ## Lab Verification
 

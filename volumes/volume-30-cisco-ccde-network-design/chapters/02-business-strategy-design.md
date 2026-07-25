@@ -160,16 +160,69 @@ Knowledge checks:
    the technically optimal one, and name the requirement that decides
    it.
 
-## Design Exercise
+## Design Exercises
 
-Take the hospital-merger brief (or a merger/expansion brief from your
-experience) and produce a business-alignment design document: a table
-of business drivers → requirements → architectural implications; an
-availability target with its business justification; a stated delivery
-methodology and one architectural consequence of it; and an RPO/RTO
-pair with the continuity element each drives. Close with three
-strategy-level design decisions, each written as a sentence tying it
-to a business driver and naming its cost.
+These Design Exercises cover the CCDE **Business Strategy** domain — aligning technical design to
+business drivers, risk, and cost. Work each to a written deliverable, writing every major choice
+as a *decision → driver → cost* sentence. They share the chapter's **`**Lab verified by:**
+*pending*`** sign-off.
+
+### Design Exercise 2.1 — Align a design to a business event (Topic: Business alignment)
+
+> **Scenario.** A retailer is acquiring a competitor of similar size. Integration must complete in
+> nine months, keep both e-commerce sites running throughout, and unify security policy — with a
+> flat integration budget.
+
+Produce a design approach that serves the *business event*: how you interconnect the two networks
+(overlapping IP space, overlapping domains), the sequencing (what integrates first and why), the
+segmentation that keeps the two security postures separate until unified, and the reversibility if
+the deal terms change. Tie each choice to the merger's drivers (speed, continuity, cost).
+
+**Expected result:** a design where the technical sequence is driven by the M&A timeline and
+continuity requirement (e.g. NAT/overlay to bridge overlapping address space first, unify identity
+and policy in a controlled second phase) — CCDE business-strategy design starts from the business
+event, not the technology.
+
+**Common mistake:** proposing a clean-slate re-architecture that ignores the nine-month deadline
+and continuity requirement; the "ideal" design that cannot be delivered in time fails the business
+requirement — feasibility within the constraints is part of correctness.
+
+### Design Exercise 2.2 — Design for risk and change (Topic: Risk management)
+
+> **Scenario.** A bank's board mandates that no core-network change may risk a full outage, after a
+> previous change caused one.
+
+Produce a design and change approach that bounds risk: redundancy and failure-domain boundaries so
+no single change or fault is total; a staged rollout model (canary/rings) with validation gates and
+rollback; and how the *design itself* (modularity, blast-radius containment) makes changes safer.
+State the cost of the added safety (capex for redundancy, slower change velocity).
+
+**Expected result:** a design whose modularity and failure-domain boundaries limit the blast radius
+of any change or fault, paired with a staged, reversible change process — risk-averse business
+requirements translate into concrete design choices (smaller failure domains, redundancy,
+reversibility), each with a cost.
+
+**Common mistake:** treating "high availability" as a bolt-on (add a second device) rather than a
+design property (bounded failure domains, tested failover, reversible change); redundancy without
+containment can still propagate a failure network-wide.
+
+### Design Exercise 2.3 — Justify the design economically (Topic: Cost and TCO)
+
+> **Scenario.** Two designs meet the requirements; one has lower capex but higher opex (more manual
+> operation), the other higher capex but lower opex (more automation/simplicity). A five-year
+> horizon is assumed.
+
+Build the trade-off on **total cost of ownership**, not sticker price: capex vs opex over five
+years, operational complexity and staffing, refresh/scale cost, and the risk-adjusted cost of
+downtime. Recommend with the condition that flips the decision (e.g. "choose the automation-heavy
+design if opex/skills dominate and the horizon is ≥5 years").
+
+**Expected result:** a recommendation grounded in five-year TCO and risk, not initial price — CCDE
+design decisions must be economically defensible, and the cheapest-to-buy option is frequently the
+most expensive to own.
+
+**Common mistake:** comparing only upfront capex; ignoring opex, operational complexity, and the
+cost of downtime hides the true cost — TCO over the design horizon is the honest comparison.
 
 ## Lab Verification
 

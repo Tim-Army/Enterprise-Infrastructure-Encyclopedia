@@ -152,18 +152,76 @@ Knowledge checks:
 4. Why is gold-plating penalized, and how do you catch yourself doing
    it?
 
-## Design Exercise
+## Design Exercises
 
-Assemble and take a **full timed scenario** in your chosen elective:
-gather (or write, from real experience) a multi-part brief with an
-existing-network diagram, an evolving requirement delivered partway
-through, and three or four specific design questions. Time yourself to
-a module budget. Produce decisions with driver-and-trade-off
-justification, revise appropriately when the injected requirement
-lands, and keep every answer in scope. Then self-review against the
-verification checklist above — grading your *method*, not only your
-conclusions — and repeat with new scenarios until the method is
-automatic.
+These Design Exercises rehearse the **CCDE practical exam itself** — the scenario method, trade-off
+analysis under changing requirements, and a full integrative capstone. Work each as if under exam
+conditions: closed-book, design-only, defending every choice. They share the chapter's **`**Lab
+verified by:** *pending*`** sign-off.
+
+### Design Exercise 9.1 — Work a practical scenario (Topic: Scenario method)
+
+> **Scenario.** You are given a multi-page brief: a company profile, a business objective, existing
+> topology, constraints, and a set of documents (emails, diagrams, requirements) — some relevant,
+> some noise. Questions unlock in sequence as the scenario progresses.
+
+Practice the **method**: read for the business objective first; extract requirements and constraints
+and separate them from noise; build a mental (or sketched) model of the current and target state;
+answer each question from the requirements, not from a favorite technology; and track how each
+answer constrains later ones. Time-box each phase.
+
+**Expected result:** a repeatable way of working a scenario — objective → requirements → model →
+requirement-driven answers — that stays consistent as information accumulates, which is exactly the
+skill the eight-hour practical assesses (managing a large, evolving information set under time
+pressure).
+
+**Common mistake:** answering questions in isolation from a technology preference, or drowning in the
+document set; the exam rewards a disciplined method that ties every answer to the brief's
+requirements and carries context forward.
+
+### Design Exercise 9.2 — Trade-offs under changing requirements (Topic: Adaptation)
+
+> **Scenario.** Midway through a scenario, the business changes a key requirement: a merger is
+> announced, a budget is cut, a new compliance mandate lands, or a timeline is halved. Your earlier
+> design must adapt.
+
+Practice adaptation: identify which earlier decisions the change invalidates; rework only those,
+preserving what still holds; re-state the affected *decision → driver → cost* sentences under the new
+driver; and show whether the change forces a different *best* answer (and why). Do this without
+starting over.
+
+**Expected result:** a demonstrated ability to revise a design surgically when a requirement changes,
+re-justifying the affected decisions — CCDE practical scenarios deliberately change requirements
+mid-stream to test whether your design reasoning is requirement-driven (and thus adaptable) rather
+than memorized.
+
+**Common mistake:** clinging to the original design after the requirements changed, or scrapping
+everything and restarting; the graded skill is targeted adaptation — change what the new driver
+invalidates, keep what it does not.
+
+### Design Exercise 9.3 — Integrative capstone (Topic: Full-scenario synthesis)
+
+> **Scenario.** A multinational is consolidating three regional networks into one, adding a public-
+> cloud presence and an AI training cluster, under a fixed budget and an aggressive timeline, with a
+> board-level security mandate and a strict change-risk tolerance. Design the target network and
+> defend it end to end.
+
+Produce a full HLD synthesizing the whole volume: **business alignment** (Ch02) to the consolidation
+drivers; **campus/WAN/edge** (Ch03) and **addressing** for the unified network; **routing/control-
+plane** (Ch04) hierarchy and scaling; **data/management-plane, QoS, automation, operations** (Ch05);
+**services** (Ch06) for multi-region/multi-tenant connectivity; **security/segmentation** (Ch07);
+and the relevant **electives** (Ch08 — cloud on-ramps and the AI fabric). Every major choice is a
+*decision → driver → cost* sentence, and the whole design is reviewed against the brief both ways.
+
+**Expected result:** a coherent, defensible target design where every layer traces to a requirement,
+the trade-offs are explicit, and the electives (cloud, AI) integrate with the core rather than
+bolting on — this is the deliverable the eight-hour practical builds toward: not the "best"
+technologies, but the best *justified* design for these requirements.
+
+**Common mistake:** producing a technically maximal design (every modern feature) that busts the
+budget/timeline or that the team cannot operate; the capstone, like the exam, rewards the design that
+best satisfies *all* the requirements — including cost, risk, and operability — with the reasoning
+made explicit.
 
 ## Lab Verification
 

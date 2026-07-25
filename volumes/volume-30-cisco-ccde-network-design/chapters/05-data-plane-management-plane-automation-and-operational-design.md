@@ -173,17 +173,84 @@ Knowledge checks:
 4. How does observability become part of the design rather than a
    bolt-on, and what sizes it?
 
-## Design Exercise
+## Design Exercises
 
-Take the bank-branch brief (or a large-scale operational design from
-your experience) and produce an HLD for the non-control planes: the
-plane-separation decisions (OOB, control-plane protection) with their
-drivers; the data-plane/overlay choice with MTU handling; the
-automation architecture (building blocks, source of truth, model-
-driven interfaces) that makes turn-up automatable; and the
-observability/assurance design sized to the compliance/operational
-obligation. State each as a decision-with-driver-and-cost, and confirm
-a small team could run it at scale.
+These Design Exercises cover the CCDE **data-plane, management-plane, automation, and operational**
+design topics. Work each to a written design, stating every choice as a *decision → driver → cost*
+sentence. They share the chapter's **`**Lab verified by:** *pending*`** sign-off.
+
+### Design Exercise 5.1 — QoS design (Topic: Data-plane / QoS)
+
+> **Scenario.** A converged network carries voice, interactive video, business-critical apps, bulk
+> replication, and scavenger traffic over congested WAN links. Voice and video have strict SLAs.
+
+Design end-to-end QoS: the **trust boundary** (where marking is trusted vs re-marked); a class model
+(how many classes and their mapping to the traffic types); the queuing/scheduling and drop policy
+per class; and how the model stays consistent across campus, WAN, and any SD-WAN/overlay. State the
+trade-off between the number of classes and operational simplicity.
+
+**Expected result:** a coherent class model with a defined trust boundary, priority queuing for
+real-time traffic, and consistent treatment end to end — QoS is a data-plane design decision driven
+by application SLAs and link congestion, and the trust boundary is where it starts.
+
+**Common mistake:** trusting markings from untrusted edges, or designing a different class model per
+domain; both break end-to-end SLAs — the trust boundary and a single consistent class model are the
+design's backbone.
+
+### Design Exercise 5.2 — Multicast or overlay data-plane design (Topic: Data-plane forwarding)
+
+> **Scenario.** A media enterprise distributes live video to thousands of receivers across the WAN,
+> and separately runs a data-center overlay (VXLAN/EVPN) for east-west traffic.
+
+Choose one to design: (a) **multicast** — PIM mode (SSM vs ASM), RP placement/redundancy (anycast
+RP), and how you scope and scale the trees; or (b) the **overlay data plane** — encapsulation
+(VXLAN), the control plane (EVPN) for MAC/IP distribution, and how BUM traffic is handled. Justify
+the forwarding model against the traffic pattern.
+
+**Expected result:** a forwarding design matched to the pattern — SSM for well-known one-to-many
+sources with anycast-RP redundancy where ASM is needed; or VXLAN/EVPN with a defined BUM strategy —
+the data-plane/overlay choice follows the traffic model and its scale.
+
+**Common mistake:** using ASM with a single RP for a large source set (RP is a single point of
+failure and suboptimal), or an overlay with no control plane (flood-and-learn) at scale — the
+control-plane/redundancy design is what makes the data plane scale.
+
+### Design Exercise 5.3 — Management plane and automation (Topic: Management design)
+
+> **Scenario.** A 500-device network must move from CLI-by-hand to model-driven operations:
+> consistent config, telemetry-based monitoring, and safe automated change.
+
+Design the management plane: **in-band vs out-of-band** management (and a hybrid) with its
+resilience trade-off; the automation model (source-of-truth/IaC, model-driven config via NETCONF/
+YANG, CI/CD with validation gates); and streaming telemetry vs SNMP polling for monitoring. State
+how the design makes change safer, not just faster.
+
+**Expected result:** a management design with resilient (ideally out-of-band) reachability,
+model-driven automation gated by validation, and telemetry-based observability — the management/
+automation plane is a first-class design concern, and safety (rollback, gates) is as important as
+speed.
+
+**Common mistake:** automating change with no out-of-band path or validation gates; an automated
+bad change can cut the very in-band path used to fix it — OOB reachability and gated rollback are
+what make automation safe.
+
+### Design Exercise 5.4 — Operational and Day-2 design (Topic: Operational design)
+
+> **Scenario.** A design must be operable by a modest team: predictable troubleshooting, bounded
+> change risk, and clear observability.
+
+Design for operations: how **modularity and consistency** (repeated building blocks, standard
+templates) reduce cognitive load; the observability strategy (what is measured, where alerts fire,
+how a fault is localized to a module); and the change model (maintenance windows, canary, rollback).
+Argue that operability is a design property, not an afterthought.
+
+**Expected result:** a design whose repeated, standardized modules and clear observability make
+faults localizable and changes bounded — CCDE explicitly values *operational* design, because a
+technically elegant network that the team cannot operate safely has failed a real requirement.
+
+**Common mistake:** optimizing purely for technical elegance or minimal device count while producing
+a bespoke, hard-to-troubleshoot network; operability (consistency, observability, bounded change) is
+a graded requirement, not a nicety.
 
 ## Lab Verification
 
