@@ -342,62 +342,101 @@ than the original mistake.
 
 ## Hands-On Lab
 
-**Objective:** Measure the capacity and resynchronization consequences of
-a storage policy change, and audit a cluster against the division of
-management.
+This chapter carries a topic-level walkthrough lab for **each theme of vSphere/vSAN integration and
+the division of management** — the vCenter/VxRail-plugin relationship, the vSAN datastore and
+policies, what VxRail owns versus vCenter, and vSAN health. It builds on Volume V's vSphere/vSAN
+foundation. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites:** A nested vSphere cluster with vSAN enabled from
-[Volume V](../../volume-05-vmware-virtualization/README.md), enough hosts
-to satisfy at least one erasure-coding policy, PowerCLI, and several test
-VMs carrying real data.
+**Shared prerequisites for Labs 4.1–4.4** — a deployed VxRail cluster, vSphere Client access, and
+the VxRail API. **Cost:** none.
 
-**This lab runs faithfully without VxRail hardware.** Storage policies,
-resync behavior, and cluster services are vSAN and vSphere mechanisms
-that VxRail inherits unchanged — this is one of the chapters where a
-nested substitute teaches the actual material rather than an
-approximation of it.
+### Lab 4.1 — vCenter and the VxRail plugin (Topic: vSphere integration)
 
-**Procedure**
+**Objective:** Locate VxRail management inside vCenter.
 
-1. Run the policy audit from *Implementation and Automation* and record
-   the current distribution of VMs and capacity across policies.
-2. Note the cluster's current free capacity.
-3. Create the `vSAN-EC-FTT1` policy and apply it to a tagged subset of
-   test VMs.
-4. Immediately begin watching resync with `Get-VsanResyncingComponent`,
-   sampling every minute, and record how long the resync takes and how
-   much data it moves.
-5. Once resync completes, re-measure free capacity and compare against
-   step 2. Calculate the actual capacity recovered per TB of VM data
-   moved, and compare it against the 2x-to-1.33x expectation in the
-   theory section.
-6. Run the DRS and admission control check and confirm the cluster
-   matches what VxRail lifecycle would assume.
+```text
+# In the vSphere Client: open the cluster > Configure > VxRail.
+#   Confirm the VxRail plugin shows: system health, hosts/chassis, and the "Add VxRail Hosts",
+#   "Updates" (LCM), and support panels — VxRail management lives inside vCenter, not a separate UI.
+```
 
-**Negative test**
+**Expected result:** the VxRail management panels appear within the vSphere Client via the plugin —
+VxRail integrates *into* vCenter: day-to-day VxRail operations (add hosts, LCM, health) are driven
+from the vSphere Client's VxRail plugin, so operators work in one console, not two.
 
-7. Create a policy requiring a failure tolerance your host count cannot
-   satisfy — on a three-host cluster, a policy tolerating two failures —
-   and apply it to a single test VM. Confirm that policy *creation*
-   succeeds, that *application* succeeds, and that the VM then reports
-   persistent non-compliance rather than an error. This is the failure
-   mode from the troubleshooting table, and seeing it once makes it
-   recognizable later.
-8. Reassign the VM to a satisfiable policy and confirm compliance
-   returns.
+**Negative test:** look for a wholly separate VxRail admin console for daily operations; the primary
+management surface is the vCenter plugin — knowing where VxRail functions live in vCenter is an
+exam and operational essential.
 
-**Expected results**
+**Cleanup:** none (read-only).
 
-- A measured, not estimated, capacity difference between mirroring and
-  erasure coding on your own data.
-- A resync duration that gives a realistic sense of what a
-  production-scale policy change would cost.
-- A non-compliance condition produced deliberately and resolved.
+### Lab 4.2 — The vSAN datastore and storage policies (Topic: vSAN storage)
 
-**Cleanup**
+**Objective:** Read the vSAN datastore and apply a storage policy.
 
-9. Return the test VMs to their original policy, allow resync to
-   complete, and remove the policies created during the lab.
+```text
+# vSphere Client: Cluster > Datastores > the vSAN datastore (usable capacity, from disk groups).
+#   Policies and Profiles > VM Storage Policies: review the vSAN Default Storage Policy
+#   (FTT=1, RAID-1) and create a policy (e.g. FTT=1 RAID-5) for a workload; assign it to a VM.
+```
+
+**Expected result:** the single vSAN datastore spans all nodes' disk groups, and a storage policy
+(FTT/RAID) governs per-VM resilience and efficiency — vSAN presents one policy-driven datastore;
+the storage policy (not LUN placement) decides how many failures a VM tolerates and its space
+overhead.
+
+**Negative test:** expect to place a VM on a specific disk for performance the way you would on a
+SAN; vSAN is policy-driven and object-distributed — you set intent (FTT, stripe, RAID) via policy,
+not manual placement.
+
+**Cleanup:** revert the lab VM to the default policy; delete the lab policy if unused.
+
+### Lab 4.3 — The division of management (Topic: Management boundaries)
+
+**Objective:** Distinguish what VxRail owns from what vCenter owns.
+
+```text
+# Classify common tasks:
+#   VxRail owns  -> node add/remove, LCM (firmware+ESXi+vSAN+vCenter bundle), hardware health,
+#                   support/telemetry, the Continuously Validated State
+#   vCenter owns -> VMs, resource pools, DRS/HA, networking (vDS), permissions, standard vSphere ops
+```
+
+**Expected result:** a clear split — VxRail owns the *platform lifecycle and hardware*, vCenter
+owns *virtualization operations* — this division is the core operating model: you never patch ESXi
+or firmware by hand (that is VxRail LCM), but you run VMs/DRS/HA normally through vCenter.
+
+**Negative test:** upgrade ESXi through the standard vSphere Lifecycle Manager on a VxRail; you
+break the validated state and the supported path — ESXi/firmware updates must go through VxRail LCM
+(Chapter 06), which is the boundary this lab establishes.
+
+**Cleanup:** none.
+
+### Lab 4.4 — vSAN health check (Topic: Storage health)
+
+**Objective:** Confirm vSAN is healthy end to end.
+
+```text
+# vSphere Client: Cluster > Monitor > vSAN > Skyline Health.
+#   Review all checks (network, physical disk, data, cluster); resolve any red/yellow.
+```
+
+Verify overall system health via the API:
+
+```bash
+curl -sk -u 'administrator@vsphere.local:<pass>' https://<vxm>/rest/vxm/v1/system | \
+  python3 -c "import json,sys; print('system health:', json.load(sys.stdin).get('health'))"
+```
+
+**Expected result:** vSAN Skyline Health passes all checks and the VxRail system reports healthy —
+vSAN health is the definitive storage check (network config, disk balance, object compliance), and
+on VxRail it should be watched continuously because storage underpins every workload.
+
+**Negative test:** ignore a yellow vSAN network health check (e.g. MTU mismatch); under load it
+becomes packet loss and degraded VMs — Skyline Health surfaces it early, so a clean health check is
+the bar before and after any change.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

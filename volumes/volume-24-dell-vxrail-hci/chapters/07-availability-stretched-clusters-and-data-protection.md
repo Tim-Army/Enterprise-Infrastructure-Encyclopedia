@@ -370,63 +370,101 @@ matters most.
 
 ## Hands-On Lab
 
-**Objective:** Test availability claims by causing the failures they
-claim to survive, and validate a restore rather than a backup.
+This chapter carries a topic-level walkthrough lab for **each availability and data-protection
+theme** — vSAN fault tolerance, stretched clusters, data protection/replication, and availability
+validation — part of the Post-Deployment domain. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites:** A nested vSphere cluster with vSAN and at least four
-hosts from [Volume V](../../volume-05-vmware-virtualization/README.md),
-a backup product with a trial or community edition, PowerCLI, and an
-isolated port group with no uplinks.
+**Shared prerequisites for Labs 7.1–7.4** — a deployed VxRail cluster (a stretched-cluster pair +
+witness for Lab 7.2), vSphere Client access, and a lab workload to protect. **Cost:** none beyond
+lab resources.
 
-**Most of this lab is faithful.** Fault domains, witness behavior, HA
-response, and restore validation are vSAN and vSphere mechanisms that
-VxRail inherits unchanged. A nested environment can even build a
-stretched cluster configuration, though its latency characteristics will
-be nothing like a real inter-site link.
+### Lab 7.1 — vSAN fault tolerance (FTT and RAID) (Topic: Fault tolerance)
 
-**Procedure**
+**Objective:** Set how many failures a workload tolerates.
 
-1. Run the availability audit and record which policies protect what
-   proportion of your estate by capacity.
-2. Configure fault domains grouping your hosts into two or three domains.
-   Observe how vSAN redistributes object components in response.
-3. Abruptly power off one host — not a graceful shutdown. Time how long
-   until VMs restart and until vSAN reports objects fully compliant
-   again. These are two different durations and the second is longer.
-4. Build a two-node cluster configuration with a witness appliance hosted
-   outside both nodes.
-5. Isolate the witness from both nodes and confirm the cluster continues
-   operating. Then, with the witness still isolated, fail one node and
-   observe the result. Restore the witness afterwards.
-6. Configure a backup of several test VMs, run it, then restore one into
-   the isolated port group. Power it on and verify its data is present
-   and current.
+```text
+# vSphere Client: Policies and Profiles > VM Storage Policies. Compare:
+#   FTT=1 RAID-1 (mirror)  -> tolerates 1 failure, 2x space
+#   FTT=1 RAID-5 (erasure) -> tolerates 1 failure, ~1.33x space (needs >=4 hosts)
+#   FTT=2 RAID-6           -> tolerates 2 failures, 1.5x space (needs >=6 hosts)
+# Assign a policy to a VM and confirm compliance (Monitor > vSAN > Virtual Objects).
+```
 
-**Negative test**
+**Expected result:** the storage policy sets Failures To Tolerate and the RAID method, trading space
+for resilience, with host-count requirements — vSAN resilience is per-VM policy: RAID-1 mirrors for
+performance/small clusters, erasure coding (RAID-5/6) for capacity efficiency on larger clusters.
 
-7. While the cluster is still rebuilding from the step 3 failure, fail a
-   second host. Confirm that objects become inaccessible even though the
-   applied policy nominally tolerates a failure — because that tolerance
-   was already spent on the first failure and not yet restored. This is
-   the first row of the troubleshooting table, and it is the single most
-   important availability behavior in this chapter to have seen.
-8. Restore both hosts and allow the cluster to return to full compliance.
+**Negative test:** apply an FTT=2 RAID-6 policy on a 4-host cluster; objects are non-compliant
+because RAID-6 needs ≥6 hosts — the policy's resilience must fit the cluster's host count.
 
-**Expected results**
+**Cleanup:** revert the lab VM to the default policy.
 
-- A measured gap between "VMs restarted" and "redundancy restored", which
-  is the window during which the cluster is not protected.
-- Direct observation that a witness loss is silent until the next
-  failure.
-- A restore verified by booting and inspecting data, not by reading a job
-  report.
-- A demonstrated second-failure-during-rebuild data unavailability event.
+### Lab 7.2 — Stretched cluster (Topic: Site resilience)
 
-**Cleanup**
+**Objective:** Understand cross-site availability with a witness.
 
-9. Remove restored test VMs and the isolated port group's contents,
-   return fault domain configuration to its original state, and allow all
-   resync to complete before leaving the cluster.
+```text
+# A VxRail stretched cluster spans two sites (data) plus a third-site Witness (metadata only):
+#   - site-affinity storage policies place a mirror copy at each site (FTT across sites)
+#   - the Witness breaks the tie if the inter-site link fails, preventing split-brain
+# In vSphere Client, review the fault domains (Site A / Site B / Witness) and a stretched policy.
+```
+
+**Expected result:** the cluster has two data fault domains and a witness, with policies mirroring
+data across sites — a stretched cluster survives the loss of an entire site (VMs restart at the
+surviving site), and the witness at a third location is what arbitrates to avoid split-brain.
+
+**Negative test:** run a stretched cluster with the witness co-located at one data site; losing that
+site loses both a copy and the witness, breaking arbitration — the witness must be at an independent
+third location.
+
+**Cleanup:** none (read-only).
+
+### Lab 7.3 — Data protection and replication (Topic: Data protection)
+
+**Objective:** Protect workloads beyond in-cluster resilience.
+
+```text
+# Layer data protection on top of vSAN resilience:
+#   - vSAN/array-based or VM-level replication to a second cluster/site (RPO in minutes)
+#   - backup (e.g. PowerProtect / third-party) for point-in-time recovery and ransomware
+#   - VMware SRM or native replication for orchestrated DR failover
+# Confirm at least one recovery mechanism protects the lab workload, and test a restore.
+```
+
+**Expected result:** the workload has a recovery path beyond the cluster's own FTT — vSAN FTT
+protects against *hardware* failure within a cluster, but not against data corruption, deletion,
+ransomware, or full-site loss; replication + backup + DR orchestration cover those, so both are
+needed.
+
+**Negative test:** rely on FTT alone as "backup"; a ransomware event or accidental deletion is
+faithfully mirrored to every FTT copy — resilience is not backup, so a separate point-in-time copy
+is required.
+
+**Cleanup:** remove the lab protection job if created only for the exercise.
+
+### Lab 7.4 — Availability validation (Topic: Failure testing)
+
+**Objective:** Prove the cluster survives a host failure.
+
+```text
+# In a lab (never production): put a host into maintenance mode with "Ensure accessibility" or
+#   full data migration, or simulate a host failure. Confirm:
+#   - HA restarts affected VMs on surviving hosts
+#   - vSAN re-protects objects (rebuild) once slack capacity allows
+#   - Skyline Health returns to green after recovery
+```
+
+**Expected result:** VMs restart via vSphere HA and vSAN rebuilds the lost data copies onto
+surviving capacity — validating availability confirms that HA + vSAN FTT + slack capacity actually
+deliver the resilience the policies promise, rather than assuming it.
+
+**Negative test:** assume resilience works without ever testing a host failure; a misconfigured HA
+admission-control or insufficient slack only reveals itself during a real outage — a controlled
+failure test proves it in advance.
+
+**Cleanup:** exit maintenance mode / restore the host; confirm health returns to green.
 
 ## Lab Verification
 

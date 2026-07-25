@@ -330,62 +330,99 @@ treating a threshold crossing as a genuine deadline for that reason.
 
 ## Hands-On Lab
 
-**Objective:** Build a capacity model from measured data, project a
-procurement trigger date, and observe expansion and removal behavior on a
-nested cluster.
+This chapter carries a topic-level walkthrough lab for **each task under the "Cluster Upgrade and
+Expansion" domain** — adding a node, capacity planning, disk-group expansion, and post-expansion
+validation. Each pairs the VxRail plugin with API verification. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites:** A nested vSphere cluster with vSAN from
-[Volume V](../../volume-05-vmware-virtualization/README.md) with at least
-four hosts, PowerCLI, and enough test data to make capacity movement
-visible.
+**Shared prerequisites for Labs 5.1–5.4** — a deployed VxRail cluster, an available compatible node
+(cabled and on the discovery network), vSphere Client, and the VxRail API. **Cost:** none beyond
+lab hardware.
 
-**The expansion mechanics here are vSAN's, not VxRail's.** VxRail
-Manager's orchestration of a node addition cannot be reproduced without
-hardware. The capacity modelling, the rebalance behavior, and the removal
-preconditions all can be, and they are the parts that determine whether
-an expansion is planned correctly.
+### Lab 5.1 — Add a node (scale-out) (Topic: Expansion)
 
-**Procedure**
+**Objective:** Expand the cluster through VxRail Manager.
 
-1. Run the capacity position commands and record raw capacity, free
-   capacity, and used percentage.
-2. Compute usable capacity by hand through the five-step chain from the
-   theory section, using your cluster's actual policy. Compare the result
-   against the raw figure and note the ratio.
-3. Take capacity samples using the history script, then generate
-   artificial growth by deploying test VMs, sampling after each. Build a
-   series of at least five points.
-4. From the series, compute the growth rate per day and project the date
-   your chosen trigger threshold would be crossed.
-5. Put a host into maintenance mode with full data migration and time it.
-   Record how long the cluster spent at reduced redundancy.
-6. Remove a host from the vSAN cluster and observe the evacuation, then
-   add it back and observe the rebalance.
+```bash
+# Confirm the new node is discovered and available:
+curl -sk -u 'administrator@vsphere.local:<pass>' https://<vxm>/rest/vxm/v1/system/available-hosts | \
+  python3 -m json.tool | head
+# vSphere Client: Cluster > Configure > VxRail > Add VxRail Hosts > select the discovered node,
+#   supply its hostname/IPs, and run the validated add-node workflow.
+```
 
-**Negative test**
+**Expected result:** the available node is discovered and the guided workflow adds it to the
+cluster, extending compute and vSAN capacity — VxRail scale-out is a validated workflow: the new
+node is imaged to the cluster's version, joined to vCenter, and its disks added to the vSAN
+datastore, all as one operation.
 
-7. Fill the cluster to above 90% with test data, then attempt to put a
-   host into maintenance mode with full data migration. Confirm it cannot
-   complete because the remaining hosts have nowhere to put the data —
-   the "cannot self-heal" condition made concrete. Note that the cluster
-   was reporting healthy immediately beforehand.
-8. Delete test data to bring utilization back below the trigger
-   threshold and confirm the operation then succeeds.
+**Negative test:** add a node running a different firmware/ESXi version by hand; it violates the
+Continuously Validated State — the VxRail add-node workflow images the node to match the cluster,
+which manual joining does not.
 
-**Expected results**
+**Cleanup:** none (leave the node in the cluster, or remove via the VxRail remove-host workflow).
 
-- A usable-to-raw capacity ratio measured on your own cluster, which will
-  be substantially below one.
-- A projected trigger date derived from a growth series rather than a
-  guess.
-- Direct observation that a nearly full vSAN cluster loses the ability to
-  perform maintenance while still reporting itself healthy.
+### Lab 5.2 — Capacity planning and vSAN slack space (Topic: Capacity planning)
 
-**Cleanup**
+**Objective:** Compute real usable capacity, not raw.
 
-9. Remove test VMs, allow resync to complete, and retain the capacity
-   history CSV — it is the input to the day-2 operations work in
-   [Chapter 09](09-day-2-operations-troubleshooting-support-and-capstone.md).
+```text
+# vSphere Client: Cluster > Monitor > vSAN > Capacity. Read: raw, used, and free, plus the
+#   recommended slack/free-space reserve (commonly ~25-30% for rebuilds/operations).
+# Usable ≈ raw / FTT-overhead - slack. E.g. FTT=1 RAID-1 halves usable; keep slack free for
+#   a host's data to re-protect after a failure (N+1).
+```
+
+**Expected result:** an understanding that usable capacity is raw minus FTT/RAID overhead minus
+operational slack — vSAN needs free "slack" space to rebuild after a failure and to operate, so
+capacity planning must reserve it (N+1) rather than filling the datastore.
+
+**Negative test:** fill the vSAN datastore to near-full; a single host failure has nowhere to
+rebuild the lost components and the cluster cannot re-protect data — reserving slack (N+1 capacity)
+is what keeps the cluster resilient.
+
+**Cleanup:** none (read-only).
+
+### Lab 5.3 — Disk-group expansion (Topic: Scale-up)
+
+**Objective:** Add capacity within existing nodes.
+
+```text
+# Where nodes have empty drive bays: add capacity drives and, via the VxRail/vSAN workflow,
+#   claim them into the existing disk groups (or create a new disk group).
+#   vSphere Client: Cluster > Configure > vSAN > Disk Management to verify the claimed devices.
+```
+
+**Expected result:** the new devices join the disk groups and the vSAN datastore grows without
+adding a node — you scale VxRail two ways: **scale-out** (add nodes, Lab 5.1) for compute+capacity,
+or **scale-up** (add drives to disk groups) for capacity alone; choose per whether you need more
+compute or just space.
+
+**Negative test:** add capacity by adding a node when you only needed more storage (not compute);
+you pay for cores/RAM/licensing you do not need — scale-up (drives) fits a capacity-only need more
+economically.
+
+**Cleanup:** none.
+
+### Lab 5.4 — Validate after expansion (Topic: Post-expansion validation)
+
+**Objective:** Confirm the cluster is healthy and balanced after growth.
+
+```bash
+curl -sk -u 'administrator@vsphere.local:<pass>' https://<vxm>/rest/vxm/v2/hosts | \
+  python3 -c "import json,sys; d=json.load(sys.stdin); print('hosts:', len(d) if isinstance(d,list) else d.get('total'))"
+# vSphere Client: vSAN Skyline Health + confirm the new node/disks are contributing and balanced.
+```
+
+**Expected result:** the host count reflects the addition, vSAN health is green, and data
+rebalances across the new capacity — validating after expansion confirms the new node/disks are
+contributing and the cluster re-protected/rebalanced correctly.
+
+**Negative test:** assume an added node is working because the workflow finished; if vSAN health
+shows it not contributing (a network/disk issue), capacity did not actually grow — the post-change
+health check is the proof.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

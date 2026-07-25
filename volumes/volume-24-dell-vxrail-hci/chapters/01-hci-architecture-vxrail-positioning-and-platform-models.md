@@ -319,58 +319,102 @@ not.
 
 ## Hands-On Lab
 
-**Objective:** Produce a defensible VxRail sizing baseline and platform
-decision record for a stated workload, without requiring VxRail hardware.
+This chapter carries a topic-level walkthrough lab for **each theme of the "VxRail Deployment
+Planning" and "Physical Components" domains** — HCI architecture, platform models, physical
+components, and VxRail's position versus build-your-own vSAN. VxRail is an appliance, so these
+labs pair reasoning exercises with VxRail Manager / VxRail REST API reads where a cluster exists.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites:** An existing vSphere environment to measure — nested is
-sufficient, and [Volume V](../../volume-05-vmware-virtualization/README.md)'s
-lab environment serves — plus PowerCLI as installed in
-[Volume V, Chapter 09](../../volume-05-vmware-virtualization/chapters/09-vsphere-lifecycle-automation-observability-and-troubleshooting.md).
+**Shared prerequisites for Labs 1.1–1.4** — access to a VxRail cluster's VxRail Manager (or the
+VxRail API), or the published VxRail configuration/planning materials where no hardware exists.
+This volume assumes the vSphere/vSAN foundation from Volume V. **Cost:** none beyond lab access.
 
-**This lab does not deploy VxRail.** No free or virtual VxRail edition
-exists, as the volume README states. What it does is exercise the
-architectural reasoning the Deploy exam tests and that a real engagement
-begins with.
+### Lab 1.1 — HCI versus three-tier architecture (Topic: HCI architecture)
 
-**Procedure**
+**Objective:** Contrast converged HCI with a traditional three-tier stack.
 
-1. Connect to your vCenter and export the sizing baseline using the
-   PowerCLI snippet in *Implementation and Automation* above.
-2. From the exported CSV, compute totals for vCPU, memory, provisioned
-   storage, and used storage.
-3. Establish the binding constraint: divide each total by a plausible
-   per-node figure for a general-purpose node and record which axis
-   requires the most nodes.
-4. Apply a storage policy overhead multiplier to the used-storage figure
-   — model both a mirroring policy and an erasure-coding policy — and
-   recompute the storage-driven node count for each.
-5. Write a one-page decision record stating: the binding constraint, the
-   node count under each storage policy, the recommended vCenter
-   topology with its reason, and whether the organization's patching
-   policy is compatible with bundle-based lifecycle management.
+```text
+# On paper/whiteboard, map the two models:
+#   Three-tier: separate compute (servers) + storage (SAN/array) + fabric (SAN switches)
+#   HCI (VxRail): compute + storage pooled in the same x86 nodes, storage via vSAN across nodes,
+#                 scaled by adding nodes; one lifecycle for the whole stack.
+```
 
-**Negative test**
+**Expected result:** a clear contrast — HCI collapses compute and storage into the same nodes with
+software-defined storage (vSAN) spanning them, scaled by adding nodes — HCI removes the separate
+SAN and its own lifecycle, trading array features for operational simplicity and linear scale.
 
-6. Recompute step 4 using *provisioned* rather than *used* storage. Note
-   the difference in node count. This is the error that most commonly
-   inflates a first-pass HCI quote, and seeing the size of it once is
-   worth more than being told about it.
+**Negative test:** treat VxRail as "just servers with local disks"; without vSAN pooling the disks
+across nodes, there is no shared, resilient datastore — the software-defined storage layer is what
+makes it HCI, not the hardware alone.
 
-**Expected results**
+**Cleanup:** none (design exercise).
 
-- A sizing baseline traceable to measured data rather than estimates.
-- A node count that differs meaningfully between the two storage
-  policies, demonstrating that policy is a sizing input and not a
-  post-deployment detail.
-- A decision record in which the patching-policy question is answered
-  rather than deferred.
+### Lab 1.2 — VxRail platform models (Topic: Platform models)
 
-**Cleanup**
+**Objective:** Match a workload to the right VxRail series.
 
-7. The lab produces documents rather than infrastructure; retain the
-   decision record as input to
-   [Chapter 02](02-physical-installation-network-prerequisites-and-pre-deployment-planning.md).
-   Disconnect the PowerCLI session with `Disconnect-VIServer`.
+```text
+# Map series to purpose:
+#   E-Series  -> general-purpose, space-efficient (1U)
+#   P-Series  -> performance / databases (dense, high core/RAM)
+#   V-Series  -> VDI / GPU workloads
+#   S-Series  -> storage-dense / capacity
+#   G-Series  -> compute-dense (multi-node chassis)
+#   Dynamic Nodes -> compute-only, using external storage (e.g. PowerStore) instead of local vSAN
+```
+
+**Expected result:** a workload-to-model mapping (e.g. VDI→V-Series with GPUs, capacity→S-Series)
+— VxRail spans a model family so the platform fits the workload; **dynamic nodes** notably run
+compute-only against external storage, breaking the usual "storage lives in the node" assumption.
+
+**Negative test:** buy one model for every workload; VDI on a capacity node lacks GPU, and a
+database on a storage-dense node lacks cores — matching the series to the workload is a planning
+decision the Deploy exam expects.
+
+**Cleanup:** none.
+
+### Lab 1.3 — Physical components and disk groups (Topic: Physical components)
+
+**Objective:** Read a node's compute and vSAN disk-group makeup.
+
+```bash
+# On a VxRail cluster, read node/chassis inventory via the VxRail API:
+curl -sk -u 'administrator@vsphere.local:<pass>' https://<vxm>/rest/vxm/v1/chassis | \
+  python3 -m json.tool | head -40
+```
+
+**Expected result:** node and disk-group detail (cache + capacity devices, NICs, PSUs) — a VxRail
+node is a PowerEdge server whose disks are organized into vSAN **disk groups** (a cache device
+fronting capacity devices), and understanding this layout is prerequisite to capacity and
+performance planning.
+
+**Negative test:** plan capacity from raw disk totals ignoring the cache-tier and vSAN overhead;
+usable capacity is far less than raw — disk-group structure and vSAN slack space determine real
+usable space.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.4 — VxRail versus build-your-own vSAN (Topic: VxRail positioning)
+
+**Objective:** Articulate what the joint engineering adds.
+
+```text
+# List what VxRail adds over a hand-built vSAN Ready Node cluster:
+#   - VxRail Manager: guided deployment + a single "Continuously Validated State"
+#   - one version-locked, jointly-tested bundle (BIOS/firmware/ESXi/vSAN/vCenter) per release
+#   - full-stack LCM as one operation; Dell single-vendor support for the whole stack
+```
+
+**Expected result:** a list of the operational value VxRail adds — VxRail is a jointly engineered
+*appliance*, not just hardware: VxRail Manager, the continuously-validated bundle, and single-stack
+lifecycle/support are what distinguish it from assembling your own vSAN cluster.
+
+**Negative test:** patch a VxRail's ESXi or firmware manually as if it were a generic vSphere host;
+you break the validated state and the supported LCM path — VxRail is updated as one bundle through
+its LCM (Chapter 06), not component-by-component.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

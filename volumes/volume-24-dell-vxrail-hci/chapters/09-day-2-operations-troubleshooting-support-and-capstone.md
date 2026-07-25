@@ -357,85 +357,113 @@ becomes an unrecoverable one.
 
 ## Hands-On Lab
 
-**Objective:** Build and run the complete day-2 operational routine, then
-complete a capstone exercising every chapter in this volume.
+This chapter closes the volume with **day-2 operations, troubleshooting, and support** — the
+"Troubleshooting" domain — and a **Design Exercise** capstone. Each pairs the plugin/API with
+verification; the capstone is a written design. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites:** Everything from the preceding chapters — a nested
-vSphere and vSAN cluster, PowerCLI, the drift detector from
-[Chapter 08](08-vxrail-api-automation-and-ecosystem-integrations.md), the
-capacity history from
-[Chapter 05](05-cluster-expansion-scale-out-and-capacity-planning.md), and
-the baseline from
-[Chapter 03](03-vxrail-manager-deployment-and-first-run-configuration.md).
+**Shared prerequisites for Labs 9.1–9.4** — a deployed VxRail cluster, vSphere Client and VxRail
+plugin access, the VxRail API, and CloudIQ/support connectivity where available. **Cost:** none.
 
-**Part A — the day-2 routine**
+### Lab 9.1 — Day-2 health monitoring (Topic: Operations)
 
-1. Assemble the daily and weekly scripts into `vxrail-day2.sh` and run
-   both cadences. Confirm each exits zero on a healthy cluster.
-2. Introduce a condition each check should catch — fill capacity past the
-   threshold, change a monitored value, break a policy's satisfiability —
-   and confirm the corresponding check exits non-zero and names it.
-3. Schedule the daily run and confirm it produces output and alerts
-   without a human present.
+**Objective:** Watch cluster health across the surfaces that report it.
 
-**Part B — capstone**
+```bash
+curl -sk -u 'administrator@vsphere.local:<pass>' https://<vxm>/rest/vxm/v1/system | \
+  python3 -c "import json,sys; d=json.load(sys.stdin); print('health:',d.get('health'),'version:',d.get('version'))"
+# Also: vSphere Client VxRail plugin health, vSAN Skyline Health, and CloudIQ fleet health.
+```
 
-This exercises the volume end to end. Work it as a single continuous
-scenario.
+**Expected result:** consistent health across the VxRail API/plugin, vSAN Skyline Health, and
+CloudIQ — day-2 operations watches hardware health (VxRail), storage health (vSAN), and fleet
+analytics (CloudIQ) together, so a degradation shows up wherever you look and is caught early.
 
-4. **Design** (Chapter 01). Given a workload of 200 VMs averaging 4 vCPU,
-   16 GB RAM, and 200 GB used storage, produce a sizing decision record:
-   binding constraint, node count under mirroring and under erasure
-   coding, recommended vCenter topology, and the patching-policy
-   determination.
-5. **Prerequisites** (Chapter 02). Produce the complete deployment plan
-   for that design, with addressing, VLANs, and services. Verify DNS both
-   ways and jumbo frames on your lab fabric.
-6. **Deployment verification** (Chapter 03). Run the pre-flight checks
-   against your plan, then capture a baseline of the resulting cluster.
-7. **Policy** (Chapter 04). Apply a storage policy appropriate to the
-   design's resilience requirement and measure the capacity consequence
-   against the step 4 projection. Note the error and its direction.
-8. **Capacity** (Chapter 05). Build a capacity series, project the
-   trigger date, and state what you would procure and when.
-9. **Lifecycle** (Chapter 06). Run a rolling per-host maintenance
-   operation, time it, and produce a defensible change-window estimate
-   for a twelve-node cluster.
-10. **Availability** (Chapter 07). Test a host failure abruptly, measure
-    both the restart and the redundancy-restored durations, and validate
-    a restore into isolation.
-11. **Automation** (Chapter 08). Run the drift detector against the
-    baseline from step 6 and confirm it reports the changes steps 7
-    through 10 introduced.
-12. **Operations** (Chapter 09). Produce a single operational handover
-    document containing: the design decision record, the deployment plan,
-    the current baseline, the capacity projection, the measured upgrade
-    window, the availability test results, and the day-2 schedule.
+**Negative test:** monitor only vCenter VM alarms and ignore VxRail/vSAN/CloudIQ health; a
+predictive disk failure or a vSAN network warning is invisible there — the platform health surfaces
+are where hardware/storage degradation appears.
 
-**Negative test**
+**Cleanup:** none (read-only).
 
-13. Give the handover document from step 12 to someone who has not
-    followed the exercise and ask them to answer: what happens when a
-    host fails, when must capacity be procured, and how long is the next
-    upgrade window. If the document does not answer all three, it is
-    incomplete — this is the actual test of the whole volume, because a
-    platform whose operational knowledge lives only in one person's head
-    is not operationally sound regardless of how well it is built.
+### Lab 9.2 — Troubleshooting and log collection (Topic: Troubleshooting)
 
-**Expected results**
+**Objective:** Gather the evidence for a VxRail issue.
 
-- A day-2 routine that runs unattended and alerts correctly on each
-  condition it monitors.
-- A handover document that answers the three questions in step 13 without
-  its author present.
-- Measured rather than assumed figures for capacity ratio, upgrade
-  duration, and recovery time.
+```text
+# VxRail plugin: generate a VxRail log bundle / diagnostics collection (spans VxRail Manager,
+#   ESXi hosts, vCenter, and hardware). Review the LCM/deployment logs for a failed operation.
+# Common issues to reason through: failed node discovery (network/VLAN), LCM precheck failure
+#   (vSAN health/slack), certificate/password expiry, DNS/NTP drift.
+```
 
-**Cleanup**
+**Expected result:** a consolidated VxRail log bundle and a path to the relevant logs — VxRail
+troubleshooting starts by collecting the multi-component log bundle, then works the layer the
+symptom points to (network for discovery, vSAN health for LCM, DNS/NTP/certs for auth), rather than
+guessing.
 
-14. Return the lab cluster to its baseline state, allow all resync to
-    complete, and retain the handover document — it is the template for
-    the real one.
+**Negative test:** troubleshoot a failed LCM by retrying it repeatedly without reading the precheck/
+LCM logs; you repeat the same failure — the log bundle names the blocker (e.g. a vSAN health issue
+or expired cert) that a retry will not fix.
+
+**Cleanup:** remove the lab log bundle if generated only for the exercise.
+
+### Lab 9.3 — Support and telemetry (Topic: Support)
+
+**Objective:** Ensure proactive support is in place.
+
+```text
+# Confirm Secure Connect Gateway / SupportAssist is registered and connected:
+#   - VxRail sends health telemetry to Dell; hardware faults auto-open support cases with parts dispatch
+#   - CloudIQ provides predictive capacity/health and cybersecurity/misconfig advisories
+# Send a connectivity test and confirm it reaches Dell support.
+```
+
+**Expected result:** support connectivity is verified and telemetry flows to Dell — proactive
+support (Secure Connect Gateway/SupportAssist + CloudIQ) is a core VxRail operational benefit:
+hardware faults become automatic cases with parts dispatch, and predictive analytics flag issues
+before they become outages.
+
+**Negative test:** run VxRail disconnected from support; a failed drive generates no automatic case
+and you react only after noticing it — the support connection is what makes support proactive rather
+than reactive.
+
+**Cleanup:** none (keep support connected).
+
+### Lab 9.4 — Capstone Design Exercise: a VxRail estate (Topic: Synthesis)
+
+**Objective:** Produce a defensible VxRail deploy-and-operate design — the deliverable, not a
+click-path.
+
+> **Scenario.** Deploy and operate VxRail for a two-site enterprise: a primary data center and a DR
+> site, plus edge clusters. Requirements: resilient storage, site-loss survivability, current and
+> validated software, proactive support, automation, and capacity for growth.
+
+Work through and **write down**:
+
+1. **Plan & deploy** — platform models per workload; network prerequisites (VLANs/MTU/DNS/NTP)
+   validated before deploy; embedded vs external vCenter (Ch01–03).
+2. **Storage & resilience** — vSAN storage policies (FTT/RAID) per workload; a **stretched cluster**
+   across the two sites with a third-site witness; capacity with N+1 slack (Ch04, Ch05, Ch07).
+3. **Data protection** — replication + backup + DR orchestration beyond FTT, for corruption/
+   ransomware/site loss (Ch07).
+4. **Lifecycle** — the Continuously Validated State and scheduled LCM bundle upgrades with prechecks
+   and maintenance windows (Ch06).
+5. **Automate & integrate** — VxRail REST API automation, CloudIQ fleet analytics, and Secure
+   Connect Gateway support (Ch08, Ch09).
+6. **Operate** — health monitoring across VxRail/vSAN/CloudIQ, a troubleshooting/log-bundle runbook,
+   and capacity/expansion planning (Ch05, Ch09).
+
+**Expected result:** a written design where a two-site VxRail estate is deployed on validated
+networks, resilient via vSAN policy + stretched cluster + backup, kept current through LCM, and
+operated with automation, monitoring, and proactive support — the deploy-and-operate deliverable the
+VxRail exams build toward.
+
+**Negative test:** deploy VxRail like a generic vSphere cluster — manual component patching, no
+stretched cluster or witness, FTT treated as backup, and no support connectivity; you lose the
+validated state, site resilience, real recoverability, and proactive support — VxRail's LCM,
+stretched-cluster, data-protection, and support model are its actual value.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 

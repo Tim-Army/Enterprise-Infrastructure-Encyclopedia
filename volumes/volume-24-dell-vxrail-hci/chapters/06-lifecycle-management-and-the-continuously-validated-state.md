@@ -384,58 +384,102 @@ caught by diffing against the baseline captured in
 
 ## Hands-On Lab
 
-**Objective:** Practice the upgrade planning, pre-check, and evidence
-workflow, and measure a rolling per-host maintenance operation to build a
-realistic window estimate.
+This chapter carries a topic-level walkthrough lab for **each theme of VxRail lifecycle management**
+— the Continuously Validated State, checking for updates, running an LCM upgrade, and pre-upgrade
+health. LCM is VxRail's signature capability. Each pairs the plugin with API verification. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites:** A nested vSphere cluster with vSAN and at least four
-hosts from [Volume V](../../volume-05-vmware-virtualization/README.md),
-PowerCLI, and workloads running on it.
+**Shared prerequisites for Labs 6.1–6.4** — a deployed VxRail cluster, vSphere Client and VxRail
+plugin access, connectivity (or an offline bundle) for update content, and the VxRail API. **Cost:**
+none.
 
-**The bundle mechanism cannot be reproduced.** There is no VxRail bundle
-without VxRail. What this lab exercises is the surrounding discipline —
-consistency checking, capacity verification, evidence capture, and
-duration measurement from a rolling host operation — which is where
-upgrade windows are actually won or lost.
+### Lab 6.1 — The Continuously Validated State (Topic: LCM concept)
 
-**Procedure**
+**Objective:** Understand what a VxRail "version" actually is.
 
-1. Run the build-consistency check and confirm your cluster reports a
-   uniform build.
-2. Run the host-out capacity check. Record whether `FitsHostOut` is true.
-   If it is false, reduce workload until it is true, and note what that
-   tells you about the cluster's real headroom.
-3. Capture the full set of pre-upgrade evidence exports.
-4. Perform a rolling maintenance operation across all hosts: for each
-   host in turn, enter maintenance mode with full data migration, reboot,
-   exit maintenance mode, and wait for the cluster to report healthy.
-   Time each host individually.
-5. From the first host's timing, project a window for the whole cluster.
-   Compare the projection against the actual total. Note the direction
-   and size of the error — this is the calibration the technique needs.
-6. Re-run the evidence exports afterwards and diff them against step 3.
+```bash
+curl -sk -u 'administrator@vsphere.local:<pass>' https://<vxm>/rest/vxm/v1/system | \
+  python3 -c "import json,sys; print('VxRail bundle version:', json.load(sys.stdin).get('version'))"
+# The version names ONE tested combination of BIOS/firmware/drivers/ESXi/vSAN/vCenter/VxRail Manager.
+```
 
-**Negative test**
+**Expected result:** a single VxRail version string naming one Dell-tested combination of the entire
+stack — VxRail's **Continuously Validated State** means every component version is validated together
+as one bundle, so "what version am I on" answers for the whole stack, not per component.
 
-7. Set DRS to manual and begin the rolling operation on one host.
-   Observe that maintenance mode does not complete without manual VM
-   placement, and estimate what that would mean for a twelve-host
-   overnight run. Restore fully automated DRS.
-8. Fill the cluster until `FitsHostOut` reports false, then attempt the
-   maintenance operation. Confirm it cannot complete — the capacity
-   pre-check condition, produced deliberately.
+**Negative test:** update one component (e.g. a NIC driver) out of band to chase a fix; the cluster
+leaves the validated state and Dell support/LCM no longer guarantee compatibility — components move
+together, as a bundle, through LCM.
 
-**Expected results**
+**Cleanup:** none (read-only).
 
-- A per-host duration measured rather than assumed, and a projection
-  calibrated against a real total.
-- Direct experience of what manual DRS costs during a rolling operation.
-- A pre-change and post-change evidence pair that diffs cleanly.
+### Lab 6.2 — Check for updates (Topic: Update discovery)
 
-**Cleanup**
+**Objective:** See which validated bundle you can move to.
 
-9. Restore DRS automation and workload levels, and retain the timing
-   figures — they are the basis of every future window estimate.
+```text
+# vSphere Client: Cluster > Configure > VxRail > Updates (or Internet/Local update source).
+#   VxRail lists the available target bundle(s) — a single composite update for the whole stack.
+```
+
+Verify via the API:
+
+```bash
+curl -sk -u 'administrator@vsphere.local:<pass>' https://<vxm>/rest/vxm/v1/lcm/upgrade 2>/dev/null | head
+```
+
+**Expected result:** the available target VxRail bundle(s) are listed — checking for updates surfaces
+the next validated state as one composite bundle (connected via Dell, or uploaded offline), so you
+plan a single stack upgrade rather than tracking dozens of component versions.
+
+**Negative test:** track each component's latest version independently and try to assemble your own
+"current" set; you recreate the compatibility problem VxRail solved — the composite bundle is the
+supported update unit.
+
+**Cleanup:** none.
+
+### Lab 6.3 — Pre-upgrade health check (Topic: Upgrade readiness)
+
+**Objective:** Confirm the cluster is ready to upgrade.
+
+```text
+# Run the VxRail pre-upgrade health check (LCM precheck) from the Updates panel.
+#   It validates: vSAN health, host connectivity, capacity/slack for maintenance-mode rolling,
+#   password/cert validity, and network. Resolve any failures BEFORE starting.
+```
+
+**Expected result:** the precheck passes (or lists specific blockers) — VxRail runs a health
+precheck before an LCM upgrade because the upgrade rolls hosts through maintenance mode one at a
+time, which requires healthy vSAN and enough slack capacity to evacuate each host.
+
+**Negative test:** start an LCM upgrade with a failing vSAN health check or insufficient slack; a
+host cannot safely enter maintenance mode and the upgrade stalls or risks data — the precheck is the
+gate that prevents an unsafe upgrade.
+
+**Cleanup:** none.
+
+### Lab 6.4 — Run an LCM upgrade (Topic: Lifecycle upgrade)
+
+**Objective:** Apply the validated bundle non-disruptively.
+
+```text
+# From the Updates panel, start the LCM upgrade to the target bundle. VxRail:
+#   - puts each host into maintenance mode in turn (vSAN data evacuated/re-protected),
+#     updates firmware + ESXi + vSAN, exits maintenance, moves to the next host
+#   - updates vCenter and VxRail Manager as part of the bundle
+# Monitor to completion; confirm the new version and green health afterward.
+```
+
+**Expected result:** the whole stack upgrades one host at a time with workloads migrating via DRS,
+ending on the new validated version with green health — LCM is VxRail's core value: a single,
+non-disruptive, Dell-tested full-stack upgrade instead of manually sequencing firmware, ESXi, vSAN,
+and vCenter.
+
+**Negative test:** manually upgrade ESXi/vCenter/firmware in your own order on a VxRail; you risk an
+unsupported/untested combination and break LCM — the orchestrated bundle upgrade is what keeps the
+stack validated and supported.
+
+**Cleanup:** none (leave the cluster on the upgraded version).
 
 ## Lab Verification
 

@@ -300,62 +300,98 @@ deployment is complete; an unregistered plugin means lifecycle management
 
 ## Hands-On Lab
 
-**Objective:** Rehearse the deployment validation and post-deployment
-verification workflow, and prove that a prepared environment passes the
-checks a real first run performs.
+This chapter is the **highest-value chapter for the Deploy exam**: "Deploying the VxRail Cluster"
+is its heaviest domain at **24%**, and "Post-Deployment procedures" adds 18%. It carries a lab for
+each deployment step — initialization, the deployment wizard, build validation, and first
+post-deployment tasks. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites:** The completed `vxrail-deployment-plan.yml` and lab DNS,
-NTP, and switching from
-[Chapter 02](02-physical-installation-network-prerequisites-and-pre-deployment-planning.md);
-PowerCLI; a nested vSphere cluster from
-[Volume V](../../volume-05-vmware-virtualization/README.md).
+**Shared prerequisites for Labs 3.1–3.4** — VxRail nodes racked and cabled with the network
+prepared and validated (Chapter 02), the deployment configuration ready, and a workstation on the
+management VLAN. **Cost:** none beyond lab hardware.
 
-**This lab cannot run the VxRail wizard.** No VxRail simulator exists.
-What it does exercise is the pre-flight validation and post-deployment
-verification either side of the wizard, which are the parts a reader can
-genuinely practice and which use standard vSphere tooling throughout.
+### Lab 3.1 — Initialize and reach VxRail Manager (Topic: Deployment)
 
-**Procedure**
+**Objective:** Bring up the primary node and reach the deployment UI.
 
-1. Run the complete pre-flight check script from *Implementation and
-   Automation* against your lab plan. Resolve any failure it reports.
-2. On your nested cluster, run the PowerCLI cluster verification block.
-   Record which hosts report which build.
-3. Capture a post-deployment baseline using the export commands, and
-   inspect the resulting CSV files.
-4. Introduce a deliberate configuration drift — change a port group's
-   VLAN on the nested cluster — then re-run the port group export and
-   diff it against the baseline:
+```text
+# Power on the nodes. VxRail's internal discovery (IPv6 multicast on the mgmt VLAN) elects a
+#   primary node and starts VxRail Manager on it. From the jump host:
+#   - browse to the VxRail Manager initial IP (default per the platform guide)
+#   - confirm the Manager sees all expected nodes in the "discovered nodes" list
+```
 
-   ```bash
-   diff vxrail-baseline-port-groups-<date>.csv \
-        vxrail-baseline-port-groups-<newdate>.csv
-   ```
+**Expected result:** VxRail Manager is reachable and lists every discovered node — first-run
+discovery over the management VLAN is what assembles the nodes into a deployable set; all expected
+nodes appearing confirms the network prep (Chapter 02) is correct and the build can proceed.
 
-5. Restore the port group and confirm the diff comes back clean.
+**Negative test:** find fewer nodes than expected in discovery; a node is on the wrong VLAN or its
+uplink/MTU is wrong — the discovery count is the immediate check that the physical/network layer is
+right before you deploy.
 
-**Negative test**
+**Cleanup:** none (proceed to Lab 3.2).
 
-6. Point one planned hostname at an address that is already in use, then
-   re-run the pre-flight script. Confirm it reports `IN USE` and that the
-   forward and reverse resolution checks still pass — demonstrating that
-   name resolution being correct says nothing about the address being
-   available. Restore the record.
+### Lab 3.2 — Run the deployment wizard (Topic: Cluster build)
 
-**Expected results**
+**Objective:** Configure and start the cluster build.
 
-- A pre-flight run with no missing records, no in-use addresses, and a
-  responding NTP source.
-- A baseline pair of CSV files that diff cleanly against themselves and
-  detect an introduced change.
-- Confirmation that the address-availability check catches a problem that
-  the DNS checks do not.
+```text
+# In VxRail Manager: run the guided deployment (or upload the validated configuration JSON):
+#   - choose vCenter: VxRail-managed embedded vCenter, or a customer-supplied external vCenter
+#   - enter hostnames/IPs, DNS, NTP, VLAN IDs, and passwords from the plan (Chapter 02)
+#   - validate the configuration, then start the build
+```
 
-**Cleanup**
+**Expected result:** the wizard validates the inputs and begins building the cluster (deploying
+vCenter if embedded, configuring ESXi hosts, forming the vSAN datastore) — the deployment is a
+guided, validated, largely unattended process that turns discovered nodes into a running vSphere+
+vSAN cluster.
 
-7. Restore any DNS records altered by the negative test and retain the
-   baseline files — [Chapter 06](06-lifecycle-management-and-the-continuously-validated-state.md)
-   compares against them.
+**Negative test:** proceed past a validation warning (e.g. a DNS record missing); the build fails
+partway and must be cleaned up — let validation pass cleanly before starting, because a mid-build
+failure is costly to unwind.
+
+**Cleanup:** none (proceed to validation).
+
+### Lab 3.3 — Validate the built cluster (Topic: Deployment validation)
+
+**Objective:** Confirm the cluster deployed correctly.
+
+```bash
+curl -sk -u 'administrator@vsphere.local:<pass>' https://<vxm>/rest/vxm/v1/system | \
+  python3 -c "import json,sys; d=json.load(sys.stdin); print('version:',d.get('version'),'health:',d.get('health'),'installed:',d.get('installed'))"
+# vSphere Client: confirm the cluster, all hosts connected, and a healthy vSAN datastore.
+```
+
+**Expected result:** the VxRail system reports installed/healthy, all hosts are connected in
+vCenter, and the vSAN datastore is present and healthy — validating the deployed state (via the API
+and the vSphere Client) confirms the build succeeded before any workload is placed.
+
+**Negative test:** place production VMs immediately without checking vSAN health; a disk-group or
+network warning left from deployment degrades storage under load — validate health first.
+
+**Cleanup:** none.
+
+### Lab 3.4 — First post-deployment tasks (Topic: Post-deployment)
+
+**Objective:** Complete the essential post-deploy configuration.
+
+```text
+# In VxRail Manager / vSphere Client, complete first tasks:
+#   - register the cluster for support (SupportAssist / Secure Connect Gateway, Chapter 09)
+#   - configure a vSAN storage policy appropriate to the cluster size (FTT, Chapter 07)
+#   - set up alerting/CloudIQ, and confirm the LCM baseline (Continuously Validated State)
+#   - create workload networks/port groups for VMs
+```
+
+**Expected result:** the cluster is registered for support, has an appropriate default storage
+policy, is monitored, and is ready for workloads — post-deployment procedures (18% of the exam) turn
+a freshly built cluster into a production-ready, supported, monitored platform.
+
+**Negative test:** hand a freshly deployed cluster to production with no support registration, no
+reviewed storage policy, and no monitoring; the first hardware fault has no proactive case and the
+default policy may not match your resilience needs — post-deploy tasks are what make it operable.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

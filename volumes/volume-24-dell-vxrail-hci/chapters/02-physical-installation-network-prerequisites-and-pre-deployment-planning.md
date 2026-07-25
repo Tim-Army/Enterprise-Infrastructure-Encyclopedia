@@ -377,67 +377,106 @@ worth performing in advance rather than being derived from a failure.
 
 ## Hands-On Lab
 
-**Objective:** Build and verify the complete set of VxRail network
-prerequisites — DNS, NTP, VLANs, MTU — against a lab fabric, and produce
-a validated deployment plan.
+This chapter carries a topic-level walkthrough lab for **each task under the "Hardware Installation
+and Initialization" and "Network Environment Requirements" domains** — network prerequisites,
+cabling, the deployment configuration, and pre-deploy validation. Getting these right is what makes
+the Chapter 03 deployment succeed. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
 
-**Prerequisites:** A managed switch that supports VLAN tagging and jumbo
-frames, a DNS server you control, an NTP source, and two hosts to test
-between. A nested vSphere environment from
-[Volume V](../../volume-05-vmware-virtualization/README.md) serves for
-the host side.
+**Shared prerequisites for Labs 2.1–2.4** — access to the top-of-rack (ToR) switches and the
+planned IP/VLAN scheme, a workstation for validation, and the Dell VxRail network planning guide.
+**Cost:** none.
 
-**This lab does not require VxRail hardware.** Every prerequisite in this
-chapter is a property of the surrounding infrastructure rather than of
-VxRail, which makes this the most faithfully reproducible lab in the
-volume — the checks below are exactly the checks a real engagement runs.
+### Lab 2.1 — Network VLANs and requirements (Topic: Network requirements)
 
-**Procedure**
+**Objective:** Define the required VxRail networks.
 
-1. Create forward and reverse DNS records for five planned names on your
-   lab DNS server, following the addressing in the sample plan above.
-2. Verify both directions using the `dig` loops from *Implementation and
-   Automation*. Confirm every line returns a value and that reverse
-   lookups return the original names.
-3. Configure a VLAN on your switch for vSAN-equivalent traffic with an
-   MTU of 9216, and configure two host VMkernel adapters on that VLAN
-   with MTU 9000.
-4. Test jumbo frames with `vmkping -I vmk1 -d -s 8972 <peer>`. Confirm
-   it succeeds.
-5. Configure the node-facing ports as spanning-tree edge ports with BPDU
-   guard, and time how long a port takes to reach forwarding after a
-   link bounce.
-6. Complete `vxrail-deployment-plan.yml` for your lab addressing and
-   review it as you would a change record: every field populated, no
-   credentials present.
+```text
+# Plan the VLANs VxRail requires on the ToR switches:
+#   - Management (ESXi mgmt + vCenter + VxRail Manager)
+#   - vSAN         (storage traffic; jumbo frames recommended)
+#   - vMotion      (live migration)
+#   - VxRail Discovery / internal management (Loudmouth/IPv6 multicast on the mgmt VLAN)
+#   - VM/Workload networks
+# Confirm the switch trunks the VLANs to every node port and MTU 9000 where required.
+```
 
-**Negative test**
+**Expected result:** the required VLANs (management, vSAN, vMotion, discovery, VM) planned and
+trunked to all node ports — VxRail has strict network prerequisites; the internal node discovery
+uses IPv6 multicast on the management VLAN at initialization, and vSAN benefits from jumbo frames,
+so the switch must be configured *before* deployment.
 
-7. Set the switch MTU on the test VLAN back to 1500 while leaving the
-   VMkernel adapters at 9000. Re-run the `vmkping` from step 4 — it
-   should fail — then run a plain `vmkping` without `-d -s`, which should
-   still succeed. Observe that the ordinary reachability test gives no
-   indication of the problem. Restore the switch MTU afterwards.
+**Negative test:** deploy without trunking the vSAN/vMotion VLANs to every node port; initialization
+fails or the cluster forms without storage/migration networks — the network must be fully prepared
+first, which is why the exam weights network requirements.
 
-8. Remove one reverse DNS record and re-run the verification loop.
-   Confirm the forward loop still passes cleanly while the reverse loop
-   does not — this is the exact asymmetry that lets a broken deployment
-   look prepared. Restore the record.
+**Cleanup:** none (planning/switch config).
 
-**Expected results**
+### Lab 2.2 — Physical cabling and ToR switch prep (Topic: Hardware installation)
 
-- All forward and reverse lookups resolve consistently.
-- Jumbo-frame ping succeeds at 8972 bytes with do-not-fragment set, and
-  fails when any hop is reduced to 1500.
-- Edge-configured ports reach forwarding in roughly a second rather than
-  tens of seconds.
-- A completed deployment plan containing no secrets.
+**Objective:** Verify node uplinks and switch readiness.
 
-**Cleanup**
+```text
+# Confirm per node:
+#   - node NIC ports cabled to the ToR switch(es) per the design (redundant uplinks)
+#   - switch ports set to trunk the VxRail VLANs, correct MTU, spanning-tree edge/portfast
+#   - out-of-band iDRAC ports cabled to the management network (Volume XXIII)
+```
 
-9. Restore any switch settings changed by the negative tests, and retain
-   the deployment plan as input to
-   [Chapter 03](03-vxrail-manager-deployment-and-first-run-configuration.md).
+**Expected result:** each node's data uplinks and iDRAC are cabled and the switch ports are
+correctly configured (trunk, MTU, edge) — VxRail initialization drives the nodes over these
+uplinks, so cabling and switch-port configuration errors are the most common cause of a failed
+first deployment.
+
+**Negative test:** leave a node port on an access VLAN or without portfast; discovery times out or
+STP delays bring-up — the physical/switch layer must match the VxRail requirements exactly.
+
+**Cleanup:** none.
+
+### Lab 2.3 — The deployment configuration (Topic: Pre-deployment planning)
+
+**Objective:** Prepare the VxRail configuration inputs.
+
+```text
+# Assemble the deployment inputs (VxRail configuration JSON / the Manager's guided form):
+#   - hostnames + IPs for ESXi hosts, vCenter, VxRail Manager (contiguous or per-host)
+#   - DNS + NTP servers (must resolve/serve before deployment)
+#   - VLAN IDs and subnets/gateways for each network
+#   - passwords and vCenter mode (VxRail-managed embedded vCenter, or customer external vCenter)
+```
+
+**Expected result:** a complete configuration (JSON or validated form) with hostnames, IPs, DNS,
+NTP, VLANs, and the vCenter choice — VxRail deployment is data-driven; a validated configuration
+file is what the Manager consumes to build the cluster unattended, and DNS/NTP must already work.
+
+**Negative test:** start deployment with DNS records not yet created or NTP unreachable; validation
+fails — DNS forward/reverse records and a reachable NTP source are hard prerequisites, not
+post-deploy tasks.
+
+**Cleanup:** none.
+
+### Lab 2.4 — Pre-deployment validation (Topic: Network initialization)
+
+**Objective:** Prove the environment is ready before deploying.
+
+```bash
+# From a jump host on the management VLAN, validate the prerequisites:
+nslookup vxm.lab.example.com          # DNS forward record exists
+nslookup 192.168.10.50                # reverse (PTR) record exists
+ping -c1 <ntp-server> && chronyc sources 2>/dev/null | head
+ping -M do -s 8972 -c1 <vsan-peer>    # jumbo-frame (MTU 9000) end-to-end test
+```
+
+**Expected result:** DNS forward/reverse resolve, NTP is reachable, and a 9000-MTU ping succeeds
+end-to-end — pre-deployment validation catches the network/DNS/NTP/MTU issues that would otherwise
+fail the deployment hours in; passing these checks first is what makes Chapter 03 succeed on the
+first attempt.
+
+**Negative test:** skip the jumbo-frame test and deploy; if an intermediate switch does not pass
+MTU 9000, vSAN performance/health suffers after deployment — the `ping -M do -s 8972` proves the
+path end-to-end before you commit.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

@@ -430,59 +430,101 @@ discovering it at the next scheduled run.
 
 ## Hands-On Lab
 
-**Objective:** Build a read-only drift detector and a combined platform
-and workload report, exercising idempotence and safe credential handling.
+This chapter carries a topic-level walkthrough lab for **each task under the "VxRail REST API"
+domain** — API authentication and queries, API-driven operations, automation, and ecosystem
+integrations. The API labs are runnable `curl` walkthroughs. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites:** Python 3 with `requests`, PowerCLI, and a vSphere
-environment from [Volume V](../../volume-05-vmware-virtualization/README.md).
+**Shared prerequisites for Labs 8.1–8.4** — a deployed VxRail cluster, vCenter SSO admin
+credentials, a workstation with `curl`/`python3`, and (Lab 8.3) Ansible/PowerShell if available.
+**Cost:** none.
 
-**The VxRail API cannot be reached without VxRail.** For the VxRail half
-of this lab, work against the API reference documentation and build the
-script's structure, credential handling, and error paths — then exercise
-the identical patterns against the vSphere API, which is reachable. The
-skills that transfer are the ones the lab can teach: idempotent design,
-polling asynchronous operations, and never embedding secrets.
+### Lab 8.1 — Authenticate and query the VxRail API (Topic: REST API access)
 
-**Procedure**
+**Objective:** Read system state through the VxRail REST API.
 
-1. Write the drift-detection script from *Implementation and Automation*,
-   adapting `current_state()` to read from the vSphere API via `pyvmomi`
-   or by shelling out to PowerCLI. Keep the baseline-write-on-first-run
-   behavior.
-2. Run it once to establish the baseline. Confirm it exits zero and
-   writes the baseline file.
-3. Run it again unchanged. Confirm it exits zero and reports no drift —
-   this is the idempotence check.
-4. Change something it monitors: add a host, or change a build. Run again
-   and confirm it exits non-zero and names the change.
-5. Build the combined report by joining the PowerCLI host output against
-   your inventory source on hostname.
-6. Move credentials out of the environment into a prompt or a secret
-   store, and confirm the script still works with no secret anywhere in
-   the file.
+```bash
+VXM=https://<vxrail-manager>
+AUTH='administrator@vsphere.local:<password>'
+curl -sk -u "$AUTH" "$VXM/rest/vxm/v1/system" | \
+  python3 -c "import json,sys; d=json.load(sys.stdin); print('version:',d.get('version'),'health:',d.get('health'))"
+curl -sk -u "$AUTH" "$VXM/rest/vxm/v1/cluster" | python3 -m json.tool | head
+```
 
-**Negative test**
+**Expected result:** the API returns the VxRail version/health and cluster details as JSON — the
+VxRail REST API (`/rest/vxm/...`) authenticates with vCenter SSO credentials over HTTPS and exposes
+system, cluster, hosts, chassis, and LCM resources, so the whole appliance is queryable and
+automatable.
 
-7. Point the script at an unreachable host and confirm it fails clearly
-   with a timeout rather than hanging indefinitely. If it hangs, the
-   `timeout=` parameters are missing — add them. This is the failure mode
-   that turns a scheduled job into a stuck job.
-8. Supply deliberately wrong credentials and confirm the script reports
-   an authentication failure distinguishable from a connectivity failure.
-   Automation that cannot tell these apart generates useless alerts.
+**Negative test:** call the API over plain HTTP or with wrong credentials; it is refused (TLS
+required, 401 on bad auth) — the API is authenticated and encrypted, gated by vCenter SSO.
 
-**Expected results**
+**Cleanup:** none (read-only).
 
-- A script that is safe to run repeatedly and detects real change.
-- Clear, distinguishable failures for unreachable, unauthorized, and
-  drifted conditions.
-- No credential present in any file under version control.
+### Lab 8.2 — API-driven inventory and operations (Topic: API operations)
 
-**Cleanup**
+**Objective:** Enumerate hosts and available nodes programmatically.
 
-9. Revert any environment change made in step 4, and retain the script —
-   [Chapter 09](09-day-2-operations-troubleshooting-support-and-capstone.md)
-   builds it into a day-2 operations routine.
+```bash
+curl -sk -u "$AUTH" "$VXM/rest/vxm/v2/hosts" | \
+  python3 -c "import json,sys; d=json.load(sys.stdin); print('hosts:', len(d) if isinstance(d,list) else d)"
+curl -sk -u "$AUTH" "$VXM/rest/vxm/v1/system/available-hosts" | python3 -m json.tool | head
+# Expansion, LCM, and shutdown are also API-driven (POST to /cluster/expansion, /lcm/upgrade, etc.)
+```
+
+**Expected result:** the API lists cluster hosts and any discovered nodes available to add — beyond
+reads, the VxRail API performs operations (add-node expansion, LCM upgrade, cluster shutdown), so
+lifecycle tasks can be scripted, not just clicked.
+
+**Negative test:** script an expansion against a node not yet discovered/available; the API rejects
+it — the API enforces the same prerequisites as the GUI (node discovered, compatible), so
+automation cannot skip them.
+
+**Cleanup:** none (read-only in this lab).
+
+### Lab 8.3 — Automation with supported tooling (Topic: Automation)
+
+**Objective:** Drive VxRail from an automation framework.
+
+```text
+# With Ansible (community VxRail/OpenManage modules) or PowerShell + the VxRail API:
+#   - collect system/health/inventory across clusters into a report
+#   - gate an LCM upgrade on a passing precheck
+# Run an idempotent playbook/script that reports version + health for a set of clusters.
+```
+
+**Expected result:** the tooling reports version/health across clusters and can orchestrate
+operations idempotently — wrapping the VxRail REST API in Ansible/PowerShell puts fleet operations
+in version-controlled automation, consistent with the IaC approach used elsewhere (Volume IX).
+
+**Negative test:** manage many VxRail clusters entirely by hand through each vCenter plugin; it does
+not scale and drifts — API-driven automation applies operations and reporting uniformly across the
+fleet.
+
+**Cleanup:** revert any lab-only changes.
+
+### Lab 8.4 — Ecosystem integrations (Topic: Integrations)
+
+**Objective:** Connect VxRail to the wider operations ecosystem.
+
+```text
+# Confirm/plan integrations:
+#   - CloudIQ: cloud-based health, capacity, and predictive analytics for the fleet
+#   - Secure Connect Gateway / SupportAssist: telemetry + automated support cases (Chapter 09)
+#   - VMware SRM / vRealize (Aria) Operations: DR orchestration and operations analytics
+#   - Backup (PowerProtect) integration for data protection (Chapter 07)
+```
+
+**Expected result:** VxRail health/telemetry flows to CloudIQ and support, and DR/backup/ops tools
+integrate — the appliance is not an island: CloudIQ gives fleet-wide predictive insight, support
+gateways enable proactive cases, and DR/backup/ops integrations connect VxRail to enterprise
+operations.
+
+**Negative test:** run VxRail with no CloudIQ or support connectivity; you lose predictive capacity/
+health analytics and proactive support — the ecosystem integrations are what turn a single cluster
+into a managed part of the fleet.
+
+**Cleanup:** none (leave beneficial integrations enabled).
 
 ## Lab Verification
 
