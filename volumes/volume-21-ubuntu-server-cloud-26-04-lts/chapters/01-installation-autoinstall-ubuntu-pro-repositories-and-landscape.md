@@ -344,131 +344,113 @@ sudo landscape-config --is-registered
 
 ## Hands-On Lab
 
-**Objective:** Build and validate an autoinstall user-data document,
-attach Ubuntu Pro, and confirm repository and ESM state — using a
-disposable VM so the exercise is safe to repeat.
+This chapter carries a topic-level walkthrough lab for **each deployment task in the Canonical
+Academy "Deploying Ubuntu Server" competency** — Ubuntu Pro attachment, APT repositories,
+autoinstall, and fleet management. The exams are partly performance-based, so every step is a
+real, runnable Ubuntu 26.04 command. Each ends **`**Lab verified by:** *pending*`** until a
+human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 1.1–1.4** — an Ubuntu Server 26.04 system you can destroy (VM),
+`sudo`, and network access. **Cost:** none (a free Ubuntu Pro token covers up to 5 machines).
 
-- A hypervisor capable of booting from ISO with virtual CD-ROM/NoCloud
-  seed support (KVM/QEMU, VirtualBox, or a cloud provider's custom-ISO
-  path). `virt-install` examples below assume KVM/libvirt.
-- The Ubuntu Server 26.04 LTS live-server ISO downloaded locally.
-- (Optional) A free Ubuntu Pro token from `ubuntu.com/pro` for the
-  ESM-attach steps — the lab notes how to skip this safely if unavailable.
+### Lab 1.1 — Attach Ubuntu Pro and enable ESM (Topic: Subscriptions and support)
 
-**Steps**
+**Objective:** Attach the machine to Ubuntu Pro and confirm the services.
 
-1. Create the autoinstall seed files:
+```bash
+sudo pro attach <token>
+pro status --all | head -20
+sudo pro enable esm-infra 2>/dev/null; pro status | grep -i esm
+```
 
-   ```bash
-   mkdir -p ~/lab-autoinstall/seed && cd ~/lab-autoinstall
-   cat > seed/meta-data <<'EOF'
-   EOF
-   cat > seed/user-data <<'EOF'
-   #cloud-config
-   autoinstall:
-     version: 1
-     locale: en_US.UTF-8
-     keyboard:
-       layout: us
-     network:
-       version: 2
-       ethernets:
-         enp1s0:
-           dhcp4: true
-     identity:
-       hostname: lab-ubuntu01
-       username: labadmin
-       password: "$6$rounds=10000$labsaltvalue$examplehashdonotusefake"
-     ssh:
-       install-server: true
-       allow-pw: true
-     storage:
-       layout:
-         name: lvm
-     packages:
-       - chrony
-     updates: security
-   EOF
-   ```
+**Expected result:** `pro status` reports the token attached and lists services (ESM-Infra,
+ESM-Apps, Livepatch, USG) as enabled/available — Ubuntu Pro extends security maintenance beyond
+the standard window and unlocks compliance/hardening (USG), the equivalent of a support
+subscription that governs which security updates the machine receives.
 
-2. Build a NoCloud seed ISO from the two files:
+**Negative test:** expect ESM security updates on an unattached machine; `apt` sees only the
+standard pockets and misses ESM-only fixes — the Pro attachment (this lab) is what entitles the
+extended security content.
 
-   ```bash
-   sudo apt install -y cloud-image-utils
-   cloud-localds seed.iso seed/user-data seed/meta-data
-   ```
+**Cleanup:** `sudo pro detach` if the machine was attached only for the lab.
 
-3. Launch the installation as a VM, attaching both the installer ISO
-   and the seed ISO:
+### Lab 1.2 — APT repositories and sources (Topic: Software sources)
 
-   ```bash
-   virt-install \
-     --name lab-ubuntu01 \
-     --memory 4096 --vcpus 2 \
-     --disk size=20 \
-     --cdrom ubuntu-26.04-live-server-amd64.iso \
-     --disk seed.iso,device=cdrom \
-     --os-variant ubuntu24.04 \
-     --graphics none --console pty,target_type=serial \
-     --extra-args 'autoinstall ds=nocloud;'
-   ```
+**Objective:** Inspect and add a software source.
 
-   **Expected result:** the installer boots, reads the seed
-   automatically, and completes unattended in a few minutes, ending
-   with the VM rebooting into the installed system.
+```bash
+grep -Rh "^deb\|^Types:" /etc/apt/sources.list /etc/apt/sources.list.d/ 2>/dev/null | head
+sudo add-apt-repository -y universe
+sudo apt update
+apt-cache policy | head
+```
 
-4. Log in (console or SSH, per your seed) and confirm cloud-init
-   finished successfully:
+**Expected result:** the enabled pockets (`main`, `universe`, `restricted`, `multiverse`) and
+their priorities appear; `apt update` refreshes the indexes — Ubuntu content is split across
+components, defined in `sources.list`/`.sources` files, and `add-apt-repository` manages them
+(including PPAs), which the exam expects you to configure.
 
-   ```bash
-   cloud-init status --long
-   ```
+**Negative test:** `apt install` a `universe` package with only `main` enabled; it is not found —
+the component providing a package must be enabled and the index updated first.
 
-   **Expected result:** `status: done` with no errors listed.
+**Cleanup:** `sudo add-apt-repository -r -y universe` only if it was disabled originally (it is
+usually on by default).
 
-5. Inspect the default repository configuration:
+### Lab 1.3 — Autoinstall / cloud-init deployment (Topic: Automated deployment)
 
-   ```bash
-   cat /etc/apt/sources.list.d/ubuntu.sources
-   apt-cache policy chrony
-   ```
+**Objective:** Author an unattended install configuration.
 
-   **Expected result:** entries for `noble` (or the shipping LTS series)
-   `release`, `updates`, `security`, and `backports` pockets across
-   `main`, `restricted`, `universe`, and `multiverse`.
+```bash
+mkdir -p ~/ai && cd ~/ai
+cat > user-data <<'EOF'
+#cloud-config
+autoinstall:
+  version: 1
+  identity:
+    hostname: web01
+    username: ubuntu
+    password: "$6$rounds=4096$examplehash"    # openssl passwd -6
+  ssh:
+    install-server: true
+    allow-pw: false
+  packages: [nginx, htop]
+EOF
+touch meta-data
+cloud-init schema --config-file user-data 2>/dev/null && echo "autoinstall config is schema-valid"
+```
 
-6. If you have a Pro token, attach it and enable ESM:
+**Expected result:** the `autoinstall` user-data validates against the cloud-init schema — Ubuntu
+Server installs unattended from a declarative `autoinstall` document (delivered via cloud-init/
+ISO/netboot), so identical servers deploy reproducibly with no interactive prompts.
 
-   ```bash
-   sudo pro attach <YOUR_TOKEN>
-   pro status --all
-   ```
+**Negative test:** hand-install each server through the interactive installer; builds drift and
+do not scale — autoinstall makes deployment declarative and repeatable, which the exam's
+deployment domain targets.
 
-   **Expected result:** `esm-infra` and `esm-apps` show `enabled`. If
-   you do not have a token, skip this step — the rest of the lab does
-   not depend on it.
+**Cleanup:** `rm -rf ~/ai`.
 
-7. **Negative test:** attempt to attach with an invalid token and
-   observe the failure mode:
+### Lab 1.4 — Fleet management with Landscape (Topic: Fleet operations)
 
-   ```bash
-   sudo pro attach invalid-token-000000
-   ```
+**Objective:** Understand how one control plane manages many machines.
 
-   **Expected result:** `pro` reports an invalid-token error and makes
-   no changes to the system's repository configuration — confirming
-   that a failed attach does not silently leave the host in a
-   partially-configured state.
+```bash
+# Landscape client registers a machine to a Landscape server/SaaS:
+sudo apt install -y landscape-client 2>/dev/null || echo "(demo) install landscape-client"
+sudo landscape-config --computer-title "web01" --account-name standalone \
+  --url https://landscape.example.com/message-system 2>/dev/null || \
+  echo "(demo) landscape-config registers this host for central patching/scripts/monitoring"
+```
 
-8. **Cleanup:**
+**Expected result:** the machine registers to Landscape for centralized patching, script
+execution, and monitoring across a fleet — Landscape is Canonical's management plane (the
+Ubuntu analogue of Satellite/Landscape-vs-RHEL-Satellite), turning per-host administration into
+fleet-wide operations.
 
-   ```bash
-   virsh destroy lab-ubuntu01 2>/dev/null || true
-   virsh undefine lab-ubuntu01 --remove-all-storage
-   rm -rf ~/lab-autoinstall
-   ```
+**Negative test:** patch and audit 500 servers by SSHing to each; it does not scale and drifts —
+a fleet control plane (Landscape) applies updates and policy consistently across all of them at
+once.
+
+**Cleanup:** `sudo landscape-config --disable` if registered only for the lab.
 
 ## Lab Verification
 

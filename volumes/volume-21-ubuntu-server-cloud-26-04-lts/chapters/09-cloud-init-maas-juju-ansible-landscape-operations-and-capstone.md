@@ -409,164 +409,132 @@ landscape-api get-computers --with-annotations --query "hostname:app01*"
 
 ## Hands-On Lab
 
-**Capstone objective:** Combine this volume's automation stack into one
-workflow: boot a host with cloud-init user-data that hands it off in a
-minimally configured, Ansible-manageable state, then use an Ansible
-playbook to complete baseline configuration and verify the result —
-with a negative test proving the dry-run (`--check`) mode catches an
-unintended change before it applies.
+This chapter closes the volume with **Canonical's automation stack** — cloud-init, MAAS, Juju,
+Ansible, and Landscape — mapping to the "Tools for Automation and System Updating" competency,
+and a **Design Exercise** capstone. Every operational step is runnable; the capstone is a written
+design. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 9.1–9.4** — an Ubuntu 26.04 system with `sudo`, `snap`, and (for
+Juju) enough resources for LXD. **Cost:** none.
 
-- A hypervisor able to launch a cloud image with a NoCloud cloud-init
-  seed (this lab reuses the `cloud-localds` approach from [Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md)).
-- An Ubuntu Server 26.04 LTS cloud image (`.img`) rather than the
-  installer ISO.
-- A control host (can be the same VM host) with `ansible` installed.
-- A non-production environment throughout.
+### Lab 9.1 — cloud-init instance configuration (Topic: Automated provisioning)
 
-**Steps**
+**Objective:** Configure a machine declaratively at first boot.
 
-1. Prepare a minimal cloud-init seed that creates an Ansible-manageable
-   user and nothing else — deliberately leaving baseline hardening to
-   Ansible:
+```bash
+cloud-init status --long
+cat > user-data.yaml <<'EOF'
+#cloud-config
+package_update: true
+packages: [nginx]
+write_files:
+  - path: /var/www/html/index.html
+    content: "Provisioned by cloud-init\n"
+runcmd:
+  - [systemctl, enable, --now, nginx]
+EOF
+cloud-init schema --config-file user-data.yaml && echo "cloud-config valid"
+```
 
-   ```bash
-   mkdir -p ~/lab-capstone/seed && cd ~/lab-capstone
-   ssh-keygen -t ed25519 -C "capstone-lab" -f capstone-key -N ""
+**Expected result:** `cloud-init status` shows it ran at boot, and the user-data validates —
+cloud-init is the cross-cloud first-boot provisioner: it applies packages, files, users, and
+commands from declarative user-data, so every cloud/VM/MAAS instance configures itself
+identically on launch.
 
-   cat > seed/meta-data <<'EOF'
-   instance-id: capstone-01
-   local-hostname: capstone-01
-   EOF
+**Negative test:** bake configuration into a golden image instead of cloud-init user-data; the
+image must be rebuilt for every change and cannot adapt per-instance — cloud-init parameterizes a
+single image at boot.
 
-   cat > seed/user-data <<EOF
-   #cloud-config
-   users:
-     - name: ansible
-       groups: sudo
-       shell: /bin/bash
-       sudo: ALL=(ALL) NOPASSWD:ALL
-       ssh_authorized_keys:
-         - $(cat capstone-key.pub)
-   package_update: true
-   EOF
+**Cleanup:** `rm -f user-data.yaml`.
 
-   cloud-localds seed.iso seed/user-data seed/meta-data
-   ```
+### Lab 9.2 — Model-driven operations with Juju (Topic: Deployment technologies)
 
-2. Launch the cloud image with the seed attached:
+**Objective:** Deploy an application with an operator charm.
 
-   ```bash
-   qemu-img create -f qcow2 -F qcow2 -b ubuntu-26.04-server-cloudimg-amd64.img capstone-01.qcow2 10G
-   virt-install \
-     --name capstone-01 \
-     --memory 2048 --vcpus 2 \
-     --disk capstone-01.qcow2 \
-     --disk seed.iso,device=cdrom \
-     --os-variant ubuntu24.04 \
-     --import --graphics none --console pty,target_type=serial \
-     --noautoconsole
-   ```
+```bash
+sudo snap install juju
+juju bootstrap localhost lxd-controller
+juju add-model lab
+juju deploy postgresql
+juju status
+```
 
-3. Wait for cloud-init to finish, then confirm minimal-state hand-off:
+**Expected result:** Juju bootstraps a controller on LXD and deploys PostgreSQL via its charm,
+with `juju status` showing the application converging — Juju is model-driven operations: charms
+encode an application's operational knowledge (deploy, configure, scale, integrate), so you
+`deploy` and `relate` applications rather than scripting each step.
 
-   ```bash
-   CAPSTONE_IP=$(virsh domifaddr capstone-01 | awk '/ipv4/{print $4}' | cut -d/ -f1)
-   ssh -i capstone-key -o StrictHostKeyChecking=no ansible@"${CAPSTONE_IP}" \
-     'cloud-init status --long; ufw status 2>&1 || echo "ufw not yet configured"'
-   ```
+**Negative test:** script postgres install/config/backup by hand across environments; each drifts
+and reinvents the operations — a charm packages that operational logic once, applied consistently.
 
-   **Expected result:** `cloud-init status --long` shows `status: done`;
-   `ufw` reports inactive or not installed, confirming hardening was
-   deliberately left for Ansible, not cloud-init.
+**Cleanup:** `juju destroy-model lab --no-prompt; juju destroy-controller lxd-controller
+--no-prompt` if lab-only.
 
-4. Build the Ansible inventory and baseline playbook:
+### Lab 9.3 — Configuration management with Ansible (Topic: Automation and updating)
 
-   ```bash
-   cat > inventory.ini <<EOF
-   [capstone]
-   ${CAPSTONE_IP} ansible_user=ansible ansible_ssh_private_key_file=$(pwd)/capstone-key ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-   EOF
+**Objective:** Converge an Ubuntu host with an idempotent playbook.
 
-   cat > site.yml <<'EOF'
-   - name: Capstone baseline configuration
-     hosts: capstone
-     become: true
-     tasks:
-       - name: Install baseline packages
-         ansible.builtin.apt:
-           name: [chrony, ufw]
-           state: present
-           update_cache: true
+```bash
+sudo apt install -y ansible
+cat > site.yml <<'EOF'
+---
+- hosts: localhost
+  connection: local
+  become: true
+  tasks:
+    - name: Ensure nginx present
+      ansible.builtin.apt: { name: nginx, state: present, update_cache: true }
+    - name: Deploy index page
+      ansible.builtin.copy: { content: "Managed by Ansible\n", dest: /var/www/html/index.html }
+      notify: restart nginx
+  handlers:
+    - name: restart nginx
+      ansible.builtin.service: { name: nginx, state: restarted }
+EOF
+ansible-playbook site.yml | grep -E "changed=|ok="
+ansible-playbook site.yml | grep -E "changed=|ok="     # second run: changed=0
+```
 
-       - name: Enable chrony
-         ansible.builtin.systemd_service:
-           name: chrony
-           enabled: true
-           state: started
+**Expected result:** the first run changes state and the **second reports `changed=0`** — Ansible
+is the vendor-neutral configuration manager (the `apt`/`service` modules are idempotent), useful
+alongside Canonical's stack for cross-distro automation and updating.
 
-       - name: Set default-deny inbound firewall policy
-         community.general.ufw:
-           policy: deny
-           direction: incoming
+**Negative test:** use `command: apt install` instead of the `apt` module; it reports `changed`
+every run and is not idempotent — prefer state-based modules.
 
-       - name: Allow SSH through the firewall
-         community.general.ufw:
-           rule: allow
-           name: OpenSSH
+**Cleanup:** `rm -f site.yml`.
 
-       - name: Enable ufw
-         community.general.ufw:
-           state: enabled
-   EOF
-   ```
+### Lab 9.4 — Capstone Design Exercise: an Ubuntu fleet from metal to apps (Topic: Synthesis)
 
-5. **Negative test:** run the playbook in check mode first and confirm
-   it correctly reports pending changes without applying them:
+**Objective:** Produce a defensible end-to-end operations design across Canonical's stack.
 
-   ```bash
-   ansible-playbook -i inventory.ini site.yml --check --diff
-   ssh -i capstone-key ansible@"${CAPSTONE_IP}" 'ufw status'
-   ```
+> **Scenario.** Stand up and operate 200 Ubuntu servers across a data center and two clouds: bare
+> metal provisioned automatically, identical configuration, application deployment, ongoing
+> patching/compliance, and security maintenance — with minimal manual touch.
 
-   **Expected result:** the check-mode run reports tasks as "changed"
-   (what *would* happen) but the live SSH check immediately after shows
-   `ufw` is still inactive — proving `--check` made no real change to
-   the host.
+Work through and **write down**:
 
-6. Apply the playbook for real and verify the end state:
+1. **Provision** — MAAS for bare-metal (PXE/IPMI) and cloud images; cloud-init/autoinstall for
+   first-boot configuration (Ch01, Ch09).
+2. **Configure** — netplan networking, ufw, AppArmor enforcing, and users/SSH baselines applied by
+   cloud-init + Ansible/charms (Ch04, Ch06, Ch09).
+3. **Deploy apps** — Juju charms and/or Kubernetes (the `k8s` snap) for workloads; LXD for
+   system-container services (Ch08, Ch09).
+4. **Operate & patch** — Landscape for fleet-wide patching, script execution, and monitoring;
+   Ubuntu Pro for ESM security maintenance and USG hardening (Ch01, Ch06).
+5. **Storage & services** — LVM and persistent mounts, database/web services with correct firewall
+   and AppArmor (Ch05, Ch07).
+6. **Assure** — USG CIS audits, drift control, and a tested update/rollback path.
 
-   ```bash
-   ansible-playbook -i inventory.ini site.yml
-   ssh -i capstone-key ansible@"${CAPSTONE_IP}" \
-     'ufw status verbose; systemctl is-active chrony'
-   ```
+**Expected result:** a written design where metal-to-apps is automated (MAAS → cloud-init → Juju/
+Ansible), governed (Landscape + Pro/USG), and secured (netplan/ufw/AppArmor), with minimal manual
+intervention — the deliverable that Canonical's SysAdmin/DevOps competencies build toward.
 
-   **Expected result:** `ufw status verbose` shows `Status: active`
-   with a default-deny incoming policy and an OpenSSH allow rule;
-   `systemctl is-active chrony` reports `active`.
+**Negative test:** hand-install and hand-configure each of the 200 servers; it does not scale,
+drifts immediately, and cannot be patched or audited consistently — the automation stack (MAAS,
+cloud-init, Juju/Ansible, Landscape) is what makes the fleet operable.
 
-7. Confirm idempotency by re-running the playbook:
-
-   ```bash
-   ansible-playbook -i inventory.ini site.yml | tail -5
-   ```
-
-   **Expected result:** the play recap shows `changed=0` for every
-   task (aside from any facts-gathering), confirming the playbook is
-   safe to re-run — the same idempotency principle [Chapter 02](02-essential-tools-shell-scripting-apt-and-snap-management.md)
-   established for shell scripts and [Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md) established for
-   cloud-init modules now demonstrated end to end across the whole
-   provisioning chain.
-
-8. **Cleanup:**
-
-   ```bash
-   virsh destroy capstone-01 2>/dev/null || true
-   virsh undefine capstone-01 --remove-all-storage
-   cd ~ && rm -rf ~/lab-capstone
-   ```
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 

@@ -408,112 +408,104 @@ sudo snap remove lxd
 
 ## Hands-On Lab
 
-**Objective:** Build a small but realistic administrative script that
-audits packages and disk usage, and exercise both APT history-style
-recovery and Snap rollback.
+This chapter carries a topic-level walkthrough lab for **each skill in the "Using Linux
+Terminal" competency** — files and links, text processing, package management (APT and snap),
+and shell scripting. Every step is a runnable Ubuntu 26.04 command. Each ends **`**Lab verified
+by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.4** — an Ubuntu 26.04 shell with `sudo`, and a scratch dir
+`mkdir -p ~/lab && cd ~/lab`. **Cost:** none.
 
-- An Ubuntu Server 26.04 LTS host or VM with `sudo` access and
-  configured repositories (see [Chapter 01](01-installation-autoinstall-ubuntu-pro-repositories-and-landscape.md)).
-- A non-production system, since this lab installs and removes test
-  packages and a test snap.
+### Lab 2.1 — Files, directories, and links (Topic: Navigating filesystems)
 
-**Steps**
+**Objective:** Manage files and create hard and symbolic links.
 
-1. Create a working directory and the audit script:
+```bash
+cd ~/lab
+echo "data" > file.txt
+ln file.txt hard.txt          # hard link (same inode)
+ln -s file.txt soft.txt       # symbolic link (points to the name)
+ls -li file.txt hard.txt soft.txt
+```
 
-   ```bash
-   mkdir -p ~/lab-tools && cd ~/lab-tools
-   cat > disk-and-pkg-report.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -euo pipefail
+**Expected result:** `file.txt` and `hard.txt` share one inode and link count 2; `soft.txt` is a
+separate inode pointing to the name — a hard link is another name for the same data, a symlink is
+a pointer that breaks if the target is removed; distinguishing them is core terminal fluency.
 
-   echo "== Disk usage over 80% =="
-   df -hT | awk 'NR==1 || $6+0 > 80 { print }'
+**Negative test:** `rm file.txt`, then `cat hard.txt` (works — data persists) vs `cat soft.txt`
+(fails — dangling symlink) — this proves the inode-vs-name distinction.
 
-   echo "== Recently installed packages (dpkg log) =="
-   grep " install " /var/log/dpkg.log 2>/dev/null | tail -5 || echo "none found"
+**Cleanup:** `rm -f ~/lab/file.txt ~/lab/hard.txt ~/lab/soft.txt`.
 
-   echo "== Top 5 largest directories under /var =="
-   du -h --max-depth=1 /var 2>/dev/null | sort -rh | head -5
-   EOF
-   chmod +x disk-and-pkg-report.sh
-   ```
+### Lab 2.2 — Text processing and redirection (Topic: Managing system resources)
 
-2. Run the script and confirm it executes without error:
+**Objective:** Filter and transform text with pipes and redirection.
 
-   ```bash
-   ./disk-and-pkg-report.sh
-   ```
+```bash
+cd ~/lab
+getent passwd > users.txt
+grep -c bash users.txt
+awk -F: '$3 >= 1000 {print $1}' users.txt
+ps -eo pid,comm,%mem --sort=-%mem | head -5 > topmem.txt && cat topmem.txt
+```
 
-   **Expected result:** three labeled sections print with real data
-   from the host; the script exits with status `0`
-   (`echo $?` immediately afterward confirms).
+**Expected result:** counts of bash users, the regular (UID≥1000) accounts, and the top
+memory-consuming processes — `grep`/`awk`/`sed` with pipes and redirection (`>`, `>>`, `2>`) are
+the terminal's core tools for extracting and reporting on system data.
 
-3. Install a small, harmless test package to generate new `dpkg.log`
-   activity:
+**Negative test:** use `>` where you meant `>>` and overwrite a report you meant to append to;
+prior content is lost — redirection operators are exact.
 
-   ```bash
-   sudo apt update
-   sudo apt install -y tree
-   ```
+**Cleanup:** `rm -f ~/lab/users.txt ~/lab/topmem.txt`.
 
-4. Re-run the audit script and confirm the new install is now visible:
+### Lab 2.3 — APT and snap package management (Topic: Managing applications)
 
-   ```bash
-   ./disk-and-pkg-report.sh
-   ```
+**Objective:** Manage software through both Ubuntu package systems.
 
-   **Expected result:** the "Recently installed packages" section shows
-   `tree`.
+```bash
+sudo apt update && sudo apt install -y tree
+apt-mark hold tree && apt-mark showhold          # pin against upgrades
+sudo snap install hello-world
+snap list | grep hello-world
+snap info hello-world | grep -E "channels:|tracking" 
+```
 
-5. **Negative test:** intentionally break the script by introducing an
-   unquoted variable and observe the failure mode:
+**Expected result:** `tree` installs via APT and is held from upgrades, while `hello-world`
+installs as a snap tracking a channel — Ubuntu has two package systems: APT (debs, versioned in
+repos) and snap (self-contained, channel-based, auto-updating); managing both, including holds
+and channels, is an exam competency.
 
-   ```bash
-   cp disk-and-pkg-report.sh broken.sh
-   sed -i 's#du -h --max-depth=1 /var#TESTDIR="/var/log audit"; du -h --max-depth=1 $TESTDIR#' broken.sh
-   chmod +x broken.sh
-   ./broken.sh
-   ```
+**Negative test:** expect a snap to stay on a fixed version by default; snaps auto-refresh from
+their channel — pin with `snap refresh --hold` or a specific channel, unlike an APT `hold`.
 
-   **Expected result:** the unquoted `$TESTDIR` word-splits into two
-   separate arguments (`/var/log` and `audit`), and `du` reports it
-   cannot access a directory literally named `audit` in the current
-   working directory — demonstrating exactly the class of bug that
-   `"$TESTDIR"` quoting prevents.
+**Cleanup:** `sudo apt-mark unhold tree; sudo apt remove -y tree; sudo snap remove hello-world`.
 
-6. Remove the test package cleanly:
+### Lab 2.4 — A simple shell script (Topic: Scripting)
 
-   ```bash
-   sudo apt purge -y tree
-   sudo apt autoremove -y
-   dpkg -l tree 2>&1 | tail -1
-   ```
+**Objective:** Write a script with a conditional, a loop, and exit status.
 
-   **Expected result:** `dpkg -l tree` reports the package is unknown
-   or not installed.
+```bash
+cd ~/lab
+cat > report.sh <<'EOF'
+#!/bin/bash
+dir="${1:-.}"
+if [ ! -d "$dir" ]; then echo "Not a directory: $dir" >&2; exit 1; fi
+for f in "$dir"/*; do [ -f "$f" ] && echo "file: $f"; done
+exit 0
+EOF
+chmod +x report.sh
+./report.sh /etc >/dev/null; echo "exit=$?"
+./report.sh /nope; echo "exit=$?"
+```
 
-7. Install and roll back a test snap:
+**Expected result:** the script lists files and exits 0, then reports the bad directory to stderr
+and exits 1 — scripting with positional parameters, conditionals, loops, and meaningful exit
+codes is expected across the terminal and DevOps domains.
 
-   ```bash
-   sudo snap install hello-world
-   snap list hello-world
-   sudo snap refresh hello-world --channel=latest/edge 2>/dev/null || true
-   sudo snap revert hello-world
-   snap list hello-world --all
-   ```
+**Negative test:** omit the `#!/bin/bash` shebang or `chmod +x`; the script runs under the wrong
+interpreter or is not executable — both are required to run a script directly.
 
-   **Expected result:** `snap list --all` shows at least one retained
-   prior revision alongside the current one.
-
-8. **Cleanup:**
-
-   ```bash
-   sudo snap remove hello-world
-   cd ~ && rm -rf ~/lab-tools
-   ```
+**Cleanup:** `rm -f ~/lab/report.sh`.
 
 ## Lab Verification
 

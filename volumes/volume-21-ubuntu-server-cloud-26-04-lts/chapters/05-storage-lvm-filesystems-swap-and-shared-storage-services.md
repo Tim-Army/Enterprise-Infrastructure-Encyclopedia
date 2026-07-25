@@ -366,108 +366,123 @@ sudo iscsiadm -m node -T iqn.2026-01.com.example:target0 -p 10.20.40.10 --op upd
 
 ## Hands-On Lab
 
-**Objective:** Build an LVM-backed filesystem, grow it online, and
-export it over NFS to a second host, confirming access control with a
-negative test.
+This chapter carries a topic-level walkthrough lab for **each storage task in the "Securing
+Filesystem Access" and server competencies** — partitioning, LVM, filesystems and persistent
+mounts, swap, and network storage. Every step is a runnable Ubuntu 26.04 command. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 5.1–5.5** — an Ubuntu 26.04 system with a **spare disk you can
+destroy** (e.g. `/dev/vdb`), `sudo`, and (for Lab 5.5) an NFS export. **Safety:** these labs write
+partition tables — use a scratch disk, never the system disk. **Cost:** none.
 
-- An Ubuntu Server 26.04 LTS VM ("server") with at least one spare,
-  unpartitioned virtual disk (for example `/dev/sdb`, 10 GiB) and
-  `sudo` access.
-- A second Ubuntu host or VM ("client") on the same network for the
-  NFS mount test.
-- This lab modifies partition tables and `/etc/exports`; use disposable
-  VMs, not production hosts.
+### Lab 5.1 — Partition a disk (Topic: Configuring storage)
 
-**Steps**
+**Objective:** Create a GPT partition on a spare disk.
 
-1. On the server, build the LVM stack:
+```bash
+lsblk
+sudo parted -s /dev/vdb mklabel gpt
+sudo parted -s /dev/vdb mkpart primary 1MiB 2GiB
+sudo parted -s /dev/vdb set 1 lvm on
+lsblk /dev/vdb
+```
 
-   ```bash
-   sudo parted /dev/sdb --script mklabel gpt mkpart primary 0% 100%
-   sudo parted /dev/sdb --script set 1 lvm on
-   sudo pvcreate /dev/sdb1
-   sudo vgcreate lab_vg /dev/sdb1
-   sudo lvcreate -L 4G -n lab_lv lab_vg
-   sudo mkfs.ext4 -L labdata /dev/lab_vg/lab_lv
-   sudo mkdir -p /srv/labdata
-   echo "$(blkid -s UUID -o value /dev/lab_vg/lab_lv)  /srv/labdata  ext4  defaults  0  2" | \
-     sudo tee -a /etc/fstab
-   sudo mount -a
-   df -h /srv/labdata
-   ```
+**Expected result:** `/dev/vdb1` appears as a 2 GiB partition flagged for LVM — creating
+partitions with `parted` (or `fdisk`) and choosing GPT for modern disks is a storage competency.
 
-   **Expected result:** `/srv/labdata` mounted with roughly 4 GiB
-   available.
+**Negative test:** create a partition but skip re-reading the table (`partprobe`) on a busy disk;
+the kernel may not see it — confirm with `lsblk` before building on it.
 
-2. Grow the volume online and confirm the filesystem reflects it:
+**Cleanup:** carried through Lab 5.2's cleanup.
 
-   ```bash
-   sudo lvextend -L +2G /dev/lab_vg/lab_lv
-   sudo resize2fs /dev/lab_vg/lab_lv
-   df -h /srv/labdata
-   ```
+### Lab 5.2 — Logical Volume Management (Topic: Configuring storage)
 
-   **Expected result:** available space increases by roughly 2 GiB
-   with no unmount required.
+**Objective:** Build and extend an LVM logical volume.
 
-3. Export the volume over NFS, scoped to the client's subnet:
+```bash
+sudo apt install -y lvm2
+sudo pvcreate /dev/vdb1
+sudo vgcreate datavg /dev/vdb1
+sudo lvcreate -L 1G -n datalv datavg
+sudo lvextend -L +512M /dev/datavg/datalv
+sudo vgs ; sudo lvs
+```
 
-   ```bash
-   sudo apt install -y nfs-kernel-server
-   sudo chown nobody:nogroup /srv/labdata
-   echo "/srv/labdata 10.20.30.0/24(rw,sync,no_subtree_check,root_squash)" | \
-     sudo tee -a /etc/exports
-   sudo exportfs -ra
-   sudo systemctl enable --now nfs-kernel-server
-   ```
+**Expected result:** a PV, a VG `datavg`, and an LV `datalv` grown to 1.5 G — LVM (PV → VG → LV)
+lets you resize storage online, which fixed partitions cannot; `lvextend` grows the LV (Lab 5.3
+grows the filesystem on it).
 
-4. On the client, mount the export and write a test file:
+**Negative test:** `lvextend` past the VG's free space; it fails with insufficient extents — an LV
+cannot exceed its VG, so extend the VG (add a PV) first.
 
-   ```bash
-   sudo apt install -y nfs-common
-   sudo mkdir -p /mnt/labdata
-   sudo mount -t nfs <server-address>:/srv/labdata /mnt/labdata
-   echo "written from client $(date -Iseconds)" | sudo tee /mnt/labdata/client-test.txt
-   ```
+**Cleanup:** carried through Lab 5.3's cleanup.
 
-   **Expected result:** the file write succeeds; on the server,
-   `cat /srv/labdata/client-test.txt` shows the same content.
+### Lab 5.3 — Filesystems and persistent mounts (Topic: Creating file systems)
 
-5. **Negative test:** confirm the export rejects a client outside the
-   allowed subnet. From a third host (or by temporarily changing the
-   client's address outside `10.20.30.0/24`, if your lab topology
-   allows it), attempt the same mount:
+**Objective:** Format, mount, and persist a filesystem by UUID.
 
-   ```bash
-   sudo mount -t nfs <server-address>:/srv/labdata /mnt/labdata
-   ```
+```bash
+sudo mkfs.ext4 /dev/datavg/datalv
+sudo mkdir -p /data
+UUID=$(sudo blkid -s UUID -o value /dev/datavg/datalv)
+echo "UUID=$UUID /data ext4 defaults 0 2" | sudo tee -a /etc/fstab
+sudo systemctl daemon-reload
+sudo mount -a && df -h /data
+sudo resize2fs /dev/datavg/datalv       # grow ext4 to the LV size after lvextend
+```
 
-   **Expected result:** the mount is refused (`access denied by
-   server`), confirming the subnet restriction in `/etc/exports` is
-   enforced. If a third host isn't available, review
-   `sudo exportfs -v` and confirm the export line shows the specific
-   `10.20.30.0/24` scope rather than a wildcard, as evidence the
-   restriction is in place.
+**Expected result:** the ext4 filesystem mounts at `/data`, `mount -a` succeeds (proving the
+`/etc/fstab` entry), and `resize2fs` extends it — persistent mounts by UUID and online growth
+(`resize2fs` for ext4, `xfs_growfs` for XFS) are storage competencies.
 
-6. **Cleanup:**
+**Negative test:** put a bad UUID/option in `/etc/fstab`; the next boot drops to emergency mode —
+always run `mount -a` after editing `fstab` to catch errors before rebooting.
 
-   ```bash
-   # client
-   sudo umount /mnt/labdata
-   sudo sed -i '\|/mnt/labdata|d' /etc/fstab 2>/dev/null || true
+**Cleanup:** `sudo umount /data`; remove the `fstab` line; `sudo lvremove -y /dev/datavg/datalv;
+sudo vgremove -y datavg; sudo pvremove /dev/vdb1; sudo wipefs -a /dev/vdb`.
 
-   # server
-   sudo systemctl disable --now nfs-kernel-server
-   sudo sed -i '\|/srv/labdata|d' /etc/exports
-   sudo umount /srv/labdata
-   sudo sed -i '\|/srv/labdata|d' /etc/fstab
-   sudo lvremove -f /dev/lab_vg/lab_lv
-   sudo vgremove lab_vg
-   sudo pvremove /dev/sdb1
-   sudo parted /dev/sdb --script rm 1
-   ```
+### Lab 5.4 — Swap space (Topic: Configuring storage)
+
+**Objective:** Add swap and enable it persistently.
+
+```bash
+sudo lvcreate -L 512M -n swaplv datavg
+sudo mkswap /dev/datavg/swaplv
+SWAP_UUID=$(sudo blkid -s UUID -o value /dev/datavg/swaplv)
+echo "UUID=$SWAP_UUID none swap sw 0 0" | sudo tee -a /etc/fstab
+sudo swapon -a ; swapon --show
+```
+
+**Expected result:** the swap area is active (`swapon --show`) and persists via `/etc/fstab` —
+creating swap (`mkswap`), enabling it (`swapon`), and persisting it is expected; note Ubuntu
+default installs often use a `/swap.img` file rather than a partition.
+
+**Negative test:** `swapon` a device you never ran `mkswap` on; it fails "invalid argument" — swap
+must be formatted before it can be enabled.
+
+**Cleanup:** `sudo swapoff /dev/datavg/swaplv`; remove the swap `fstab` line;
+`sudo lvremove -y /dev/datavg/swaplv`.
+
+### Lab 5.5 — Network storage: NFS client (Topic: Configuring services)
+
+**Objective:** Mount an NFS export persistently.
+
+```bash
+sudo apt install -y nfs-common
+showmount -e nfsserver.example.com
+sudo mkdir -p /mnt/shared
+echo "nfsserver.example.com:/export/shared /mnt/shared nfs defaults,_netdev 0 0" | sudo tee -a /etc/fstab
+sudo mount -a && df -h /mnt/shared
+```
+
+**Expected result:** the export mounts at `/mnt/shared` and persists with `_netdev` (so the mount
+waits for the network) — mounting network filesystems is a services competency, and `_netdev`
+prevents a boot hang before networking is ready.
+
+**Negative test:** add an NFS entry without `_netdev`; boot can hang or the mount fails before the
+network is up — network mounts need `_netdev` to order correctly.
+
+**Cleanup:** `sudo umount /mnt/shared`; remove the `fstab` line.
 
 ## Lab Verification
 

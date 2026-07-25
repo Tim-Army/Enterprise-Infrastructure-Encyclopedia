@@ -382,123 +382,120 @@ atrm 3
 
 ## Hands-On Lab
 
-**Objective:** Author a custom systemd service and timer, verify its
-execution and logging through `journalctl`, and observe a deliberate
-failure mode.
+This chapter carries a topic-level walkthrough lab for **each task in the "Managing Processes"
+competency** — systemd services, boot targets and recovery, process management, logging, and
+scheduled work. Every step is a runnable Ubuntu 26.04 command. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 3.1–3.5** — an Ubuntu 26.04 system you can reboot and destroy
+(VM, with console access for Lab 3.2), and `sudo`. **Cost:** none.
 
-- An Ubuntu Server 26.04 LTS host or VM with `sudo` access.
-- A non-production system, since this lab creates and removes a
-  systemd unit and a dedicated service account.
+### Lab 3.1 — Manage services with systemd (Topic: Service management)
 
-**Steps**
+**Objective:** Start, enable, and inspect a service unit.
 
-1. Create a dedicated service account and the target script:
+```bash
+sudo systemctl enable --now systemd-timesyncd
+systemctl status systemd-timesyncd --no-pager
+systemctl is-enabled systemd-timesyncd
+sudo systemctl restart systemd-timesyncd && systemctl is-active systemd-timesyncd
+```
 
-   ```bash
-   sudo useradd --system --no-create-home --shell /usr/sbin/nologin svc-labreport
-   sudo mkdir -p /usr/local/sbin
-   sudo tee /usr/local/sbin/lab-report.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -euo pipefail
-   echo "Lab report generated at $(date -Iseconds) by $(whoami)"
-   EOF
-   sudo chmod +x /usr/local/sbin/lab-report.sh
-   ```
+**Expected result:** the service is `active (running)` and `enabled`; `is-active`/`is-enabled`
+report runtime and boot state separately — `systemctl` manages units, and the exam distinguishes
+*running now* from *starts at boot*.
 
-2. Create the service and timer units:
+**Negative test:** `systemctl start` a service but never `enable` it, then reboot; it is not
+running — `start` affects only the current boot, persistence needs `enable`.
 
-   ```bash
-   sudo tee /etc/systemd/system/lab-report.service <<'EOF'
-   [Unit]
-   Description=Lab report generator (training exercise)
+**Cleanup:** leave `systemd-timesyncd` enabled (time sync is expected).
 
-   [Service]
-   Type=oneshot
-   ExecStart=/usr/local/sbin/lab-report.sh
-   User=svc-labreport
-   EOF
+### Lab 3.2 — Boot targets and recovery (Topic: System recovery)
 
-   sudo tee /etc/systemd/system/lab-report.timer <<'EOF'
-   [Unit]
-   Description=Run lab-report.service every 2 minutes
+**Objective:** Change the default target and reset a lost password.
 
-   [Timer]
-   OnBootSec=1min
-   OnUnitActiveSec=2min
-   Persistent=true
+```bash
+systemctl get-default
+sudo systemctl set-default multi-user.target
+# Reset a lost password (at the console, on reboot):
+#   1. At GRUB, press 'e' on the Ubuntu entry
+#   2. On the linux line, change 'ro' to 'rw' and append: init=/bin/bash
+#   3. Ctrl-x to boot, then at the root shell:
+#        passwd <user>
+#        exec /sbin/init      # or reboot -f
+```
 
-   [Install]
-   WantedBy=timers.target
-   EOF
+**Expected result:** the default target changes, and the `init=/bin/bash` procedure gives a root
+shell to reset a password — Ubuntu's recovery differs from RHEL (no SELinux relabel needed), and
+booting to a single-user root shell via GRUB is the standard password-recovery path.
 
-   sudo systemctl daemon-reload
-   sudo systemctl enable --now lab-report.timer
-   ```
+**Negative test:** try to reset a password from the normal login screen with no credentials; you
+cannot — physical/console access plus the GRUB edit is what enables recovery, which is why boot
+security (GRUB password, disk encryption) matters.
 
-3. Confirm the timer is scheduled:
+**Cleanup:** `sudo systemctl set-default graphical.target` only if that was the original default
+(servers default to multi-user).
 
-   ```bash
-   systemctl list-timers lab-report.timer
-   ```
+### Lab 3.3 — Process management (Topic: Managing processes)
 
-   **Expected result:** a `NEXT` and `LEFT` column showing an upcoming
-   run within about a minute.
+**Objective:** Find and control processes and their priority.
 
-4. Trigger the service manually and confirm success in the journal:
+```bash
+sleep 600 &
+pgrep -af "sleep 600"
+top -b -n1 | head -12
+sudo renice -n 10 -p "$(pgrep -n sleep)"
+kill "$(pgrep -n sleep)"
+```
 
-   ```bash
-   sudo systemctl start lab-report.service
-   journalctl -u lab-report.service --no-pager -n 10
-   ```
+**Expected result:** the background `sleep` is found by `pgrep`, `top` shows load, `renice`
+adjusts priority, and `kill` terminates it — listing (`ps`/`top`/`pgrep`), prioritizing
+(`nice`/`renice`), and signaling (`kill`/`pkill`) processes is the heart of the process domain.
 
-   **Expected result:** a log line showing the report text, with
-   `svc-labreport` as the reporting user, and
-   `systemctl status lab-report.service` showing `Active: inactive
-   (dead)` with the last run marked `SUCCESS`.
+**Negative test:** `kill -9` a database instead of a graceful `kill`; you risk data loss —
+SIGTERM allows cleanup, SIGKILL (`-9`) does not, so reserve `-9` for when graceful stop fails.
 
-5. **Negative test:** break the service by pointing it at a
-   non-existent script, and observe the failure mode:
+**Cleanup:** `pkill sleep 2>/dev/null || true`.
 
-   ```bash
-   sudo systemctl edit lab-report.service --full
-   ```
+### Lab 3.4 — Logging with journald (Topic: Monitoring and troubleshooting)
 
-   Change `ExecStart=` to `/usr/local/sbin/lab-report-typo.sh`, save,
-   then:
+**Objective:** Read and persist the system journal.
 
-   ```bash
-   sudo systemctl daemon-reload
-   sudo systemctl start lab-report.service
-   systemctl status lab-report.service
-   journalctl -u lab-report.service -n 5 --no-pager
-   ```
+```bash
+journalctl -b --no-pager | tail -20
+journalctl -u ssh --since "10 min ago" --no-pager
+sudo mkdir -p /var/log/journal && sudo systemctl restart systemd-journald
+journalctl --list-boots | tail
+```
 
-   **Expected result:** the unit reports `Active: failed`, and the
-   journal shows an `status=203/EXEC` (or similar "No such file or
-   directory") error — confirming systemd surfaces exec failures
-   directly rather than failing silently.
+**Expected result:** journald shows this boot's messages, per-unit/time-filtered views, and
+creating `/var/log/journal` makes the journal persist across reboots — reading logs with
+`journalctl` filters and configuring persistence is a troubleshooting competency.
 
-6. Restore the working `ExecStart=` (repeat the `systemctl edit
-   --full` step with the correct path) and confirm it runs cleanly
-   again:
+**Negative test:** review last week's logs on a volatile (in-memory) journal after a reboot; they
+are gone — persistence must be enabled before you need the history.
 
-   ```bash
-   sudo systemctl daemon-reload
-   sudo systemctl start lab-report.service
-   systemctl is-active lab-report.service || journalctl -u lab-report.service -n 5
-   ```
+**Cleanup:** none (persistent journal is a good default).
 
-7. **Cleanup:**
+### Lab 3.5 — Scheduled tasks: cron and timers (Topic: Scheduled work)
 
-   ```bash
-   sudo systemctl disable --now lab-report.timer
-   sudo rm -f /etc/systemd/system/lab-report.timer /etc/systemd/system/lab-report.service
-   sudo rm -f /usr/local/sbin/lab-report.sh
-   sudo systemctl daemon-reload
-   sudo userdel svc-labreport
-   ```
+**Objective:** Schedule recurring and one-off jobs.
+
+```bash
+echo '*/5 * * * * root /usr/bin/logger "cron test"' | sudo tee /etc/cron.d/labtest
+sudo systemctl enable --now cron
+echo "logger 'at test'" | at now + 1 minute 2>/dev/null; atq 2>/dev/null
+systemctl list-timers --no-pager | head
+```
+
+**Expected result:** a cron job runs every 5 minutes, an `at` job queues for one minute out, and
+`list-timers` shows systemd timers — Ubuntu covers `cron` (recurring), `at` (one-off, via the
+`at` package), and systemd timers as scheduling mechanisms.
+
+**Negative test:** add a cron entry but leave the `cron` service disabled; nothing runs — the
+scheduler must be active for jobs to fire.
+
+**Cleanup:** `sudo rm -f /etc/cron.d/labtest`; `atrm` any queued jobs.
 
 ## Lab Verification
 

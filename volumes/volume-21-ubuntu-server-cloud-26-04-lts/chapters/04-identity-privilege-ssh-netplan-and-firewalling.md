@@ -359,117 +359,123 @@ sudo nft list ruleset | less
 
 ## Hands-On Lab
 
-**Objective:** Create a scoped administrative account, harden SSH
-access to it, apply a static Netplan configuration safely, and enforce
-a default-deny `ufw` policy — with a negative test proving the deny
-policy actually blocks unlisted traffic.
+This chapter carries a topic-level walkthrough lab for **each task in the "Securing Server
+Access" and networking competencies** — accounts, sudo, SSH, netplan networking, and the ufw
+firewall. Every step is a runnable Ubuntu 26.04 command. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.5** — an Ubuntu 26.04 system with `sudo`, a second host (or
+localhost) for SSH, and a data interface for networking. **Cost:** none.
 
-- An Ubuntu Server 26.04 LTS VM with console access (required for the
-  negative test and recovery) in addition to SSH, and `sudo` on an
-  existing account.
-- A second host or workstation able to attempt an SSH connection to the
-  lab VM, for the connectivity tests.
+### Lab 4.1 — Users, groups, and password aging (Topic: Managing users)
 
-**Steps**
+**Objective:** Create accounts and a shared group with an aging policy.
 
-1. Create a scoped administrative account with a dedicated SSH key:
+```bash
+sudo groupadd engineers
+sudo adduser --disabled-password --gecos "" alice
+sudo usermod -aG engineers alice
+sudo chage -M 90 -W 7 alice
+id alice ; sudo chage -l alice | head
+```
 
-   ```bash
-   sudo adduser --disabled-password labadmin
-   sudo usermod -aG sudo labadmin
-   sudo mkdir -p /home/labadmin/.ssh
-   ssh-keygen -t ed25519 -C "labadmin@lab" -f ~/lab-key -N ""
-   sudo tee /home/labadmin/.ssh/authorized_keys < ~/lab-key.pub
-   sudo chown -R labadmin:labadmin /home/labadmin/.ssh
-   sudo chmod 700 /home/labadmin/.ssh
-   sudo chmod 600 /home/labadmin/.ssh/authorized_keys
-   ```
+**Expected result:** `alice` exists with a home directory and `engineers` membership, and
+`chage -l` shows the aging policy — Ubuntu's `adduser` (a friendly wrapper) and the low-level
+`useradd`/`usermod`/`chage` manage accounts and password aging, an access competency.
 
-2. From the second host, confirm key-based login works:
+**Negative test:** create a user with `useradd` (not `adduser`) and forget `-m`; no home directory
+is created and login misbehaves — `adduser` creates the home by default, `useradd` needs `-m`.
 
-   ```bash
-   ssh -i lab-key labadmin@<lab-vm-address> 'whoami; sudo -n true && echo sudo-ok'
-   ```
+**Cleanup:** `sudo deluser --remove-home alice; sudo groupdel engineers`.
 
-   **Expected result:** returns `labadmin`; `sudo-ok` prints only if a
-   `NOPASSWD` sudoers entry exists (optional — otherwise expect a
-   password prompt, which is also correct behavior).
+### Lab 4.2 — Privilege escalation with sudo (Topic: Securing access)
 
-3. Harden `sshd` and confirm the config is valid before reloading:
+**Objective:** Grant scoped administrative rights.
 
-   ```bash
-   sudo tee /etc/ssh/sshd_config.d/99-lab-hardening.conf <<'EOF'
-   PermitRootLogin no
-   PasswordAuthentication no
-   EOF
-   sudo sshd -t && sudo systemctl reload ssh
-   ```
+```bash
+echo '%engineers ALL=(ALL) ALL' | sudo tee /etc/sudoers.d/engineers
+sudo visudo -cf /etc/sudoers.d/engineers
+sudo -l -U alice 2>/dev/null | tail
+```
 
-4. Apply a static Netplan configuration using the safe rollback path
-   (adjust the address/gateway to match your lab network):
+**Expected result:** members of `engineers` gain `sudo`, and `visudo -c` validates the syntax —
+on Ubuntu, membership in the `sudo` group grants admin by default, and drop-in files in
+`/etc/sudoers.d/` scope additional rights; `visudo` prevents a syntax error from locking out
+sudo.
 
-   ```bash
-   sudo cp /etc/netplan/*.yaml ~/netplan-backup.yaml 2>/dev/null || true
-   sudo tee /etc/netplan/90-lab-static.yaml <<'EOF'
-   network:
-     version: 2
-     renderer: networkd
-     ethernets:
-       ens160:
-         dhcp4: false
-         addresses: [10.20.30.50/24]
-         routes:
-           - to: default
-             via: 10.20.30.1
-         nameservers:
-           addresses: [10.20.30.5]
-   EOF
-   sudo netplan try
-   ```
+**Negative test:** edit `/etc/sudoers` directly and save a syntax error; sudo breaks for everyone
+— always use `visudo`, which refuses to save an invalid file.
 
-   **Expected result:** `netplan try` prompts to accept within a
-   countdown; press Enter to accept once you confirm connectivity from
-   the second host still works at the new address, or let it time out
-   and roll back automatically if it does not.
+**Cleanup:** `sudo rm -f /etc/sudoers.d/engineers`.
 
-5. Enable `ufw` with a default-deny inbound policy, allowing only SSH:
+### Lab 4.3 — SSH key-based authentication (Topic: Securing access)
 
-   ```bash
-   sudo apt install -y ufw
-   sudo ufw default deny incoming
-   sudo ufw default allow outgoing
-   sudo ufw allow OpenSSH
-   sudo ufw --force enable
-   sudo ufw status verbose
-   ```
+**Objective:** Configure passwordless SSH with keys.
 
-6. **Negative test:** from the second host, confirm an unlisted port is
-   actually blocked:
+```bash
+ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519
+ssh-copy-id -i ~/.ssh/id_ed25519.pub localhost
+ssh -i ~/.ssh/id_ed25519 localhost 'hostname; whoami'
+```
 
-   ```bash
-   sudo nc -l -p 8080 &  # on the lab VM, start a listener on an unlisted port
-   nc -vz -w 3 <lab-vm-address> 8080   # from the second host
-   ```
+**Expected result:** the key installs into `~/.ssh/authorized_keys` and SSH logs in without a
+password — key-based auth is the Ubuntu standard (autoinstall sets `allow-pw: false`), more secure
+than passwords and the basis for automation.
 
-   **Expected result:** the connection attempt from the second host
-   times out or is refused, confirming `ufw`'s default-deny policy
-   blocks traffic to ports with no explicit `allow` rule; SSH to the
-   same host on port 22 continues to succeed.
+**Negative test:** set `~/.ssh` or `authorized_keys` group/other-writable; `sshd` refuses the key
+— SSH enforces strict permissions on key files.
 
-7. **Cleanup:**
+**Cleanup:** remove the lab key from `~/.ssh/authorized_keys`; delete `~/.ssh/id_ed25519*` if
+lab-only.
 
-   ```bash
-   sudo kill %1 2>/dev/null || true   # stop the nc listener
-   sudo ufw disable
-   sudo rm -f /etc/netplan/90-lab-static.yaml
-   sudo netplan apply
-   sudo rm -f /etc/ssh/sshd_config.d/99-lab-hardening.conf
-   sudo systemctl reload ssh
-   sudo deluser --remove-home labadmin
-   rm -f ~/lab-key ~/lab-key.pub
-   ```
+### Lab 4.4 — Networking with netplan (Topic: Configuring networking)
+
+**Objective:** Configure a static IP the Ubuntu way.
+
+```bash
+sudo tee /etc/netplan/99-lab.yaml >/dev/null <<'EOF'
+network:
+  version: 2
+  ethernets:
+    eth0:
+      addresses: [192.168.50.10/24]
+      routes: [{to: default, via: 192.168.50.1}]
+      nameservers: {addresses: [192.168.50.1]}
+EOF
+sudo chmod 600 /etc/netplan/99-lab.yaml
+sudo netplan try         # applies with auto-rollback if you do not confirm
+ip addr show eth0
+```
+
+**Expected result:** the interface holds the static address/gateway/DNS after `netplan try`
+(which auto-reverts if unconfirmed) — Ubuntu configures networking declaratively in
+`/etc/netplan/*.yaml` (rendered to systemd-networkd/NetworkManager), and `netplan try` is the safe
+apply that prevents locking yourself out.
+
+**Negative test:** set an address with `ip addr add` and reboot; it is gone — `ip` changes are
+runtime-only, while netplan writes the persistent configuration.
+
+**Cleanup:** `sudo rm /etc/netplan/99-lab.yaml && sudo netplan apply`.
+
+### Lab 4.5 — Firewalling with ufw (Topic: Securing access)
+
+**Objective:** Open a service through the uncomplicated firewall.
+
+```bash
+sudo ufw allow OpenSSH
+sudo ufw allow 8080/tcp
+sudo ufw --force enable
+sudo ufw status verbose
+```
+
+**Expected result:** `ufw status` shows SSH and 8080/tcp allowed with a default-deny incoming
+policy — `ufw` is Ubuntu's front-end to nftables/iptables; enabling it applies a default-deny
+inbound stance with explicit allow rules, the exam's server-access hardening step.
+
+**Negative test:** enable `ufw` before allowing OpenSSH on a remote box; you lock yourself out of
+SSH — always allow the management service *before* enabling a default-deny firewall.
+
+**Cleanup:** `sudo ufw delete allow 8080/tcp; sudo ufw disable` if lab-only.
 
 ## Lab Verification
 

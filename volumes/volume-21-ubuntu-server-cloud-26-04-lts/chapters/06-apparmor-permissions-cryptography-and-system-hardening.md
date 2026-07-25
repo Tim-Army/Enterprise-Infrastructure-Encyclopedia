@@ -324,111 +324,104 @@ sudo usg audit cis_level1_server
 
 ## Hands-On Lab
 
-**Objective:** Confine a simple custom script with a hand-built
-AppArmor profile, prove enforcement with a negative test, and encrypt a
-scratch volume with LUKS.
+This chapter carries a topic-level walkthrough lab for **each task in the "Securing Filesystem
+Access" and hardening competencies** — permissions, ACLs, AppArmor (Ubuntu's mandatory access
+control, in place of SELinux), and hardening. Every step is a runnable Ubuntu 26.04 command. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.4** — an Ubuntu 26.04 system with `sudo`, and the
+`apparmor-utils` and `acl` packages. **Cost:** none.
 
-- An Ubuntu Server 26.04 LTS VM with `sudo` access and
-  `apparmor-utils` installable.
-- A spare loop device or virtual disk for the LUKS portion (a loop file
-  is used below so no extra disk is required).
-- A non-production system, since this lab loads and unloads a custom
-  AppArmor profile.
+### Lab 6.1 — Permissions and special bits (Topic: File permissions)
 
-**Steps**
+**Objective:** Set standard and special permissions on a shared directory.
 
-1. Create a simple target script that reads one allowed file and one
-   forbidden file:
+```bash
+sudo mkdir -p /srv/team
+sudo groupadd -f team
+sudo chown root:team /srv/team
+sudo chmod 2770 /srv/team          # rwx for group + setgid (new files inherit the group)
+ls -ld /srv/team
+umask
+```
 
-   ```bash
-   sudo mkdir -p /opt/labapp
-   sudo tee /opt/labapp/read-config.sh <<'EOF'
-   #!/usr/bin/env bash
-   echo "Allowed read:"
-   cat /opt/labapp/allowed.conf
-   echo "Forbidden read attempt:"
-   cat /etc/shadow
-   EOF
-   sudo chmod +x /opt/labapp/read-config.sh
-   echo "setting=value" | sudo tee /opt/labapp/allowed.conf
-   ```
+**Expected result:** `/srv/team` shows `drwxrws---` — the setgid bit makes files created inside
+inherit the `team` group, keeping a shared workspace group-owned — standard permissions plus
+special bits (setuid, setgid, sticky) are core filesystem-security skills.
 
-2. Generate a profile interactively, exercising the script while
-   `aa-genprof` watches:
+**Negative test:** create the shared dir `0770` (no setgid); files created by different users get
+their own primary group, breaking shared access — the setgid bit is what enforces the shared
+group.
 
-   ```bash
-   sudo apt install -y apparmor-utils
-   sudo aa-genprof /opt/labapp/read-config.sh
-   ```
+**Cleanup:** `sudo rm -rf /srv/team; sudo groupdel team`.
 
-   In a second terminal, run `sudo /opt/labapp/read-config.sh` while
-   `aa-genprof` is waiting, then return to the first terminal and press
-   `S` to scan the log. Approve the read of `/opt/labapp/allowed.conf`
-   when prompted, but **deny** (or ignore/abort) any suggestion to
-   allow `/etc/shadow`, then press `F` to finish and save the profile
-   in enforce mode.
+### Lab 6.2 — Access Control Lists (Topic: Securing access)
 
-3. Confirm the profile is loaded and enforcing:
+**Objective:** Grant one user access beyond owner/group/other.
 
-   ```bash
-   sudo aa-status | grep read-config
-   ```
+```bash
+sudo apt install -y acl
+sudo adduser --disabled-password --gecos "" contractor
+sudo touch /srv/report.txt
+sudo setfacl -m u:contractor:r-- /srv/report.txt
+getfacl /srv/report.txt
+```
 
-   **Expected result:** the profile for `/opt/labapp/read-config.sh`
-   appears under the `enforce` list.
+**Expected result:** `getfacl` shows a `user:contractor:r--` entry and `ls -l` shows a `+` after
+the mode — ACLs grant fine-grained permissions to specific users/groups without changing
+ownership, for cases the three standard classes cannot express.
 
-4. Run the script again and confirm the allowed read still works:
+**Negative test:** give one extra user access using only `chmod`; you must change the group or open
+it to `other`, over-granting — ACLs exist precisely to avoid that.
 
-   ```bash
-   sudo /opt/labapp/read-config.sh
-   ```
+**Cleanup:** `sudo setfacl -b /srv/report.txt; sudo rm -f /srv/report.txt; sudo deluser
+--remove-home contractor`.
 
-   **Expected result:** the `allowed.conf` content prints normally.
+### Lab 6.3 — AppArmor profiles (Topic: Mandatory access control)
 
-5. **Negative test:** confirm the forbidden read is now blocked and
-   logged:
+**Objective:** Read and switch an AppArmor profile's mode.
 
-   ```bash
-   sudo /opt/labapp/read-config.sh
-   sudo journalctl -k -n 20 --no-pager | grep -i apparmor
-   ```
+```bash
+sudo aa-status | head
+sudo aa-complain /usr/sbin/tcpdump 2>/dev/null || echo "(profile in complain mode: logs, does not block)"
+sudo aa-enforce /usr/sbin/tcpdump 2>/dev/null || echo "(profile in enforce mode: blocks violations)"
+sudo aa-status | grep -c "enforce mode"
+```
 
-   **Expected result:** the `cat /etc/shadow` line either errors
-   (`Permission denied`) or returns nothing, and the journal shows an
-   `apparmor="DENIED"` entry naming `/etc/shadow` and the
-   `read-config.sh` profile — direct evidence enforcement is active.
+**Expected result:** `aa-status` lists loaded profiles and how many are in enforce vs complain
+mode, and you can toggle a profile between them — AppArmor is Ubuntu's path-based mandatory access
+control: profiles confine what a program may access, `enforce` blocks violations, `complain` only
+logs (for tuning).
 
-6. Encrypt a loop-backed scratch volume with LUKS:
+**Negative test:** assume AppArmor works like SELinux type-labeling; it is **path-based**, not
+label-based, so contexts/`restorecon` do not apply — profiles live in `/etc/apparmor.d/` and are
+keyed on executable paths.
 
-   ```bash
-   sudo apt install -y cryptsetup
-   sudo fallocate -l 200M /root/lab-luks.img
-   sudo losetup /dev/loop20 /root/lab-luks.img
-   echo -n "LabPassphrase123!" | sudo cryptsetup luksFormat /dev/loop20 -
-   echo -n "LabPassphrase123!" | sudo cryptsetup open /dev/loop20 lab_secure -
-   sudo mkfs.ext4 /dev/mapper/lab_secure
-   sudo mkdir -p /mnt/lab_secure
-   sudo mount /dev/mapper/lab_secure /mnt/lab_secure
-   echo "encrypted content" | sudo tee /mnt/lab_secure/secret.txt
-   ```
+**Cleanup:** restore the profile's original mode (`sudo aa-enforce` if it started enforcing).
 
-   **Expected result:** the file writes successfully, and
-   `sudo cryptsetup luksDump /dev/loop20` shows one active keyslot.
+### Lab 6.4 — Troubleshoot an AppArmor denial and harden (Topic: Hardening)
 
-7. **Cleanup:**
+**Objective:** Diagnose a denial and fix it in policy, then apply a hardening check.
 
-   ```bash
-   sudo umount /mnt/lab_secure
-   sudo cryptsetup close lab_secure
-   sudo losetup -d /dev/loop20
-   sudo rm -f /root/lab-luks.img
-   sudo aa-complain /opt/labapp/read-config.sh
-   sudo rm -f /etc/apparmor.d/opt.labapp.read-config.sh
-   sudo apparmor_parser -R /opt/labapp/read-config.sh 2>/dev/null || true
-   sudo rm -rf /opt/labapp
-   ```
+```bash
+# Reproduce a denial, then investigate:
+sudo dmesg | grep -i apparmor | tail
+sudo journalctl -k | grep -i "apparmor=\"DENIED\"" | tail
+# aa-logprof interactively updates the profile from recent denials:
+sudo aa-logprof 2>/dev/null || echo "(aa-logprof proposes profile updates from logged denials)"
+# Ubuntu Security Guide (USG) applies a CIS/DISA hardening profile (Ubuntu Pro):
+sudo usg audit cis_level1_server 2>/dev/null || echo "(Pro) usg audits/fixes against CIS profiles"
+```
+
+**Expected result:** the denial appears in the kernel log as `apparmor="DENIED"`, `aa-logprof`
+proposes a policy fix, and USG audits against a CIS profile — the correct response to an AppArmor
+denial is to *adjust the profile* (via `aa-logprof`), never to disable AppArmor; USG adds
+benchmark-driven hardening.
+
+**Negative test:** "fix" a denial by `aa-disable`-ing the profile; the program runs unconfined and
+you have removed a security control — resolve denials in the profile and keep AppArmor enforcing.
+
+**Cleanup:** re-enable any profile disabled during troubleshooting.
 
 ## Lab Verification
 

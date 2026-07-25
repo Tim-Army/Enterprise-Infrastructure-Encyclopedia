@@ -346,118 +346,97 @@ sudo grep -v '^#' /etc/postgresql/*/main/pg_hba.conf | grep -v '^$'
 
 ## Hands-On Lab
 
-**Objective:** Deploy an authoritative BIND9 zone, verify time
-synchronization, and stand up an Nginx virtual host — confirming DNS
-resolution end-to-end with a negative test against a nonexistent
-record.
+This chapter carries a topic-level walkthrough lab for **each service in the "Configuring Servers
+and Services" competency** — time sync, DNS resolution, a web server, and a database. Every step
+is a runnable Ubuntu 26.04 command. Each ends **`**Lab verified by:** *pending*`** until a human
+runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.4** — an Ubuntu 26.04 system with `sudo` and network
+access. **Cost:** none.
 
-- An Ubuntu Server 26.04 LTS VM with `sudo` access, acting as both the
-  DNS server and the web server for simplicity.
-- A second host or the same VM able to run `dig`/`resolvectl query`
-  against it.
-- This lab is safe on a disposable VM; it opens no ports to the
-  internet and requests no real TLS certificate.
+### Lab 7.1 — Time synchronization (Topic: Server services)
 
-**Steps**
+**Objective:** Configure and verify NTP time sync.
 
-1. Install and configure BIND9 with a lab zone:
+```bash
+timedatectl
+sudo sed -i 's/^#NTP=/NTP=ntp.ubuntu.com/' /etc/systemd/timesyncd.conf
+sudo systemctl restart systemd-timesyncd
+timedatectl show-timesync --property=ServerName,NTPMessage 2>/dev/null | head
+timedatectl set-timezone UTC
+```
 
-   ```bash
-   sudo apt install -y bind9 bind9utils dnsutils
-   sudo tee -a /etc/bind/named.conf.local <<'EOF'
-   zone "lab.internal" {
-       type master;
-       file "/etc/bind/db.lab.internal";
-   };
-   EOF
-   sudo tee /etc/bind/db.lab.internal <<'EOF'
-   $TTL    604800
-   @       IN      SOA     ns1.lab.internal. admin.lab.internal. (
-                                 1         ; Serial
-                            604800         ; Refresh
-                             86400         ; Retry
-                           2419200         ; Expire
-                            604800 )       ; Negative Cache TTL
-   @       IN      NS      ns1.lab.internal.
-   ns1     IN      A       127.0.0.1
-   web01   IN      A       127.0.0.1
-   EOF
-   sudo named-checkconf
-   sudo named-checkzone lab.internal /etc/bind/db.lab.internal
-   sudo systemctl enable --now bind9
-   ```
+**Expected result:** `timedatectl` shows `System clock synchronized: yes` and the configured NTP
+server — Ubuntu uses `systemd-timesyncd` by default (chrony for busy servers), and accurate time
+underpins logging, TLS, and Kerberos.
 
-2. Query the zone directly against BIND9:
+**Negative test:** disable time sync and let the clock drift across a maintenance window; logs and
+certificates skew — NTP keeps the clock correct, and `timedatectl` confirms it.
 
-   ```bash
-   dig @127.0.0.1 web01.lab.internal +short
-   ```
+**Cleanup:** none (time sync is expected in operation).
 
-   **Expected result:** returns `127.0.0.1`.
+### Lab 7.2 — DNS resolution with systemd-resolved (Topic: Networking services)
 
-3. Confirm chrony is synchronized:
+**Objective:** Inspect and test name resolution the Ubuntu way.
 
-   ```bash
-   sudo apt install -y chrony
-   chronyc tracking | grep -E "Reference ID|Leap status"
-   timedatectl status | grep "synchronized"
-   ```
+```bash
+resolvectl status | head
+resolvectl query example.com
+getent hosts example.com
+cat /run/systemd/resolve/resolv.conf | grep nameserver | head
+```
 
-   **Expected result:** `Leap status` shows `Normal` and
-   `System clock synchronized: yes`.
+**Expected result:** `resolvectl` shows the per-link DNS servers and resolves names — Ubuntu runs
+`systemd-resolved`, which manages a stub resolver at `127.0.0.53`; `resolvectl` (not editing
+`/etc/resolv.conf`, which is a managed symlink) is how you inspect and test resolution.
 
-4. Install Nginx and serve a simple virtual host on the lab hostname:
+**Negative test:** hand-edit `/etc/resolv.conf` to set DNS; systemd-resolved overwrites it — set
+DNS via netplan (`nameservers:`) or `resolvectl`, which persist correctly.
 
-   ```bash
-   sudo apt install -y nginx
-   sudo mkdir -p /var/www/web01
-   echo "<h1>Lab web01</h1>" | sudo tee /var/www/web01/index.html
-   sudo tee /etc/nginx/sites-available/web01.lab.internal <<'EOF'
-   server {
-       listen 80;
-       server_name web01.lab.internal;
-       root /var/www/web01;
-       index index.html;
-   }
-   EOF
-   sudo ln -s /etc/nginx/sites-available/web01.lab.internal /etc/nginx/sites-enabled/
-   sudo nginx -t && sudo systemctl reload nginx
-   ```
+**Cleanup:** none (read-only).
 
-5. Confirm end-to-end resolution and retrieval using the lab DNS zone:
+### Lab 7.3 — Web server with the firewall (Topic: Configuring servers)
 
-   ```bash
-   curl -H "Host: web01.lab.internal" http://127.0.0.1/
-   ```
+**Objective:** Serve a page and open it through ufw.
 
-   **Expected result:** returns the `<h1>Lab web01</h1>` content,
-   confirming the virtual host responds correctly for the configured
-   name.
+```bash
+sudo apt install -y nginx
+echo "<h1>Ubuntu lab</h1>" | sudo tee /var/www/html/index.html
+sudo systemctl enable --now nginx
+sudo ufw allow 'Nginx HTTP'
+curl -s http://localhost/ | head
+```
 
-6. **Negative test:** query a name that was never defined in the zone:
+**Expected result:** `curl` returns the page — a working web service on Ubuntu needs the service
+running (`nginx`), the firewall opened (ufw has named application profiles like `Nginx HTTP`), and
+correct content permissions; ufw app profiles simplify the firewall rule.
 
-   ```bash
-   dig @127.0.0.1 doesnotexist.lab.internal +short
-   dig @127.0.0.1 doesnotexist.lab.internal | grep -i status
-   ```
+**Negative test:** start nginx but leave ufw's default-deny with no `Nginx HTTP` allow; remote
+clients cannot reach it — the service and the firewall rule are both required.
 
-   **Expected result:** no address is returned, and the status line
-   shows `NXDOMAIN`, confirming BIND9 correctly reports an
-   authoritative negative answer rather than guessing or forwarding.
+**Cleanup:** `sudo systemctl disable --now nginx; sudo ufw delete allow 'Nginx HTTP'`.
 
-7. **Cleanup:**
+### Lab 7.4 — Database service (Topic: Configuring services)
 
-   ```bash
-   sudo systemctl disable --now bind9
-   sudo rm -f /etc/bind/db.lab.internal
-   sudo sed -i '/zone "lab.internal"/,/};/d' /etc/bind/named.conf.local
-   sudo rm -f /etc/nginx/sites-enabled/web01.lab.internal \
-              /etc/nginx/sites-available/web01.lab.internal
-   sudo rm -rf /var/www/web01
-   sudo systemctl reload nginx
-   ```
+**Objective:** Install and exercise a database engine.
+
+```bash
+sudo apt install -y postgresql
+sudo systemctl enable --now postgresql
+sudo -u postgres psql -c "CREATE DATABASE labdb;"
+sudo -u postgres psql -c "CREATE USER app WITH PASSWORD 'AppPass1'; GRANT ALL ON DATABASE labdb TO app;"
+sudo -u postgres psql -c "\l" | grep labdb
+```
+
+**Expected result:** PostgreSQL runs, `labdb` is created, and the scoped `app` user is granted on
+it — deploying a database covers install, enable, and basic administration (databases, users,
+grants); Ubuntu ships PostgreSQL and MySQL as packaged services.
+
+**Negative test:** grant the app user superuser instead of database-scoped rights; it can touch
+every database — scope grants to the specific database, not the whole cluster.
+
+**Cleanup:** `sudo -u postgres psql -c "DROP DATABASE labdb; DROP USER app;"`; disable postgresql
+if lab-only.
 
 ## Lab Verification
 

@@ -349,128 +349,107 @@ oc logs deployment/demo
 
 ## Hands-On Lab
 
-**Objective:** Run the same simple web application as a Docker
-container and as an LXD system container, and build a container image
-using the arbitrary-UID-compatible pattern, verifying it with a
-negative test against a naively-built image.
+This chapter carries a topic-level walkthrough lab for **each container technology in the
+"Deployment Technologies" competency** — LXD system containers, Docker Engine, Canonical
+Kubernetes, and OpenShift-compatible images. Every step is a runnable Ubuntu 26.04 command. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.4** — an Ubuntu 26.04 system with `sudo` and enough
+resources for containers; `snap` available. **Cost:** none.
 
-- An Ubuntu Server 26.04 LTS VM with `sudo` access and virtualization
-  enabled (for LXD; nested virtualization if the lab itself runs in a
-  VM).
-- Internet access to pull the `ubuntu:24.04` Docker base image and the
-  LXD `ubuntu:24.04` image.
-- A non-production system, since this lab installs Docker and LXD.
+### Lab 8.1 — LXD system containers (Topic: System containers)
 
-**Steps**
+**Objective:** Launch and manage a full-OS container.
 
-1. Install Docker and run a simple web container:
+```bash
+sudo snap install lxd
+sudo lxd init --minimal
+lxc launch ubuntu:24.04 c1
+lxc list
+lxc exec c1 -- hostnamectl | head -3
+```
 
-   ```bash
-   sudo apt install -y docker.io
-   sudo systemctl enable --now docker
-   sudo docker run -d --name lab-web -p 8080:80 nginx:latest
-   curl -s http://localhost:8080 | head -3
-   ```
+**Expected result:** `c1` runs as a lightweight system container with its own init, users, and
+network — LXD provides **system** containers (a full Ubuntu userspace, like a fast VM) as opposed
+to Docker's single-process **application** containers, and it is Canonical's native container
+technology.
 
-   **Expected result:** the default Nginx welcome page's opening HTML
-   lines print.
+**Negative test:** expect a Docker application container to run a full multi-service OS with its
+own init; that is LXD's model, not Docker's — choose LXD for machine-like containers, Docker/OCI
+for single-app images.
 
-2. Install LXD and launch an equivalent system container:
+**Cleanup:** `lxc delete -f c1`.
 
-   ```bash
-   sudo snap install lxd
-   sudo lxd init --auto
-   lxc launch ubuntu:24.04 lab-lxd-web
-   lxc exec lab-lxd-web -- bash -c "apt update && apt install -y nginx"
-   lxc list lab-lxd-web
-   ```
+### Lab 8.2 — Docker Engine (Topic: Application containers)
 
-   **Expected result:** `lxc list` shows `lab-lxd-web` in state
-   `RUNNING` with an assigned IPv4 address.
+**Objective:** Run an OCI application container.
 
-3. Confirm the LXD container serves its own Nginx over its own address:
+```bash
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo docker run -d --name web -p 8080:80 nginx
+curl -s http://localhost:8080/ | head -1
+sudo docker ps
+```
 
-   ```bash
-   LXD_IP=$(lxc list lab-lxd-web -c 4 --format csv | cut -d' ' -f1)
-   curl -s "http://${LXD_IP}" | head -3
-   ```
+**Expected result:** the nginx application container serves on 8080 — Docker runs OCI
+application containers (one main process per container), the format shared across the container
+ecosystem; on Ubuntu it installs as the `docker.io` package or the upstream Docker CE repo.
 
-   **Expected result:** the default Nginx welcome page prints, served
-   from the LXD system container rather than the Docker container.
+**Negative test:** run the container as a non-docker-group user without sudo; access to the Docker
+socket is denied — Docker daemon access is root-equivalent, so socket membership is a privilege to
+grant carefully.
 
-4. Build two versions of a minimal app image — one naive, one
-   OpenShift-portable:
+**Cleanup:** `sudo docker rm -f web`.
 
-   ```bash
-   mkdir -p ~/lab-oc-image/app && cd ~/lab-oc-image
-   cat > app/app.py <<'EOF'
-   print("writing to a fixed-owner directory")
-   open("/app/output.txt", "w").write("ok\n")
-   EOF
+### Lab 8.3 — Canonical Kubernetes (Topic: Orchestration)
 
-   cat > Dockerfile.naive <<'EOF'
-   FROM ubuntu:24.04
-   RUN apt-get update && apt-get install -y --no-install-recommends python3 \
-       && rm -rf /var/lib/apt/lists/*
-   WORKDIR /app
-   COPY app/ /app/
-   RUN chown -R root:root /app && chmod -R 700 /app
-   USER 1001
-   ENTRYPOINT ["python3", "app.py"]
-   EOF
+**Objective:** Bootstrap a single-node Kubernetes and run a workload.
 
-   cat > Dockerfile.portable <<'EOF'
-   FROM ubuntu:24.04
-   RUN apt-get update && apt-get install -y --no-install-recommends python3 \
-       && rm -rf /var/lib/apt/lists/*
-   WORKDIR /app
-   COPY app/ /app/
-   RUN chgrp -R 0 /app && chmod -R g=u /app
-   USER 1001
-   ENTRYPOINT ["python3", "app.py"]
-   EOF
+```bash
+sudo snap install k8s --classic
+sudo k8s bootstrap
+sudo k8s status --wait-ready
+sudo k8s kubectl create deployment web --image=nginx --replicas=2
+sudo k8s kubectl get pods -o wide
+```
 
-   docker build -t lab-app:naive -f Dockerfile.naive .
-   docker build -t lab-app:portable -f Dockerfile.portable .
-   ```
+**Expected result:** the `k8s` snap bootstraps a working cluster and schedules the Deployment's
+pods — Canonical Kubernetes (the `k8s` snap, successor to MicroK8s for many uses) gives a
+production-capable, batteries-included Kubernetes installed from a single snap.
 
-5. Run both images simulating an arbitrary, unpredictable UID the way
-   OpenShift's default SCC assigns one:
+**Negative test:** expect `kubectl` to work before `k8s bootstrap` completes; the API server is
+not up and commands fail — the cluster must finish bootstrapping (`status --wait-ready`) first.
 
-   ```bash
-   docker run --rm --user 543210 lab-app:naive
-   ```
+**Cleanup:** `sudo k8s kubectl delete deployment web`; `sudo snap remove k8s` if lab-only.
 
-6. **Negative test:** confirm the naive image fails under an arbitrary
-   UID it was not built for, then confirm the portable image succeeds
-   under the same condition:
+### Lab 8.4 — OpenShift-compatible images (Topic: Interoperability)
 
-   ```bash
-   echo "--- naive image (expect failure) ---"
-   docker run --rm --user 543210 lab-app:naive; echo "exit code: $?"
+**Objective:** Build an image that runs under OpenShift's restrictive defaults.
 
-   echo "--- portable image (expect success) ---"
-   docker run --rm --user 543210 lab-app:portable; echo "exit code: $?"
-   ```
+```bash
+mkdir -p ~/oci && cd ~/oci
+cat > Dockerfile <<'EOF'
+FROM ubuntu:24.04
+RUN groupadd -g 1001 app && useradd -u 1001 -g 0 -m app
+# OpenShift runs containers with a random UID in group 0 (root group), non-root:
+RUN mkdir -p /data && chgrp -R 0 /data && chmod -R g=u /data
+USER 1001
+WORKDIR /data
+CMD ["sleep","3600"]
+EOF
+sudo docker build -t localhost/os-compat:1.0 . && echo "built OpenShift-compatible image"
+```
 
-   **Expected result:** the naive image exits non-zero with a
-   `PermissionError`/`Permission denied` writing to `/app/output.txt`,
-   because UID `543210` is neither `root` nor a member of a group with
-   write access; the portable image exits `0`, because the
-   `chgrp 0`/`chmod g=u` pattern grants write access to any UID as long
-   as it belongs to the root (`0`) group — exactly how OpenShift runs
-   containers by default.
+**Expected result:** an image that does not assume a fixed UID and grants group-0 write access, so
+it runs under OpenShift's default `restricted` SCC (arbitrary non-root UID, GID 0) — building for
+arbitrary-UID/non-root is what makes an image portable to OpenShift, not just permissive Docker.
 
-7. **Cleanup:**
+**Negative test:** build an image that runs as root or hard-codes UID 0 paths; OpenShift's
+`restricted` SCC refuses it — images must tolerate a random non-root UID in group 0 to
+interoperate.
 
-   ```bash
-   docker rm -f lab-web
-   docker rmi lab-app:naive lab-app:portable nginx:latest
-   lxc delete lab-lxd-web --force
-   cd ~ && rm -rf ~/lab-oc-image
-   ```
+**Cleanup:** `sudo docker rmi localhost/os-compat:1.0; rm -rf ~/oci`.
 
 ## Lab Verification
 
