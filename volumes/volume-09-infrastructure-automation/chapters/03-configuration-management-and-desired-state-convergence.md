@@ -439,108 +439,133 @@ jobs:
 
 ## Hands-On Lab
 
-### Objective
+This chapter carries a topic-level walkthrough lab for **each configuration-management skill** —
+inventory/ad-hoc, idempotent playbooks, roles, and templating — the convergence half of the
+Infrastructure-and-Automation domain. Labs use Ansible against `localhost`, so they need no
+remote fleet. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-Write and converge an idempotent role against a local container, prove
-idempotency with a second run, and demonstrate a non-idempotent task
-failing the same check.
+**Shared prerequisites for Labs 3.1–3.4** — `ansible-core` installed and a scratch dir
+`mkdir -p ~/ans && cd ~/ans`. **Cost:** none.
 
-### Prerequisites
+### Lab 3.1 — Inventory and ad-hoc commands (Topic: Inventory)
 
-- Python 3.12, `pip install "ansible-core==2.17.*" ansible-lint`.
-- Docker or Podman available locally for a target container (or substitute
-  `localhost` with `connection: local` if container runtime access is
-  unavailable — steps below use a local connection for portability).
-
-### Steps
-
-1. Create the lab layout:
-
-   ```bash
-   mkdir -p ansible-lab/roles/motd/tasks ansible-lab/roles/motd/templates
-   cd ansible-lab
-   ```
-
-2. Create an inventory targeting the local machine:
-
-   ```bash
-   cat > inventory.yml <<'EOF'
-   all:
-     hosts:
-       localhost:
-         ansible_connection: local
-   EOF
-   ```
-
-3. Create an idempotent role that manages `/tmp/ansible-lab-motd`:
-
-   ```bash
-   cat > roles/motd/templates/motd.j2 <<'EOF'
-   Welcome to {{ inventory_hostname }} — managed by Ansible.
-   EOF
-
-   cat > roles/motd/tasks/main.yml <<'EOF'
-   ---
-   - name: Deploy managed motd file
-     ansible.builtin.template:
-       src: motd.j2
-       dest: /tmp/ansible-lab-motd
-       mode: "0644"
-   EOF
-   ```
-
-4. Create the playbook:
-
-   ```bash
-   cat > site.yml <<'EOF'
-   ---
-   - name: Converge motd
-     hosts: all
-     gather_facts: true
-     roles:
-       - motd
-   EOF
-   ```
-
-5. Lint, then run twice to prove idempotency:
-
-   ```bash
-   ansible-lint .
-   ansible-playbook -i inventory.yml site.yml   # expect changed=1
-   ansible-playbook -i inventory.yml site.yml   # expect changed=0
-   ```
-
-### Expected Results
-
-- The first run reports `changed=1` for the `template` task.
-- The second run reports `changed=0` across all tasks — the idempotency
-  contract holding.
-
-### Negative Test
-
-Add a non-idempotent task and confirm it breaks the contract:
+**Objective:** Define hosts and run a one-off module.
 
 ```bash
-cat >> roles/motd/tasks/main.yml <<'EOF'
-
-- name: Append a timestamp (deliberately non-idempotent)
-  ansible.builtin.shell: echo "Last run: $(date)" >> /tmp/ansible-lab-motd
+cd ~/ans
+cat > inventory.ini <<'EOF'
+[local]
+localhost ansible_connection=local
 EOF
-ansible-playbook -i inventory.yml site.yml   # expect changed=1
-ansible-playbook -i inventory.yml site.yml   # expect changed=1 again -- idempotency broken
+ansible -i inventory.ini local -m ping
+ansible -i inventory.ini local -m ansible.builtin.setup -a "filter=ansible_distribution*" | head
 ```
 
-Confirm the second run still reports `changed=1` for the shell task,
-demonstrating why raw `shell`/`command` tasks need explicit `creates`,
-`removes`, or `when` guards before they belong in a convergence-oriented
-playbook.
+**Expected result:** `ping` returns `SUCCESS`/`pong` and `setup` gathers facts about the host —
+the inventory names the hosts/groups Ansible manages, and ad-hoc `-m module` runs a single task
+without a playbook, useful for quick checks and facts.
 
-### Cleanup
+**Negative test:** target a host missing from the inventory; Ansible reports it does not match —
+the inventory is the authoritative host list, and only listed hosts/groups can be targeted.
+
+**Cleanup:** none.
+
+### Lab 3.2 — Idempotent playbooks (Topic: Playbooks)
+
+**Objective:** Converge a host to a declared state, twice.
 
 ```bash
-rm -f /tmp/ansible-lab-motd
-cd .. && rm -rf ansible-lab
+cd ~/ans
+cat > site.yml <<'EOF'
+---
+- name: Converge local state
+  hosts: local
+  tasks:
+    - name: Ensure a marker file exists
+      ansible.builtin.copy:
+        content: "managed\n"
+        dest: /tmp/ansible-marker
+    - name: Ensure a directory exists
+      ansible.builtin.file:
+        path: /tmp/ansible-dir
+        state: directory
+EOF
+ansible-playbook -i inventory.ini site.yml | grep -E "changed=|ok="
+ansible-playbook -i inventory.ini site.yml | grep -E "changed=|ok="   # second run: changed=0
 ```
+
+**Expected result:** the first run reports `changed`, the **second reports `changed=0`** —
+Ansible modules are declarative and idempotent: they check current state and act only if a
+change is needed, so re-running a playbook is safe and converges rather than repeats.
+
+**Negative test:** use the `command`/`shell` module to `echo` into the file instead of `copy`;
+it reports `changed` every run — raw commands are not idempotent, so prefer state-based modules.
+
+**Cleanup:** `rm -rf /tmp/ansible-marker /tmp/ansible-dir`.
+
+### Lab 3.3 — Roles and variables (Topic: Roles)
+
+**Objective:** Structure reusable automation as a role.
+
+```bash
+cd ~/ans && ansible-galaxy init roles/marker -q 2>/dev/null || mkdir -p roles/marker/tasks roles/marker/defaults
+cat > roles/marker/defaults/main.yml <<'EOF'
+marker_text: "default marker"
+EOF
+cat > roles/marker/tasks/main.yml <<'EOF'
+- name: Write the marker
+  ansible.builtin.copy: { content: "{{ marker_text }}\n", dest: /tmp/role-marker }
+EOF
+cat > play.yml <<'EOF'
+- hosts: local
+  roles:
+    - { role: marker, marker_text: "from playbook" }
+EOF
+ansible-playbook -i inventory.ini play.yml >/dev/null && cat /tmp/role-marker
+```
+
+**Expected result:** the role writes `from playbook` (the caller's variable overriding the
+role default) — roles package tasks, defaults, templates, and handlers as a reusable unit with a
+clear variable-precedence model, the standard way to organize non-trivial automation.
+
+**Negative test:** put everything in one giant playbook with no roles; it becomes unmaintainable
+and hard to share — roles are what make automation modular and reusable across projects.
+
+**Cleanup:** `rm -rf ~/ans/roles ~/ans/play.yml /tmp/role-marker`.
+
+### Lab 3.4 — Templates and handlers (Topic: Templating)
+
+**Objective:** Render config from a template and trigger a handler on change.
+
+```bash
+cd ~/ans
+cat > conf.yml <<'EOF'
+---
+- hosts: local
+  vars: { port: 8080 }
+  tasks:
+    - name: Render config from a Jinja2 template
+      ansible.builtin.copy:
+        content: "listen {{ port }}\n"
+        dest: /tmp/app.conf
+      notify: reload app
+  handlers:
+    - name: reload app
+      ansible.builtin.debug: { msg: "would reload after config change" }
+EOF
+ansible-playbook -i inventory.ini conf.yml | grep -E "reload app|changed="
+```
+
+**Expected result:** the config renders with the variable and the `reload app` handler fires
+**only because the config changed** — templating (Jinja2) generates configuration from
+variables/facts, and handlers run once at the end only when notified, so services reload on
+change rather than every run.
+
+**Negative test:** reload the service in a normal task on every run instead of via a
+change-notified handler; you cause needless restarts — handlers exist to act only when something
+actually changed.
+
+**Cleanup:** `rm -f ~/ans/conf.yml /tmp/app.conf`.
 
 ## Lab Verification
 

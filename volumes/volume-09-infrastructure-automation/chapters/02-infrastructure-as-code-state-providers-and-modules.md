@@ -446,133 +446,119 @@ for CI smoke tests that must not depend on live cloud credentials.
 
 ## Hands-On Lab
 
-### Objective
+This chapter carries a topic-level walkthrough lab for **each IaC skill** — the plan/apply
+cycle, state, variables/outputs, and modules — the heart of the Cisco Automation
+"Infrastructure and Automation" domain. Labs use Terraform with the `local`/`random`
+providers so they run with no cloud account. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-Build a small, cloud-credential-free Terraform module, back it with a
-local state backend that demonstrates the locking concept, write a
-`terraform test`, perform a refactor using a `moved` block, and confirm
-drift detection.
+**Shared prerequisites for Labs 2.1–2.4** — Terraform (or OpenTofu) installed and a scratch
+dir `mkdir -p ~/tf && cd ~/tf`. **Cost:** none (no cloud resources).
 
-### Prerequisites
+### Lab 2.1 — The plan/apply cycle (Topic: Infrastructure as Code)
 
-- Terraform 1.9.x installed (`terraform version`).
-- No cloud account required — this lab uses the `random` and `local`
-  providers only.
-
-### Steps
-
-1. Create the lab directory and module:
-
-   ```bash
-   mkdir -p tf-lab/modules/demo && cd tf-lab
-   ```
-
-2. Write the module from the Implementation section into
-   `modules/demo/main.tf`, plus a `variables.tf`:
-
-   ```bash
-   cat > modules/demo/variables.tf <<'EOF'
-   variable "greeting" {
-     type        = string
-     default     = "Managed by Terraform"
-     description = "Text prefix written into the demo file."
-   }
-   EOF
-   ```
-
-   Update `local_file.example` content to `"${var.greeting}: ${random_pet.example.id}\n"`.
-
-3. Create a root configuration that calls the module:
-
-   ```bash
-   cat > main.tf <<'EOF'
-   terraform {
-     required_version = ">= 1.9.0"
-     required_providers {
-       random = { source = "hashicorp/random", version = "~> 3.6" }
-       local  = { source = "hashicorp/local",  version = "~> 2.5" }
-     }
-   }
-
-   module "demo" {
-     source = "./modules/demo"
-   }
-
-   output "demo_id" {
-     value = module.demo.demo_id
-   }
-   EOF
-   ```
-
-   Add a matching `demo_id` output to `modules/demo/outputs.tf` that
-   exposes `random_pet.example.id`.
-
-4. Initialize and apply:
-
-   ```bash
-   terraform init
-   terraform apply -auto-approve
-   ```
-
-5. Confirm the state and generated file exist:
-
-   ```bash
-   terraform show
-   cat output-*.txt
-   ```
-
-6. Write and run a plan-level test:
-
-   ```bash
-   mkdir -p modules/demo/tests
-   cat > modules/demo/tests/demo.tftest.hcl <<'EOF'
-   variables {
-     greeting = "Unit test"
-   }
-
-   run "plan_has_one_file_and_one_pet" {
-     command = plan
-
-     assert {
-       condition     = local_file.example.filename != ""
-       error_message = "Expected a filename to be computed."
-     }
-   }
-   EOF
-   terraform test -test-directory=modules/demo/tests
-   ```
-
-7. Perform a refactor: rename the resource address by wrapping it under a
-   `for_each`-style key using a `moved` block so existing state is
-   preserved instead of destroyed. (For this lab, simulate by adding a
-   `moved` block referencing a renamed local resource label and confirming
-   `terraform plan` reports no destroy/create.)
-
-### Expected Results
-
-- `terraform apply` creates one `random_pet` resource and one local file
-  containing the greeting and pet name.
-- `terraform test` reports the plan-level assertion passing.
-- After the `moved` block refactor, `terraform plan` reports "0 to add,
-  0 to change, 0 to destroy" — confirming the resource was renamed in
-  place rather than replaced.
-
-### Negative Test
-
-Manually edit the generated `output-*.txt` file's contents outside
-Terraform, then run `terraform plan`. Terraform reports no diff, because
-`local_file` only tracks the fact that it manages the file's existence and
-declared content in state, not out-of-band edits, unless a checksum-aware
-provider is used — a useful demonstration that not every provider detects
-every kind of drift, and why understanding a specific provider's drift
-detection behavior matters before relying on it operationally.
-
-### Cleanup
+**Objective:** Declare a resource and converge to it.
 
 ```bash
-terraform destroy -auto-approve
-cd .. && rm -rf tf-lab
+cd ~/tf
+cat > main.tf <<'EOF'
+terraform { required_providers { local = { source = "hashicorp/local" } } }
+resource "local_file" "hello" {
+  filename = "${path.module}/hello.txt"
+  content  = "managed by terraform\n"
+}
+EOF
+terraform init -no-color | tail -3
+terraform plan -no-color | grep -E "will be created|Plan:"
+terraform apply -auto-approve -no-color | tail -2
+cat hello.txt
 ```
+
+**Expected result:** `plan` shows `1 to add`, `apply` creates `hello.txt`, and re-running
+`plan` shows `No changes` — IaC is declarative: you describe the desired state, Terraform
+computes and applies the diff, and a converged state is a no-op plan.
+
+**Negative test:** delete `hello.txt` by hand and re-run `terraform plan`; it detects the drift
+and plans to recreate it — Terraform reconciles real state to the declared state, catching
+out-of-band changes.
+
+**Cleanup:** `terraform destroy -auto-approve -no-color`.
+
+### Lab 2.2 — State management (Topic: State)
+
+**Objective:** Inspect the state file that tracks managed resources.
+
+```bash
+cd ~/tf && terraform apply -auto-approve -no-color >/dev/null
+terraform state list
+terraform state show local_file.hello | head
+# A remote backend (S3/Terraform Cloud) is declared in a terraform{} block for team use:
+grep -q backend main.tf && echo "backend configured" || echo "local state (terraform.tfstate)"
+```
+
+**Expected result:** `state list` shows `local_file.hello` and `state show` its attributes —
+Terraform state maps declared resources to real ones; teams store it in a **remote backend**
+with locking so concurrent applies do not corrupt it (local state is fine only for solo labs).
+
+**Negative test:** hand-edit `terraform.tfstate` to "fix" something; you desynchronize state
+from reality and the next apply misbehaves — change resources through Terraform, never by editing
+state directly (use `terraform state` subcommands if you must).
+
+**Cleanup:** `terraform destroy -auto-approve -no-color`.
+
+### Lab 2.3 — Variables and outputs (Topic: Parameterization)
+
+**Objective:** Parameterize a configuration and expose results.
+
+```bash
+cd ~/tf
+cat > vars.tf <<'EOF'
+variable "environment" { type = string, default = "dev" }
+resource "local_file" "env" {
+  filename = "${path.module}/${var.environment}.txt"
+  content  = "env=${var.environment}\n"
+}
+output "path" { value = local_file.env.filename }
+EOF
+terraform init -no-color >/dev/null
+terraform apply -auto-approve -no-color -var environment=prod | grep -E "path ="
+```
+
+**Expected result:** the resource is named `prod.txt` from the input variable and the output
+prints its path — variables make one configuration reusable across environments, and outputs
+expose values for other configs/pipelines to consume.
+
+**Negative test:** hard-code the environment string in ten places instead of a variable; a change
+means editing all ten — variables centralize the value so one input drives the whole config.
+
+**Cleanup:** `terraform destroy -auto-approve -no-color; rm -f ~/tf/vars.tf`.
+
+### Lab 2.4 — Reusable modules (Topic: Modules)
+
+**Objective:** Factor configuration into a callable module.
+
+```bash
+cd ~/tf && mkdir -p modules/note
+cat > modules/note/main.tf <<'EOF'
+variable "text" { type = string }
+resource "local_file" "n" { filename = "${path.module}/../../note-${md5(var.text)}.txt", content = var.text }
+EOF
+cat > use.tf <<'EOF'
+module "a" { source = "./modules/note", text = "alpha" }
+module "b" { source = "./modules/note", text = "bravo" }
+EOF
+terraform init -no-color >/dev/null && terraform apply -auto-approve -no-color | grep -E "Apply complete"
+ls note-*.txt
+```
+
+**Expected result:** one module called twice produces two files — modules package a reusable
+unit of infrastructure with inputs/outputs, so a pattern (a VPC, a service) is defined once and
+instantiated many times consistently.
+
+**Negative test:** copy-paste the same resource block for every instance instead of a module;
+they drift as edits land inconsistently — a module is the single definition every caller shares.
+
+**Cleanup:** `terraform destroy -auto-approve -no-color; rm -rf ~/tf`.
 
 ## Lab Verification
 

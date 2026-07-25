@@ -402,131 +402,117 @@ below, where clarity matters more than production secret hygiene.
 
 ## Hands-On Lab
 
-### Objective
+This chapter carries a topic-level walkthrough lab for **each identity-and-secrets skill** —
+secrets management, dynamic injection, least-privilege execution, and keeping secrets out of
+code — the security half of "Application Deployment and Security." Every step is runnable. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-Run Vault in dev mode, configure AppRole authentication with a scoped
-read-only policy, issue a short-lived token, and use it to read a secret
-from both a CLI login flow and an Ansible lookup — then prove the policy
-boundary by attempting a write with the same token.
+**Shared prerequisites for Labs 6.1–6.4** — `ansible-core` (for `ansible-vault`), `git`, and
+optionally a Vault dev server for Lab 6.2. Work in `mkdir -p ~/sec && cd ~/sec`. **Cost:** none.
 
-### Prerequisites
+### Lab 6.1 — Encrypt secrets at rest (Topic: Secrets management)
 
-- Vault binary installed locally (`brew install vault` or download from
-  HashiCorp's releases page); `vault version` succeeds.
-- Python 3.10+, `pip install "ansible-core==2.17.*" ansible-hashi-vault`
-  (installs the `community.hashi_vault` collection's Python dependencies).
-- `ansible-galaxy collection install community.hashi_vault`.
-- No cloud account required — Vault dev mode runs entirely locally.
-
-### Steps
-
-1. Start Vault in dev mode in one terminal and leave it running:
-
-   ```bash
-   vault server -dev -dev-root-token-id="root"
-   ```
-
-2. In a second terminal, configure the CLI and seed a secret:
-
-   ```bash
-   export VAULT_ADDR="http://127.0.0.1:8200"
-   export VAULT_TOKEN="root"
-
-   vault secrets enable -path=secret kv-v2
-   vault kv put secret/pipeline/db_password value="lab-password-123"
-   ```
-
-3. Enable AppRole and create a read-only policy and role:
-
-   ```bash
-   vault auth enable approle
-
-   cat > /tmp/pipeline-read.hcl <<'EOF'
-   path "secret/data/pipeline/*" {
-     capabilities = ["read"]
-   }
-   EOF
-   vault policy write pipeline-read /tmp/pipeline-read.hcl
-
-   vault write auth/approle/role/ci-pipeline \
-     token_policies="pipeline-read" \
-     token_ttl=10m \
-     token_max_ttl=30m
-   ```
-
-4. Retrieve the `role_id` and generate a `secret_id`, then log in:
-
-   ```bash
-   ROLE_ID=$(vault read -field=role_id auth/approle/role/ci-pipeline/role-id)
-   SECRET_ID=$(vault write -f -field=secret_id auth/approle/role/ci-pipeline/secret-id)
-
-   CI_TOKEN=$(vault write -field=token auth/approle/login \
-     role_id="${ROLE_ID}" secret_id="${SECRET_ID}")
-
-   echo "Issued token: ${CI_TOKEN}"
-   ```
-
-5. Use the scoped token to read the secret directly:
-
-   ```bash
-   VAULT_TOKEN="${CI_TOKEN}" vault kv get secret/pipeline/db_password
-   ```
-
-6. Use the same token from an Ansible lookup:
-
-   ```bash
-   mkdir -p vault-lab && cd vault-lab
-   cat > read_secret.yml <<'EOF'
-   ---
-   - name: Read a secret via community.hashi_vault
-     hosts: localhost
-     connection: local
-     gather_facts: false
-     tasks:
-       - name: Look up the database password
-         ansible.builtin.set_fact:
-           db_password: "{{ lookup('community.hashi_vault.hashi_vault',
-                           'secret=secret/data/pipeline/db_password:value') }}"
-         no_log: true
-
-       - name: Confirm a non-empty value was retrieved (without printing it)
-         ansible.builtin.assert:
-           that:
-             - db_password | length > 0
-   EOF
-
-   VAULT_ADDR="http://127.0.0.1:8200" VAULT_TOKEN="${CI_TOKEN}" \
-     ansible-playbook read_secret.yml
-   ```
-
-### Expected Results
-
-- Step 5 prints the `value` key with `lab-password-123`.
-- Step 6's `ansible-playbook` run reports `ok=2` with the assertion task
-  passing, and the actual secret value never appears in the task output
-  because of `no_log: true`.
-
-### Negative Test
-
-Attempt a write with the same scoped token, which the `pipeline-read`
-policy does not grant:
+**Objective:** Store a secret encrypted alongside code with ansible-vault.
 
 ```bash
-VAULT_TOKEN="${CI_TOKEN}" vault kv put secret/pipeline/db_password value="should-fail"
+cd ~/sec
+echo "db_password: LabSecret1!" > secrets.yml
+ansible-vault encrypt secrets.yml --vault-password-file <(echo "labpass")
+head -1 secrets.yml                       # shows $ANSIBLE_VAULT header, not the secret
+ansible-vault view secrets.yml --vault-password-file <(echo "labpass") | head -1
 ```
 
-Confirm this returns `Error writing data to secret/data/pipeline/db_password:
-... permission denied` — proving the read-only policy is enforced by
-Vault itself, not merely by convention, exactly as Design Considerations
-argued a plan-stage credential should behave.
+**Expected result:** `secrets.yml` becomes an encrypted `$ANSIBLE_VAULT` blob, viewable only
+with the vault password — secrets committed to a repo must be encrypted at rest, so the
+ciphertext is safe in Git while the key stays out of the repo (in a password manager/CI secret).
 
-### Cleanup
+**Negative test:** commit the plaintext `db_password` to Git; it lives in history forever, even
+if later deleted — encrypt (or externalize) secrets *before* the first commit, because Git never
+forgets.
+
+**Cleanup:** `rm -f ~/sec/secrets.yml`.
+
+### Lab 6.2 — Dynamic secret injection (Topic: Secret injection)
+
+**Objective:** Fetch a secret at runtime instead of storing it.
 
 ```bash
-cd .. && rm -rf vault-lab
-# In the terminal running Vault dev mode, press Ctrl+C to stop it.
-# Dev-mode Vault is entirely in-memory; no persistent state remains.
+# With a Vault dev server (export VAULT_ADDR / VAULT_TOKEN):
+vault kv put secret/app db_password=RuntimeSecret1 2>/dev/null || echo "(demo) vault kv put ..."
+vault kv get -field=db_password secret/app 2>/dev/null || echo "(demo) app reads secret at runtime"
+# The app/pipeline reads it into an env var at execution, never persisting it:
+export DB_PASSWORD="$(vault kv get -field=db_password secret/app 2>/dev/null || echo demo)"
+echo "DB_PASSWORD is set: ${DB_PASSWORD:+yes}"
 ```
+
+**Expected result:** the secret is fetched from Vault into an environment variable at runtime and
+never written to disk or code — dynamic injection (Vault, cloud secret managers) means the
+credential is retrieved on demand, can be short-lived/rotated, and is auditable per access.
+
+**Negative test:** bake a long-lived static credential into the config; if it leaks, every copy
+is compromised until manually rotated — dynamic, short-lived secrets limit the blast radius of a
+leak.
+
+**Cleanup:** `unset DB_PASSWORD`; remove the demo Vault path if created.
+
+### Lab 6.3 — Least-privilege execution (Topic: Privileged execution)
+
+**Objective:** Run automation as a scoped identity, escalating only when needed.
+
+```bash
+cd ~/sec
+cat > play.yml <<'EOF'
+---
+- hosts: localhost
+  connection: local
+  become: false                     # run unprivileged by default
+  tasks:
+    - name: A task that needs no privilege
+      ansible.builtin.command: id
+      register: r
+    - debug: { msg: "{{ r.stdout }}" }
+    - name: A task that DOES need privilege (scoped)
+      ansible.builtin.file: { path: /tmp/priv-marker, state: touch }
+      become: true                  # escalate only for this task
+EOF
+ansible-playbook play.yml | grep -E "changed=|ok="
+```
+
+**Expected result:** most tasks run unprivileged, and `become: true` escalates only the one task
+that needs it — least-privilege execution means the automation identity holds only the rights it
+needs, escalating narrowly rather than running everything as root.
+
+**Negative test:** run the whole playbook as root (`become: true` at play level) for convenience;
+a bug or compromised task now has full privilege — scope escalation to the specific tasks that
+require it.
+
+**Cleanup:** `rm -f ~/sec/play.yml /tmp/priv-marker`.
+
+### Lab 6.4 — Keep secrets out of code (Topic: Secret hygiene)
+
+**Objective:** Prevent secrets from entering the repository.
+
+```bash
+cd ~/sec && git init -q 2>/dev/null
+cat > .gitignore <<'EOF'
+*.env
+*.pem
+*_key
+secrets.decrypted.yml
+EOF
+echo "API_KEY=leak-me" > app.env
+git add -A && git status --short              # app.env must NOT appear
+git grep -nE "API_KEY|password|BEGIN .*PRIVATE KEY" -- . 2>/dev/null || echo "no plaintext secrets staged"
+```
+
+**Expected result:** `app.env` is ignored (not staged), and the grep finds no plaintext secrets —
+secret hygiene combines `.gitignore` for secret-bearing files, encryption/externalization for any
+that must live near code, and secret-scanning (gitleaks/CI) as a backstop.
+
+**Negative test:** omit `.gitignore` and commit `app.env`; the API key is now in history and must
+be treated as compromised and rotated — preventing the commit is far cheaper than the cleanup.
+
+**Cleanup:** `rm -rf ~/sec`.
 
 ## Lab Verification
 

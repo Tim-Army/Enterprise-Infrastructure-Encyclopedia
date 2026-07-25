@@ -477,100 +477,106 @@ change record and an automated apply.
 
 ## Hands-On Lab
 
-### Objective
+This chapter carries a topic-level walkthrough lab for **each API-automation skill** — REST
+consumption, authentication, pagination/error handling, and webhooks — the Cisco Automation
+"Understanding and Using APIs" domain (a fifth of the associate exam). Labs use `curl`/Python
+against public test APIs. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-Stand up a local webhook receiver that enforces signature verification,
-replay protection, and idempotency-key deduplication, then drive it with a
-signed and an intentionally tampered request to prove both the positive
-and negative paths.
+**Shared prerequisites for Labs 4.1–4.4** — `curl`, `jq`, and `python3` with `requests`, plus
+internet access to a public test API (e.g. `httpbin.org`). **Cost:** none.
 
-### Prerequisites
+### Lab 4.1 — Consume a REST API (Topic: REST semantics)
 
-- Python 3.10+ available locally (`python3 --version`).
-- `curl` and `python3 -c "import hmac"` (standard library — no extra
-  packages required).
-- No cloud account or external network access required.
-
-### Steps
-
-1. Create the lab directory and save the receiver:
-
-   ```bash
-   mkdir -p webhook-lab && cd webhook-lab
-   ```
-
-   Save the `receiver.py` script from the Implementation section into this
-   directory.
-
-2. Start the receiver in the foreground of one terminal:
-
-   ```bash
-   python3 receiver.py
-   ```
-
-3. In a second terminal, compute a valid signature and send a legitimate
-   event:
-
-   ```bash
-   cat > event.json <<'EOF'
-   {"id":"evt-001","type":"infra.apply.completed","time_epoch": TIMESTAMP}
-   EOF
-   python3 - <<'PYEOF'
-   import time
-   with open("event.json") as f:
-       content = f.read().replace("TIMESTAMP", str(int(time.time())))
-   with open("event.json", "w") as f:
-       f.write(content)
-   PYEOF
-
-   SIG=$(python3 -c "
-   import hmac, hashlib
-   body = open('event.json','rb').read()
-   print(hmac.new(b'replace-with-a-real-shared-secret', body, hashlib.sha256).hexdigest())
-   ")
-
-   curl -i -X POST http://127.0.0.1:8085/ \
-     -H "X-Signature-256: sha256=${SIG}" \
-     --data-binary @event.json
-   ```
-
-4. Replay the exact same request a second time and observe deduplication:
-
-   ```bash
-   curl -i -X POST http://127.0.0.1:8085/ \
-     -H "X-Signature-256: sha256=${SIG}" \
-     --data-binary @event.json
-   ```
-
-### Expected Results
-
-- Step 3 returns `HTTP/1.0 200 OK` with body `accepted`, and the receiver's
-  terminal prints `processing event evt-001: infra.apply.completed`.
-- Step 4 returns `HTTP/1.0 200 OK` with body `duplicate event acknowledged`
-  and does **not** print a second `processing event` line — proving the
-  idempotency-key check suppressed the duplicate.
-
-### Negative Test
-
-Send a request with a tampered body but the original signature:
+**Objective:** Issue GET and POST and read the response.
 
 ```bash
-curl -i -X POST http://127.0.0.1:8085/ \
-  -H "X-Signature-256: sha256=${SIG}" \
-  -d '{"id":"evt-002","type":"infra.apply.completed","time_epoch": 9999999999}'
+curl -s https://httpbin.org/get?role=web | jq '.args'
+curl -s -X POST https://httpbin.org/post \
+  -H "Content-Type: application/json" \
+  -d '{"name":"web1","role":"web"}' | jq '.json'
 ```
 
-Confirm the response is `HTTP/1.0 401 Unauthorized` with body
-`invalid signature` — the receiver correctly rejects a payload that does
-not match the signature computed over the original body, even though the
-signature header itself is a real, previously valid value.
+**Expected result:** the GET echoes the query args and the POST echoes the JSON body — REST maps
+verbs to intent (GET reads, POST creates, PUT/PATCH update, DELETE removes) and carries JSON in
+the body; reading status codes and parsing the JSON response is the core API-automation loop.
 
-### Cleanup
+**Negative test:** POST JSON without a `Content-Type: application/json` header; many APIs
+mishandle or reject it — the header tells the server how to interpret the body, and omitting it is
+a common integration bug.
+
+**Cleanup:** none.
+
+### Lab 4.2 — Authentication (Topic: API authentication)
+
+**Objective:** Authenticate with a bearer token.
 
 ```bash
-# Stop the receiver with Ctrl+C in its terminal, then:
-cd .. && rm -rf webhook-lab
+TOKEN="demo-token-123"
+curl -s https://httpbin.org/bearer -H "Authorization: Bearer $TOKEN" | jq '.authenticated, .token'
+# Basic auth alternative:
+curl -s -u user:pass https://httpbin.org/basic-auth/user/pass | jq '.authenticated'
 ```
+
+**Expected result:** the bearer request reports `authenticated: true` with the token, and basic
+auth likewise — APIs authenticate via bearer tokens (OAuth2/API keys) in the `Authorization`
+header or basic auth; tokens are passed per request and never hard-coded (Chapter 06 covers
+secret handling).
+
+**Negative test:** call a protected endpoint with no/invalid `Authorization` header; it returns
+401 Unauthorized — authentication is per request, and the credential must be present and valid.
+
+**Cleanup:** none.
+
+### Lab 4.3 — Pagination and error handling (Topic: Robust API code)
+
+**Objective:** Handle status codes and multi-page results in code.
+
+```bash
+python3 - <<'EOF'
+import requests
+r = requests.get("https://httpbin.org/status/503")
+print("status:", r.status_code)
+if r.status_code >= 500:
+    print("would retry with backoff")          # transient server error
+elif r.status_code == 404:
+    print("not found - do not retry")
+# Pagination pattern: follow 'next' links / page params until exhausted
+for page in range(1, 3):
+    resp = requests.get("https://httpbin.org/get", params={"page": page})
+    print("page", page, "->", resp.json()["args"])
+EOF
+```
+
+**Expected result:** the code branches on status class (retry 5xx, do not retry 4xx) and walks
+pages — production API automation must handle errors and pagination: check the status code, retry
+transient failures with backoff, and iterate pages/`next` links until the data is exhausted.
+
+**Negative test:** assume one request returns all results and ignore pagination; you silently
+process only the first page — respecting pagination is what makes the automation complete.
+
+**Cleanup:** none.
+
+### Lab 4.4 — Webhooks and event-driven integration (Topic: Webhooks)
+
+**Objective:** Reason about receiving an event instead of polling.
+
+```bash
+# Simulate a webhook payload delivered to your endpoint:
+cat > event.json <<'EOF'
+{"event":"device.down","device":"sw1","severity":"critical"}
+EOF
+python3 -c "import json;e=json.load(open('event.json'));print('ACT' if e['severity']=='critical' else 'LOG', e['device'])"
+```
+
+**Expected result:** the handler acts on a critical `device.down` event — webhooks push events to
+your endpoint the moment they occur, so automation reacts in real time instead of polling on a
+timer; the receiver validates and dispatches the payload to the right action.
+
+**Negative test:** poll an API every few minutes for a state change instead of subscribing to a
+webhook; you add latency and load — event-driven (webhook) integration reacts immediately and
+scales better than polling.
+
+**Cleanup:** `rm -f event.json`.
 
 ## Lab Verification
 

@@ -396,129 +396,130 @@ consumers can schedule against.
 
 ## Hands-On Lab
 
-### Objective
+This chapter closes the volume with **observability, reliability, and lifecycle** for automation
+itself — and a **Design Exercise** synthesizing an end-to-end automation platform. Every
+operational step is runnable; the capstone is a written design. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-Instrument a local Terraform apply with structured JSON logging, compute a
-simple rolling success-rate metric from accumulated run logs, and perform
-an actual backup-and-restore drill against a local Vault dev instance to
-prove the backup is usable, not merely present.
+**Shared prerequisites for Labs 9.1–9.4** — `ansible-core`, `git`, and Terraform. Work in
+`mkdir -p ~/ops && cd ~/ops`. **Cost:** none.
 
-### Prerequisites
+### Lab 9.1 — Structured, auditable automation output (Topic: Observability)
 
-- Terraform 1.9.x, `jq`, and `vault` installed locally.
-- No cloud account required.
-
-### Steps
-
-1. Create the lab layout and a minimal configuration:
-
-   ```bash
-   mkdir -p observability-lab && cd observability-lab
-   cat > main.tf <<'EOF'
-   terraform {
-     required_providers {
-       random = { source = "hashicorp/random", version = "~> 3.6" }
-     }
-   }
-   resource "random_pet" "example" {
-     length = 2
-   }
-   EOF
-   terraform init
-   ```
-
-2. Save the structured-logging wrapper script from the Implementation
-   section as `apply-with-log.sh`, adjusted for a local log path:
-
-   ```bash
-   cat > apply-with-log.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -uo pipefail
-   RUN_ID="local-$(date +%s)"
-   START_EPOCH=$(date +%s)
-   terraform apply -auto-approve
-   APPLY_STATUS=$?
-   END_EPOCH=$(date +%s)
-   DURATION=$((END_EPOCH - START_EPOCH))
-   jq -n \
-     --arg run_id "$RUN_ID" \
-     --argjson duration "$DURATION" \
-     --argjson status "$APPLY_STATUS" \
-     '{event:"terraform_apply_completed", run_id:$run_id, duration_seconds:$duration, exit_status:$status, timestamp:(now|todate)}' \
-     | tee -a apply-runs.jsonl
-   EOF
-   chmod +x apply-with-log.sh
-   ```
-
-3. Run the wrapper three times, appending to the run log:
-
-   ```bash
-   ./apply-with-log.sh
-   ./apply-with-log.sh
-   ./apply-with-log.sh
-   ```
-
-4. Compute a success rate from the accumulated structured logs:
-
-   ```bash
-   jq -s 'map(select(.exit_status == 0)) | length as $ok
-          | (input_filename | . )
-          ' apply-runs.jsonl 2>/dev/null || true
-   TOTAL=$(jq -s 'length' apply-runs.jsonl)
-   OK=$(jq -s 'map(select(.exit_status == 0)) | length' apply-runs.jsonl)
-   echo "Success rate: ${OK}/${TOTAL}"
-   ```
-
-5. Perform a Vault backup-and-restore drill in a separate terminal:
-
-   ```bash
-   vault server -dev -dev-root-token-id="root" &
-   sleep 2
-   export VAULT_ADDR="http://127.0.0.1:8200"
-   export VAULT_TOKEN="root"
-   vault secrets enable -path=secret kv-v2
-   vault kv put secret/lab/marker value="present-before-restore-test"
-   ```
-
-### Expected Results
-
-- `apply-runs.jsonl` contains three JSON lines, each with
-  `"exit_status": 0` and a `duration_seconds` value.
-- Step 4 reports `Success rate: 3/3`.
-- Step 5's `vault kv put` succeeds and a subsequent
-  `vault kv get secret/lab/marker` shows `value = present-before-restore-test`.
-
-### Negative Test
-
-Simulate a failed apply and confirm it is captured accurately in the run
-log rather than silently dropped:
+**Objective:** Capture machine-readable run records.
 
 ```bash
-cat >> main.tf <<'EOF'
-resource "random_pet" "broken" {
-  length = -1
-}
+cd ~/ops
+cat > play.yml <<'EOF'
+- hosts: localhost
+  connection: local
+  tasks: [ { name: gather uptime, ansible.builtin.command: uptime, register: u },
+           { debug: { var: u.stdout } } ]
 EOF
-./apply-with-log.sh   # expect a non-zero exit_status recorded
-TOTAL=$(jq -s 'length' apply-runs.jsonl)
-OK=$(jq -s 'map(select(.exit_status == 0)) | length' apply-runs.jsonl)
-echo "Success rate: ${OK}/${TOTAL}"
+ANSIBLE_STDOUT_CALLBACK=json ansible-playbook play.yml 2>/dev/null | python3 -c \
+  "import json,sys; d=json.load(sys.stdin); print('plays:',len(d['plays']),'stats:',d['stats'])"
 ```
 
-Confirm the run log now has four entries with the fourth showing a
-non-zero `exit_status`, and the recomputed success rate correctly drops to
-`3/4` — proving the instrumentation captures failures as data instead of
-only recording successful runs, which is the entire point of measuring a
-success-rate indicator rather than assuming one.
+**Expected result:** the run emits JSON with per-play tasks and a stats summary you can store and
+query — automation must be observable: structured output (JSON callbacks, run artifacts) turns
+each run into an auditable record of what changed, where, and whether it succeeded.
 
-### Cleanup
+**Negative test:** rely on scrollback in a terminal for what an automation run did; it is lost and
+impossible to query — structured, retained output is what lets you audit and troubleshoot past runs.
+
+**Cleanup:** `rm -f ~/ops/play.yml`.
+
+### Lab 9.2 — Metrics and run telemetry (Topic: Telemetry)
+
+**Objective:** Emit metrics about automation execution.
 
 ```bash
-terraform destroy -auto-approve 2>/dev/null || true
-# Stop the Vault dev server:
-kill %1 2>/dev/null || true
-cd .. && rm -rf observability-lab
+cd ~/ops
+# Time a run and record success/duration as a metric line (Prometheus textfile format):
+start=$(date +%s)
+ansible-playbook play.yml >/dev/null 2>&1; rc=$?
+dur=$(( $(date +%s) - start ))
+printf 'automation_run_success %d\nautomation_run_duration_seconds %d\n' "$([ $rc -eq 0 ] && echo 1 || echo 0)" "$dur" | tee run.prom
 ```
+
+**Expected result:** a metrics file recording run success and duration — instrumenting automation
+(run count, success rate, duration, drift found) feeds dashboards and alerts, so you can see a
+rising failure rate or a slowing pipeline before it becomes an outage.
+
+**Negative test:** run automation with no metrics; a gradually climbing failure rate goes
+unnoticed until a critical run fails — telemetry is what turns automation into an observable
+system.
+
+**Cleanup:** `rm -f ~/ops/run.prom ~/ops/play.yml`.
+
+### Lab 9.3 — Reliability: retries and safe failure (Topic: Reliability)
+
+**Objective:** Make automation resilient to transient failure.
+
+```bash
+cd ~/ops
+cat > retry.yml <<'EOF'
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Retry a flaky check until it succeeds
+      ansible.builtin.command: /bin/true
+      register: r
+      retries: 3
+      delay: 2
+      until: r.rc == 0
+    - name: Fail safely with a clear message
+      ansible.builtin.assert:
+        that: r.rc == 0
+        fail_msg: "precondition not met - aborting before making changes"
+EOF
+ansible-playbook retry.yml | grep -E "ok=|changed=|failed="
+```
+
+**Expected result:** the task retries with backoff and the play asserts a precondition before
+proceeding — reliable automation handles transient failures (retries with `until`/`delay`) and
+fails safely (assert preconditions, `any_errors_fatal`, block/rescue) rather than half-applying a
+change.
+
+**Negative test:** let a flaky network call fail the whole run with no retry, or push ahead after
+a failed precondition; you get spurious failures or a half-configured system — retries and
+guarded failure are what make runs trustworthy.
+
+**Cleanup:** `rm -f ~/ops/retry.yml`.
+
+### Lab 9.4 — Design Exercise: an end-to-end automation platform (Topic: Synthesis)
+
+**Objective:** Produce a defensible automation-platform design — the deliverable, not a script.
+
+> **Scenario.** A 60-engineer organization wants to automate provisioning and configuration
+> across on-prem and two clouds, with self-service for app teams, strong security, and no
+> unreviewed changes to production.
+
+Work through and **write down**:
+
+1. **Source of truth & delivery** — Git as the single source; IaC (Terraform) for
+   provisioning, config management (Ansible) for state; a CI pipeline with fmt/validate/lint/
+   policy gates (Ch01, Ch02, Ch03, Ch05).
+2. **APIs & integration** — how systems integrate (REST, webhooks, event-driven remediation)
+   (Ch04, Ch07).
+3. **Secrets & identity** — a secrets manager, dynamic injection, and least-privilege execution
+   identities (Ch06).
+4. **Orchestration** — job/workflow templates with RBAC, approvals for production, schedules,
+   and API triggers (Ch07).
+5. **Security & governance** — pinned dependencies, SBOM/scanning, CODEOWNERS + branch
+   protection, and policy-as-code gates (Ch05, Ch08).
+6. **Observability & reliability** — structured run records, metrics/alerting, drift detection,
+   and safe-failure patterns (Ch08, Ch09).
+
+**Expected result:** a written design where the paved road is Git-driven, gated, secure,
+observable, and self-service — an automation platform judged on whether change is safe, reviewed,
+and reversible, not merely on whether a script runs.
+
+**Negative test:** let each team automate with ad-hoc scripts, personal credentials, and no
+review, CI, or drift detection; it works until an unreviewed change causes an outage no one can
+trace — the platform's gates and observability are its actual value.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 

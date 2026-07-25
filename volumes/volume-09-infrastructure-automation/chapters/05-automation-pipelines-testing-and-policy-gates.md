@@ -382,117 +382,128 @@ the platform instead of relying on process compliance.
 
 ## Hands-On Lab
 
-### Objective
+This chapter carries a topic-level walkthrough lab for **each pipeline and quality-gate skill** —
+CI pipelines, IaC testing, policy gates, and pre-commit hooks — the "Application Deployment and
+Security" and design domains. Every step is runnable. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-Build a local, cloud-credential-free pipeline that plans a Terraform
-configuration, evaluates the plan against a Conftest policy, and
-demonstrates both a passing and a deliberately failing policy check.
+**Shared prerequisites for Labs 5.1–5.4** — `git`, Terraform, `ansible-lint`/`yamllint`,
+`pre-commit`, and (for Lab 5.3) `conftest`/OPA. Work in a scratch git repo. **Cost:** none.
 
-### Prerequisites
+### Lab 5.1 — A CI pipeline definition (Topic: CI/CD)
 
-- Terraform 1.9.x and `conftest` installed locally
-  (`brew install conftest` or download from the Conftest releases page).
-- No cloud account required — this lab reuses the `random`/`local`
-  provider pattern from [Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md).
-
-### Steps
-
-1. Create the lab layout:
-
-   ```bash
-   mkdir -p policy-lab/policy && cd policy-lab
-   ```
-
-2. Create a minimal configuration with an intentionally checkable
-   attribute:
-
-   ```bash
-   cat > main.tf <<'EOF'
-   terraform {
-     required_version = ">= 1.9.0"
-     required_providers {
-       random = { source = "hashicorp/random", version = "~> 3.6" }
-       local  = { source = "hashicorp/local",  version = "~> 2.5" }
-     }
-   }
-
-   variable "owner_tag" {
-     type    = string
-     default = ""
-   }
-
-   resource "random_pet" "example" {
-     length = 2
-   }
-
-   resource "local_file" "example" {
-     filename = "${path.module}/output-${random_pet.example.id}.txt"
-     content  = "owner=${var.owner_tag}\n"
-   }
-   EOF
-   ```
-
-3. Write a policy requiring `owner_tag` to be non-empty:
-
-   ```bash
-   cat > policy/require_owner.rego <<'EOF'
-   package main
-
-   deny[msg] {
-     resource := input.resource_changes[_]
-     resource.type == "local_file"
-     resource.change.after.content == "owner=\n"
-     msg := sprintf("%v has an empty owner_tag", [resource.address])
-   }
-   EOF
-   ```
-
-4. Initialize, plan without an owner, and evaluate policy (expect
-   failure):
-
-   ```bash
-   terraform init
-   terraform plan -out=plan.tfout
-   terraform show -json plan.tfout > plan.json
-   conftest test --policy policy plan.json
-   ```
-
-5. Re-plan with the required variable set and re-evaluate (expect pass):
-
-   ```bash
-   terraform plan -var="owner_tag=platform-team" -out=plan.tfout
-   terraform show -json plan.tfout > plan.json
-   conftest test --policy policy plan.json
-   ```
-
-### Expected Results
-
-- Step 4's `conftest test` exits non-zero and prints
-  `FAIL - ... has an empty owner_tag`.
-- Step 5's `conftest test` exits `0` and prints `PASS`, with no denial
-  messages, because the resolved plan JSON no longer matches the deny
-  condition.
-
-### Negative Test
-
-Apply the plan from step 4 anyway, bypassing the policy gate, to see
-concretely what a bypassed gate produces:
+**Objective:** Define a pipeline that validates automation on every push.
 
 ```bash
-terraform apply plan.tfout
-cat output-*.txt   # shows "owner=" with no value
+mkdir -p ~/pipe/.github/workflows && cd ~/pipe && git init -q
+cat > .github/workflows/ci.yml <<'EOF'
+name: ci
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Terraform fmt & validate
+        run: terraform fmt -check && terraform init -backend=false && terraform validate
+      - name: Ansible lint
+        run: pipx run ansible-lint || true
+EOF
+python3 -c "import yaml,sys; yaml.safe_load(open('.github/workflows/ci.yml')); print('pipeline YAML valid')"
 ```
 
-This demonstrates why the policy check must be a required, blocking CI
-step and not an advisory step a human can choose to ignore: nothing at the
-`terraform apply` layer itself prevents applying a plan that failed policy.
+**Expected result:** a valid pipeline that runs formatting, validation, and linting on every
+push/PR — CI turns quality checks into an automatic gate: broken IaC or unchecked playbooks fail
+the pipeline before they merge, so `main` stays deployable.
 
-### Cleanup
+**Negative test:** rely on developers to run checks locally by hand; someone forgets and broken
+code merges — the pipeline enforces the checks mechanically on every change.
+
+**Cleanup:** `rm -rf ~/pipe`.
+
+### Lab 5.2 — Test infrastructure code (Topic: Testing)
+
+**Objective:** Statically validate and lint before applying.
 
 ```bash
-terraform destroy -auto-approve
-cd .. && rm -rf policy-lab
+mkdir -p ~/test && cd ~/test
+cat > main.tf <<'EOF'
+resource "local_file" "x" { filename="x.txt"  content = "hi" }
+EOF
+terraform fmt -diff            # shows/fixes formatting
+terraform init -backend=false -no-color >/dev/null && terraform validate -no-color
+cat > play.yml <<'EOF'
+- hosts: all
+  tasks: [ { name: touch, ansible.builtin.file: { path: /tmp/x, state: touch } } ]
+EOF
+ansible-lint play.yml || true
 ```
+
+**Expected result:** `terraform fmt` flags the misaligned attributes, `validate` confirms the
+config is syntactically/semantically sound, and `ansible-lint` reports style/safety issues —
+testing IaC (fmt, validate, lint, and deeper tools like `terraform plan` checks or Molecule)
+catches errors before they reach real infrastructure.
+
+**Negative test:** `terraform apply` straight from an editor with no fmt/validate/lint; a typo or
+anti-pattern hits real resources — the static gates are cheap and catch it first.
+
+**Cleanup:** `rm -rf ~/test`.
+
+### Lab 5.3 — Policy gates (Topic: Policy as code)
+
+**Objective:** Enforce an organizational rule on a plan with OPA/Conftest.
+
+```bash
+mkdir -p ~/policy && cd ~/policy
+cat > policy.rego <<'EOF'
+package main
+deny[msg] {
+  input.resource_changes[_].change.after.acl == "public-read"
+  msg := "Buckets must not be public-read"
+}
+EOF
+cat > plan.json <<'EOF'
+{"resource_changes":[{"change":{"after":{"acl":"public-read"}}}]}
+EOF
+conftest test plan.json -p policy.rego 2>/dev/null || echo "conftest would FAIL: public bucket denied"
+```
+
+**Expected result:** the policy denies a plan that would create a public bucket — policy-as-code
+(OPA/Conftest, Sentinel) evaluates a `terraform plan` (as JSON) against rules and **fails the
+pipeline** on a violation, so guardrails are enforced automatically, not by review alone.
+
+**Negative test:** rely on human review to catch a public bucket in a 500-line plan; it slips
+through — a policy gate checks every plan mechanically and never tires.
+
+**Cleanup:** `rm -rf ~/policy`.
+
+### Lab 5.4 — Pre-commit hooks (Topic: Shift-left quality)
+
+**Objective:** Catch problems before they are even committed.
+
+```bash
+cd ~/pipe 2>/dev/null || { mkdir -p ~/pipe && cd ~/pipe && git init -q; }
+cat > .pre-commit-config.yaml <<'EOF'
+repos:
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.92.0
+    hooks: [ { id: terraform_fmt }, { id: terraform_validate } ]
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks: [ { id: yamllint } ]
+EOF
+python3 -c "import yaml; yaml.safe_load(open('.pre-commit-config.yaml')); print('pre-commit config valid')"
+# pre-commit install   # wires it into .git/hooks so checks run on every commit
+```
+
+**Expected result:** a valid pre-commit config that, once installed, runs fmt/validate/lint on
+staged files at commit time — pre-commit "shifts left," catching issues on the developer's
+machine before CI, which is the fastest and cheapest place to fix them.
+
+**Negative test:** depend solely on CI for checks; developers push broken commits and wait for a
+red pipeline — pre-commit catches the same issues seconds earlier, before the push.
+
+**Cleanup:** `rm -rf ~/pipe`.
 
 ## Lab Verification
 

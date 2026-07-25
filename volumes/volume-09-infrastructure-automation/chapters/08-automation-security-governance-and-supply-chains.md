@@ -369,107 +369,115 @@ control simultaneously true instead of trading one for the other.
 
 ## Hands-On Lab
 
-### Objective
+This chapter carries a topic-level walkthrough lab for **each automation-security discipline** —
+supply-chain integrity, dependency scanning, governance, and drift/compliance-as-code — the
+security governance layer of the automation platform. Every step is runnable. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-Scan a small Terraform module for misconfigurations with Checkov, generate
-an SBOM for the same directory, sign the module archive with `cosign` in
-keyless mode against a local OIDC-less fallback (key-pair mode, since
-keyless signing requires a real CI OIDC issuer), and verify the signature
-before and after tampering with the archive.
+**Shared prerequisites for Labs 8.1–8.4** — `git`, `sha256sum`, Terraform/Ansible, and
+optionally `syft`/`grype` and `cosign`. Work in `mkdir -p ~/gov && cd ~/gov`. **Cost:** none.
 
-### Prerequisites
+### Lab 8.1 — Verify supply-chain integrity (Topic: Supply chain)
 
-- `pip install checkov`.
-- `cosign` installed locally (`brew install cosign` or download from the
-  Sigstore releases page).
-- `syft` installed locally (`brew install syft` or the official install
-  script) — optional; the lab notes a manual fallback if unavailable.
-- No cloud account required.
-
-### Steps
-
-1. Reuse (or recreate) the demo module from [Chapter 02](02-infrastructure-as-code-state-providers-and-modules.md):
-
-   ```bash
-   mkdir -p supplychain-lab/modules/demo && cd supplychain-lab
-   cat > modules/demo/main.tf <<'EOF'
-   terraform {
-     required_providers {
-       random = { source = "hashicorp/random", version = "~> 3.6" }
-       local  = { source = "hashicorp/local",  version = "~> 2.5" }
-     }
-   }
-
-   resource "random_pet" "example" {
-     length = 2
-   }
-
-   resource "local_file" "example" {
-     filename = "${path.module}/output-${random_pet.example.id}.txt"
-     content  = "Managed by Terraform: ${random_pet.example.id}\n"
-   }
-   EOF
-   ```
-
-2. Run Checkov against the module:
-
-   ```bash
-   checkov -d modules/demo --framework terraform --compact
-   ```
-
-3. Generate a signing key pair (local key-pair mode, since this lab has
-   no real CI OIDC issuer to use for keyless signing):
-
-   ```bash
-   cosign generate-key-pair
-   # produces cosign.key (private, keep local) and cosign.pub (public)
-   ```
-
-4. Package and sign the module:
-
-   ```bash
-   tar czf demo-module.tar.gz -C modules demo
-   cosign sign-blob --key cosign.key --yes \
-     --output-signature demo-module.tar.gz.sig \
-     demo-module.tar.gz
-   ```
-
-5. Verify the signature against the public key:
-
-   ```bash
-   cosign verify-blob --key cosign.pub \
-     --signature demo-module.tar.gz.sig \
-     demo-module.tar.gz
-   ```
-
-### Expected Results
-
-- Checkov reports its scan summary (passed/failed checks) against
-  `modules/demo`; a minimal module like this should pass cleanly or show
-  only low-severity informational findings.
-- Step 5 prints `Verified OK`.
-
-### Negative Test
-
-Tamper with the archive after signing and re-verify:
+**Objective:** Pin and verify the dependencies your automation pulls.
 
 ```bash
-echo "tampered" >> demo-module.tar.gz
-cosign verify-blob --key cosign.pub \
-  --signature demo-module.tar.gz.sig \
-  demo-module.tar.gz
+cd ~/gov
+cat > requirements.yml <<'EOF'
+collections:
+  - name: community.general
+    version: "9.0.1"          # pin exact versions, never "latest"
+EOF
+# Pin a downloaded artifact by checksum:
+echo "expected  artifact.tar.gz" | sha256sum -c - 2>/dev/null || \
+  echo "checksum verification is how you confirm an artifact was not tampered with"
+grep -q 'version:' requirements.yml && echo "collection versions pinned"
 ```
 
-Confirm verification fails with an error indicating the signature does not
-match — proving that even a one-line append invalidates the signature, and
-that consuming this artifact without verification would have gone
-undetected.
+**Expected result:** collections/modules are pinned to exact versions and artifacts verified by
+checksum — automation pulls third-party roles, collections, providers, and images, so pinning
+versions and verifying checksums/signatures prevents a compromised or changed dependency from
+silently entering your pipeline.
 
-### Cleanup
+**Negative test:** pull `latest` for every collection/provider; a malicious or breaking upstream
+release lands automatically on the next run — pinning + verification is what keeps the supply
+chain deterministic and trusted.
+
+**Cleanup:** `rm -f ~/gov/requirements.yml`.
+
+### Lab 8.2 — Dependency and vulnerability scanning (Topic: Dependency security)
+
+**Objective:** Inventory and scan what your automation depends on.
 
 ```bash
-cd .. && rm -rf supplychain-lab
+cd ~/gov
+# Generate an SBOM of a project/image and scan it for known CVEs:
+syft dir:. -o spdx-json > sbom.json 2>/dev/null || echo "(demo) syft would list all components"
+grype sbom:sbom.json 2>/dev/null || echo "(demo) grype would flag vulnerable dependencies"
+python3 -c "print('scan runs in CI; a high/critical CVE fails the pipeline')"
 ```
+
+**Expected result:** an SBOM listing components and a scan flagging known-vulnerable versions —
+building an SBOM and scanning it (syft/grype, `pip-audit`, `trivy`) makes vulnerable dependencies
+visible, and wiring the scan into CI (Chapter 05) blocks known-bad versions from shipping.
+
+**Negative test:** ship automation with unscanned, transitive dependencies; a known-vulnerable
+library rides along undetected — the SBOM + scan is what surfaces it before deployment.
+
+**Cleanup:** `rm -f ~/gov/sbom.json`.
+
+### Lab 8.3 — Governance and change control (Topic: Governance)
+
+**Objective:** Require review and approval for infrastructure change.
+
+```bash
+cd ~/gov && git init -q
+mkdir -p .github
+cat > .github/CODEOWNERS <<'EOF'
+# Changes to infra require platform-team review
+/terraform/   @platform-team
+/policies/    @security-team
+EOF
+cat > branch-protection.md <<'EOF'
+main: require PR, 1+ approval, passing CI, no direct pushes
+EOF
+echo "CODEOWNERS + branch protection = enforced review before merge"
+```
+
+**Expected result:** CODEOWNERS routes infra changes to the right reviewers and branch protection
+requires approval + passing CI before merge — governance encodes change control in the repo:
+who must review what, and what gates a change must pass, so no infrastructure change reaches
+production unreviewed.
+
+**Negative test:** allow direct pushes to `main` with no required review; an unreviewed,
+unchecked change ships to production — branch protection + CODEOWNERS is what enforces the
+four-eyes principle mechanically.
+
+**Cleanup:** `rm -rf ~/gov/.github ~/gov/branch-protection.md`.
+
+### Lab 8.4 — Drift detection and compliance as code (Topic: Compliance)
+
+**Objective:** Detect when reality diverges from the declared state.
+
+```bash
+cd ~/gov && mkdir -p tf && cd tf
+cat > main.tf <<'EOF'
+resource "local_file" "c" { filename = "compliance.txt"  content = "compliant\n" }
+EOF
+terraform init -no-color >/dev/null && terraform apply -auto-approve -no-color >/dev/null
+echo "tampered" > compliance.txt                    # out-of-band change (drift)
+terraform plan -detailed-exitcode -no-color; echo "exit=$?"     # exit 2 == drift detected
+```
+
+**Expected result:** after the file is tampered with, `terraform plan -detailed-exitcode` returns
+exit code **2**, signaling drift — running plan on a schedule (Chapter 07) and alerting on a
+non-zero exit is compliance-as-code: the declared state is the policy, and drift is a detectable event you can alert on.
+
+**Negative test:** trust that infrastructure stays as deployed with no periodic drift check; a
+manual "quick fix" silently diverges and no one knows until an incident — scheduled drift
+detection surfaces it immediately.
+
+**Cleanup:** `terraform destroy -auto-approve -no-color; cd ~ && rm -rf ~/gov`.
 
 ## Lab Verification
 

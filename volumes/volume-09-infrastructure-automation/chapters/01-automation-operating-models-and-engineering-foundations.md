@@ -401,105 +401,121 @@ differences.
 
 ## Hands-On Lab
 
-### Objective
+This chapter carries a topic-level walkthrough lab for **each engineering foundation of
+automation** — version control, structured data, scripting, and idempotence — mapping to the
+Cisco Automation "Software Development and Design" domain. Every step is runnable. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-Stand up the baseline repository skeleton from this chapter with a working
-lint gate and branch protection, and prove that a broken commit is blocked
-before it reaches `main`.
+**Shared prerequisites for Labs 1.1–1.4** — a Linux/macOS host with `git`, `python3`, and
+`jq`/`yq` installed. Work in a scratch dir: `mkdir -p ~/auto && cd ~/auto`. **Cost:** none.
 
-### Prerequisites
+### Lab 1.1 — Version control as the source of truth (Topic: Software development)
 
-- Git 2.40+ and a GitHub account with permission to create a repository.
-- Terraform 1.9.x installed locally (`terraform version`).
-- Python 3.12 with `pip` available.
-- GitHub CLI (`gh`) authenticated, or access to the GitHub web UI.
-
-### Steps
-
-1. Create and enter a new local repository:
-
-   ```bash
-   mkdir infra-automation-lab && cd infra-automation-lab
-   git init -b main
-   ```
-
-2. Create the baseline directory structure:
-
-   ```bash
-   mkdir -p .github/workflows modules/network environments/dev playbooks/roles docs/adr
-   ```
-
-3. Add a minimal Terraform module so `terraform fmt`/`validate` have
-   something to check:
-
-   ```bash
-   cat > modules/network/main.tf <<'EOF'
-   terraform {
-     required_version = ">= 1.9.0"
-   }
-
-   variable "name" {
-     type        = string
-     description = "Logical network name."
-   }
-
-   resource "random_pet" "network" {
-     length = 2
-   }
-
-   output "network_id" {
-     value = "${var.name}-${random_pet.network.id}"
-   }
-   EOF
-   ```
-
-4. Add the CI lint workflow shown in Implementation and Automation above,
-   saved to `.github/workflows/lint.yml`.
-
-5. Commit and push to a new GitHub repository:
-
-   ```bash
-   git add .
-   git commit -m "Bootstrap automation repository skeleton"
-   gh repo create infra-automation-lab --private --source=. --push
-   ```
-
-6. In the GitHub UI, enable branch protection on `main`: require a pull
-   request before merging and require the `terraform-fmt` and
-   `ansible-lint` status checks to pass.
-
-7. Create a feature branch that introduces a deliberately unformatted file
-   to verify the gate works:
-
-   ```bash
-   git checkout -b lab/negative-test
-   printf 'variable "bad" {\ntype=string\n}\n' >> modules/network/main.tf
-   git commit -am "Introduce unformatted HCL"
-   git push -u origin lab/negative-test
-   gh pr create --title "Negative test: unformatted HCL" --body "Expect lint failure."
-   ```
-
-### Expected Results
-
-- The pull request's `terraform-fmt` check fails because
-  `terraform fmt -check -recursive` detects the unformatted block, and the
-  merge button is disabled by branch protection.
-- Running `terraform fmt -recursive` locally, committing the fix, and
-  pushing again turns the check green and allows the merge.
-
-### Negative Test
-
-Step 7 above **is** the negative test: it confirms that a non-conforming
-change is mechanically blocked rather than relying on manual review
-diligence.
-
-### Cleanup
+**Objective:** Track automation code with a branch-and-merge workflow.
 
 ```bash
-gh pr close lab/negative-test --delete-branch
-cd .. && rm -rf infra-automation-lab
-gh repo delete infra-automation-lab --yes   # if you no longer need the remote
+cd ~/auto && git init -q repo && cd repo
+echo "name: demo" > config.yaml
+git add config.yaml && git commit -qm "initial config"
+git switch -c feature/add-region
+echo "region: us-east-1" >> config.yaml
+git commit -qam "add region"
+git switch main && git merge --no-ff feature/add-region -m "merge region" && git log --oneline
 ```
+
+**Expected result:** a repo whose history shows the feature branch merged into `main` — version
+control is the non-negotiable foundation of automation: every change is reviewable, revertible,
+and auditable, which is what makes automation safe to run at scale.
+
+**Negative test:** edit infrastructure config directly on a server with no version control; there
+is no history, no review, and no rollback — the un-tracked change is exactly what GitOps and
+automation discipline exist to eliminate.
+
+**Cleanup:** `rm -rf ~/auto/repo`.
+
+### Lab 1.2 — Structured data formats (Topic: Data formats)
+
+**Objective:** Parse and transform JSON and YAML — the lingua franca of automation.
+
+```bash
+cd ~/auto
+cat > data.json <<'EOF'
+{"hosts":[{"name":"web1","role":"web"},{"name":"db1","role":"db"}]}
+EOF
+jq -r '.hosts[] | select(.role=="web") | .name' data.json
+python3 -c "import json,yaml,sys; print(yaml.safe_dump(json.load(open('data.json'))))" 2>/dev/null || \
+  python3 -c "import json; print(json.load(open('data.json'))['hosts'][0]['name'])"
+```
+
+**Expected result:** `jq` extracts the web host name and Python round-trips JSON↔YAML — APIs,
+IaC, and config management all exchange JSON/YAML, so filtering (`jq`/`yq`) and
+parsing/generating them in code is a core daily automation skill.
+
+**Negative test:** parse YAML with a plain text tool (grep/sed) instead of a real parser; nested
+structures and multi-line values break it — structured data needs a structured parser, not line
+matching.
+
+**Cleanup:** `rm -f ~/auto/data.json`.
+
+### Lab 1.3 — Python for automation (Topic: Scripting)
+
+**Objective:** Build an isolated environment and a small automation script.
+
+```bash
+cd ~/auto
+python3 -m venv .venv && source .venv/bin/activate
+pip -q install requests
+cat > check.py <<'EOF'
+import sys, json
+def summarize(path):
+    data = json.load(open(path))
+    return {h["role"]: h["name"] for h in data["hosts"]}
+if __name__ == "__main__":
+    print(json.dumps(summarize(sys.argv[1]), indent=2))
+EOF
+echo '{"hosts":[{"name":"web1","role":"web"}]}' > d.json
+python3 check.py d.json
+deactivate
+```
+
+**Expected result:** a virtualenv with `requests` installed and a script that summarizes the
+data — a **venv** isolates dependencies per project (no system-wide conflicts), and small,
+testable functions are the building blocks of automation tooling.
+
+**Negative test:** `pip install` globally as root across many projects; versions collide and one
+project's upgrade breaks another — the venv is what isolates each project's dependency set.
+
+**Cleanup:** `rm -rf ~/auto/.venv ~/auto/check.py ~/auto/d.json`.
+
+### Lab 1.4 — Idempotence and desired-state thinking (Topic: Design methodology)
+
+**Objective:** Write an operation that is safe to run repeatedly.
+
+```bash
+cd ~/auto
+cat > ensure.sh <<'EOF'
+#!/bin/bash
+# Idempotent: ensure a line exists exactly once
+f="$1"; line="$2"
+grep -qxF "$line" "$f" 2>/dev/null || echo "$line" >> "$f"
+EOF
+chmod +x ensure.sh
+touch hosts.txt
+./ensure.sh hosts.txt "10.0.0.1 web1"
+./ensure.sh hosts.txt "10.0.0.1 web1"     # run again
+wc -l < hosts.txt                          # still 1 line
+```
+
+**Expected result:** running the operation twice leaves exactly one line — **idempotence**
+(the same result no matter how many times you apply it) is the defining property of good
+automation, and the reason declarative tools (Terraform, Ansible) converge to a desired state
+rather than blindly repeating actions.
+
+**Negative test:** replace the guarded append with a plain `echo >>`; each run adds a duplicate
+line — a non-idempotent operation produces drift and damage when re-run, which automation must
+avoid.
+
+**Cleanup:** `rm -f ~/auto/ensure.sh ~/auto/hosts.txt`.
 
 ## Lab Verification
 

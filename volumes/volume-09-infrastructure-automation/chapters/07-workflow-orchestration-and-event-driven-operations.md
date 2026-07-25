@@ -367,125 +367,117 @@ access.
 
 ## Hands-On Lab
 
-### Objective
+This chapter carries a topic-level walkthrough lab for **each orchestration skill** — job
+templates, event-driven automation, workflow chaining, and scheduled/triggered runs — the
+"Infrastructure and Automation" domain at platform scale. Labs use Ansible Automation Platform/
+AWX concepts plus Event-Driven Ansible. Each ends **`**Lab verified by:** *pending*`** until a
+human runs it.
 
-Install Event-Driven Ansible locally, write a rulebook that reacts to a
-webhook event by running a playbook, and demonstrate the loop-breaking
-guard by sending both a triggering event and a self-produced event that
-must be ignored.
+**Shared prerequisites for Labs 7.1–7.4** — an AWX/Ansible Automation Platform instance (or a
+local `ansible-rulebook` install for Lab 7.2), a source-controlled project, and `curl`.
+**Cost:** none beyond lab resources.
 
-### Prerequisites
+### Lab 7.1 — Job templates (Topic: Orchestration)
 
-- Python 3.10+, `pip install ansible-rulebook ansible-core==2.17.*`.
-- `ansible-galaxy collection install ansible.eda`.
-- `curl` for sending test events.
-- No cloud account required — this lab runs entirely on localhost.
+**Objective:** Turn a playbook into a governed, runnable job.
 
-### Steps
-
-1. Create the lab layout:
-
-   ```bash
-   mkdir -p eda-lab/eda/rulebooks eda-lab/playbooks
-   cd eda-lab
-   ```
-
-2. Create the inventory and playbook:
-
-   ```bash
-   cat > inventory.yml <<'EOF'
-   all:
-     hosts:
-       localhost:
-         ansible_connection: local
-   EOF
-
-   cat > playbooks/scale_out.yml <<'EOF'
-   ---
-   - name: Scale-out response
-     hosts: localhost
-     gather_facts: false
-     tasks:
-       - name: Record the trigger
-         ansible.builtin.lineinfile:
-           path: /tmp/eda-lab-actions.log
-           line: "Scale-out triggered by alert on {{ triggering_host | default('unknown') }}"
-           create: true
-   EOF
-   ```
-
-3. Create the rulebook from the Implementation section, simplified for a
-   local file-based action instead of the annotate callback:
-
-   ```bash
-   cat > eda/rulebooks/scale-out-on-alert.yml <<'EOF'
-   ---
-   - name: React to a high-CPU alert
-     hosts: all
-     sources:
-       - ansible.eda.webhook:
-           host: 0.0.0.0
-           port: 5000
-     rules:
-       - name: High CPU alert triggers scale-out
-         condition: >
-           event.payload.alert_name == "HighCPU" and
-           event.payload.status == "firing" and
-           event.payload.source != "automation"
-         action:
-           run_playbook:
-             name: playbooks/scale_out.yml
-             extra_vars:
-               triggering_host: "{{ event.payload.host }}"
-   EOF
-   ```
-
-4. Start the rulebook in one terminal:
-
-   ```bash
-   ansible-rulebook --rulebook eda/rulebooks/scale-out-on-alert.yml \
-     -i inventory.yml --verbose
-   ```
-
-5. In a second terminal, send a matching event:
-
-   ```bash
-   curl -X POST http://127.0.0.1:5000/endpoint \
-     -H "Content-Type: application/json" \
-     -d '{"alert_name": "HighCPU", "status": "firing", "host": "web01", "source": "monitoring"}'
-   ```
-
-### Expected Results
-
-- The `ansible-rulebook` terminal logs the matched rule and the
-  `scale_out.yml` playbook run.
-- `/tmp/eda-lab-actions.log` contains the line
-  `Scale-out triggered by alert on web01`.
-
-### Negative Test
-
-Send an event tagged as automation-produced and confirm it is correctly
-ignored:
-
-```bash
-curl -X POST http://127.0.0.1:5000/endpoint \
-  -H "Content-Type: application/json" \
-  -d '{"alert_name": "HighCPU", "status": "firing", "host": "web01", "source": "automation"}'
+```text
+# In AWX / Automation Platform:
+#   1. Create a Project pointing at your Git repo (SCM), and sync it
+#   2. Create an Inventory and a machine Credential
+#   3. Create a Job Template binding playbook + inventory + credential
+#   4. Launch it, then review the job output and status
+# Via the API, confirm the template exists:
+#   curl -sk -H "Authorization: Bearer $TOKEN" https://awx/api/v2/job_templates/ | jq '.count'
 ```
 
-Confirm no new line is appended to `/tmp/eda-lab-actions.log` and the
-`ansible-rulebook` terminal shows the event was received but the rule's
-condition did not match — proving the `event.payload.source != "automation"`
-guard actually prevents a feedback loop rather than merely documenting the
-intent to prevent one.
+**Expected result:** a Job Template that runs a specific playbook against a specific inventory
+with a stored credential, runnable by authorized users with full logging — orchestration
+platforms wrap playbooks in RBAC, credentials, logging, and a run interface, so
+automation is governed and self-service rather than ad-hoc on someone's laptop.
 
-### Cleanup
+**Negative test:** run playbooks manually from an engineer's shell with a personal SSH key; there
+is no RBAC, no audit, and no shared credential rotation — the platform's job template is what
+makes execution controlled and repeatable.
+
+**Cleanup:** delete the lab job template/project if created only for the exercise.
+
+### Lab 7.2 — Event-driven automation (Topic: Event-driven operations)
+
+**Objective:** React to an event with a rulebook.
 
 ```bash
-# Stop ansible-rulebook with Ctrl+C in its terminal, then:
-rm -f /tmp/eda-lab-actions.log
-cd .. && rm -rf eda-lab
+cat > rulebook.yml <<'EOF'
+---
+- name: React to alerts
+  hosts: localhost
+  sources:
+    - ansible.eda.webhook: { host: 0.0.0.0, port: 5000 }
+  rules:
+    - name: Remediate device-down
+      condition: event.payload.alert == "device_down"
+      action:
+        run_playbook: { name: remediate.yml }
+EOF
+# ansible-rulebook --rulebook rulebook.yml -i inventory.ini
+# Then POST an event: curl -X POST http://localhost:5000/endpoint -d '{"alert":"device_down"}'
+python3 -c "import yaml; yaml.safe_load(open('rulebook.yml')); print('rulebook valid')"
 ```
+
+**Expected result:** a valid rulebook that listens for a webhook and runs a remediation playbook
+when a `device_down` alert arrives — Event-Driven Ansible turns monitoring events into automatic
+actions (source → condition → action), closing the loop from detection to remediation without a
+human in the middle.
+
+**Negative test:** page a human for every routine, well-understood alert; response is slow and
+inconsistent — codifying the known remediation as a rulebook action makes it instant and uniform
+(escalate only the novel cases).
+
+**Cleanup:** `rm -f rulebook.yml`.
+
+### Lab 7.3 — Workflow chaining (Topic: Workflows)
+
+**Objective:** Compose multiple jobs with dependencies and branching.
+
+```text
+# In AWX / Automation Platform, build a Workflow Template:
+#   provision (Terraform)  ->  on success: configure (Ansible)
+#                          ->  on failure: notify + rollback
+#   Add an approval node before the production step.
+# Launch the workflow and confirm each node runs in order, honoring success/failure paths.
+```
+
+**Expected result:** a workflow runs provision → configure on success and notify/rollback on
+failure, with a human approval gate before production — workflows chain independent jobs into a
+pipeline with conditional paths and approvals, orchestrating multi-step operations end to end.
+
+**Negative test:** run each step manually and hope the operator remembers the order and the
+rollback; under pressure a step is skipped — the workflow encodes the order, the failure paths,
+and the approval so they are never forgotten.
+
+**Cleanup:** delete the lab workflow if created only for the exercise.
+
+### Lab 7.4 — Scheduling and triggered execution (Topic: Triggered operations)
+
+**Objective:** Run automation on a schedule and on demand via API.
+
+```bash
+# Schedule: in AWX add a Schedule to the job template (e.g. nightly compliance run).
+# On-demand trigger via the API (e.g. from a chatbot or another system):
+# curl -sk -X POST -H "Authorization: Bearer $TOKEN" \
+#   https://awx/api/v2/job_templates/<id>/launch/ | jq '.status'
+echo "schedule = recurring cron; launch endpoint = event/API triggered"
+```
+
+**Expected result:** the job runs nightly on its schedule and can also be launched on demand
+through the API — orchestration supports both time-based (cron-like schedules for compliance/
+drift runs) and event/API-triggered execution (from pipelines, chatops, or other systems).
+
+**Negative test:** rely on someone remembering to run the nightly compliance job by hand; it is
+skipped on holidays and busy days — a schedule guarantees it runs, and the API lets other systems
+trigger it deterministically.
+
+**Cleanup:** remove the lab schedule if created only for the exercise.
 
 ## Lab Verification
 
