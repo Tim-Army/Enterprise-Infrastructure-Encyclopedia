@@ -689,143 +689,78 @@ Get-VM -Name "ora-db-01" | New-TagAssignment -Tag (Get-Tag -Name "db" -Category 
 
 ## Hands-On Lab
 
-**Objective:** Configure ESXi Lockdown Mode, build a least-privilege custom
-vCenter role, and implement a basic NSX micro-segmentation policy using
-dynamic security groups — including a negative test proving default-deny
-blocks unauthorized east-west traffic — in a nested lab environment, then
-restore the lab to its prior state.
+This chapter carries a topic-level walkthrough lab for **each vSphere/NSX security theme** — host and
+VM hardening, micro-segmentation concepts, and the security architecture. Labs use esxcli/PowerCLI and
+NSX concepts. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.3** — a vSphere cluster (with NSX for Lab 8.2) and PowerCLI.
+**Cost:** none.
 
-- A vSphere 9.x lab with at least one ESXi host and vCenter Server, plus
-  NSX Manager deployed and the host(s) prepared as NSX transport nodes
-  (NSX installation/configuration mechanics are covered in Chapters 10–11;
-  this lab assumes that groundwork is already in place).
-- PowerCLI connected to the lab vCenter, and API access (curl or
-  equivalent) to the lab NSX Manager with an administrative account.
-- Two or three small test VMs on the same NSX segment (same subnet), with
-  VMware Tools installed and network connectivity confirmed between them
-  before beginning (`ping` from one VM to the others succeeds).
+### Lab 8.1 — Host and VM hardening (Topic: Hardening)
 
-**Steps**
+**Objective:** Apply the vSphere security baseline.
 
-1. Enable Normal Lockdown Mode on the lab host and add a designated
-   exception user:
+```bash
+esxcli system settings advanced list -o /UserVars/SuppressShellWarning | grep -i int
+esxcli network firewall get                          # firewall enabled
+# Lockdown mode restricts direct host access to vCenter only:
+vim-cmd hostsvc/hostsummary | grep -i lockdown 2>/dev/null || esxcli system settings
+```
 
-   ```powershell
-   Connect-VIServer -Server vcenter01.lab.example
-   $vmhost = Get-VMHost -Name "esxi01.lab.example"
-   (Get-View $vmhost.ExtensionData.ConfigManager.HostAccessManager).ChangeLockdownMode("lockdownNormal")
-   ```
+**Expected result:** the host firewall enabled and lockdown-mode state — vSphere hardening follows the
+Security Configuration Guide: enable the host firewall, use **lockdown mode** (management only via
+vCenter), limit SSH/shell, and enforce VM-level restrictions; the baseline reduces the hypervisor's
+attack surface.
 
-   **Expected result:** `vSphere Client > select host > Configure >
-   Security Profile > Lockdown Mode` shows "Lockdown Mode: Normal."
-   Attempting `ssh root@esxi01.lab.example` from a workstation using a
-   non-exception account should fail with a permission/lockdown-related
-   error.
+**Negative test:** leave hosts with SSH always on, no lockdown, and default settings; the management
+plane is broadly exposed — the hardening baseline closes those well-known exposures.
 
-2. Build and assign a least-privilege custom role scoped to a single
-   folder:
+**Cleanup:** none (keep hardening).
 
-   ```powershell
-   $privileges = Get-VIPrivilege -Name "VirtualMachine.Interact.PowerOn",
-     "VirtualMachine.Interact.PowerOff"
-   New-VIRole -Name "lab-role-power-only" -Privilege $privileges
+### Lab 8.2 — Micro-segmentation with NSX (Topic: Segmentation)
 
-   New-Folder -Name "lab-scoped-vms" -Location (Get-Datacenter | Select-Object -First 1)
-   New-VIPermission -Entity (Get-Folder -Name "lab-scoped-vms") `
-     -Principal "CORP\lab-test-user" -Role "lab-role-power-only" -Propagate:$true
-   ```
+**Objective:** Reason about distributed-firewall segmentation.
 
-   **Expected result:** logging in to the vSphere Client as
-   `lab-test-user` shows only the `lab-scoped-vms` folder contents, with
-   power-on/power-off available but no ability to edit settings, snapshot,
-   or delete VMs — confirm at least one restricted action is correctly
-   refused.
+```text
+# NSX Distributed Firewall (DFW) enforces policy at each VM's vNIC (Chapters 10-11):
+#   - default-deny between workloads, allow only intended flows
+#   - policy by security group / tag (e.g. "web -> app:8443 only"), not by IP/subnet
+#   - east-west traffic inspected in the hypervisor, before it hits the network
+```
 
-3. Tag the test VMs to establish dynamic group membership (a simple
-   two-tier scenario: a "web" VM and a "db" VM):
+**Expected result:** a micro-segmentation model where the distributed firewall enforces least-privilege
+between VMs at the vNIC — NSX moves segmentation into the hypervisor (the DFW), so east-west traffic is
+controlled per-workload by group/tag regardless of network topology, containing lateral movement a
+perimeter firewall cannot.
 
-   ```powershell
-   New-TagCategory -Name "lab-tier" -Cardinality Single -EntityType VirtualMachine
-   New-Tag -Name "web" -Category "lab-tier"
-   New-Tag -Name "db" -Category "lab-tier"
+**Negative test:** rely on a perimeter firewall alone; once traffic is inside the data center it moves
+freely east-west between VMs — the distributed firewall is what enforces segmentation between
+workloads on the same network.
 
-   Get-VM -Name "lab-web-01" | New-TagAssignment -Tag (Get-Tag -Name "web" -Category "lab-tier")
-   Get-VM -Name "lab-db-01" | New-TagAssignment -Tag (Get-Tag -Name "db" -Category "lab-tier")
-   ```
+**Cleanup:** none.
 
-4. Create matching dynamic security groups in NSX Manager and a
-   default-deny-by-default DFW policy allowing only web-to-db on a single
-   test port (for example TCP/5432):
+### Lab 8.3 — Security architecture and integration (Topic: Security architecture)
 
-   ```bash
-   curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PATCH \
-     https://nsxmgr01.lab.example/policy/api/v1/infra/domains/default/groups/lab-sg-web \
-     -H "Content-Type: application/json" \
-     -d '{"display_name":"lab-sg-web","expression":[{"resource_type":"Condition","member_type":"VirtualMachine","key":"Tag","operator":"EQUALS","value":"lab-tier|web"}]}'
+**Objective:** Position vSphere/NSX security in the stack.
 
-   curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PATCH \
-     https://nsxmgr01.lab.example/policy/api/v1/infra/domains/default/groups/lab-sg-db \
-     -H "Content-Type: application/json" \
-     -d '{"display_name":"lab-sg-db","expression":[{"resource_type":"Condition","member_type":"VirtualMachine","key":"Tag","operator":"EQUALS","value":"lab-tier|db"}]}'
+```text
+# Map the layered controls:
+#   - platform: ESXi hardening + lockdown, vCenter RBAC/SSO (Ch03), certificate management
+#   - network: NSX DFW micro-segmentation + gateway firewall/IDS (Ch10-11)
+#   - workload: VM encryption, secure boot, VBS; identity-based policy
+# Show how these integrate with the enterprise security program (Volume X).
+```
 
-   curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PATCH \
-     https://nsxmgr01.lab.example/policy/api/v1/infra/domains/default/security-policies/lab-sp/rules/lab-rule-web-to-db \
-     -H "Content-Type: application/json" \
-     -d '{"display_name":"lab-web-to-db","source_groups":["/infra/domains/default/groups/lab-sg-web"],"destination_groups":["/infra/domains/default/groups/lab-sg-db"],"services":["/infra/services/PostgreSQL"],"action":"ALLOW","scope":["ANY"]}'
-   ```
+**Expected result:** a layered security architecture (platform + network + workload) integrated with
+the enterprise program — vSphere/NSX security is defense in depth: hardened hosts, RBAC, distributed
+micro-segmentation, and workload protections together, feeding the same monitoring/IR (Volumes X, XI)
+as the rest of the estate.
 
-   **Expected result:** `NSX Manager > Inventory > Groups` shows both
-   groups populated with exactly the expected VM; the security policy
-   shows the new rule with the correct source/destination/service.
+**Negative test:** secure only one layer (e.g. the perimeter) and assume the platform is safe; a gap in
+host hardening or east-west segmentation is exploitable — layered controls across platform, network,
+and workload are what make it defensible.
 
-5. From `lab-web-01`, confirm the allowed flow succeeds
-   (`nc -zv <lab-db-01-IP> 5432` or equivalent, adjusting for the actual
-   service listening on `lab-db-01`) and confirm rule hit counters
-   increment in NSX Manager's security policy view.
-
-6. **Negative test.** From `lab-web-01`, attempt a connection to
-   `lab-db-01` on a port not covered by the allow rule (for example
-   `nc -zv <lab-db-01-IP> 22`), and separately attempt `ping` between the
-   two VMs if ICMP is not explicitly allowed by an infrastructure-category
-   rule.
-
-   **Expected result:** the unauthorized connection attempt is blocked,
-   and NSX Manager's Traffic Analysis / rule-hit view shows the traffic
-   matching the default-deny rule (or an explicit deny rule if one was
-   added), confirming the DFW's default-deny posture is actually enforced
-   for traffic not explicitly allowed — not merely configured but
-   inert.
-
-7. **Cleanup:** remove the DFW rule and groups, remove tags, remove the
-   custom role and folder permission, and disable Lockdown Mode if the
-   lab's baseline had it disabled:
-
-   ```bash
-   curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X DELETE \
-     https://nsxmgr01.lab.example/policy/api/v1/infra/domains/default/security-policies/lab-sp/rules/lab-rule-web-to-db
-   curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X DELETE \
-     https://nsxmgr01.lab.example/policy/api/v1/infra/domains/default/groups/lab-sg-web
-   curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X DELETE \
-     https://nsxmgr01.lab.example/policy/api/v1/infra/domains/default/groups/lab-sg-db
-   ```
-
-   ```powershell
-   Get-VM -Name "lab-web-01" | Get-TagAssignment | Remove-TagAssignment -Confirm:$false
-   Get-VM -Name "lab-db-01" | Get-TagAssignment | Remove-TagAssignment -Confirm:$false
-   Get-Tag -Name "web" -Category "lab-tier" | Remove-Tag -Confirm:$false
-   Get-Tag -Name "db" -Category "lab-tier" | Remove-Tag -Confirm:$false
-   Get-TagCategory -Name "lab-tier" | Remove-TagCategory -Confirm:$false
-
-   Remove-VIPermission -Entity (Get-Folder -Name "lab-scoped-vms") `
-     -Principal "CORP\lab-test-user" -Role "lab-role-power-only" -Confirm:$false
-   Remove-Folder -Folder "lab-scoped-vms" -Confirm:$false
-   Get-VIRole -Name "lab-role-power-only" | Remove-VIRole -Confirm:$false
-
-   $vmhost = Get-VMHost -Name "esxi01.lab.example"
-   (Get-View $vmhost.ExtensionData.ConfigManager.HostAccessManager).ChangeLockdownMode("lockdownDisabled")
-   ```
+**Cleanup:** none.
 
 ## Lab Verification
 

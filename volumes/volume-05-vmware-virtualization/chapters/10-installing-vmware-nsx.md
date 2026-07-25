@@ -468,89 +468,79 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PUT \
 
 ## Hands-On Lab
 
-**Objective:** Deploy a single-node NSX Manager (lab-scoped), create an
-overlay transport zone, uplink profile, and TEP pool, prepare one nested
-ESXi host as a transport node, deploy an Edge VM, and validate TEP
-connectivity — including a deliberate uplink-profile misconfiguration
-negative test.
+This chapter carries a topic-level walkthrough lab for **each step of installing VMware NSX** — the
+management/control plane, transport nodes, and validation. NSX is deployed from NSX Manager (UI/API);
+labs pair the workflow with API verification. Each ends **`**Lab verified by:** *pending*`** until a
+human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 10.1–10.3** — a vSphere cluster, NSX Manager deployed, and `curl` for
+the NSX API. **Cost:** none beyond lab resources.
 
-- A vSphere 9.x lab with at least one ESXi host (nested is acceptable)
-  already prepared with a VDS (from the [Chapter 4](04-vsphere-virtual-networking.md) lab or equivalent),
-  reachable NTP and DNS, and sufficient free capacity for an NSX Manager
-  appliance and an Edge VM.
-- The NSX Manager and NSX Edge OVA files staged locally, and `ovftool`
-  installed on the deploying workstation.
-- A lab overlay-capable VLAN (transport VLAN) trunked to the relevant
-  physical/nested switch ports, with jumbo frames (MTU 9000) supported
-  end-to-end.
+### Lab 10.1 — NSX Manager and management cluster (Topic: NSX deployment)
 
-**Steps**
+**Objective:** Verify the NSX management/control plane.
 
-1. Deploy a single NSX Manager node using the `ovftool` example in
-   Implementation and Automation, adjusted to lab addressing.
+```bash
+# NSX Manager (a 3-node cluster for production) hosts the management + control plane:
+curl -sk -u 'admin:<pass>' https://<nsx-mgr>/api/v1/cluster/status | python3 -c "import json,sys; print('cluster:', json.load(sys.stdin).get('control_cluster_status',{}).get('status'))"
+curl -sk -u 'admin:<pass>' https://<nsx-mgr>/api/v1/node/version | python3 -m json.tool | head
+```
 
-   **Expected result:** the NSX Manager UI becomes reachable at
-   `https://<manager-ip>/` and the cluster status API reports the single
-   node as `UP`.
+**Expected result:** the NSX management cluster reporting stable/healthy with its version — NSX Manager
+provides the management plane (policy/API) and control plane (distributes configuration to transport
+nodes); a healthy manager cluster (3 nodes in production) is the prerequisite for everything NSX does.
 
-2. Create an overlay transport zone, an uplink profile referencing the
-   lab's VDS uplink names, and a TEP IP pool sized for at least 4
-   addresses.
+**Negative test:** build NSX on a single manager node for production; there is no control-plane
+redundancy — a 3-node manager cluster is required for a resilient control plane.
 
-   **Expected result:** all three objects are visible under `System >
-   Fabric` in the NSX Manager UI.
+**Cleanup:** none (read-only).
 
-3. **Negative test:** create a second uplink profile that intentionally
-   references an uplink name that does not exist on the lab VDS (for
-   example, `uplink-3` when the VDS has only two uplinks configured), and
-   attempt to prepare the lab host using a transport node profile built
-   from this incorrect uplink profile.
+### Lab 10.2 — Transport nodes and zones (Topic: Data plane preparation)
 
-   **Expected result:** host preparation fails, with the transport node
-   status reporting an uplink mapping error rather than succeeding
-   silently — confirm the specific failure reason references the
-   nonexistent uplink name.
+**Objective:** Prepare hosts to carry NSX overlay/VLAN traffic.
 
-4. Correct the transport node profile to reference the correct uplink
-   profile from step 2, and re-run host preparation:
+```text
+# In NSX Manager: prepare the ESXi hosts as Transport Nodes:
+#   - install the NSX components on each host (the data plane)
+#   - attach to a Transport Zone (Overlay for Geneve tunnels, and/or VLAN)
+#   - configure the host TEP (Tunnel Endpoint) VMkernel for overlay
+```
 
-   **Expected result:** the host transitions through `Installing` to a
-   `Success`/green transport node status.
+Verify via the API:
 
-5. From the prepared host's shell, verify TEP configuration:
+```bash
+curl -sk -u 'admin:<pass>' https://<nsx-mgr>/api/v1/transport-nodes | python3 -c "import json,sys; d=json.load(sys.stdin); print('transport nodes:', d.get('result_count'))"
+```
 
-   ```bash
-   nsxcli
-   get vteps
-   ```
+**Expected result:** the ESXi hosts become transport nodes attached to a transport zone, with TEPs for
+overlay — transport nodes are the NSX data plane: preparing hosts and attaching them to a transport
+zone is what lets NSX build overlay (Geneve) networks and enforce the distributed firewall across the
+cluster.
 
-   **Expected result:** the host reports at least one TEP interface with
-   an IP address drawn from the configured TEP pool.
+**Negative test:** create logical segments before preparing transport nodes; there is no data plane to
+realize them — hosts must be transport nodes in the right transport zone first.
 
-6. Deploy an NSX Edge VM using the `ovftool` example, adjusted to lab
-   addressing, and register it with NSX Manager.
+**Cleanup:** remove lab-only transport-node prep if reworking.
 
-   **Expected result:** the Edge node appears under `System > Fabric >
-   Nodes > Edge Transport Nodes` with a healthy status, and can be added
-   to a new Edge cluster.
+### Lab 10.3 — Edge nodes and validation (Topic: Edge and validation)
 
-7. Validate MTU end-to-end for the transport VLAN:
+**Objective:** Deploy edge capacity and confirm readiness.
 
-   ```bash
-   vmkping ++netstack=vxlan -d -s 8972 <PEER_TEP_IP>
-   ```
+```bash
+# Edge nodes provide centralized services (gateways/NAT/LB/gateway firewall) at the perimeter:
+curl -sk -u 'admin:<pass>' https://<nsx-mgr>/api/v1/edge-clusters | python3 -c "import json,sys; print('edge clusters:', json.load(sys.stdin).get('result_count'))"
+```
 
-   **Expected result:** the ping succeeds at full jumbo-frame payload
-   size, confirming the transport VLAN correctly carries Geneve-
-   encapsulated traffic with room for encapsulation overhead.
+**Expected result:** an edge cluster present and healthy alongside the prepared transport nodes — NSX
+**edge nodes** run the centralized (Tier-0/Tier-1 gateway) services that connect overlay networks to
+the physical world; with manager, transport nodes, and edges in place, NSX is ready to configure
+(Chapter 11).
 
-8. **Cleanup:** remove the transport node profile and revert host
-   preparation (uninstall NSX from the host), delete the Edge VM and Edge
-   cluster, remove the transport zone/uplink profile/TEP pool objects,
-   and power off/delete the NSX Manager appliance if it was deployed
-   solely for this lab.
+**Negative test:** plan north-south routing/NAT/load-balancing with no edge cluster; those centralized
+services have nowhere to run — edge nodes are required for gateway services, while the distributed
+firewall runs on every transport node.
+
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

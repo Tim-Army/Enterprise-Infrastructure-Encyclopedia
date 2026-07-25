@@ -445,80 +445,87 @@ curl -k -u admin:'<NSX_ADMIN_PASSWORD>' -X PUT \
 
 ## Hands-On Lab
 
-**Objective:** Build a Tier-0 gateway (BGP to a simulated upstream), a
-Tier-1 gateway beneath it, an overlay segment with DHCP relay, verify VM
-connectivity, build and test a scoped DFW rule using Traceflow, and
-validate a negative test (blocked traffic) before allowing it.
+This chapter carries a topic-level walkthrough lab for **each NSX configuration skill** — logical
+segments and gateways, the distributed firewall, and services. Labs pair the NSX policy workflow with
+API verification. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 11.1–11.3** — NSX installed (Chapter 10: manager, transport nodes,
+edge cluster) and `curl`. **Cost:** none.
 
-- The transport fabric from the [Chapter 10](10-installing-vmware-nsx.md) lab (prepared host, Edge node,
-  overlay transport zone) already in place, or an equivalent lab NSX
-  environment.
-- A simulated upstream BGP router reachable from the Edge node's uplink
-  (a lab router, or a second NSX Edge/VM running a BGP daemon such as
-  FRRouting, is sufficient for AS-peering validation).
-- Two test VMs deployable onto the lab overlay segment, and a lab DHCP
-  server reachable for the DHCP relay test.
+### Lab 11.1 — Logical segments and gateways (Topic: Logical networking)
 
-**Steps**
+**Objective:** Build an overlay network with routing.
 
-1. Create the Tier-0 gateway and configure a BGP neighbor toward the lab
-   upstream router, using the example in Implementation and Automation
-   adjusted to lab addressing and AS numbers.
+```text
+# In NSX (Policy): create a Tier-1 gateway connected to a Tier-0, then overlay Segments on it:
+#   - Segment "web" 10.10.10.0/24, "app" 10.10.20.0/24 on the overlay transport zone
+#   - the Tier-1 provides distributed routing between segments; Tier-0 handles north-south
+```
 
-   **Expected result:** `get bgp neighbor summary` on the Edge node CLI
-   reports the neighbor as `Established`.
+Verify via the API:
 
-2. Create the Tier-1 gateway attached to the Tier-0, and an overlay
-   segment attached to the Tier-1, with DHCP relay pointed at the lab
-   DHCP server.
+```bash
+curl -sk -u 'admin:<pass>' https://<nsx-mgr>/policy/api/v1/infra/segments | python3 -c "import json,sys; print('segments:', json.load(sys.stdin).get('result_count'))"
+```
 
-   **Expected result:** the segment appears under `Networking > Segments`
-   with the Tier-1 shown as its connectivity, and the Tier-1 shows the
-   Tier-0 as its parent.
+**Expected result:** overlay segments with distributed routing via a Tier-1 gateway — NSX **logical
+segments** are software-defined L2 networks (Geneve overlay) decoupled from physical VLANs, and the
+Tier-1/Tier-0 gateways provide distributed east-west and centralized north-south routing, so networks
+are created by policy, not physical reconfiguration.
 
-3. Deploy two test VMs (`test-app-01`, `test-db-01`) onto the new segment
-   and confirm both obtain DHCP-relayed addresses from the lab DHCP
-   server.
+**Negative test:** expect two overlay segments to communicate with no gateway between them; overlay
+segments are isolated L2 domains — a Tier-1 gateway is required to route between them.
 
-   **Expected result:** both VMs receive IP addresses in the expected lab
-   subnet, and can ping each other and the segment's gateway address.
+**Cleanup:** delete the lab segments/gateway.
 
-4. Create a DFW policy section and a default-deny rule at the bottom of
-   the section (`Applied To` the segment's group), then attempt
-   connectivity between the two test VMs on a specific port (for example,
-   TCP 5432):
+### Lab 11.2 — Distributed firewall (Topic: Micro-segmentation)
 
-   **Expected result (negative test):** the connection fails/times out,
-   and the DFW rule hit counter for the default-deny rule increments.
+**Objective:** Enforce least-privilege between workloads.
 
-5. Use Traceflow to trace the blocked flow from `test-app-01` to
-   `test-db-01` on TCP 5432:
+```text
+# In NSX (Security > Distributed Firewall): build a micro-segmentation policy:
+#   - groups by tag/membership: "web", "app", "db"
+#   - rules: web->app:8443 allow, app->db:5432 allow, else default-deny (east-west)
+#   - the DFW enforces at each VM's vNIC in the hypervisor, independent of network topology
+```
 
-   **Expected result:** Traceflow reports the packet reaching the
-   destination segment but being dropped by the default-deny DFW rule,
-   confirming the block is a firewall decision rather than a routing
-   failure.
+Verify via the API:
 
-6. Add a scoped Allow rule above the default-deny rule permitting
-   `test-app-01`'s group to reach `test-db-01`'s group on TCP 5432 only,
-   using the example in Implementation and Automation as a model.
+```bash
+curl -sk -u 'admin:<pass>' https://<nsx-mgr>/policy/api/v1/infra/domains/default/security-policies | python3 -c "import json,sys; print('DFW policies:', json.load(sys.stdin).get('result_count'))"
+```
 
-   **Expected result:** the connection now succeeds, and re-running
-   Traceflow for the same flow shows the packet reaching the destination
-   with the new Allow rule (not the default-deny rule) as the matching
-   rule.
+**Expected result:** a default-deny distributed-firewall policy allowing only intended tiers to
+communicate — the **distributed firewall** enforces micro-segmentation at every vNIC, so lateral
+movement between workloads is contained by group/tag-based policy regardless of subnet, the core NSX
+security value.
 
-7. Confirm the Allow rule's scope is correctly limited: attempt the same
-   connection from a third, out-of-group test VM if available, and
-   confirm it is still blocked by the default-deny rule — demonstrating
-   the Applied To scoping is working as intended rather than
-   inadvertently permissive.
+**Negative test:** write firewall rules by IP address for dynamic/auto-scaling workloads; addresses
+churn and rules break — group/tag-based membership keeps the policy correct as workloads change.
 
-8. **Cleanup:** delete the test VMs, remove the DFW policy section and its
-   rules, delete the segment, Tier-1 gateway, and Tier-0 gateway (and its
-   BGP neighbor configuration) if these were created solely for this lab.
+**Cleanup:** remove the lab DFW policy/groups.
+
+### Lab 11.3 — Network services (Topic: NSX services)
+
+**Objective:** Add a gateway service (NAT/load balancing).
+
+```text
+# On the Tier-0/Tier-1 gateway (edge-hosted), configure a service, e.g.:
+#   - source NAT so overlay workloads reach the physical/internet
+#   - a load balancer virtual server fronting the "web" group
+#   - a gateway firewall rule for north-south control
+```
+
+**Expected result:** a gateway service (NAT/LB/firewall) running on the edge for the overlay networks —
+NSX gateway services (NAT, load balancing, gateway firewall, VPN) provide the north-south and L4-7
+functions that connect and protect the software-defined networks, completing the NSX stack alongside
+the distributed firewall.
+
+**Negative test:** expect overlay workloads to reach the physical network with no NAT/uplink on the
+Tier-0; overlay addresses are not routable externally without the gateway service — the edge-hosted
+gateway is what bridges overlay to physical.
+
+**Cleanup:** remove the lab gateway service.
 
 ## Lab Verification
 

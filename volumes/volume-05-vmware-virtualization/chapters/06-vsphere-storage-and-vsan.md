@@ -658,141 +658,71 @@ Set-VsanClusterConfiguration -Cluster $cluster -StretchedClusterEnabled:$true `
 
 ## Hands-On Lab
 
-**Objective:** Enable vSAN on a nested-ESXi lab cluster, create and apply a
-RAID-1 storage policy, deliberately violate policy compliance through a
-simulated host failure, and observe resync behavior — then clean up back to
-a non-vSAN state.
+This chapter carries a topic-level walkthrough lab for **each vSphere storage skill** — datastores,
+vSAN, and storage policies. Labs use PowerCLI/esxcli. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.3** — a vSphere cluster (vSAN-enabled for Labs 6.2–6.3) and
+PowerCLI. **Cost:** none.
 
-- A vSphere 9.x lab with at least 3 nested ESXi hosts in one cluster, each
-  presenting at least two unused virtual disks (one to serve as a cache
-  device, one or more as capacity devices) not already consumed by another
-  datastore. Nested ESXi VMs must have hardware virtualization exposed and
-  the virtual disks marked as SSD/flash at the VM's virtual disk controller
-  settings for a clean vSAN all-flash claim.
-- A dedicated, routable VMkernel network (a lab VLAN or isolated
-  port group) available for vSAN traffic on each host.
-- PowerCLI connected to the lab vCenter with cluster-modify privileges.
+### Lab 6.1 — Datastores (Topic: Datastores)
 
-**Steps**
+**Objective:** Read the datastores backing VM storage.
 
-1. Create a dedicated vSAN VMkernel adapter on each of the 3 hosts:
+```powershell
+Get-Datastore | Select Name,Type,@{N='CapGB';E={[math]::Round($_.CapacityGB)}},@{N='FreeGB';E={[math]::Round($_.FreeSpaceGB)}}
+Get-VMHost <host> | Get-ScsiLun -LunType disk | Select CanonicalName,CapacityGB | Select -First 5
+```
 
-   ```powershell
-   Connect-VIServer -Server vcenter01.lab.example
-   $cluster = Get-Cluster -Name "lab-vsan-cluster"
-   foreach ($vmhost in (Get-VMHost -Location $cluster)) {
-     New-VMHostNetworkAdapter -VMHost $vmhost -PortGroup "pg-vsan-lab" `
-       -VirtualSwitch (Get-VirtualSwitch -VMHost $vmhost -Name "vSwitch0") `
-       -IP "10.10.30.1$($vmhost.Name.Substring($vmhost.Name.Length-1))" `
-       -SubnetMask "255.255.255.0" -VsanTrafficEnabled:$true
-   }
-   ```
+**Expected result:** the datastores (VMFS/NFS/vSAN) with capacity/free, and the backing LUNs — a
+datastore is the logical storage container for VM files; vSphere supports block (VMFS on FC/iSCSI/local)
+and file (NFS) and software-defined (vSAN) datastores, and capacity/headroom must be watched to avoid
+VMs pausing on a full datastore.
 
-   **Expected result:** each host shows a new VMkernel adapter with the
-   vSAN traffic service enabled under
-   `vSphere Client > select host > Configure > VMkernel adapters`.
+**Negative test:** run a datastore to near-full; thin-provisioned VMs and snapshots can exhaust it and
+pause VMs — monitor datastore free space and alarm before it fills.
 
-2. Enable vSAN on the cluster:
+**Cleanup:** none (read-only).
 
-   ```powershell
-   Set-Cluster -Cluster $cluster -VsanEnabled:$true -Confirm:$false
-   ```
+### Lab 6.2 — vSAN (Topic: Software-defined storage)
 
-3. Claim disks and create a disk group on each host (adjust device
-   identifiers to the lab's actual virtual disk `naa.` or `mpx.` identifiers,
-   found via `Get-VMHostDisk` or `esxcli storage core device list`):
+**Objective:** Read the vSAN cluster and its health.
 
-   ```powershell
-   foreach ($vmhost in (Get-VMHost -Location $cluster)) {
-     New-VsanDiskGroup -VMHost $vmhost `
-       -SsdCanonicalName "<CACHE_DEVICE_ID>" `
-       -DataDiskCanonicalName "<CAPACITY_DEVICE_ID>"
-   }
-   ```
+```powershell
+Get-Cluster <cluster> | Select Name,VsanEnabled
+Get-VsanDisk 2>$null | Select VMHost,IsCacheDisk,CapacityGB | Select -First 6
+# vSphere Client: Cluster > Monitor > vSAN > Skyline Health (network, disks, data, cluster)
+```
 
-   **Expected result:** `vSphere Client > select cluster > Configure > vSAN
-   > Disk Management` shows three disk groups, one per host, all in a
-   healthy (green) state, and a new vSAN datastore appears under Datastores
-   with usable capacity roughly matching the sum of claimed capacity
-   devices.
+**Expected result:** vSAN enabled with per-host disk groups (cache + capacity) and a health view —
+vSAN pools the hosts' local disks into a single distributed datastore, scaled by adding nodes; disk
+groups (a cache device fronting capacity devices) are its building block, and Skyline Health is the
+definitive storage check.
 
-4. Run Skyline Health and confirm no unresolved findings:
+**Negative test:** plan usable capacity from raw disk totals; FTT/RAID overhead and slack space make
+usable far less than raw — vSAN capacity planning must account for the resilience policy overhead.
 
-   `vSphere Client > select cluster > Monitor > vSAN > Skyline Health >
-   Retest`.
+**Cleanup:** none (read-only).
 
-   **Expected result:** all categories report green/healthy; resolve any
-   network or disk findings before proceeding.
+### Lab 6.3 — Storage policies (Topic: Storage policy-based management)
 
-5. Create a RAID-1 FTT=1 storage policy and deploy a small test VM using it:
+**Objective:** Set per-VM resilience with a storage policy.
 
-   ```powershell
-   $rule = New-SpbmRuleFtt -FttType RAID-1 -FttValue 1
-   $ruleset = New-SpbmRuleSet -AllOfRules $rule
-   New-SpbmStoragePolicy -Name "lab-vsan-raid1-ftt1" -AnyOfRuleSets $ruleset
+```powershell
+Get-SpbmStoragePolicy | Select Name | Select -First 5
+# Assign a policy (e.g. FTT=1 RAID-1) to a VM; RAID-5/6 (erasure coding) trades space for hosts needed:
+Get-VM web01 | Get-SpbmEntityConfiguration | Select Entity,StoragePolicy,ComplianceStatus
+```
 
-   New-VM -Name "vsan-lab-test-vm" -ResourcePool $cluster `
-     -Datastore (Get-Datastore -Name "vsanDatastore") `
-     -DiskGB 10 -DiskStorageFormat Thin -NumCpu 1 -MemoryGB 1
-   Get-VM -Name "vsan-lab-test-vm" | Get-HardDisk |
-     Set-SpbmEntityConfiguration -StoragePolicy (Get-SpbmStoragePolicy -Name "lab-vsan-raid1-ftt1")
-   ```
+**Expected result:** the VM's storage policy and its compliance status — **Storage Policy-Based
+Management (SPBM)** sets resilience per VM by intent (Failures To Tolerate, RAID method) rather than by
+placing files on a specific LUN; the policy, not manual placement, decides how many failures a VM
+survives and its space overhead.
 
-   **Expected result:** `Get-VM -Name "vsan-lab-test-vm" |
-   Get-SpbmEntityConfiguration` reports `ComplianceStatus: compliant`.
+**Negative test:** apply an FTT=2 RAID-6 policy on a cluster with too few hosts; objects are
+non-compliant (RAID-6 needs ≥6 hosts) — the policy's resilience must fit the cluster size.
 
-6. **Negative test:** place one host into maintenance mode using the "No
-   data migration" option (simulating an unplanned host loss rather than a
-   clean evacuation) while the test VM's replica components reside partly
-   on that host:
-
-   ```powershell
-   Set-VMHost -VMHost (Get-VMHost -Location $cluster | Select-Object -First 1) `
-     -State Maintenance -VsanDataMigrationMode NoAction -Confirm:$false
-   ```
-
-   **Expected result:** within a few minutes, `Get-VM -Name
-   "vsan-lab-test-vm" | Get-SpbmEntityConfiguration` shows
-   `ComplianceStatus: nonCompliant` or `Get-VM -Name "vsan-lab-test-vm" |
-   Get-VsanObject` (or the vSAN health/resyncing view in the vSphere
-   Client) shows the object as reduced-redundancy, since only 2 of the
-   original 3 fault domains remain reachable for a policy requiring 3.
-   The VM itself should remain running and accessible (RAID-1 FTT=1
-   tolerates exactly this single-host loss) — this is the expected,
-   correct behavior a storage policy is designed to guarantee, but the
-   compliance flag correctly signals the object is no longer protected
-   against a *second* concurrent failure until the host returns.
-
-7. Exit maintenance mode and confirm the object resyncs back to full
-   compliance:
-
-   ```powershell
-   Set-VMHost -VMHost (Get-VMHost -Location $cluster | Select-Object -First 1) `
-     -State Connected -Confirm:$false
-   ```
-
-   **Expected result:** `vSphere Client > select cluster > Monitor > vSAN
-   > Resyncing Objects` shows active resync traffic, and
-   `Get-SpbmEntityConfiguration` returns to `ComplianceStatus: compliant`
-   once resync completes.
-
-8. **Cleanup:** delete the test VM, remove the storage policy, disable
-   vSAN, and remove the vSAN VMkernel adapters to return the cluster to its
-   prior non-vSAN state:
-
-   ```powershell
-   Get-VM -Name "vsan-lab-test-vm" | Stop-VM -Confirm:$false
-   Get-VM -Name "vsan-lab-test-vm" | Remove-VM -DeletePermanently -Confirm:$false
-   Get-SpbmStoragePolicy -Name "lab-vsan-raid1-ftt1" | Remove-SpbmStoragePolicy -Confirm:$false
-   Set-Cluster -Cluster $cluster -VsanEnabled:$false -Confirm:$false
-   foreach ($vmhost in (Get-VMHost -Location $cluster)) {
-     Get-VMHostNetworkAdapter -VMHost $vmhost -Name "vmk*" |
-       Where-Object { $_.PortGroupName -eq "pg-vsan-lab" } |
-       Remove-VMHostNetworkAdapter -Confirm:$false
-   }
-   ```
+**Cleanup:** revert the lab VM to the default policy if changed.
 
 ## Lab Verification
 

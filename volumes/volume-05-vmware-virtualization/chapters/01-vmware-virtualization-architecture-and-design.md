@@ -541,134 +541,72 @@ curl -sk -H "vmware-api-session-id: ${SESSION//\"/}" \
 
 ## Hands-On Lab
 
-**Objective:** Build a permission-delegation-ready inventory hierarchy
-(datacenter, cluster, folders, tag category) against a lab vCenter
-Server using PowerCLI, verify the structure through a second, independent
-API client (govc), and prove the resulting permission boundary with a
-negative test.
+This chapter carries a topic-level walkthrough lab for **each virtualization-architecture theme** —
+the hypervisor model, resource abstraction, and design planning. Labs use `esxcli`/PowerCLI against a
+lab vSphere environment. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-### Prerequisites
+**Shared prerequisites for Labs 1.1–1.3** — a vSphere lab (ESXi host + vCenter) and PowerCLI
+(`Connect-VIServer`). **Cost:** none beyond lab resources.
 
-- A lab vCenter Server Appliance already deployed and reachable (nested
-  or physical), with at least one ESXi host registered — full deployment
-  steps are covered in [Chapter 2](02-esxi-installation-configuration-and-host-operations.md) (ESXi) and [Chapter 3](03-vcenter-server-deployment-identity-and-recovery.md) (vCenter). This
-  lab assumes that groundwork already exists.
-- A workstation with PowerShell 7.x and the `VMware.PowerCLI` module
-  installed, and `govc` installed for the cross-verification step
-  (`brew install govmomi` or the equivalent binary release for your OS).
-- An `administrator@vsphere.local` (or equivalent) credential with
-  privileges to create inventory objects and permissions.
-- A second, lower-privileged local SSO user account already created (for
-  the negative test) — this can be created ahead of time via
-  `vSphere Client > Administration > Single Sign On > Users and Groups`.
+### Lab 1.1 — The type-1 hypervisor model (Topic: Virtualization architecture)
 
-### Procedure
+**Objective:** Read the hypervisor and its virtual hardware abstraction.
 
-1. Connect with PowerCLI and confirm the target vCenter Server:
+```bash
+esxcli system version get
+esxcli hardware cpu global get            # physical CPU the hypervisor abstracts
+vim-cmd hostsvc/hostsummary | grep -iE "cpuModel|memorySize" | head
+```
 
-   ```powershell
-   Connect-VIServer -Server vcenter01.lab.local -User 'administrator@vsphere.local'
-   Get-Datacenter
-   ```
+**Expected result:** the ESXi (type-1) version and the physical CPU/memory it abstracts — ESXi is a
+**bare-metal (type-1) hypervisor** that runs directly on hardware and presents virtual CPUs, memory,
+disks, and NICs to guests, giving strong isolation and near-native performance versus a hosted
+(type-2) hypervisor.
 
-   **Expected result:** the session connects without error and lists any
-   pre-existing datacenters.
+**Negative test:** treat a VM's virtual hardware as fixed to the physical host; vCPUs/memory are
+abstractions the scheduler maps to physical resources and can exceed (overcommit) them — the
+abstraction is what enables consolidation.
 
-2. Create the datacenter, folders, and cluster:
+**Cleanup:** none (read-only).
 
-   ```powershell
-   New-Datacenter -Location (Get-Folder -NoRecursion) -Name 'LAB-DC'
-   $dc = Get-Datacenter -Name 'LAB-DC'
-   New-Folder -Location (Get-Folder -Name 'vm' -Location $dc) -Name 'Restricted-Apps'
+### Lab 1.2 — Resource abstraction and consolidation (Topic: Resource model)
 
-   New-Cluster -Location $dc -Name 'LAB-CLUSTER' `
-     -HAEnabled -HAAdmissionControlEnabled `
-     -DrsEnabled -DrsAutomationLevel FullyAutomated
-   ```
-
-   **Expected result:** `Get-Cluster LAB-CLUSTER | Select Name,
-   HAEnabled, DrsEnabled` shows both features enabled.
-
-3. Create a tag category and tag for data classification, and confirm
-   it is visible through a second API client (govc):
-
-   ```powershell
-   New-TagCategory -Name 'DataClassification' -Cardinality Single -EntityType VirtualMachine
-   New-Tag -Name 'Restricted' -Category 'DataClassification'
-   ```
-
-   ```bash
-   export GOVC_URL='https://vcenter01.lab.local'
-   export GOVC_USERNAME='administrator@vsphere.local'
-   export GOVC_PASSWORD='<PASSWORD>'
-   export GOVC_INSECURE=1
-
-   govc tags.category.ls
-   govc tags.ls
-   ```
-
-   **Expected result:** `DataClassification` and `Restricted` both
-   appear in the govc output, confirming both clients see the same
-   underlying object model.
-
-4. Create a custom role scoped to read-only VM interaction and assign it
-   to the lower-privileged user at the `Restricted-Apps` folder only:
-
-   ```powershell
-   $privileges = Get-VIPrivilege -Name 'VirtualMachine.Interact.PowerOn',
-                                        'VirtualMachine.Interact.PowerOff'
-   New-VIRole -Name 'LabRestrictedOperator' -Privilege $privileges
-
-   New-VIPermission -Entity (Get-Folder -Name 'Restricted-Apps') `
-     -Principal 'lab-restricted-user' -Role 'LabRestrictedOperator' `
-     -Propagate:$true
-   ```
-
-   **Expected result:** `Get-VIPermission -Entity (Get-Folder -Name
-   'Restricted-Apps')` shows the new assignment with `Propagate: True`.
-
-5. Move an existing test VM (create one if none exists) into the
-   `Restricted-Apps` folder and confirm it inherits the permission:
-
-   ```powershell
-   Get-VM -Name '<TEST_VM_NAME>' | Move-VM -Destination (Get-Folder -Name 'Restricted-Apps')
-   ```
-
-   **Expected result:** the VM now appears under `Restricted-Apps` in the
-   vSphere Client inventory tree.
-
-### Negative Test
-
-Log in to the vSphere Client as `lab-restricted-user` (the account
-scoped to `LabRestrictedOperator` at the `Restricted-Apps` folder only).
-Attempt two actions: first, power on the test VM inside
-`Restricted-Apps` — this should succeed, confirming the assigned
-privileges work. Second, attempt to view or modify any object outside
-that folder (for example, the `LAB-CLUSTER` object's settings, or a VM
-in a different folder). The vSphere Client should either hide those
-objects entirely or return a permission-denied error, proving the
-folder-scoped permission boundary — not a resource pool, and not a
-naming convention — is what is actually enforcing isolation.
-
-### Cleanup
+**Objective:** See how the hypervisor consolidates many VMs onto one host.
 
 ```powershell
-Remove-VIPermission -Entity (Get-Folder -Name 'Restricted-Apps') `
-  -Principal 'lab-restricted-user' -Role 'LabRestrictedOperator' -Confirm:$false
-Remove-VIRole -Role 'LabRestrictedOperator' -Confirm:$false
-
-Get-VM -Name '<TEST_VM_NAME>' | Move-VM -Destination (Get-Folder -Name 'vm' -Location (Get-Datacenter -Name 'LAB-DC'))
-
-Remove-TagAssignment -TagAssignment (Get-TagAssignment -Category 'DataClassification') -Confirm:$false
-Remove-Tag -Tag 'Restricted' -Confirm:$false
-Remove-TagCategory -Category 'DataClassification' -Confirm:$false
-
-Remove-Cluster -Cluster 'LAB-CLUSTER' -Confirm:$false
-Remove-Folder -Folder 'Restricted-Apps' -Confirm:$false
-Remove-Datacenter -Datacenter 'LAB-DC' -Confirm:$false
-
-Disconnect-VIServer -Server vcenter01.lab.local -Confirm:$false
+Connect-VIServer <vcenter>
+Get-VMHost | Select Name,NumCpu,@{N='MemGB';E={[math]::Round($_.MemoryTotalGB)}},@{N='VMs';E={($_|Get-VM).Count}}
+Get-VMHost | Get-Stat -Stat cpu.usage.average -MaxSamples 1 2>$null | Select Entity,Value
 ```
+
+**Expected result:** one host running many VMs with aggregate vCPU/memory exceeding physical (safe
+overcommit) — virtualization consolidates workloads by time-sharing physical CPU and over-committing
+memory (with reclamation), raising utilization far above bare-metal one-app-per-server.
+
+**Negative test:** provision every VM with maximal vCPUs "to be safe"; excessive vCPU overcommit causes
+CPU-ready contention that slows all VMs — right-sizing beats over-provisioning.
+
+**Cleanup:** none (read-only).
+
+### Lab 1.3 — Design planning (Topic: Architecture design)
+
+**Objective:** Reason about a consolidation design.
+
+```text
+# For a workload set, plan the vSphere design:
+#   - host sizing + count for N+1 availability (a host can fail without capacity loss)
+#   - CPU/memory overcommit ratios appropriate to the workload profile
+#   - cluster boundaries (failure domains), and where DRS/HA apply (Chapter 07)
+```
+
+**Expected result:** a design with N+1 host capacity, justified overcommit ratios, and defined cluster/
+failure-domain boundaries — virtualization design balances consolidation density against availability
+and performance headroom, so a host failure is survivable and contention is bounded.
+
+**Negative test:** size a cluster with no spare (N+0) capacity; a single host failure cannot restart
+its VMs elsewhere — N+1 (or more) is what makes HA (Chapter 07) actually able to recover.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

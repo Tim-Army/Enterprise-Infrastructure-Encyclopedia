@@ -418,108 +418,78 @@ esxtop -b -d 5 -n 12 > /tmp/esxtop-capture.csv
 
 ## Hands-On Lab
 
-**Objective:** Set a vLCM desired-state image on a lab cluster, run a
-compliance check, create a custom alarm, generate a support bundle, and
-perform a basic esxtop-based performance observation — including a
-deliberate non-compliant-component negative test.
+This chapter carries a topic-level walkthrough lab for **each lifecycle/automation/observability
+skill** — Lifecycle Manager, PowerCLI automation, and troubleshooting. Labs use vLCM and PowerCLI.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 9.1–9.3** — a vSphere cluster with vSphere Lifecycle Manager and
+PowerCLI. **Cost:** none.
 
-- A vSphere 9.x lab cluster with at least 2 hosts under vLCM image
-  management (or convertible to it), and enough free capacity for DRS to
-  evacuate one host at a time.
-- PowerCLI connected to the lab vCenter with cluster and vLCM privileges.
-- SSH or console access to at least one ESXi host for `esxtop` and
-  `vm-support`.
+### Lab 9.1 — Lifecycle management (Topic: Lifecycle)
 
-**Steps**
+**Objective:** Manage host software with an image.
 
-1. Confirm (or convert) the cluster to image-based management and inspect
-   the current desired-state image:
+```powershell
+# vSphere Lifecycle Manager (vLCM) manages a cluster to a desired IMAGE (ESXi + vendor add-on + firmware):
+Get-Cluster <cluster> | Select Name
+# vSphere Client: Cluster > Updates > Image — define the desired image, check compliance, remediate.
+Get-Compliance -Entity (Get-Cluster <cluster>) 2>$null | Select Entity,Status | Select -First 5
+```
 
-   ```powershell
-   Connect-VIServer -Server vcenter-lab.local
-   $cluster = Get-Cluster -Name "lab-cluster"
-   Get-VMHostImage -Cluster $cluster
-   ```
+**Expected result:** the cluster's compliance against a desired image (ESXi + drivers + firmware) —
+vLCM manages an entire cluster to one **desired-state image**, remediating hosts (rolling through
+maintenance mode) so they are identical and current, replacing per-host baseline patching.
 
-   **Expected result:** the command returns the current base image
-   version and any configured add-ons/components.
+**Negative test:** patch each host individually to different builds; the cluster becomes inconsistent
+and unsupported combinations creep in — vLCM's single desired image keeps every host identical.
 
-2. Run a compliance check against the current image:
+**Cleanup:** none.
 
-   ```powershell
-   Get-VMHostImageCompliance -Cluster $cluster | Select-Object VMHost, ComplianceStatus
-   ```
+### Lab 9.2 — Automation with PowerCLI (Topic: Automation)
 
-   **Expected result:** all hosts report `Compliant` if the cluster was
-   already converged.
+**Objective:** Automate a routine operation across the fleet.
 
-3. **Negative test:** manually install an unmanaged VIB on one host,
-   outside the desired-state image, to simulate configuration drift:
+```powershell
+# Report + act across all VMs (idempotent, scriptable):
+Get-VM | Where-Object { $_.PowerState -eq 'PoweredOff' -and $_.Notes -match 'decommission' } |
+  Select Name,PowerState
+# e.g. bulk-set a config; the vSphere Automation SDK / API scales this further.
+Get-VMHost | Get-VMHostService | Where-Object Key -eq 'TSM-SSH' | Select VMHost,Running
+```
 
-   ```bash
-   esxcli software vib install -v /vmfs/volumes/ds-vmfs6-tier1/test-vibs/lab-test.vib \
-     --no-sig-check
-   ```
+**Expected result:** a scripted report/action across the fleet — PowerCLI (and the vSphere REST/
+Automation API) makes every vSphere operation scriptable, so routine tasks (reporting, bulk config,
+provisioning) are automated and consistent rather than clicked per object.
 
-   Then re-run the compliance check:
+**Negative test:** perform a fleet-wide change by clicking each VM/host in the UI; it is slow and
+error-prone — PowerCLI applies it uniformly and repeatably.
 
-   ```powershell
-   Get-VMHostImageCompliance -Cluster $cluster | Select-Object VMHost, ComplianceStatus
-   ```
+**Cleanup:** none (read-only report).
 
-   **Expected result:** the modified host now reports non-compliant,
-   demonstrating vLCM's whole-image drift detection.
+### Lab 9.3 — Troubleshooting (Topic: Troubleshooting)
 
-4. Remediate the cluster to bring the drifted host back into compliance:
+**Objective:** Diagnose a vSphere issue from logs and events.
 
-   ```powershell
-   Test-VMHostImageCompliance -Cluster $cluster
-   Update-VMHostImage -Cluster $cluster -Confirm:$false
-   ```
+```bash
+# ESXi logs + events for a problem:
+esxcli system syslog config get
+tail -20 /var/log/vmkernel.log 2>/dev/null | grep -iE "error|warn" | head
+vim-cmd vmsvc/getallvms | head        # VM inventory + any that fail to load
+```
 
-   **Expected result:** the previously drifted host reports `Compliant`
-   again after remediation completes, and the manually installed test VIB
-   is removed as part of convergence to the desired-state image.
+```powershell
+Get-VIEvent -MaxSamples 20 | Where-Object { $_.GetType().Name -match 'Error|Warning' } | Select CreatedTime,FullFormattedMessage | Select -First 5
+```
 
-5. Create a custom alarm scoped to the lab cluster (for example, a
-   datastore usage warning threshold) using the vSphere Client's Alarm
-   Definitions editor or `New-AlarmDefinition`.
+**Expected result:** relevant vmkernel-log errors and vCenter events for the issue — vSphere
+troubleshooting works from host logs (`vmkernel.log`, `hostd.log`) and vCenter events (`Get-VIEvent`),
+localizing a fault to a host, VM, storage, or network layer rather than guessing.
 
-   **Expected result:** the alarm appears under `vSphere Client > select
-   cluster > Configure > Alarm Definitions` and shows as enabled.
+**Negative test:** restart a failing VM/host repeatedly without reading logs/events; the log names the
+cause (storage APD, network loss, resource exhaustion) a restart will not fix — read the evidence
+first.
 
-6. Generate a support bundle from one lab host:
-
-   ```bash
-   vm-support -w /vmfs/volumes/ds-vmfs6-tier1/support-bundles/
-   ```
-
-   **Expected result:** a `.tgz` support bundle archive appears at the
-   specified datastore path.
-
-7. Observe CPU ready time under a synthetic load (start several CPU-bound
-   test VMs beyond the host's logical CPU count to intentionally induce
-   contention):
-
-   ```bash
-   esxtop
-   # press 'c' for the CPU view, observe %RDY per VM world
-   ```
-
-   **Expected result:** `%RDY` rises measurably for the contended VMs
-   while the test load runs, and returns to baseline after stopping the
-   extra load — confirming the tool correctly reflects scheduler
-   contention.
-
-8. **Cleanup:** remove the test alarm definition, delete the generated
-   support bundle from the datastore, and power off/remove any synthetic
-   load-generation test VMs.
-
-   ```powershell
-   Get-AlarmDefinition -Name "Datastore Usage Critical" | Remove-AlarmDefinition -Confirm:$false
-   ```
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 

@@ -421,99 +421,72 @@ vcsa-deploy restore --accept-eula --no-ssl-certificate-verification \
 
 ## Hands-On Lab
 
-**Objective:** Deploy a VCSA using the CLI installer against a JSON
-template, configure an Active Directory identity source, take a
-file-based backup, simulate appliance loss, and restore from the backup —
-then validate and clean up.
+This chapter carries a topic-level walkthrough lab for **each vCenter operation** — deployment/access,
+identity and permissions, and backup/recovery. Labs use PowerCLI and the VAMI. Each ends **`**Lab
+verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 3.1–3.3** — a vCenter Server Appliance (VCSA) and PowerCLI. **Cost:**
+none.
 
-- A lab ESXi host (physical or nested) reachable by the deploying
-  workstation, with sufficient free capacity for at least a "tiny"-sized
-  VCSA deployment.
-- The VCSA installer media (ISO) mounted or extracted on the deploying
-  workstation, providing the `vcsa-deploy` CLI tool.
-- Lab DNS able to resolve the new appliance's forward and reverse records,
-  and lab NTP reachable from both the ESXi host and the new appliance.
-- A lab Active Directory domain controller reachable over LDAPS, with a
-  service account for LDAP bind.
-- A remote SFTP (or supported equivalent) target reachable from the
-  appliance for backup storage.
+### Lab 3.1 — vCenter deployment and inventory (Topic: vCenter deployment)
 
-**Steps**
+**Objective:** Connect to vCenter and read the inventory hierarchy.
 
-1. Build a JSON deployment template (adapt the example in Implementation
-   and Automation) with lab-appropriate values, and deploy:
+```powershell
+Connect-VIServer <vcenter>
+Get-Datacenter | Select Name
+Get-Cluster | Select Name,@{N='Hosts';E={($_|Get-VMHost).Count}},HAEnabled,DrsEnabled
+Get-Folder -Type VM | Select Name -First 5
+```
 
-   ```bash
-   vcsa-deploy install --accept-eula --no-ssl-certificate-verification \
-     vcsa-deploy-lab-template.json
-   ```
+**Expected result:** the datacenter → cluster → host/VM-folder hierarchy — vCenter is the central
+management plane that organizes hosts into datacenters and clusters and provides the inventory,
+permissions, and cluster services (HA/DRS, Chapter 07) that individual ESXi hosts cannot.
 
-   **Expected result:** the installer reports successful stage 1 (OVA
-   deployment) and stage 2 (appliance setup, including SSO domain
-   creation) completion, and the vSphere Client is reachable at the new
-   appliance's configured IP/hostname.
+**Negative test:** manage many hosts by connecting to each ESXi directly; you lose clusters, vMotion,
+DRS/HA, and central permissions — vCenter is what turns hosts into a managed cluster.
 
-2. Add the lab Active Directory domain as an LDAPS identity source:
+**Cleanup:** none (read-only).
 
-   ```powershell
-   Add-LDAPIdentitySource -Name "lab.example" -DomainName "lab.example" `
-     -DomainAlias "LAB" -PrimaryUrl "ldaps://dc01.lab.example:636" `
-     -BaseDNUsers "OU=Users,DC=lab,DC=example" `
-     -BaseDNGroups "OU=Groups,DC=lab,DC=example" `
-     -Username "svc-vcenter-ldap@lab.example" -Password "<LAB_SERVICE_ACCOUNT_PASSWORD>"
-   ```
+### Lab 3.2 — Identity and permissions (Topic: Access control)
 
-   **Expected result:** the identity source appears under `Administration
-   > Single Sign On > Configuration > Identity Sources` and a test login
-   using a lab AD account succeeds.
+**Objective:** Grant scoped access via roles and SSO.
 
-3. Assign a scoped RBAC role (not Administrator) to the AD test account at
-   a specific folder, and confirm least-privilege behavior:
+```powershell
+# vCenter SSO + role-based permissions (integrate AD via Get-IdentitySource in the UI):
+Get-VIRole | Select Name -First 8
+New-VIPermission -Entity (Get-Cluster <cluster>) -Principal "LAB\vmops" -Role "Virtual machine power user"
+Get-VIPermission | Select Role,Principal,Entity | Select -First 5
+```
 
-   **Expected result:** logging in as the AD test account shows only the
-   permitted scope and denies actions outside the assigned role's
-   privileges.
+**Expected result:** an AD group granted a scoped role on a specific inventory object — vCenter permissions
+combine a **role** (what actions) with an **object** (where), assigned to SSO/AD principals, so
+least-privilege delegation is possible (e.g. a team manages only its cluster's VMs).
 
-4. Take an on-demand file-based backup to the lab SFTP target through the
-   VAMI (`https://<appliance-fqdn>:5480` > Backup > Backup Now), noting the
-   backup's timestamp and comment.
+**Negative test:** grant everyone the Administrator role at the vCenter root; any user can alter the
+whole environment — role + object scoping is what enforces least privilege.
 
-   **Expected result:** the backup completes successfully and a new backup
-   set is visible at the SFTP target.
+**Cleanup:** remove the lab permission.
 
-5. **Negative test (simulated loss):** power off and delete the deployed
-   VCSA VM entirely, simulating total appliance loss.
+### Lab 3.3 — vCenter backup and recovery (Topic: Recovery)
 
-   **Expected result:** the vSphere Client and all vCenter-dependent
-   management access are now unavailable — hosts continue running
-   existing VMs (ESXi does not depend on vCenter to keep already-running
-   workloads up), but no centralized management, DRS, or vCenter-mediated
-   HA orchestration is available until vCenter Server is restored.
+**Objective:** Protect vCenter with a file-based backup.
 
-6. Restore from the backup using the CLI installer in restore mode,
-   pointing at the SFTP backup location and the noted backup timestamp:
+```text
+# VCSA Management (VAMI, https://<vcenter>:5480) > Backup:
+#   configure a scheduled file-based backup to SFTP/FTPS/NFS, and run one now.
+# Recovery: deploy a new VCSA from the same build's OVA and restore from the backup.
+```
 
-   ```bash
-   vcsa-deploy restore --accept-eula --no-ssl-certificate-verification \
-     vcsa-restore-lab-template.json
-   ```
+**Expected result:** a scheduled file-based backup of vCenter (configuration + inventory + events) with
+a documented restore path — vCenter holds all cluster configuration and inventory, so a scheduled
+backup plus a tested restore is its disaster-recovery guarantee; hosts keep running VMs even while
+vCenter is down, but management is lost without it.
 
-   **Expected result:** a new appliance deploys and rehydrates from the
-   backup, restoring the SSO domain, the AD identity source configuration,
-   the scoped RBAC role assignment, and the prior inventory view once
-   hosts reconnect.
+**Negative test:** run vCenter with no backups; losing the appliance means rebuilding clusters, roles,
+and configuration by hand — the file-based backup preserves all of it for a clean restore.
 
-7. Validate: confirm the AD test account can still authenticate and that
-   its scoped role assignment survived the restore; confirm the original
-   ESXi host(s) reconnect to the restored vCenter Server automatically or
-   via `Add-VMHost` if reconnection requires re-adding.
-
-8. **Cleanup:** remove the lab AD identity source and RBAC role
-   assignment if no longer needed, delete the test backup set from the
-   SFTP target, and decommission the lab VCSA if it was deployed solely
-   for this exercise.
+**Cleanup:** none (keep the backup schedule).
 
 ## Lab Verification
 

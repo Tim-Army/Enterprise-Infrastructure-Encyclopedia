@@ -261,93 +261,68 @@ reproductions of any Broadcom exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Produce a traceable, defensible design fragment and rehearse
-defending it, as a realistic first step toward a Distinguished Expert
-submission — without attempting a full submission.
+The VCDX is a **design-defense** credential, not a configuration exam: candidates submit a complete
+architecture design and defend it before a panel. In place of configuration labs, this chapter carries
+**Design Exercises** that rehearse that discipline. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Design Exercises 19.1–19.3** — the vSphere/NSX knowledge from this volume,
+and a place to write and diagram. Work each to a written, defensible deliverable. **Cost:** none.
 
-- The design-document skeleton and traceability check from the
-  Implementation section.
-- One realistic scenario with at least four stated requirements (reuse a
-  design from [Chapter 18](18-the-vcap-advanced-professional-tier-vcf-9-0-role-exams-dcv-design-and-nv-deploy.md)'s
-  lab if you produced one).
-- A partner or a recording method for the spoken defense.
+### Design Exercise 19.1 — A complete, traceable design (Topic: Design methodology)
 
-**Steps**
+> **Scenario.** You must produce a VCDX-style design for a customer: a vSphere platform meeting stated
+> availability, performance, security, and recoverability requirements within a fixed budget.
 
-1. **Author (target 60 minutes).** For the scenario, write the conceptual,
-   logical, and physical design for one subsystem (for example, the vSAN
-   storage design), plus its requirements, constraints, assumptions, and
-   risks.
+Produce the design artifacts VCDX requires: **requirements** (functional + non-functional),
+**constraints**, **assumptions**, and **risks**; then the architecture across logical → physical, where
+**every design decision names its justification and its impact/trade-off** (a decision-with-driver-and-
+consequence). Include the conceptual/logical/physical layers for compute, storage, network, and
+security.
 
-   **Expected result:** a complete design fragment for one subsystem, all
-   four analysis elements present.
+**Expected result:** a design where every decision traces to a requirement/constraint and states its
+justification and impact — the VCDX discipline is *traceability and justification*: not the "best"
+technology, but the design that provably meets the requirements, with each choice defensible.
 
-2. **Trace (target 20 minutes).** Complete the traceability check for every
-   physical decision in the fragment.
+**Common mistake:** presenting a technically strong design with no requirement traceability or stated
+trade-offs; the panel probes *why*, and an unjustified decision cannot be defended — justification, not
+the choice alone, is what is assessed.
 
-   **Expected result:** every decision traces to a requirement, constraint,
-   assumption, or risk; every requirement is served by at least one
-   decision. Fix any gap in either direction.
+### Design Exercise 19.2 — Availability and recoverability design (Topic: Non-functional design)
 
-3. **Defend (target 20 minutes).** Present the fragment aloud, then have
-   your partner ask "why this, not the alternative?" for each physical
-   decision.
+> **Scenario.** The design must meet a 99.99% availability target and defined RPO/RTO, and you must
+> defend that it actually does.
 
-   **Expected result:** every decision defended without notes; mark any you
-   could not justify.
+Design and **justify** the availability/recoverability: host N+1/N+2 sizing and HA admission control
+(Ch07); vSAN FTT/RAID for the availability target (Ch06); backup + replication + DR orchestration for
+RPO/RTO (data protection); and the failure scenarios the design survives. Show the math (how the design
+achieves the number) and the residual risks.
 
-4. **Unseen scenario (target 15 minutes).** Have your partner pose one
-   design change ("the recovery-time requirement just halved") and reason
-   the design impact aloud, unprepared.
+**Expected result:** an availability/recoverability design where the numbers (availability, RPO, RTO)
+are *derived* from the architecture and defended with reasoning and residual risk — VCDX requires you to
+prove the non-functional targets are met, not merely assert them.
 
-   **Expected result:** a coherent spoken response applying the same
-   traceability discipline to an unfamiliar change.
+**Common mistake:** claiming "99.99% with HA and backups" without showing how the topology, capacity,
+and DR mechanism produce that number; the panel asks you to derive it — the derivation and residual-risk
+analysis are the deliverable.
 
-5. **Review and iterate.** For every decision you could not defend and
-   every gap in traceability, revise the fragment. Repeat step 3 until the
-   fragment is fully defensible — that iteration is the discipline the full
-   credential demands.
+### Design Exercise 19.3 — The design defense (Topic: Defense discipline)
 
-6. **Cleanup:** archive the design fragment and the traceability check as
-   the foundation of a future full submission; there is no infrastructure
-   to tear down.
+> **Scenario.** Defend your design (Exercises 19.1–19.2) before a panel that probes your decisions,
+> changes requirements mid-defense, and challenges trade-offs.
 
-## Design Exercise
+Rehearse the defense: for each major decision, state the driver, the alternatives considered, why you
+chose as you did, and the trade-off accepted. When the panel **changes a requirement**, revise only the
+affected decisions and re-justify them, showing your reasoning is requirement-driven (and thus
+adaptable), not memorized.
 
-VCDX is a **design-defense** credential — there is no exam code and no
-configuration component, so this chapter's coverage is entirely a design
-exercise (the Hands-On Lab above is its authoring half; this is the defense
-half). The discipline is identical to the VCAP-DCV Design and VCF Architect
-exercises in [Chapters 17](17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md)
-and [18](18-the-vcap-advanced-professional-tier-vcf-9-0-role-exams-dcv-design-and-nv-deploy.md),
-raised to submission standard.
+**Expected result:** a defense where every decision is explained by its driver and alternatives, and the
+design adapts surgically when requirements change — the VCDX defense assesses whether you *own* the
+design and reason from requirements, the same discipline the CCDE (Volume XXX) tests for networks.
 
-**Scenario.** Take one subsystem design you authored in the Chapter 18 or 17
-exercise (for example, the vSAN storage or the availability design) to a
-mock defense panel.
-
-**Defend, out loud and without notes:**
-
-1. **Traceability challenge** — for any physical decision the panel names,
-   trace it up through the logical and conceptual layers to the specific
-   requirement it satisfies. A decision that cannot be traced is scope.
-2. **Alternative challenge** — for each key decision, state the alternative
-   you rejected and the measurable reason. "It's best practice" is not a
-   defense; the requirement and the trade-off are.
-3. **Failure challenge** — the panel injects a failure ("this host dies
-   mid-upgrade"); walk the design's response and show the requirement
-   (RTO/RPO) is still met.
-4. **Constraint challenge** — the panel tightens a constraint (budget, time,
-   a compliance rule); state which decision changes and what new risk it
-   introduces.
-
-**Success looks like:** every answer returns to a stated requirement and a
-recorded decision, no claim rests on unstated assumption, and each rejected
-alternative is named with its reason — the standard a VCDX panel applies.
-This is the terminal design discipline the whole certification ladder builds
-toward.
+**Common mistake:** defending decisions by authority ("it's best practice") rather than by the
+scenario's drivers, or being unable to adapt when a requirement changes; the panel rewards
+requirement-driven reasoning that holds up under challenge and change.
 
 ## Lab Verification
 

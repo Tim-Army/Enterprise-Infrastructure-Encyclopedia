@@ -726,128 +726,75 @@ vsish -e get /memory/comprehensive
 
 ## Hands-On Lab
 
-**Objective:** Build a VM template, deploy a customized clone from it, apply
-resource controls including a deliberately misconfigured resource pool
-sibling scenario, and observe delta-disk growth through a snapshot lifecycle
-— all in a nested-ESXi lab.
+This chapter carries a topic-level walkthrough lab for **each VM-lifecycle skill** — creation and
+templates, resource management, and snapshots. Labs use PowerCLI. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 5.1–5.3** — a vSphere cluster with a datastore and PowerCLI. **Cost:**
+none.
 
-- A vSphere 9.x lab environment: one vCenter Server instance managing at
-  least one ESXi 9.x host (nested ESXi-in-a-VM is sufficient), with at least
-  one shared or local VMFS/vSAN datastore and 16+ GB free capacity.
-- PowerCLI installed and connected (`Connect-VIServer`) with a role that
-  has VM creation, template, and resource-pool privileges.
-- A small Linux guest ISO or an existing minimal VM to serve as the
-  template source (a 2 vCPU / 2 GB RAM VM is sufficient for this lab).
+### Lab 5.1 — VM creation and templates (Topic: VM lifecycle)
 
-**Steps**
+**Objective:** Deploy VMs consistently from a template.
 
-1. Build the template source VM and confirm it boots cleanly, then shut it
-   down and convert it to a template:
+```powershell
+# Create a VM, convert to template, then deploy clones with customization:
+New-VM -Name web-tmpl -VMHost <host> -Datastore <ds> -DiskGB 40 -MemoryGB 4 -NumCpu 2 -NetworkName "App-VLAN20"
+Get-VM web-tmpl | Set-VM -ToTemplate -Confirm:$false
+1..3 | ForEach-Object { New-VM -Name "web0$_" -Template web-tmpl -VMHost <host> -Datastore <ds> }
+Get-VM web0* | Select Name,PowerState,NumCpu,MemoryGB
+```
 
-   ```powershell
-   Connect-VIServer -Server vcenter01.lab.example
-   Get-VM -Name "lab-src-01" | Stop-VM -Confirm:$false
-   Get-VM -Name "lab-src-01" | Set-VM -ToTemplate -Confirm:$false
-   ```
+**Expected result:** three identical VMs deployed from one template — templates make VM deployment
+consistent and fast: build a golden VM once, convert to a template, and clone it (with guest
+customization for unique identity), the standard way to deploy at scale.
 
-   **Expected result:** `Get-Template -Name "lab-src-01"` returns the new
-   template object; the original VM object no longer appears in
-   `Get-VM`.
+**Negative test:** build each VM from an ISO install individually; they drift and deployment is slow —
+a template cloned with customization gives identical, rapid deployment.
 
-2. Create a minimal customization specification for Linux guests with DHCP
-   networking:
+**Cleanup:** `Get-VM web0* | Remove-VM -DeletePermanently -Confirm:$false; Remove-Template web-tmpl -DeletePermanently`.
 
-   ```powershell
-   New-OSCustomizationSpec -Name "lab-spec-dhcp" -OSType Linux `
-     -Domain "lab.example" -NamingScheme Fixed -NamingPrefix "lab-clone" `
-     -Type NonPersistent
-   ```
+### Lab 5.2 — Resource management (Topic: Resources)
 
-3. Deploy two clones from the template using the customization spec:
+**Objective:** Control a VM's share of contended resources.
 
-   ```powershell
-   1..2 | ForEach-Object {
-     New-VM -Name "lab-clone-0$_" -Template (Get-Template -Name "lab-src-01") `
-       -OSCustomizationSpec (Get-OSCustomizationSpec -Name "lab-spec-dhcp") `
-       -Datastore (Get-Datastore | Select-Object -First 1) `
-       -ResourcePool (Get-Cluster | Select-Object -First 1) `
-       -RunAsync
-   }
-   ```
+```powershell
+# Reservations/limits/shares govern access to contended CPU/memory:
+Get-VM web01 | Get-VMResourceConfiguration | Select CpuSharesLevel,MemReservationGB,MemLimitGB
+Get-VM web01 | Set-VMResourceConfiguration -MemReservationGB 2 -CpuSharesLevel High
+# Resource pools group VMs and apply shares/reservations hierarchically.
+```
 
-   **Expected result:** After both tasks complete and the VMs boot,
-   `Get-VM -Name "lab-clone-0*" | Get-VMGuest` reports two distinct
-   hostnames (`lab-clone-01`, `lab-clone-02`), confirming customization ran.
+**Expected result:** a memory reservation and high CPU shares on the VM — resource controls
+(reservation = guaranteed floor, limit = ceiling, shares = relative priority under contention) let you
+protect critical VMs and prioritize them when the host is busy, without over-provisioning.
 
-4. Reproduce the resource pool sibling pitfall deliberately. Create one
-   resource pool with High CPU shares containing both clones, then move a
-   third standalone VM to be a sibling of that pool:
+**Negative test:** rely on reservations for every VM to "guarantee" performance; large reservations
+reduce consolidation and can block power-on when unsatisfiable — use shares for prioritization and
+reservations sparingly for truly critical floors.
 
-   ```powershell
-   $cluster = Get-Cluster | Select-Object -First 1
-   New-ResourcePool -Location $cluster -Name "lab-pool-high" `
-     -CpuSharesLevel High
-   Get-VM -Name "lab-clone-01", "lab-clone-02" |
-     Move-VM -Destination (Get-ResourcePool -Name "lab-pool-high")
-   ```
+**Cleanup:** `Get-VM web01 | Set-VMResourceConfiguration -MemReservationGB 0 -CpuSharesLevel Normal`.
 
-   **Negative test:** Generate CPU load inside `lab-clone-01`,
-   `lab-clone-02`, and a third standalone VM left at the cluster root
-   (e.g., `stress-ng --cpu 2 --timeout 120s` inside each guest, or any
-   available CPU-load tool) simultaneously on an intentionally
-   CPU-constrained lab host (reduce vCPU allocation or run this on a
-   resource-limited nested host to force contention). **Expected
-   result:** the standalone VM at the cluster root receives CPU
-   scheduling roughly proportional to a single High-share entity
-   competing against the *entire pool* as one entity — observable in
-   `esxtop`'s CPU view (`%RDY` climbing disproportionately on the two
-   pooled VMs relative to what their individual "High" pool-inherited
-   shares would suggest) — demonstrating that the two pooled VMs are
-   sharing one pool-level allocation rather than each independently
-   receiving High-share treatment.
+### Lab 5.3 — Snapshots (Topic: VM state)
 
-5. Take a snapshot of `lab-clone-01`, generate write activity inside the
-   guest, and observe delta-disk growth:
+**Objective:** Capture and revert VM state safely.
 
-   ```powershell
-   New-Snapshot -VM "lab-clone-01" -Name "pre-change-snapshot" -Memory:$false
-   ```
+```powershell
+Get-VM web01 | New-Snapshot -Name pre-change -Description "before patch"
+# ... make a change ...
+Get-VM web01 | Get-Snapshot | Select Name,Created,SizeGB
+Get-VM web01 | Get-Snapshot -Name pre-change | Set-VM -Snapshot pre-change -Confirm:$false   # revert
+```
 
-   Inside the guest: `dd if=/dev/urandom of=/tmp/fill.img bs=1M count=500`
-   (adjust size to available lab disk space).
+**Expected result:** a snapshot captures the VM state, and revert restores it — snapshots are a
+short-term safety net for reversible changes (patches, upgrades); they are **not backups** (they depend
+on the base disk) and must be removed promptly, as long-lived snapshots grow and hurt performance.
 
-   ```powershell
-   Get-VM -Name "lab-clone-01" | Get-Snapshot | Select-Object Name, SizeGB, Created
-   ```
+**Negative test:** keep snapshots for weeks as "backups"; the delta disks grow, consume datastore
+space, and degrade I/O, and a base-disk failure loses everything — snapshots are temporary, backups
+(Chapter 07/data protection) are separate.
 
-   **Expected result:** the snapshot's reported `SizeGB` grows to reflect
-   the ~500 MB of new guest writes, confirming the delta disk — not the
-   base disk — absorbed the change.
-
-6. Consolidate and remove the snapshot:
-
-   ```powershell
-   Get-VM -Name "lab-clone-01" | Get-Snapshot -Name "pre-change-snapshot" |
-     Remove-Snapshot -Confirm:$false
-   ```
-
-   **Expected result:** `Get-VM -Name "lab-clone-01" | Get-Snapshot` returns
-   no results, and the VM's summary in the vSphere Client shows no
-   "Consolidation Needed" flag.
-
-7. **Cleanup:** remove the lab pool, move any remaining VMs back to the
-   cluster root, delete the clones, and delete the template so the lab
-   environment returns to its prior state:
-
-   ```powershell
-   Get-VM -Name "lab-clone-01", "lab-clone-02" | Stop-VM -Confirm:$false
-   Get-VM -Name "lab-clone-01", "lab-clone-02" | Remove-VM -DeletePermanently -Confirm:$false
-   Remove-ResourcePool -ResourcePool "lab-pool-high" -Confirm:$false
-   Get-Template -Name "lab-src-01" | Remove-Template -DeletePermanently -Confirm:$false
-   Get-OSCustomizationSpec -Name "lab-spec-dhcp" | Remove-OSCustomizationSpec -Confirm:$false
-   ```
+**Cleanup:** `Get-VM web01 | Get-Snapshot | Remove-Snapshot -Confirm:$false`.
 
 ## Lab Verification
 

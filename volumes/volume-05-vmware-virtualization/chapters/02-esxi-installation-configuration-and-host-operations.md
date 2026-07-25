@@ -458,102 +458,71 @@ Add-VMHost -Name "esxi21.corp.example" -Location (Get-Cluster -Name "prod-cluste
 
 ## Hands-On Lab
 
-**Objective:** Perform a scripted ESXi installation using a kickstart file
-in a nested lab, configure NTP and syslog forwarding, extract a Host
-Profile from the result, apply it to a second host, deliberately introduce
-configuration drift, detect it, and remediate.
+This chapter carries a topic-level walkthrough lab for **each ESXi host-operations skill** —
+installation/config, host networking basics, and host lifecycle. Labs use `esxcli`/`vim-cmd`/PowerCLI.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.3** — an ESXi host (SSH/console) and PowerCLI. **Cost:** none.
 
-- A nested-ESXi-capable lab (a physical or virtual host capable of running
-  nested ESXi VMs with hardware virtualization exposed), the standard
-  ESXi 9.x installer ISO, and at least two target nested-ESXi VMs with a
-  virtual disk sized for a comfortable ESX-OSData partition (40 GB or
-  greater is a safe lab minimum).
-- A reachable HTTP or TFTP server (or simply attaching the kickstart file
-  to boot media) to serve `ks.cfg`; a lab DHCP scope if testing PXE boot.
-- A lab syslog receiver (any host listening on UDP/514 is sufficient — a
-  simple `nc -ul 514` listener works for validation purposes).
-- PowerCLI connected to a lab vCenter Server with host-add and Host
-  Profile privileges.
+### Lab 2.1 — ESXi installation and first configuration (Topic: Host deployment)
 
-**Steps**
+**Objective:** Verify a host's core configuration.
 
-1. Author a kickstart file for the first nested host, adjusting IP,
-   hostname, and syslog target to lab values, using the `ks.cfg` example
-   in Implementation and Automation as a starting point. Attach it to the
-   installer boot process (as a secondary CD-ROM/ISO referencing
-   `ks=cdrom:/KS.CFG`, or via a served URL for a PXE-style test).
+```bash
+esxcli system hostname get
+esxcli network ip interface ipv4 get         # management vmk0 addressing
+esxcli system ntp get ; esxcli system ntp set --enabled true
+esxcli system maintenanceMode get
+```
 
-   **Expected result:** the host completes an unattended installation and
-   reboots to the DCUI showing the configured static management IP.
+**Expected result:** the host's name, management IP, and NTP state, with NTP enabled — first ESXi
+configuration establishes management networking, name resolution, and NTP (required for vCenter,
+certificates, and log correlation); a host is not production-ready until these are set.
 
-2. From a workstation with network access to the new host, confirm NTP and
-   syslog were applied by the `%firstboot` section:
+**Negative test:** add a host to vCenter with unsynchronized time; certificate and task-timing issues
+follow — NTP on every host is a prerequisite, not an afterthought.
 
-   ```bash
-   esxcli system syslog config get
-   ```
+**Cleanup:** none (keep NTP enabled).
 
-   **Expected result:** the configured loghost matches the lab syslog
-   target, and test log entries generated on the host (for example,
-   restarting a service) appear at the syslog receiver.
+### Lab 2.2 — Host management interface and services (Topic: Host operations)
 
-3. Repeat interactive or scripted installation for a second nested host
-   using a different static IP/hostname, but *without* NTP or syslog
-   configured, to create a deliberately non-standardized second host.
+**Objective:** Manage ESXi services and the management network.
 
-4. Join both hosts to a lab vCenter cluster, then extract a Host Profile
-   from the first (correctly configured) host:
+```bash
+esxcli network firewall ruleset list | grep -iE "sshServer|ntpClient" | head
+vim-cmd hostsvc/enable_ssh ; vim-cmd hostsvc/get_service_status ssh 2>/dev/null || esxcli system settings
+esxcli network vswitch standard list | head
+```
 
-   ```powershell
-   Connect-VIServer -Server vcenter-lab.local
-   $reference = Get-VMHost -Name "esxi-lab-01.local"
-   New-VMHostProfile -Name "lab-standard-profile" -ReferenceHost $reference
-   ```
+**Expected result:** the host firewall rulesets, SSH service state, and the management vSwitch — ESXi
+host operations include managing services (SSH, NTP), the firewall, and the management vSwitch (vmk0);
+these are the host-level controls beneath everything vCenter orchestrates.
 
-   **Expected result:** the new profile appears under
-   `vSphere Client > Policies and Profiles > Host Profiles`.
+**Negative test:** leave SSH enabled permanently on production hosts; it widens the attack surface —
+enable it for maintenance and disable it after (vSphere flags persistent SSH as a security warning).
 
-5. Check the second host's compliance against the profile:
+**Cleanup:** `vim-cmd hostsvc/disable_ssh` if enabled only for the lab.
 
-   ```powershell
-   $profile = Get-VMHostProfile -Name "lab-standard-profile"
-   Test-VMHostProfileCompliance -VMHost (Get-VMHost -Name "esxi-lab-02.local") -Profile $profile
-   ```
+### Lab 2.3 — Host lifecycle: maintenance mode (Topic: Host lifecycle)
 
-   **Expected result:** the compliance check reports non-compliant items
-   specifically covering the NTP and syslog settings that differ from the
-   reference host.
+**Objective:** Safely take a host out of service.
 
-6. **Negative test:** attempt to remediate without first supplying
-   required answer-file values for host-specific settings (if the profile
-   includes a host-specific network setting not yet answered for the
-   second host):
+```powershell
+Connect-VIServer <vcenter>
+Get-VMHost <host> | Set-VMHost -State Maintenance -Evacuate    # DRS migrates running VMs off (Ch07)
+Get-VMHost <host> | Select Name,ConnectionState
+# ... patch/hardware work ...
+Get-VMHost <host> | Set-VMHost -State Connected
+```
 
-   ```powershell
-   Apply-VMHostProfile -Entity (Get-VMHost -Name "esxi-lab-02.local") -Profile $profile -Confirm:$false
-   ```
+**Expected result:** the host enters maintenance mode with its VMs evacuated (via vMotion/DRS), then
+returns to service — maintenance mode is the safe way to patch or service a host: VMs migrate off
+first, so host work causes no VM downtime in a cluster with DRS and shared storage.
 
-   **Expected result:** remediation either prompts for or fails on the
-   missing host-specific value, demonstrating that Host Profiles do not
-   silently overwrite host-specific identity with the reference host's
-   values — confirm the specific failure reason matches a host-specific
-   (not global) setting.
+**Negative test:** patch or reboot a host without entering maintenance mode; its running VMs are
+interrupted — maintenance mode (with evacuation) is what makes host servicing non-disruptive.
 
-7. Supply the required answer-file value and remediate again:
-
-   **Expected result:** `Test-VMHostProfileCompliance` now reports the
-   second host as compliant, and `esxcli system syslog config get` on that
-   host shows the same loghost as the reference host.
-
-8. **Cleanup:** remove the Host Profile, and if the nested hosts are lab
-   scratch resources, power off and delete both nested-ESXi VMs; otherwise
-   revert syslog/NTP configuration on the second host to its prior state.
-
-   ```powershell
-   Get-VMHostProfile -Name "lab-standard-profile" | Remove-VMHostProfile -Confirm:$false
-   ```
+**Cleanup:** ensure the host is returned to Connected state.
 
 ## Lab Verification
 

@@ -681,118 +681,70 @@ Move-VM -VM (Get-VM -Name "app-web-05") `
 
 ## Hands-On Lab
 
-**Objective:** Configure HA admission control and isolation response on a
-nested-ESXi lab cluster, perform a live vMotion, and deliberately trigger a
-host isolation event to observe HA's isolation-response and restart
-behavior — then restore the cluster to its prior configuration.
+This chapter carries a topic-level walkthrough lab for **each availability and mobility service** —
+vMotion, vSphere HA, and DRS. Labs use PowerCLI. Each ends **`**Lab verified by:** *pending*`** until a
+human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.3** — a vSphere cluster with shared storage, a configured vMotion
+network, and PowerCLI. **Cost:** none.
 
-- A vSphere 9.x lab with at least 3 nested ESXi hosts in an HA/DRS-enabled
-  cluster, shared datastore access across all hosts, and at least one test
-  VM per host with VMware Tools installed.
-- PowerCLI connected to the lab vCenter with cluster-modify privileges.
-- The ability to disable/re-enable a nested ESXi host's management network
-  adapter from the underlying hypervisor (or nested VM) console, since the
-  isolation test requires cutting management connectivity without powering
-  off the host itself.
+### Lab 7.1 — vMotion (Topic: Live migration)
 
-**Steps**
+**Objective:** Migrate a running VM with no downtime.
 
-1. Confirm HA is enabled and set admission control to cluster resource
-   percentage tolerating one host failure:
+```powershell
+Get-VM web01 | Move-VM -Destination <host2>          # live migrate compute (VM stays running)
+Get-VM web01 | Select Name,PowerState,VMHost
+# Storage vMotion moves the disks: Move-VM -Datastore <ds2>
+```
 
-   ```powershell
-   Connect-VIServer -Server vcenter01.lab.example
-   $cluster = Get-Cluster -Name "lab-ha-cluster"
-   Set-Cluster -Cluster $cluster -HAEnabled:$true -HAAdmissionControlEnabled:$true -Confirm:$false
-   ```
+**Expected result:** the running VM moves to another host with no downtime — **vMotion** live-migrates
+a VM's active memory/state across hosts over the vMotion network (shared storage keeps the disk in
+place), which underpins host maintenance (Chapter 02) and DRS load balancing.
 
-   **Expected result:** `vSphere Client > select cluster > Configure >
-   vSphere Availability > Admission Control` shows a calculated reserved
-   percentage greater than zero.
+**Negative test:** attempt vMotion with the vMotion VMkernel network misconfigured or without shared
+storage; it fails or requires Storage vMotion — the vMotion network and shared (or migrated) storage
+are prerequisites.
 
-2. Set an explicit isolation address (use the lab management gateway or
-   another reliably-pingable device on the management VLAN) and set
-   isolation response to "Power off and restart VMs":
+**Cleanup:** none (leave the VM where balanced).
 
-   ```powershell
-   New-AdvancedSetting -Entity $cluster -Name "das.isolationaddress1" `
-     -Value "10.10.10.1" -Confirm:$false -Force
-   New-AdvancedSetting -Entity $cluster -Name "das.usedefaultisolationaddress" `
-     -Value "false" -Confirm:$false -Force
-   ```
+### Lab 7.2 — vSphere HA (Topic: High availability)
 
-   Set the isolation response via
-   `vSphere Client > select cluster > Configure > vSphere Availability >
-   Edit > Host Failure Response Behavior > Response for Host Isolation >
-   Power off and restart VMs`.
+**Objective:** Confirm HA restarts VMs after a host failure.
 
-3. Deploy or confirm a test VM (`lab-ha-test-vm`) is running on one
-   specific host, and note that host's name:
+```powershell
+Get-Cluster <cluster> | Select Name,HAEnabled,HAAdmissionControlEnabled,HARestartPriority
+Get-Cluster <cluster> | Set-Cluster -HAEnabled $true -Confirm:$false
+# Simulate a host failure (lab) -> HA restarts that host's VMs on surviving hosts.
+```
 
-   ```powershell
-   Get-VM -Name "lab-ha-test-vm" | Select-Object Name, @{N="Host";E={$_.VMHost.Name}}
-   ```
+**Expected result:** HA enabled with admission control reserving failover capacity — **vSphere HA**
+monitors hosts and restarts a failed host's VMs on surviving hosts automatically; admission control
+reserves the N+1 capacity (Chapter 01) so the restart always has somewhere to go.
 
-4. Perform a live compute vMotion of the test VM to a different host to
-   confirm baseline vMotion functions before the isolation test:
+**Negative test:** enable HA but disable admission control and run the cluster full; a host failure has
+no capacity to restart its VMs — admission control is what guarantees the failover capacity HA needs.
 
-   ```powershell
-   Move-VM -VM (Get-VM -Name "lab-ha-test-vm") `
-     -Destination (Get-VMHost -Name "esxi02.lab.example") -VMotionPriority High
-   ```
+**Cleanup:** none (leave HA enabled).
 
-   **Expected result:** the VM shows the new host in
-   `Get-VM | Select Name,VMHost` with no guest-visible interruption (a
-   continuous ping to the VM's IP shows at most one or two dropped
-   packets, not a sustained outage).
+### Lab 7.3 — DRS (Topic: Load balancing)
 
-5. **Negative test — isolation event.** On the host now running
-   `lab-ha-test-vm`, disconnect only its management network vmknic (not the
-   VM network) from the nested-hypervisor console, simulating management
-   isolation while VM traffic paths remain theoretically reachable:
+**Objective:** Let DRS balance load across hosts.
 
-   ```bash
-   # Run directly on the isolated host's ESXi shell/console (not via vCenter,
-   # since vCenter connectivity will itself be lost to this host)
-   esxcli network ip interface set -e false -i vmk0
-   ```
+```powershell
+Get-Cluster <cluster> | Select Name,DrsEnabled,DrsAutomationLevel
+Get-Cluster <cluster> | Set-Cluster -DrsEnabled $true -DrsAutomationLevel FullyAutomated -Confirm:$false
+Get-DrsRecommendation -Cluster <cluster> | Select Reason,Target 2>$null | Select -First 5
+```
 
-   **Expected result:** within the configured isolation-detection window,
-   the master HA host detects loss of network heartbeats from this host,
-   confirms isolation (rather than failure) via datastore heartbeating, and
-   — per the configured "Power off and restart VMs" policy — hard-powers-off
-   `lab-ha-test-vm` on the isolated host and restarts it on a surviving
-   host. Confirm via `vSphere Client > select cluster > Monitor > vSphere
-   HA > Summary` and by observing `lab-ha-test-vm`'s host attribute change
-   without any administrator-initiated migration.
+**Expected result:** DRS enabled, balancing VMs across hosts via vMotion (and placing new VMs on the
+best host) — **DRS** uses vMotion to keep host load balanced automatically and to place powering-on VMs
+optimally, so the cluster self-tunes and you manage capacity at the cluster, not per host.
 
-6. Restore the isolated host's management connectivity:
+**Negative test:** run a cluster with no DRS; hosts become unevenly loaded, some contended while others
+idle — DRS continuously rebalances, which manual placement cannot at scale.
 
-   ```bash
-   esxcli network ip interface set -e true -i vmk0
-   ```
-
-   **Expected result:** the host reconnects to vCenter and rejoins the HA
-   cluster as an agent host within a few minutes; confirm via `vSphere
-   Client > Hosts and Clusters` that the host shows Connected, not
-   Disconnected or Not Responding.
-
-7. **Cleanup:** remove the explicit isolation address settings and restore
-   default isolation response if the lab's baseline configuration did not
-   originally specify them:
-
-   ```powershell
-   Get-AdvancedSetting -Entity $cluster -Name "das.isolationaddress1" |
-     Remove-AdvancedSetting -Confirm:$false
-   Get-AdvancedSetting -Entity $cluster -Name "das.usedefaultisolationaddress" |
-     Remove-AdvancedSetting -Confirm:$false
-   ```
-
-   Reset isolation response to its prior value via `vSphere Client >
-   select cluster > Configure > vSphere Availability > Edit`, and power off
-   /remove `lab-ha-test-vm` if it was created solely for this lab.
+**Cleanup:** none (leave DRS enabled).
 
 ## Lab Verification
 

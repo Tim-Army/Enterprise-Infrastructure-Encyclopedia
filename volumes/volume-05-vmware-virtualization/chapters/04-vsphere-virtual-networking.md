@@ -416,107 +416,70 @@ Get-VDPortgroup -Name "pg-vm-app-tier" | Get-VDSecurityPolicy |
 
 ## Hands-On Lab
 
-**Objective:** Build a distributed switch, add hosts, create VST port
-groups, configure an LACP LAG, apply NIOC shares, and validate teaming
-behavior including a deliberate uplink failure.
+This chapter carries a topic-level walkthrough lab for **each vSphere networking skill** — standard
+and distributed switches, port groups/VLANs, and network validation. Labs use PowerCLI/esxcli. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.3** — a vSphere cluster with PowerCLI, and switch uplinks
+trunking the lab VLANs. **Cost:** none.
 
-- A vSphere 9.x lab with at least 2 ESXi hosts (nested is acceptable) in
-  one cluster, each with at least two unused physical (or nested virtual)
-  uplinks not already claimed by another vSwitch.
-- A lab physical/virtual switch upstream capable of LACP configuration for
-  the LAG portion of the exercise (a nested lab using a virtual switch
-  supporting LACP passthrough, or a physical lab switch port group,
-  either is acceptable).
-- PowerCLI connected to the lab vCenter with networking-modify privileges.
+### Lab 4.1 — Standard vs distributed switches (Topic: Virtual switching)
 
-**Steps**
+**Objective:** Read the two virtual-switch models.
 
-1. Create the VDS and add both hosts with one uplink each initially:
+```powershell
+Get-VirtualSwitch -Standard | Select VMHost,Name,Nic,NumPorts
+Get-VDSwitch | Select Name,NumUplinkPorts,@{N='Hosts';E={($_|Get-VMHost).Count}}
+```
 
-   ```powershell
-   Connect-VIServer -Server vcenter-lab.local
-   $dc = Get-Datacenter -Name "lab-dc"
-   $vds = New-VDSwitch -Name "dvs-lab" -Location $dc -NumUplinkPorts 2 -Mtu 9000
-   foreach ($vmhost in (Get-VMHost -Location (Get-Cluster -Name "lab-cluster"))) {
-     Add-VDSwitchVMHost -VDSwitch $vds -VMHost $vmhost
-     Add-VDSwitchPhysicalNetworkAdapter -VMHostNetworkAdapter (Get-VMHostNetworkAdapter -VMHost $vmhost -Name "vmnic1") -DistributedSwitch $vds -Confirm:$false
-   }
-   ```
+**Expected result:** per-host standard switches and any cluster-wide distributed switch (VDS) — a
+**standard vSwitch (vSS)** is configured per host, while a **vSphere Distributed Switch (vDS)** is
+configured once at vCenter and spans all hosts, giving consistent networking, advanced features
+(LACP, NIOC, port mirroring), and far less per-host toil at scale.
 
-   **Expected result:** both hosts appear as VDS members under `vSphere
-   Client > Networking > dvs-lab > Hosts`.
+**Negative test:** manage networking on dozens of hosts with per-host standard switches; a port-group
+change means editing every host — a distributed switch applies it once cluster-wide.
 
-2. Create a VST-tagged port group and deploy a small test VM onto it:
+**Cleanup:** none (read-only).
 
-   ```powershell
-   New-VDPortgroup -VDSwitch $vds -Name "pg-lab-test" -VlanId 150
-   ```
+### Lab 4.2 — Port groups and VLANs (Topic: Port groups)
 
-   **Expected result:** the test VM's vNIC connects successfully and
-   obtains/uses an IP address on the lab VLAN 150 subnet.
+**Objective:** Create a VLAN-backed network for VMs.
 
-3. Add the second uplink from each host, then create and assign an LACP
-   LAG:
+```powershell
+$vds = Get-VDSwitch <vds>
+New-VDPortgroup -VDSwitch $vds -Name "App-VLAN20" -VlanId 20 -NumPorts 128
+Get-VDPortgroup | Select Name,VlanConfiguration | Select -First 5
+```
 
-   ```powershell
-   foreach ($vmhost in (Get-VMHost -Location (Get-Cluster -Name "lab-cluster"))) {
-     Add-VDSwitchPhysicalNetworkAdapter -VMHostNetworkAdapter (Get-VMHostNetworkAdapter -VMHost $vmhost -Name "vmnic2") -DistributedSwitch $vds -Confirm:$false
-   }
-   $lag = New-VDSwitchLACPGroup -VDSwitch $vds -Name "lag-lab" -Mode Active
-   ```
+**Expected result:** a distributed port group tagging VMs into VLAN 20 — a **port group** defines the
+network policy (VLAN, security, teaming) a VM's NIC connects to; VLAN-backed port groups on a vDS place
+VMs onto the physical VLANs trunked to the hosts, integrating virtual and physical networking.
 
-   **Expected result:** `esxcli network vswitch dvs vmware lacp status
-   get` on each host reports the LAG as `bundled` once the upstream switch
-   side is configured to match.
+**Negative test:** assign a VM to a port group whose VLAN is not trunked to the host uplinks; the VM has
+no external connectivity — the port-group VLAN must match a VLAN the physical switch trunks.
 
-4. Apply NIOC shares favoring vMotion traffic during contention:
+**Cleanup:** `Remove-VDPortgroup "App-VLAN20"`.
 
-   ```powershell
-   Get-VDSwitch -Name "dvs-lab" | Get-NetworkResourcePool -Name "vMotion Traffic" |
-     Set-NetworkResourcePool -SharesLevel High
-   ```
+### Lab 4.3 — Network validation (Topic: Verification)
 
-   **Expected result:** the network resource pool shows the updated
-   shares value under `vSphere Client > dvs-lab > Configure > Resource
-   Allocation`.
+**Objective:** Confirm host and VM networking end to end.
 
-5. Validate MTU consistency for the jumbo-frame-enabled VDS:
+```bash
+esxcli network nic list                              # physical uplinks + link state/speed
+esxcli network vm list | head                        # VMs and their networks
+vmkping -I vmk1 <vmotion-peer>                        # test a VMkernel network (e.g. vMotion)
+```
 
-   ```bash
-   vmkping -I vmk0 -d -s 8972 <PEER_HOST_VMKERNEL_IP>
-   ```
+**Expected result:** uplink state/speed, VM network attachments, and a successful VMkernel ping —
+network validation confirms physical uplinks are up, VMs are on the right networks, and VMkernel
+services (vMotion/vSAN/management) have connectivity, which every mobility and storage feature depends
+on.
 
-   **Expected result:** the ping succeeds at the full jumbo-frame payload
-   size, confirming MTU 9000 end-to-end.
+**Negative test:** assume vMotion will work without testing the vMotion VMkernel network; if `vmkping`
+on that vmk fails, migrations fail — validate each VMkernel network before relying on its service.
 
-6. **Negative test:** simulate an uplink failure by disabling one physical
-   uplink's link (or administratively shutting the corresponding physical
-   switch port) while the test VM has active traffic flowing:
-
-   **Expected result:** the test VM's connectivity briefly pauses (or
-   shows no interruption at all if the LAG is correctly negotiated and
-   the remaining member link absorbs traffic) and resumes/continues on
-   the surviving uplink; `esxcli network vswitch dvs vmware lacp status
-   get` shows the failed uplink as no longer bundled while the healthy
-   uplink remains active. Confirm no sustained packet loss beyond the
-   brief convergence window.
-
-7. Restore the failed uplink and confirm it rejoins the LAG:
-
-   **Expected result:** the uplink returns to `bundled` status without
-   manual intervention (LACP renegotiates automatically).
-
-8. **Cleanup:** remove the test VM, remove the LAG assignment and port
-   group, and remove the hosts from the VDS if the VDS was created solely
-   for this lab.
-
-   ```powershell
-   Get-VM -Name "lab-test-vm" | Remove-VM -DeletePermanently -Confirm:$false
-   Get-VDPortgroup -Name "pg-lab-test" | Remove-VDPortgroup -Confirm:$false
-   Get-VDSwitch -Name "dvs-lab" | Remove-VDSwitch -Confirm:$false
-   ```
+**Cleanup:** none (read-only).
 
 ## Lab Verification
 
