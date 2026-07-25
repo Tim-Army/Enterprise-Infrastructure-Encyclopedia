@@ -406,106 +406,107 @@ the same local or directory-service credentials as SSH.
 
 ## Hands-On Lab
 
-**Objective:** Configure repository access from a local installation
-source (no live subscription required), install and secure Cockpit, and
-verify both from the command line and a browser.
+This chapter carries a topic-level walkthrough lab for **each installation and
+software-source task under RHCSA objectives 2 (manage software) and 7 (deploy, configure,
+maintain)** — subscription, repositories, `dnf`, and Cockpit. EX200 is performance-based,
+so every step is a real, runnable RHEL 10 command. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 1.1–1.4** — a RHEL 10 system you can destroy (VM), root or
+`sudo` access, and network reachability for content. **Cost:** none beyond a RHEL
+subscription (a free Developer subscription suffices).
 
-- A RHEL 10 virtual machine or bare-metal lab host with root or sudo
-  access, and the RHEL 10 installation ISO available locally or over
-  HTTP.
-- Network access to the host's management interface from your
-  workstation browser.
+### Lab 1.1 — Register the system to subscription management (Topic: Subscriptions)
 
-**Steps**
+**Objective:** Attach the system to Red Hat content.
 
-1. Mount the installation ISO and inspect its content sets:
+```bash
+sudo subscription-manager register --username <user> --password <pass>
+sudo subscription-manager status
+subscription-manager repos --list | head
+```
 
-   ```bash
-   sudo mkdir -p /mnt/rhel10-iso
-   sudo mount -o loop /path/to/rhel-10.0-x86_64-dvd.iso /mnt/rhel10-iso
-   ls /mnt/rhel10-iso/BaseOS/Packages | head
-   ls /mnt/rhel10-iso/AppStream/Packages | head
-   ```
+**Expected result:** `register` returns a system ID, `status` reports `Overall Status:
+Current`, and repositories become listable — registration is what entitles the system to
+`dnf` content; without it, package installs from Red Hat repos fail.
 
-2. Define local repositories pointing at the mounted media, disabling
-   any conflicting subscription-based repos for this lab:
+**Negative test:** run `dnf install` on an unregistered system with no local repo; it errors
+with no available repositories — entitlement (this lab) precedes software management.
 
-   ```bash
-   sudo tee /etc/yum.repos.d/rhel10-local.repo <<'EOF'
-   [rhel10-local-baseos]
-   name=RHEL 10 Local BaseOS
-   baseurl=file:///mnt/rhel10-iso/BaseOS
-   enabled=1
-   gpgcheck=1
-   gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+**Cleanup:** `sudo subscription-manager unregister` if the system was registered only for the
+lab.
 
-   [rhel10-local-appstream]
-   name=RHEL 10 Local AppStream
-   baseurl=file:///mnt/rhel10-iso/AppStream
-   enabled=1
-   gpgcheck=1
-   gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
-   EOF
-   ```
+### Lab 1.2 — Configure repositories (Topic: Software sources)
 
-3. Verify the new repositories resolve correctly:
+**Objective:** Enable a repo and add a local one.
 
-   ```bash
-   dnf repolist
-   dnf clean all && dnf makecache
-   ```
+```bash
+sudo subscription-manager repos --enable rhel-10-for-x86_64-appstream-rpms
+sudo dnf config-manager --add-repo https://example.com/local.repo 2>/dev/null || \
+  sudo tee /etc/yum.repos.d/local.repo >/dev/null <<'EOF'
+[local]
+name=Local Repo
+baseurl=file:///mnt/repo
+enabled=1
+gpgcheck=0
+EOF
+dnf repolist
+```
 
-   **Expected result:** both `rhel10-local-baseos` and
-   `rhel10-local-appstream` appear with a nonzero package count.
+**Expected result:** `dnf repolist` lists the enabled AppStream and the local repo — RHEL
+content is split across BaseOS and AppStream, and additional repos are defined as `.repo`
+files in `/etc/yum.repos.d/`; RHCSA expects you to configure a repo from a given URL.
 
-4. Install and enable Cockpit and a storage module from the local
-   repository:
+**Negative test:** point a repo `baseurl` at a path with no repodata; `dnf repolist` reports
+it as failed/unavailable — a repo needs valid metadata, not just a reachable URL.
 
-   ```bash
-   sudo dnf install -y cockpit cockpit-storaged
-   sudo systemctl enable --now cockpit.socket
-   ```
+**Cleanup:** `sudo rm -f /etc/yum.repos.d/local.repo`.
 
-5. Open the firewall for Cockpit and confirm the port is listening:
+### Lab 1.3 — Manage software with dnf (Topic: Manage software)
 
-   ```bash
-   sudo firewall-cmd --add-service=cockpit --permanent
-   sudo firewall-cmd --reload
-   ss -tlnp | grep 9090
-   ```
+**Objective:** Install, query, and roll back packages.
 
-6. **Expected result:** From your workstation browser, navigate to
-   `https://<lab-host-ip>:9090`, accept the self-signed certificate
-   warning for this lab environment, and log in with a local account.
-   The Overview page must show the host's hostname, uptime, and
-   resource graphs.
+```bash
+sudo dnf install -y tree
+tree --version
+dnf list installed tree
+sudo dnf history            # find the transaction ID for the install
+sudo dnf history undo last -y
+dnf list installed tree || echo "removed via history undo"
+```
 
-7. **Negative test:** Stop the Cockpit socket and confirm the console
-   becomes unreachable, proving the firewall rule alone is not what
-   provides the service:
+**Expected result:** `tree` installs and runs, appears in the installed list, and
+`dnf history undo last` cleanly reverses the transaction — `dnf` manages packages, groups
+(`dnf group`), modules (`dnf module`), and keeps a transaction history you can undo, which
+is the RHCSA software-management toolkit.
 
-   ```bash
-   sudo systemctl stop cockpit.socket
-   curl -Ik --max-time 5 https://localhost:9090 || echo "Connection failed as expected"
-   ```
+**Negative test:** remove a package another depends on with `dnf remove` and expect the
+dependency to stay; `dnf` removes or refuses per dependencies and records it in history —
+`dnf history undo` is the safe reversal, not manual file deletion.
 
-   **Expected result:** the `curl` command fails to connect (connection
-   refused or timeout), confirming Cockpit's socket activation — not
-   just the open firewall port — is required for access.
+**Cleanup:** `sudo dnf remove -y tree` if still installed.
 
-8. **Cleanup:**
+### Lab 1.4 — Cockpit web console (Topic: System management)
 
-   ```bash
-   sudo systemctl enable --now cockpit.socket   # restore service if keeping the lab host
-   sudo firewall-cmd --remove-service=cockpit --permanent
-   sudo firewall-cmd --reload
-   sudo rm -f /etc/yum.repos.d/rhel10-local.repo
-   sudo umount /mnt/rhel10-iso
-   sudo rmdir /mnt/rhel10-iso
-   dnf clean all
-   ```
+**Objective:** Enable the built-in web management console.
+
+```bash
+sudo dnf install -y cockpit
+sudo systemctl enable --now cockpit.socket
+sudo firewall-cmd --add-service=cockpit --permanent && sudo firewall-cmd --reload
+ss -tlnp | grep 9090
+```
+
+**Expected result:** Cockpit listens on 9090 (browse to `https://<host>:9090`), and the
+firewall permits it — Cockpit is the graphical, browser-based admin console for services,
+storage, networking, and logs, useful for tasks and for confirming CLI changes.
+
+**Negative test:** enable `cockpit.socket` but never open the firewall; the console is
+unreachable from other hosts — the service *and* the firewall rule are both required for
+remote access.
+
+**Cleanup:** `sudo systemctl disable --now cockpit.socket` and remove the firewall service if
+lab-only.
 
 ## Lab Verification
 

@@ -480,124 +480,129 @@ the timer equivalent of `anacron`'s catch-up behavior for cron.
 
 ## Hands-On Lab
 
-**Objective:** Build a custom systemd service and a companion timer,
-observe them through the journal and process tools, and practice
-recovering from a deliberately broken boot-time dependency.
+This chapter carries a topic-level walkthrough lab for **each task under RHCSA objective 4
+(operate running systems) and the boot portion of objective 7** — systemd services, boot
+targets and root-password recovery, processes, logging, and scheduled work. Every step is a
+runnable RHEL 10 command. Each ends **`**Lab verified by:** *pending*`** until a human runs
+it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 3.1–3.5** — a RHEL 10 system you can reboot and destroy
+(VM, with console access for Lab 3.2), and `sudo`. **Cost:** none.
 
-- A RHEL 10 host or VM with root or sudo access.
-- Console access (not only SSH) for the boot-recovery portion of the
-  lab, since a broken `fstab` can prevent SSH from coming up.
+### Lab 3.1 — Manage services with systemd (Topic: Operate running systems)
 
-**Steps**
+**Objective:** Start, enable, and inspect a service unit.
 
-1. Create a small script and its target unit:
+```bash
+sudo systemctl enable --now chronyd
+systemctl status chronyd --no-pager
+systemctl is-enabled chronyd
+sudo systemctl restart chronyd && systemctl is-active chronyd
+```
 
-   ```bash
-   sudo tee /usr/local/bin/heartbeat.sh <<'EOF'
-   #!/usr/bin/env bash
-   echo "heartbeat at $(date -Is)"
-   EOF
-   sudo chmod +x /usr/local/bin/heartbeat.sh
+**Expected result:** `chronyd` is `active (running)` and `enabled` (starts at boot);
+`is-active`/`is-enabled` confirm runtime and boot state separately — `systemctl` manages
+units, and RHCSA distinguishes *running now* (`start`/`is-active`) from *starts at boot*
+(`enable`/`is-enabled`).
 
-   sudo tee /etc/systemd/system/heartbeat.service <<'EOF'
-   [Unit]
-   Description=Heartbeat logger
+**Negative test:** `systemctl start` a service but never `enable` it, then reboot; it is not
+running — `start` affects only the current boot, so persistence requires `enable`.
 
-   [Service]
-   Type=oneshot
-   ExecStart=/usr/local/bin/heartbeat.sh
-   EOF
+**Cleanup:** leave `chronyd` enabled (time sync is expected in operation).
 
-   sudo tee /etc/systemd/system/heartbeat.timer <<'EOF'
-   [Unit]
-   Description=Run heartbeat.service every minute
+### Lab 3.2 — Boot targets and root-password recovery (Topic: Deploy/maintain systems)
 
-   [Timer]
-   OnBootSec=1min
-   OnUnitActiveSec=1min
-   Persistent=true
+**Objective:** Change the default target and reset a lost root password.
 
-   [Install]
-   WantedBy=timers.target
-   EOF
-   ```
+```bash
+systemctl get-default
+sudo systemctl set-default multi-user.target        # boot to text, not graphical
+# Reset a lost root password (at the console, on reboot):
+#   1. At the GRUB menu, press 'e' on the RHEL entry
+#   2. On the linux line, append:  rd.break
+#   3. Ctrl-x to boot, then:
+#        mount -o remount,rw /sysroot
+#        chroot /sysroot
+#        passwd root
+#        touch /.autorelabel        # so SELinux relabels on next boot
+#        exit ; exit
+```
 
-2. Load and enable the timer:
+**Expected result:** the default target changes, and the `rd.break` procedure gets you a
+root shell to reset the password; `touch /.autorelabel` ensures SELinux relabels
+`/etc/shadow` on reboot — root-password recovery is a classic RHCSA task, and forgetting
+`.autorelabel` leaves the system unable to log in.
 
-   ```bash
-   sudo systemctl daemon-reload
-   sudo systemctl enable --now heartbeat.timer
-   systemctl list-timers heartbeat.timer
-   ```
+**Negative test:** reset the password via `rd.break` but skip `touch /.autorelabel`; SELinux
+denies access to the relabeled shadow file and login still fails — the relabel step is
+mandatory, not optional.
 
-   **Expected result:** the timer appears in `list-timers` with a
-   populated `NEXT` and `LEFT` column.
+**Cleanup:** `sudo systemctl set-default graphical.target` if that was the original default.
 
-3. Wait at least one minute, then confirm the service ran and check
-   its journal output:
+### Lab 3.3 — Process management (Topic: Operate running systems)
 
-   ```bash
-   sleep 65
-   systemctl status heartbeat.service
-   journalctl -u heartbeat.service --since "5 minutes ago"
-   ```
+**Objective:** Find and control processes and their priority.
 
-   **Expected result:** at least one `heartbeat at ...` line appears in
-   the journal, and `systemctl status` shows the last run as
-   `inactive (dead)` with exit code `0` (expected for a `oneshot`
-   between runs).
+```bash
+sleep 600 &
+pgrep -af "sleep 600"
+top -b -n1 | head -12
+sudo renice -n 10 -p "$(pgrep -n sleep)"     # lower its priority
+kill "$(pgrep -n sleep)"                       # terminate it
+```
 
-4. Observe resource accounting for the unit while it is not running
-   versus a long-lived process:
+**Expected result:** the background `sleep` appears in `ps`, `top` shows system load, `renice`
+adjusts its niceness, and `kill` terminates it — RHCSA expects listing (`ps`/`top`),
+prioritizing (`nice`/`renice`), and signaling (`kill`/`pkill`) processes.
 
-   ```bash
-   systemd-cgtop -n 1
-   ```
+**Negative test:** `kill -9` a process indiscriminately (e.g. a database) instead of a
+graceful `kill`; you risk data loss — SIGTERM (default) allows cleanup, SIGKILL (`-9`) does
+not, so reach for `-9` only when a graceful stop fails.
 
-5. **Negative test:** intentionally reference a nonexistent script from
-   a new unit and observe the failure signature:
+**Cleanup:** `pkill sleep 2>/dev/null || true`.
 
-   ```bash
-   sudo tee /etc/systemd/system/broken-demo.service <<'EOF'
-   [Unit]
-   Description=Intentionally broken demo unit
+### Lab 3.4 — Logging with journald (Topic: Operate running systems)
 
-   [Service]
-   Type=simple
-   ExecStart=/usr/local/bin/does-not-exist.sh
-   EOF
+**Objective:** Read and persist the system journal.
 
-   sudo systemctl daemon-reload
-   sudo systemctl start broken-demo.service
-   systemctl status broken-demo.service
-   journalctl -u broken-demo.service -n 10
-   ```
+```bash
+journalctl -b --no-pager | tail -20            # this boot's log
+journalctl -u chronyd --since "10 min ago" --no-pager
+sudo mkdir -p /var/log/journal
+sudo systemctl restart systemd-journald        # enable persistent journal
+journalctl --list-boots | tail
+```
 
-   **Expected result:** `systemctl status` reports `failed` with a
-   status such as `203/EXEC`, and the journal shows systemd could not
-   execute the configured `ExecStart=` path — demonstrating how a
-   missing-binary failure is surfaced distinctly from an
-   application-level crash.
+**Expected result:** journald shows the current boot's messages, per-unit and time-filtered
+views work, and creating `/var/log/journal` makes the journal persist across reboots —
+RHCSA expects reading logs with `journalctl` filters and configuring persistence.
 
-6. Practice targeted log filtering by priority and time:
+**Negative test:** try to review last week's logs on a system with a volatile (in-memory)
+journal after a reboot; they are gone — persistence (`/var/log/journal`) must be enabled
+*before* you need the history.
 
-   ```bash
-   journalctl -p err --since "10 minutes ago"
-   ```
+**Cleanup:** none (persistent journal is a good default).
 
-7. **Cleanup:**
+### Lab 3.5 — Scheduled tasks: cron, at, and timers (Topic: Scheduled work)
 
-   ```bash
-   sudo systemctl disable --now heartbeat.timer
-   sudo rm -f /etc/systemd/system/heartbeat.timer \
-              /etc/systemd/system/heartbeat.service \
-              /etc/systemd/system/broken-demo.service \
-              /usr/local/bin/heartbeat.sh
-   sudo systemctl daemon-reload
-   sudo systemctl reset-failed
-   ```
+**Objective:** Schedule recurring and one-off jobs.
+
+```bash
+echo '*/5 * * * * /usr/bin/logger "cron test"' | sudo tee /etc/cron.d/labtest
+sudo systemctl enable --now crond
+echo "logger 'at test'" | at now + 1 minute ; atq
+systemctl list-timers --no-pager | head
+```
+
+**Expected result:** a cron job runs every 5 minutes (visible via `journalctl -t cron test`
+or `logger` output), an `at` job is queued for one minute out, and `list-timers` shows
+systemd timers — RHCSA covers `cron` (recurring), `at` (one-off), and systemd timers as
+scheduling mechanisms.
+
+**Negative test:** add a cron entry but leave `crond` disabled; nothing runs — the scheduler
+service must be active for jobs to fire.
+
+**Cleanup:** `sudo rm -f /etc/cron.d/labtest`; `atrm` any queued `at` jobs.
 
 ## Lab Verification
 

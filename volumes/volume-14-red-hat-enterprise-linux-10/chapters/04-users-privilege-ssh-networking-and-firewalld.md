@@ -402,115 +402,120 @@ firewall-cmd --reload
 
 ## Hands-On Lab
 
-**Objective:** Provision a scoped administrative account, harden SSH
-access to it, configure a static network profile, and restrict a
-service to a specific source network with firewalld.
+This chapter carries a topic-level walkthrough lab for **each task under RHCSA objectives 8
+(networking), 9 (users and groups), and part of 10 (security)** — accounts, privilege
+escalation, SSH, networking, and firewalld. Every step is a runnable RHEL 10 command. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.5** — a RHEL 10 system with `sudo`, a second host (or
+localhost) for the SSH lab, and a data interface for networking. **Cost:** none.
 
-- A RHEL 10 host or VM with root or sudo access and at least two
-  network interfaces (a second virtual NIC is sufficient in a lab
-  hypervisor).
-- A separate SSH client machine able to reach the lab host.
+### Lab 4.1 — Users, groups, and password aging (Topic: Manage users and groups)
 
-**Steps**
+**Objective:** Create accounts and a shared group with aging policy.
 
-1. Create a scoped operator account and grant it delegated sudo for a
-   single service:
+```bash
+sudo groupadd engineers
+sudo useradd -m -G engineers alice
+sudo passwd alice
+sudo chage -M 90 -W 7 alice          # 90-day max age, 7-day warning
+id alice ; sudo chage -l alice | head
+```
 
-   ```bash
-   sudo groupadd webteam
-   sudo useradd -m -G webteam -s /bin/bash operator1
-   sudo passwd operator1
+**Expected result:** `alice` exists with a home directory and membership in `engineers`, and
+`chage -l` shows the aging policy — RHCSA expects creating/modifying users and groups
+(`useradd`/`usermod`/`groupadd`) and setting password aging (`chage`).
 
-   sudo tee /etc/sudoers.d/webteam-httpd <<'EOF'
-   %webteam ALL=(root) /usr/bin/systemctl restart httpd, /usr/bin/systemctl status httpd
-   EOF
-   sudo visudo -cf /etc/sudoers.d/webteam-httpd
-   ```
+**Negative test:** create a user with `useradd` but without `-m` on a system whose default
+skips home creation; the user has no home directory and login misbehaves — verify the home
+directory exists, do not assume it.
 
-   **Expected result:** `visudo -cf` reports the file's syntax is
-   correct.
+**Cleanup:** `sudo userdel -r alice; sudo groupdel engineers`.
 
-2. Generate a key pair on the client and install it for the new
-   account:
+### Lab 4.2 — Privilege escalation with sudo (Topic: Manage security)
 
-   ```bash
-   ssh-keygen -t ed25519 -f ~/.ssh/lab_operator1 -N ""
-   ssh-copy-id -i ~/.ssh/lab_operator1.pub operator1@<lab-host-ip>
-   ```
+**Objective:** Grant scoped administrative rights.
 
-3. Confirm key-based login works, then confirm the scoped sudo grant:
+```bash
+echo '%engineers ALL=(ALL) ALL' | sudo tee /etc/sudoers.d/engineers
+sudo visudo -cf /etc/sudoers.d/engineers        # syntax-check
+sudo -l -U alice
+```
 
-   ```bash
-   ssh -i ~/.ssh/lab_operator1 operator1@<lab-host-ip> \
-     "sudo systemctl status httpd; sudo -l"
-   ```
+**Expected result:** members of `engineers` gain `sudo` rights, and `visudo -c` validates the
+syntax — RHCSA expects configuring `sudo` via drop-in files in `/etc/sudoers.d/`, and
+`visudo` is what prevents a syntax error from locking out all `sudo`.
 
-   **Expected result:** the account authenticates without a password
-   prompt, and `sudo -l` lists only the two permitted `systemctl`
-   commands.
+**Negative test:** edit `/etc/sudoers` directly with a plain editor and save a syntax error;
+`sudo` breaks for everyone — always use `visudo` (or `visudo -cf` on drop-ins), which refuses
+to save an invalid file.
 
-4. Configure a static IP on the lab host's second interface:
+**Cleanup:** `sudo rm -f /etc/sudoers.d/engineers`.
 
-   ```bash
-   sudo nmcli connection add type ethernet ifname ens224 con-name lab-static \
-     ipv4.method manual ipv4.addresses 192.0.2.50/24 ipv4.gateway 192.0.2.1
-   sudo nmcli connection up lab-static
-   nmcli device status
-   ```
+### Lab 4.3 — SSH key-based authentication (Topic: Manage security)
 
-   **Expected result:** `ens224` shows `connected` with the
-   `lab-static` profile active.
+**Objective:** Configure passwordless SSH with keys.
 
-5. Restrict SSH access on that interface's zone to your client's
-   subnet only, then verify the running policy:
+```bash
+ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519
+ssh-copy-id -i ~/.ssh/id_ed25519.pub localhost
+ssh -i ~/.ssh/id_ed25519 localhost 'hostname; whoami'
+```
 
-   ```bash
-   sudo firewall-cmd --zone=public --add-rich-rule='rule family="ipv4" source address="192.0.2.0/24" service name="ssh" accept' --permanent
-   sudo firewall-cmd --zone=public --remove-service=ssh --permanent
-   sudo firewall-cmd --reload
-   sudo firewall-cmd --list-all
-   ```
+**Expected result:** the key is generated, installed into the target's
+`~/.ssh/authorized_keys`, and SSH logs in without a password — key-based auth is the RHCSA
+standard for SSH, more secure than passwords and the basis for automation.
 
-   **Expected result:** the `ssh` service no longer appears in the
-   plain `services:` list, but the rich rule scoping SSH to
-   `192.0.2.0/24` is present.
+**Negative test:** set `~/.ssh` or `authorized_keys` with loose permissions (group/other
+writable); `sshd` refuses the key and falls back to a password — SSH enforces strict
+permissions on key files by design.
 
-6. **Negative test:** confirm the account lockout policy actually
-   locks after repeated bad passwords:
+**Cleanup:** remove the lab key from `~/.ssh/authorized_keys` and delete
+`~/.ssh/id_ed25519*` if created only for the lab.
 
-   ```bash
-   for i in 1 2 3 4 5; do
-     sshpass -p "wrong-password" ssh -o PreferredAuthentications=password \
-       -o PubkeyAuthentication=no operator1@<lab-host-ip> exit 2>/dev/null
-   done
-   sudo faillock --user operator1
-   ```
+### Lab 4.4 — Networking with nmcli (Topic: Manage basic networking)
 
-   **Expected result:** `faillock` shows multiple recorded failures
-   and, once the configured threshold is exceeded, the account is
-   temporarily locked (if `sshpass` is unavailable, this step can be
-   performed manually with repeated interactive password attempts).
+**Objective:** Configure a static IP and hostname.
 
-7. Reset the lockout and confirm normal access is restored:
+```bash
+nmcli connection show
+sudo nmcli connection modify "System eth0" ipv4.addresses 192.168.50.10/24 \
+     ipv4.gateway 192.168.50.1 ipv4.dns 192.168.50.1 ipv4.method manual
+sudo nmcli connection up "System eth0"
+sudo hostnamectl set-hostname server1.example.com
+ip addr show ; hostname
+```
 
-   ```bash
-   sudo faillock --user operator1 --reset
-   ```
+**Expected result:** the interface holds the static address/gateway/DNS and the hostname is
+set — RHCSA expects static and DHCP addressing via `nmcli`, name resolution, and hostname
+configuration; `nmcli connection modify` persists across reboots (unlike `ip addr add`).
 
-8. **Cleanup:**
+**Negative test:** set an address with `ip addr add` and reboot; it is gone — `ip` changes
+are runtime-only, while `nmcli`/NetworkManager writes persistent connection profiles.
 
-   ```bash
-   sudo firewall-cmd --zone=public --remove-rich-rule='rule family="ipv4" source address="192.0.2.0/24" service name="ssh" accept' --permanent
-   sudo firewall-cmd --zone=public --add-service=ssh --permanent
-   sudo firewall-cmd --reload
-   sudo nmcli connection delete lab-static
-   sudo userdel -r operator1
-   sudo groupdel webteam
-   sudo rm -f /etc/sudoers.d/webteam-httpd
-   rm -f ~/.ssh/lab_operator1 ~/.ssh/lab_operator1.pub
-   ```
+**Cleanup:** restore the original connection settings (`ipv4.method auto` or your lab values).
+
+### Lab 4.5 — Firewall management with firewalld (Topic: Manage security)
+
+**Objective:** Open a service through the firewall persistently.
+
+```bash
+sudo firewall-cmd --get-active-zones
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-port=8080/tcp
+sudo firewall-cmd --reload
+sudo firewall-cmd --list-all
+```
+
+**Expected result:** the `http` service and TCP/8080 are permitted in the active zone and
+persist a reload — `firewalld` is zone-based, and RHCSA expects adding services/ports with
+`--permanent` plus `--reload` (runtime-only rules are lost on reload/reboot).
+
+**Negative test:** add a rule without `--permanent`, then `--reload`; the rule vanishes — the
+runtime and permanent configurations are separate, and persistence requires `--permanent`.
+
+**Cleanup:** `sudo firewall-cmd --permanent --remove-service=http --remove-port=8080/tcp &&
+sudo firewall-cmd --reload`.
 
 ## Lab Verification
 

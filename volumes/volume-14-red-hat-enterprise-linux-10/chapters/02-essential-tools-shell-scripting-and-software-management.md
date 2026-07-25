@@ -334,104 +334,115 @@ dnf group remove -y "Development Tools"
 
 ## Hands-On Lab
 
-**Objective:** Build a small but realistic administrative script that
-audits installed packages and disk usage, and exercise `dnf history` to
-practice safe rollback.
+This chapter carries a topic-level walkthrough lab for **each skill under RHCSA objectives 1
+(essential tools) and 3 (create simple shell scripts)** — files and links, text processing
+and redirection, archiving, and scripting. Every step is a runnable RHEL 10 command. Each
+ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.4** — a RHEL 10 shell as a normal user with `sudo`
+where noted, and a scratch directory (`mkdir -p ~/lab && cd ~/lab`). **Cost:** none.
 
-- A RHEL 10 host or VM with sudo access and configured repositories
-  (see [Chapter 01](01-installation-subscriptions-repositories-and-cockpit.md)).
-- A non-production system, since this lab installs and removes a test
-  package.
+### Lab 2.1 — Files, directories, and links (Topic: Essential tools)
 
-**Steps**
+**Objective:** Manage files and create hard and symbolic links.
 
-1. Create a working directory and the audit script:
+```bash
+cd ~/lab
+echo "data" > file.txt
+ln file.txt hard.txt          # hard link (same inode)
+ln -s file.txt soft.txt       # symbolic link (points to name)
+ls -li file.txt hard.txt soft.txt
+```
 
-   ```bash
-   mkdir -p ~/lab-tools && cd ~/lab-tools
-   cat > disk-and-pkg-report.sh <<'EOF'
-   #!/usr/bin/env bash
-   set -euo pipefail
+**Expected result:** `file.txt` and `hard.txt` share one inode number and a link count of 2;
+`soft.txt` is a separate inode pointing to the name — a hard link is another name for the
+same data (survives deleting the original name), a symlink is a pointer (breaks if the target
+is removed).
 
-   echo "== Disk usage over 80% =="
-   df -hT | awk 'NR==1 || $6+0 > 80 { print }'
+**Negative test:** `rm file.txt`, then `cat hard.txt` (still works — data persists) vs
+`cat soft.txt` (fails — dangling symlink) — this proves the inode-vs-name distinction the
+exam expects you to know.
 
-   echo "== Packages installed in the last transaction =="
-   dnf history info last | grep -E '^(Install|Upgrade|Erase)' || true
+**Cleanup:** `rm -f ~/lab/file.txt ~/lab/hard.txt ~/lab/soft.txt`.
 
-   echo "== Top 5 largest directories under /var =="
-   du -h --max-depth=1 /var 2>/dev/null | sort -rh | head -5
-   EOF
-   chmod +x disk-and-pkg-report.sh
-   ```
+### Lab 2.2 — Text processing and I/O redirection (Topic: Essential tools)
 
-2. Run the script and confirm it executes without error:
+**Objective:** Filter and transform text with pipes and redirection.
 
-   ```bash
-   ./disk-and-pkg-report.sh
-   ```
+```bash
+cd ~/lab
+getent passwd > users.txt
+grep -c bash users.txt                          # count bash users
+awk -F: '$3 >= 1000 {print $1}' users.txt        # regular (UID>=1000) accounts
+sed -n '1,3p' users.txt > firstthree.txt          # redirect first 3 lines to a file
+```
 
-   **Expected result:** three labeled sections print with real data
-   from the host; the script exits with status `0`
-   (`echo $?` immediately afterward confirms).
+**Expected result:** a count of bash-shell accounts, the list of regular-user names, and a
+three-line file — `grep`/`sed`/`awk` with pipes (`|`) and redirection (`>`, `>>`, `2>`) are
+the core text-processing tools RHCSA tasks lean on for extracting and transforming data.
 
-3. Install a small, harmless test package to generate a new
-   transaction:
+**Negative test:** use `>` where you meant `>>` and overwrite a file you meant to append to;
+the prior content is gone — redirection operators are exact, and choosing the wrong one loses
+data.
 
-   ```bash
-   sudo dnf install -y tree
-   ```
+**Cleanup:** `rm -f ~/lab/users.txt ~/lab/firstthree.txt`.
 
-4. Confirm the transaction is visible in history:
+### Lab 2.3 — Archiving and compression (Topic: Essential tools)
 
-   ```bash
-   sudo dnf history list | head -5
-   sudo dnf history info last
-   ```
+**Objective:** Create and extract a compressed archive.
 
-   **Expected result:** the most recent entry shows `Install tree`.
+```bash
+cd ~/lab
+mkdir -p src && echo hi > src/a && echo yo > src/b
+tar -czvf backup.tar.gz src/
+rm -rf src
+tar -xzvf backup.tar.gz
+ls src/
+```
 
-5. Re-run the audit script and confirm the new transaction now appears
-   in its output:
+**Expected result:** `backup.tar.gz` is created, and extraction restores `src/a` and
+`src/b` — `tar` with `-z` (gzip), `-j` (bzip2), or `-J` (xz) bundles and compresses
+directories, the standard RHCSA backup/transfer mechanism.
 
-   ```bash
-   ./disk-and-pkg-report.sh
-   ```
+**Negative test:** extract a `.tar.gz` with `tar -xf` but without matching the compression
+in a pipeline that needs it; modern `tar` autodetects, but a raw `gzip -d` on a `.tar` (not
+`.tar.gz`) fails — the tool must match the file's actual format.
 
-6. **Negative test:** intentionally break the script by removing the
-   quotes around a variable and observe the failure mode, to see why
-   quoting matters:
+**Cleanup:** `rm -rf ~/lab/src ~/lab/backup.tar.gz`.
 
-   ```bash
-   cp disk-and-pkg-report.sh broken.sh
-   sed -i 's#du -h --max-depth=1 /var#TESTDIR="/var/log audit"; du -h --max-depth=1 $TESTDIR#' broken.sh
-   chmod +x broken.sh
-   ./broken.sh
-   ```
+### Lab 2.4 — A simple shell script (Topic: Create shell scripts)
 
-   **Expected result:** the unquoted `$TESTDIR` word-splits into two
-   separate arguments (`/var/log` and `audit`), and `du` reports it
-   cannot access a directory literally named `audit` in the current
-   working directory — demonstrating exactly the class of bug that
-   `"$TESTDIR"` quoting prevents.
+**Objective:** Write a script with a conditional, a loop, and exit status.
 
-7. Roll back the test package using `dnf history undo`:
+```bash
+cd ~/lab
+cat > report.sh <<'EOF'
+#!/bin/bash
+# usage: report.sh <dir>
+dir="${1:-.}"
+if [ ! -d "$dir" ]; then
+    echo "Not a directory: $dir" >&2
+    exit 1
+fi
+for f in "$dir"/*; do
+    [ -f "$f" ] && echo "file: $f"
+done
+exit 0
+EOF
+chmod +x report.sh
+./report.sh /etc; echo "exit=$?"
+./report.sh /nope; echo "exit=$?"
+```
 
-   ```bash
-   sudo dnf history undo last
-   rpm -q tree
-   ```
+**Expected result:** the script lists files in `/etc` and exits 0, then reports the bad
+directory to stderr and exits 1 — RHCSA scripting expects positional parameters (`$1`),
+conditionals (`if [ ]`), loops (`for`), input/output, and meaningful exit codes.
 
-   **Expected result:** `rpm -q tree` reports the package is no longer
-   installed.
+**Negative test:** omit the `#!/bin/bash` shebang and run `./report.sh`; it may run under the
+wrong interpreter or fail — the shebang declares the interpreter, and `chmod +x` makes it
+executable; both are required.
 
-8. **Cleanup:**
-
-   ```bash
-   cd ~ && rm -rf ~/lab-tools
-   ```
+**Cleanup:** `rm -f ~/lab/report.sh`.
 
 ## Lab Verification
 

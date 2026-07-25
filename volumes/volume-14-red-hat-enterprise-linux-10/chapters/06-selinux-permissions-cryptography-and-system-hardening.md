@@ -398,107 +398,107 @@ oscap xccdf generate fix \
 
 ## Hands-On Lab
 
-**Objective:** Deliberately trigger and resolve an SELinux denial for
-a relocated web content directory, apply an ACL for exceptional
-access, and encrypt a scratch volume with LUKS.
+This chapter carries a topic-level walkthrough lab for **each task under the security core of
+RHCSA objective 10** — permissions, ACLs, SELinux modes/contexts, and SELinux
+troubleshooting. SELinux is one of the most commonly failed exam areas, so every step is a
+runnable RHEL 10 command. Each ends **`**Lab verified by:** *pending*`** until a human runs
+it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.4** — a RHEL 10 system with SELinux in **enforcing**
+mode (`getenforce`), `sudo`, and `policycoreutils-python-utils` / `setroubleshoot-server`
+installed for the troubleshooting lab. **Cost:** none.
 
-- A RHEL 10 host or VM with root/sudo access.
-- `httpd` installed (`dnf install -y httpd`) and a spare block device
-  or loopback file for the LUKS portion.
+### Lab 6.1 — Permissions and special bits (Topic: File permissions)
 
-**Steps**
+**Objective:** Set standard and special permissions on a shared directory.
 
-1. Create a non-default content directory and serve from it:
+```bash
+sudo mkdir -p /srv/team
+sudo groupadd -f team
+sudo chown root:team /srv/team
+sudo chmod 2770 /srv/team          # rwx for group + setgid (new files inherit the group)
+ls -ld /srv/team
+umask
+```
 
-   ```bash
-   sudo mkdir -p /data/web
-   echo "<h1>SELinux lab</h1>" | sudo tee /data/web/index.html
-   sudo sed -i 's#DocumentRoot "/var/www/html"#DocumentRoot "/data/web"#' /etc/httpd/conf/httpd.conf
-   sudo systemctl enable --now httpd
-   curl -s http://localhost/ || echo "Request failed as expected"
-   ```
+**Expected result:** `/srv/team` shows `drwxrws---` — the setgid bit (`s`) makes files created
+inside inherit the `team` group, so a shared workspace stays group-owned — RHCSA expects
+standard permissions plus special bits: setuid, setgid, and the sticky bit.
 
-   **Expected result:** the `curl` request fails (connection succeeds
-   but returns a 403, or `httpd` fails to start cleanly), because
-   `/data/web` does not carry the `httpd_sys_content_t` context.
+**Negative test:** create the shared dir with plain `2770`? Test the opposite: use `0770`
+(no setgid); files created by different users get *their own* primary group, breaking shared
+access — the setgid bit is what enforces the shared group.
 
-2. Confirm the denial in the audit log:
+**Cleanup:** `sudo rm -rf /srv/team; sudo groupdel team`.
 
-   ```bash
-   sudo ausearch -m avc -ts recent | tail -20
-   sudo sealert -a /var/log/audit/audit.log | head -40
-   ```
+### Lab 6.2 — Access Control Lists (Topic: ACLs)
 
-   **Expected result:** the output identifies `httpd_t` being denied
-   access to a path labeled with a type other than
-   `httpd_sys_content_t`.
+**Objective:** Grant one user access beyond the standard owner/group/other.
 
-3. Apply the correct persistent fix:
+```bash
+sudo useradd -m contractor
+sudo touch /srv/report.txt
+sudo setfacl -m u:contractor:r-- /srv/report.txt
+getfacl /srv/report.txt
+```
 
-   ```bash
-   sudo semanage fcontext -a -t httpd_sys_content_t "/data/web(/.*)?"
-   sudo restorecon -Rv /data/web
-   curl -s http://localhost/
-   ```
+**Expected result:** `getfacl` shows a `user:contractor:r--` entry, and `ls -l` shows a `+`
+after the mode — ACLs grant fine-grained permissions to specific users/groups without
+changing ownership or the primary group, for cases the three standard classes cannot express.
 
-   **Expected result:** the request now returns the lab's HTML content
-   successfully.
+**Negative test:** try to give one extra user access using only `chmod`; you would have to
+change the group or open it to `other`, over-granting — ACLs (`setfacl`) exist precisely to
+avoid that.
 
-4. Grant one additional non-owner user write access to the content
-   directory using an ACL:
+**Cleanup:** `sudo setfacl -b /srv/report.txt; sudo rm -f /srv/report.txt; sudo userdel -r
+contractor`.
 
-   ```bash
-   sudo useradd -m contentwriter 2>/dev/null || true
-   sudo setfacl -m u:contentwriter:rwx /data/web
-   sudo -u contentwriter touch /data/web/from-acl.html && echo "ACL grant confirmed"
-   getfacl /data/web
-   ```
+### Lab 6.3 — SELinux modes, contexts, and booleans (Topic: SELinux)
 
-5. Create and mount a LUKS-encrypted scratch volume using a loopback
-   file (no spare disk required):
+**Objective:** Read and set SELinux state, file contexts, and booleans.
 
-   ```bash
-   sudo dd if=/dev/zero of=/root/luks-lab.img bs=1M count=200
-   sudo losetup -fP /root/luks-lab.img
-   LOOPDEV=$(sudo losetup -j /root/luks-lab.img | cut -d: -f1)
-   sudo cryptsetup luksFormat "$LOOPDEV" --batch-mode
-   sudo cryptsetup luksOpen "$LOOPDEV" lab_secure
-   sudo mkfs.xfs /dev/mapper/lab_secure
-   sudo mkdir -p /mnt/lab_secure
-   sudo mount /dev/mapper/lab_secure /mnt/lab_secure
-   echo "encrypted lab data" | sudo tee /mnt/lab_secure/secret.txt
-   ```
+```bash
+getenforce
+sudo semanage fcontext -a -t httpd_sys_content_t "/web(/.*)?"
+sudo mkdir -p /web && sudo restorecon -Rv /web
+ls -Zd /web
+sudo setsebool -P httpd_can_network_connect on
+getsebool httpd_can_network_connect
+```
 
-   **Expected result:** the file writes successfully to the mounted,
-   decrypted volume.
+**Expected result:** the custom path `/web` gets the `httpd_sys_content_t` context (so httpd
+may serve it), and the boolean persists with `-P` — RHCSA expects setting enforcing/permissive
+modes, managing file contexts (`semanage fcontext` + `restorecon`), and toggling booleans
+(`setsebool -P`).
 
-6. **Negative test:** confirm the underlying loopback file is
-   unreadable as plaintext while the mapping is closed:
+**Negative test:** copy content into `/web` and set the context with `chcon` instead of
+`semanage fcontext`; a later `restorecon` or relabel reverts it — `chcon` is temporary, only
+`semanage fcontext` writes the persistent policy.
 
-   ```bash
-   sudo umount /mnt/lab_secure
-   sudo cryptsetup luksClose lab_secure
-   sudo strings /root/luks-lab.img | grep -i "encrypted lab data" \
-     || echo "Plaintext not found, as expected"
-   ```
+**Cleanup:** `sudo setsebool -P httpd_can_network_connect off; sudo semanage fcontext -d
+"/web(/.*)?"; sudo rm -rf /web`.
 
-   **Expected result:** the `strings` search finds nothing, confirming
-   the data is not recoverable from the raw backing file without the
-   LUKS key.
+### Lab 6.4 — Troubleshoot an SELinux denial (Topic: SELinux troubleshooting)
 
-7. **Cleanup:**
+**Objective:** Diagnose a denial and fix it correctly.
 
-   ```bash
-   sudo losetup -d "$LOOPDEV" 2>/dev/null
-   sudo rm -f /root/luks-lab.img
-   sudo userdel -r contentwriter
-   sudo semanage fcontext -d "/data/web(/.*)?"
-   sudo sed -i 's#DocumentRoot "/data/web"#DocumentRoot "/var/www/html"#' /etc/httpd/conf/httpd.conf
-   sudo systemctl restart httpd
-   sudo rm -rf /data/web
-   ```
+```bash
+# Reproduce: serve content from a non-default path/port and hit a denial, then investigate:
+sudo ausearch -m AVC -ts recent 2>/dev/null | tail
+sudo sealert -a /var/log/audit/audit.log 2>/dev/null | head -40
+# For a non-standard port, add the port to the right type instead of disabling SELinux:
+sudo semanage port -a -t http_port_t -p tcp 8080
+```
+
+**Expected result:** `ausearch`/`sealert` show the AVC denial and a suggested fix, and adding
+the port to `http_port_t` lets the service bind 8080 — the RHCSA-correct response to a denial
+is to *fix the context/boolean/port*, never to disable SELinux.
+
+**Negative test:** "fix" a denial with `setenforce 0` (permissive) and call it done; the exam
+scores SELinux as enforcing, so this fails the task — always resolve denials with policy
+(context/boolean/port), keeping SELinux enforcing.
+
+**Cleanup:** `sudo semanage port -d -t http_port_t -p tcp 8080` if added only for the lab.
 
 ## Lab Verification
 

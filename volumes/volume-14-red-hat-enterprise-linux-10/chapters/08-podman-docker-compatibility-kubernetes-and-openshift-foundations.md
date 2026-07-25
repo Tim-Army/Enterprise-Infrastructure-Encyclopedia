@@ -404,122 +404,109 @@ oc get routes
 
 ## Hands-On Lab
 
-**Objective:** Build a custom container image, run it rootless as a
-Quadlet-managed systemd service, group it into a pod with a second
-container, and export/re-import that pod as Kubernetes-compatible
-YAML.
+This chapter carries a topic-level walkthrough lab for **each container skill** — Podman
+basics, persistent storage, containers as systemd services, and Kubernetes/OpenShift
+foundations. Containers are **no longer on the RHEL 10 RHCSA blueprint**, so treat these as
+platform-engineering and RHCE-adjacent skills rather than exam objectives. Every step is a
+runnable RHEL 10 command. Each ends **`**Lab verified by:** *pending*`** until a human runs
+it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.4** — a RHEL 10 system with `sudo`, `podman` installed,
+and (for Lab 8.4) access to a Kubernetes/OpenShift cluster or `kind`/CRC. **Cost:** none.
 
-- A RHEL 10 host or VM with Podman installed
-  (`dnf install -y podman podman-docker`) and a non-root user account
-  for rootless operation.
-- No cluster or CRC required for this lab; the OpenShift commands in
-  the Implementation section are for reference and are not required to
-  complete the lab steps below.
+### Lab 8.1 — Podman basics, rootless (Topic: Podman)
 
-**Steps**
+**Objective:** Run and manage a container without root.
 
-1. Build the lab application image:
+```bash
+podman run -d --name web -p 8080:80 registry.access.redhat.com/ubi9/httpd-24
+podman ps
+curl -s http://localhost:8080/ | head -1
+podman logs web | tail -3
+```
 
-   ```bash
-   mkdir -p ~/lab-app && cd ~/lab-app
-   cat > Containerfile <<'EOF'
-   FROM registry.access.redhat.com/ubi9/ubi-minimal
-   RUN microdnf install -y httpd && microdnf clean all
-   COPY index.html /var/www/html/index.html
-   EXPOSE 80
-   CMD ["httpd", "-D", "FOREGROUND"]
-   EOF
-   echo "<h1>Quadlet lab</h1>" > index.html
-   podman build -t localhost/lab-app:1.0 .
-   podman images | grep lab-app
-   ```
+**Expected result:** the container runs **rootless** (as your user, no `sudo`), serves on
+8080, and `podman ps`/`logs` inspect it — Podman is the daemonless, rootless container engine
+on RHEL; rootless operation is a key security advantage over a root daemon.
 
-   **Expected result:** `localhost/lab-app:1.0` appears in
-   `podman images`.
+**Negative test:** publish to a privileged port (`-p 80:80`) as a rootless user; it is denied
+(ports <1024 need privilege) — rootless containers map to high ports unless the sysctl/
+capability is granted.
 
-2. Deploy it as a rootless Quadlet-managed service:
+**Cleanup:** `podman rm -f web`.
 
-   ```bash
-   mkdir -p ~/.config/containers/systemd
-   cat > ~/.config/containers/systemd/lab-app.container <<'EOF'
-   [Unit]
-   Description=Lab app container managed by Quadlet
+### Lab 8.2 — Persistent storage with volumes (Topic: Container storage)
 
-   [Container]
-   Image=localhost/lab-app:1.0
-   PublishPort=8091:80
+**Objective:** Persist container data across restarts.
 
-   [Service]
-   Restart=on-failure
+```bash
+mkdir -p ~/cdata && echo "persistent" > ~/cdata/index.html
+podman run -d --name web2 -p 8081:8080 \
+  -v ~/cdata:/var/www/html:Z registry.access.redhat.com/ubi9/httpd-24
+curl -s http://localhost:8081/ | head -1
+podman rm -f web2 ; ls ~/cdata/index.html    # data survives the container
+```
 
-   [Install]
-   WantedBy=default.target
-   EOF
+**Expected result:** the container serves the host file, and the data remains after the
+container is removed — a bind mount (`-v`, with `:Z` to set the SELinux label) decouples data
+lifetime from container lifetime, the basis for stateful containers.
 
-   systemctl --user daemon-reload
-   systemctl --user enable --now lab-app.service
-   systemctl --user status lab-app.service
-   curl -s http://localhost:8091/
-   ```
+**Negative test:** bind-mount a host directory without `:Z` under enforcing SELinux; the
+container gets permission denied on the volume — `:Z`/`:z` relabels the content so the
+container may access it.
 
-   **Expected result:** `curl` returns `<h1>Quadlet lab</h1>`, and
-   `systemctl --user status` shows the unit active and running.
+**Cleanup:** `rm -rf ~/cdata`.
 
-3. Create a two-container pod and confirm shared-network reachability
-   between the containers:
+### Lab 8.3 — Containers as systemd services (Topic: Container services)
 
-   ```bash
-   podman pod create --name lab-pod -p 8092:80
-   podman run -d --pod lab-pod --name lab-pod-app localhost/lab-app:1.0
-   podman run -d --pod lab-pod --name lab-pod-sidecar registry.access.redhat.com/ubi9/ubi-minimal sleep infinity
-   podman exec lab-pod-sidecar curl -s http://localhost:80/
-   ```
+**Objective:** Run a container under systemd with a Quadlet unit.
 
-   **Expected result:** the sidecar container reaches the app
-   container over `localhost`, returning `<h1>Quadlet lab</h1>`,
-   confirming the shared pod network namespace.
+```bash
+mkdir -p ~/.config/containers/systemd
+cat > ~/.config/containers/systemd/web.container <<'EOF'
+[Container]
+Image=registry.access.redhat.com/ubi9/httpd-24
+PublishPort=8082:8080
 
-4. Export the pod as Kubernetes-compatible YAML, then tear down and
-   recreate it purely from that file:
+[Install]
+WantedBy=default.target
+EOF
+systemctl --user daemon-reload
+systemctl --user start web.service
+systemctl --user status web.service --no-pager | head
+```
 
-   ```bash
-   podman generate kube lab-pod > ~/lab-app/lab-pod.yaml
-   podman pod rm -f lab-pod
-   podman play kube ~/lab-app/lab-pod.yaml
-   podman ps --pod
-   ```
+**Expected result:** systemd generates and starts a service from the Quadlet `.container`
+unit, so the container is managed like any service (start on boot, restart on failure) —
+Quadlet is the modern RHEL way to run containers under systemd, replacing
+`podman generate systemd`.
 
-   **Expected result:** the pod and both containers are running again,
-   recreated entirely from the exported YAML.
+**Negative test:** expect a plain `podman run` container to restart after a reboot; it does
+not — only a systemd-managed (Quadlet) unit gives you boot-time start and restart policy.
 
-5. **Negative test:** attempt to bind a privileged port (below 1024)
-   rootless without additional configuration, and observe the
-   failure:
+**Cleanup:** `systemctl --user stop web.service; rm ~/.config/containers/systemd/web.container;
+systemctl --user daemon-reload`.
 
-   ```bash
-   podman run --rm -p 80:80 localhost/lab-app:1.0 &
-   sleep 2
-   jobs
-   wait
-   ```
+### Lab 8.4 — Kubernetes/OpenShift foundations (Topic: Orchestration)
 
-   **Expected result:** the run fails with a permission error binding
-   port 80, demonstrating that rootless Podman cannot bind privileged
-   ports by default (the documented, deliberate limitation of running
-   without host root).
+**Objective:** Deploy a pod and read its state.
 
-6. **Cleanup:**
+```bash
+kubectl run web --image=registry.access.redhat.com/ubi9/httpd-24 --port=8080
+kubectl get pods -o wide
+kubectl describe pod web | sed -n '1,20p'
+# On OpenShift, the equivalent is: oc new-app / oc get pods
+```
 
-   ```bash
-   systemctl --user disable --now lab-app.service
-   rm -f ~/.config/containers/systemd/lab-app.container
-   systemctl --user daemon-reload
-   podman pod rm -f lab-pod
-   podman rmi -f localhost/lab-app:1.0
-   rm -rf ~/lab-app
-   ```
+**Expected result:** the pod is scheduled and reaches `Running`; `describe` shows events and
+node placement — Kubernetes/OpenShift orchestrate containers across nodes (scheduling,
+scaling, self-healing), the platform layer above single-host Podman.
+
+**Negative test:** treat a single Podman host as a substitute for orchestration for a
+multi-node HA app; it has no scheduling, scaling, or self-healing — that is precisely what
+Kubernetes/OpenShift add.
+
+**Cleanup:** `kubectl delete pod web`.
 
 ## Lab Verification
 

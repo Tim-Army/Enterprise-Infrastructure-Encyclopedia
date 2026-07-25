@@ -406,254 +406,152 @@ ansible-playbook -i inventory.ini site.yml --ask-vault-pass
 
 ## Hands-On Lab
 
-**Objective:** This is the volume's capstone lab. Using a single fresh
-RHEL 10 host, complete an integrated build touching identity, storage,
-SELinux, firewalld, a web service, and scheduled work — first with
-Ansible automation for the repeatable portions, then with manual
-verification exercising RHCSA-aligned objective domains end to end.
+This chapter carries a topic-level walkthrough lab for **Ansible automation (the RHCE EX294
+core) and an integrative RHCSA capstone**. Ansible is the Red Hat Certified Engineer path
+built on RHCSA; the capstone chains RHCSA objectives into one timed build the way EX200 does.
+Every step is a runnable RHEL 10 command. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 9.1–9.4** — a control node with `ansible-core` installed, one
+or more managed RHEL 10 hosts reachable by SSH key with a `sudo`-capable user, and (for the
+capstone) a spare disk. **Cost:** none.
 
-- A RHEL 10 host or VM with root/sudo access, `ansible-core` and
-  `rhel-system-roles` installed, and a spare block device
-  (`/dev/sdb`) of at least 5 GB.
-- This lab can be run entirely against `localhost` with
-  `ansible_connection=local` if a second managed node is not
-  available.
+### Lab 9.1 — Inventory and ad-hoc commands (Topic: Ansible basics)
 
-**Steps**
+**Objective:** Define an inventory and run ad-hoc modules.
 
-1. Set up a local-connection inventory and confirm reachability:
+```bash
+sudo dnf install -y ansible-core
+cat > inventory.ini <<'EOF'
+[web]
+node1.example.com
+node2.example.com
+EOF
+ansible -i inventory.ini web -m ping
+ansible -i inventory.ini web -m dnf -a "name=tree state=present" --become
+```
 
-   ```bash
-   mkdir -p ~/capstone && cd ~/capstone
-   cat > inventory.ini <<'EOF'
-   [capstone]
-   localhost ansible_connection=local
-   EOF
-   ansible -i inventory.ini capstone -m ping
-   ```
+**Expected result:** `ping` returns `SUCCESS` (`pong`) for each host, and the `dnf` module
+installs `tree` with privilege escalation (`--become`) — Ansible is agentless over SSH; the
+inventory names hosts/groups and ad-hoc `-m module -a args` runs one task without a playbook.
 
-   **Expected result:** `localhost | SUCCESS => {"ping": "pong"}`.
+**Negative test:** run a privileged task without `--become` (or `become: true`); it fails with
+permission denied — privilege escalation must be requested explicitly.
 
-2. Create a capstone playbook covering identity, storage, SELinux,
-   firewall, and a web service in one run:
+**Cleanup:** `ansible -i inventory.ini web -m dnf -a "name=tree state=absent" --become`.
 
-   ```bash
-   cat > capstone.yml <<'EOF'
-   ---
-   - name: RHCSA-aligned capstone build
-     hosts: capstone
-     become: true
-     tasks:
-       - name: Create an application group
-         ansible.builtin.group:
-           name: capstoneapp
-           state: present
+### Lab 9.2 — A playbook with tasks, handlers, and variables (Topic: Playbooks)
 
-       - name: Create a scoped service account
-         ansible.builtin.user:
-           name: capstonesvc
-           group: capstoneapp
-           shell: /sbin/nologin
-           create_home: false
-           state: present
+**Objective:** Write and run an idempotent playbook.
 
-       - name: Partition the spare disk
-         community.general.parted:
-           device: /dev/sdb
-           number: 1
-           state: present
-           label: gpt
-           part_end: 100%
+```bash
+cat > web.yml <<'EOF'
+---
+- name: Configure web servers
+  hosts: web
+  become: true
+  vars:
+    page_content: "Deployed by Ansible"
+  tasks:
+    - name: Install httpd
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+    - name: Deploy index page
+      ansible.builtin.copy:
+        content: "{{ page_content }}\n"
+        dest: /var/www/html/index.html
+      notify: Restart httpd
+    - name: Start and enable httpd
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
+  handlers:
+    - name: Restart httpd
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
+EOF
+ansible-playbook -i inventory.ini web.yml
+ansible-playbook -i inventory.ini web.yml    # second run: all "ok", nothing "changed"
+```
 
-       - name: Build LVM physical volume, volume group, and logical volume
-         community.general.lvg:
-           vg: vg_capstone
-           pvs: /dev/sdb1
-       - community.general.lvol:
-           vg: vg_capstone
-           lv: lv_capstone
-           size: 4g
+**Expected result:** the first run reports `changed` for the installs/copies and fires the
+handler; the **second run reports zero changes** — idempotence is the point of Ansible, and
+handlers run only when a task reports a change (the restart fires on content change, not every
+run).
 
-       - name: Create an XFS filesystem
-         community.general.filesystem:
-           fstype: xfs
-           dev: /dev/vg_capstone/lv_capstone
+**Negative test:** use `command`/`shell` to `echo` content into the file instead of the
+`copy` module; it reports `changed` every run and is not idempotent — prefer modules over raw
+commands so state, not actions, drives the result.
 
-       - name: Mount the new filesystem persistently
-         ansible.posix.mount:
-           path: /capstone-data
-           src: /dev/vg_capstone/lv_capstone
-           fstype: xfs
-           state: mounted
+**Cleanup:** an uninstall playbook, or `ansible -i inventory.ini web -m dnf -a "name=httpd
+state=absent" --become`.
 
-       - name: Install httpd
-         ansible.builtin.dnf:
-           name: httpd
-           state: present
+### Lab 9.3 — RHEL System Roles (Topic: System roles)
 
-       - name: Set correct ownership on the served directory
-         ansible.builtin.file:
-           path: /capstone-data
-           owner: capstonesvc
-           group: capstoneapp
-           mode: "0755"
+**Objective:** Apply a supported role for a standard subsystem.
 
-       - name: Apply an SELinux file context for the new content path
-         community.general.sefcontext:
-           target: '/capstone-data(/.*)?'
-           setype: httpd_sys_content_t
-           state: present
-       - name: Apply the SELinux context to existing files
-         ansible.builtin.command: restorecon -Rv /capstone-data
-         changed_when: true
+```bash
+sudo dnf install -y rhel-system-roles
+cat > timesync.yml <<'EOF'
+---
+- name: Configure time synchronization
+  hosts: web
+  become: true
+  vars:
+    timesync_ntp_servers:
+      - hostname: 0.rhel.pool.ntp.org
+        iburst: true
+  roles:
+    - redhat.rhel_system_roles.timesync
+EOF
+ansible-playbook -i inventory.ini timesync.yml
+ansible -i inventory.ini web -m command -a "chronyc sources" --become
+```
 
-       - name: Deploy a placeholder index page
-         ansible.builtin.copy:
-           content: "<h1>Capstone host is alive</h1>\n"
-           dest: /capstone-data/index.html
-           owner: capstonesvc
-           group: capstoneapp
-           mode: "0644"
+**Expected result:** the `timesync` role configures chrony on every host consistently, and
+`chronyc sources` confirms it — RHEL System Roles are Red-Hat-supported Ansible roles that
+apply best-practice configuration to subsystems (time, firewall, storage, networking, SELinux)
+without writing the tasks by hand.
 
-       - name: Point httpd at the capstone content directory
-         ansible.builtin.lineinfile:
-           path: /etc/httpd/conf/httpd.conf
-           regexp: '^DocumentRoot'
-           line: 'DocumentRoot "/capstone-data"'
-         notify: Restart httpd
+**Negative test:** hand-write chrony config across many hosts with slightly different playbooks;
+they drift — a supported System Role gives one consistent, maintained implementation.
 
-       - name: Enable and start httpd
-         ansible.builtin.service:
-           name: httpd
-           state: started
-           enabled: true
+**Cleanup:** none (time sync is a good state to leave).
 
-       - name: Open the firewall for HTTP
-         ansible.posix.firewalld:
-           service: http
-           permanent: true
-           immediate: true
-           state: enabled
+### Lab 9.4 — RHCSA capstone: an integrative timed build (Topic: Synthesis)
 
-       - name: Create a nightly report timer unit
-         ansible.builtin.copy:
-           dest: /etc/systemd/system/capstone-report.service
-           content: |
-             [Unit]
-             Description=Capstone nightly report
+**Objective:** Chain multiple RHCSA objectives into one build, as EX200 does — then verify
+the end state, not the commands.
 
-             [Service]
-             Type=oneshot
-             ExecStart=/usr/bin/df -hT /capstone-data
-       - ansible.builtin.copy:
-           dest: /etc/systemd/system/capstone-report.timer
-           content: |
-             [Unit]
-             Description=Run capstone-report nightly
+```bash
+# On a fresh RHEL 10 host, perform in one sitting (target: brisk, exam-like pace):
+# 1. Users/security: create user 'ops', add to wheel, set 60-day password aging
+sudo useradd ops && sudo usermod -aG wheel ops && sudo chage -M 60 ops
+# 2. Storage: PV/VG/LV 'applv' on a spare disk, XFS, persistent mount at /app
+sudo pvcreate /dev/vdb1 && sudo vgcreate appvg /dev/vdb1 && sudo lvcreate -L 1G -n applv appvg
+sudo mkfs.xfs /dev/appvg/applv && sudo mkdir -p /app
+echo "/dev/appvg/applv /app xfs defaults 0 0" | sudo tee -a /etc/fstab && sudo mount -a
+# 3. Service + firewall + SELinux: serve /app content over httpd on port 8080
+sudo semanage fcontext -a -t httpd_sys_content_t "/app(/.*)?" && sudo restorecon -Rv /app
+sudo semanage port -a -t http_port_t -p tcp 8080
+sudo firewall-cmd --permanent --add-port=8080/tcp && sudo firewall-cmd --reload
+# 4. Verify the END STATE:
+mount | grep /app ; sudo chage -l ops | grep Maximum ; sudo firewall-cmd --list-ports
+```
 
-             [Timer]
-             OnCalendar=*-*-* 02:00:00
-             Persistent=true
+**Expected result:** a single host that ends in the required state across users, storage,
+services, firewall, and SELinux — the capstone mirrors EX200: you are scored on whether the
+system ends correct and complete, done at a brisk pace, not on any individual command.
 
-             [Install]
-             WantedBy=timers.target
+**Negative test:** configure each piece but skip `mount -a` / a reboot check; a bad `fstab`
+entry that "worked" interactively renders the system unbootable — the exam (and this capstone)
+rewards verifying the persistent end state, because that is what is graded.
 
-       - name: Reload systemd and enable the timer
-         ansible.builtin.systemd:
-           daemon_reload: true
-           name: capstone-report.timer
-           enabled: true
-           state: started
-
-     handlers:
-       - name: Restart httpd
-         ansible.builtin.service:
-           name: httpd
-           state: restarted
-   EOF
-
-   ansible-playbook -i inventory.ini capstone.yml --check
-   ansible-playbook -i inventory.ini capstone.yml
-   ```
-
-   **Expected result:** the playbook completes with no `failed` tasks;
-   re-running it immediately afterward shows `changed=0` for every
-   task except the `restorecon` command (which is intentionally always
-   reported as changed).
-
-3. Independently verify every domain the playbook touched, exactly as
-   an RHCSA-style practical exam would require:
-
-   ```bash
-   # Identity
-   id capstonesvc
-
-   # Storage
-   lsblk /dev/sdb
-   df -hT /capstone-data
-   findmnt /capstone-data
-
-   # SELinux
-   ls -Z /capstone-data/index.html
-   getenforce
-
-   # Firewall and service
-   firewall-cmd --list-services
-   systemctl is-active httpd
-   curl -s http://localhost/
-
-   # Scheduled work
-   systemctl list-timers capstone-report.timer
-   ```
-
-   **Expected result:** every check confirms the intended state —
-   the service account exists with no login shell, `/capstone-data` is
-   an XFS filesystem labeled `httpd_sys_content_t`, `httpd` is active
-   and reachable, and the timer is enabled with a populated `NEXT`
-   trigger time.
-
-4. **Negative test:** revert the SELinux context manually and confirm
-   the web service now fails at the SELinux layer, then confirm
-   re-running the playbook restores correct state (demonstrating both
-   the value of MAC enforcement and of idempotent remediation):
-
-   ```bash
-   sudo semanage fcontext -d '/capstone-data(/.*)?'
-   sudo chcon -t var_t /capstone-data/index.html
-   curl -s http://localhost/ ; echo "exit status: $?"
-   sudo ausearch -m avc -ts recent | tail -5
-
-   ansible-playbook -i inventory.ini capstone.yml
-   curl -s http://localhost/
-   ```
-
-   **Expected result:** the first `curl` fails or returns a 403 with a
-   corresponding AVC denial in the audit log; after re-running the
-   playbook, the context is restored and `curl` succeeds again.
-
-5. **Cleanup:**
-
-   ```bash
-   sudo systemctl disable --now capstone-report.timer
-   sudo rm -f /etc/systemd/system/capstone-report.timer \
-              /etc/systemd/system/capstone-report.service
-   sudo systemctl daemon-reload
-   sudo firewall-cmd --remove-service=http --permanent
-   sudo firewall-cmd --reload
-   sudo systemctl stop httpd
-   sudo umount /capstone-data
-   sudo sed -i '/vg_capstone/d' /etc/fstab
-   sudo lvremove -f /dev/vg_capstone/lv_capstone
-   sudo vgremove vg_capstone
-   sudo pvremove /dev/sdb1
-   sudo semanage fcontext -d '/capstone-data(/.*)?' 2>/dev/null || true
-   sudo rmdir /capstone-data
-   sudo userdel capstonesvc
-   sudo groupdel capstoneapp
-   rm -rf ~/capstone
-   ```
+**Cleanup:** reverse the build — remove the port/context, unmount and remove the LV/VG/PV,
+delete the `fstab` line and the `ops` user — or rebuild the throwaway VM.
 
 ## Lab Verification
 

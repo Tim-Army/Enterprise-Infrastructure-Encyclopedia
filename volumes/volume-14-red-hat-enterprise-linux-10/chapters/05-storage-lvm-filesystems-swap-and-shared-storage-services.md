@@ -421,124 +421,128 @@ systemctl enable --now autofs
 
 ## Hands-On Lab
 
-**Objective:** Build a complete LVM-backed filesystem from an
-unpartitioned disk, extend it live, configure swap on the same volume
-group, and export the filesystem over NFS to a second host.
+This chapter carries a topic-level walkthrough lab for **each task under RHCSA objectives 5
+(configure local storage) and 6 (create and configure file systems)** — partitioning, LVM,
+filesystems and persistent mounts, swap, and network storage. Every step is a runnable RHEL
+10 command. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 5.1–5.5** — a RHEL 10 system with a **spare disk you can
+destroy** (e.g. `/dev/vdb`), `sudo`, and (for Lab 5.5) an NFS server export. **Cost:** none.
+**Safety:** these labs write partition tables — use a scratch disk, never the system disk.
 
-- A RHEL 10 host or VM with root/sudo access and at least one spare,
-  unpartitioned virtual disk (`/dev/sdb` in this lab) of 10 GB or
-  larger.
-- A second RHEL 10 host or VM on the same network to act as an NFS
-  client (a single host can simulate both roles using `localhost` if a
-  second host is unavailable).
+### Lab 5.1 — Partition a disk (Topic: Configure local storage)
 
-**Steps**
+**Objective:** Create a GPT partition on a spare disk.
 
-1. Partition the spare disk and build the LVM stack:
+```bash
+lsblk
+sudo parted -s /dev/vdb mklabel gpt
+sudo parted -s /dev/vdb mkpart primary 1MiB 2GiB
+sudo parted -s /dev/vdb set 1 lvm on
+lsblk /dev/vdb
+```
 
-   ```bash
-   sudo parted /dev/sdb --script mklabel gpt
-   sudo parted /dev/sdb --script mkpart primary 0% 100%
-   sudo partprobe /dev/sdb
-   sudo pvcreate /dev/sdb1
-   sudo vgcreate vg_lab /dev/sdb1
-   sudo lvcreate -n lv_share -L 4G vg_lab
-   ```
+**Expected result:** `/dev/vdb1` appears as a 2 GiB partition flagged for LVM — RHCSA expects
+creating partitions with `parted` (or `fdisk`), choosing GPT for modern/large disks, and
+setting the partition type appropriately.
 
-2. Format, mount, and persist the filesystem:
+**Negative test:** create a partition but skip `partprobe`/re-read on a busy disk; the kernel
+may not see it until refreshed — confirm with `lsblk` that the partition is visible before
+building on it.
 
-   ```bash
-   sudo mkfs.xfs /dev/vg_lab/lv_share
-   sudo mkdir -p /srv/nfs/lab-share
-   sudo mount /dev/vg_lab/lv_share /srv/nfs/lab-share
-   UUID=$(sudo blkid -s UUID -o value /dev/vg_lab/lv_share)
-   echo "UUID=${UUID}  /srv/nfs/lab-share  xfs  defaults  0 0" | sudo tee -a /etc/fstab
-   sudo mount -a
-   findmnt /srv/nfs/lab-share
-   ```
+**Cleanup:** carried through Lab 5.2's cleanup (the partition becomes a PV).
 
-   **Expected result:** `findmnt` shows `/srv/nfs/lab-share` mounted
-   from `/dev/mapper/vg_lab-lv_share` with filesystem type `xfs`.
+### Lab 5.2 — Logical Volume Management (Topic: Configure local storage)
 
-3. Extend the logical volume live and grow the filesystem:
+**Objective:** Build and then extend an LVM logical volume.
 
-   ```bash
-   sudo lvextend -L +2G /dev/vg_lab/lv_share
-   sudo xfs_growfs /srv/nfs/lab-share
-   df -hT /srv/nfs/lab-share
-   ```
+```bash
+sudo pvcreate /dev/vdb1
+sudo vgcreate datavg /dev/vdb1
+sudo lvcreate -L 1G -n datalv datavg
+sudo lvextend -L +512M /dev/datavg/datalv
+sudo vgs ; sudo lvs
+```
 
-   **Expected result:** the filesystem now reports approximately 6 GB
-   total size without an unmount.
+**Expected result:** a physical volume, a volume group `datavg`, and a logical volume
+`datalv` grown to 1.5 G — LVM (PV → VG → LV) is a core RHCSA topic because it lets you resize
+storage online, which fixed partitions cannot; `lvextend` grows the LV (Lab 5.3 grows the
+filesystem on it).
 
-4. Add a swap logical volume in the same volume group:
+**Negative test:** `lvextend` past the free space in the VG; it fails with insufficient free
+extents — an LV cannot exceed its VG's capacity, so you extend the VG (add a PV) first.
 
-   ```bash
-   sudo lvcreate -n lv_swap -L 1G vg_lab
-   sudo mkswap /dev/vg_lab/lv_swap
-   sudo swapon /dev/vg_lab/lv_swap
-   echo "/dev/vg_lab/lv_swap  swap  swap  defaults  0 0" | sudo tee -a /etc/fstab
-   swapon --show
-   ```
+**Cleanup:** carried through Lab 5.3's cleanup.
 
-5. Export the filesystem over NFS and confirm from the client host:
+### Lab 5.3 — Filesystems and persistent mounts (Topic: Create file systems)
 
-   ```bash
-   sudo dnf install -y nfs-utils
-   echo "/srv/nfs/lab-share  10.10.10.0/24(rw,sync,no_root_squash)" | sudo tee -a /etc/exports
-   sudo systemctl enable --now nfs-server
-   sudo exportfs -rav
-   sudo firewall-cmd --add-service=nfs --permanent
-   sudo firewall-cmd --reload
+**Objective:** Format, mount, and persist a filesystem by UUID.
 
-   # From the client host:
-   showmount -e <lab-server-ip>
-   sudo mkdir -p /mnt/lab-share
-   sudo mount -t nfs <lab-server-ip>:/srv/nfs/lab-share /mnt/lab-share
-   echo "hello from client" | sudo tee /mnt/lab-share/test.txt
-   ```
+```bash
+sudo mkfs.xfs /dev/datavg/datalv
+sudo mkdir -p /data
+UUID=$(sudo blkid -s UUID -o value /dev/datavg/datalv)
+echo "UUID=$UUID /data xfs defaults 0 0" | sudo tee -a /etc/fstab
+sudo systemctl daemon-reload
+sudo mount -a && df -h /data
+# After growing the LV (Lab 5.2), grow the filesystem online:
+sudo xfs_growfs /data
+```
 
-   **Expected result:** `test.txt` appears in `/srv/nfs/lab-share` on
-   the server, confirming a working two-way NFS mount.
+**Expected result:** the XFS filesystem mounts at `/data`, `mount -a` succeeds (proving the
+`/etc/fstab` entry is valid), and `xfs_growfs` extends it to the LV size — RHCSA requires
+persistent mounts by UUID and online filesystem growth (`xfs_growfs` for XFS,
+`resize2fs` for ext4).
 
-6. **Negative test:** attempt to mount the export from a source
-   outside the permitted network and confirm it is refused:
+**Negative test:** put a bad UUID or option in `/etc/fstab`; the next boot drops to emergency
+mode — always run `mount -a` after editing `fstab` to catch errors *before* rebooting, which
+is the habit that prevents an unbootable system.
 
-   ```bash
-   # Temporarily narrow the export to a network the client is NOT on
-   sudo sed -i 's#10.10.10.0/24#192.0.2.0/24#' /etc/exports
-   sudo exportfs -rav
-   # From the client host (which is not on 192.0.2.0/24):
-   sudo umount /mnt/lab-share
-   sudo mount -t nfs <lab-server-ip>:/srv/nfs/lab-share /mnt/lab-share
-   ```
+**Cleanup:** `sudo umount /data`; remove the `fstab` line; `sudo lvremove -y /dev/datavg/datalv;
+sudo vgremove -y datavg; sudo pvremove /dev/vdb1; sudo wipefs -a /dev/vdb`.
 
-   **Expected result:** the mount attempt fails with a permission or
-   access error, confirming the export's client restriction is
-   enforced.
+### Lab 5.4 — Swap space (Topic: Configure local storage)
 
-7. **Cleanup:**
+**Objective:** Add a swap volume and enable it persistently.
 
-   ```bash
-   # Client
-   sudo umount -f /mnt/lab-share 2>/dev/null
-   sudo rmdir /mnt/lab-share
+```bash
+sudo lvcreate -L 512M -n swaplv datavg
+sudo mkswap /dev/datavg/swaplv
+SWAP_UUID=$(sudo blkid -s UUID -o value /dev/datavg/swaplv)
+echo "UUID=$SWAP_UUID none swap defaults 0 0" | sudo tee -a /etc/fstab
+sudo swapon -a ; swapon --show
+```
 
-   # Server
-   sudo sed -i '/lab-share/d' /etc/exports
-   sudo exportfs -rav
-   sudo firewall-cmd --remove-service=nfs --permanent
-   sudo firewall-cmd --reload
-   sudo swapoff /dev/vg_lab/lv_swap
-   sudo umount /srv/nfs/lab-share
-   sudo sed -i '/vg_lab/d' /etc/fstab
-   sudo lvremove -f /dev/vg_lab/lv_swap /dev/vg_lab/lv_share
-   sudo vgremove vg_lab
-   sudo pvremove /dev/sdb1
-   sudo rmdir /srv/nfs/lab-share
-   ```
+**Expected result:** the new swap area is active (`swapon --show` lists it) and persists via
+`/etc/fstab` — RHCSA expects creating swap (on a partition or LV), labeling it with `mkswap`,
+and enabling it at boot.
+
+**Negative test:** `swapon` a device you never ran `mkswap` on; it fails with "invalid
+argument" — swap must be formatted with `mkswap` before it can be enabled.
+
+**Cleanup:** `sudo swapoff /dev/datavg/swaplv`; remove the swap `fstab` line;
+`sudo lvremove -y /dev/datavg/swaplv`.
+
+### Lab 5.5 — Network storage: NFS client (Topic: Configure file systems)
+
+**Objective:** Mount an NFS export persistently.
+
+```bash
+sudo dnf install -y nfs-utils
+showmount -e nfsserver.example.com
+sudo mkdir -p /mnt/shared
+echo "nfsserver.example.com:/export/shared /mnt/shared nfs defaults,_netdev 0 0" | sudo tee -a /etc/fstab
+sudo mount -a && df -h /mnt/shared
+```
+
+**Expected result:** the NFS export mounts at `/mnt/shared` and persists via `fstab` with the
+`_netdev` option (so the mount waits for the network) — RHCSA expects mounting network file
+systems, and `_netdev` is what prevents a boot hang when the network is not yet up.
+
+**Negative test:** add an NFS entry to `fstab` without `_netdev`; boot can hang or the mount
+fails before networking is ready — network mounts need `_netdev` to order correctly at boot.
+
+**Cleanup:** `sudo umount /mnt/shared`; remove the `fstab` line.
 
 ## Lab Verification
 

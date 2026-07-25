@@ -420,127 +420,105 @@ firewall-cmd --reload
 
 ## Hands-On Lab
 
-**Objective:** Stand up an internal caching DNS resolver, a
-TLS-enabled Apache virtual host, and a MariaDB instance serving a
-scoped application user, wiring SELinux and firewalld correctly at
-every step.
+This chapter carries a topic-level walkthrough lab for **each common server service** — time
+synchronization, DNS/name resolution, a web server, and a database. Time sync and name
+resolution are RHCSA-relevant; web and database services extend toward real deployment and
+RHCE. Every step is a runnable RHEL 10 command. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.4** — a RHEL 10 system with `sudo`, network access, and
+SELinux enforcing (so the labs exercise correct contexts). **Cost:** none.
 
-- A RHEL 10 host or VM with root/sudo access and outbound internet
-  access (for `chronyd` and BIND forwarding).
-- `openssl` available for generating a self-signed lab certificate.
+### Lab 7.1 — Time synchronization with chrony (Topic: NTP)
 
-**Steps**
+**Objective:** Configure and verify NTP time sync.
 
-1. Configure and verify time synchronization:
+```bash
+sudo dnf install -y chrony
+sudo systemctl enable --now chronyd
+sudo timedatectl set-timezone UTC
+chronyc sources -v | head
+timedatectl
+```
 
-   ```bash
-   sudo dnf install -y chrony
-   sudo systemctl enable --now chronyd
-   chronyc tracking | grep "Leap status"
-   ```
+**Expected result:** `chronyc sources` lists reachable time servers with a synchronized
+source (`^*`), and `timedatectl` shows `System clock synchronized: yes` — RHCSA expects
+configuring time sync (`chronyd`) and the timezone; accurate time underpins logging, TLS, and
+Kerberos.
 
-   **Expected result:** `Leap status: Normal`.
+**Negative test:** rely on the hardware clock with `chronyd` disabled across a DST change or
+drift; logs and certificates skew — NTP is what keeps the clock correct, and `timedatectl`
+confirms it.
 
-2. Install and configure BIND as a caching resolver:
+**Cleanup:** none (time sync is expected in operation).
 
-   ```bash
-   sudo dnf install -y bind bind-utils
-   sudo tee /etc/named.conf <<'EOF'
-   options {
-       listen-on port 53 { 127.0.0.1; };
-       allow-query     { localhost; };
-       recursion yes;
-       forwarders { 8.8.8.8; 9.9.9.9; };
-       dnssec-validation yes;
-   };
-   EOF
-   sudo named-checkconf
-   sudo systemctl enable --now named
-   sudo firewall-cmd --add-service=dns --permanent
-   sudo firewall-cmd --reload
-   dig @127.0.0.1 redhat.com +short
-   ```
+### Lab 7.2 — DNS client and name resolution (Topic: DNS)
 
-   **Expected result:** `dig` returns at least one IP address.
+**Objective:** Configure and test name resolution.
 
-3. Install Apache, create a self-signed certificate, and configure a
-   TLS virtual host:
+```bash
+sudo nmcli connection modify "System eth0" ipv4.dns 192.168.50.1
+sudo nmcli connection up "System eth0"
+cat /etc/resolv.conf
+getent hosts example.com
+dig +short example.com A
+```
 
-   ```bash
-   sudo dnf install -y httpd mod_ssl
-   sudo mkdir -p /var/www/vhosts/lab/html
-   echo "<h1>lab vhost</h1>" | sudo tee /var/www/vhosts/lab/html/index.html
-   sudo restorecon -Rv /var/www/vhosts
+**Expected result:** `resolv.conf` reflects the configured DNS server, and `getent`/`dig`
+resolve names — RHCSA expects configuring the resolver (via NetworkManager, which manages
+`/etc/resolv.conf`) and testing resolution with `getent`/`host`/`dig`.
 
-   sudo openssl req -x509 -nodes -days 30 -newkey rsa:2048 \
-     -keyout /etc/pki/tls/private/lab.key \
-     -out /etc/pki/tls/certs/lab.crt \
-     -subj "/CN=lab.example.com"
+**Negative test:** hand-edit `/etc/resolv.conf` directly; NetworkManager overwrites it on the
+next connection change — set DNS through `nmcli` so the change persists.
 
-   sudo tee /etc/httpd/conf.d/lab.conf <<'EOF'
-   <VirtualHost *:443>
-       ServerName lab.example.com
-       DocumentRoot /var/www/vhosts/lab/html
-       SSLEngine on
-       SSLCertificateFile /etc/pki/tls/certs/lab.crt
-       SSLCertificateKeyFile /etc/pki/tls/private/lab.key
-   </VirtualHost>
-   EOF
+**Cleanup:** restore the original DNS setting on the connection.
 
-   sudo httpd -t
-   sudo systemctl enable --now httpd
-   sudo firewall-cmd --add-service=https --permanent
-   sudo firewall-cmd --reload
-   curl -sk https://localhost/ -H "Host: lab.example.com"
-   ```
+### Lab 7.3 — Web server with correct firewall and SELinux (Topic: Web services)
 
-   **Expected result:** the curl request returns `<h1>lab vhost</h1>`.
+**Objective:** Serve a page, opening the firewall and SELinux context.
 
-4. Install MariaDB and create a scoped application user:
+```bash
+sudo dnf install -y httpd
+echo "<h1>RHEL lab</h1>" | sudo tee /var/www/html/index.html
+sudo restorecon -Rv /var/www/html
+sudo systemctl enable --now httpd
+sudo firewall-cmd --permanent --add-service=http && sudo firewall-cmd --reload
+curl -s http://localhost/ | head
+```
 
-   ```bash
-   sudo dnf module enable -y mariadb:10.11
-   sudo dnf install -y mariadb-server
-   sudo systemctl enable --now mariadb
+**Expected result:** `curl` returns the page — a working web service requires three things
+together: the service running (`httpd`), the firewall open (`http`), and the content in a
+correctly-labeled path (`httpd_sys_content_t`) — the integration RHCE-style tasks probe.
 
-   sudo mysql <<'EOF'
-   CREATE DATABASE labdb CHARACTER SET utf8mb4;
-   CREATE USER 'labuser'@'localhost' IDENTIFIED BY 'LabPass!234';
-   GRANT ALL PRIVILEGES ON labdb.* TO 'labuser'@'localhost';
-   FLUSH PRIVILEGES;
-   EOF
+**Negative test:** start `httpd` and open the firewall but serve content from a path with the
+wrong SELinux context; the browser gets 403 while logs show an AVC denial — all three layers
+(service, firewall, SELinux) must line up.
 
-   mysql -u labuser -pLabPass!234 -e "SHOW DATABASES;" | grep labdb
-   ```
+**Cleanup:** `sudo systemctl disable --now httpd; sudo firewall-cmd --permanent
+--remove-service=http && sudo firewall-cmd --reload`.
 
-   **Expected result:** `labdb` appears in the output, confirming the
-   scoped user can authenticate and see its own database.
+### Lab 7.4 — Database service (Topic: Database services)
 
-5. **Negative test:** confirm the scoped database user cannot see or
-   access an unrelated database:
+**Objective:** Install and exercise a database engine.
 
-   ```bash
-   mysql -u labuser -pLabPass!234 -e "USE mysql; SHOW TABLES;" \
-     2>&1 | grep -i "denied" && echo "Access correctly denied"
-   ```
+```bash
+sudo dnf install -y mariadb-server
+sudo systemctl enable --now mariadb
+sudo mysql -e "CREATE DATABASE labdb; SHOW DATABASES;"
+sudo mysql -e "CREATE USER 'app'@'localhost' IDENTIFIED BY 'AppPass1!'; \
+  GRANT ALL ON labdb.* TO 'app'@'localhost'; FLUSH PRIVILEGES;"
+mysql -u app -p'AppPass1!' -e "SHOW DATABASES;" 2>/dev/null
+```
 
-   **Expected result:** MariaDB returns an access-denied error for the
-   `mysql` system database, confirming the grant is properly scoped.
+**Expected result:** MariaDB runs, `labdb` is created, and the scoped `app` user can access
+it — deploying a database service covers install, enable, and basic administration (databases,
+users, grants), a common real-world and RHCE task.
 
-6. **Cleanup:**
+**Negative test:** grant the app user `ALL ON *.*` instead of `ON labdb.*`; it can now touch
+every database — scope grants to the specific database, not globally.
 
-   ```bash
-   sudo mysql -e "DROP DATABASE labdb; DROP USER 'labuser'@'localhost';"
-   sudo rm -f /etc/httpd/conf.d/lab.conf
-   sudo rm -f /etc/pki/tls/private/lab.key /etc/pki/tls/certs/lab.crt
-   sudo rm -rf /var/www/vhosts/lab
-   sudo systemctl restart httpd
-   sudo firewall-cmd --remove-service=https --permanent
-   sudo firewall-cmd --remove-service=dns --permanent
-   sudo firewall-cmd --reload
-   ```
+**Cleanup:** `sudo mysql -e "DROP DATABASE labdb; DROP USER 'app'@'localhost';"`; disable
+mariadb if lab-only.
 
 ## Lab Verification
 
