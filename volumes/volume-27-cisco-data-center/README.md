@@ -356,14 +356,21 @@ engineers (Chapter 06), or DCAI where AI clusters are landing (Chapter
 
 **CCIE Data Center v3.1** sits above the CCNP track, reached by first
 passing the `DCCOR 350-601` core. It is an **eight-hour, hands-on
-practical exam** in the standard CCIE two-module shape — a **3-hour
-Design** module (scenario-based, no device access) and a **5-hour
-Deploy, Operate, and Optimize** module — covering the full data center
-lifecycle: NX-OS and VXLAN EVPN fabrics, ACI, UCS compute, storage
+practical exam** — today in the standard CCIE two-module shape, a
+**3-hour Design** module (scenario-based, no device access) and a
+**5-hour Deploy, Operate, and Optimize** module — covering the full data
+center lifecycle: NX-OS and VXLAN EVPN fabrics, ACI, UCS compute, storage
 networking, and automation, with programmability expected throughout.
-Cisco is adding a **new AI module** to its CCIE practical exams —
-fitting for a track that already gained the DCAI specialist; confirm the
-current format at registration.
+Under Cisco's redesigned practical format — for exams scheduled on or
+after **23 March 2027** — the exam becomes three fixed modules: **Design
+(2 hr)**, **Deploy, Operate, and Optimize (5 hr)**, and the new **AI
+Deploy, Operate, and Optimize (AI DOO, 1 hr)** module
+(deploy/operate/optimize using AI as a toolset). **Data Center is the
+first track to adopt it** — a CCIE DC practice lab with the AI toolset
+lands at Cisco Live London in **February 2027** and the full exam with
+the AI DOO module releases in **June 2027** — fitting for a track that
+already gained the DCAI specialist; confirm the current format at
+registration.
 
 **What the lab adds over this volume.** These chapters build data
 center knowledge and configuration skill at professional depth; the lab

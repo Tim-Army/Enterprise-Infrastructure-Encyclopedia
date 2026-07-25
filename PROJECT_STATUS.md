@@ -18,7 +18,7 @@ does not by itself verify every technical claim in it.
 | VI — Enterprise Storage and Data Protection | 9 | Drafted |
 | VII — Cloud Infrastructure | 9 | Drafted |
 | VIII — Containers and Platform Engineering | 9 | Drafted |
-| IX — Infrastructure Automation | 9 | Drafted |
+| IX — Infrastructure Automation | 10 | Drafted |
 | X — Enterprise Cybersecurity | 9 | Drafted |
 | XI — Observability and Enterprise Operations | 9 | Drafted |
 | XII — Resilience and Lifecycle Management | 9 | Drafted |
@@ -48,7 +48,7 @@ does not by itself verify every technical claim in it.
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 352 of 352 drafted (100%). Every volume has a
+**Total declared chapters:** 353 of 353 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

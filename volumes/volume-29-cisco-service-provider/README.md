@@ -347,14 +347,19 @@ Assurance domain.
 
 **CCIE Service Provider v5.1** sits above the CCNP track, reached by
 first passing the `SPCOR 350-501` core. It is an **eight-hour, hands-on
-practical exam** in the standard CCIE two-module shape — a **3-hour
-Design** module (scenario-based, no device access) and a **5-hour
-Deploy, Operate, and Optimize** module — covering the full provider
-lifecycle: IS-IS and BGP at scale, MPLS and Segment Routing, traffic
-engineering, L3VPN and L2VPN/EVPN, QoS, and multicast on IOS XR, with
-programmability and model-driven operation expected throughout. Cisco is
-adding a **new AI module** to its CCIE practical exams — confirm the
-current format at registration.
+practical exam** — today in the standard CCIE two-module shape, a
+**3-hour Design** module (scenario-based, no device access) and a
+**5-hour Deploy, Operate, and Optimize** module — covering the full
+provider lifecycle: IS-IS and BGP at scale, MPLS and Segment Routing,
+traffic engineering, L3VPN and L2VPN/EVPN, QoS, and multicast on IOS XR,
+with programmability and model-driven operation expected throughout.
+Under Cisco's redesigned practical format — for exams scheduled on or
+after **23 March 2027** — the exam becomes three fixed modules: **Design
+(2 hr)**, **Deploy, Operate, and Optimize (5 hr)**, and the new **AI
+Deploy, Operate, and Optimize (AI DOO, 1 hr)** module
+(deploy/operate/optimize using AI as a toolset). Per Cisco's rollout,
+CCIE Service Provider gains the AI DOO module in **September 2027** (*to
+be confirmed*) — confirm the current format at registration.
 
 **What the lab adds over this volume.** These chapters build
 provider-technology knowledge and IOS XR configuration skill at

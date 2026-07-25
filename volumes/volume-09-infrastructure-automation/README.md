@@ -57,10 +57,11 @@ or local HTTP servers.
 7. [Workflow Orchestration and Event-Driven Operations](chapters/07-workflow-orchestration-and-event-driven-operations.md) — the event-driven automation loop, Event-Driven Ansible rulebooks, approval-gated workflows, and guarding against automation feedback loops.
 8. [Automation Security, Governance, and Supply Chains](chapters/08-automation-security-governance-and-supply-chains.md) — the automation supply chain, SLSA, SBOM generation, `cosign` signing, and governed dependency updates.
 9. [Automation Observability, Reliability, and Lifecycle Operations](chapters/09-automation-observability-reliability-and-lifecycle-operations.md) — observability for the automation control plane itself, reliability indicators, backup/restore drills, and module deprecation policy.
+10. [AI in Network Automation](chapters/10-ai-in-network-automation.md) — the AUTOCOR 350-901 v2.0 "AI in Automation" domain and CCIE AI DOO readiness: AI-assisted code validation, AI security risks, an MCP server with FastMCP, a guarded LLM conversational agent, and evaluating AI recommendations.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all nine chapters.
+- [Index](INDEX.md) — alphabetized topical index across all ten chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this
   volume.
 
@@ -81,10 +82,14 @@ recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). Cisco
 rebranded its DevNet certifications as **CCNA, CCNP, and CCIE
 Automation on 3 February 2026**, migrating existing DevNet holders to
-the new names; the exam-topics documents still carry their DevNet-era
-titles, which is a naming lag, not a content difference. Cisco has also
-announced upcoming v1.2 minor updates across the Automation exams —
-re-confirm versions at the next currency check. Chapter content
+the new names. The core exam has since moved to **350-901 v2.0
+(AUTOCOR)**, *Designing, Deploying and Managing Network Automation
+Systems*, adding a 20% **AI in Automation** domain; the associate exam
+(200-901) still shows its DevNet-era title, a naming lag rather than a
+content difference. On the practical side, the CCIE Automation lab gains
+the **AI Deploy, Operate, and Optimize (AI DOO)** module at v1.2 (see
+CCIE lab readiness below) — re-confirm versions at the next currency
+check. Chapter content
 describes blueprint domains and points to Cisco's official sources; it
 does not reproduce proprietary exam content.
 
@@ -93,8 +98,8 @@ does not reproduce proprietary exam content.
 | Exam | Title | Duration | Role in the track |
 | --- | --- | --- | --- |
 | **200-901** v1.1 | CCNA Automation (published as "DevNet Associate Exam") | 120 min | Associate |
-| **350-901** v1.1 | Developing Applications using Cisco Core Platforms and APIs | 120 min | Core — required for CCNP Automation |
-| CCIE Automation | Practical (lab) exam | — | Expert tier; Cisco is adding an AI module to its practical exams |
+| **350-901** v2.0 (AUTOCOR) | Designing, Deploying and Managing Network Automation Systems | 120 min | Core — required for CCNP **and** CCIE Automation |
+| CCIE Automation v1.1 | Practical (lab) exam | 8 hr | Expert tier; gains the 1-hour **AI DOO** module at v1.2 (June 2028) |
 
 CCNP Automation requires the core exam plus **one** concentration exam;
 the concentration set carried over from the DevNet specialist exams and
@@ -112,15 +117,17 @@ registration, along with question counts and pricing.
 | 5.0 Infrastructure and Automation | 20% | 02, 03, 07 |
 | 6.0 Network Fundamentals | 15% | Volume II |
 
-**350-901 CCNP Automation core v1.1**
+**350-901 CCNP/CCIE Automation core v2.0 (AUTOCOR)** — *Designing, Deploying
+and Managing Network Automation Systems*. The v2.0 revision reorganizes the
+core around network-automation delivery and adds a **20% "AI in Automation"**
+domain, now the shared qualifying written for **both** CCNP and CCIE Automation.
 
 | Domain | Weight | Chapters |
 | --- | --- | --- |
-| 1.0 Software Development and Design | 20% | 01, 05 |
-| 2.0 Using APIs | 20% | 04 |
-| 3.0 Cisco Platforms | 20% | 04 |
-| 4.0 Application Deployment and Security | 20% | 05, 06, 08 |
-| 5.0 Infrastructure and Automation | 20% | 02, 03, 07, 09 |
+| 1.0 Network Automation (Ansible, Terraform, RESTCONF, Python, REST APIs) | 30% | 02, 03, 04 |
+| 2.0 Infrastructure as Code (Git, GitLab CI/CD, CML, Docker Compose, source of truth, YANG) | 30% | 01, 02, 05 |
+| 3.0 Operations (model-driven telemetry, logging, pyATS validation, TLS, secure coding) | 20% | 05, 06, 09 |
+| 4.0 AI in Automation (AI-assisted code, security risks, MCP/FastMCP, LLM agents, evaluation) | 20% | 10 |
 
 Be clear-eyed about depth: this volume is deliberately vendor-neutral —
 its Terraform, Ansible, pipeline, and orchestration material carries the
@@ -143,8 +150,10 @@ Python fluency this volume already expects:
 | 6 | Network fundamentals refresh, then full-blueprint timed practice | Volume II |
 
 For the core exam afterward, extend the same structure by three to four
-weeks, weighting evenly — its five domains are a flat 20% each, so
-weakest-domain-first beats weight-ordered study.
+weeks. The v2.0 (AUTOCOR) core weights Network Automation and Infrastructure
+as Code at 30% each and Operations and **AI in Automation** at 20% each, so
+lead with the two 30% domains, then shore up weakest-domain-first — and do not
+skip the new AI in Automation domain (Chapter 10), a full fifth of the exam.
 
 ### CCIE lab readiness
 
@@ -152,12 +161,20 @@ weakest-domain-first beats weight-ordered study.
 is the expert tier above this track, reached by first passing the
 `350-901` core. It is a **hands-on practical lab exam** in which you
 design, build, and operate software and automation solutions across
-Cisco platforms end to end; Cisco has announced **minor (v1.2) updates**
-and is adding a **new AI module** to its CCIE practical exams, so confirm
-the current format at registration. Unlike the infrastructure CCIEs, the
-Automation lab is a **programming and automation** exam — pipelines,
-APIs, model-driven interfaces, and orchestration under time — rather than
-a device-configuration one.
+Cisco platforms end to end. The current blueprint is **v1.1** (an 8-hour
+exam). Under Cisco's redesigned practical format, the exam becomes three
+fixed modules — **Design (2 hr)**, **Deploy, Operate, and Optimize
+(5 hr)**, and the new **AI Deploy, Operate, and Optimize (AI DOO, 1 hr)**
+module — and the Automation track picks up the AI DOO module at **v1.2,
+scheduled for June 2028** (per Cisco's rollout, *to be confirmed*); the
+new format applies to exams scheduled on or after **23 March 2027**, so
+confirm the current version at registration. The AI DOO module tests the
+same AI-as-a-toolset skills this volume's [Chapter 10](chapters/10-ai-in-network-automation.md)
+builds — soft engineering (using an LLM for scoping, diagnostics, and
+assisted coding) and augmented engineering (AIOps). Unlike the
+infrastructure CCIEs, the Automation lab is a **programming and
+automation** exam — pipelines, APIs, model-driven interfaces, and
+orchestration under time — rather than a device-configuration one.
 
 **What the lab adds over this volume.** These chapters build automation
 as a vendor-neutral discipline — IaC, configuration management, CI/CD,

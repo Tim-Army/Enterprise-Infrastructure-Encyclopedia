@@ -281,14 +281,18 @@ alongside the exams.
 
 **CCIE Security v6.1** sits above the CCNP track, reached by first
 passing the `SCOR 350-701` core (the same qualifier as CCNP Security).
-It is an **eight-hour, hands-on practical exam** in the standard CCIE
-two-module shape — a **3-hour Design** module (scenario-based, no device
-access) and a **5-hour Deploy, Operate, and Optimize** module — in which
-you design, deploy, operate, and optimize end-to-end security for a
+It is an **eight-hour, hands-on practical exam** — today in the standard
+CCIE two-module shape, a **3-hour Design** module (scenario-based, no
+device access) and a **5-hour Deploy, Operate, and Optimize** module — in
+which you design, deploy, operate, and optimize end-to-end security for a
 **dual-stack (IPv4 and IPv6)** enterprise network, and are expected to
-**program and automate** it as well. Cisco is adding a **new AI module**
-to its CCIE practical exams — confirm the current format at
-registration.
+**program and automate** it as well. Under Cisco's redesigned practical
+format — for exams scheduled on or after **23 March 2027** — the exam
+becomes three fixed modules: **Design (2 hr)**, **Deploy, Operate, and
+Optimize (5 hr)**, and the new **AI Deploy, Operate, and Optimize (AI
+DOO, 1 hr)** module (deploy/operate/optimize using AI as a toolset). Per
+Cisco's rollout, CCIE Security gains the AI DOO module in **September
+2027** (*to be confirmed*) — confirm the current format at registration.
 
 **What the lab adds over this volume.** These chapters build security
 knowledge and configuration skill at professional depth; the lab tests

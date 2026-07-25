@@ -303,16 +303,23 @@ Enterprise Infrastructure, WLCOR for Wireless):
 | **CCIE Enterprise Infrastructure** | v1.1 | 350-401 ENCOR |
 | **CCIE Wireless** (renamed from CCIE Enterprise Wireless) | v1.1 | 350-101 WLCOR |
 
-Both are **eight-hour, hands-on practical exams** in the standard CCIE
-two-module shape: a **3-hour Design** module (scenario-based, no device
-access — the reasoning skills of [Volume XXX](../volume-30-cisco-ccde-network-design/README.md)
-applied to one track) followed by a **5-hour Deploy, Operate, and
-Optimize** module on real equipment, over a **dual-stack (IPv4 and
-IPv6)** network, with programmability and automation expected
-throughout. Cisco is adding a **new AI module** to its CCIE practical
-exams — confirm the current format at registration. The CCIE Wireless
-lab now incorporates **Cisco Meraki** alongside Wi-Fi 6 and Wi-Fi 7,
-and its written qualifier moved from ENCOR to WLCOR.
+Both are **eight-hour, hands-on practical exams**. Today they use the
+standard CCIE two-module shape: a **3-hour Design** module
+(scenario-based, no device access — the reasoning skills of
+[Volume XXX](../volume-30-cisco-ccde-network-design/README.md) applied to
+one track) followed by a **5-hour Deploy, Operate, and Optimize** module
+on real equipment, over a **dual-stack (IPv4 and IPv6)** network, with
+programmability and automation expected throughout. Under Cisco's
+redesigned practical format — for exams scheduled on or after **23 March
+2027** — the exam becomes three fixed modules: **Design (2 hr)**,
+**Deploy, Operate, and Optimize (5 hr)**, and the new **AI Deploy,
+Operate, and Optimize (AI DOO, 1 hr)** module, in which you deploy,
+operate, and optimize using AI as a toolset (soft engineering with an
+LLM, and AIOps). Per Cisco's rollout, CCIE Enterprise Infrastructure
+gains the AI DOO module in **February 2028** and CCIE Wireless in **June
+2028** (*to be confirmed*) — confirm the current format at registration.
+The CCIE Wireless lab now incorporates **Cisco Meraki** alongside Wi-Fi 6
+and Wi-Fi 7, and its written qualifier moved from ENCOR to WLCOR.
 
 **What the lab adds over this volume.** These chapters build the
 knowledge and the configuration skills at professional depth; the lab

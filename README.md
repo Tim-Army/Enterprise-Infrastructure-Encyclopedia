@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.34-blue)
+![Release](https://img.shields.io/badge/release-v1.2.35-blue)
 
-**v1.2.34 — latest release.** 37 volumes, 352 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.34) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.35 — latest release.** 37 volumes, 353 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.35) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -25,7 +25,7 @@ The series combines architecture and theory with implementation guidance, automa
 
 ## Curriculum
 
-37 volumes, 352 chapters. Each volume has a dedicated
+37 volumes, 353 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -38,7 +38,7 @@ The series combines architecture and theory with implementation guidance, automa
 | VI | [Enterprise Storage and Data Protection](volumes/volume-06-enterprise-storage-data-protection/README.md) | 9 |
 | VII | [Cloud Infrastructure](volumes/volume-07-cloud-infrastructure/README.md) | 9 |
 | VIII | [Containers and Platform Engineering](volumes/volume-08-containers-platform-engineering/README.md) | 9 |
-| IX | [Infrastructure Automation](volumes/volume-09-infrastructure-automation/README.md) | 9 |
+| IX | [Infrastructure Automation](volumes/volume-09-infrastructure-automation/README.md) | 10 |
 | X | [Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) | 9 |
 | XI | [Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) | 9 |
 | XII | [Resilience and Lifecycle Management](volumes/volume-12-resilience-lifecycle-management/README.md) | 9 |
@@ -68,7 +68,7 @@ The series combines architecture and theory with implementation guidance, automa
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
-Technical review and lab-validation sign-off for all 352 chapters are
+Technical review and lab-validation sign-off for all 353 chapters are
 tracked in [PROJECT_STATUS.md](PROJECT_STATUS.md). The
 [master index](INDEX.md) and [master glossary](GLOSSARY.md) cover all
 volumes.

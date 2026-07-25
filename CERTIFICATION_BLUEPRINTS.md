@@ -10,7 +10,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | III — Cisco Enterprise Networking | CCNA, CCNP Enterprise (ENCOR/ENARSI), CCNP Wireless: WLCOR core (350-101) + WLSD (300-110) or WLSI (300-120); WLCOR also qualifies CCIE Wireless | Cisco Learning & Certifications |
 | IV — Enterprise Systems Administration | CCST IT Support (100-140) | Cisco Learning & Certifications |
 | V — VMware Virtualization | The Broadcom/VMware program end to end. VCP: NV (2V0-41.24), VCF Support (2V0-15.25), VCF Administrator (2V0-17.25), VCF Architect (2V0-13.25), VVF Administrator (2V0-16.25), VVF Support (2V0-18.25), DCV (2V0-21.23), plus 6V0 specialists AVI (6V0-22.25) and PCS (6V0-21.25). VCAP: VCF 9.0 role series (Administrator 3V0-11.26, Architect 3V0-12.26, Support 3V0-13.26, Automation 3V0-21.25, Operations 3V0-22.25, Storage 3V0-23.25, VKS 3V0-24.25, Networking 3V0-25.25), plus DCV Design (3V0-21.23) and NV Deploy (3V0-41.22). Distinguished Expert (VCDX, no written code). Telco Cloud: Platform 5V0-36.22, NFV 5V0-37.22, Automation 5V0-44.21 | Broadcom/VMware Learning |
-| IX — Infrastructure Automation | CCNA Automation (200-901), CCNP Automation: core (350-901) + one concentration, CCIE Automation — rebranded from DevNet on 3 February 2026 | Cisco Learning & Certifications |
+| IX — Infrastructure Automation | CCNA Automation (200-901), CCNP/CCIE Automation core **350-901 v2.0 (AUTOCOR)** — *Designing, Deploying and Managing Network Automation Systems*, adds a 20% AI in Automation domain — plus one concentration for CCNP; CCIE Automation practical (v1.1) gains the AI DOO module at v1.2; rebranded from DevNet on 3 February 2026 | Cisco Learning & Certifications |
 | X — Enterprise Cybersecurity | CCST Cybersecurity (100-160), CCNA Cybersecurity (200-201), CCNP Cybersecurity: CBRCOR core (350-201) + CBRFIR (300-215) — rebranded from CyberOps on 3 February 2026 | Cisco Learning & Certifications |
 | XIV — Red Hat Enterprise Linux 10 | RHCSA (EX200) | Red Hat Training and Certification |
 | XV — Forescout Platform | FSCA, FSAA, FSCP, FSCE, FSCA: OT/ICS, FSCE: OT/ICS | Forescout Technologies |
@@ -59,9 +59,25 @@ XXVIII, and CCIE Service Provider (v5.1) in XXIX. These cover the
 qualifying-written and technology preparation and how to build hands-on
 lab speed; they are not a substitute for Cisco's official CCIE practice
 labs. The lab versions above were verified against the Cisco Learning
-Network CCIE track pages on 22 July 2026; a new AI module is being added
-to the CCIE practical exams (and CCIE Automation carries a v1.2 minor
-update), so confirm the current lab format before scheduling.
+Network CCIE track pages on 22 July 2026.
+
+**AI Deploy, Operate, and Optimize (AI DOO) module.** Cisco is redesigning
+the CCIE practical exam, effective for exams **scheduled on or after 23
+March 2027** (Cisco Learning Network article 000010877). The 8-hour exam
+becomes **three fixed modules in a fixed sequence**: **Design (2 hours)**
+(reduced from 3), **Deploy, Operate, and Optimize (5 hours)**, and the new
+**AI Deploy, Operate, and Optimize (AI DOO, 1 hour)** module — in which the
+candidate deploys, operates, and optimizes the track's technologies **using
+AI as a toolset** (soft engineering with a general-purpose LLM; augmented
+engineering / AIOps). Each module has its own minimum and pass score. The
+module rolls out per track: **CCIE Data Center first — June 2027** (practice
+lab at Cisco Live London, February 2027) — then **Collaboration (August
+2027)**, **Security and Service Provider (September 2027)**, **Enterprise
+Infrastructure (February 2028)**, and **Automation and Wireless (June
+2028)**; dates after Data Center are *to be confirmed*. For the Automation
+track this is the **v1.2** practical update, and its written core is now
+**350-901 v2.0 (AUTOCOR)**, which adds a 20% *AI in Automation* domain
+(Volume IX, Chapter 10). Confirm the current lab format before scheduling.
 
 ## Currency
 
@@ -99,9 +115,11 @@ The rest of the Cisco portfolio was added on **22 July 2026**, all
 against Cisco's own exam-topics documents or Learning Network topic
 pages: the three CCST entry exams (100-150 Networking, 100-160
 Cybersecurity, 100-140 IT Support — Cisco publishes no domain weights at
-this tier), the Automation track (200-901 v1.1 and 350-901 v1.1 —
-rebranded from DevNet on 3 February 2026, with v1.2 minor updates
-announced), the Cybersecurity track (200-201 v1.1, CBRCOR 350-201 v1.1,
+this tier), the Automation track (200-901 v1.1 and 350-901 — since
+revised to **v2.0 (AUTOCOR)** with a 20% AI in Automation domain, and the
+CCIE Automation practical gaining the AI DOO module at v1.2, both noted
+above — rebranded from DevNet on 3 February 2026), the Cybersecurity
+track (200-201 v1.1, CBRCOR 350-201 v1.1,
 and CBRFIR 300-215 v1.1 — rebranded from CyberOps the same day), and the
 three unmapped cores (DCCOR 350-601 v1.2, CLCOR 350-801 v2.0, SPCOR
 350-501 v1.1). Every weighted domain set sums to 100%. One stale-page
