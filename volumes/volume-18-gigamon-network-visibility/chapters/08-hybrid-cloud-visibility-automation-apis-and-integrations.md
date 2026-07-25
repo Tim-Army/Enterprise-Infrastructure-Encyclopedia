@@ -361,74 +361,101 @@ Administration > Integrations > SIEM Export
 
 ## Hands-On Lab
 
-**Objective:** Use the GigaVUE-FM REST API to perform a read-only health
-query and an authenticated configuration change against a lab fabric,
-validating both a successful narrowly-scoped automation credential and a
-deliberately over-scoped call that should be rejected.
+This chapter carries a topic-level walkthrough lab for **each theme of automation and
+integration** — the GigaVUE-FM REST API, infrastructure-as-code, and ecosystem
+integrations. The API labs are `curl` walkthroughs against GigaVUE-FM. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 8.1–8.4** — a GigaVUE-FM instance with an API-capable
+service account, a client host with `curl` (and Terraform/Ansible for Lab 8.3), and a
+target SIEM/ITSM for Lab 8.4. **Cost:** none beyond lab resources.
 
-- A lab GigaVUE-FM instance from [Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md), with at least one onboarded
-  lab node.
-- `curl` or an equivalent HTTP client, and (optionally) `jq` for readable
-  JSON output.
-- Ability to create a scoped API service account/role in GigaVUE-FM,
-  following the RBAC pattern from [Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md).
+### Lab 8.1 — GigaVUE-FM REST API access (Topic: REST API)
 
-**Steps**
+**Objective:** Authenticate and read inventory through the API.
 
-1. In GigaVUE-FM, create a service account with a role scoped to
-   read-only access on the lab fabric group only (no Flow Mapping write
-   permission), following the RBAC pattern from [Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md).
-2. Authenticate to the API using this scoped account and store the
-   returned token in a shell variable:
+```bash
+# GigaVUE-FM REST API uses HTTPS with basic auth. Read the chassis inventory:
+curl -sk -u "apiuser:<password>" \
+  -H "Accept: application/json" \
+  "https://fm.example.com/api/v1.3/inventory/chassis" | head -40
+```
 
-   ```bash
-   FM_TOKEN=$(curl -sk -X POST "https://<lab-fm-address>/v1/auth/login" \
-     -H "Content-Type: application/json" \
-     -d '{"username": "lab-readonly-svc", "password": "<lab-password>"}' \
-     | jq -r '.token')
-   ```
+**Expected result:** the API returns the managed chassis/node inventory as JSON — the
+GigaVUE-FM REST API exposes inventory, ports, maps, and GigaSMART for programmatic read and
+write, so the whole fabric is automatable, not click-only.
 
-3. Perform a read-only health query against the lab node:
+**Negative test:** call the API over plain HTTP or with a wrong credential; the request is
+refused (TLS required, 401 on bad auth) — API access is authenticated and encrypted, not
+open.
 
-   ```bash
-   curl -sk "https://<lab-fm-address>/v1/nodes" \
-     -H "Authorization: Bearer $FM_TOKEN" | jq .
-   ```
+**Cleanup:** none (read-only).
 
-   **Expected result:** the call succeeds and returns the lab node's
-   inventory and health status in JSON.
-4. **Negative test:** attempt a write operation (for example, creating a
-   new Flow Map) using the same read-only-scoped token:
+### Lab 8.2 — Configure the fabric through the API (Topic: API automation)
 
-   ```bash
-   curl -sk -X POST "https://<lab-fm-address>/v1/maps" \
-     -H "Authorization: Bearer $FM_TOKEN" \
-     -H "Content-Type: application/json" \
-     -d '{"alias": "api-test-map", "source": "1/1/x1", "destination": "1/1/g1"}'
-   ```
+**Objective:** Create a map programmatically and confirm it exists.
 
-   **Expected result:** the API rejects the call with an authorization
-   error, confirming the scoped role correctly enforces least privilege
-   at the API layer, not merely in the web UI.
-5. Create a second service account scoped with Flow Mapping write
-   permission on the lab fabric group, authenticate as that account, and
-   repeat the map-creation call.
-   **Expected result:** the call succeeds, and the new map is visible
-   both via the API (`GET /v1/maps`) and in the GigaVUE-FM web UI,
-   confirming API-driven and UI-driven configuration operate on the same
-   underlying fabric state.
-6. Confirm the map-creation event appears in GigaVUE-FM's audit log
-   attributed to the correct service account identity.
-7. **Cleanup:** delete the test map via the API, and remove or disable
-   both lab service accounts created for this exercise if they will not
-   be reused in later chapters.
+```bash
+# POST a map definition (source, destination, pass rule) as JSON:
+curl -sk -u "apiuser:<password>" -X POST \
+  -H "Content-Type: application/json" \
+  "https://fm.example.com/api/v1.3/maps" \
+  -d '{"alias":"api-map","type":"byRule","subType":"byRule",
+       "srcPorts":["1/1/x1"],"dstPorts":["1/1/x5"],
+       "rules":[{"action":"pass","ipVersion":4}]}'
+# Verify:
+curl -sk -u "apiuser:<password>" "https://fm.example.com/api/v1.3/maps/api-map"
+```
 
-   ```bash
-   curl -sk -X DELETE "https://<lab-fm-address>/v1/maps/api-test-map" \
-     -H "Authorization: Bearer $FM_TOKEN_WRITE"
-   ```
+**Expected result:** the map is created via the API and reads back with its rules — anything
+you can build in the GUI/CLI you can build through the API, which is what makes fabric
+changes repeatable and reviewable as code.
+
+**Negative test:** POST a map referencing a port that is not `tool`-typed as the destination;
+the API returns a validation error — the API enforces the same role/consistency rules as the
+CLI, so bad definitions fail fast.
+
+**Cleanup:** `curl -sk -u apiuser:<password> -X DELETE ".../api/v1.3/maps/api-map"`.
+
+### Lab 8.3 — Infrastructure as code (Topic: Terraform/Ansible)
+
+**Objective:** Manage fabric config declaratively.
+
+```text
+# Author a Terraform config (or Ansible playbook) that calls the GigaVUE-FM API to
+#   declare ports, maps, and cloud monitoring sessions. Run plan/apply (or the playbook),
+#   then re-run to confirm idempotence (no changes on a second apply).
+```
+
+**Expected result:** the declared fabric state is applied, and a second run reports no
+changes — infrastructure-as-code makes the visibility fabric versioned, peer-reviewed, and
+reproducible across environments, the operating model for hybrid-cloud scale.
+
+**Negative test:** hand-edit a map in the GUI that Terraform manages; the next `apply`
+reverts your drift — IaC-managed objects must be changed in code, or state drifts and
+surprises the next apply.
+
+**Cleanup:** `terraform destroy` (or the playbook's teardown) for lab-only objects.
+
+### Lab 8.4 — Ecosystem integration (Topic: SIEM/ITSM integration)
+
+**Objective:** Stream fabric health/events to the operations ecosystem.
+
+```text
+# GigaVUE-FM: configure SNMP traps / syslog to the SIEM, and (where available) an ITSM
+#   integration for alerting. Trigger a benign event (e.g. a port down/up on a lab link)
+#   and confirm the event reaches the SIEM/ITSM.
+```
+
+**Expected result:** fabric events (link state, health, config changes) appear in the SIEM/
+ITSM — the visibility fabric is itself monitored and ticketed by the same tools it feeds, so
+a fabric fault becomes an actionable alert rather than a silent blind spot.
+
+**Negative test:** run the fabric with no event export; a failed tap or a downed tool port
+goes unnoticed until an investigation needs that traffic — exporting fabric health is what
+makes blind spots visible.
+
+**Cleanup:** revert the benign lab event; keep the integration (it is the intended state).
 
 ## Lab Verification
 

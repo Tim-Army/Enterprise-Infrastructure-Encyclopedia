@@ -282,61 +282,99 @@ back toward the physical fabric for centralized delivery.
 
 ## Hands-On Lab
 
-**Objective:** Deploy a minimal virtual visibility pipeline in a lab
-hypervisor environment — a virtual tap source feeding a V Series node —
-and validate east-west traffic between two lab VMs is captured, including
-a negative test demonstrating a coverage gap.
+This chapter carries a topic-level walkthrough lab for **each theme of virtual and cloud
+traffic acquisition** — V Series nodes, the Universal Cloud Tap, cloud traffic policy, and
+container tapping. Cloud visibility is orchestrated from **GigaVUE-FM** (GigaVUE Cloud
+Suite), so these are FM-driven walkthroughs. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 3.1–3.4** — GigaVUE-FM with the Cloud Suite for your
+platform (AWS/Azure/GCP/VMware/Kubernetes), cloud credentials/role for FM to orchestrate,
+a workload VPC/VNet with instances to tap, and a tool endpoint. **Cost:** cloud-provider
+charges apply for the V Series instances and data processed — use a small lab scope.
 
-- A lab hypervisor environment (VMware Workstation/ESXi, or an equivalent
-  virtualization platform) capable of running at least three VMs: two
-  workload VMs that will communicate with each other, and one for the
-  V Series node (or a lab-equivalent virtual visibility node image).
-- Administrative access to deploy and configure VM network interfaces.
-- A packet capture tool available on, or reachable from, the V Series
-  node's tool-facing output for validation.
-- Isolated lab network segment — do not perform this lab against a
-  production hypervisor.
+### Lab 3.1 — Deploy a GigaVUE V Series node (Topic: Virtual nodes)
 
-**Steps**
+**Objective:** Have GigaVUE-FM launch a V Series node in the cloud.
 
-1. Deploy the V Series (or lab-equivalent) node VM with a management
-   interface and a tunnel-endpoint interface, and note its tunnel-endpoint
-   IP address.
-2. Deploy two workload VMs on the same virtual switch/host, and confirm
-   they can reach each other directly (for example, with `ping`) —
-   this traffic is the east-west traffic a physical TAP could never see.
-3. Install and configure a virtual tap agent (or equivalent capture
-   component available in your lab platform) on the first workload VM,
-   configured to tunnel captured traffic to the V Series node's
-   tunnel-endpoint IP.
-4. On the V Series node, configure a minimal all-pass Flow Map from the
-   tunnel-endpoint source to a designated output (a local capture tool, or
-   a tool-facing interface), following the mapping pattern from
-   [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md).
-5. From the second workload VM, generate traffic toward the first
-   workload VM (for example, an HTTP request or a sustained `ping`).
-6. Observe the capture tool connected to the V Series node's output.
-   **Expected result:** the capture shows the inter-VM traffic, confirming
-   the virtual tap successfully captured east-west traffic invisible to
-   any physical acquisition point and delivered it through the tunnel to
-   the V Series node.
-7. **Negative test:** stop or disable the virtual tap agent on the first
-   workload VM (leaving the map and V Series node otherwise unchanged),
-   generate the same inter-VM traffic again, and observe the capture
-   tool.
-   **Expected result:** no new traffic appears at the capture tool,
-   confirming that acquisition coverage — not the map or the V Series
-   node — was the point of failure, and reproducing the
-   partial-coverage failure mode described in Validation and
-   Troubleshooting (analogous to a Kubernetes DaemonSet not covering
-   every node).
-8. Re-enable the virtual tap agent and confirm traffic resumes at the
-   capture tool.
-9. **Cleanup:** remove the lab Flow Map and virtual tap agent
-   configuration if the environment will be reused, and power off or
-   discard the lab VMs if they are disposable.
+```text
+# GigaVUE-FM: Inventory > VIRTUAL > (your cloud) > create a Monitoring Domain and a
+#   Connection using the cloud credentials. Define the V Series node configuration
+#   (instance type, subnet, security group) and deploy. Then confirm:
+#   Inventory > the V Series node shows Connected/Up and is FM-managed.
+```
+
+**Expected result:** FM launches and manages a V Series node in the target VPC/VNet — the V
+Series node is the cloud-native packet broker that performs mapping and GigaSMART where
+there is no physical chassis, all orchestrated from FM.
+
+**Negative test:** give FM cloud credentials lacking permission to create instances; the V
+Series deployment fails at launch — FM's orchestration role needs the cloud IAM permissions
+to create and manage the nodes.
+
+**Cleanup:** delete the V Series node/deployment from FM to stop cloud charges.
+
+### Lab 3.2 — Acquire traffic with the Universal Cloud Tap (Topic: Cloud acquisition)
+
+**Objective:** Tap workload traffic without a physical TAP or SPAN.
+
+```text
+# GigaVUE-FM: deploy the Universal Cloud Tap (UCT) / G-vTAP agent to the target workloads
+#   (agent-based) or use the cloud's native mirroring (agentless) as the acquisition method.
+#   Bind the tapped source to the monitoring domain from Lab 3.1. Confirm:
+#   Monitoring > traffic statistics rising from the tapped instances.
+```
+
+**Expected result:** workload traffic is copied to the V Series node via the UCT/agent (or
+native mirroring) — cloud acquisition replaces the physical TAP with a software tap on the
+instance or the cloud fabric, so visibility follows workloads that have no cable to tap.
+
+**Negative test:** expect visibility into an instance with no agent deployed and no native
+mirroring configured; the fabric sees nothing from it — cloud traffic must be acquired by an
+agent or provider mirroring before the fabric can process it.
+
+**Cleanup:** remove the UCT/agent from the lab workloads.
+
+### Lab 3.3 — Monitoring domain and traffic policy (Topic: Cloud traffic policy)
+
+**Objective:** Define what cloud traffic is forwarded and where.
+
+```text
+# GigaVUE-FM: within the monitoring domain, build a Monitoring Session / traffic policy:
+#   source (tapped instances) -> rules (filter by subnet/port/protocol) -> optional
+#   GigaSMART (e.g. slicing) -> destination (tool tunnel to your monitoring tool).
+#   Deploy the session and confirm traffic reaches the tool.
+```
+
+**Expected result:** only the selected cloud traffic is filtered, optionally transformed,
+and tunneled to the tool — the monitoring session is the cloud analogue of Flow Mapping
+(Chapter 05), deciding what happens to acquired traffic.
+
+**Negative test:** forward all tapped traffic to a tool in another VPC with no tunnel; it never
+arrives (no cross-VPC L2) — cloud tool delivery uses tunnels (VXLAN/L2GRE), which the
+traffic policy's destination defines.
+
+**Cleanup:** undeploy the monitoring session.
+
+### Lab 3.4 — Container/Kubernetes-aware tapping (Topic: Container visibility)
+
+**Objective:** Acquire east-west pod traffic in a Kubernetes cluster.
+
+```text
+# GigaVUE-FM: deploy the Universal Cloud Tap for containers (UCT-C) as a DaemonSet to the
+#   cluster; define a monitoring session selecting namespaces/pods by label; tunnel to the
+#   tool. Confirm pod-to-pod traffic appears at the tool.
+```
+
+**Expected result:** east-west traffic between pods is acquired by the per-node container
+tap and delivered to the tool — container tapping brings the same visibility to ephemeral,
+label-selected pods that physical taps bring to a switch port.
+
+**Negative test:** rely on a VM-level tap to see intra-node pod-to-pod traffic; that traffic
+never leaves the node's virtual switch, so the VM tap misses it — a container-aware tap
+(UCT-C) is required for east-west pod visibility.
+
+**Cleanup:** remove the UCT-C DaemonSet and the monitoring session.
 
 ## Lab Verification
 

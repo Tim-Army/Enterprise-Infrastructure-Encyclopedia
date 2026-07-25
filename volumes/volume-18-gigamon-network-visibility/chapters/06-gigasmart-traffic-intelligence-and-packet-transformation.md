@@ -282,61 +282,148 @@ traffic to its final tool destination:
 
 ## Hands-On Lab
 
-**Objective:** Configure a GigaSMART processing chain — packet slicing
-and masking — on a lab node, feed it from the two-level map pattern built
-in [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md), and validate both correct transformation and a deliberate
-misconfiguration that exposes unmasked data.
+This chapter carries a topic-level walkthrough lab for **each GigaSMART operation** — the
+foundation (gsgroup/gsop), slicing, masking, de-duplication, and application metadata — the
+transformation half of the GCP implementation domain. All commands are GigaVUE-OS CLI.
+Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 6.1–6.5** — a GigaVUE node with a **GigaSMART engine** (an
+`e` port, e.g. `1/1/e1`), a network port with traffic, and a tool port. GigaSMART features
+may require the appropriate GigaSMART license. **Cost:** none beyond lab resources.
 
-- A lab GigaVUE HC Series node (or lab-equivalent) with GigaSMART
-  licensed and available, continuing from the [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md) and [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md)
-  labs.
-- A packet capture tool at the final tool-port destination.
-- A lab traffic generator capable of sending a payload containing a
-  recognizable test pattern (for example, a fixed 16-byte value standing
-  in for a sensitive field) at a known, fixed offset in the packet.
+### Lab 6.1 — GigaSMART foundation: gsgroup and gsop (Topic: GigaSMART basics)
 
-**Steps**
+**Objective:** Bind a GigaSMART engine and attach an operation to a map.
 
-1. Configure a `gsgroup` with a slicing operation that truncates packets
-   shortly after the TCP/IP header, following the pattern in
-   Implementation and Automation.
-2. Configure a masking operation within the same `gsgroup` targeting the
-   offset of your test payload pattern.
-3. Configure a first-level map sourcing lab traffic into the `gsgroup`,
-   and a second-level map delivering the `gsgroup` output to a tool port
-   connected to your capture tool, following the two-level chaining
-   pattern.
-4. Generate lab traffic containing the test payload pattern at the
-   expected offset.
-5. Inspect the capture at the tool port.
-   **Expected result:** the captured packets are truncated at the
-   configured slice point (payload beyond the slice length is absent),
-   and the test pattern — if it falls within the retained slice length —
-   appears masked (overwritten with the configured fixed value) rather
-   than as the original test pattern.
-6. **Negative test:** intentionally misconfigure the masking operation's
-   offset (shift it by a fixed number of bytes so it no longer aligns
-   with the test pattern's actual position), re-apply the configuration,
-   and regenerate the same lab traffic.
+```text
+configure terminal
+gsgroup alias gsg1 port-list 1/1/e1
+gsop alias noop-op flow-ops none port-list gsg1     # placeholder op to prove the binding
+map alias gs-map
+   from 1/1/x1
+   to 1/1/x5
+   use gsop noop-op
+   rule add pass ipver 4
+exit
+show gsgroup
+show gsop
+```
 
-   ```text
-   (admin) (config gsgroup gsop alias mask-pan-field) # mask-pattern offset 60 length 16 value 0xFF
-   ```
+**Expected result:** the GigaSMART group binds the engine port, the gsop is defined against
+it, and the map applies the gsop — every GigaSMART feature follows this pattern: **gsgroup**
+(which engine) → **gsop** (what transformation) → **map** (which traffic), so this binding
+is the prerequisite for Labs 6.2–6.5.
 
-   **Expected result:** the captured packets now show the original,
-   unmasked test pattern at its true offset, reproducing the
-   misaligned-masking failure mode described in Validation and
-   Troubleshooting — demonstrating why offset/length must be validated
-   against actual traffic, not assumed from documentation alone.
-7. Correct the masking offset back to the validated value from step 2 and
-   confirm masked output resumes.
-8. **Cleanup:** remove or retain the lab `gsgroup`, first-level map, and
-   second-level map depending on whether the lab node will be reused for
-   [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md)'s inline and decryption exercises; if disposing of the
-   configuration, remove the `gsgroup` reference from both maps before
-   deleting the `gsgroup` itself.
+**Negative test:** reference a gsop in a map without a gsgroup bound to a real `e` port; the
+gsop cannot run and the map errors — GigaSMART needs an engine (gsgroup) behind every
+operation.
+
+**Cleanup:** `no map alias gs-map`; `no gsop alias noop-op`; `no gsgroup alias gsg1`.
+
+### Lab 6.2 — Packet slicing (Topic: Slicing)
+
+**Objective:** Truncate packets to headers to cut storage/tool load.
+
+```text
+configure terminal
+gsop alias slice-64 slicing protocol none offset 64 port-list gsg1
+map alias slice-map
+   from 1/1/x1
+   to 1/1/x5
+   use gsop slice-64
+   rule add pass ipver 4
+exit
+show gsop alias slice-64
+```
+
+**Expected result:** delivered packets are truncated to 64 bytes (headers preserved,
+payload removed); the tool receives full metadata at a fraction of the volume — slicing is
+how you feed header-only analysis (flow tools, some IDS) without shipping payloads.
+
+**Negative test:** slice traffic destined for a tool that needs full payload (e.g. a DLP or
+full-packet forensic recorder); it loses the data it exists to inspect — slice only for tools
+that need headers, not payload.
+
+**Cleanup:** `no map alias slice-map`; `no gsop alias slice-64`.
+
+### Lab 6.3 — Data masking (Topic: Masking)
+
+**Objective:** Overwrite sensitive payload bytes before delivery.
+
+```text
+configure terminal
+gsop alias mask-pan masking protocol none offset 52 pattern 0x58 length 16 port-list gsg1
+map alias mask-map
+   from 1/1/x1
+   to 1/1/x5
+   use gsop mask-pan
+   rule add pass ipver 4
+exit
+show gsop alias mask-pan
+```
+
+**Expected result:** the specified payload range is overwritten (e.g. with `X`) before the
+packet reaches the tool — masking lets you deliver traffic for analysis while keeping PANs,
+credentials, or PII out of the tool and its storage, a compliance-critical GigaSMART use.
+
+**Negative test:** send unmasked payloads containing card numbers to a monitoring tool; the
+sensitive data now lives in that tool's storage and scope — masking at the fabric is what
+keeps it out.
+
+**Cleanup:** `no map alias mask-map`; `no gsop alias mask-pan`.
+
+### Lab 6.4 — De-duplication (Topic: Deduplication)
+
+**Objective:** Remove duplicate packets created by multiple tap points.
+
+```text
+configure terminal
+gsop alias dedup-op dedup set port-list gsg1
+map alias dedup-map
+   from 1/1/x1
+   to 1/1/x5
+   use gsop dedup-op
+   rule add pass ipver 4
+exit
+show gsop alias dedup-op
+```
+
+**Expected result:** packets seen twice (tapped on both sides of a device, or on multiple
+SPAN sources) are collapsed to one within the dedup window; tool volume drops without losing
+information — de-duplication reclaims tool capacity wasted on identical copies.
+
+**Negative test:** feed a tool duplicate-heavy aggregated traffic with no dedup; it processes
+the same packet many times, inflating load and skewing counts — dedup is what removes that
+waste before the tool.
+
+**Cleanup:** `no map alias dedup-map`; `no gsop alias dedup-op`.
+
+### Lab 6.5 — Application metadata intelligence (Topic: Application metadata)
+
+**Objective:** Generate application-aware metadata (NetFlow/IPFIX) from traffic.
+
+```text
+configure terminal
+gsop alias amx-op flow-ops netflow port-list gsg1
+map alias amx-map
+   from 1/1/x1
+   to 1/1/x5
+   use gsop amx-op
+   rule add pass ipver 4
+exit
+show gsop alias amx-op
+```
+
+**Expected result:** the fabric exports rich flow/application metadata (IPFIX/NetFlow with
+Layer-7 attributes) to a collector, instead of (or alongside) raw packets — Application
+Metadata Intelligence turns traffic into compact, analyzable records for SIEM/NDR, cutting
+the data a collector must store.
+
+**Negative test:** send full packets to a metadata-only analytics platform expecting flow
+records; it cannot ingest raw packets — the fabric generating the metadata (this gsop) is
+what feeds those tools.
+
+**Cleanup:** `no map alias amx-map`; `no gsop alias amx-op`.
 
 ## Lab Verification
 

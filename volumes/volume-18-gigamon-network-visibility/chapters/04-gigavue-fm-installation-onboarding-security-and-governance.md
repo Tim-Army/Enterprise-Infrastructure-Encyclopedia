@@ -305,61 +305,93 @@ model for nodes carrying inline traffic).
 
 ## Hands-On Lab
 
-**Objective:** Deploy a lab GigaVUE-FM instance, onboard a lab GigaVUE
-node (physical or virtual, from [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md) or 03), configure a scoped
-administrative role, and validate both successful and denied access
-paths.
+This chapter carries a topic-level walkthrough lab for **each theme of GigaVUE-FM as a
+production control plane** — onboarding, RBAC, directory integration, and audit. These are
+GigaVUE-FM (GUI) tasks with CLI/API where noted. Each ends **`**Lab verified by:**
+*pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 4.1–4.4** — a deployed GigaVUE-FM instance, one or more
+GigaVUE nodes to onboard, and a directory service (LDAP/AD or TACACS+/RADIUS) for the
+integration lab. **Cost:** none beyond lab resources.
 
-- A lab GigaVUE-FM virtual appliance deployable to an available
-  hypervisor or cloud environment.
-- At least one lab GigaVUE node (physical or virtual) with known
-  management credentials, from the [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md) or [Chapter 03](03-gigavue-virtual-nodes-and-virtual-traffic-acquisition.md) labs.
-- Two lab user identities (or the ability to create two local GigaVUE-FM
-  accounts) to demonstrate scoped access.
-- Isolated lab network segment — do not perform this lab against
-  production management infrastructure.
+### Lab 4.1 — Onboard a node to GigaVUE-FM (Topic: Onboarding)
 
-**Steps**
+**Objective:** Bring a physical node under FM management.
 
-1. Deploy the GigaVUE-FM appliance and complete first-boot configuration
-   (management IP, DNS, NTP).
-2. Log in to the GigaVUE-FM web UI with the initial credential and
-   immediately change it to a strong, lab-documented password.
-3. Onboard the lab GigaVUE node by registering its management IP and
-   credentials under a new fabric group named `lab-fabric-01`.
-   **Expected result:** the node appears in the GigaVUE-FM inventory with
-   a healthy status within a few minutes of onboarding.
-4. Create a scoped role `lab-read-only` granting read-only access to
-   `lab-fabric-01` only, and a second role `lab-flow-author` granting Flow
-   Mapping read/write access to the same fabric group.
-5. Create two local user accounts (or map two test directory identities),
-   assigning `lab-read-only` to the first and `lab-flow-author` to the
-   second.
-6. Log in as the `lab-read-only` user and attempt to create a new Flow
-   Map on `lab-fabric-01`.
-   **Expected result:** the action is denied or the relevant controls are
-   unavailable/read-only in the UI, confirming the scoped role correctly
-   restricts write access.
-7. Log in as the `lab-flow-author` user and create a minimal test Flow Map
-   on the onboarded node.
-   **Expected result:** the map is created successfully, confirming the
-   role's granted permissions function as intended.
-8. **Negative test:** attempt to log in as the `lab-flow-author` user and
-   access or modify a different fabric group not included in that role's
-   scope (create a second empty fabric group, `lab-fabric-02`, if none
-   exists).
-   **Expected result:** access to `lab-fabric-02` is denied, confirming
-   role scoping is enforced per fabric group and not merely per
-   capability.
-9. Review the audit log and confirm every action above — the login
-   attempts, the denied write, the successful map creation — is recorded
-   with the correct user identity and timestamp.
-10. **Cleanup:** remove the test Flow Map, the two lab user accounts (or
-    role assignments), and the `lab-fabric-02` empty group if it was
-    created solely for this lab, and note whether `lab-fabric-01` and the
-    onboarded node should be retained for later chapters' exercises.
+```text
+# GigaVUE-FM: Inventory > PHYSICAL > Nodes > Add. Provide the node IP and credentials
+#   (and cluster VIP if clustered). After discovery, confirm:
+#   the node shows Connected/Up, with its chassis, cards, and ports inventoried in FM.
+```
+
+**Expected result:** the node appears in FM Connected, with full chassis/port inventory —
+FM becomes the single console for maps, GigaSMART, upgrades, and monitoring across every
+node, replacing per-node CLI for day-to-day work.
+
+**Negative test:** onboard with an account lacking admin rights on the node; FM connects
+read-only or fails to push config — FM management needs node credentials with sufficient
+privilege.
+
+**Cleanup:** remove the lab node from FM if onboarded only for the exercise.
+
+### Lab 4.2 — Role-based access control (Topic: RBAC)
+
+**Objective:** Create a scoped operator role in FM.
+
+```text
+# GigaVUE-FM: Settings > Authentication / Roles & Users. Create a role granting, e.g.,
+#   read-only on maps and monitoring but no config write. Assign a user to it, log in,
+#   and confirm the boundary (can view maps, cannot edit).
+```
+
+**Expected result:** the scoped user sees dashboards/maps but cannot alter configuration —
+RBAC enforces least privilege so NOC viewers, tool owners, and fabric admins each get an
+appropriate slice of the shared fabric.
+
+**Negative test:** grant every user the admin role; any one can delete a production map and
+blind a security tool — role scoping is what prevents that on a shared visibility fabric.
+
+**Cleanup:** delete the lab role/user.
+
+### Lab 4.3 — Directory integration (Topic: Centralized authentication)
+
+**Objective:** Authenticate FM users against LDAP/AD or TACACS+.
+
+```text
+# GigaVUE-FM: Settings > Authentication > add the external server (LDAP/AD/TACACS+/RADIUS),
+#   map directory groups to FM roles, set the auth order (external, then local fallback).
+#   Log in as a directory user and confirm the mapped role applies.
+```
+
+**Expected result:** directory users log in with their central credentials and receive the
+FM role mapped from their group — directory integration centralizes identity and lets
+group membership drive fabric access, so onboarding/offboarding happens in one place.
+
+**Negative test:** integrate the directory but keep every admin as a shared local account;
+you lose per-person attribution and central revocation — directory-backed accounts are what
+make access auditable and revocable.
+
+**Cleanup:** revert to local auth if the integration was lab-only.
+
+### Lab 4.4 — Audit logging (Topic: Governance)
+
+**Objective:** Confirm configuration changes are recorded and exportable.
+
+```text
+# GigaVUE-FM: Settings/Dashboard > Audit Logs. Make a benign change (e.g. edit a map
+#   description), then confirm the audit log records the user, action, timestamp, and
+#   target. Configure syslog export of audit events to your SIEM.
+```
+
+**Expected result:** the change appears in the audit log attributed to your user, and audit
+events stream to the SIEM — audit logging makes the fabric's control plane accountable and
+feeds change history into security monitoring.
+
+**Negative test:** operate the fabric with audit logging unexported; a mis-scoped map that
+blinded a tool has no forensic trail of who changed what and when — exported audit is what
+answers that.
+
+**Cleanup:** revert the benign change; keep audit/syslog enabled (it is the intended state).
 
 ## Lab Verification
 

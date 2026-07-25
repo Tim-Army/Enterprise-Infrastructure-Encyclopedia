@@ -313,78 +313,126 @@ SPAN can passively observe.
 
 ## Hands-On Lab
 
-**Objective:** Build a lab inline bypass deployment with heartbeat-based
-failover configured fail-open, validate that production traffic continues
-to flow when the inline tool is deliberately failed, and validate
-maintenance mode as a controlled alternative — entirely in an isolated lab
-segment.
+This chapter carries a topic-level walkthrough lab for **each inline mechanism** — inline
+network/tool pairs, heartbeat and failover, bypass, and inline TLS decryption — the
+highest-risk, highest-value deployment mode. All commands are GigaVUE-OS CLI. Each ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 7.1–7.4** — a GigaVUE node with inline-capable ports (a
+bypass combo module for physical protection), an inline security tool (IPS/WAF/firewall) to
+place in path, and a **lab link you may safely take down**. **Cost:** none beyond lab
+resources. **Safety:** inline carries production traffic — never build these on a live link
+without a maintenance window and verified bypass.
 
-- A lab GigaVUE HC Series node (or lab-equivalent) with inline-capable
-  ports, continuing from prior chapters' lab node where practical.
-- A lab inline tool — a simple bump-in-the-wire device or a VM configured
-  to bridge two interfaces is sufficient to stand in for a production IPS
-  for this lab's purposes.
-- Two lab hosts positioned on either side of the inline link to generate
-  and receive test traffic.
-- An isolated lab network segment — this lab deliberately fails a device
-  in the traffic path and must never be performed against a production
-  link.
+### Lab 7.1 — Inline network and inline tool pairs (Topic: Inline deployment)
 
-**Steps**
+**Objective:** Place a security tool in the traffic path via the fabric.
 
-1. Cable the lab inline network group between the two lab hosts' link,
-   and cable the lab inline tool to the inline tool ports, following the
-   pattern in Implementation and Automation.
-2. Configure the inline network group, inline tool group with heartbeat
-   enabled at a short interval, and an inline map binding them with a
-   `pass any` rule.
-3. Set the inline tool group's fail-mode to open (bypass).
-4. From one lab host, start a continuous ping (or equivalent continuous
-   traffic) to the other lab host across the inline link.
-   **Expected result:** traffic flows normally, passing through the
-   healthy inline tool.
-5. Confirm heartbeat status shows healthy for the inline tool group
-   (`show inline-tool` or the equivalent status command).
-6. **Controlled failure test:** power off, disconnect, or otherwise fail
-   the lab inline tool while the continuous traffic test from step 4 is
-   still running.
-   **Expected result:** a brief interruption occurs while the heartbeat
-   failure is detected, after which traffic resumes flowing (now bypassing
-   the failed tool) because fail-mode is set to open — confirming
-   fail-open behavior protects production connectivity when an inline
-   tool fails.
-7. Restore the lab inline tool and confirm the inline tool group returns
-   to healthy status and traffic resumes routing through it rather than
-   remaining in bypass.
-8. **Negative test:** change the inline tool group's fail-mode to closed,
-   repeat the controlled failure test from step 6, and observe the
-   result.
+```text
+configure terminal
+inline-network alias inet1
+   pair net-a 1/1/x1 and net-b 1/1/x2
+   physical-bypass disable
+   traffic-path to-inline-tool
+exit
+inline-tool alias itool1
+   pair tool-a 1/1/x3 and tool-b 1/1/x4
+exit
+map-passall alias inline-map
+   roles replace admin to owner_roles
+   from inet1
+   to itool1
+exit
+show inline-network
+show inline-tool
+```
 
-   ```text
-   (admin) (config inline-tool alias ips-primary) # fail-mode closed
-   ```
+**Expected result:** production traffic entering `inet1` is steered through the inline tool
+on `itool1` and back out — inline places a tool *in* the path (it can block), unlike
+out-of-band taps (copy only); the inline-network pair is the wire, the inline-tool pair is
+the tool insertion.
 
-   **Expected result:** this time, traffic stops entirely when the tool
-   fails and does not resume until the tool is restored, demonstrating
-   the fail-closed trade-off described in Theory and Architecture — a
-   security-availability trade-off made deliberately, not by default.
-9. Restore fail-mode to the value appropriate for this lab's intended
-   later use, and invoke maintenance mode manually, confirming traffic
-   bypasses the tool without waiting for a heartbeat failure:
+**Negative test:** cable a blocking IPS directly inline without the fabric; a tool failure
+or upgrade drops the production link — the fabric's inline-tool insertion is what lets you
+add heartbeat and bypass around the tool (Labs 7.2–7.3).
 
-   ```text
-   (admin) # inline-tool alias ips-primary maintenance-mode enable
-   ```
+**Cleanup:** `no map-passall alias inline-map`; `no inline-tool alias itool1`;
+`no inline-network alias inet1`.
 
-   **Expected result:** traffic continues flowing (bypassing the tool)
-   immediately upon invoking maintenance mode, confirming the controlled
-   bypass path works independently of heartbeat detection.
-10. **Cleanup:** disable maintenance mode, restore the inline tool group
-    and inline map to a known-good baseline configuration (or remove them
-    entirely if the lab topology will be reused for [Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md) or 09),
-    and stop the continuous traffic test.
+### Lab 7.2 — Heartbeat and failover action (Topic: Production safety)
+
+**Objective:** Detect a failed inline tool and define what happens to traffic.
+
+```text
+configure terminal
+inline-tool alias itool1
+   heart-beat
+   hb-ip-src 10.0.0.1 hb-ip-dst 10.0.0.2
+   failover-action tool-bypass
+exit
+show inline-tool alias itool1
+```
+
+**Expected result:** the fabric sends heartbeat packets through the inline tool; if they stop
+returning, `failover-action tool-bypass` routes production traffic *around* the failed tool
+so the link stays up — heartbeat + failover is what makes an inline blocking tool safe to
+deploy.
+
+**Negative test:** set `failover-action drop` (or leave heartbeat off) on a tool that then
+fails; production traffic is dropped and the link goes down — the failover action is the
+deliberate choice between availability (`tool-bypass`) and security (`drop`), and it must be
+set consciously.
+
+**Cleanup:** revert to the lab's intended failover policy; disable heartbeat if lab-only.
+
+### Lab 7.3 — Physical and logical bypass (Topic: Bypass protection)
+
+**Objective:** Confirm the link survives a fabric power/logic failure.
+
+```text
+configure terminal
+inline-network alias inet1
+   physical-bypass enable        # protected bypass combo: relay closes on power loss
+exit
+show inline-network alias inet1
+# Test (maintenance window): simulate tool/logic failure and confirm traffic keeps flowing;
+#   simulate node power loss on a physical-bypass module and confirm the link stays up.
+```
+
+**Expected result:** with physical bypass enabled on a bypass module, loss of node power
+mechanically closes the relay and traffic keeps flowing; logical bypass handles tool/logic
+failures — layered bypass keeps the production link up across the full range of failures.
+
+**Negative test:** deploy inline on a non-bypass module and lose node power; the link goes
+down hard — physical bypass (a protected combo module) is what survives a total node failure,
+which logical bypass alone cannot.
+
+**Cleanup:** restore the intended bypass configuration.
+
+### Lab 7.4 — Inline TLS/SSL decryption (Topic: TLS decryption)
+
+**Objective:** Decrypt once at the fabric and feed cleartext to inline and out-of-band tools.
+
+```text
+configure terminal
+gsgroup alias gsg-ssl port-list 1/1/e1
+gsop alias ssl-inline ssl-decrypt in-line port-list gsg-ssl
+# Reference the SSL/TLS decryption profile and the CA/keys per the deployment guide, then
+#   apply the gsop to the inline map so tools receive decrypted traffic.
+show gsop alias ssl-inline
+```
+
+**Expected result:** TLS sessions are decrypted once at the fabric, so inline IPS and
+out-of-band tools all inspect cleartext without each doing its own decryption — "decrypt
+once, inspect many" removes duplicated crypto load and gives every tool visibility into
+encrypted threats.
+
+**Negative test:** have each tool decrypt TLS independently; you multiply CPU cost and key
+distribution, and some tools cannot decrypt at all — centralizing decryption at the fabric is
+the efficient, consistent approach (mind privacy/compliance policy on what may be decrypted).
+
+**Cleanup:** `no gsop alias ssl-inline`; `no gsgroup alias gsg-ssl`; remove the decryption
+profile if lab-only.
 
 ## Lab Verification
 

@@ -320,88 +320,107 @@ Members: 2
 
 ## Hands-On Lab
 
-**Objective:** Perform first-touch configuration of a lab GigaVUE node
-(physical or a lab/virtual GigaVUE-OS instance), configure network and
-tool ports, and validate a minimal Flow Map moves traffic end to end,
-including a deliberate misconfiguration to observe the resulting failure
-mode.
+This chapter carries a topic-level walkthrough lab for **each task of first-deploying a
+physical GigaVUE node** — bring-up, port typing, GigaStream, and clustering — the
+foundation of a GigaVUE fabric. All commands are GigaVUE-OS CLI. Each ends **`**Lab
+verified by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 2.1–2.4** — a GigaVUE HC Series or TA Series node (or two,
+for the cluster lab) on a current GigaVUE-OS, console/SSH access, and management network
+reachability. **Cost:** none beyond lab resources.
 
-- A lab GigaVUE node with console or SSH access at a documented
-  management address — a physical evaluation unit, or a virtual
-  GigaVUE-OS lab instance if no physical hardware is available.
-- A traffic source cabled or connected to a designated network port (a
-  TAP, SPAN destination, or a simple lab packet generator).
-- A packet capture tool (for example, `tcpdump` or Wireshark, covered in
-  depth in [Volume XX](../../volume-20-wireshark-packet-analysis/README.md)) connected to the designated tool port to observe
-  forwarded traffic.
-- An isolated lab network segment — do not perform this lab against a
-  production visibility fabric.
+### Lab 2.1 — Node bring-up and inventory (Topic: First deployment)
 
-**Steps**
+**Objective:** Confirm the node's identity, cards, and health.
 
-1. Connect to console and log in with the default or documented initial
-   credential.
-2. Enter configuration mode and set the hostname and management
-   addressing:
+```text
+show version
+show chassis
+show card
+```
 
-   ```text
-   (admin) # configure terminal
-   (admin) (config) # hostname gv-lab-node01
-   (admin) (config) # mgmt ip address 10.50.10.5 /24
-   ```
+**Expected result:** `show version` prints the GigaVUE-OS version, `show chassis` the model
+and health, and `show card` the installed line cards/modules with status `up` — the first
+orientation on any node before you type ports or build maps.
 
-3. Configure one port as a network port and one as a tool port:
+**Negative test:** build maps referencing a slot whose card is down or not inventoried; the
+port IDs do not resolve — confirm cards are up (this lab) before referencing their ports.
 
-   ```text
-   (admin) (config) # port 1/1/x1 params admin enable
-   (admin) (config) # port 1/1/x1 type network
-   (admin) (config) # port 1/1/g1 params admin enable
-   (admin) (config) # port 1/1/g1 type tool
-   ```
+**Cleanup:** none (read-only).
 
-4. Save the configuration:
+### Lab 2.2 — Port types and enablement (Topic: Port configuration)
 
-   ```text
-   (admin) (config) # write memory
-   ```
+**Objective:** Type and enable network and tool ports — the fabric's on-ramps and off-ramps.
 
-   **Expected result:** the save command completes without error; a
-   subsequent `show running-config` (or equivalent) reflects the port
-   role changes.
+```text
+configure terminal
+port 1/1/x1 type network
+port 1/1/x1 alias tap-core
+port 1/1/x1 params admin enable
+port 1/1/x5 type tool
+port 1/1/x5 alias ids-1
+port 1/1/x5 params admin enable
+exit
+show port
+```
 
-5. Create a minimal all-pass Flow Map from the network port to the tool
-   port, following the pattern in Implementation and Automation.
-6. Start a packet capture on the tool used to verify forwarding, connected
-   to the tool port.
-7. Generate or confirm live traffic at the tapped source.
-   **Expected result:** the capture tool shows packets matching the tapped
-   source's traffic, confirming acquisition, mapping, and delivery are all
-   functioning.
-8. **Negative test:** change the map's rule from `pass any` to a narrow
-   rule that cannot match the generated traffic (for example, a specific
-   host IP address not present in the lab traffic), and re-save the
-   configuration.
+**Expected result:** both ports show their assigned type, alias, and admin `enable` with
+link `up` — network ports receive tapped traffic and tool ports deliver it; aliases make
+later maps readable (`tap-core` → `ids-1` instead of raw port IDs).
 
-   ```text
-   (admin) (config map alias first-touch-verify) # no rule add pass any
-   (admin) (config map alias first-touch-verify) # rule add pass ipv4 host-source 192.0.2.250
-   ```
+**Negative test:** enable a port without setting its type; it defaults and cannot serve as a
+map source/destination as intended — type must be assigned explicitly per the port's role.
 
-   **Expected result:** the capture tool now shows zero new packets,
-   confirming the map — not the physical cabling or port configuration —
-   is the traffic-selection control point, and demonstrating the failure
-   mode of an overly narrow map rule.
-9. **Cleanup:** restore the map to `pass any` (or remove it if the node
-   will be reused for [Chapter 04](04-gigavue-fm-installation-onboarding-security-and-governance.md)'s onboarding exercises), and if the node
-   is a shared lab resource, remove any lab-only configuration:
+**Cleanup:** `no port 1/1/x1 params admin enable` / `no port 1/1/x5 params admin enable`.
 
-   ```text
-   (admin) (config map alias first-touch-verify) # no rule add pass ipv4 host-source 192.0.2.250
-   (admin) (config map alias first-touch-verify) # rule add pass any
-   (admin) (config) # write memory
-   ```
+### Lab 2.3 — GigaStream tool delivery (Topic: GigaStream)
+
+**Objective:** Bundle several tool ports into one load-balanced GigaStream.
+
+```text
+configure terminal
+port 1/1/x5..x8 type tool
+port 1/1/x5..x8 params admin enable
+gigastream alias ids-farm port-list 1/1/x5..x8
+exit
+show gigastream
+```
+
+**Expected result:** the four tool ports form one GigaStream `ids-farm` that a map can send
+to; traffic is hashed across members so a tool farm scales beyond a single port's line rate
+— GigaStream is how the fabric delivers high-volume traffic to a group of tool instances.
+
+**Negative test:** send 40G of aggregated traffic to a single 10G tool port; it drops the
+overflow — a GigaStream across enough members is what matches delivery capacity to the
+aggregated volume.
+
+**Cleanup:** `no gigastream alias ids-farm`; disable the ports if lab-only.
+
+### Lab 2.4 — Clustering and stack links (Topic: Fabric foundations)
+
+**Objective:** Join nodes into a cluster so traffic can traverse between them.
+
+```text
+configure terminal
+port 1/1/x9 type stack
+port 1/1/x9 params admin enable
+# On each node: configure cluster settings (cluster id, master/leader election) per the
+#   deployment guide, then verify:
+exit
+show cluster
+show port type stack
+```
+
+**Expected result:** the nodes form a cluster with `stack` ports carrying inter-node
+traffic; `show cluster` lists members and roles — clustering lets a tap on one node feed a
+tool on another, so the fabric spans multiple chassis as one logical broker.
+
+**Negative test:** map a network port on node A to a tool port on node B without stack ports
+/ a formed cluster; the traffic has no path between chassis — stack links are the fabric's
+inter-node backbone.
+
+**Cleanup:** remove the node from the cluster and `no port 1/1/x9 params admin enable` if
+lab-only.
 
 ## Lab Verification
 

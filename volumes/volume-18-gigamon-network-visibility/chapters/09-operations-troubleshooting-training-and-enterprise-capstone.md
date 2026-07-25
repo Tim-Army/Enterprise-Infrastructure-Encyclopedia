@@ -294,75 +294,95 @@ enforced check.
 
 ## Hands-On Lab
 
-**Objective (Capstone):** Integrate the mechanisms built across this
-volume — acquisition, Flow Mapping, GigaSMART processing, inline
-resiliency, and API-driven configuration — into one coherent, end-to-end
-lab deployment, validated with a full-chain traffic trace, a multi-stage
-negative test, and a documented rollback.
+This chapter closes the volume with **day-2 operations and a capstone** — health
+monitoring, a structured troubleshooting method, and a **Design Exercise** that synthesizes
+the whole fabric for the GCP-level architect. The operational labs are GigaVUE-OS CLI /
+GigaVUE-FM; the capstone is a written design. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 9.1–9.3** — a running GigaVUE fabric (node(s) + FM) with at
+least one live map delivering traffic to a tool. **Cost:** none beyond lab resources.
 
-- Lab GigaVUE node(s) and GigaVUE-FM instance from prior chapters'
-  exercises (physical or virtual), with the [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md), 04, 05, 06, and 07
-  lab configurations available as a starting baseline (or rebuilt fresh,
-  following those chapters' steps).
-- A lab traffic generator and at least two capture/receiving tools (one
-  out-of-band, one representing an inline tool per [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md)'s pattern).
-- API access to the lab GigaVUE-FM instance, per [Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md).
-- An isolated lab network segment.
-- A written rollback plan drafted before starting (see step 1).
+### Lab 9.1 — Health and traffic statistics (Topic: Operations)
 
-**Steps**
+**Objective:** Read the counters that tell you the fabric is healthy and doing work.
 
-1. **Plan and document rollback first.** Before making any change, write
-   down the exact configuration state you will restore to if the capstone
-   deployment must be backed out (existing map aliases, `gsgroup`
-   definitions, and inline tool group settings from prior chapters'
-   labs).
-2. Configure an acquisition source (a TAP, SPAN, or virtual tap, per
-   [Chapter 01](01-visibility-architecture-traffic-acquisition-and-tool-delivery.md) or 03) feeding a network port on the lab node.
-3. Configure a first-level Flow Map filtering that source to a specific
-   traffic subset (per [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md)), destined to a GigaSMART group.
-4. Configure GigaSMART packet slicing and Application Metadata
-   Intelligence export on that group (per [Chapter 06](06-gigasmart-traffic-intelligence-and-packet-transformation.md)), with a
-   second-level map delivering processed traffic to an out-of-band
-   capture tool.
-5. Separately, configure an inline network group and inline tool group
-   with heartbeat-based fail-open behavior (per [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md)), positioned on
-   a distinct lab link from the out-of-band path in steps 2–4.
-6. Using the GigaVUE-FM API (per [Chapter 08](08-hybrid-cloud-visibility-automation-apis-and-integrations.md)), query the fabric's current
-   map inventory and confirm both the out-of-band chain and the inline
-   map appear as expected, and record this output as your pre-validation
-   baseline.
-7. **Full-chain trace:** generate lab traffic matching the first-level
-   filter criteria, and confirm, in order: traffic present at the network
-   port (acquisition), traffic present at the `gsgroup` (mapping),
-   correctly sliced and tagged traffic at the out-of-band capture tool
-   (GigaSMART and delivery), and metadata records at the configured
-   Application Metadata Intelligence export destination.
-   **Expected result:** every stage in the chain shows the expected
-   traffic or output, confirming the full acquisition-to-delivery pipeline
-   functions end to end.
-8. Separately confirm the inline path: send traffic across the inline
-   link and confirm it passes through the lab inline tool successfully.
-9. **Multi-stage negative test:** (a) narrow the first-level map's rule to
-   exclude the test traffic and confirm the out-of-band chain correctly
-   shows no output (reproducing [Chapter 05](05-ports-flow-mapping-traffic-policy-and-tool-delivery.md)'s rule-scope behavior); restore
-   the rule; then (b) fail the lab inline tool and confirm the inline path
-   fails open per [Chapter 07](07-inline-bypass-tls-decryption-and-production-safety.md)'s behavior; restore the inline tool.
-   **Expected result:** both negative tests reproduce the specific,
-   isolated failure behavior documented in their respective chapters,
-   confirming the integrated deployment did not introduce unexpected
-   cross-stage interaction — the out-of-band rule change did not affect
-   the inline path, and the inline tool failure did not affect the
-   out-of-band chain.
-10. Re-run the API query from step 6 and diff it against the
-    pre-validation baseline to confirm no unintended configuration drift
-    occurred during the capstone exercise.
-11. **Cleanup and rollback validation:** execute the rollback plan
-    documented in step 1, restoring the lab environment to its
-    pre-capstone baseline, and confirm via the API that the fabric state
-    matches the documented baseline afterward.
+```text
+show port stats
+show map stats all
+show gsgroup stats
+show system health 2>/dev/null || show environment
+```
+
+**Expected result:** RX/TX and drop counters per port, per-rule map hit counts, GigaSMART
+engine load, and system/environment health — day-2 operations is watching these: rising
+drops, a saturated GigaSMART engine, or a map with zero hits are the early signals of a
+problem.
+
+**Negative test:** judge fabric health by "links are up" alone; a map with zero rule hits or
+a GigaSMART engine at 100% is silently losing/limiting traffic while every link shows up —
+the counters, not link state, reveal it.
+
+**Cleanup:** none (read-only).
+
+### Lab 9.2 — Structured troubleshooting: traffic not reaching a tool (Topic: Troubleshooting)
+
+**Objective:** Trace the delivery path from tap to tool, layer by layer.
+
+```text
+show port 1/1/x1                 # 1. is the network port up with rising RX?
+show map stats alias <map>       # 2. is the map's pass rule getting hits?
+show gsop alias <op>             # 3. if a gsop is applied, is it running/healthy?
+show gigastream                  # 4. are the tool/GigaStream members up?
+show port stats 1/1/x5           # 5. is the tool port transmitting?
+```
+
+**Expected result:** you localize the break — no RX (tap/SPAN issue), rule hits but no TX
+(map/destination issue), or a saturated gsop — instead of guessing; the acquisition → map →
+GigaSMART → delivery path is the deterministic order to walk.
+
+**Negative test:** start by rebuilding the map when the real fault is that the network port
+has no RX (dead SPAN source); you "fix" a working map while the tap is still dark — check
+acquisition first, then work downstream.
+
+**Cleanup:** none (read-only diagnostics).
+
+### Lab 9.3 — Capstone Design Exercise: enterprise visibility fabric (Topic: Synthesis)
+
+**Objective:** Produce a defensible end-to-end fabric design — the GCP architect deliverable,
+not a config dump.
+
+> **Scenario.** An enterprise has 2 data centers, 5 campuses, and workloads across AWS and
+> Azure. Security tools (IDS/IPS inline, NDR out-of-band, full-packet forensic recorder,
+> flow/metadata analytics) must each see the right traffic, with no production risk, PII kept
+> out of tools, and one management plane.
+
+Work through and **write down**:
+
+1. **Acquisition** — TAP vs SPAN per site; physical taps for data centers, UCT/agents and
+   native mirroring for AWS/Azure, UCT-C for Kubernetes.
+2. **Fabric** — HC Series in data centers, TA Series at campuses, V Series in cloud;
+   clustering/stack links; a single GigaVUE-FM control plane with RBAC and directory auth.
+3. **Delivery (Flow Mapping)** — which traffic goes to which tool; GigaStream for the
+   high-volume tools; a shared collector so nothing is silently dropped.
+4. **Transformation (GigaSMART)** — slicing for the flow tools, **masking** for PII before
+   any tool, de-duplication across redundant taps, metadata generation for analytics,
+   decrypt-once for the encrypted-threat inspection path.
+5. **Inline safety** — bypass modules, heartbeat, and failover-action choices for the inline
+   IPS so a tool failure never drops production.
+6. **Automation & ops** — Terraform-managed config, API/IaC change control, and SIEM/ITSM
+   export of fabric health.
+
+**Expected result:** a written design that names appliance placement, mapping and GigaSMART
+strategy, inline safety, and automation — the deliverable a GCP-level architect (and a real
+deployment) is judged on, where *why* (decrypt-once, mask-before-tool, bypass choice) matters
+as much as *what*.
+
+**Negative test:** design maximal mirroring of all traffic to all tools with no filtering,
+slicing, or dedup; you saturate tools and budgets and bury analysts — the design value is
+delivering *the right* traffic to each tool, not all traffic to every tool.
+
+**Cleanup:** none (design artifact).
 
 ## Lab Verification
 

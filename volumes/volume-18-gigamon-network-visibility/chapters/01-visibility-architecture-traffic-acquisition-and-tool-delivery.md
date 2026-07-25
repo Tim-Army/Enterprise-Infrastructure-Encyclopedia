@@ -333,58 +333,83 @@ sessions nobody can explain — from accumulating over the fabric's life.
 
 ## Hands-On Lab
 
-**Objective:** Design and document a small visibility fabric acquisition
-plan for a simulated two-segment network, then validate the plan's logic
-with a tabletop trace of expected traffic flow — no physical GigaVUE
-hardware is required for this planning-level lab (physical configuration
-begins in [Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md)).
+This chapter carries a topic-level walkthrough lab for **each pillar of visibility
+architecture — acquisition, fabric, and delivery** — the vocabulary every later chapter
+assumes. These labs use a GigaVUE node (GigaVUE-OS CLI) and its GigaVUE-FM manager; where
+no hardware tap is available, a lab SPAN session stands in. Each ends **`**Lab verified
+by:** *pending*`** until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 1.1–1.3** — a GigaVUE node (HC Series or TA Series, or a
+GigaVUE-OS VM) reachable by CLI/GigaVUE-FM, a traffic source (a TAP or a switch SPAN
+session), and a monitoring tool (or a capture host) to receive delivered traffic.
+**Cost:** none beyond lab resources.
 
-- A text editor and a local Git-tracked scratch directory (or the
-  `tap-inventory.yaml` pattern shown above).
-- A simple network diagram: one core switch, one access switch feeding a
-  server VLAN, and one internet edge router — hand-drawn or produced with
-  any diagramming tool is sufficient.
+### Lab 1.1 — TAP versus SPAN acquisition (Topic: Traffic acquisition)
 
-**Steps**
+**Objective:** Acquire a traffic copy and reason about TAP vs. SPAN trade-offs.
 
-1. On your diagram, mark two candidate acquisition points: the uplink
-   between the access switch and the core (a candidate SPAN source), and
-   the internet edge router's WAN-facing link (a candidate TAP point).
-2. For each acquisition point, write one sentence justifying the
-   acquisition method chosen, referencing the TAP-vs-SPAN comparison table
-   in this chapter (for example: "internet edge — physical TAP, because
-   loss of visibility during a security incident is unacceptable and the
-   link is business-critical").
-3. Create a `tap-inventory.yaml` file following the schema shown in
-   Implementation and Automation, with one entry per acquisition point.
-   Assign each a placeholder `gigavue_node` name and at least one
-   `subscribed_tools` entry (for example, an IDS sensor and a packet
-   capture platform).
-4. For the internet-edge TAP entry, add both monitor-port directions
-   (`network_ports: ["1/1/x1", "1/1/x2"]`) and note in a comment which
-   port carries inbound versus outbound traffic.
-5. **Validate the plan with a tabletop trace:** pick a hypothetical
-   outbound HTTPS session from an internal server to an external host.
-   Trace it on paper through both acquisition points and confirm your
-   inventory correctly shows it visible to every tool that should see it
-   (both the IDS at the internet edge and the packet capture tool per
-   your entries).
-   **Expected result:** the trace confirms every subscribed tool in your
-   inventory has a documented, unbroken acquisition path to the session;
-   any tool without a path indicates a missing acquisition point or
-   subscription entry.
-6. **Negative test:** remove the `network_ports` entry for one direction
-   of the internet-edge TAP and re-run the tabletop trace for a
-   bidirectional session (for example, a TCP handshake). Confirm — and
-   write down — that the trace now shows only one direction of traffic
-   reaching the tools, reproducing the asymmetric-visibility failure mode
-   described in Validation and Troubleshooting. Restore the removed entry
-   afterward.
-7. **Cleanup:** none required beyond retaining or discarding your
-   `tap-inventory.yaml` scratch file; no production or lab infrastructure
-   was touched in this lab.
+```text
+# Acquire via SPAN (lab) or TAP (production): mirror a link to a GigaVUE network port.
+configure terminal
+port 1/1/x1 type network
+port 1/1/x1 params admin enable
+exit
+show port 1/1/x1
+```
+
+**Expected result:** the network port shows `up` and rising RX counters as mirrored
+traffic arrives — a **TAP** copies traffic passively in hardware (no production impact, sees
+errors/full duplex), while a **SPAN** is switch-configured and can drop under load or omit
+errored frames; the visibility fabric ingests either on a *network* port.
+
+**Negative test:** oversubscribe a SPAN source (mirror more than the SPAN port's line rate);
+the switch silently drops mirrored packets and your tools see incomplete traffic — a TAP
+avoids this, which is why production visibility prefers TAPs.
+
+**Cleanup:** `no port 1/1/x1 params admin enable` if the port was enabled only for the lab.
+
+### Lab 1.2 — Aggregation and replication (Topic: Fabric function)
+
+**Objective:** Aggregate many sources to one tool and replicate one source to many tools.
+
+```text
+# Aggregation: several network ports -> one tool port (many-to-one)
+# Replication: one network port -> several tool ports (one-to-many), via map "to" list
+show map            # after building the maps in Chapter 05, review the fan-in/fan-out
+show port           # confirm network vs tool port roles
+```
+
+**Expected result:** the fabric aggregates multiple tap points onto a shared tool and
+replicates a single tap to multiple tools — the two core fabric functions that let every
+tool see exactly the traffic it needs from any tap point, decoupling tools from taps.
+
+**Negative test:** connect each tool directly to its own dedicated TAP instead of through
+the fabric; adding a tool means re-cabling taps, and two tools cannot share one tap
+cleanly — aggregation/replication in the fabric is what removes that rigidity.
+
+**Cleanup:** none (read-only in this chapter; maps are built in Chapter 05).
+
+### Lab 1.3 — Fabric roles: network, tool, and hybrid ports (Topic: Tool delivery)
+
+**Objective:** Assign port roles that define the direction of traffic through the fabric.
+
+```text
+configure terminal
+port 1/1/x2 type tool
+port 1/1/x2 params admin enable
+exit
+show port type
+```
+
+**Expected result:** ports are typed **network** (ingress from taps/SPAN), **tool** (egress
+to monitoring/security tools), or **hybrid**/**inline** — `show port type` lists each role;
+the port role is what determines whether traffic enters, leaves, or passes through the
+fabric.
+
+**Negative test:** map traffic *to* a port still typed `network`; the fabric rejects it —
+delivery targets must be `tool` (or inline-tool) ports, so role assignment precedes any map.
+
+**Cleanup:** `no port 1/1/x2 params admin enable` if enabled only for the lab.
 
 ## Lab Verification
 

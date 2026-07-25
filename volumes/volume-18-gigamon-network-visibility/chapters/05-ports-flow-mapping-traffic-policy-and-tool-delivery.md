@@ -312,65 +312,137 @@ other acquisition points sharing the same GigaStream group.
 
 ## Hands-On Lab
 
-**Objective:** Build a two-level filtered Flow Map feeding a GigaStream
-tool group with source tagging applied, on a lab GigaVUE node from
-[Chapter 02](02-gigavue-appliance-first-deployment-and-fabric-foundations.md) or 03, and validate both correct filtering behavior and a
-deliberate rule-order defect.
+This chapter carries a topic-level walkthrough lab for **each Flow Mapping mechanism** —
+basic maps, pass/drop rules and priority, GigaStream delivery, map hierarchy with a shared
+collector, and tagging — the heart of the GCP implementation domain. All commands are
+GigaVUE-OS CLI (mirrored in GigaVUE-FM). Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Prerequisites**
+**Shared prerequisites for Labs 5.1–5.5** — a GigaVUE node with at least one network port
+receiving traffic and several tool ports, and a capture host/tool to confirm delivery.
+**Cost:** none beyond lab resources.
 
-- A lab GigaVUE node (physical or virtual) with at least two network-port
-  traffic sources and three tool-port-equivalent destinations available
-  (or simulated with a lab packet generator and multiple capture
-  listeners).
-- Access to GigaVUE-FM or direct CLI access to the lab node.
-- A packet capture tool for each simulated tool-port destination.
+### Lab 5.1 — A basic map: network to tool (Topic: Flow Mapping)
 
-**Steps**
+**Objective:** Deliver filtered traffic from a network port to a tool port.
 
-1. Configure a first-level map filtering one network source down to a
-   specific subnet or port range of interest, following the pattern in
-   Implementation and Automation.
-2. Configure a GigaStream group with two member tool ports, and a
-   second-level map forwarding the first-level map's output to the
-   GigaStream group.
-3. Apply an egress source tag (VLAN tag) to the second-level map.
-4. Generate lab traffic matching the first-level filter criteria (for
-   example, traffic to the configured subnet or port).
-5. Confirm traffic appears at both capture tools connected to the
-   GigaStream group's member ports, and confirm the expected VLAN tag is
-   present.
-   **Expected result:** traffic is visible at the tool farm with the
-   correct source tag, confirming the two-level chain and GigaStream
-   distribution both function.
-6. Generate lab traffic that does **not** match the first-level filter
-   (for example, traffic to an excluded port).
-   **Expected result:** no corresponding traffic appears at either
-   capture tool, confirming the first-level filter correctly excludes
-   non-matching traffic before it reaches GigaStream.
-7. **Negative test:** intentionally introduce a rule-order defect by
-   adding a broad `pass any` rule at a lower priority number (evaluated
-   before) the first-level map's existing filter rule, then re-run the
-   excluded-traffic test from step 6.
+```text
+configure terminal
+map alias web-to-ids
+   from 1/1/x1
+   to 1/1/x5
+   rule add pass ipver 4
+   rule add pass portdst 443
+exit
+show map alias web-to-ids
+```
 
-   ```text
-   (admin) (config map alias fl-internal-https) # rule add priority 5 pass any
-   ```
+**Expected result:** IPv4 traffic to port 443 from `1/1/x1` is delivered to the tool on
+`1/1/x5`; `show map` lists the rules and packet counts — a map binds a source, a
+destination, and pass rules, the fundamental unit of tool delivery.
 
-   **Expected result:** the previously excluded traffic now appears at
-   the tool farm, reproducing the rule-order failure mode described in
-   Validation and Troubleshooting.
-8. Remove the defect rule and confirm the excluded-traffic test from
-   step 6 passes again.
+**Negative test:** create the map with only a destination and no `rule add pass`; nothing
+matches and the tool receives nothing (a by-rule map with no pass rule passes no traffic) —
+a pass rule (or `map-passall`) is required to deliver anything.
 
-   ```text
-   (admin) (config map alias fl-internal-https) # no rule add priority 5 pass any
-   ```
+**Cleanup:** `no map alias web-to-ids`.
 
-9. **Cleanup:** remove the lab maps and GigaStream group if the node will
-   be reused for later chapters' exercises, or leave them in place with
-   clear naming if they will serve as a foundation for [Chapter 06](06-gigasmart-traffic-intelligence-and-packet-transformation.md)'s
-   GigaSMART exercises.
+### Lab 5.2 — Pass/drop rules and priority (Topic: Traffic policy)
+
+**Objective:** Exclude noise with a drop rule and understand rule evaluation.
+
+```text
+configure terminal
+map alias to-ids-filtered
+   from 1/1/x1
+   to 1/1/x5
+   rule add drop portdst 53          # drop DNS noise
+   rule add pass ipver 4             # pass the rest of IPv4
+exit
+show map stats alias to-ids-filtered
+```
+
+**Expected result:** DNS (port 53) is dropped while other IPv4 traffic passes; `show map
+stats` shows per-rule hit counts — drop rules trim high-volume, low-value traffic before it
+consumes tool capacity, and rule counters prove what matched.
+
+**Negative test:** rely on drop rules in a map that has no pass rule; a pure-drop by-rule
+map delivers nothing at all — drop rules refine a pass set, they do not create one.
+
+**Cleanup:** `no map alias to-ids-filtered`.
+
+### Lab 5.3 — GigaStream load-balanced delivery (Topic: Tool delivery)
+
+**Objective:** Deliver aggregated traffic across a tool farm.
+
+```text
+configure terminal
+gigastream alias ids-farm port-list 1/1/x5..x8
+map alias agg-to-farm
+   from 1/1/x1
+   to ids-farm
+   rule add pass ipver 4
+exit
+show gigastream
+show map alias agg-to-farm
+```
+
+**Expected result:** traffic is hashed across the GigaStream members so no single tool port
+saturates — GigaStream is how high-volume aggregated traffic is delivered evenly to a scaled
+tool farm, keyed by a configurable hash (e.g. 5-tuple).
+
+**Negative test:** send the aggregate to one tool port instead of the GigaStream; it drops
+above line rate and the tool sees gaps — spreading across GigaStream members is what matches
+delivery to volume.
+
+**Cleanup:** `no map alias agg-to-farm`; `no gigastream alias ids-farm`.
+
+### Lab 5.4 — Map hierarchy and the shared collector (Topic: Map types)
+
+**Objective:** Use first-level maps with a shared collector for unmatched traffic.
+
+```text
+configure terminal
+map alias first-https
+   from 1/1/x1
+   to 1/1/x5
+   rule add pass portdst 443
+exit
+map-scollector alias catch-all
+   from 1/1/x1
+   to 1/1/x6                         # send everything unmatched to a catch-all tool
+exit
+show map all
+```
+
+**Expected result:** HTTPS goes to the IDS on `x5`, and everything the first-level maps did
+*not* match falls to the shared collector on `x6` — the collector guarantees no acquired
+packet is silently discarded just because no explicit map matched it.
+
+**Negative test:** deploy only specific pass maps with no collector; traffic matching no map
+is dropped and never reaches any tool — the shared collector is the safety net for
+unmatched traffic.
+
+**Cleanup:** `no map alias first-https`; `no map-scollector alias catch-all`.
+
+### Lab 5.5 — Port and VLAN tagging (Topic: Traffic identification)
+
+**Objective:** Tag traffic by source so a tool can tell tap points apart.
+
+```text
+configure terminal
+port 1/1/x1 params vlantag 100        # tag traffic entering this network port
+show port params 1/1/x1
+```
+
+**Expected result:** traffic entering `1/1/x1` is tagged VLAN 100 before delivery, so a tool
+fed by several tap points can distinguish which tap each packet came from — tagging preserves
+source context that aggregation would otherwise erase.
+
+**Negative test:** aggregate ten tap points to one tool with no tagging; the tool cannot tell
+which site/segment a packet came from — port/VLAN tagging is what restores that provenance.
+
+**Cleanup:** `no port 1/1/x1 params vlantag`.
 
 ## Lab Verification
 
