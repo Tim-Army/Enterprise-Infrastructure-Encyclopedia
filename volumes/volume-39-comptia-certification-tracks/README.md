@@ -94,14 +94,17 @@ cloud volumes, and Server+ under Volume XXXVI.
 
 ## Lab coverage
 
-Every chapter carries a Hands-On Lab. Because this is a certification-tracks
-volume, the labs are **exam-preparation exercises**: verifying a current exam
-code on comptia.org, reading a blueprint's weighted objectives, mapping a
-scenario to the right credential and pathway, planning a stackable path, and
-performing a representative hands-on task that the exam's performance-based
-questions simulate. Each lab states an objective, steps, expected results, a
-negative test, and cleanup, and ends with a **`**Lab verified by:** *pending*`**
-sign-off.
+Every chapter carries hands-on labs, and the pathway chapters go **per topic**:
+there is **one walkthrough lab for every weighted exam domain of every
+certification** — Core (25 labs across Tech+, A+ Core 1/2, Network+, Security+),
+Infrastructure (15: Cloud+, Linux+, Server+), Cybersecurity (13: CySA+, PenTest+,
+SecurityX), Data and AI (15: Data+, DataSys+, DataAI), the Xpert/Expansion certs
+(14: CloudNetX, SecAI+, SecOT+), and Project+ (4), plus program, renewal, and
+career-planning labs. Each is a real command-line walkthrough — objective,
+runnable commands, expected result, a negative test, and cleanup — ending with a
+**`**Lab verified by:** *pending*`** sign-off. (The "Pro" competency-assessment
+courses have no published weightings; their hands-on practice lives in their
+ladder cert's chapter or vendor volume.)
 
 ## Software and platform baseline
 

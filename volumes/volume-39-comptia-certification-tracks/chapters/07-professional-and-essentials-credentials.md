@@ -128,9 +128,12 @@ CompCerts have their own, lighter currency model — confirm each on comptia.org
 
 ## Hands-On Lab
 
-Exam-preparation walkthroughs for the professional and Essentials credentials.
+A selection walkthrough for the Essentials/course tier (Labs 7.1–7.2), then
+**one lab for every weighted exam domain** of the chapter's only certification,
+**Project+** (Labs 7.3–7.6).
 
-**Shared prerequisites for Labs 7.1–7.2** — a browser and `curl`. **Cost:** none.
+**Shared prerequisites** — a browser and `curl` for 7.1; a Linux shell with
+`python3` and `column` for the rest. **Cost:** none.
 
 ### Lab 7.1 — Distinguish the Cloud Essentials course from Cloud+ (Topic: Right credential)
 
@@ -171,6 +174,78 @@ for project/cloud-business roles, microcredentials for AI literacy.
 full data or security certification; it proves literacy, not engineering depth.
 
 **Cleanup:** none.
+
+### Lab 7.3 — Project+: Project management concepts (33%)
+
+**Objective:** Sequence milestones and identify a critical dependency.
+
+```bash
+python3 - <<'PY'
+tasks=[("charter",0,2),("design",2,5),("build",5,12),("test",12,15)]
+for name,start,end in tasks: print(f"{name:8} day {start}->{end}")
+print("critical path length:", max(e for _,_,e in tasks), "days")
+PY
+```
+
+**Expected result:** an ordered schedule and a 15-day critical-path length —
+schedule and dependency management, the largest Project+ domain.
+
+**Negative test:** start `build` before `design` finishes; ignoring dependencies
+breaks the schedule.
+
+**Cleanup:** none.
+
+### Lab 7.4 — Project+: Project life cycle phases (30%)
+
+**Objective:** Produce a phase checklist from initiation to closing.
+
+```bash
+for p in Initiation Planning Execution Monitoring Closing; do echo "[ ] $p — key artifact"; done
+```
+
+**Expected result:** the five life-cycle phases as a checklist — the phase model
+Project+ tests (charter → plan → execute → monitor → close).
+
+**Negative test:** skip Closing (lessons learned, contract closure); an unclosed
+project leaks resources and knowledge.
+
+**Cleanup:** none.
+
+### Lab 7.5 — Project+: Tools and documentation (19%)
+
+**Objective:** Build a burndown from a simple issue log.
+
+```bash
+python3 - <<'PY'
+remaining=[20,16,11,7,2]
+for day,r in enumerate(remaining,1): print(f"day {day} | {'#'*r} {r}")
+PY
+```
+
+**Expected result:** a descending burndown chart — a project tracking tool/
+documentation artifact.
+
+**Negative test:** report status with no burndown or issue log; Project+ expects
+tool-backed documentation, not verbal updates.
+
+**Cleanup:** none.
+
+### Lab 7.6 — Project+: Basics of IT and governance (18%)
+
+**Objective:** Record an IT change with a governance/compliance note.
+
+```bash
+printf 'change,env,approver,compliance\ndeploy-v2,staging->prod,change-board,SOC2\n' > /tmp/change.csv
+column -s, -t /tmp/change.csv
+```
+
+**Expected result:** a change record with approver and compliance driver — IT
+change control and governance basics.
+
+**Negative test:** push straight to production without change-board approval;
+governance requires a documented, approved change.
+
+**Cleanup:** `rm -f /tmp/change.csv`.
 
 ## Lab Verification
 

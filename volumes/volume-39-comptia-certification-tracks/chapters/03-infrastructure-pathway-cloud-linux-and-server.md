@@ -112,46 +112,268 @@ renewal** (Chapter 08), noting Server+'s historically non-expiring status.
 
 ## Hands-On Lab
 
-Exam-preparation walkthroughs for the Infrastructure pathway.
+Per-topic walkthroughs — **one lab for every weighted exam domain** of Cloud+,
+Linux+, and Server+.
 
-**Shared prerequisites for Labs 3.1–3.2** — a browser and `curl`; a Linux VM
-for Lab 3.2. **Cost:** none.
+**Shared prerequisites** — a Linux shell with `python3` (and `pyyaml` for one
+lab), `openssl`, `git`, and standard tools; some labs use `sudo`. **Cost:** none.
 
-### Lab 3.1 — Confirm the Infrastructure codes (Topic: Verify the pathway)
+### Lab 3.1 — Cloud+: Cloud architecture (23%)
 
-**Objective:** Prove the current codes and the Linux+ version change.
+**Objective:** Inspect the virtualization/containerization layer cloud
+architecture builds on.
 
 ```bash
-curl -sSL -A "Mozilla/5.0" "https://www.comptia.org/en-us/certifications/linux/" \
-  | grep -oE '\bXK0-[0-9]{3}\b' | sort -u
+systemd-detect-virt || echo bare-metal
+command -v docker podman 2>/dev/null | head -1 || echo "no container runtime"
 ```
 
-**Expected result:** **XK0-006** (and possibly XK0-005 noted as retiring) — the
-current Linux+ exam.
+**Expected result:** the hypervisor/virt type and a container runtime path (or a
+clear absence) — the virtualization and containerization of cloud architecture.
 
-**Negative test:** study XK0-005 material as if current; it is the retiring
-version — confirm XK0-006.
+**Negative test:** assume containers and VMs give the same isolation; containers
+share the host kernel.
 
 **Cleanup:** none.
 
-### Lab 3.2 — Practice a Linux+ performance skill (Topic: Hands-on preparation)
+### Lab 3.2 — Cloud+: Deployment (19%)
 
-**Objective:** Perform a task a Linux+ PBQ simulates.
+**Objective:** Author and validate an infrastructure-as-code resource
+definition.
 
 ```bash
-# Manage a service, a user, and permissions — core Linux+ objectives
-sudo useradd -m -s /bin/bash appuser
-sudo systemctl enable --now chronyd 2>/dev/null || sudo systemctl enable --now systemd-timesyncd
-id appuser; systemctl is-enabled chronyd 2>/dev/null || systemctl is-enabled systemd-timesyncd
+cat > /tmp/vm.json <<'JSON'
+{"resource":"vm","name":"web01","cpu":2,"mem_gb":4,"disk_gb":40}
+JSON
+python3 -c "import json;d=json.load(open('/tmp/vm.json'));print('valid IaC:',d['name'],d['cpu'],'vCPU')"
 ```
 
-**Expected result:** the user exists and a time service is enabled and running
-— exactly the kind of task Linux+ performance-based questions assess.
+**Expected result:** `valid IaC: web01 2 vCPU` — a declarative resource parsed
+and validated, the essence of IaC deployment.
 
-**Negative test:** attempt the same as a non-root user without `sudo`; it is
-denied — Linux administration requires privilege, a Linux+ security concept.
+**Negative test:** delete a comma to break the JSON; the parser errors — IaC must
+be valid to apply.
 
-**Cleanup:** `sudo userdel -r appuser`.
+**Cleanup:** `rm -f /tmp/vm.json`.
+
+### Lab 3.3 — Cloud+: Operations (17%)
+
+**Objective:** Practice lifecycle, backup, and observability on a resource.
+
+```bash
+mkdir -p /tmp/vol && echo v1 > /tmp/vol/data; cp -r /tmp/vol /tmp/vol.snap; du -sh /tmp/vol
+```
+
+**Expected result:** a point-in-time snapshot copy and a size metric —
+backup/recovery and observability in operations.
+
+**Negative test:** treat the snapshot as live; changes after the snapshot are
+not captured.
+
+**Cleanup:** `rm -rf /tmp/vol /tmp/vol.snap`.
+
+### Lab 3.4 — Cloud+: Security (19%)
+
+**Objective:** Apply IAM-style least privilege and review exposure.
+
+```bash
+touch /tmp/cloud.key && chmod 400 /tmp/cloud.key && stat -c '%A' /tmp/cloud.key
+ss -tln 2>/dev/null | head
+```
+
+**Expected result:** a read-only key (400) and listening ports — least-privilege
+IAM and attack-surface review.
+
+**Negative test:** leave the key at 644; a world-readable private key is an IAM
+failure.
+
+**Cleanup:** `rm -f /tmp/cloud.key`.
+
+### Lab 3.5 — Cloud+: DevOps fundamentals (10%)
+
+**Objective:** Use source control — the foundation of CI/CD.
+
+```bash
+d=$(mktemp -d); cd "$d"; git init -q; echo v1 > app.txt; git add app.txt
+git -c user.email=a@b.c -c user.name=ci commit -qm init; git log --oneline
+```
+
+**Expected result:** one commit in the log — version-controlled code, the input
+to a CI/CD pipeline.
+
+**Negative test:** commit with nothing staged; there is nothing to commit.
+
+**Cleanup:** `rm -rf "$d"`.
+
+### Lab 3.6 — Cloud+: Troubleshooting (12%)
+
+**Objective:** Rule out a misconfiguration by validating a config file.
+
+```bash
+printf 'server:\n  port: 8080\n  tls: true\n' > /tmp/svc.yaml
+python3 -c "import yaml;yaml.safe_load(open('/tmp/svc.yaml'));print('config OK')" 2>/dev/null || echo "install pyyaml or fix syntax"
+```
+
+**Expected result:** `config OK` — a well-formed config, ruling out a
+misconfiguration.
+
+**Negative test:** indent `port` with a tab; YAML rejects tabs — a classic
+misconfiguration.
+
+**Cleanup:** `rm -f /tmp/svc.yaml`.
+
+### Lab 3.7 — Linux+: System management (23%)
+
+**Objective:** Review boot target, storage, and network configuration.
+
+```bash
+systemctl get-default; lsblk -o NAME,SIZE,MOUNTPOINT | head; ip -brief addr | head
+```
+
+**Expected result:** the default boot target, block devices with mountpoints,
+and interface addresses — core system management.
+
+**Negative test:** read `get-default` as the running target; it shows the
+configured default.
+
+**Cleanup:** none.
+
+### Lab 3.8 — Linux+: Services and user management (20%)
+
+**Objective:** Create a user and group and check a service.
+
+```bash
+sudo groupadd -f apps; sudo useradd -m -g apps -s /bin/bash svcuser 2>/dev/null; id svcuser
+systemctl is-enabled cron 2>/dev/null || systemctl is-enabled crond 2>/dev/null || echo n/a
+```
+
+**Expected result:** `svcuser` with group `apps` and a service state —
+user/group and service management.
+
+**Negative test:** run `useradd svcuser` twice; the second reports the account
+exists.
+
+**Cleanup:** `sudo userdel -r svcuser 2>/dev/null; sudo groupdel apps 2>/dev/null || true`.
+
+### Lab 3.9 — Linux+: Security (18%)
+
+**Objective:** Harden with sudo scoping and file permissions.
+
+```bash
+sudo -l 2>/dev/null | head; touch /tmp/s.conf && chmod 640 /tmp/s.conf && stat -c '%A %G' /tmp/s.conf
+```
+
+**Expected result:** the sudo privileges summary and a group-readable 640 config
+— authorization and permission hardening.
+
+**Negative test:** set the config 666; a world-writable config violates
+hardening.
+
+**Cleanup:** `rm -f /tmp/s.conf`.
+
+### Lab 3.10 — Linux+: Automation, orchestration, and scripting (17%)
+
+**Objective:** Write a shell script and a Python snippet.
+
+```bash
+cat > /tmp/a.sh <<'SH'
+#!/bin/bash
+for s in web db cache; do echo "provisioning $s"; done
+SH
+bash /tmp/a.sh; python3 -c "print('py:', sum(range(1,11)))"
+```
+
+**Expected result:** three "provisioning" lines and `py: 55` — a shell loop and
+a Python calculation, the automation building blocks.
+
+**Negative test:** execute `/tmp/a.sh` without the exec bit or an interpreter;
+permission denied.
+
+**Cleanup:** `rm -f /tmp/a.sh`.
+
+### Lab 3.11 — Linux+: Troubleshooting (22%)
+
+**Objective:** Triage system health — disk, errors, and top processes.
+
+```bash
+df -h / | awk 'NR==2{print "root use%:",$5}'
+journalctl -p err -n 3 --no-pager 2>/dev/null || dmesg | tail -3
+ps -eo pid,comm,%cpu --sort=-%cpu | head -3
+```
+
+**Expected result:** root filesystem usage, recent errors, and top CPU consumers
+— the troubleshooting data set.
+
+**Negative test:** let `/` fill and expect services to keep writing; a full root
+breaks logging and services.
+
+**Cleanup:** none.
+
+### Lab 3.12 — Server+: Server hardware installation and management (18%)
+
+**Objective:** Enumerate storage and RAID for a server build.
+
+```bash
+lsblk -o NAME,SIZE,TYPE,MOUNTPOINT
+cat /proc/mdstat 2>/dev/null | head -2 || echo "no software RAID configured"
+```
+
+**Expected result:** disks/partitions and any md RAID status — storage
+deployment and capacity planning.
+
+**Negative test:** assume more disks means redundancy; RAID 0 adds capacity but
+no redundancy.
+
+**Cleanup:** none.
+
+### Lab 3.13 — Server+: Server administration (30%)
+
+**Objective:** Review server roles/services and a network service.
+
+```bash
+systemctl list-units --type=service --state=running 2>/dev/null | head
+getent hosts localhost; ss -uln 2>/dev/null | grep -E ':53|:67' || echo "no DNS/DHCP listener here"
+```
+
+**Expected result:** running services, name resolution, and whether DNS/DHCP
+listeners exist — server roles and network services.
+
+**Negative test:** assume a role is active because the package is installed; it
+must be enabled and running.
+
+**Cleanup:** none.
+
+### Lab 3.14 — Server+: Security and disaster recovery (24%)
+
+**Objective:** Encrypt server data and stage an offsite recovery copy.
+
+```bash
+echo "db-dump" > /tmp/db.sql
+openssl enc -aes-256-cbc -pbkdf2 -pass pass:DR2026 -in /tmp/db.sql -out /tmp/db.sql.enc && cp /tmp/db.sql.enc /tmp/offsite.enc && ls -1 /tmp/*.enc
+```
+
+**Expected result:** an encrypted backup plus an "offsite" copy — data security
+and disaster recovery.
+
+**Negative test:** keep the only backup on the source disk; one disk failure
+loses both.
+
+**Cleanup:** `rm -f /tmp/db.sql /tmp/db.sql.enc /tmp/offsite.enc`.
+
+### Lab 3.15 — Server+: Troubleshooting (28%)
+
+**Objective:** Run a first-pass server diagnostic across compute and network.
+
+```bash
+uptime; free -h | awk '/Mem:/{print "mem free:",$4}'; ping -c1 -W2 127.0.0.1 >/dev/null && echo "net stack OK"
+```
+
+**Expected result:** load average, free memory, and a working network stack.
+
+**Negative test:** read high load as CPU-bound without checking I/O wait; load
+includes uninterruptible I/O.
+
+**Cleanup:** none.
 
 ## Lab Verification
 
