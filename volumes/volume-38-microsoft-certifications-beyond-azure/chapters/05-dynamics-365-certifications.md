@@ -24,8 +24,15 @@ Customer Engagement apps / CRM) and **MB-920** (Dynamics 365 Fundamentals,
 Finance and Operations apps / ERP) — and functional/developer/architect
 credentials such as:
 
+- **Sales Functional Consultant** — **MB-210** (Associate).
 - **Customer Service Functional Consultant** — **MB-230** (Associate).
 - **Field Service Functional Consultant** — **MB-240** (Associate).
+- **Customer Insights (Journeys) Functional Consultant** — **MB-220**
+  (Associate; the real-time marketing app).
+- **Customer Insights (Data) Specialist** — **MB-260** (Specialty; the customer
+  data platform / unification).
+- **Finance Functional Consultant** — **MB-310** (Associate; the F&O Finance
+  module, alongside the SCM tracks below).
 - **Customer Experience Analyst** — **MB-280** (Associate; the evolution of
   the Sales/Marketing functional line).
 - **Supply Chain Management Functional Consultant** — **MB-330** (Associate),
@@ -981,6 +988,361 @@ page 50101 "Widget API"
 
 **Negative test:** expose a UI page as an integration point; use an API page
 (stable contract) instead.
+
+**Cleanup:** none.
+
+### Lab 5.53 — MB-210: Configure Dynamics 365 Sales (35–40%)
+
+**Objective:** Inspect the sales configuration tables (the top MB-210 domain).
+
+```http
+GET {org}/api/data/v9.2/savedqueries?$select=name&$filter=returnedtypecode eq 'opportunity'&$top=5
+```
+
+**Expected result:** system views for opportunities — configuring the Sales app
+(processes, views, forms).
+
+**Negative test:** customize the default solution directly; use your own
+publisher/solution.
+
+**Cleanup:** none.
+
+### Lab 5.54 — MB-210: Manage core sales features (30–35%)
+
+**Objective:** Work the pipeline entities (leads/opportunities/quotes).
+
+```http
+GET {org}/api/data/v9.2/quotes?$select=name,totalamount&$top=5
+```
+
+**Expected result:** quotes with totals — the core sales features
+(lead→opportunity→quote→order).
+
+**Negative test:** create a quote with no price list; quote lines require a price
+list.
+
+**Cleanup:** none.
+
+### Lab 5.55 — MB-210: Configure additional tools and services (25–30%)
+
+**Objective:** Identify the Sales add-on services (goals, forecasting, insights).
+
+```http
+GET {org}/api/data/v9.2/goals?$select=title&$top=5
+```
+
+**Expected result:** goal records — the additional Sales tools (goals,
+forecasting, Sales Insights).
+
+**Negative test:** expect forecasting without a configured forecast hierarchy;
+set it up first.
+
+**Cleanup:** none.
+
+### Lab 5.56 — MB-220: Configure marketing applications (15–20%)
+
+**Objective:** Confirm the Customer Insights - Journeys environment.
+
+```bash
+pac org who   # Journeys runs on a Dataverse environment with the marketing app installed
+```
+
+**Expected result:** the Dataverse org — the platform Customer Insights -
+Journeys (marketing) is configured on.
+
+**Negative test:** install Journeys in a non-managed environment; it requires a
+managed Dataverse environment.
+
+**Cleanup:** none.
+
+### Lab 5.57 — MB-220: Manage segments and lists (10–15%)
+
+**Objective:** Query marketing segments.
+
+```http
+GET {org}/api/data/v9.2/msdynmkt_segments?$select=msdynmkt_name&$top=5
+```
+
+**Expected result:** marketing segments — audience targeting for journeys.
+
+**Negative test:** journey to a static list that is never refreshed; use dynamic
+segments for live audiences.
+
+**Cleanup:** none.
+
+### Lab 5.58 — MB-220: Create and manage marketing forms and pages (5–10%)
+
+**Objective:** Identify marketing forms (lead capture).
+
+```text
+Marketing form -> hosted/embedded on a marketing page -> maps fields to contact/lead
+Consent captured per form; double opt-in where required
+```
+
+**Expected result:** the form-to-page-to-lead flow — capturing marketing leads.
+
+**Negative test:** capture data without consent mapping; compliance requires
+consent.
+
+**Cleanup:** none.
+
+### Lab 5.59 — MB-220: Manage leads, contacts, and accounts (5–10%)
+
+**Objective:** Query the marketing lead/contact records.
+
+```http
+GET {org}/api/data/v9.2/leads?$select=subject,leadqualitycode&$top=5
+```
+
+**Expected result:** leads with quality scoring — nurturing/qualifying marketing
+leads.
+
+**Negative test:** score leads with no scoring model; configure lead scoring
+first.
+
+**Cleanup:** none.
+
+### Lab 5.60 — MB-220: Create and manage marketing email messages (10–15%)
+
+**Objective:** Identify marketing email assets.
+
+```text
+Marketing email -> content blocks + personalization tokens -> A/B variants
+Deliverability: authenticated sending domain, unsubscribe, consent center
+```
+
+**Expected result:** the marketing-email design elements — building compliant
+campaigns.
+
+**Negative test:** send without a verified sending domain; deliverability and
+compliance fail.
+
+**Cleanup:** none.
+
+### Lab 5.61 — MB-220: Manage customer journeys (20–25%)
+
+**Objective:** Query customer journeys (the top MB-220 domain).
+
+```http
+GET {org}/api/data/v9.2/msdynmkt_journeys?$select=msdynmkt_name,statuscode&$top=5
+```
+
+**Expected result:** journeys with status — orchestrating multi-step customer
+journeys (triggers, branches, actions).
+
+**Negative test:** publish a journey with no exit criteria; journeys need
+completion/exit conditions.
+
+**Cleanup:** none.
+
+### Lab 5.62 — MB-220: Manage events and webinars (10–15%)
+
+**Objective:** Query marketing events.
+
+```http
+GET {org}/api/data/v9.2/msevtmgt_events?$select=msevtmgt_name&$top=5
+```
+
+**Expected result:** event records — event/webinar management within Journeys.
+
+**Negative test:** run a webinar with no registration form; attendees cannot
+register.
+
+**Cleanup:** none.
+
+### Lab 5.63 — MB-220: Configure Dynamics 365 Customer Voice (5–10%)
+
+**Objective:** Identify the survey (Customer Voice) integration.
+
+```text
+Customer Voice: survey project -> send via journey -> responses back to Dataverse
+Satisfaction metrics (NPS/CSAT) feed segmentation
+```
+
+**Expected result:** the survey-to-journey feedback loop — measuring experience.
+
+**Negative test:** email surveys outside the consent framework; respect
+communication consent.
+
+**Cleanup:** none.
+
+### Lab 5.64 — MB-260: Design Dynamics 365 Customer Insights - Data solutions (5–10%)
+
+**Objective:** Plan the Customer Data Platform (CDP) solution.
+
+```text
+Design: sources -> unification (map/match/merge) -> unified profile -> activation
+Plan data volume, refresh cadence, and downstream consumers
+```
+
+**Expected result:** the CDP solution blueprint — designing Customer Insights -
+Data.
+
+**Negative test:** unify before mapping keys; unification needs match keys per
+source.
+
+**Cleanup:** none.
+
+### Lab 5.65 — MB-260: Ingest data into Customer Insights - Data (10–15%)
+
+**Objective:** Identify data-source connectors for ingestion.
+
+```text
+Sources: Dataverse, Azure Data Lake, Synapse, Fabric, connectors (Salesforce, etc.)
+Ingest as tables; incremental refresh where supported
+```
+
+**Expected result:** the ingestion connectors — bringing customer data into the
+CDP.
+
+**Negative test:** full-refresh a huge source each run; use incremental refresh.
+
+**Cleanup:** none.
+
+### Lab 5.66 — MB-260: Create customer profiles through data unification (30–35%)
+
+**Objective:** Run the map/match/merge unification (the top MB-260 domain).
+
+```text
+Map: semantic types per column -> Match: rules across sources -> Merge: unified profile (CustomerId)
+Review match pairs and conflict resolution order
+```
+
+**Expected result:** a unified customer profile from multiple sources — the core
+of Customer Insights - Data.
+
+**Negative test:** merge with an over-broad match rule; distinct customers
+collapse into one profile.
+
+**Cleanup:** none.
+
+### Lab 5.67 — MB-260: Implement AI predictions in Customer Insights - Data (5–10%)
+
+**Objective:** Identify the out-of-box + custom prediction models.
+
+```text
+OOB: churn, CLV, product recommendation; Custom: bring your own Azure ML model
+Predictions become profile attributes usable in measures/segments
+```
+
+**Expected result:** the prediction models enriching profiles — AI in the CDP.
+
+**Negative test:** trust a churn model with no training window/label; predictions
+need historical labels.
+
+**Cleanup:** none.
+
+### Lab 5.68 — MB-260: Configure measures and segments (10–15%)
+
+**Objective:** Build a measure and a segment on unified profiles.
+
+```text
+Measure: aggregate (e.g., total spend per customer) over unified data
+Segment: filter profiles (e.g., high-value + churn-risk) -> export for activation
+```
+
+**Expected result:** a measure and a segment — turning unified data into
+actionable audiences.
+
+**Negative test:** segment on a stale profile; segments reflect the last refresh.
+
+**Cleanup:** none.
+
+### Lab 5.69 — MB-260: Configure third-party connections and administer Customer Insights - Data (5–10% + 5–10%)
+
+**Objective:** Configure activation exports and CDP administration.
+
+```text
+Export to: Journeys, ad platforms, Power BI; APIs for downstream apps
+Admin: refresh schedules, roles/permissions, data governance, and monitoring
+```
+
+**Expected result:** activation exports plus the admin controls — operating the
+CDP (this lab pairs the two small MB-260 domains).
+
+**Negative test:** export PII to an ad platform without consent; respect
+consent/compliance on activation.
+
+**Cleanup:** none.
+
+### Lab 5.70 — MB-310: Implement financial management (40–45%)
+
+**Objective:** Map the F&O General Ledger setup (the largest MB-310 domain).
+
+```text
+GL: chart of accounts, main accounts, financial dimensions, ledger per legal entity
+Journals: general, allocation, periodic; posting definitions
+```
+
+**Expected result:** the GL/dimension structure — implementing Finance's core.
+
+**Negative test:** post to a dimension combination outside the account structure;
+account structures constrain valid combinations.
+
+**Cleanup:** none.
+
+### Lab 5.71 — MB-310: Implement accounts receivable, credit, collections, and subscription billing (15–20%)
+
+**Objective:** Map the AR / order-to-cash configuration.
+
+```text
+AR: customers, payment terms, methods; free-text vs project invoices
+Credit & collections: credit limits, aging, collection cases; subscription billing
+```
+
+**Expected result:** the AR configuration — customer invoicing and collections.
+
+**Negative test:** invoice a customer over their credit limit with no hold; credit
+management should block or warn.
+
+**Cleanup:** none.
+
+### Lab 5.72 — MB-310: Implement and manage accounts payable and expenses (10–15%)
+
+**Objective:** Map the AP / procure-to-pay configuration.
+
+```text
+AP: vendors, payment terms/methods, invoice matching (2/3-way), settlement
+Expense management: policies, workflows, per-diems
+```
+
+**Expected result:** the AP configuration — vendor invoicing, matching, and
+payment.
+
+**Negative test:** pay an invoice that failed 3-way match; matching policies gate
+payment.
+
+**Cleanup:** none.
+
+### Lab 5.73 — MB-310: Manage budgeting (10–15%)
+
+**Objective:** Map budgeting and budget control.
+
+```text
+Basic budgeting (register entries) vs budget control (checks against available budget)
+Budget planning: scenarios, workflow, allocation
+```
+
+**Expected result:** the budgeting model — planning and controlling spend.
+
+**Negative test:** enable budget control with no over-budget permissions/actions;
+transactions block unexpectedly.
+
+**Cleanup:** none.
+
+### Lab 5.74 — MB-310: Manage fixed assets (10–15%)
+
+**Objective:** Map the fixed-assets lifecycle.
+
+```text
+Asset groups + books (depreciation profiles) -> acquire -> depreciate -> dispose
+Integration: acquire from AP/PO; value models per book
+```
+
+**Expected result:** the fixed-asset lifecycle — acquisition through disposal.
+
+**Negative test:** depreciate an asset with no value model/book; books drive
+depreciation.
 
 **Cleanup:** none.
 

@@ -77,14 +77,16 @@ Volume XXXIII for the shared Azure and data/AI foundations.
 ## Lab coverage
 
 The family chapters go **per topic**: there is **one walkthrough lab for every
-weighted "skills measured" domain of every certification** — 199 domain labs in
+weighted "skills measured" domain of every certification** — 246 domain labs in
 all — plus the program and currency labs in Chapters 01 and 09. The weight for
 each domain comes from that exam's Microsoft Learn study guide: M365 (21 labs
 across MS-900/MS-102/MD-102/MS-700/MS-721), Security/Compliance/Identity (22:
 SC-900/300/200/401/100/500), Power Platform (24: PL-900/200/300/400/500/600),
-Dynamics 365 (52 across the MB exams that publish a study guide), Data and
-Analytics (31: DP-900/700/600/300/420/100/750/800), AI and Copilot (20:
-AI-901/102/103/500), and GitHub (29: GH-900/100/300/500/600). Because these are
+Dynamics 365 (74: MB-910/920, MB-210/220/260/310, MB-230/240/280/330/335,
+MB-500/700/800/820), Data and Analytics (31: DP-900/700/600/300/420/100/750/800),
+AI and Copilot (40: AI-901/102/103/200/300/500 and the Expansion "AB" family
+AB-100/410/620/730/731/900), and GitHub (34: GH-900/100/200/300/500/600). Because
+these are
 Microsoft-platform skills, the walkthroughs use the appropriate tooling —
 **Microsoft Graph PowerShell**, **Teams PowerShell**, **Azure CLI (`az`)**, the
 **Power Platform CLI (`pac`)**, Dataverse Web API, X++/AL for Dynamics, and the

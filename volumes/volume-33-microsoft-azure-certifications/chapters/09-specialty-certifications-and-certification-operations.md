@@ -224,58 +224,176 @@ reproductions of any Microsoft exam item)*
 
 ## Hands-On Lab
 
-**Objective:** Run one complete, primary-source currency check across the
-Azure program and produce an auditable drift log — and audit your own
-certification portfolio while you are at it.
+Per-topic walkthroughs for the two current Azure specialties covered here —
+**AZ-140 (Azure Virtual Desktop)** and **AZ-120 (Azure for SAP Workloads)** —
+one lab per weighted "skills measured" domain, plus the certification-operations
+currency check. *(The third current specialty, DP-420, has per-domain labs in
+[Chapter 07](07-data-on-azure-dp-300-dp-420-and-dp-750.md); AZ-220/AZ-720/AZ-600
+are retired.)*
 
-**Cost note:** Free. No Azure resources are created.
+**Shared prerequisites** — an **Azure subscription** with the **Azure CLI**
+(`az login`) and the `desktopvirtualization` extension for the AVD labs. Commands
+are illustrative walkthroughs; delete resources after. **Cost:** small on free
+tiers.
 
-**Prerequisites**
+### Lab 9.1 — AZ-140: Plan and implement an Azure Virtual Desktop infrastructure (40–45%)
 
-- Web access to Microsoft Learn.
-- This volume's stated codes (Chapters 01–08) to check against.
-- Your Microsoft Learn certification record, if you hold any.
+**Objective:** Create the host-pool infrastructure (the largest AZ-140 domain).
 
-**Steps**
+```bash
+az desktopvirtualization hostpool create -g rg-avd -n hp-lab \
+  --host-pool-type Pooled --load-balancer-type BreadthFirst --location eastus
+az desktopvirtualization hostpool list -g rg-avd -o table
+```
 
-1. **Re-list (10 minutes).** Run the catalog query and compare against
-   Chapter 01's table.
+**Expected result:** a pooled host pool with breadth-first load balancing — the
+AVD infrastructure (host pools, session hosts, networking, FSLogix storage).
 
-   **Expected result:** a match, or a documented difference.
+**Negative test:** create session hosts before a host pool; hosts join a pool,
+not the reverse.
 
-2. **Re-confirm codes (20 minutes).** Run the per-certification loop.
+**Cleanup:** `az desktopvirtualization hostpool delete -g rg-avd -n hp-lab -y`.
 
-   **Expected result:** every code confirmed from a Microsoft page. Any
-   `NONE` is a finding to chase manually, not to ignore.
+### Lab 9.2 — AZ-140: Plan and implement identity and security (15–20%)
 
-3. **Classify notices (10 minutes).** For each notice found, classify it
-   as retirement, renumbering, update, or language/delivery, and record
-   which noun it attached to.
+**Objective:** Assign an AVD-specific role (identity/access control).
 
-   **Expected result:** each correctly classified, including at least one
-   that is *not* a retirement.
+```bash
+az role assignment create --assignee <user> \
+  --role "Desktop Virtualization User" --scope <application-group-id>
+```
 
-4. **Log (10 minutes).** Record findings in the drift-log format with
-   date, previous state, current state, and the action needed.
+**Expected result:** the "Desktop Virtualization User" role on an application
+group — AVD identity and access (RBAC, Conditional Access, SSO).
 
-   **Expected result:** an auditable log.
+**Negative test:** grant VM Contributor to end users for desktop access; AVD uses
+dedicated AVD roles plus Conditional Access.
 
-5. **Audit your own portfolio (15 minutes).** For each certification you
-   hold, record its expiry, whether a renewal assessment is still offered,
-   and your renewal window.
+**Cleanup:** remove the role assignment.
 
-   **Expected result:** a dated plan — particularly for any credential
-   whose exam is closing, where no renewal path will exist.
+### Lab 9.3 — AZ-140: Plan and implement user environments and apps (20–25%)
 
-6. **Negative test (10 minutes).** Compare a third-party Azure
-   certification listing against your harvest.
+**Objective:** Publish apps with a RemoteApp application group.
 
-   **Expected result:** at least one discrepancy — AI-900 still shown,
-   AI-102 still listed as current, or the new `AB` certification absent.
+```bash
+az desktopvirtualization applicationgroup create -g rg-avd -n ag-lab \
+  --application-group-type RemoteApp --host-pool-arm-path <hostpool-id> --location eastus
+```
 
-7. **Close the loop.** Confirm this volume, the appendix, and
-   CERTIFICATION_BLUEPRINTS.md agree with your harvest, and file the drift
-   log. Nothing to tear down.
+**Expected result:** a RemoteApp application group — delivering apps and FSLogix
+profiles to users.
+
+**Negative test:** store profiles on the session-host OS disk; use FSLogix
+profile containers on Azure Files/NetApp.
+
+**Cleanup:** `az desktopvirtualization applicationgroup delete -g rg-avd -n ag-lab`.
+
+### Lab 9.4 — AZ-140: Monitor and maintain an Azure Virtual Desktop infrastructure (10–15%)
+
+**Objective:** Route AVD logs to Log Analytics for AVD Insights.
+
+```bash
+az monitor diagnostic-settings create --name avd-diag --resource <hostpool-id> \
+  --workspace <log-analytics-id> --logs '[{"category":"Connection","enabled":true}]'
+```
+
+**Expected result:** connection logs flowing to Log Analytics — monitoring,
+autoscaling, and backup/DR maintenance.
+
+**Negative test:** scale a pooled host pool by hand; configure autoscale scaling
+plans instead.
+
+**Cleanup:** `az monitor diagnostic-settings delete --name avd-diag --resource <hostpool-id>`.
+
+### Lab 9.5 — AZ-120: Migrate SAP workloads to Azure (25–30%)
+
+**Objective:** Map the SAP migration toolchain and approach.
+
+```text
+Discovery/assessment: Azure Migrate; DB migration: DMO/SWPM (heterogeneous vs homogeneous)
+Approach: lift-and-shift (AnyDB) vs re-platform to SAP HANA; cutover + rollback plan
+```
+
+**Expected result:** the migration toolset and lift-vs-replatform decision — the
+top AZ-120 domain.
+
+**Negative test:** "copy" AnyDB to HANA; a database-engine change is a
+heterogeneous migration, not a copy.
+
+**Cleanup:** none.
+
+### Lab 9.6 — AZ-120: Design and implement an infrastructure to support SAP workloads on Azure (25–30%)
+
+**Objective:** Identify SAP-certified compute for HANA/NetWeaver.
+
+```bash
+az vm list-skus --location eastus --query "[?starts_with(name,'Standard_M')].name" -o tsv | head
+```
+
+**Expected result:** M-series (large-memory) SKUs — the SAP-certified compute
+tier the infrastructure design uses.
+
+**Negative test:** run HANA on a non-SAP-certified SKU; SAP support requires
+certified compute and storage.
+
+**Cleanup:** none.
+
+### Lab 9.7 — AZ-120: Design and implement high availability and disaster recovery (HADR) (20–25%)
+
+**Objective:** Design the SAP HA/DR topology.
+
+```text
+HA: availability zones + Pacemaker clusters (ASCS/ERS), HANA System Replication (HSR)
+DR: cross-region Azure Site Recovery + async HSR; RPO/RTO mapped to the SLA
+```
+
+**Expected result:** the Pacemaker/HSR HA and ASR/async-HSR DR design — the HADR
+domain.
+
+**Negative test:** protect tier-1 SAP with a single availability set; use zones
+plus clustering to meet the SLA.
+
+**Cleanup:** none.
+
+### Lab 9.8 — AZ-120: Maintain SAP workloads on Azure (20–25%)
+
+**Objective:** Verify the Azure monitoring extension for SAP is present.
+
+```bash
+az vm extension list -g rg-sap --vm-name sap-hana --query "[].name" -o table
+```
+
+**Expected result:** the Azure Monitor for SAP / Enhanced Monitoring (AEM)
+extension — required for SAP support and ongoing maintenance.
+
+**Negative test:** skip the SAP monitoring extension; SAP support requires it for
+performance data.
+
+**Cleanup:** none.
+
+### Lab 9.9 — Certification operations: run a primary-source currency check
+
+**Objective:** Run one complete, primary-source currency check across the Azure
+program and produce an auditable drift log — and audit your own certification
+portfolio. **Cost:** free (no resources created).
+
+```bash
+# 1. Re-list and compare against Chapter 01's table
+curl -sSL "https://learn.microsoft.com/api/catalog/?type=certifications&locale=en-us" | python3 -m json.tool | grep -c '"uid"'
+# 2. Re-confirm each code from its Microsoft page; 3. classify each notice
+#    (retirement / renumber / update / language); 4. record a dated drift log
+```
+
+**Expected result:** a drift log with date, previous state, current state, and
+action per finding; each notice correctly classified (at least one that is *not*
+a retirement); and your own portfolio audited for renewal windows.
+
+**Negative test:** compare a third-party Azure cert listing against the harvest —
+expect ≥1 discrepancy (AI-900 still shown, AI-102 listed as current, or the new
+`AB` family absent).
+
+**Cleanup:** none — file the drift log and confirm this volume, the appendix, and
+CERTIFICATION_BLUEPRINTS.md agree.
 
 ## Lab Verification
 

@@ -25,10 +25,14 @@ became central. As verified on Microsoft Learn (26 July 2026):
   (Associate).
 - **Microsoft Certified: Multi-Agent AI Solutions Expert** — exam **AI-500**
   (Expert; beta). Design and operate multi-agent AI systems.
-- Assessment-based and beta credentials in the same space — **AI Agent Builder
-  Associate**, **Agentic AI Business Solutions Architect**, **Intelligent
-  Applications Builder Associate (beta)**, plus a data/AI operations exam
-  (**AI-300**, operationalizing ML and generative-AI solutions).
+- The data/AI **operations** exam **AI-300** (operationalizing ML and
+  generative-AI solutions — MLOps/GenAIOps).
+- The **Expansion "AB" family** of AI/agent certifications, each now with its own
+  exam code: **AB-100** (Agentic AI Business Solutions Architect), **AB-410**
+  (Building Intelligent Applications), **AB-620** (Designing and Building
+  Integrated AI Solutions — Copilot Studio), **AB-730** (AI Business
+  Professional), **AB-731** (AI Transformation Leader), and **AB-900**
+  (Microsoft 365 Copilot and Agent Administration Fundamentals).
 
 Two **business-level** credentials round out the family — **AI Business
 Professional** and **AI Transformation Leader** — for non-engineering roles.
@@ -453,6 +457,345 @@ deployments (identity, safety, quotas).
 network controls.
 
 **Cleanup:** `az cognitiveservices account delete -n lab-safety -g rg-lab`.
+
+### Lab 7.21 — AI-300: Design and implement an MLOps infrastructure (15–20%)
+
+**Objective:** Register an Azure ML workspace + compute as the MLOps foundation.
+
+```bash
+az ml workspace show -n <ws> -g rg-lab --query name
+az ml compute create -f cluster.yml -w <ws> -g rg-lab   # scalable training compute
+```
+
+**Expected result:** the workspace and a compute cluster — the MLOps
+infrastructure AI-300 designs.
+
+**Negative test:** train on a single fixed VM; MLOps needs elastic, reproducible
+compute.
+
+**Cleanup:** delete the compute.
+
+### Lab 7.22 — AI-300: Implement machine learning model lifecycle and operations (25–30%)
+
+**Objective:** Register and version a model; deploy to a managed endpoint (top
+domain).
+
+```bash
+az ml model create -n churn -v 1 -p ./model -w <ws> -g rg-lab
+az ml online-deployment create -f deploy.yml -w <ws> -g rg-lab
+```
+
+**Expected result:** a versioned model and an online deployment — the ML
+lifecycle (register → deploy → monitor).
+
+**Negative test:** overwrite a production model in place; version models for
+rollback and lineage.
+
+**Cleanup:** delete the deployment.
+
+### Lab 7.23 — AI-300: Design and implement a GenAIOps infrastructure (20–25%)
+
+**Objective:** Stand up prompt-flow + a model deployment for GenAIOps.
+
+```text
+AI Foundry project -> prompt flow (RAG) -> connections (Azure OpenAI, AI Search)
+CI/CD: flow evaluated in a pipeline before promotion; environments dev/test/prod
+```
+
+**Expected result:** a prompt-flow app with grounded connections and a promotion
+pipeline — GenAIOps infrastructure.
+
+**Negative test:** ship a flow with no evaluation gate; GenAIOps requires
+automated quality checks before promotion.
+
+**Cleanup:** none.
+
+### Lab 7.24 — AI-300: Implement generative AI quality assurance and observability (10–15%)
+
+**Objective:** Evaluate and trace a generative app.
+
+```python
+from azure.ai.evaluation import evaluate, GroundednessEvaluator, RelevanceEvaluator
+evaluate(data="eval.jsonl", evaluators={"grounded":GroundednessEvaluator(m),"rel":RelevanceEvaluator(m)})
+```
+
+**Expected result:** groundedness/relevance scores plus traces — QA and
+observability for generative AI.
+
+**Negative test:** rely on manual spot-checks; automated evaluators catch
+regressions across releases.
+
+**Cleanup:** none.
+
+### Lab 7.25 — AI-300: Optimize generative AI systems and model performance (10–15%)
+
+**Objective:** Tune cost/latency levers.
+
+```text
+Levers: model choice (mini vs full), max tokens, caching, batching, PTUs vs PAYG
+Measure: latency p95, tokens/request, $/1k requests before/after each change
+```
+
+**Expected result:** a measured before/after on latency and cost — optimizing a
+generative system.
+
+**Negative test:** raise `max_tokens` "to be safe"; unbounded tokens inflate cost
+and latency.
+
+**Cleanup:** none.
+
+### Lab 7.26 — AB-900: Identify the core features and objects of Microsoft 365 services (30–35%)
+
+**Objective:** Enumerate the M365 objects Copilot reasons over.
+
+```powershell
+Connect-MgGraph -Scopes "User.Read.All","Group.Read.All" -NoWelcome
+Get-MgUser -Top 3 | Select-Object DisplayName; Get-MgGroup -Top 3 | Select-Object DisplayName
+```
+
+**Expected result:** users and groups (plus mailboxes/sites/Teams) — the M365
+objects a Copilot admin governs.
+
+**Negative test:** assume Copilot ignores permissions; it honors the user's
+existing access to these objects.
+
+**Cleanup:** none.
+
+### Lab 7.27 — AB-900: Understand data protection and governance tasks for Microsoft 365 and Copilot (35–40%)
+
+**Objective:** Inspect the sensitivity labels/DLP that bound Copilot (top domain).
+
+```powershell
+Connect-IPPSSession
+Get-Label | Select-Object DisplayName; Get-DlpCompliancePolicy | Select-Object Name
+```
+
+**Expected result:** labels and DLP policies — the Purview controls that govern
+what Copilot can surface and generate.
+
+**Negative test:** deploy Copilot with unlabeled oversharing; Copilot can surface
+over-permissioned content — fix access first.
+
+**Cleanup:** none.
+
+### Lab 7.28 — AB-900: Perform basic administrative tasks for Copilot and agents (25–30%)
+
+**Objective:** Read Copilot/agent admin settings.
+
+```powershell
+Get-MgUser -Filter "assignedLicenses/any(x:x/skuId eq <copilot-sku>)" -CountVariable c -ConsistencyLevel eventual | Out-Null; $c
+```
+
+**Expected result:** the count of Copilot-licensed users — a basic Copilot admin
+task (licensing, agent management, usage).
+
+**Negative test:** enable agents org-wide with no governance review; scope agent
+availability and data access.
+
+**Cleanup:** none.
+
+### Lab 7.29 — AB-730: Understand generative AI fundamentals (25–30%)
+
+**Objective:** Distinguish the generative-AI concepts AB-730 tests.
+
+```text
+LLM vs traditional ML; tokens/context window; grounding (RAG) vs training
+Hallucination + verification; responsible-AI limits
+```
+
+**Expected result:** the generative-AI vocabulary — the foundation for the AI
+Business Professional.
+
+**Negative test:** treat a model's fluent answer as fact; verify — models can
+hallucinate.
+
+**Cleanup:** none.
+
+### Lab 7.30 — AB-730: Manage prompts and conversations by using AI (35–40%)
+
+**Objective:** Craft and iterate a business prompt (top domain).
+
+```text
+Prompt = role + task + context + constraints + format
+Iterate: refine with follow-ups; keep a reusable prompt library per task
+```
+
+**Expected result:** a structured, reusable prompt and an iteration loop —
+managing prompts/conversations at work.
+
+**Negative test:** paste confidential data into a consumer AI tool; use the
+approved, governed tenant tools.
+
+**Cleanup:** none.
+
+### Lab 7.31 — AB-730: Draft and analyze business content by using AI (25–30%)
+
+**Objective:** Use AI to draft and analyze a business document.
+
+```text
+Draft: summary/email/report from bullet inputs -> review for tone/accuracy
+Analyze: extract action items, sentiment, risks from a document; verify outputs
+```
+
+**Expected result:** an AI-drafted document and an analysis, both human-reviewed
+— applied business content work.
+
+**Negative test:** send AI output unreviewed to a customer; the human is
+accountable for accuracy and tone.
+
+**Cleanup:** none.
+
+### Lab 7.32 — AB-731: Identify the business value of generative AI solutions (35–40%)
+
+**Objective:** Build a value case for a generative-AI initiative.
+
+```text
+Value: time saved, quality, revenue, risk reduction -> KPI + baseline + target
+Prioritize use cases by value x feasibility; note change-management cost
+```
+
+**Expected result:** a KPI-anchored value case — the AI Transformation Leader's
+core skill.
+
+**Negative test:** adopt AI for novelty with no KPI; value must be measurable.
+
+**Cleanup:** none.
+
+### Lab 7.33 — AB-731: Identify benefits, capabilities, and opportunities for Microsoft's AI apps and services (35–40%)
+
+**Objective:** Map Microsoft's AI portfolio to opportunities.
+
+```text
+Copilot (M365/security/Dynamics) | Copilot Studio (agents) | Azure AI Foundry (build)
+Match each opportunity to the right product tier and licensing
+```
+
+**Expected result:** an opportunity-to-product map across the Microsoft AI stack.
+
+**Negative test:** propose custom-built AI where Copilot already solves it; buy
+before build when it fits.
+
+**Cleanup:** none.
+
+### Lab 7.34 — AB-731: Identify an implementation and adoption strategy for Microsoft's AI apps and services (20–25%)
+
+**Objective:** Draft an AI adoption roadmap.
+
+```text
+Roadmap: pilot -> measure -> scale; governance, security, and training as gates
+Adoption: champions, usage analytics, feedback loop; responsible-AI policy
+```
+
+**Expected result:** a phased adoption strategy with governance gates — leading
+the transformation.
+
+**Negative test:** roll out org-wide with no pilot or training; adoption stalls
+without enablement.
+
+**Cleanup:** none.
+
+### Lab 7.35 — AB-100: Plan AI-powered business solutions (25–30%)
+
+**Objective:** Scope an agentic business solution from requirements.
+
+```text
+Plan: business outcome -> agent tasks/tools -> data sources (RAG) -> success metrics
+Architecture-review the trust boundaries and human-in-the-loop points
+```
+
+**Expected result:** a planned agentic solution mapped to outcomes — the
+architect's planning domain.
+
+**Negative test:** plan an agent with no human oversight for high-risk actions;
+insert approvals.
+
+**Cleanup:** none.
+
+### Lab 7.36 — AB-100: Design AI-powered business solutions (25–30%)
+
+**Objective:** Design the agent topology and integrations.
+
+```text
+Design: Copilot Studio agents + connectors + Dataverse/knowledge; orchestration
+Non-functional: security (least privilege), monitoring, cost, latency
+```
+
+**Expected result:** a solution design with agents, data, and guardrails — the
+design domain.
+
+**Negative test:** grant an agent broad write connectors; scope tools to the task.
+
+**Cleanup:** none.
+
+### Lab 7.37 — AB-100: Deploy AI-powered business solutions (40–45%)
+
+**Objective:** Deploy and manage the solution through ALM (the largest domain).
+
+```bash
+pac solution export --path ./ai-sln.zip --managed true
+pac solution import --path ./ai-sln.zip   # to the target environment
+```
+
+**Expected result:** a managed solution deployed to the target — deploying the
+agentic business solution.
+
+**Negative test:** deploy unmanaged to production; export as managed and promote
+via pipelines.
+
+**Cleanup:** none.
+
+### Lab 7.38 — AB-410: Create a foundation for intelligent applications (25–30%)
+
+**Objective:** Provision the data/AI foundation for an intelligent app.
+
+```bash
+az cognitiveservices account create -n lab-ai -g rg-lab --kind AIServices --sku S0 -l eastus --yes
+az search service create -n lab-idx -g rg-lab --sku basic -l eastus   # retrieval foundation
+```
+
+**Expected result:** AI Services + AI Search — the foundation intelligent apps
+build on (models + retrieval).
+
+**Negative test:** build RAG with no index; retrieval needs a search/vector store.
+
+**Cleanup:** delete both resources.
+
+### Lab 7.39 — AB-410: Create intelligent applications (25–30%)
+
+**Objective:** Wire a model call with grounding into an app.
+
+```python
+# retrieve -> augment -> generate
+docs = search_client.search("policy question", top=3)
+resp = openai_client.chat.completions.create(model="gpt-4o",
+        messages=[{"role":"system","content":"Answer only from context."},
+                  {"role":"user","content": f"{context(docs)}\nQ: ..."}])
+```
+
+**Expected result:** a grounded generation using retrieved context — building the
+intelligent application.
+
+**Negative test:** answer without grounding for company-specific questions; the
+model guesses.
+
+**Cleanup:** none.
+
+### Lab 7.40 — AB-410: Build business application logic and automation (40–45%)
+
+**Objective:** Add business logic/automation around the AI (top domain).
+
+```text
+Automation: Power Automate flow triggers on an event -> calls the AI app -> writes Dataverse
+Logic: validation, approvals, error handling, and audit of AI outputs
+```
+
+**Expected result:** an automated flow embedding the AI with validation/approval
+— the largest AB-410 domain.
+
+**Negative test:** auto-commit AI output to a system of record with no validation;
+add checks and approvals.
+
+**Cleanup:** none.
 
 ## Lab Verification
 

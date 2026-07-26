@@ -99,6 +99,10 @@ number at harvest — confirm on the certification page.
 | --- | --- | --- |
 | Dynamics 365 Fundamentals (CRM) | MB-910 | Fundamentals |
 | Dynamics 365 Fundamentals (ERP) | MB-920 | Fundamentals |
+| Sales Functional Consultant Associate | MB-210 | Associate |
+| Customer Insights (Journeys) Functional Consultant Associate | MB-220 | Associate |
+| Customer Insights (Data) Specialist | MB-260 | Specialty |
+| Finance Functional Consultant Associate | MB-310 | Associate |
 | Customer Service Functional Consultant Associate | MB-230 | Associate |
 | Field Service Functional Consultant Associate | MB-240 | Associate |
 | Customer Experience Analyst Associate | MB-280 | Associate |
@@ -132,15 +136,20 @@ number at harvest — confirm on the certification page.
 | Azure AI Apps and Agents Developer Associate | AI-103 | Associate |
 | Azure AI Cloud Developer Associate | AI-200 | Associate |
 | Multi-Agent AI Solutions Expert (beta) | AI-500 | Expert |
-| Microsoft 365 Copilot and Agent Administration Fundamentals | assessment | Fundamentals |
-| AI Business Professional / AI Transformation Leader | assessment | Business |
+| Operationalizing ML and Generative AI Solutions | AI-300 | Associate |
+| Agentic AI Business Solutions Architect | AB-100 | (Expansion — AB family) |
+| Building Intelligent Applications | AB-410 | (Expansion — AB family) |
+| Designing and Building Integrated AI Solutions | AB-620 | (Expansion — AB family) |
+| AI Business Professional | AB-730 | (Expansion — AB family) |
+| AI Transformation Leader | AB-731 | (Expansion — AB family) |
+| Microsoft 365 Copilot and Agent Administration Fundamentals | AB-900 | Fundamentals |
 
 ### GitHub (GH)
 
 | Certification | Exam | Tier |
 | --- | --- | --- |
 | GitHub Foundations | GH-900 | Fundamentals |
-| GitHub Actions | GH-series | Associate |
+| GitHub Actions | GH-200 | Associate |
 | GitHub Administration | GH-100 | Associate |
 | GitHub Advanced Security | GH-500 | Associate |
 | GitHub Copilot | GH-300 | Associate |

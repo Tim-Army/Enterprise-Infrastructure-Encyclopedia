@@ -22,6 +22,9 @@ Microsoft Learn (26 July 2026), the GitHub credentials are:
   deploying with GitHub Actions workflows.
 - **GitHub Administration** — exam **GH-100** (Associate-level). Administer
   GitHub organizations and enterprises — access, policies, and integrations.
+- **GitHub Actions** — exam **GH-200** (Associate). Author, consume, and
+  troubleshoot workflows; build and maintain actions; govern and secure Actions
+  for the enterprise.
 - **GitHub Advanced Security** — exam **GH-500**. Code scanning, secret
   scanning, and dependency review with GitHub Advanced Security (GHAS).
 - **GitHub Copilot** — exam **GH-300**. Use and administer GitHub Copilot
@@ -613,6 +616,101 @@ accountability for agents.
 
 **Negative test:** allow autonomous writes with no approval or logging; agents
 need bounded, auditable authority.
+
+**Cleanup:** none.
+
+### Lab 8.30 — GH-200: Author and manage workflows (20–25%)
+
+**Objective:** Author a multi-job workflow with dependencies.
+
+```yaml
+# .github/workflows/build.yml
+on: [push]
+jobs:
+  test:   { runs-on: ubuntu-latest, steps: [{ run: echo test }] }
+  deploy: { runs-on: ubuntu-latest, needs: test, steps: [{ run: echo deploy }] }
+```
+
+**Expected result:** a `deploy` job gated on `test` via `needs` — authoring and
+managing workflow dependencies.
+
+**Negative test:** run `deploy` without `needs: test`; deploy runs even when tests
+fail.
+
+**Cleanup:** remove the workflow.
+
+### Lab 8.31 — GH-200: Consume and troubleshoot workflows (15–20%)
+
+**Objective:** Inspect a failed run and re-run failed jobs.
+
+```bash
+gh run list --limit 5
+gh run view <run-id> --log-failed
+gh run rerun <run-id> --failed
+```
+
+**Expected result:** the failed step's log and a targeted re-run — consuming and
+troubleshooting workflows.
+
+**Negative test:** re-run the whole workflow when only one job failed; use
+`--failed` to save minutes.
+
+**Cleanup:** none.
+
+### Lab 8.32 — GH-200: Author and maintain actions (15–20%)
+
+**Objective:** Scaffold a composite action.
+
+```yaml
+# action.yml
+name: greet
+runs:
+  using: composite
+  steps: [{ run: echo "hello ${{ inputs.name }}", shell: bash }]
+inputs: { name: { required: true } }
+```
+
+**Expected result:** a reusable composite action with an input — authoring and
+maintaining custom actions.
+
+**Negative test:** publish an action with no version tag; consumers pin to a
+mutable branch and break unpredictably.
+
+**Cleanup:** none.
+
+### Lab 8.33 — GH-200: Manage GitHub Actions for the enterprise (20–25%)
+
+**Objective:** Register a self-hosted runner and set org runner groups.
+
+```bash
+gh api orgs/{org}/actions/runners --jq '.runners[] | {name:.name, status:.status}'
+gh api -X PUT orgs/{org}/actions/permissions/workflow -f default_workflow_permissions=read
+```
+
+**Expected result:** the runner inventory and a read-only default token —
+enterprise Actions governance (runners, permissions, policies).
+
+**Negative test:** grant `write` default workflow permissions org-wide; scope to
+read and elevate per job.
+
+**Cleanup:** revert the permission.
+
+### Lab 8.34 — GH-200: Secure and optimize automation (10–15%)
+
+**Objective:** Pin actions by SHA and add caching.
+
+```yaml
+steps:
+  - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11   # v4, pinned by SHA
+  - uses: actions/cache@v4
+    with: { path: ~/.npm, key: npm-${{ hashFiles('package-lock.json') }} }
+```
+
+**Expected result:** a SHA-pinned action and a dependency cache — securing the
+supply chain and optimizing run time.
+
+**Negative test:** reference `@main` for a third-party action; a compromised main
+runs in your pipeline — pin to a SHA.
 
 **Cleanup:** none.
 
