@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.45-blue)
+![Release](https://img.shields.io/badge/release-v1.2.46-blue)
 
-**v1.2.45 — latest release.** 42 volumes, 405 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.45) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.46 — latest release.** 43 volumes, 415 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.46) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -69,7 +69,8 @@ The series combines architecture and theory with implementation guidance, automa
 | XXXVII | [Microsoft 365 and Modern Work](volumes/volume-37-microsoft-365-modern-work/README.md) | 11 |
 | XXXVIII | [Microsoft Certifications Beyond Azure](volumes/volume-38-microsoft-certifications-beyond-azure/README.md) | 9 |
 | XXXIX | [CompTIA Certification Tracks](volumes/volume-39-comptia-certification-tracks/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 13 |
+| XL | [ISC2 Certification Tracks](volumes/volume-40-isc2-certifications/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 14 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
@@ -105,6 +106,7 @@ ascending order.
 | Microsoft (beyond Azure) | [XXXVI Windows Server 2025 and Active Directory](volumes/volume-36-windows-server-2025-active-directory/README.md) → [XXXVII Microsoft 365 and Modern Work](volumes/volume-37-microsoft-365-modern-work/README.md) → [XXXVIII Microsoft Certifications Beyond Azure](volumes/volume-38-microsoft-certifications-beyond-azure/README.md) — on-premises Windows Server and AD, the Entra/Intune/M365/Purview/Defender modern workplace, and the full role-based certification map (M365, SC, PL, MB, DP, AI, GitHub) |
 | Google Cloud | [XXXIV Google Cloud Certification Tracks](volumes/volume-34-google-cloud-certifications/README.md) — the whole Google Cloud certification program in one volume: foundational, associate, and professional |
 | CompTIA | [XXXIX CompTIA Certification Tracks](volumes/volume-39-comptia-certification-tracks/README.md) — the whole vendor-neutral program in one volume: the classic Core, Infrastructure, Cybersecurity, and Data "plus" certifications, the hands-on Xpert "Pro" series, and the Essentials microcredentials — the foundation beneath the vendor tracks |
+| ISC2 | [XL ISC2 Certification Tracks](volumes/volume-40-isc2-certifications/README.md) — the whole ISC2 program in one volume: CC, SSCP, CISSP and its ISSAP/ISSEP/ISSMP concentrations, CCSP, CGRC, and CSSLP — the vendor-neutral governance, architecture, and management tier above the other tracks |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) |
