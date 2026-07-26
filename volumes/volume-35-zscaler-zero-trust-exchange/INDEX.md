@@ -1,0 +1,45 @@
+# Volume XXXV Index
+
+Alphabetized topical index for **Volume XXXV — Zscaler Zero Trust
+Exchange**. Each entry links to the chapter where the topic is introduced
+or covered in depth. See also the [volume glossary](GLOSSARY.md) for term
+definitions and the [master index](../../INDEX.md) for cross-volume
+topics.
+
+- **Advanced Threat Protection (ATP)** — [Chapter 03, Theory and Architecture](chapters/03-zia-threat-prevention-firewall-dns-ips-and-sandbox.md)
+- **App Connector (ZPA)** — [Chapter 05, Theory and Architecture](chapters/05-zpa-zero-trust-access-to-private-applications.md)
+- **AppProtection (ZPA)** — [Chapter 06, Theory and Architecture](chapters/06-zpa-advanced-posture-browser-access-and-app-protection.md)
+- **Application segment (ZPA)** — [Chapter 05, Theory and Architecture / Hands-On Lab](chapters/05-zpa-zero-trust-access-to-private-applications.md)
+- **Block page (end-user notification)** — [Chapter 02, Theory and Architecture](chapters/02-zia-secure-web-gateway-and-tls-inspection.md)
+- **Browser Access (clientless, ZPA)** — [Chapter 06, Theory and Architecture / Hands-On Lab](chapters/06-zpa-advanced-posture-browser-access-and-app-protection.md)
+- **CASB (inline and out-of-band)** — [Chapter 04, Theory and Architecture](chapters/04-zia-data-protection-dlp-casb-and-browser-isolation.md)
+- **Cloud & Branch Connector** — [Chapter 07, Theory and Architecture](chapters/07-zscaler-client-connector-and-traffic-forwarding.md)
+- **Cloud Browser Isolation (CBI)** — [Chapter 04, Theory and Architecture](chapters/04-zia-data-protection-dlp-casb-and-browser-isolation.md)
+- **Cloud Firewall (FWaaS)** — [Chapter 03, Theory and Architecture / Hands-On Lab](chapters/03-zia-threat-prevention-firewall-dns-ips-and-sandbox.md)
+- **Cloud Path (ZDX)** — [Chapter 09, Theory and Architecture / Hands-On Lab](chapters/09-zscaler-digital-experience-and-platform-operations.md)
+- **Cloud Sandbox (patient-zero blocking)** — [Chapter 03, Theory and Architecture](chapters/03-zia-threat-prevention-firewall-dns-ips-and-sandbox.md)
+- **Deep tracing (ZDX)** — [Chapter 09, Theory and Architecture](chapters/09-zscaler-digital-experience-and-platform-operations.md)
+- **DLP dictionary and engine** — [Chapter 04, Theory and Architecture / Hands-On Lab](chapters/04-zia-data-protection-dlp-casb-and-browser-isolation.md)
+- **DNS Control** — [Chapter 03, Theory and Architecture](chapters/03-zia-threat-prevention-firewall-dns-ips-and-sandbox.md)
+- **EICAR test file** — [Chapter 03, Hands-On Lab](chapters/03-zia-threat-prevention-firewall-dns-ips-and-sandbox.md)
+- **Forwarding and app profiles (ZCC)** — [Chapter 07, Theory and Architecture / Hands-On Lab](chapters/07-zscaler-client-connector-and-traffic-forwarding.md)
+- **Identity provider (IdP) integration** — [Chapter 08, Theory and Architecture](chapters/08-identity-authentication-and-policy.md)
+- **Location tunnel (GRE/IPSec)** — [Chapter 07, Theory and Architecture / Hands-On Lab](chapters/07-zscaler-client-connector-and-traffic-forwarding.md)
+- **NSS / LSS log streaming** — [Chapter 09, Implementation and Automation](chapters/09-zscaler-digital-experience-and-platform-operations.md)
+- **PAC file (FindProxyForURL)** — [Chapter 02, Implementation and Automation / Hands-On Lab](chapters/02-zia-secure-web-gateway-and-tls-inspection.md)
+- **Posture profile (ZPA)** — [Chapter 06, Theory and Architecture / Hands-On Lab](chapters/06-zpa-advanced-posture-browser-access-and-app-protection.md)
+- **Privileged Remote Access (PRA)** — [Chapter 06, Theory and Architecture / Hands-On Lab](chapters/06-zpa-advanced-posture-browser-access-and-app-protection.md)
+- **SAML authentication and group claims** — [Chapter 08, Theory and Architecture / Hands-On Lab](chapters/08-identity-authentication-and-policy.md)
+- **SCIM provisioning** — [Chapter 08, Theory and Architecture / Hands-On Lab](chapters/08-identity-authentication-and-policy.md)
+- **Secure Web Gateway (SWG)** — [Chapter 02, Theory and Architecture](chapters/02-zia-secure-web-gateway-and-tls-inspection.md)
+- **Server group (ZPA)** — [Chapter 05, Theory and Architecture](chapters/05-zpa-zero-trust-access-to-private-applications.md)
+- **SSL/TLS inspection and trust chain** — [Chapter 02, Theory and Architecture / Hands-On Lab](chapters/02-zia-secure-web-gateway-and-tls-inspection.md)
+- **URL filtering and categories** — [Chapter 02, Theory and Architecture / Hands-On Lab](chapters/02-zia-secure-web-gateway-and-tls-inspection.md)
+- **Z-Tunnel 1.0 vs 2.0** — [Chapter 07, Theory and Architecture / Hands-On Lab](chapters/07-zscaler-client-connector-and-traffic-forwarding.md)
+- **ZDX Score** — [Chapter 09, Theory and Architecture / Hands-On Lab](chapters/09-zscaler-digital-experience-and-platform-operations.md)
+- **Zero Trust Exchange (ZTE)** — [Chapter 01, Theory and Architecture](chapters/01-zscaler-certification-program-and-the-zero-trust-exchange.md)
+- **Zscaler Client Connector (ZCC)** — [Chapter 07, Theory and Architecture](chapters/07-zscaler-client-connector-and-traffic-forwarding.md)
+- **Zscaler cloud (zscaler.net / zscalertwo.net / zscloud.net)** — [Chapter 01, Validation and Troubleshooting](chapters/01-zscaler-certification-program-and-the-zero-trust-exchange.md)
+- **Zscaler Digital Experience (ZDX)** — [Chapter 09, Theory and Architecture](chapters/09-zscaler-digital-experience-and-platform-operations.md)
+- **Zscaler Internet Access (ZIA)** — [Chapter 02, Theory and Architecture](chapters/02-zia-secure-web-gateway-and-tls-inspection.md)
+- **Zscaler Private Access (ZPA)** — [Chapter 05, Theory and Architecture](chapters/05-zpa-zero-trust-access-to-private-applications.md)

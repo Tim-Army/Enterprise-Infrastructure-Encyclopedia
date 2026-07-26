@@ -44,11 +44,12 @@ does not by itself verify every technical claim in it.
 | XXXII — Dell Technologies Certification Tracks | 9 | Drafted |
 | XXXIII — Microsoft Azure Certification Tracks | 9 | Drafted |
 | XXXIV — Google Cloud Certification Tracks | 9 | Drafted |
+| XXXV — Zscaler Zero Trust Exchange | 9 | Drafted |
 | XCVII — Master Appendices | 10 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 353 of 353 drafted (100%). Every volume has a
+**Total declared chapters:** 362 of 362 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
