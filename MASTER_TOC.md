@@ -563,6 +563,20 @@ table of contents for that volume.
 8. GitHub Certifications
 9. Keeping the Microsoft Program Current
 
+## Volume XXXIX — CompTIA Certification Tracks
+
+[Volume README](volumes/volume-39-comptia-certification-tracks/README.md) · [Index](volumes/volume-39-comptia-certification-tracks/INDEX.md) · [Glossary](volumes/volume-39-comptia-certification-tracks/GLOSSARY.md)
+
+1. The CompTIA Certification Program
+2. Core Pathway — Tech+, A+, Network+, and Security+
+3. Infrastructure Pathway — Cloud+, Linux+, and Server+
+4. Cybersecurity Pathway — CySA+, PenTest+, and SecurityX
+5. Data and AI Certifications — Data+, DataSys+, and DataAI
+6. The Xpert Series — Pro Certifications
+7. Professional and Essentials Credentials
+8. Continuing Education and Renewal
+9. Building a CompTIA Career Path
+
 ## Volume XCVII — Master Appendices
 
 [Volume README](volumes/volume-97-master-appendices/README.md) · [Index](volumes/volume-97-master-appendices/INDEX.md) · [Glossary](volumes/volume-97-master-appendices/GLOSSARY.md)
@@ -579,6 +593,7 @@ table of contents for that volume.
 10. Appendix — Google Cloud Certifications and Course Access
 11. Appendix — Zscaler Certifications and Course Access
 12. Appendix — Microsoft Certifications Beyond Azure and Course Access
+13. Appendix — CompTIA Certifications and Course Access
 
 ## Volume XCVIII — Acronyms
 

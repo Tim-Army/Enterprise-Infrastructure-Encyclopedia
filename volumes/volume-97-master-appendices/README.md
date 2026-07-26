@@ -20,6 +20,7 @@ one place instead of scattered through volume READMEs.
 10. [Appendix — Google Cloud Certifications and Course Access](chapters/10-appendix-google-cloud-certifications-and-course-access.md) — all fourteen Google Cloud certifications by level with format, fee, validity, the free Google Skills training, and why the exam-code column reads "none"; snapshot dated 23 July 2026.
 11. [Appendix — Zscaler Certifications and Course Access](chapters/11-appendix-zscaler-certifications-and-course-access.md) — the four Zscaler credentials (ZTCA, ZDTA, ZDTE, ZDXA) with exam format, US$300 fee, two-year validity, Pearson VUE/OnVUE delivery, the EDU-200/202/310 learning paths, and the published weighted blueprints for the three professional exams; snapshot dated 25 July 2026.
 12. [Appendix — Microsoft Certifications Beyond Azure and Course Access](chapters/12-appendix-microsoft-beyond-azure-certifications-and-course-access.md) — Microsoft's role-based program outside Azure (Microsoft 365, SC, PL, MB, DP, AI, GitHub) by family and tier with verified exam codes, the free Microsoft Learn training and free annual renewal, and Pearson VUE/OnVUE delivery; snapshot dated 26 July 2026.
+13. [Appendix — CompTIA Certifications and Course Access](chapters/13-appendix-comptia-certifications-and-course-access.md) — the vendor-neutral program by pathway with verified exam codes (the classic "plus" certs, the hands-on Xpert "Pro" series, and Essentials), CompTIA CertMaster training, Pearson VUE delivery, and the three-year Continuing Education renewal model; snapshot dated 26 July 2026.
 
 ## Appendix catalog
 
@@ -38,6 +39,7 @@ one place instead of scattered through volume READMEs.
 | Google Cloud certifications and course access | [Volume XXXIV](../volume-34-google-cloud-certifications/README.md) | [10](chapters/10-appendix-google-cloud-certifications-and-course-access.md) |
 | Zscaler certifications and course access | [Volume XXXV](../volume-35-zscaler-zero-trust-exchange/README.md) | [11](chapters/11-appendix-zscaler-certifications-and-course-access.md) |
 | Microsoft (beyond Azure) certifications and course access | [Volume XXXVIII](../volume-38-microsoft-certifications-beyond-azure/README.md) | [12](chapters/12-appendix-microsoft-beyond-azure-certifications-and-course-access.md) |
+| CompTIA certifications and course access | [Volume XXXIX](../volume-39-comptia-certification-tracks/README.md) | [13](chapters/13-appendix-comptia-certifications-and-course-access.md) |
 
 ## Conventions
 

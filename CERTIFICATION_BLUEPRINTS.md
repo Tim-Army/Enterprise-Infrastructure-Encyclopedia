@@ -35,6 +35,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXXVI — Windows Server 2025 and Active Directory | Microsoft Windows Server role-based certifications (a product/administration volume mapped to the exams, not a certification-tracks volume): **Windows Server Hybrid Administrator Associate** (AZ-800 *Administering Windows Server Hybrid Core Infrastructure* + AZ-801 *Configuring Windows Server Hybrid Advanced Services*) and the newer on-premises **Windows Server Administrator Associate** (beta). Confirm current exam numbers/status on Microsoft Learn | Microsoft Learn |
 | XXXVII — Microsoft 365 and Modern Work | Microsoft 365 and Security role-based certifications (product/administration volume mapped to the exams): **M365 Certified: Fundamentals** (MS-900), **Administrator Expert** (MS-102), **Endpoint Administrator Associate** (MD-102), **Teams Administrator Associate** (MS-700), **Collaboration Communications Systems Engineer** (MS-721); **Identity and Access Administrator** (SC-300), **Information Security Administrator** (SC-401, replaced SC-400), **Security Operations Analyst** (SC-200). Codes verified on Microsoft Learn 26 Jul 2026 | Microsoft Learn |
 | XXXVIII — Microsoft Certifications Beyond Azure | The whole Microsoft role-based program **outside Azure** in one volume (certification-tracks): **Microsoft 365** (MS-900/MS-102/MD-102/MS-700/MS-721), **Security/Compliance/Identity** (SC-900/SC-300/SC-200/SC-401/SC-100/SC-500), **Power Platform** (PL-900/PL-200/PL-300/PL-400/PL-500/PL-600), **Dynamics 365** (MB-910/920 + CE and F&O tracks, MB-500/MB-700/MB-800/MB-820), **Data & Analytics/Fabric** (DP-900/DP-700/DP-600/DP-300/DP-420/DP-100/DP-750/DP-800), **AI & Copilot** (AI-901/AI-102/AI-103/AI-500 + agent wave), and **GitHub** (GH-900/GH-100/GH-300/GH-500/GH-600). Four tiers; free annual renewal. All codes verified on Microsoft Learn 26 Jul 2026 (Azure itself is Volume XXXIII) | Microsoft Learn |
+| XXXIX — CompTIA Certification Tracks | The whole vendor-neutral CompTIA program in one volume (certification-tracks), on two parallel lines plus Essentials. **Classic "plus"**: Core — Tech+ (FC0-U71, ex-ITF+), A+ (220-1201 Core 1 + 220-1202 Core 2), Network+ (N10-009), Security+ (SY0-701); Infrastructure — Cloud+ (CV0-004), Linux+ (XK0-006), Server+ (SK0-005); Cybersecurity — CySA+ (CS0-004, V4; CS0-003 prior), PenTest+ (PT0-003), SecurityX (CAS-005, ex-CASP+); Data — Data+ (DA0-002), DataSys+ (DS0-001), DataAI (ex-DataX, DY0-001); professional — Project+ (PK0-005); Cloud Essentials+ (CLO-002) **retired 25 Sep 2025**, now the Cloud Essentials CompCert course. CompTIA's newer hands-on material comes in three kinds: exam-coded **Xpert Series certifications** — CloudNetX (CNX-001), DataAI (DY0-001); the **Expansion Series** security certifications — SecAI+ (CY0-001, GA Feb 2026, scaled 600/100–900), SecOT+ (SOT-001, GA Dec 2026, draft objectives); and **"Pro" training courses + competency assessments** that ladder into other certs — Hybrid Server Pro I/II (→ Microsoft AZ-800/AZ-801), CyberDefense Pro (→ CySA+ V3), Ethical Hacker Pro (career-focused), Linux Pro (→ Linux+), Security Pro (→ Security+). Plus an AI/Business/Skills **Essentials** microcredential tier. Pearson VUE delivery; three-year Continuing Education renewal; stackable; ISO/ANSI and DoD 8140/8570 recognition. All codes verified on comptia.org 26 Jul 2026 | comptia.org certification pages |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -415,3 +416,24 @@ alongside AZ-800/AZ-801 on the Windows Server pages. A matching course-catalog
 appendix (Master Appendices Chapter 12) records the catalog with the free
 Microsoft Learn training model and free annual renewal. Azure itself remains
 Volume XXXIII; hands-on practice lives in Volumes XXXVI and XXXVII.
+
+Volume XXXIX (CompTIA Certification Tracks) was created on **26 July 2026** as
+the encyclopedia's vendor-neutral foundation — the on-ramp beneath every vendor
+track. It maps the whole CompTIA program, which was **substantially
+restructured** after CompTIA's 2024–2025 acquisition and relaunch into two
+parallel lines plus an Essentials tier: the **classic "plus" certifications**
+(Core, Infrastructure, Cybersecurity, Data, and professional) and the new
+hands-on, performance-based **Xpert "Pro" series** (Security Pro, CyberDefense
+Pro, Ethical Hacker Pro, Linux Pro, Hybrid Server Pro I/II, CloudNetX, SecAI+,
+SecOT+). Every exam code was verified on 26 July 2026 against comptia.org, which
+surfaced the program's many renames and renumbers: **ITF+ → Tech+ (FC0-U71)**,
+**CASP+ → SecurityX (CAS-005)**, A+ now the **220-1201/220-1202 Core Series**,
+Network+ **N10-009**, Security+ **SY0-701**, Linux+ **XK0-006**, Data+
+**DA0-002**, and **DataX → DataAI**; new Xpert credentials **CloudNetX
+(CNX-001)** and **SecOT+ (SOT-001, arriving December 2026)**. A matching
+course-catalog appendix (Master Appendices Chapter 13) records the pathways with
+the CompTIA CertMaster training model, Pearson VUE delivery, and the three-year
+Continuing Education renewal. CompTIA credentials are the foundation the vendor
+volumes build on — Security+ under the security tracks, Network+ under the
+networking tracks, Linux+ under Volumes XIV/XXI, Cloud+ under the cloud volumes,
+and Server+ under Volume XXXVI.

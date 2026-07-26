@@ -48,11 +48,12 @@ does not by itself verify every technical claim in it.
 | XXXVI — Windows Server 2025 and Active Directory | 11 | Drafted |
 | XXXVII — Microsoft 365 and Modern Work | 11 | Drafted |
 | XXXVIII — Microsoft Certifications Beyond Azure | 9 | Drafted |
-| XCVII — Master Appendices | 12 | Drafted |
+| XXXIX — CompTIA Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 13 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 395 of 395 drafted (100%). Every volume has a
+**Total declared chapters:** 405 of 405 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
