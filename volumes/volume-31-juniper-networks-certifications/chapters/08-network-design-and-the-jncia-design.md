@@ -118,50 +118,121 @@ Knowledge checks:
    customer's team has never run BGP. What does the design method say
    happens next?
 
-## Design Exercise
+## Design Exercises
 
-**JNCIA-Design (JN0-1103)** is a design associate exam: it tests reasoning from
-requirements to a Juniper network design across campus, WAN, and data center,
-rather than device configuration. This chapter's deliverable is a Design Exercise
-covering JNCIA-Design's six objective domains; no configuration lab is required.
+Six per-objective design exercises — **one for each JNCIA-Design (JN0-1103)
+objective domain**. JNCIA-Design is a design associate exam: it tests reasoning
+from requirements to a Juniper design across campus, WAN, and data center rather
+than device configuration, so each exercise produces a **design artifact**, not a
+running config.
 
-**Scenario.** Design the Juniper network for a mid-size enterprise: a headquarters
-campus (wired + wireless for 3,000 users), 40 branches, two data centers
-(active/active), an SD-WAN between sites, and a security mandate (zero-trust,
-regulated data). Requirements: high resiliency with no single point of failure;
-consistent security from campus to data center; centralized management and
-automation; and a design that scales to double the branch count.
+**Shared scenario (all six).** Design the Juniper network for a mid-size
+enterprise: a headquarters campus (wired + wireless for 3,000 users), 40
+branches, two active/active data centers, SD-WAN between sites, and a security
+mandate (zero-trust, regulated data). Baseline requirements: no single point of
+failure; consistent security from campus to data center; centralized management
+and automation; and headroom to double the branch count. Each exercise defends
+every choice against a rejected alternative.
 
-**Produce, defending each choice against a rejected alternative:**
+### Design Exercise 8.1 — Customer network design requirements (Objective: Domain 1)
 
-1. **Customer network design requirements (Domain 1)** — classify each requirement
-   using Juniper's life-cycle service approach, set proposal boundaries, note
-   greenfield vs brownfield constraints, plan capacity, and map each requirement to
-   the Juniper products/solutions (MX/ACX routing, EX/QFX switching, SRX security,
-   Mist WLAN, Apstra/SDN, Mist/Junos Space management) that satisfy it.
-2. **Securing the network (Domain 2)** — the security design: general principles,
-   securing the data center (fabric segmentation, SRX), securing the campus/WAN,
-   **zero-trust** (identity-aware policy, NAC via Mist Access Assurance), and
-   **SASE** for remote users.
-3. **Network management and reliability (Domain 3)** — the resiliency design (link/
-   device redundancy, **ESI-LAG** multihoming, SRX chassis cluster, Virtual
-   Chassis, campus best practices), the automation strategy (Junos XML/REST/JET,
-   on-box vs off-box), and the management strategy (out-of-band management,
-   config backups, remote console).
-4. **Campus and branch LAN design (Domain 4)** — the wired design (modular,
-   subnet/VLAN plan, access control, **EVPN-VXLAN** campus fabric, oversubscription)
-   and the wireless design (WLAN phases, business/technical/RF requirements, AP
-   coverage and co-channel contention, RF modeling, real-time location).
-5. **Campus and branch WAN design (Domain 5)** — the WAN connectivity and HA
-   (active/active vs active/passive), WAN VPN design, and the **SD-WAN** design
-   (devices, assurance model, intersite connectivity).
-6. **Data center network design (Domain 6)** — the DC design (traffic patterns,
-   fabric architecture, environmental) and the **IP fabric** design (spine-leaf
-   placement, underlay/overlay, routing-protocol selection, best practices,
-   scaling), justified against alternatives (e.g., IP fabric vs traditional
-   three-tier).
+**Objective:** Turn business needs into a traceable technical design brief.
 
-**Success looks like:** every design choice traces to a requirement, each
+**Task:** Classify each requirement using Juniper's life-cycle service approach;
+set proposal boundaries; note greenfield vs brownfield constraints; plan capacity
+(50% steady-state link ceilings); and map each requirement to the Juniper
+products (MX/ACX routing, EX/QFX switching, SRX security, Mist WLAN, Apstra/SDN,
+Mist/Junos Space management) that satisfy it.
+
+**Produce:** `01-requirements.md` — numbered business, technical, and constraint
+requirements, each mapped to a product and a test.
+
+**Success:** every business goal maps to ≥1 technical requirement and ≥1
+acceptance test; each product choice names a rejected alternative (e.g., Virtual
+Chassis vs ESI-LAG for access resiliency).
+
+### Design Exercise 8.2 — Securing the network (Objective: Domain 2)
+
+**Objective:** Design end-to-end security from campus to data center.
+
+**Task:** Apply general security principles; secure the data center (fabric
+segmentation, SRX); secure the campus/WAN; implement **zero-trust** (identity-
+aware policy, NAC via Mist Access Assurance); and design **SASE** for remote
+users.
+
+**Produce:** the security section of `02-hld.md` — trust boundaries and
+inspection points on the primary diagram, data flows annotated with
+classification.
+
+**Success:** each security claim names the exposure it addresses; zero-trust
+identity sources and enforcement points are explicit; rejected alternative named
+(e.g., perimeter-only vs zero-trust).
+
+### Design Exercise 8.3 — Network management and reliability (Objective: Domain 3)
+
+**Objective:** Design resiliency, automation, and management as first-class
+requirements.
+
+**Task:** Design link/device redundancy (**ESI-LAG** multihoming, SRX chassis
+cluster, Virtual Chassis, campus best practices); the automation strategy (Junos
+XML/REST/JET, on-box vs off-box); and the management strategy (out-of-band
+management, config backups, remote console).
+
+**Produce:** the resiliency and management sections of `02-hld.md`, plus a
+failure-walkthrough table (blast radius, detection, recovery time vs RTO) per
+drawn domain.
+
+**Success:** every shared-fate domain has an RTO-checked failover drill; the
+management plane (OOB, jump hosts, automation subnets) is a named section, not an
+appendix; rejected alternative named (e.g., in-band vs OOB management).
+
+### Design Exercise 8.4 — Campus and branch LAN design (Objective: Domain 4)
+
+**Objective:** Design the wired and wireless campus/branch LAN.
+
+**Task:** Wired — modular design, subnet/VLAN plan, access control,
+**EVPN-VXLAN** campus fabric, oversubscription targets. Wireless — WLAN design
+phases; business/technical/RF requirements; AP coverage and co-channel
+contention; RF modeling; real-time location if required.
+
+**Produce:** the campus LAN section of `03-lld.md` (per-device addressing,
+VLAN/VNI, policy names) and a wireless coverage plan.
+
+**Success:** oversubscription and RF assumptions are stated and testable; the
+fabric choice is justified against a traditional access/distribution/core
+alternative.
+
+### Design Exercise 8.5 — Campus and branch WAN design (Objective: Domain 5)
+
+**Objective:** Design site interconnection and the SD-WAN.
+
+**Task:** Design WAN connectivity and HA (active/active vs active/passive); the
+WAN VPN design; and the **SD-WAN** (devices, Mist assurance model, intersite
+connectivity for 40 branches + 2 DCs).
+
+**Produce:** the WAN section of `03-lld.md` and a `04-migration-plan.md` fragment
+for branch cutover (phases, rollback gates, success criteria).
+
+**Success:** the HA model meets the no-SPOF requirement at the WAN edge; branch
+cutover has rollback per phase; rejected alternative named (e.g., MPLS-only vs
+SD-WAN overlay).
+
+### Design Exercise 8.6 — Data center network design (Objective: Domain 6)
+
+**Objective:** Design the two active/active data center fabrics.
+
+**Task:** Design the DC (traffic patterns, fabric architecture, environmental/
+power) and the **IP fabric** (spine-leaf placement, underlay/overlay,
+routing-protocol selection, best practices, scaling to 2× branch growth).
+
+**Produce:** the DC section of `03-lld.md` plus the `05-test-plan.md` acceptance
+tests for fabric convergence and cross-DC failover.
+
+**Success:** the IP fabric scales to the stated growth; the underlay/overlay and
+routing choice is justified against a traditional three-tier alternative;
+cross-DC active/active behavior has a named test.
+
+**Across all six:** every design choice traces to a numbered requirement, each
 resiliency and security claim names the failure or exposure it addresses, the
 campus/WAN/DC designs interoperate under one management and automation strategy,
 and each decision names the rejected option and its trade-off — the design
