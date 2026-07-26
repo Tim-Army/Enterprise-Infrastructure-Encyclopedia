@@ -533,6 +533,22 @@ table of contents for that volume.
 10. Security and Identity Hardening — AD CS, gMSA, LAPS, Credential Guard, and Defender
 11. Hybrid Operations and Migration — Azure Arc, Entra Connect, Azure File Sync, Update Manager, and Capstone
 
+## Volume XXXVII — Microsoft 365 and Modern Work
+
+[Volume README](volumes/volume-37-microsoft-365-modern-work/README.md) · [Index](volumes/volume-37-microsoft-365-modern-work/INDEX.md) · [Glossary](volumes/volume-37-microsoft-365-modern-work/GLOSSARY.md)
+
+1. Microsoft 365 and the Modern Work Platform
+2. Microsoft Entra ID — Identities, Groups, Devices, and Roles
+3. Authentication and Access — MFA, Passwordless, and Conditional Access
+4. Identity Governance and Hybrid Identity
+5. Microsoft Intune — Enrollment and Device Management
+6. Compliance Policies, Configuration Profiles, and Endpoint Security
+7. Application Management and Windows Autopilot
+8. Exchange Online — Recipients, Mail Flow, and Protection
+9. SharePoint Online, OneDrive, and Microsoft Teams
+10. Microsoft Purview — Information Protection, DLP, Retention, and Compliance
+11. Microsoft Defender XDR, Secure Score, Copilot Governance, and Capstone
+
 ## Volume XCVII — Master Appendices
 
 [Volume README](volumes/volume-97-master-appendices/README.md) · [Index](volumes/volume-97-master-appendices/INDEX.md) · [Glossary](volumes/volume-97-master-appendices/GLOSSARY.md)

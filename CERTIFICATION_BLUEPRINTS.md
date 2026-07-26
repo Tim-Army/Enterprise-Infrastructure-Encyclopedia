@@ -33,6 +33,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXXV — Zscaler Zero Trust Exchange | Zscaler certification program — four credentials across three tiers: **ZTCA** (Zero Trust Cyber Associate, associate; course-only, no published blueprint); **ZDTA** (Digital Transformation Administrator) and **ZDXA** (Digital Experience Administrator, administrator); **ZDTE** (Digital Transformation Engineer, engineer). The three professional exams (ZDTA/ZDTE/ZDXA) each **publish a weighted blueprint** and complete an EDU learning path (EDU-200 / EDU-202 / EDU-310); all three are US$300, 60 Q / 90 min, two-year validity. Details in the [Zscaler appendix](volumes/volume-97-master-appendices/chapters/11-appendix-zscaler-certifications-and-course-access.md) | Zscaler Cyber Academy / Customer Success Center |
 | XXX — Cisco CCDE Network Design | CCDE (expert-level design): Written (400-007) + Practical, v3.1 unified topics, with AI Infrastructure / Large Scale Networks / On-Prem and Cloud Services / Workforce Mobility electives | Cisco Learning & Certifications |
 | XXXVI — Windows Server 2025 and Active Directory | Microsoft Windows Server role-based certifications (a product/administration volume mapped to the exams, not a certification-tracks volume): **Windows Server Hybrid Administrator Associate** (AZ-800 *Administering Windows Server Hybrid Core Infrastructure* + AZ-801 *Configuring Windows Server Hybrid Advanced Services*) and the newer on-premises **Windows Server Administrator Associate** (beta). Confirm current exam numbers/status on Microsoft Learn | Microsoft Learn |
+| XXXVII — Microsoft 365 and Modern Work | Microsoft 365 and Security role-based certifications (product/administration volume mapped to the exams): **M365 Certified: Fundamentals** (MS-900), **Administrator Expert** (MS-102), **Endpoint Administrator Associate** (MD-102), **Teams Administrator Associate** (MS-700), **Collaboration Communications Systems Engineer** (MS-721); **Identity and Access Administrator** (SC-300), **Information Security Administrator** (SC-401, replaced SC-400), **Security Operations Analyst** (SC-200). Codes verified on Microsoft Learn 26 Jul 2026 | Microsoft Learn |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -381,3 +382,17 @@ Microsoft role-based certification catalog was verified the same day
 against the Microsoft Learn Catalog API. Windows Server is deliberately kept
 as a product volume; the broader Microsoft certification program beyond
 Azure is reserved for a dedicated tracks volume.
+
+Volume XXXVII (Microsoft 365 and Modern Work) was created on **26 July
+2026** as the second Microsoft volume — the cloud modern-work counterpart to
+the on-premises Volume XXXVI. Eleven chapters with Microsoft Graph PowerShell
+and admin-center walkthrough labs cover Entra ID identity and access, Intune
+endpoint management and Autopilot, Exchange/SharePoint/Teams, Microsoft
+Purview, and Microsoft Defender XDR — mapped to **MS-900**, **MS-102**,
+**MD-102**, **MS-700**, **MS-721**, **SC-300**, **SC-401**, and **SC-200**.
+Exam codes were verified against the individual Microsoft Learn certification
+pages the same day, which surfaced two post-cutoff facts: **SC-401**
+(Information Security Administrator) replaced the retired SC-400, and **Cloud
+and AI Security Engineer (SC-500)** is a new identity/security credential.
+Copilot and agent governance is treated as part of the identity, data, and
+security-posture surface rather than a separate topic.

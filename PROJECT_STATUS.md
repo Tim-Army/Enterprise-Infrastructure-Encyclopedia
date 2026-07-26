@@ -46,11 +46,12 @@ does not by itself verify every technical claim in it.
 | XXXIV — Google Cloud Certification Tracks | 9 | Drafted |
 | XXXV — Zscaler Zero Trust Exchange | 9 | Drafted |
 | XXXVI — Windows Server 2025 and Active Directory | 11 | Drafted |
+| XXXVII — Microsoft 365 and Modern Work | 11 | Drafted |
 | XCVII — Master Appendices | 11 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 374 of 374 drafted (100%). Every volume has a
+**Total declared chapters:** 385 of 385 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
