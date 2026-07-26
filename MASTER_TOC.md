@@ -517,6 +517,7 @@ table of contents for that volume.
 8. Appendix — AWS Certifications and Course Access
 9. Appendix — Microsoft Azure Certifications and Course Access
 10. Appendix — Google Cloud Certifications and Course Access
+11. Appendix — Zscaler Certifications and Course Access
 
 ## Volume XCVIII — Acronyms
 

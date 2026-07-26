@@ -18,6 +18,7 @@ one place instead of scattered through volume READMEs.
 8. [Appendix — AWS Certifications and Course Access](chapters/08-appendix-aws-certifications-and-course-access.md) — all twelve current AWS certifications by level with exam codes, exam end dates, and the free Skill Builder exam-prep / paid classroom access model; snapshot dated 23 July 2026.
 9. [Appendix — Microsoft Azure Certifications and Course Access](chapters/09-appendix-microsoft-azure-certifications-and-course-access.md) — every current Azure certification by level with exam codes, exam end dates, the retired list, and the free Microsoft Learn training / annual free renewal model; snapshot dated 23 July 2026.
 10. [Appendix — Google Cloud Certifications and Course Access](chapters/10-appendix-google-cloud-certifications-and-course-access.md) — all fourteen Google Cloud certifications by level with format, fee, validity, the free Google Skills training, and why the exam-code column reads "none"; snapshot dated 23 July 2026.
+11. [Appendix — Zscaler Certifications and Course Access](chapters/11-appendix-zscaler-certifications-and-course-access.md) — the four Zscaler credentials (ZTCA, ZDTA, ZDTE, ZDXA) with exam format, US$300 fee, two-year validity, Pearson VUE/OnVUE delivery, the EDU-200/202/310 learning paths, and the published weighted blueprints for the three professional exams; snapshot dated 25 July 2026.
 
 ## Appendix catalog
 
@@ -34,6 +35,7 @@ one place instead of scattered through volume READMEs.
 | AWS certifications and course access | [Volume XVII](../volume-17-aws-architecture-security/README.md) | [08](chapters/08-appendix-aws-certifications-and-course-access.md) |
 | Microsoft Azure certifications and course access | [Volume XXXIII](../volume-33-microsoft-azure-certifications/README.md) | [09](chapters/09-appendix-microsoft-azure-certifications-and-course-access.md) |
 | Google Cloud certifications and course access | [Volume XXXIV](../volume-34-google-cloud-certifications/README.md) | [10](chapters/10-appendix-google-cloud-certifications-and-course-access.md) |
+| Zscaler certifications and course access | [Volume XXXV](../volume-35-zscaler-zero-trust-exchange/README.md) | [11](chapters/11-appendix-zscaler-certifications-and-course-access.md) |
 
 ## Conventions
 

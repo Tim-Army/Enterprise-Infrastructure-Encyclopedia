@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.36-blue)
+![Release](https://img.shields.io/badge/release-v1.2.37-blue)
 
-**v1.2.36 — latest release.** 38 volumes, 362 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.36) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.37 — latest release.** 38 volumes, 363 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.37) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -25,7 +25,7 @@ The series combines architecture and theory with implementation guidance, automa
 
 ## Curriculum
 
-38 volumes, 362 chapters. Each volume has a dedicated
+38 volumes, 363 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -65,11 +65,11 @@ The series combines architecture and theory with implementation guidance, automa
 | XXXIII | [Microsoft Azure Certification Tracks](volumes/volume-33-microsoft-azure-certifications/README.md) | 9 |
 | XXXIV | [Google Cloud Certification Tracks](volumes/volume-34-google-cloud-certifications/README.md) | 9 |
 | XXXV | [Zscaler Zero Trust Exchange](volumes/volume-35-zscaler-zero-trust-exchange/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 10 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 11 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
-Technical review and lab-validation sign-off for all 362 chapters are
+Technical review and lab-validation sign-off for all 363 chapters are
 tracked in [PROJECT_STATUS.md](PROJECT_STATUS.md). The
 [master index](INDEX.md) and [master glossary](GLOSSARY.md) cover all
 volumes.

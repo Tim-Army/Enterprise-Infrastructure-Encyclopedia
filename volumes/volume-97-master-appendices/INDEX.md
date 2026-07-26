@@ -19,3 +19,4 @@ also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **AWS certifications (levels, exam codes, exam end dates, Skill Builder access)** — [Chapter 08](chapters/08-appendix-aws-certifications-and-course-access.md)
 - **Microsoft Azure certifications (levels, exam codes, exam end dates, Microsoft Learn access)** — [Chapter 09](chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
 - **Google Cloud certifications (levels, format, fee, validity, Google Skills access)** — [Chapter 10](chapters/10-appendix-google-cloud-certifications-and-course-access.md)
+- **Zscaler certifications (ZTCA/ZDTA/ZDTE/ZDXA, exam format, US$300 fee, two-year validity, weighted blueprints, EDU-200/202/310 learning paths)** — [Chapter 11](chapters/11-appendix-zscaler-certifications-and-course-access.md)

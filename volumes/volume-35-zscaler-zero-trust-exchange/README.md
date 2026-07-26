@@ -15,13 +15,16 @@ from: **Zscaler Internet Access (ZIA)** for internet and SaaS,
 **Zscaler Client Connector (ZCC)** for forwarding, identity as the policy
 anchor, and **Zscaler Digital Experience (ZDX)** for operations.
 
-Zscaler prepares candidates through **learning paths rather than
-published, weighted exam domains**, so — as with the Forescout program in
-Volume XV — this volume follows the vendor's own product structure and
-official certification outcomes rather than reproducing any percentage
-breakdown Zscaler does not publish openly. Every claim about the program
-was taken from Zscaler's own Customer Success Center and Cyber Academy,
-never a third-party exam-dump summary.
+Zscaler prepares candidates through **learning paths** — eLearning plus a
+hands-on lab per credential — and publishes a **weighted exam blueprint**
+for each of the three professional exams (ZDTA, ZDTE, ZDXA); the associate
+ZTCA is course-only. This volume is organized by the platform's product
+pillars so one volume serves all four credentials, with the published
+domain weightings, exam formats, fees, and two-year validity recorded in
+the [Zscaler certification appendix](../volume-97-master-appendices/chapters/11-appendix-zscaler-certifications-and-course-access.md).
+Every claim about the program was taken from Zscaler's own Customer Success
+Center, Cyber Academy, Certification Program Brief, and Certification Exam
+FAQs, never a third-party exam-dump summary.
 
 ## Chapters
 
@@ -55,13 +58,17 @@ of the Zero Trust Exchange rather than a single product:
 | **ZDXA** — Digital Experience Administrator | Administrator | Administering ZDX digital-experience monitoring | Chapter 09 |
 | **ZDTE** — Digital Transformation Engineer | Engineer | Engineering-level deployment and design across the platform | Depth across Chapters 02–09 |
 
-**Course-is-the-blueprint.** Zscaler does not publish weighted exam
-domains openly; its exams are the final step of a **learning path** (for
-example, ZDTA completes *Zscaler for Users — Administrator*, EDU-200).
-Confirm the current exam name, cost, language, and learning path on
-Zscaler's Cyber Academy / Customer Success Center pages before scheduling,
-and treat the platform pillars in these chapters — not any third-party
-percentage breakdown — as the study structure.
+**Learning-path model.** Each exam is the final step of a **learning
+path** (ZDTA completes *Zscaler for Users — Administrator*, EDU-200; ZDTE
+completes *Zscaler for Users — Engineer*, EDU-202; ZDXA completes *ZDX
+Operationalization*, EDU-310; ZTCA has its own associate eLearning). The
+three professional exams each publish a **weighted blueprint** — recorded,
+with exam format, US$300 fee, delivery method, and two-year validity, in
+the [Zscaler certification appendix](../volume-97-master-appendices/chapters/11-appendix-zscaler-certifications-and-course-access.md);
+ZTCA is course-only. This volume follows the platform pillars so it serves
+all four credentials at once. Confirm the current exam name, cost,
+language, and learning path on Zscaler's Cyber Academy pages before
+scheduling.
 
 ## Lab coverage
 
@@ -89,6 +96,12 @@ documentation on the **Zscaler Help Portal** (`help.zscaler.com`).
 Learning paths bundle the eLearning and hands-on labs that lead to each
 exam; the exams themselves are paid. Partners have an equivalent path
 through the **Partner Academy** (`partneracademy.zscaler.com`).
+
+The full certification catalog — every exam's format, US$300 fee (the
+three proctored exams), two-year validity, Pearson VUE / OnVUE delivery,
+and learning path — is in the
+[Zscaler certification appendix](../volume-97-master-appendices/chapters/11-appendix-zscaler-certifications-and-course-access.md)
+(Master Appendices, Volume XCVII).
 
 ## Software and platform baseline
 
