@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.37-blue)
+![Release](https://img.shields.io/badge/release-v1.2.38-blue)
 
-**v1.2.37 — latest release.** 38 volumes, 363 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.37) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.38 — latest release.** 39 volumes, 374 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.38) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 38-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 39-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-38 volumes, 363 chapters. Each volume has a dedicated
+39 volumes, 374 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -65,11 +65,12 @@ The series combines architecture and theory with implementation guidance, automa
 | XXXIII | [Microsoft Azure Certification Tracks](volumes/volume-33-microsoft-azure-certifications/README.md) | 9 |
 | XXXIV | [Google Cloud Certification Tracks](volumes/volume-34-google-cloud-certifications/README.md) | 9 |
 | XXXV | [Zscaler Zero Trust Exchange](volumes/volume-35-zscaler-zero-trust-exchange/README.md) | 9 |
+| XXXVI | [Windows Server 2025 and Active Directory](volumes/volume-36-windows-server-2025-active-directory/README.md) | 11 |
 | XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 11 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
-Technical review and lab-validation sign-off for all 363 chapters are
+Technical review and lab-validation sign-off for all 374 chapters are
 tracked in [PROJECT_STATUS.md](PROJECT_STATUS.md). The
 [master index](INDEX.md) and [master glossary](GLOSSARY.md) cover all
 volumes.
@@ -102,7 +103,7 @@ ascending order.
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) |
-| Operating systems | [XIV Red Hat Enterprise Linux 10](volumes/volume-14-red-hat-enterprise-linux-10/README.md) → [XXI Ubuntu Server and Cloud 26.04 LTS](volumes/volume-21-ubuntu-server-cloud-26-04-lts/README.md) |
+| Operating systems | [XIV Red Hat Enterprise Linux 10](volumes/volume-14-red-hat-enterprise-linux-10/README.md) → [XXI Ubuntu Server and Cloud 26.04 LTS](volumes/volume-21-ubuntu-server-cloud-26-04-lts/README.md) → [XXXVI Windows Server 2025 and Active Directory](volumes/volume-36-windows-server-2025-active-directory/README.md) |
 | Virtualization | [V VMware](volumes/volume-05-vmware-virtualization/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Cloud | [VII Cloud Infrastructure](volumes/volume-07-cloud-infrastructure/README.md) → [XVII AWS Architecture and Security](volumes/volume-17-aws-architecture-security/README.md) |
 | Reference | [XCVII Master Appendices](volumes/volume-97-master-appendices/README.md), [XCVIII Acronyms](volumes/volume-98-acronyms/README.md), and [XCIX Reference Library](volumes/volume-99-reference-library/README.md) — appendices, the acronym dictionary, and cross-volume reference material, always last |

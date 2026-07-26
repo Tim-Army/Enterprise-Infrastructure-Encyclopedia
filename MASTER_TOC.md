@@ -503,6 +503,36 @@ table of contents for that volume.
 8. Data and ML Professionals — Data Engineer, Database Engineer, and Machine Learning Engineer
 9. Certification Operations and Keeping the Program Current
 
+## Volume XXXV — Zscaler Zero Trust Exchange
+
+[Volume README](volumes/volume-35-zscaler-zero-trust-exchange/README.md) · [Index](volumes/volume-35-zscaler-zero-trust-exchange/INDEX.md) · [Glossary](volumes/volume-35-zscaler-zero-trust-exchange/GLOSSARY.md)
+
+1. The Zscaler Certification Program and the Zero Trust Exchange
+2. ZIA — Secure Web Gateway and TLS Inspection
+3. ZIA Threat Prevention — Cloud Firewall, DNS, IPS, and Sandbox
+4. ZIA Data Protection — DLP, CASB, and Browser Isolation
+5. ZPA — Zero Trust Access to Private Applications
+6. ZPA Advanced — Posture, Browser Access, and App Protection
+7. Zscaler Client Connector and Traffic Forwarding
+8. Identity, Authentication, and Policy
+9. Zscaler Digital Experience and Platform Operations
+
+## Volume XXXVI — Windows Server 2025 and Active Directory
+
+[Volume README](volumes/volume-36-windows-server-2025-active-directory/README.md) · [Index](volumes/volume-36-windows-server-2025-active-directory/INDEX.md) · [Glossary](volumes/volume-36-windows-server-2025-active-directory/GLOSSARY.md)
+
+1. Windows Server 2025 — Editions, Installation, Server Core, and Windows Admin Center
+2. PowerShell, Remoting, and Desired State Configuration
+3. Active Directory Domain Services — Forests, Domains, Domain Controllers, and Replication
+4. AD DS Objects — Users, Groups, OUs, Delegation, and Trusts
+5. Group Policy — Processing, Preferences, Filtering, and the Central Store
+6. DNS, DHCP, and IP Address Management
+7. Storage and File Services — Storage Spaces Direct, ReFS, Deduplication, SMB, and DFS
+8. Hyper-V Virtualization and Windows Containers
+9. High Availability and Disaster Recovery — Failover Clustering, Hyper-V Replica, and Backup
+10. Security and Identity Hardening — AD CS, gMSA, LAPS, Credential Guard, and Defender
+11. Hybrid Operations and Migration — Azure Arc, Entra Connect, Azure File Sync, Update Manager, and Capstone
+
 ## Volume XCVII — Master Appendices
 
 [Volume README](volumes/volume-97-master-appendices/README.md) · [Index](volumes/volume-97-master-appendices/INDEX.md) · [Glossary](volumes/volume-97-master-appendices/GLOSSARY.md)

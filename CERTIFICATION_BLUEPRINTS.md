@@ -30,8 +30,9 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXXI — Juniper Networks Certification Tracks | Juniper, all 8 tracks: JNCIA-Junos JN0-106; ENT JN0-352/JN0-650/JPR-946; SP JN0-364/JN0-664/JPR-962; SEC JN0-232/JN0-336/JN0-637/JPR-935; DC JN0-281/JN0-481/JN0-683/JPR-981; DevOps JN0-224/JN0-423; Cloud JN0-214; Mist AI JN0-253/JN0-452/JN0-460/JN0-750; Design JN0-1103 | Juniper certification pages |
 | XXXIII — Microsoft Azure Certification Tracks | The whole Microsoft Azure program in one volume. Fundamentals (non-expiring): Azure Fundamentals (AZ-900), AI Fundamentals (AI-901, replaced AI-900 retired 30 Jun 2026), Data Fundamentals (DP-900). Associate: Administrator (AZ-104), Network Engineer (AZ-700), Database Administrator (DP-300), AI Apps and Agents Developer (AI-103), AI Cloud Developer (AI-200), AI Agent Builder (AB-620), Databricks Data Engineer (DP-750); Developer (AZ-204) retires 31 Jul 2026 and Security Engineer (AZ-500) retires 31 Aug 2026; AI Engineer (AI-102) and Data Scientist (DP-100) retired. Expert: Solutions Architect (AZ-305), DevOps Engineer (AZ-400). Specialty: Virtual Desktop (AZ-140), Cosmos DB Developer (DP-420), SAP Workloads (AZ-120); IoT Developer (AZ-220), Support Engineer (AZ-720), Stack Hub Operator (AZ-600) retired | Microsoft Learn |
 | XXXIV — Google Cloud Certification Tracks | The whole Google Cloud program in one volume — **named credentials with no exam codes**. Foundational (90 min, $99, 3 yr): Cloud Digital Leader, Generative AI Leader. Associate (2 hr, $125, 3 yr): Cloud Engineer, Google Workspace Administrator, Data Practitioner. Professional (2 hr, $200, 2 yr): Cloud Architect, Cloud Database Engineer, Cloud Developer, Data Engineer, Cloud DevOps Engineer, Cloud Security Engineer, Cloud Network Engineer, Machine Learning Engineer, Security Operations Engineer. No prerequisites at any level; recertification is a full paid retake | Google Cloud certification pages |
-| XXXV — Zscaler Zero Trust Exchange | Zscaler certification program — four credentials across three tiers, **no publicly published weighted domains** (learning-path based): **ZTCA** (Zero Trust Cyber Associate, associate); **ZDTA** (Digital Transformation Administrator) and **ZDXA** (Digital Experience Administrator, administrator); **ZDTE** (Digital Transformation Engineer, engineer). ZDTA completes the *Zscaler for Users — Administrator* (EDU-200) path; confirm each exam's name/cost/language/path on the Cyber Academy | Zscaler Cyber Academy / Customer Success Center |
+| XXXV — Zscaler Zero Trust Exchange | Zscaler certification program — four credentials across three tiers: **ZTCA** (Zero Trust Cyber Associate, associate; course-only, no published blueprint); **ZDTA** (Digital Transformation Administrator) and **ZDXA** (Digital Experience Administrator, administrator); **ZDTE** (Digital Transformation Engineer, engineer). The three professional exams (ZDTA/ZDTE/ZDXA) each **publish a weighted blueprint** and complete an EDU learning path (EDU-200 / EDU-202 / EDU-310); all three are US$300, 60 Q / 90 min, two-year validity. Details in the [Zscaler appendix](volumes/volume-97-master-appendices/chapters/11-appendix-zscaler-certifications-and-course-access.md) | Zscaler Cyber Academy / Customer Success Center |
 | XXX — Cisco CCDE Network Design | CCDE (expert-level design): Written (400-007) + Practical, v3.1 unified topics, with AI Infrastructure / Large Scale Networks / On-Prem and Cloud Services / Workforce Mobility electives | Cisco Learning & Certifications |
+| XXXVI — Windows Server 2025 and Active Directory | Microsoft Windows Server role-based certifications (a product/administration volume mapped to the exams, not a certification-tracks volume): **Windows Server Hybrid Administrator Associate** (AZ-800 *Administering Windows Server Hybrid Core Infrastructure* + AZ-801 *Configuring Windows Server Hybrid Advanced Services*) and the newer on-premises **Windows Server Administrator Associate** (beta). Confirm current exam numbers/status on Microsoft Learn | Microsoft Learn |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -356,11 +357,27 @@ Cisco Security XXV). The four current certifications — **ZTCA** (associate),
 confirmed the same day against Zscaler's Customer Success Center and Cyber
 Academy pages; third-party exam-dump sites were excluded as sources.
 
-Like Forescout (Volume XV), **Zscaler publishes learning paths rather than
-weighted exam domains** openly, so the volume follows the platform's own
-product pillars — ZIA, ZPA, ZDX, and the Client Connector — and the
-certification outcomes Zscaler states, not any percentage breakdown. The
-detailed exam blueprints sit behind the Cyber Academy login; the exam name,
-cost, language, and learning path per credential are the currency signals
-to re-check, since Zscaler renames courses and certifications as the
-platform evolves.
+**Update (26 July 2026):** the three professional Zscaler exams — ZDTA,
+ZDTE, and ZDXA — **do publish weighted blueprints**, confirmed against
+Zscaler's official Certification Program Brief and Certification Exam FAQs;
+only the associate **ZTCA** is course-only with no published blueprint. The
+volume follows the platform's product pillars — ZIA, ZPA, ZDX, and the
+Client Connector — which serve all four credentials, with the published
+weightings, exam formats (all three professional exams 60 Q / 90 min,
+US$300, two-year validity) and delivery (Pearson VUE / OnVUE) recorded in
+the [Zscaler certification appendix](volumes/volume-97-master-appendices/chapters/11-appendix-zscaler-certifications-and-course-access.md).
+Exam name, cost, language, and learning path per credential remain the
+currency signals to re-check, since Zscaler renames courses and
+certifications as the platform evolves.
+
+Volume XXXVI (Windows Server 2025 and Active Directory) was created on
+**26 July 2026** as the Windows counterpart to the Linux platform volumes
+(XIV Red Hat Enterprise Linux 10, XXI Ubuntu Server). It is a
+product/administration volume — eleven chapters with PowerShell walkthrough
+labs — mapped to Microsoft's **Windows Server Hybrid Administrator** exams
+(**AZ-800**, **AZ-801**) and the newer on-premises **Windows Server
+Administrator** credential (beta at the time of writing). The current
+Microsoft role-based certification catalog was verified the same day
+against the Microsoft Learn Catalog API. Windows Server is deliberately kept
+as a product volume; the broader Microsoft certification program beyond
+Azure is reserved for a dedicated tracks volume.
