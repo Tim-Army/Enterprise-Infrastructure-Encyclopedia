@@ -112,48 +112,360 @@ renew on time through the free annual assessment.
 
 ## Hands-On Lab
 
-Exam-preparation walkthroughs for the Microsoft 365 family.
+Per-topic walkthroughs — **one lab for every weighted "skills measured" domain**
+of each M365 certification (MS-900, MS-102, MD-102, MS-700, MS-721), with the
+domain weight from the Microsoft Learn study guide.
 
-**Shared prerequisites for Labs 2.1–2.2** — a browser; `curl` for Lab 2.1.
-**Cost:** none.
+**Shared prerequisites** — a Microsoft 365 **developer tenant** and the
+**Microsoft Graph PowerShell SDK** (`Connect-MgGraph`), **Teams PowerShell**
+(`Connect-MicrosoftTeams`), and the **Purview/IPPS** module (`Connect-IPPSSession`).
+Commands are illustrative walkthroughs against a tenant (read-only unless a
+cleanup is shown); consent to the listed scopes at first connect. **Cost:** none
+on a developer tenant.
 
-### Lab 2.1 — Confirm the M365 exam codes (Topic: Verify the family)
+### Lab 2.1 — MS-900: Describe cloud concepts (5–10%)
 
-**Objective:** Prove the current codes from Learn.
+**Objective:** See the SaaS subscriptions the tenant consumes.
 
-```bash
-for slug in microsoft-365-fundamentals m365-administrator-expert modern-desktop; do
-  curl -s "https://learn.microsoft.com/en-us/credentials/certifications/$slug/" \
-    | grep -oE '\b(MS|MD)-[0-9]{3}\b' | sort -u | tr '\n' ' '; echo " <- $slug"
-done
+```powershell
+Connect-MgGraph -Scopes "Organization.Read.All" -NoWelcome
+(Get-MgSubscribedSku).SkuPartNumber
 ```
 
-**Expected result:** MS-900, MS-102, and MD-102 respectively — verified codes,
-not memory.
+**Expected result:** SKU part numbers (e.g., `SPE_E3`, `ENTERPRISEPREMIUM`) —
+the cloud (SaaS) services M365 delivers.
 
-**Negative test:** search for "MS-101" on the Endpoint Administrator page; it
-is not there — MS-101 is retired.
+**Negative test:** try to "install" M365 on a server; it is SaaS — Microsoft
+operates the infrastructure.
+
+**Cleanup:** none (read-only).
+
+### Lab 2.2 — MS-900: Describe Microsoft 365 apps and services (45–50%)
+
+**Objective:** Enumerate the service plans bundled in the tenant.
+
+```powershell
+(Get-MgSubscribedSku).ServicePlans.ServicePlanName | Sort-Object -Unique | Select-Object -First 8
+```
+
+**Expected result:** service-plan names (`EXCHANGE_S_ENTERPRISE`,
+`SHAREPOINTENTERPRISE`, `TEAMS1`, …) — the apps and services M365 bundles.
+
+**Negative test:** assume every SKU includes Teams Phone; add-ons like Teams
+Phone are separate service plans.
 
 **Cleanup:** none.
 
-### Lab 2.2 — Build an M365 administrator path (Topic: Study plan)
+### Lab 2.3 — MS-900: Describe security, compliance, privacy, and trust in Microsoft 365 (25–30%)
 
-**Objective:** Sequence the family for a real role.
+**Objective:** Read the tenant's Microsoft Secure Score.
 
-```text
-Endpoint-and-tenant administrator:
-  MS-900 (Fundamentals) -> MD-102 (Endpoint) -> MS-102 (Administrator Expert)
-  + SC-300 (Identity) for the security half of MS-102.
-Map to Vol XXXVII: Ch 01 (tenant), Ch 05–07 (endpoints), Ch 02–04 (identity),
-Ch 08–11 (workloads, compliance, protection).
+```powershell
+Connect-MgGraph -Scopes "SecurityEvents.Read.All" -NoWelcome
+(Get-MgSecuritySecureScore -Top 1).CurrentScore
 ```
 
-**Expected result:** a Fundamentals→Associate→Expert path anchored to hands-on
-chapters — the deliberate order for the M365 role.
+**Expected result:** a numeric Secure Score — the posture measure M365 exposes
+for trust and security.
 
-**Negative test:** attempt MS-102 first with no tenant experience; its
-identity/security/compliance breadth is punishing without the Associate and SC
-groundwork.
+**Negative test:** treat a high Secure Score as "fully compliant"; it measures
+configuration, not regulatory compliance.
+
+**Cleanup:** none.
+
+### Lab 2.4 — MS-900: Describe Microsoft 365 pricing, licensing, and support (10–15%)
+
+**Objective:** Inspect license consumption (assigned vs available).
+
+```powershell
+Get-MgSubscribedSku | Select-Object SkuPartNumber, ConsumedUnits, @{n='Total';e={$_.PrepaidUnits.Enabled}}
+```
+
+**Expected result:** per-SKU consumed vs total units — the licensing model you
+manage and pay for.
+
+**Negative test:** assign a plan that has a prerequisite service plan without
+it; the dependency blocks activation.
+
+**Cleanup:** none.
+
+### Lab 2.5 — MS-102: Deploy and manage a Microsoft 365 tenant (25–30%)
+
+**Objective:** Read core tenant/organization settings.
+
+```powershell
+Get-MgOrganization | Select-Object DisplayName, City, CountryLetterCode -ExpandProperty VerifiedDomains
+```
+
+**Expected result:** the tenant name, location, and verified domains — the
+tenant configuration MS-102 manages.
+
+**Negative test:** try to rename the initial `*.onmicrosoft.com` domain; it is
+fixed — add a custom verified domain instead.
+
+**Cleanup:** none.
+
+### Lab 2.6 — MS-102: Implement and manage Microsoft Entra identity and access (25–30%)
+
+**Objective:** Provision an Entra user (identity lifecycle).
+
+```powershell
+Connect-MgGraph -Scopes "User.ReadWrite.All" -NoWelcome
+$d=(Get-MgOrganization).VerifiedDomains[0].Name
+$pp=@{Password='TempP@ss2026!';ForceChangePasswordNextSignIn=$true}
+New-MgUser -DisplayName "Lab User" -AccountEnabled -MailNickname labuser -UserPrincipalName "labuser@$d" -PasswordProfile $pp
+```
+
+**Expected result:** a new enabled user with a UPN — Entra identity
+provisioning.
+
+**Negative test:** omit the `PasswordProfile`; a cloud account cannot be created
+without it.
+
+**Cleanup:** `Remove-MgUser -UserId "labuser@$d"`.
+
+### Lab 2.7 — MS-102: Manage security and threats by using Microsoft Defender XDR (30–35%)
+
+**Objective:** Triage the Defender XDR incident queue.
+
+```powershell
+Connect-MgGraph -Scopes "SecurityIncident.Read.All" -NoWelcome
+Get-MgSecurityIncident -Top 5 | Select-Object DisplayName, Severity, Status
+```
+
+**Expected result:** incidents with severity and status — the XDR queue an M365
+admin works.
+
+**Negative test:** expect endpoint alerts with no Defender for Endpoint
+onboarding; unonboarded devices produce none.
+
+**Cleanup:** none.
+
+### Lab 2.8 — MS-102: Manage compliance by using Microsoft Purview (10–15%)
+
+**Objective:** List retention (compliance) policies.
+
+```powershell
+Connect-IPPSSession
+Get-RetentionCompliancePolicy | Select-Object Name, Enabled, Workload
+```
+
+**Expected result:** retention policies with their workloads — the Purview
+controls MS-102 covers.
+
+**Negative test:** apply a delete-retention policy without review; retention
+actions can be irreversible.
+
+**Cleanup:** none.
+
+### Lab 2.9 — MD-102: Prepare infrastructure for devices (20–25%)
+
+**Objective:** Read the Intune enrollment configuration.
+
+```powershell
+Connect-MgGraph -Scopes "DeviceManagementServiceConfig.Read.All" -NoWelcome
+Get-MgDeviceManagementDeviceEnrollmentConfiguration | Select-Object DisplayName, Priority
+```
+
+**Expected result:** enrollment restriction/configuration profiles — the device
+infrastructure Intune prepares.
+
+**Negative test:** enroll a device with the MDM authority unset; enrollment
+fails until Intune is the MDM authority.
+
+**Cleanup:** none.
+
+### Lab 2.10 — MD-102: Manage and maintain devices (25–30%)
+
+**Objective:** List managed devices with their compliance state.
+
+```powershell
+Connect-MgGraph -Scopes "DeviceManagementManagedDevices.Read.All" -NoWelcome
+Get-MgDeviceManagementManagedDevice -Top 5 | Select-Object DeviceName, OperatingSystem, ComplianceState
+```
+
+**Expected result:** enrolled devices with OS and compliance state — the managed
+estate.
+
+**Negative test:** expect a device to appear instantly after enrollment; sync
+latency delays inventory.
+
+**Cleanup:** none.
+
+### Lab 2.11 — MD-102: Protect devices (15–20%)
+
+**Objective:** Read a device compliance policy.
+
+```powershell
+Get-MgDeviceManagementDeviceCompliancePolicy -Top 3 | Select-Object DisplayName
+```
+
+**Expected result:** compliance policy names (BitLocker/OS-version rules) —
+device protection controls.
+
+**Negative test:** rely on a compliance policy with no Conditional Access;
+without CA, non-compliant devices still get access.
+
+**Cleanup:** none.
+
+### Lab 2.12 — MD-102: Manage and secure applications (15–20%)
+
+**Objective:** List deployed client apps.
+
+```powershell
+Get-MgDeviceAppManagementMobileApp -Top 5 | Select-Object DisplayName, AdditionalProperties
+```
+
+**Expected result:** app assignments (Win32/store/protected apps) — application
+management.
+
+**Negative test:** deploy a required app with no assignment group; unassigned
+apps never install.
+
+**Cleanup:** none.
+
+### Lab 2.13 — MD-102: Optimize endpoint operations by using automation, monitoring, and reporting (10–15%)
+
+**Objective:** Produce an endpoint compliance report metric.
+
+```powershell
+(Get-MgDeviceManagementManagedDevice -All).ComplianceState | Group-Object | Select-Object Name, Count
+```
+
+**Expected result:** device counts grouped by compliance state — the reporting
+that drives endpoint operations.
+
+**Negative test:** read one snapshot as a trend; endpoint reporting needs a
+time series.
+
+**Cleanup:** none.
+
+### Lab 2.14 — MS-700: Configure and manage a Teams environment (40–45%)
+
+**Objective:** Read org-wide Teams client configuration.
+
+```powershell
+Connect-MicrosoftTeams
+Get-CsTeamsClientConfiguration | Select-Object Identity, AllowGuestUser
+```
+
+**Expected result:** the client configuration including guest access — the
+org-wide environment settings.
+
+**Negative test:** enable Teams guest access while Entra external collaboration
+is off; both layers must allow it.
+
+**Cleanup:** none.
+
+### Lab 2.15 — MS-700: Manage teams, channels, chats, and apps (20–25%)
+
+**Objective:** List teams and their visibility.
+
+```powershell
+Get-Team | Select-Object -First 3 DisplayName, Visibility
+```
+
+**Expected result:** teams with Public/Private visibility — the collaboration
+objects you manage.
+
+**Negative test:** delete a team to "archive" it; archiving preserves content,
+deletion removes it — use archive.
+
+**Cleanup:** none.
+
+### Lab 2.16 — MS-700: Manage meetings and calling (15–20%)
+
+**Objective:** Inspect the global meeting policy.
+
+```powershell
+Get-CsTeamsMeetingPolicy -Identity Global | Select-Object AllowCloudRecording, AllowMeetNow
+```
+
+**Expected result:** meeting policy settings (recording, meet-now) — meeting
+governance.
+
+**Negative test:** expect recordings with cloud recording off; recording needs
+the policy on and OneDrive/SharePoint storage.
+
+**Cleanup:** none.
+
+### Lab 2.17 — MS-700: Monitor, report on, and troubleshoot Teams (15–20%)
+
+**Objective:** Read the Teams upgrade/coexistence mode.
+
+```powershell
+Get-CsTeamsUpgradePolicy | Select-Object Identity, Mode
+```
+
+**Expected result:** upgrade policy modes (`TeamsOnly`, `Islands`) — a frequent
+root cause when chats/calls route unexpectedly.
+
+**Negative test:** troubleshoot missing chats without checking coexistence mode;
+`Islands` splits activity across clients.
+
+**Cleanup:** none.
+
+### Lab 2.18 — MS-721: Plan and design collaboration communications systems (20–25%)
+
+**Objective:** Read the tenant's voice-routing design.
+
+```powershell
+Get-CsOnlineVoiceRoutingPolicy | Select-Object Identity
+```
+
+**Expected result:** voice routing policies — the calling-design foundation for
+Teams Phone.
+
+**Negative test:** design Direct Routing with an uncertified SBC; unsupported
+SBCs break call flows.
+
+**Cleanup:** none.
+
+### Lab 2.19 — MS-721: Configure and manage Teams meetings, webinars, and town halls (15–20%)
+
+**Objective:** Inspect the events policy for webinars/town halls.
+
+```powershell
+Get-CsTeamsEventsPolicy | Select-Object Identity, AllowWebinars, AllowTownhalls
+```
+
+**Expected result:** event policy settings for webinars and town halls —
+large-scale meeting governance.
+
+**Negative test:** assume every license can host town halls; premium
+capabilities require the right license.
+
+**Cleanup:** none.
+
+### Lab 2.20 — MS-721: Implement and configure Teams Phone (30–35%)
+
+**Objective:** Read phone-number assignments.
+
+```powershell
+Get-CsPhoneNumberAssignment -Top 3 | Select-Object TelephoneNumber, NumberType, AssignedPstnTargetId
+```
+
+**Expected result:** assigned phone numbers with type — the Teams Phone
+provisioning core to MS-721.
+
+**Negative test:** assign a Calling Plan number with no Calling Plan license;
+the assignment fails.
+
+**Cleanup:** none.
+
+### Lab 2.21 — MS-721: Configure and manage Teams Rooms and devices (20–25%)
+
+**Objective:** List the resource accounts Teams Rooms/attendants use.
+
+```powershell
+Get-CsOnlineUser -Filter "AccountType -eq 'ResourceAccount'" | Select-Object -First 3 DisplayName
+```
+
+**Expected result:** resource accounts (used by Teams Rooms and auto attendants)
+— room/device management.
+
+**Negative test:** manage a Teams Room with no Teams Rooms license on its
+resource account; features are license-gated.
 
 **Cleanup:** none.
 

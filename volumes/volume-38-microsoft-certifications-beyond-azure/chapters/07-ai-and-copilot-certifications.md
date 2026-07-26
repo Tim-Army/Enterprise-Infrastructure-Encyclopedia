@@ -112,47 +112,347 @@ governance** (Volume XXXVII). Renew annually through the free assessment.
 
 ## Hands-On Lab
 
-Exam-preparation walkthroughs for the AI family.
+Per-topic walkthroughs — **one lab for every weighted "skills measured" domain**
+of the AI family (AI-901 Fundamentals, AI-102, AI-103, AI-500). Domain weights
+are from the current Azure AI Fundamentals/Engineer study guides.
 
-**Shared prerequisites for Labs 7.1–7.2** — a browser; `curl` for Lab 7.1.
-**Cost:** none.
+**Shared prerequisites** — an **Azure subscription** with the **Azure CLI**
+(`az`, `az extension add -n ml`), an **Azure AI Foundry / OpenAI** resource for
+the generative labs, and Python with the `azure-ai-*` SDKs. Endpoints/keys are
+shown as `$AOAI`, `$VISION`, etc.; prefer Entra/managed identity over keys.
+**Cost:** small — use F0/free tiers and delete resources after.
 
-### Lab 7.1 — Confirm the AI Fundamentals renumber (Topic: Verify currency)
+### Lab 7.1 — AI-901: Describe Artificial Intelligence workloads and considerations (15–20%)
 
-**Objective:** Prove AI-901 is current.
+**Objective:** Enumerate the Azure AI service kinds (workload families).
 
 ```bash
-curl -s "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/" \
-  | grep -oE '\bAI-[0-9]{3}\b' | sort -u
+az cognitiveservices account list-kinds -o tsv | tr '\t' '\n' | head
 ```
 
-**Expected result:** **AI-901** — the current Azure AI Fundamentals exam
-(AI-900 retired).
+**Expected result:** service kinds (`OpenAI`, `ComputerVision`, `TextAnalytics`,
+…) — the AI workloads Azure offers.
 
-**Negative test:** search for an "AI-900" certification page; it is retired —
-study AI-901.
+**Negative test:** deploy AI with no responsible-AI review; fairness,
+reliability, and privacy are exam considerations.
 
 **Cleanup:** none.
 
-### Lab 7.2 — Plan an AI/agent path (Topic: Study plan)
+### Lab 7.2 — AI-901: Describe fundamental principles of machine learning on Azure (15–20%)
 
-**Objective:** Sequence for a generative-AI/agent developer.
+**Objective:** Classify ML task types.
 
 ```text
-AI-901 (Fundamentals)
-  -> AI-102 (Azure AI Engineer) as the core
-  -> AI-103 (AI Apps and Agents Developer) for GenAI/agents
-  -> AI-500 (Multi-Agent Expert, beta) for senior multi-agent design.
-Administrators instead: Copilot and Agent Administration Fundamentals,
-tied to Vol XXXVII Ch 10–11 governance.
+Supervised: regression (numeric), classification (label)
+Unsupervised: clustering
+Azure ML: Automated ML tunes models; Designer for no-code pipelines
 ```
 
-**Expected result:** a Fundamentals→Associate→Expert developer path, with a
-separate administration branch.
+**Expected result:** the ML task taxonomy and Azure ML tooling — ML
+fundamentals.
 
-**Negative test:** plan around AI-900; it is renumbered — anchor on AI-901.
+**Negative test:** score a regression model with accuracy; use RMSE/R².
 
 **Cleanup:** none.
+
+### Lab 7.3 — AI-901: Describe features of computer vision workloads on Azure (15–20%)
+
+**Objective:** Create an AI Vision resource.
+
+```bash
+az cognitiveservices account create -n lab-vision -g rg-lab --kind ComputerVision --sku F0 -l eastus --yes
+```
+
+**Expected result:** an AI Vision resource (F0 free) — image analysis, OCR, and
+face workloads.
+
+**Negative test:** expect custom object detection from the prebuilt Read API;
+custom models use Custom Vision / AI Foundry.
+
+**Cleanup:** `az cognitiveservices account delete -n lab-vision -g rg-lab`.
+
+### Lab 7.4 — AI-901: Describe features of Natural Language Processing (NLP) workloads on Azure (15–20%)
+
+**Objective:** Create a Language (Text Analytics) resource.
+
+```bash
+az cognitiveservices account create -n lab-lang -g rg-lab --kind TextAnalytics --sku F0 -l eastus --yes
+```
+
+**Expected result:** a Language resource — sentiment, key phrases, entity
+recognition, and question answering.
+
+**Negative test:** expect translation here; use the Translator resource.
+
+**Cleanup:** `az cognitiveservices account delete -n lab-lang -g rg-lab`.
+
+### Lab 7.5 — AI-901: Describe features of generative AI workloads on Azure (20–25%)
+
+**Objective:** List Azure OpenAI model deployments.
+
+```bash
+az cognitiveservices account deployment list -n <openai-acct> -g rg-lab -o table
+```
+
+**Expected result:** deployed generative models (`gpt-4o`, embeddings) — the
+generative-AI workload.
+
+**Negative test:** send unbounded prompts expecting unlimited context; models
+have token limits.
+
+**Cleanup:** none.
+
+### Lab 7.6 — AI-102: Plan and manage an Azure AI solution (20–25%)
+
+**Objective:** Provision a multi-service AI resource and read a key.
+
+```bash
+az cognitiveservices account create -n lab-aisvc -g rg-lab --kind AIServices --sku S0 -l eastus --yes
+az cognitiveservices account keys list -n lab-aisvc -g rg-lab --query key1 -o tsv
+```
+
+**Expected result:** an AI Services resource and a key — the managed AI solution
+AI-102 plans.
+
+**Negative test:** embed the key in client code; use Entra/managed identity and
+Key Vault.
+
+**Cleanup:** `az cognitiveservices account delete -n lab-aisvc -g rg-lab`.
+
+### Lab 7.7 — AI-102: Implement generative AI solutions (15–20%)
+
+**Objective:** Call a chat completion (Azure OpenAI).
+
+```bash
+curl "$AOAI/openai/deployments/gpt-4o/chat/completions?api-version=2024-10-21" \
+  -H "api-key: $KEY" -H "Content-Type: application/json" \
+  -d '{"messages":[{"role":"user","content":"Say hi"}]}'
+```
+
+**Expected result:** a JSON completion with the assistant message — a
+generative-AI call.
+
+**Negative test:** send PII with no content filtering/logging controls;
+configure data-privacy settings.
+
+**Cleanup:** none.
+
+### Lab 7.8 — AI-102: Implement an agentic solution (5–10%)
+
+**Objective:** Define a tool-using agent (Azure AI Agent Service).
+
+```python
+agent = project.agents.create_agent(model="gpt-4o", name="lab",
+        instructions="Use tools to answer.", tools=[code_interpreter])
+```
+
+**Expected result:** an agent with a tool attached — the agentic pattern (LLM +
+tools + instructions).
+
+**Negative test:** grant broad tool access with no guardrails; scope tools and
+add approvals.
+
+**Cleanup:** delete the agent.
+
+### Lab 7.9 — AI-102: Implement computer vision solutions (10–15%)
+
+**Objective:** Run image analysis (caption + read).
+
+```bash
+curl "$VISION/computervision/imageanalysis:analyze?api-version=2024-02-01&features=caption,read" \
+  -H "Ocp-Apim-Subscription-Key: $KEY" -H "Content-Type: application/json" \
+  -d '{"url":"https://aka.ms/azai/vision/example"}'
+```
+
+**Expected result:** a caption and OCR text JSON — implementing vision.
+
+**Negative test:** trust OCR of a rotated low-DPI scan blindly; preprocess and
+validate.
+
+**Cleanup:** none.
+
+### Lab 7.10 — AI-102: Implement natural language processing solutions (15–20%)
+
+**Objective:** Run sentiment analysis (Language service).
+
+```bash
+curl "$LANG/language/:analyze-text?api-version=2023-04-01" \
+  -H "Ocp-Apim-Subscription-Key: $KEY" -H "Content-Type: application/json" \
+  -d '{"kind":"SentimentAnalysis","analysisInput":{"documents":[{"id":"1","text":"Great service"}]}}'
+```
+
+**Expected result:** a positive sentiment score JSON — NLP implementation.
+
+**Negative test:** use sentiment for intent; use conversational language
+understanding (CLU) for intent.
+
+**Cleanup:** none.
+
+### Lab 7.11 — AI-102: Implement knowledge mining and information extraction solutions (15–20%)
+
+**Objective:** Create an Azure AI Search service (knowledge mining backbone).
+
+```bash
+az search service create -n lab-search -g rg-lab --sku basic -l eastus
+```
+
+**Expected result:** an AI Search service — skillsets, indexers, and vector
+search for RAG/knowledge mining.
+
+**Negative test:** build RAG with no chunking; indexing whole documents degrades
+retrieval.
+
+**Cleanup:** `az search service delete -n lab-search -g rg-lab -y`.
+
+### Lab 7.12 — AI-103: Plan and manage an Azure AI solution (25–30%)
+
+**Objective:** Create an AI Foundry project under a hub.
+
+```bash
+az ml workspace create --kind project --hub-id <hub> -n lab-proj -g rg-lab
+```
+
+**Expected result:** an AI Foundry project — the managed, Python-centric
+environment AI-103 plans.
+
+**Negative test:** share one project across unrelated teams; isolate with
+projects and RBAC.
+
+**Cleanup:** delete the project.
+
+### Lab 7.13 — AI-103: Implement generative AI and agentic solutions (30–35%)
+
+**Objective:** Ground an agent with retrieval (RAG) — the largest AI-103 domain.
+
+```python
+from azure.ai.projects import AIProjectClient
+client = AIProjectClient.from_connection_string(conn, cred)
+agent = client.agents.create_agent(model="gpt-4o", tools=[file_search])  # RAG
+```
+
+**Expected result:** an agent grounded with file search (RAG) — generative +
+agentic development.
+
+**Negative test:** fine-tune for changing facts; ground with retrieval instead.
+
+**Cleanup:** delete the agent.
+
+### Lab 7.14 — AI-103: Implement computer vision solutions (10–15%)
+
+**Objective:** Caption an image via the Foundry vision client.
+
+```python
+result = vision_client.analyze(image_url=url, visual_features=[VisualFeatures.CAPTION])
+print(result.caption.text)
+```
+
+**Expected result:** a generated caption string — vision in an app.
+
+**Negative test:** display captions with no moderation; apply content safety.
+
+**Cleanup:** none.
+
+### Lab 7.15 — AI-103: Implement text analysis solutions (10–15%)
+
+**Objective:** Extract key phrases.
+
+```python
+docs = ["Contoso ships the order next week"]
+print(text_client.extract_key_phrases(docs)[0].key_phrases)
+```
+
+**Expected result:** key phrases (e.g., `['Contoso','order','next week']`) —
+text analysis.
+
+**Negative test:** run one language model over mixed-language text; detect
+language first.
+
+**Cleanup:** none.
+
+### Lab 7.16 — AI-103: Implement information extraction solutions (10–15%)
+
+**Objective:** Extract invoice fields with Document Intelligence.
+
+```bash
+curl "$DOC/documentintelligence/documentModels/prebuilt-invoice:analyze?api-version=2024-11-30" \
+  -H "Ocp-Apim-Subscription-Key: $KEY" -H "Content-Type: application/json" \
+  -d '{"urlSource":"https://aka.ms/az-invoice"}'
+```
+
+**Expected result:** an `operation-location` for the async invoice analysis —
+structured field extraction.
+
+**Negative test:** regex-parse a PDF invoice; use Document Intelligence
+prebuilt/custom models.
+
+**Cleanup:** none.
+
+### Lab 7.17 — AI-500: Architect multi-agent solutions (15–20%)
+
+**Objective:** Design an orchestrator/worker topology.
+
+```text
+Orchestrator agent -> specialist agents (retriever, coder, reviewer)
+Shared memory + message passing; explicit handoff/routing between agents
+```
+
+**Expected result:** the orchestrator-plus-specialists topology — multi-agent
+architecture.
+
+**Negative test:** build one giant agent for every task; decompose into
+specialists.
+
+**Cleanup:** none.
+
+### Lab 7.18 — AI-500: Develop multi-agent solutions in Azure (30–35%)
+
+**Objective:** Coordinate two agents with a group chat (top domain).
+
+```python
+# Semantic Kernel AgentGroupChat / AutoGen
+chat = AgentGroupChat(agents=[planner, coder], termination_strategy=max_turns(6))
+await chat.invoke("Build and review a function")
+```
+
+**Expected result:** a group chat coordinating a planner and coder — multi-agent
+development on Azure.
+
+**Negative test:** let agents loop with no termination strategy; set
+turn/termination limits.
+
+**Cleanup:** none.
+
+### Lab 7.19 — AI-500: Evaluate, optimize, and monitor multi-agent solutions (20–25%)
+
+**Objective:** Score agent output with the Azure AI Evaluation SDK.
+
+```python
+from azure.ai.evaluation import evaluate, GroundednessEvaluator
+evaluate(data="runs.jsonl", evaluators={"groundedness": GroundednessEvaluator(model)})
+```
+
+**Expected result:** groundedness/relevance scores per run — evaluating and
+monitoring agents.
+
+**Negative test:** ship agents with no eval harness; regressions go unnoticed.
+
+**Cleanup:** none.
+
+### Lab 7.20 — AI-500: Secure, govern, and deploy multi-agent solutions (20–25%)
+
+**Objective:** Front the agents with Content Safety (governance).
+
+```bash
+az cognitiveservices account create -n lab-safety -g rg-lab --kind ContentSafety --sku S0 -l eastus --yes
+```
+
+**Expected result:** a Content Safety resource — securing/governing multi-agent
+deployments (identity, safety, quotas).
+
+**Negative test:** expose agent tools publicly with no auth; require Entra and
+network controls.
+
+**Cleanup:** `az cognitiveservices account delete -n lab-safety -g rg-lab`.
 
 ## Lab Verification
 

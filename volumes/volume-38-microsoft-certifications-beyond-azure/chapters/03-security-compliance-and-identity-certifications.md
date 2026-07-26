@@ -108,45 +108,380 @@ assessment.
 
 ## Hands-On Lab
 
-Exam-preparation walkthroughs for the SC family.
+Per-topic walkthroughs — **one lab for every weighted "skills measured" domain**
+of the SC family (SC-900, SC-300, SC-200, SC-401, SC-100, SC-500).
 
-**Shared prerequisites for Labs 3.1–3.2** — a browser; `curl` for Lab 3.1.
-**Cost:** none.
+**Shared prerequisites** — a Microsoft 365/Azure **developer tenant**, the
+**Microsoft Graph PowerShell SDK**, the **Purview/IPPS** module
+(`Connect-IPPSSession`), and the **Azure CLI** (`az login`) for the SC-500 and
+SC-100 infrastructure labs. Commands are illustrative walkthroughs against a
+tenant; consent to the listed scopes. **Cost:** none on a developer tenant.
 
-### Lab 3.1 — Confirm the SC renames (Topic: Verify currency)
+### Lab 3.1 — SC-900: Describe the concepts of security, compliance, and identity (10–15%)
 
-**Objective:** Prove SC-401 and SC-500 from Learn.
+**Objective:** Identify the tenant's identity authority (cloud vs hybrid).
 
-```bash
-curl -s "https://learn.microsoft.com/en-us/credentials/certifications/information-security-administrator/" | grep -oE '\bSC-[0-9]{3}\b' | sort -u
-curl -s "https://learn.microsoft.com/en-us/credentials/certifications/cloud-and-ai-security-engineer-associate/" | grep -oE '\bSC-[0-9]{3}\b' | sort -u
+```powershell
+Connect-MgGraph -Scopes "Organization.Read.All" -NoWelcome
+Get-MgOrganization | Select-Object DisplayName, OnPremisesSyncEnabled
 ```
 
-**Expected result:** **SC-401** and **SC-500** respectively — the current
-information-security exam and the new cloud-and-AI-security exam.
+**Expected result:** the tenant and whether it syncs from on-prem AD — a core
+identity concept (cloud vs hybrid).
 
-**Negative test:** look for SC-400 on the information-security page; it is not
-there — SC-400 retired.
+**Negative test:** assume cloud identity removes shared responsibility; the
+customer still owns identity governance.
 
 **Cleanup:** none.
 
-### Lab 3.2 — Build a security path (Topic: Study plan)
+### Lab 3.2 — SC-900: Describe the capabilities of Microsoft Entra (25–30%)
 
-**Objective:** Sequence the SC family for a SOC-plus-identity role.
+**Objective:** Enumerate Entra directory roles (identity RBAC).
 
-```text
-SC-900 (Fundamentals)
-  -> SC-300 (Identity and Access) + SC-200 (Security Operations)
-  -> SC-401 (Information Security) as compliance depth
-  -> SC-100 (Cybersecurity Architect Expert) once cross-domain experience exists.
-Practice: Vol XXXVII Ch 03 (Conditional Access), Ch 10 (Purview), Ch 11 (Defender XDR).
+```powershell
+Connect-MgGraph -Scopes "RoleManagement.Read.Directory" -NoWelcome
+Get-MgDirectoryRole | Select-Object DisplayName | Select-Object -First 8
 ```
 
-**Expected result:** a Fundamentals→Associate→Expert security path anchored to
-hands-on labs.
+**Expected result:** activated directory roles (Global Administrator, …) —
+Entra's access-management capabilities.
 
-**Negative test:** target SC-100 first; the architect exam's breadth is very
-hard without the Associate foundation.
+**Negative test:** assume every role is always active; some are eligible via PIM
+until activated.
+
+**Cleanup:** none.
+
+### Lab 3.3 — SC-900: Describe the capabilities of Microsoft security solutions (35–40%)
+
+**Objective:** Read the Defender security posture.
+
+```powershell
+Connect-MgGraph -Scopes "SecurityEvents.Read.All" -NoWelcome
+Get-MgSecuritySecureScore -Top 1 | Select-Object CurrentScore, MaxScore
+```
+
+**Expected result:** current vs max Secure Score — the Microsoft Defender
+security-solution posture.
+
+**Negative test:** equate Secure Score with Sentinel coverage; they are
+different tools (posture vs SIEM).
+
+**Cleanup:** none.
+
+### Lab 3.4 — SC-900: Describe the capabilities of Microsoft compliance solutions (20–25%)
+
+**Objective:** List Purview retention (compliance) policies.
+
+```powershell
+Connect-IPPSSession
+Get-RetentionCompliancePolicy | Select-Object Name, Workload
+```
+
+**Expected result:** retention policies by workload — Purview compliance
+capabilities.
+
+**Negative test:** assume Purview auto-classifies with no labels; you configure
+sensitivity/retention labels first.
+
+**Cleanup:** none.
+
+### Lab 3.5 — SC-300: Implement and manage user identities (20–25%)
+
+**Objective:** Provision a user identity.
+
+```powershell
+Connect-MgGraph -Scopes "User.ReadWrite.All" -NoWelcome
+$d=(Get-MgOrganization).VerifiedDomains[0].Name
+New-MgUser -DisplayName "SC Lab" -AccountEnabled -MailNickname sclab -UserPrincipalName "sclab@$d" -PasswordProfile @{Password='TempP@ss2026!';ForceChangePasswordNextSignIn=$true}
+```
+
+**Expected result:** a provisioned user — the identity lifecycle SC-300 manages.
+
+**Negative test:** reuse an existing UPN; Entra rejects duplicate
+userPrincipalNames.
+
+**Cleanup:** `Remove-MgUser -UserId "sclab@$d"`.
+
+### Lab 3.6 — SC-300: Implement authentication and access management (20–25%)
+
+**Objective:** List Conditional Access policies.
+
+```powershell
+Connect-MgGraph -Scopes "Policy.Read.All" -NoWelcome
+Get-MgIdentityConditionalAccessPolicy | Select-Object DisplayName, State
+```
+
+**Expected result:** CA policies with state (enabled/report-only) —
+authentication and access management.
+
+**Negative test:** enforce a block-all CA policy with no emergency-access
+account; you can lock everyone out.
+
+**Cleanup:** none.
+
+### Lab 3.7 — SC-300: Plan and implement workload identities (20–25%)
+
+**Objective:** Enumerate service principals (workload identities).
+
+```powershell
+Connect-MgGraph -Scopes "Application.Read.All" -NoWelcome
+Get-MgServicePrincipal -Top 5 | Select-Object DisplayName, AppId
+```
+
+**Expected result:** service principals — the non-human identities SC-300
+governs.
+
+**Negative test:** leave a workload identity with a never-expiring secret;
+rotate credentials and prefer managed identities.
+
+**Cleanup:** none.
+
+### Lab 3.8 — SC-300: Plan and automate identity governance (20–25%)
+
+**Objective:** Read entitlement-management access packages.
+
+```powershell
+Connect-MgGraph -Scopes "EntitlementManagement.Read.All" -NoWelcome
+Get-MgEntitlementManagementAccessPackage -Top 5 | Select-Object DisplayName
+```
+
+**Expected result:** access packages — the entitlement-management governance
+SC-300 automates.
+
+**Negative test:** grant standing access instead of time-bound; governance
+favors access reviews and expiry.
+
+**Cleanup:** none.
+
+### Lab 3.9 — SC-200: Manage a security operations environment (40–45%)
+
+**Objective:** Read the Defender XDR alert surface.
+
+```powershell
+Connect-MgGraph -Scopes "SecurityAlert.Read.All" -NoWelcome
+Get-MgSecurityAlertV2 -Top 5 | Select-Object Title, Severity, Status
+```
+
+**Expected result:** security alerts with severity/status — the SecOps
+environment SC-200 operates.
+
+**Negative test:** suppress all informational alerts; some feed correlation into
+incidents.
+
+**Cleanup:** none.
+
+### Lab 3.10 — SC-200: Respond to security incidents (35–40%)
+
+**Objective:** Move an incident into investigation.
+
+```powershell
+Connect-MgGraph -Scopes "SecurityIncident.ReadWrite.All" -NoWelcome
+$i = Get-MgSecurityIncident -Top 1
+Update-MgSecurityIncident -IncidentId $i.Id -Status "inProgress"
+```
+
+**Expected result:** an incident set to `inProgress` — the response workflow.
+
+**Negative test:** close an incident with no classification; SC-200 requires
+triage/classification for metrics.
+
+**Cleanup:** set the incident status back as appropriate.
+
+### Lab 3.11 — SC-200: Perform threat hunting (20–25%)
+
+**Objective:** Run a KQL hunting query (Defender/Sentinel).
+
+```kusto
+DeviceProcessEvents
+| where FileName in~ ("powershell.exe","cmd.exe")
+| where ProcessCommandLine has_any ("-enc","IEX","DownloadString")
+| take 20
+```
+
+**Expected result:** suspicious encoded/download process events — proactive
+threat hunting with KQL.
+
+**Negative test:** hunt with no time window; unbounded queries are slow and
+noisy — scope by timestamp.
+
+**Cleanup:** none.
+
+### Lab 3.12 — SC-401: Implement information protection (30–35%)
+
+**Objective:** List sensitivity labels.
+
+```powershell
+Connect-IPPSSession
+Get-Label | Select-Object DisplayName, ContentType
+```
+
+**Expected result:** sensitivity labels (Confidential, …) — information-protection
+classification.
+
+**Negative test:** create a label but never publish a label policy; unpublished
+labels never reach users.
+
+**Cleanup:** none.
+
+### Lab 3.13 — SC-401: Implement data loss prevention and retention (30–35%)
+
+**Objective:** List DLP policies.
+
+```powershell
+Get-DlpCompliancePolicy | Select-Object Name, Mode, Workload
+```
+
+**Expected result:** DLP policies with mode/workload — data loss prevention
+controls.
+
+**Negative test:** deploy a DLP policy in enforce mode with no simulation;
+start in test mode to avoid false blocks.
+
+**Cleanup:** none.
+
+### Lab 3.14 — SC-401: Manage risks, alerts, and activities (30–35%)
+
+**Objective:** Read protection/compliance alerts.
+
+```powershell
+Get-ProtectionAlert | Select-Object Name, Severity, Category | Select-Object -First 5
+```
+
+**Expected result:** protection alerts by category/severity — the risk and alert
+surface SC-401 manages.
+
+**Negative test:** ignore low-severity DLP alerts wholesale; patterns of low
+alerts can indicate exfiltration.
+
+**Cleanup:** none.
+
+### Lab 3.15 — SC-100: Design solutions that align with security best practices and priorities (20–25%)
+
+**Objective:** Baseline posture to inform a Zero Trust design.
+
+```powershell
+Connect-MgGraph -Scopes "SecurityEvents.Read.All" -NoWelcome
+(Get-MgSecuritySecureScore -Top 1).CurrentScore
+```
+
+**Expected result:** the current Secure Score — the baseline an SC-100 architect
+designs improvements against (Zero Trust/MCRA).
+
+**Negative test:** design controls without measuring the baseline; you cannot
+prioritize unmeasured gaps.
+
+**Cleanup:** none.
+
+### Lab 3.16 — SC-100: Design security operations, identity, and compliance capabilities (25–30%)
+
+**Objective:** Inventory the identity capability to design a target state.
+
+```powershell
+Get-MgIdentityConditionalAccessPolicy | Measure-Object | Select-Object Count
+```
+
+**Expected result:** the count of existing CA policies — the identity capability
+an architect extends toward least privilege.
+
+**Negative test:** design SecOps with no log-retention plan; detection needs
+sufficient retention.
+
+**Cleanup:** none.
+
+### Lab 3.17 — SC-100: Design security solutions for infrastructure (25–30%)
+
+**Objective:** Read Defender for Cloud coverage (infrastructure design input).
+
+```bash
+az security pricing list --query "value[].{plan:name,tier:pricingTier}" -o table
+```
+
+**Expected result:** Defender for Cloud plans and tiers per resource type — the
+infrastructure protection an architect designs.
+
+**Negative test:** assume free-tier Defender protects servers; server protection
+needs the paid plan.
+
+**Cleanup:** none.
+
+### Lab 3.18 — SC-100: Design security solutions for applications and data (20–25%)
+
+**Objective:** Inventory data-classification labels to design app/data security.
+
+```powershell
+Connect-IPPSSession
+Get-Label | Measure-Object | Select-Object Count
+```
+
+**Expected result:** the count of sensitivity labels — the classification
+foundation an architect builds app/data protection on.
+
+**Negative test:** design DLP without classification; DLP is far weaker on
+unlabeled data.
+
+**Cleanup:** none.
+
+### Lab 3.19 — SC-500: Manage identity, access, and governance (20–25%)
+
+**Objective:** List Azure RBAC role assignments (cloud access governance).
+
+```bash
+az role assignment list --all --query "[].{principal:principalName,role:roleDefinitionName}" -o table | head
+```
+
+**Expected result:** Azure role assignments — the cloud access governance SC-500
+manages.
+
+**Negative test:** grant Owner broadly for convenience; least privilege
+(Contributor/custom roles) is required.
+
+**Cleanup:** none.
+
+### Lab 3.20 — SC-500: Secure storage, databases, and networking (25–30%)
+
+**Objective:** Check storage secure-transfer and public-access posture.
+
+```bash
+az storage account list --query "[].{name:name,https:enableHttpsTrafficOnly,public:allowBlobPublicAccess}" -o table
+```
+
+**Expected result:** per-account HTTPS-only and public-access flags — storage
+security posture.
+
+**Negative test:** leave `allowBlobPublicAccess=true` on sensitive data; disable
+public blob access.
+
+**Cleanup:** none.
+
+### Lab 3.21 — SC-500: Secure compute (20–25%)
+
+**Objective:** Read Defender for Cloud recommendations for compute.
+
+```bash
+az security assessment list --query "[?contains(displayName,'machine')].displayName" -o tsv | head
+```
+
+**Expected result:** compute-related security recommendations — securing
+VMs/containers.
+
+**Negative test:** expose SSH/RDP to the internet on a VM; use just-in-time
+access and a bastion instead.
+
+**Cleanup:** none.
+
+### Lab 3.22 — SC-500: Manage and monitor security posture (20–25%)
+
+**Objective:** Read the Defender for Cloud secure score.
+
+```bash
+az security secure-scores list --query "value[].{name:displayName,score:score.percentage}" -o table
+```
+
+**Expected result:** the cloud secure-score percentage — the posture SC-500
+monitors and improves.
+
+**Negative test:** chase 100% by exempting findings; exemptions hide risk rather
+than remediate it.
 
 **Cleanup:** none.
 

@@ -76,12 +76,20 @@ Volume XXXIII for the shared Azure and data/AI foundations.
 
 ## Lab coverage
 
-Every chapter carries a Hands-On Lab. Because this is a certification-tracks
-volume, the labs are **exam-preparation exercises**: mapping a scenario to
-the right credential and exam, reading a blueprint's weighted domains,
-building a study plan against the hands-on volumes, and — where a credential
-has a free practice assessment or a Microsoft Learn sandbox — using it. Each
-lab states an objective, steps, expected results, a negative test, and
+The family chapters go **per topic**: there is **one walkthrough lab for every
+weighted "skills measured" domain of every certification** — 199 domain labs in
+all — plus the program and currency labs in Chapters 01 and 09. The weight for
+each domain comes from that exam's Microsoft Learn study guide: M365 (21 labs
+across MS-900/MS-102/MD-102/MS-700/MS-721), Security/Compliance/Identity (22:
+SC-900/300/200/401/100/500), Power Platform (24: PL-900/200/300/400/500/600),
+Dynamics 365 (52 across the MB exams that publish a study guide), Data and
+Analytics (31: DP-900/700/600/300/420/100/750/800), AI and Copilot (20:
+AI-901/102/103/500), and GitHub (29: GH-900/100/300/500/600). Because these are
+Microsoft-platform skills, the walkthroughs use the appropriate tooling —
+**Microsoft Graph PowerShell**, **Teams PowerShell**, **Azure CLI (`az`)**, the
+**Power Platform CLI (`pac`)**, Dataverse Web API, X++/AL for Dynamics, and the
+**GitHub CLI (`gh`)** — as illustrative commands against a developer tenant.
+Each lab states an objective, commands, expected results, a negative test, and
 cleanup, and ends with a **`**Lab verified by:** *pending*`** sign-off.
 
 ## Software and platform baseline
