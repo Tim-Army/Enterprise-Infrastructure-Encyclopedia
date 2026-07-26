@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.46-blue)
+![Release](https://img.shields.io/badge/release-v1.2.47-blue)
 
-**v1.2.46 — latest release.** 43 volumes, 415 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.46) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.47 — latest release.** 44 volumes, 425 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.47) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -70,7 +70,8 @@ The series combines architecture and theory with implementation guidance, automa
 | XXXVIII | [Microsoft Certifications Beyond Azure](volumes/volume-38-microsoft-certifications-beyond-azure/README.md) | 9 |
 | XXXIX | [CompTIA Certification Tracks](volumes/volume-39-comptia-certification-tracks/README.md) | 9 |
 | XL | [ISC2 Certification Tracks](volumes/volume-40-isc2-certifications/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 14 |
+| XLI | [CNCF and Kubernetes Certification Tracks](volumes/volume-41-cncf-kubernetes-certifications/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 15 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
@@ -107,6 +108,7 @@ ascending order.
 | Google Cloud | [XXXIV Google Cloud Certification Tracks](volumes/volume-34-google-cloud-certifications/README.md) — the whole Google Cloud certification program in one volume: foundational, associate, and professional |
 | CompTIA | [XXXIX CompTIA Certification Tracks](volumes/volume-39-comptia-certification-tracks/README.md) — the whole vendor-neutral program in one volume: the classic Core, Infrastructure, Cybersecurity, and Data "plus" certifications, the hands-on Xpert "Pro" series, and the Essentials microcredentials — the foundation beneath the vendor tracks |
 | ISC2 | [XL ISC2 Certification Tracks](volumes/volume-40-isc2-certifications/README.md) — the whole ISC2 program in one volume: CC, SSCP, CISSP and its ISSAP/ISSEP/ISSMP concentrations, CCSP, CGRC, and CSSLP — the vendor-neutral governance, architecture, and management tier above the other tracks |
+| CNCF / Kubernetes | [XLI CNCF and Kubernetes Certification Tracks](volumes/volume-41-cncf-kubernetes-certifications/README.md) — the whole cloud-native program in one volume: the performance-based Kubernetes core (CKA, CKAD, CKS), the cloud-native associates (KCNA, KCSA, PCA, OTCA, ICA, CCA, CAPA, CGOA, CBA, KCA), and the new platform-engineering track (CNPA, CNPE) |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) |
