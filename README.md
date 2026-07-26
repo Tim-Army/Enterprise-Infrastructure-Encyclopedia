@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.39-blue)
+![Release](https://img.shields.io/badge/release-v1.2.40-blue)
 
-**v1.2.39 — latest release.** 40 volumes, 385 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.39) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.40 — latest release.** 41 volumes, 395 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.40) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 40-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 41-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-40 volumes, 385 chapters. Each volume has a dedicated
+41 volumes, 395 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -67,11 +67,12 @@ The series combines architecture and theory with implementation guidance, automa
 | XXXV | [Zscaler Zero Trust Exchange](volumes/volume-35-zscaler-zero-trust-exchange/README.md) | 9 |
 | XXXVI | [Windows Server 2025 and Active Directory](volumes/volume-36-windows-server-2025-active-directory/README.md) | 11 |
 | XXXVII | [Microsoft 365 and Modern Work](volumes/volume-37-microsoft-365-modern-work/README.md) | 11 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 11 |
+| XXXVIII | [Microsoft Certifications Beyond Azure](volumes/volume-38-microsoft-certifications-beyond-azure/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 12 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
-Technical review and lab-validation sign-off for all 385 chapters are
+Technical review and lab-validation sign-off for all 395 chapters are
 tracked in [PROJECT_STATUS.md](PROJECT_STATUS.md). The
 [master index](INDEX.md) and [master glossary](GLOSSARY.md) cover all
 volumes.
@@ -100,7 +101,7 @@ ascending order.
 | VMware | [V VMware Virtualization](volumes/volume-05-vmware-virtualization/README.md) — the full Broadcom certification program in one volume: VCP, VCAP, Distinguished Expert (VCDX), and Telco Cloud, across vSphere, VCF, NSX, Avi, and Private Cloud Security |
 | AWS | [XVII AWS Architecture and Security](volumes/volume-17-aws-architecture-security/README.md) — the whole AWS certification program in one volume: foundational, associate, professional, and specialty across all twelve current exams |
 | Microsoft Azure | [XXXIII Microsoft Azure Certification Tracks](volumes/volume-33-microsoft-azure-certifications/README.md) — the whole Azure certification program in one volume: fundamentals, the role-based associate tier, expert, and specialty |
-| Microsoft 365 | [XXXVI Windows Server 2025 and Active Directory](volumes/volume-36-windows-server-2025-active-directory/README.md) → [XXXVII Microsoft 365 and Modern Work](volumes/volume-37-microsoft-365-modern-work/README.md) — on-premises Windows Server and AD, then Entra ID, Intune, Exchange/SharePoint/Teams, Purview, and Defender for the modern workplace |
+| Microsoft (beyond Azure) | [XXXVI Windows Server 2025 and Active Directory](volumes/volume-36-windows-server-2025-active-directory/README.md) → [XXXVII Microsoft 365 and Modern Work](volumes/volume-37-microsoft-365-modern-work/README.md) → [XXXVIII Microsoft Certifications Beyond Azure](volumes/volume-38-microsoft-certifications-beyond-azure/README.md) — on-premises Windows Server and AD, the Entra/Intune/M365/Purview/Defender modern workplace, and the full role-based certification map (M365, SC, PL, MB, DP, AI, GitHub) |
 | Google Cloud | [XXXIV Google Cloud Certification Tracks](volumes/volume-34-google-cloud-certifications/README.md) — the whole Google Cloud certification program in one volume: foundational, associate, and professional |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |

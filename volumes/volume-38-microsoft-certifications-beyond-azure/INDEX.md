@@ -1,0 +1,38 @@
+# Volume XXXVIII Index
+
+Alphabetized topical index for **Volume XXXVIII — Microsoft Certifications
+Beyond Azure**. See also the [volume glossary](GLOSSARY.md) for term
+definitions and the [master index](../../INDEX.md) for cross-volume topics.
+
+- **AI family (AI-901, AI-102, AI-103, AI-200, AI-500)** — [Chapter 07](chapters/07-ai-and-copilot-certifications.md)
+- **AI-900 to AI-901 renumber** — [Chapter 07](chapters/07-ai-and-copilot-certifications.md), [Chapter 09](chapters/09-keeping-the-microsoft-program-current.md)
+- **Associate tier** — [Chapter 01](chapters/01-the-microsoft-certification-program-beyond-azure.md)
+- **Beta exams** — [Chapter 09](chapters/09-keeping-the-microsoft-program-current.md)
+- **Catalog API (learn.microsoft.com/api/catalog)** — [Chapter 01](chapters/01-the-microsoft-certification-program-beyond-azure.md), [Chapter 09](chapters/09-keeping-the-microsoft-program-current.md)
+- **Copilot and Agent Administration Fundamentals** — [Chapter 07](chapters/07-ai-and-copilot-certifications.md)
+- **Credly digital badges** — [Chapter 01](chapters/01-the-microsoft-certification-program-beyond-azure.md)
+- **Dynamics 365 (MB family), CE vs F&O** — [Chapter 05](chapters/05-dynamics-365-certifications.md)
+- **Data and analytics (DP family)** — [Chapter 06](chapters/06-data-and-analytics-certifications.md)
+- **DP-203 to DP-700 (Fabric) transition** — [Chapter 06](chapters/06-data-and-analytics-certifications.md)
+- **Endpoint Administrator (MD-102)** — [Chapter 02](chapters/02-microsoft-365-certifications.md)
+- **Expert tier** — [Chapter 01](chapters/01-the-microsoft-certification-program-beyond-azure.md)
+- **Fundamentals tier (x-900 exams)** — [Chapter 01](chapters/01-the-microsoft-certification-program-beyond-azure.md)
+- **GitHub certifications (GH-900, GH-100, GH-300, GH-500, GH-600)** — [Chapter 08](chapters/08-github-certifications.md)
+- **Identity and Access Administrator (SC-300)** — [Chapter 03](chapters/03-security-compliance-and-identity-certifications.md)
+- **Information Security Administrator (SC-401, replaced SC-400)** — [Chapter 03](chapters/03-security-compliance-and-identity-certifications.md)
+- **Microsoft 365 certifications (MS-900, MS-102, MD-102, MS-700, MS-721)** — [Chapter 02](chapters/02-microsoft-365-certifications.md)
+- **Microsoft Fabric certifications (DP-700, DP-600)** — [Chapter 06](chapters/06-data-and-analytics-certifications.md)
+- **Microsoft Learn (learn.microsoft.com/credentials)** — [Chapter 01](chapters/01-the-microsoft-certification-program-beyond-azure.md)
+- **Multi-Agent AI Solutions Expert (AI-500)** — [Chapter 07](chapters/07-ai-and-copilot-certifications.md)
+- **Power BI Data Analyst (PL-300)** — [Chapter 04](chapters/04-power-platform-certifications.md)
+- **Power Platform certifications (PL family)** — [Chapter 04](chapters/04-power-platform-certifications.md)
+- **Pearson VUE / OnVUE exam delivery** — [Chapter 01](chapters/01-the-microsoft-certification-program-beyond-azure.md)
+- **Renewal (free annual assessment)** — [Chapter 01](chapters/01-the-microsoft-certification-program-beyond-azure.md), [Chapter 09](chapters/09-keeping-the-microsoft-program-current.md)
+- **Retirements and renumbers** — [Chapter 09](chapters/09-keeping-the-microsoft-program-current.md)
+- **Role-based certification model** — [Chapter 01](chapters/01-the-microsoft-certification-program-beyond-azure.md)
+- **Security operations (SC-200)** — [Chapter 03](chapters/03-security-compliance-and-identity-certifications.md)
+- **Security, Compliance, and Identity (SC family)** — [Chapter 03](chapters/03-security-compliance-and-identity-certifications.md)
+- **SC-500 (Cloud and AI Security Engineer, new)** — [Chapter 03](chapters/03-security-compliance-and-identity-certifications.md)
+- **Solution Architect (PL-600, MB-700)** — [Chapter 04](chapters/04-power-platform-certifications.md), [Chapter 05](chapters/05-dynamics-365-certifications.md)
+- **Specialty tier (DP-420)** — [Chapter 06](chapters/06-data-and-analytics-certifications.md)
+- **Teams certifications (MS-700, MS-721)** — [Chapter 02](chapters/02-microsoft-365-certifications.md)

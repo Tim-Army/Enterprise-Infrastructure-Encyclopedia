@@ -549,6 +549,20 @@ table of contents for that volume.
 10. Microsoft Purview — Information Protection, DLP, Retention, and Compliance
 11. Microsoft Defender XDR, Secure Score, Copilot Governance, and Capstone
 
+## Volume XXXVIII — Microsoft Certifications Beyond Azure
+
+[Volume README](volumes/volume-38-microsoft-certifications-beyond-azure/README.md) · [Index](volumes/volume-38-microsoft-certifications-beyond-azure/INDEX.md) · [Glossary](volumes/volume-38-microsoft-certifications-beyond-azure/GLOSSARY.md)
+
+1. The Microsoft Certification Program Beyond Azure
+2. Microsoft 365 Certifications
+3. Security, Compliance, and Identity Certifications
+4. Power Platform Certifications
+5. Dynamics 365 Certifications
+6. Data and Analytics Certifications
+7. AI and Copilot Certifications
+8. GitHub Certifications
+9. Keeping the Microsoft Program Current
+
 ## Volume XCVII — Master Appendices
 
 [Volume README](volumes/volume-97-master-appendices/README.md) · [Index](volumes/volume-97-master-appendices/INDEX.md) · [Glossary](volumes/volume-97-master-appendices/GLOSSARY.md)
@@ -564,6 +578,7 @@ table of contents for that volume.
 9. Appendix — Microsoft Azure Certifications and Course Access
 10. Appendix — Google Cloud Certifications and Course Access
 11. Appendix — Zscaler Certifications and Course Access
+12. Appendix — Microsoft Certifications Beyond Azure and Course Access
 
 ## Volume XCVIII — Acronyms
 

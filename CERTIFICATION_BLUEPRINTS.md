@@ -34,6 +34,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XXX — Cisco CCDE Network Design | CCDE (expert-level design): Written (400-007) + Practical, v3.1 unified topics, with AI Infrastructure / Large Scale Networks / On-Prem and Cloud Services / Workforce Mobility electives | Cisco Learning & Certifications |
 | XXXVI — Windows Server 2025 and Active Directory | Microsoft Windows Server role-based certifications (a product/administration volume mapped to the exams, not a certification-tracks volume): **Windows Server Hybrid Administrator Associate** (AZ-800 *Administering Windows Server Hybrid Core Infrastructure* + AZ-801 *Configuring Windows Server Hybrid Advanced Services*) and the newer on-premises **Windows Server Administrator Associate** (beta). Confirm current exam numbers/status on Microsoft Learn | Microsoft Learn |
 | XXXVII — Microsoft 365 and Modern Work | Microsoft 365 and Security role-based certifications (product/administration volume mapped to the exams): **M365 Certified: Fundamentals** (MS-900), **Administrator Expert** (MS-102), **Endpoint Administrator Associate** (MD-102), **Teams Administrator Associate** (MS-700), **Collaboration Communications Systems Engineer** (MS-721); **Identity and Access Administrator** (SC-300), **Information Security Administrator** (SC-401, replaced SC-400), **Security Operations Analyst** (SC-200). Codes verified on Microsoft Learn 26 Jul 2026 | Microsoft Learn |
+| XXXVIII — Microsoft Certifications Beyond Azure | The whole Microsoft role-based program **outside Azure** in one volume (certification-tracks): **Microsoft 365** (MS-900/MS-102/MD-102/MS-700/MS-721), **Security/Compliance/Identity** (SC-900/SC-300/SC-200/SC-401/SC-100/SC-500), **Power Platform** (PL-900/PL-200/PL-300/PL-400/PL-500/PL-600), **Dynamics 365** (MB-910/920 + CE and F&O tracks, MB-500/MB-700/MB-800/MB-820), **Data & Analytics/Fabric** (DP-900/DP-700/DP-600/DP-300/DP-420/DP-100/DP-750/DP-800), **AI & Copilot** (AI-901/AI-102/AI-103/AI-500 + agent wave), and **GitHub** (GH-900/GH-100/GH-300/GH-500/GH-600). Four tiers; free annual renewal. All codes verified on Microsoft Learn 26 Jul 2026 (Azure itself is Volume XXXIII) | Microsoft Learn |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -396,3 +397,21 @@ pages the same day, which surfaced two post-cutoff facts: **SC-401**
 and AI Security Engineer (SC-500)** is a new identity/security credential.
 Copilot and agent governance is treated as part of the identity, data, and
 security-posture surface rather than a separate topic.
+
+Volume XXXVIII (Microsoft Certifications Beyond Azure) was created on **26
+July 2026**, completing the three-volume Microsoft set and mapping the entire
+role-based certification program *outside* Azure: Microsoft 365, Security
+(SC), Power Platform (PL), Dynamics 365 (MB), Data and Analytics/Fabric (DP),
+AI and Copilot (AI), and GitHub (GH), across the Fundamentals, Associate,
+Expert, and Specialty tiers. Every exam code was verified on 26 July 2026
+against the Microsoft Learn Catalog API and the individual certification
+pages, which surfaced several post-cutoff facts: **SC-401** replaced SC-400,
+**DP-700** (Microsoft Fabric) replaced DP-203, **AI-900 → AI-901**, the new
+**SC-500** (Cloud and AI Security Engineer) and **DP-750/DP-800**, a large AI
+and agent credential wave (AI-103, AI-500, and assessment-based agent certs),
+GitHub certifications now using **GH-** codes (GH-900/GH-100/GH-300/GH-500,
+plus the new **GH-600** Agentic AI Developer), and **AZ-802** appearing
+alongside AZ-800/AZ-801 on the Windows Server pages. A matching course-catalog
+appendix (Master Appendices Chapter 12) records the catalog with the free
+Microsoft Learn training model and free annual renewal. Azure itself remains
+Volume XXXIII; hands-on practice lives in Volumes XXXVI and XXXVII.
