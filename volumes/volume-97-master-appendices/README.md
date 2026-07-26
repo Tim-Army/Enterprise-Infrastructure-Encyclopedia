@@ -23,6 +23,7 @@ one place instead of scattered through volume READMEs.
 13. [Appendix — CompTIA Certifications and Course Access](chapters/13-appendix-comptia-certifications-and-course-access.md) — the vendor-neutral program by pathway with verified exam codes (the classic "plus" certs, the hands-on Xpert "Pro" series, and Essentials), CompTIA CertMaster training, Pearson VUE delivery, and the three-year Continuing Education renewal model; snapshot dated 26 July 2026.
 14. [Appendix — ISC2 Certifications and Course Access](chapters/14-appendix-isc2-certifications-and-course-access.md) — the ISC2 credential ladder (CC, SSCP, CISSP with the ISSAP/ISSEP/ISSMP concentrations, CCSP, CGRC, CSSLP) with verified weighted domains, experience gates, endorsement, CAT exam mechanics, ISC2 Official Training, Pearson VUE delivery, and the CPE/AMF three-year renewal model; snapshot dated 26 July 2026.
 15. [Appendix — CNCF and Kubernetes Certifications and Course Access](chapters/15-appendix-cncf-kubernetes-certifications-and-course-access.md) — the CNCF/Linux Foundation cloud-native credentials (the Kubernetes core CKA/CKAD/CKS, the associates KCNA/KCSA/PCA/OTCA/ICA/CCA/CAPA/CGOA/CBA/KCA, and the platform-engineering CNPA/CNPE) with verified weighted curriculum domains, performance-based vs multiple-choice format, PSI delivery, killer.sh, the open version-pinned curricula, and the Linux Foundation training model; snapshot dated 26 July 2026.
+16. [Appendix — HashiCorp Certifications and Course Access](chapters/16-appendix-hashicorp-certifications-and-course-access.md) — the four active HashiCorp exams (Terraform Associate 004 and Authoring and Operations Professional; Vault Associate 003 and Operations Professional) with verified exam objectives, Associate MCQ vs Professional lab-based format, prices, two-year recertify-by-exam validity, the free HashiCorp Learn/CLI training model, and the Consul Associate retirement (15 July 2026); snapshot dated 26 July 2026.
 
 ## Appendix catalog
 
@@ -44,6 +45,7 @@ one place instead of scattered through volume READMEs.
 | CompTIA certifications and course access | [Volume XXXIX](../volume-39-comptia-certification-tracks/README.md) | [13](chapters/13-appendix-comptia-certifications-and-course-access.md) |
 | ISC2 certifications and course access | [Volume XL](../volume-40-isc2-certifications/README.md) | [14](chapters/14-appendix-isc2-certifications-and-course-access.md) |
 | CNCF and Kubernetes certifications and course access | [Volume XLI](../volume-41-cncf-kubernetes-certifications/README.md) | [15](chapters/15-appendix-cncf-kubernetes-certifications-and-course-access.md) |
+| HashiCorp certifications and course access | [Volume XLII](../volume-42-hashicorp-certifications/README.md) | [16](chapters/16-appendix-hashicorp-certifications-and-course-access.md) |
 
 ## Conventions
 

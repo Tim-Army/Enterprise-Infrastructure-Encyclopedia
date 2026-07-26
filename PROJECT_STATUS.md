@@ -51,11 +51,12 @@ does not by itself verify every technical claim in it.
 | XXXIX — CompTIA Certification Tracks | 9 | Drafted |
 | XL — ISC2 Certification Tracks | 9 | Drafted |
 | XLI — CNCF and Kubernetes Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 15 | Drafted |
+| XLII — HashiCorp Certification Tracks | 7 | Drafted |
+| XCVII — Master Appendices | 16 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 425 of 425 drafted (100%). Every volume has a
+**Total declared chapters:** 433 of 433 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
