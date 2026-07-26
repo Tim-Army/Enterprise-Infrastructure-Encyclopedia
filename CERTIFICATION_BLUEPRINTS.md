@@ -39,6 +39,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XL — ISC2 Certification Tracks | The whole ISC2 program in one volume (certification-tracks) — the vendor-neutral **governance, architecture, engineering, and management** tier above the other tracks. Entry: **CC** (Certified in Cybersecurity; 5 domains, free exam, no experience). Practitioner: **SSCP** (7 domains, 1 yr). Flagship: **CISSP** (8-domain Common Body of Knowledge, 5 yr; eff 15 Apr 2024) plus the CISSP concentrations **ISSAP** (architecture, 4 domains), **ISSEP** (engineering, 5), **ISSMP** (management, 6) — all re-issued **1 Aug 2025**. Specialists: **CCSP** (cloud, 6 domains; new outline **1 Aug 2026**), **CGRC** (governance/risk/compliance, formerly **CAP**, 7 domains), **CSSLP** (secure SDLC, 8 domains). **One per-domain walkthrough lab per weighted exam domain** (56 total). Pearson VUE, Computer Adaptive Testing for CISSP/SSCP/CC, 700/1000 pass; endorsement + experience + Code of Ethics; three-year **CPE + AMF** renewal; ANSI/ISO 17024 and DoD 8140/8570 recognition. A new **AI Security certification** is in development; HCISPP retired. Domains and weights verified on isc2.org 26 Jul 2026 | isc2.org exam outlines |
 | XLI — CNCF and Kubernetes Certification Tracks | The whole CNCF/Linux Foundation cloud-native program in one volume (certification-tracks), **performance-based** at its core. Kubernetes core (live-terminal): **CKA** (25/15/10/20/30), **CKAD** (20/20/15/25/20), **CKS** (15/15/10/20/20/20, requires active CKA); pinned to **Kubernetes v1.35**; 66–67% to pass; killer.sh included. Associates (MCQ unless noted): **KCNA** (44/28/16/12), **KCSA** (14/22/22/16/16/10), **PCA** (Prometheus), **OTCA** (OpenTelemetry), **ICA** (Istio, performance-based), **CCA** (Cilium/eBPF, 8 domains), **CAPA** (Argo), **CGOA** (GitOps), **CBA** (Backstage), **KCA** (Kyverno). Platform engineering (new): **CNPA** (associate) and **CNPE** (performance-based expert, launched Nov 2025). **One per-domain walkthrough lab per weighted curriculum domain** (77 total), run against a local kind/minikube cluster. PSI remote-proctored; version-pinned open curricula (github.com/cncf/curriculum). Domains and weights verified on training.linuxfoundation.org 26 Jul 2026 | Linux Foundation certification curricula |
 | XLII — HashiCorp Certification Tracks | The whole HashiCorp (**an IBM company**) program in one volume (certification-tracks) — infrastructure as code and secrets management. Four active exams on two products and two tiers: **Terraform Associate (004)** (8 objectives, 1 hr MCQ) and **Terraform Authoring and Operations Professional** (6 objectives, 4 hr lab-based); **Vault Associate (003)** (9 objectives, 1 hr MCQ) and **Vault Operations Professional** (8 objectives, 4 hr lab-based). **One per-objective walkthrough lab per exam objective** (31 total), run locally with the `terraform`/`vault`/`consul` CLIs (no cloud account). Online-proctored; **two-year validity, recertify by exam** (no CE model). **Consul Associate (003) retired 15 Jul 2026** — Terraform and Vault are the only certified products (Nomad/Packer/Boundary have no cert). Version bumps caught: Terraform Associate **003→004**, Vault Associate **002→003**. Objectives verified on developer.hashicorp.com 26 Jul 2026 | developer.hashicorp.com certification pages |
+| XLIII — Offensive Security (OffSec) Certification Tracks | The whole OffSec program in one volume (certification-tracks) — **hands-on practical exams + a professional report**, not weighted MCQ, so per-topic labs map **one methodology walkthrough per syllabus topic area** (~49). Foundational: **OSCC** (CyberCore, SEC-100/SJD-100), **KLCP** (PEN-103). PenTest: **OSCP/OSCP+** (PEN-200; ~24h practical, 3 standalone + 1 AD set, 70/100), **OSEP** (PEN-300), **OSWP** (PEN-210). Web: **OSWA** (WEB-200), **OSWE** (WEB-300). Exploit dev: **OSED** (EXP-301), **OSEE** (EXP-401). Defensive: **OSDA** (SOC-200), **OSIR** (IR-200), **OSTH** (TH-200). AI: **OSAI** (AI-300, AI Red Teamer, NEW). **OSCE³** = OSEP+OSWE+OSED. Two-track renewal: OSCP+/OSCC/OSTH/OSIR/OSAI+ are 3-yr "+"; OSCP(lifetime)/OSEP/OSWE/OSED/OSEE never expire. **Taught ethically, authorization-first, and defense-paired** (methodology + enumeration only for sensitive areas). POST-CUTOFF: OSCP→OSCP+, new OSCC/CyberCore + OSAI/AI-300. Verified on offsec.com 26 Jul 2026 | offsec.com courses and certifications |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -495,3 +496,25 @@ exam objective (31 in all)**, run locally with the free `terraform`, `vault`, an
 appendix (Master Appendices Chapter 16). These credentials formalize the
 Terraform and Vault practice of Volume IX (Infrastructure Automation) and the
 cloud targets of Volumes XVII, XXXIII, and XXXIV.
+
+Volume XLIII (Offensive Security / OffSec Certification Tracks) was created on
+**26 July 2026** as the encyclopedia's **hands-on, practical** security
+certification map — OffSec's exams are proctored practical assessments plus a
+professional report, not multiple-choice, so its per-topic labs map one
+methodology walkthrough per syllabus topic area. It covers the whole program:
+foundational (**OSCC**, **KLCP**), penetration testing (**OSCP/OSCP+**, **OSEP**,
+**OSWP**), web (**OSWA**, **OSWE**), exploit development (**OSED**, **OSEE**),
+defense (**OSDA**, **OSIR**, **OSTH**), and the new AI red-teaming credential
+(**OSAI**, AI-300). Every course and code was verified against offsec.com on 26
+July 2026, which surfaced the recent changes: **OSCP became OSCP+** (a renewable
+version alongside the lifetime OSCP), and OffSec added the **CyberCore (OSCC)**
+and **AI Red Teamer (OSAI)** tracks. The volume is written to a strict ethical
+standard — **every technique is taught to be understood and defended against,
+every lab is authorization-first and targets only the reader's own system or an
+authorized lab, and the most sensitive areas (evasion, exploit development, AI
+red-teaming) are taught at the level of concept, methodology, and mitigation.** A
+course-catalog appendix (Master Appendices Chapter 17) records the program with
+the practical-exam format, the OSCE³ umbrella, and the "+" renewal model. OffSec
+completes the encyclopedia's security-certification coverage at the hands-on
+practitioner tier, above the CompTIA PenTest+/Ethical Hacker material and
+alongside Volume X and the vendor-security volumes.

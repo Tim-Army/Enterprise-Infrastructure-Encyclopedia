@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.48-blue)
+![Release](https://img.shields.io/badge/release-v1.2.49-blue)
 
-**v1.2.48 — latest release.** 45 volumes, 433 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.48) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.49 — latest release.** 46 volumes, 443 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.49) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -72,7 +72,8 @@ The series combines architecture and theory with implementation guidance, automa
 | XL | [ISC2 Certification Tracks](volumes/volume-40-isc2-certifications/README.md) | 9 |
 | XLI | [CNCF and Kubernetes Certification Tracks](volumes/volume-41-cncf-kubernetes-certifications/README.md) | 9 |
 | XLII | [HashiCorp Certification Tracks](volumes/volume-42-hashicorp-certifications/README.md) | 7 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 16 |
+| XLIII | [Offensive Security (OffSec) Certification Tracks](volumes/volume-43-offensive-security-certifications/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 17 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
@@ -111,6 +112,7 @@ ascending order.
 | ISC2 | [XL ISC2 Certification Tracks](volumes/volume-40-isc2-certifications/README.md) — the whole ISC2 program in one volume: CC, SSCP, CISSP and its ISSAP/ISSEP/ISSMP concentrations, CCSP, CGRC, and CSSLP — the vendor-neutral governance, architecture, and management tier above the other tracks |
 | CNCF / Kubernetes | [XLI CNCF and Kubernetes Certification Tracks](volumes/volume-41-cncf-kubernetes-certifications/README.md) — the whole cloud-native program in one volume: the performance-based Kubernetes core (CKA, CKAD, CKS), the cloud-native associates (KCNA, KCSA, PCA, OTCA, ICA, CCA, CAPA, CGOA, CBA, KCA), and the new platform-engineering track (CNPA, CNPE) |
 | HashiCorp | [XLII HashiCorp Certification Tracks](volumes/volume-42-hashicorp-certifications/README.md) — the whole HashiCorp program in one volume: the Terraform and Vault Associate and Professional exams (infrastructure as code and secrets management), plus the retired Consul track and the wider stack |
+| Offensive Security (OffSec) | [XLIII Offensive Security (OffSec) Certification Tracks](volumes/volume-43-offensive-security-certifications/README.md) — the whole hands-on OffSec program in one volume: OSCP+ and the penetration-testing, web, exploit-development, defensive, and AI red-teaming credentials — taught ethically, authorization-first, and paired with defenses |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) |
