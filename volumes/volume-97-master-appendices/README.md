@@ -33,6 +33,7 @@ one place instead of scattered through volume READMEs.
 23. [Appendix — Snowflake Certifications and Course Access](chapters/23-appendix-snowflake-certifications-and-course-access.md) — the SnowPro program (Associate, the required Core COF-C03 with its six weighted domains, and the five Advanced tracks — Architect, Data Engineer, Data Analyst, Data Scientist, Administrator) with prerequisites, Snowflake University/free-trial training, Pearson VUE delivery, and the two-year recertify-by-exam model; snapshot dated 27 July 2026.
 24. [Appendix — CrowdStrike Certifications and Course Access](chapters/24-appendix-crowdstrike-certifications-and-course-access.md) — the seven Falcon credentials by group (platform CCFA/CCFR/CCFH, Next-Gen SIEM CCSA/CCSE, specialist CCIS/CCCS) with their exam-guide domains, the 90-minute/60-question Pearson VUE format, CrowdStrike University training, no published domain weights, and the three-year recertify-by-exam model; snapshot dated 27 July 2026.
 25. [Appendix — Nutanix Certifications and Course Access](chapters/25-appendix-nutanix-certifications-and-course-access.md) — the four-level Nutanix University program (Associate NCA; Professional NCP-MCI/MCA/DB/US/CI-AWS/CI-Azure; Master NCM-MCI; Expert NCX-MCI) with blueprint sections, fees (NCA $99 / NCP $199 / NCM $299), Pearson VUE delivery, Community Edition practice, and the three-year (since Aug 2025) recertify-by-current-version model; snapshot dated 27 July 2026.
+26. [Appendix — Infoblox Certifications and Course Access](chapters/26-appendix-infoblox-certifications-and-course-access.md) — the Infoblox program by family (NIOS DDI INO/INA/INE; Universal DDI and Threat Defense microcredentials; NetMRI IMA; vendor-agnostic Industry Learning DDIA/DDIP and DSA/DSP) with topic areas, Infoblox Education/LaunchPad training, digital badges, and the topic-area (no weightings) blueprint model; snapshot dated 27 July 2026.
 
 ## Appendix catalog
 
@@ -64,6 +65,7 @@ one place instead of scattered through volume READMEs.
 | Snowflake certifications and course access | [Volume XLIX](../volume-49-snowflake-certifications/README.md) | [23](chapters/23-appendix-snowflake-certifications-and-course-access.md) |
 | CrowdStrike certifications and course access | [Volume L](../volume-50-crowdstrike-certifications/README.md) | [24](chapters/24-appendix-crowdstrike-certifications-and-course-access.md) |
 | Nutanix certifications and course access | [Volume LI](../volume-51-nutanix-certifications/README.md) | [25](chapters/25-appendix-nutanix-certifications-and-course-access.md) |
+| Infoblox certifications and course access | [Volume LVI](../volume-56-infoblox-certifications/README.md) | [26](chapters/26-appendix-infoblox-certifications-and-course-access.md) |
 
 ## Conventions
 

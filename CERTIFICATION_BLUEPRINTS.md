@@ -48,6 +48,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XLIX — Snowflake Certification Tracks | The whole Snowflake **SnowPro** program in one volume (certification-tracks) on the **AI Data Cloud**. **SnowPro Associate: Platform** (entry); **SnowPro Core** — current code **COF-C03** (live 16 Feb 2026, replaced COF-C02; 100 Q / 115 min; 6 weighted domains: Architecture 25%, Access/Security 20%, Performance 15%, Loading/Transformation 20%, Protection/Sharing 10%, Pipelines 10%); five **SnowPro Advanced** tracks (require Core): **Architect** (ARA-C01), **Data Engineer** (DEA-C02), **Data Analyst** (DAA-C01), **Data Scientist** (DSA-C03), **Administrator** (ADA-C01). **One walkthrough lab per exam-guide domain** (38; real Snowflake SQL — warehouses/RBAC/COPY INTO/streams/tasks/time travel/VARIANT/Cortex on a free trial). Pearson VUE; 2-yr recertify-by-exam. Verified on learn.snowflake.com 27 Jul 2026 | learn.snowflake.com study guides |
 | L — CrowdStrike Certification Tracks | The whole CrowdStrike **Falcon** program in one volume (certification-tracks). Platform: **CCFA** (Administrator, 8 domains), **CCFR** (Responder, 6), **CCFH** (Hunter, 7, CQL). Next-Gen SIEM: **CCSA** (Analyst, 4), **CCSE** (Engineer, 5). Specialist: **CCIS** (Identity, 12, GraphQL), **CCCS** (Cloud, 7, CSPM/CWP/CIEM). All exams 90 min / 60 Q, Pearson VUE, **no published % weights**, valid **3 years** (recert by exam). **One walkthrough lab per exam-guide domain** (49 domain labs; 54 total — real falconctl/FalconPy/OAuth2/CQL/GraphQL against a Falcon tenant). Defensive EDR/XDR only. Verified on crowdstrike.com 27 Jul 2026 | crowdstrike.com/crowdstrike-university exam guides |
 | LI — Nutanix Certification Tracks | The whole Nutanix University program in one volume (certification-tracks) on the Nutanix Cloud Platform (NCI/AHV/AOS/Prism). Four levels: **Associate NCA** (4 sections); **Professional NCP** tracks — **MCI** (Infrastructure, 6), **MCA** (Automation, 3), **DB** (Database/NDB, 4), **US** (Unified Storage, 4), **CI-AWS** (NC2 on AWS, 4), **CI-Azure** (NC2 on Azure, 4); **Master NCM-MCI** (6); **Expert NCX-MCI** (design). Pearson VUE; NCA $99 / NCP $199 / NCM $299; valid **3 years** (since 1 Aug 2025); **NCA/NCP-MCI 7.5** current. **One walkthrough lab per blueprint section** (40 section labs + 3 design exercises; real ncli/acli/Prism-API/NDB-API on Community Edition). Verified on nutanix.com 27 Jul 2026 | nutanix.com exam blueprint guides |
+| LVI — Infoblox Certification Tracks | The whole Infoblox program in one volume (certification-tracks) for **DDI** (DNS/DHCP/IPAM) and DNS-layer security. **NIOS DDI** ladder: **INO** Operator, **INA** Administrator, **INE** Expert. **Universal DDI** (NIOS-X + Infoblox Portal) and **Threat Defense** microcredentials (knowledge checks). **NetMRI** Administrator (**IMA**). Vendor-agnostic **Industry Learning**: **DDIA/DDIP** (DDI) and **DSA/DSP** (DNS security). Topic areas published, **no weightings**; digital badges. **One walkthrough lab per topic area** (38; real WAPI/Infoblox-Portal-API/NetMRI-API + dig). Threat Defense is defensive DNS security. Verified on education.infoblox.com 27 Jul 2026 | launchpad.education.infoblox.com |
 
 Volumes not listed (I, VI–VIII, XI–XIII, LII–LV, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -663,3 +664,19 @@ section labs)** plus **3 expert design exercises** — real Nutanix tooling (`nc
 **Community Edition** — and a course-catalog appendix (Master Appendices Chapter 25).
 Nutanix extends the encyclopedia's hyperconverged and hybrid-multicloud coverage with
 a full HCI credential family.
+
+Volume LVI (Infoblox Certification Tracks) was created on **27 July 2026** as the
+certification map for **Infoblox**, the DDI (DNS/DHCP/IPAM) and DNS-security leader,
+joining the encyclopedia's network-foundations (II) and security (X) volumes and
+complementing the NetBox source-of-truth volume (LII). It covers the whole program:
+the on-prem **NIOS DDI** ladder (**INO** Operator, **INA** Administrator, **INE**
+Expert), the cloud-native **Universal DDI** and **Threat Defense** microcredentials,
+**NetMRI Administrator (IMA)**, and the vendor-agnostic **Industry Learning**
+credentials (**DDIA/DDIP**, **DSA/DSP**). Every credential was verified against
+launchpad.education.infoblox.com on 27 July 2026; Infoblox publishes **topic areas**
+but not question counts or weightings, so the volume carries **one walkthrough lab per
+topic area (38 in all)** — real Infoblox tooling (the NIOS **WAPI**, the Infoblox
+**Portal REST API** for Universal DDI and Threat Defense, the **NetMRI API**, and
+standard **`dig`** for the vendor-agnostic material). The Threat Defense content is
+defensive DNS-layer security only. Infoblox anchors the encyclopedia's DNS/DHCP/IPAM
+and DNS-security coverage.

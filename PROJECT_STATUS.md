@@ -65,11 +65,12 @@ does not by itself verify every technical claim in it.
 | LIII — LibreNMS | 9 | Drafted |
 | LIV — OpenTelemetry | 9 | Drafted |
 | LV — Prometheus | 9 | Drafted |
-| XCVII — Master Appendices | 25 | Drafted |
+| LVI — Infoblox Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 26 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 560 of 560 drafted (100%). Every volume has a
+**Total declared chapters:** 570 of 570 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
