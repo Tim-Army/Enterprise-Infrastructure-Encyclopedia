@@ -25,6 +25,7 @@ one place instead of scattered through volume READMEs.
 15. [Appendix — CNCF and Kubernetes Certifications and Course Access](chapters/15-appendix-cncf-kubernetes-certifications-and-course-access.md) — the CNCF/Linux Foundation cloud-native credentials (the Kubernetes core CKA/CKAD/CKS, the associates KCNA/KCSA/PCA/OTCA/ICA/CCA/CAPA/CGOA/CBA/KCA, and the platform-engineering CNPA/CNPE) with verified weighted curriculum domains, performance-based vs multiple-choice format, PSI delivery, killer.sh, the open version-pinned curricula, and the Linux Foundation training model; snapshot dated 26 July 2026.
 16. [Appendix — HashiCorp Certifications and Course Access](chapters/16-appendix-hashicorp-certifications-and-course-access.md) — the four active HashiCorp exams (Terraform Associate 004 and Authoring and Operations Professional; Vault Associate 003 and Operations Professional) with verified exam objectives, Associate MCQ vs Professional lab-based format, prices, two-year recertify-by-exam validity, the free HashiCorp Learn/CLI training model, and the Consul Associate retirement (15 July 2026); snapshot dated 26 July 2026.
 17. [Appendix — OffSec Certifications and Course Access](chapters/17-appendix-offsec-certifications-and-course-access.md) — the OffSec hands-on credentials by discipline (foundational OSCC/KLCP; pentest OSCP+/OSEP/OSWP; web OSWA/OSWE; exploit-dev OSED/OSEE; defensive OSDA/OSIR/OSTH; AI OSAI) with course codes, the practical-exam-plus-report format, Learn subscriptions, the OSCE³ umbrella, and the two-track "+" three-year vs never-expire renewal model; snapshot dated 26 July 2026.
+18. [Appendix — ISACA Certifications and Course Access](chapters/18-appendix-isaca-certifications-and-course-access.md) — the ISACA audit/governance/risk credentials (CISA, CISM, CRISC, CGEIT, CDPSE, the hands-on CCOA, and the Advanced in AI family AAIA/AAISM/AAIR) with verified weighted job-practice domains, exam mechanics, experience verification, the three-year CPE + annual-fee maintenance model, and the CMMC roles and certificate programs; snapshot dated 26 July 2026.
 
 ## Appendix catalog
 
@@ -48,6 +49,7 @@ one place instead of scattered through volume READMEs.
 | CNCF and Kubernetes certifications and course access | [Volume XLI](../volume-41-cncf-kubernetes-certifications/README.md) | [15](chapters/15-appendix-cncf-kubernetes-certifications-and-course-access.md) |
 | HashiCorp certifications and course access | [Volume XLII](../volume-42-hashicorp-certifications/README.md) | [16](chapters/16-appendix-hashicorp-certifications-and-course-access.md) |
 | OffSec certifications and course access | [Volume XLIII](../volume-43-offensive-security-certifications/README.md) | [17](chapters/17-appendix-offsec-certifications-and-course-access.md) |
+| ISACA certifications and course access | [Volume XLIV](../volume-44-isaca-certifications/README.md) | [18](chapters/18-appendix-isaca-certifications-and-course-access.md) |
 
 ## Conventions
 
