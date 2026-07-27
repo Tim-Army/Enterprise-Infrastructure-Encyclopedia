@@ -30,6 +30,7 @@ one place instead of scattered through volume READMEs.
 20. [Appendix — NVIDIA Certifications and Course Access](chapters/20-appendix-nvidia-certifications-and-course-access.md) — the NVIDIA-Certified Associate (NCA) and Professional (NCP) credentials across AI infrastructure/operations/networking, accelerated data science, and generative/agentic AI/OpenUSD, with prices, blueprint focus, DLI training, Pearson VUE delivery, and the renew-by-exam model; snapshot dated 26 July 2026.
 21. [Appendix — Oracle Certifications and Course Access](chapters/21-appendix-oracle-certifications-and-course-access.md) — the Oracle program across four families (OCI, Oracle Database, MySQL, Java) with key credentials, the year-versioned exam-code system, free Learning Explorer/OCI-free-tier training, Pearson VUE delivery, CertView, and recertification; snapshot dated 26 July 2026.
 22. [Appendix — Databricks Certifications and Course Access](chapters/22-appendix-databricks-certifications-and-course-access.md) — the Databricks role-based certifications (Data Analyst, Data Engineer, ML, the new Generative AI and Context Engineer, Apache Spark Developer) and free accreditations, with exam-guide focus, Databricks Academy/Free Edition training, online-proctored delivery, and the two-year renew-by-exam model; snapshot dated 26 July 2026.
+23. [Appendix — Snowflake Certifications and Course Access](chapters/23-appendix-snowflake-certifications-and-course-access.md) — the SnowPro program (Associate, the required Core COF-C03 with its six weighted domains, and the five Advanced tracks — Architect, Data Engineer, Data Analyst, Data Scientist, Administrator) with prerequisites, Snowflake University/free-trial training, Pearson VUE delivery, and the two-year recertify-by-exam model; snapshot dated 27 July 2026.
 
 ## Appendix catalog
 
@@ -58,6 +59,7 @@ one place instead of scattered through volume READMEs.
 | NVIDIA certifications and course access | [Volume XLVI](../volume-46-nvidia-certifications/README.md) | [20](chapters/20-appendix-nvidia-certifications-and-course-access.md) |
 | Oracle certifications and course access | [Volume XLVII](../volume-47-oracle-certifications/README.md) | [21](chapters/21-appendix-oracle-certifications-and-course-access.md) |
 | Databricks certifications and course access | [Volume XLVIII](../volume-48-databricks-certifications/README.md) | [22](chapters/22-appendix-databricks-certifications-and-course-access.md) |
+| Snowflake certifications and course access | [Volume XLIX](../volume-49-snowflake-certifications/README.md) | [23](chapters/23-appendix-snowflake-certifications-and-course-access.md) |
 
 ## Conventions
 

@@ -45,6 +45,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XLVI — NVIDIA Certification Tracks | The whole NVIDIA-Certified program in one volume (certification-tracks) — AI infrastructure and generative AI. **Associate (NCA, $125, 50 Q)**: AI Infrastructure and Operations (**NCA-AIIO**), Accelerated Data Science (**NCA-ADS**), Generative AI LLM (**NCA-GENL**), Generative AI Multimodal (**NCA-GENM**). **Professional (NCP, 2 hr)**: AI Infrastructure (**NCP-AII**, $400; Slurm, K8s GPU Operator, Base Command Manager, DGX/InfiniBand), AI Operations (**NCP-AIO**, $500; DCGM, Xid/ECC, MIG), AI Networking (**NCP-AIN**, $400; InfiniBand/Spectrum-X, RDMA/GPUDirect, NCCL), Accelerated Data Science (**NCP-ADS**), Generative AI LLMs (**NCP-GENL**), **Agentic AI (NCP-AAI)**, **OpenUSD (NCP-OUSD)** — the last two NEW. **One walkthrough lab per blueprint area** (~48; nvidia-smi/DCGM/Slurm/GPU Operator/RAPIDS/NeMo). Pearson VUE; DLI training; ~2-yr renew-by-exam. Verified on nvidia.com 26 Jul 2026 | nvidia.com certification blueprints |
 | XLVII — Oracle Certification Tracks | The whole Oracle program in one volume (certification-tracks) across four families with **year-versioned exam codes**. **OCI**: Foundations (1Z0-1085), AI Foundations (1Z0-1122), Architect Associate (1Z0-1072)/Professional, Developer (1Z0-1084), Operations/DevOps, Networking/Security, **Multicloud Architect** (NEW), Data Science (1Z0-1110), **Generative AI Professional** (1Z0-1127, NEW: prompting/T-Few/RAG/vector/agents). **Oracle Database**: SQL Associate (1Z0-071), DBA Associate (1Z0-082)/Professional (1Z0-083), **Database 23ai** (AI Vector Search), Autonomous Database. **MySQL**: DBA + Developer. **Java**: Java SE 21 Developer (1Z0-830). **One walkthrough lab per exam-topic area** (~54; real Oracle SQL/OCI CLI/MySQL/Java on free tiers). Pearson VUE; CertView; annual/release versioning + recertification. Verified on education.oracle.com 26 Jul 2026 | education.oracle.com certification pages |
 | XLVIII — Databricks Certification Tracks | The whole Databricks program in one volume (certification-tracks) on the lakehouse Data Intelligence Platform. Role-based certifications: **Data Analyst Associate**; **Data Engineer** Associate + Professional; **Machine Learning** Associate + Professional; **Generative AI Engineer Associate** (NEW) and **Context Engineer Associate** (NEW, agent context); **Apache Spark Developer Associate**. Free **accreditations**: Databricks/Generative AI/AI Agent Fundamentals, Platform Architect (AWS/Azure/GCP), Platform Administrator. **One walkthrough lab per exam-guide section** (~55; PySpark/Spark SQL/Delta/MLflow/Unity Catalog/Mosaic AI on Free Edition). Online-proctored; ~2-yr renew-by-exam. Hadoop Migration Architect retired 1 Aug 2024. Verified on databricks.com 26 Jul 2026 | databricks.com exam guides |
+| XLIX — Snowflake Certification Tracks | The whole Snowflake **SnowPro** program in one volume (certification-tracks) on the **AI Data Cloud**. **SnowPro Associate: Platform** (entry); **SnowPro Core** — current code **COF-C03** (live 16 Feb 2026, replaced COF-C02; 100 Q / 115 min; 6 weighted domains: Architecture 25%, Access/Security 20%, Performance 15%, Loading/Transformation 20%, Protection/Sharing 10%, Pipelines 10%); five **SnowPro Advanced** tracks (require Core): **Architect** (ARA-C01), **Data Engineer** (DEA-C02), **Data Analyst** (DAA-C01), **Data Scientist** (DSA-C03), **Administrator** (ADA-C01). **One walkthrough lab per exam-guide domain** (38; real Snowflake SQL — warehouses/RBAC/COPY INTO/streams/tasks/time travel/VARIANT/Cortex on a free trial). Pearson VUE; 2-yr recertify-by-exam. Verified on learn.snowflake.com 27 Jul 2026 | learn.snowflake.com study guides |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -609,3 +610,22 @@ Lake, Unity Catalog, MLflow, and Mosaic AI on Databricks Free Edition — and a
 course-catalog appendix (Master Appendices Chapter 22). Databricks unifies the
 encyclopedia's data-engineering, ML, and generative-AI coverage on one governed
 platform.
+
+Volume XLIX (Snowflake Certification Tracks) was created on **27 July 2026** as the
+certification map for the **Snowflake AI Data Cloud**, sitting alongside the other
+data volumes — Databricks (XLVIII) and Splunk (XLV). It covers the whole **SnowPro**
+program: the **Associate: Platform** on-ramp, the required **SnowPro Core** — now
+**COF-C03** (live 16 February 2026, replacing COF-C02), whose six weighted domains
+are Architecture (25%), Access/Security (20%), Performance (15%), Loading/
+Transformation (20%), Protection/Sharing (10%), and Pipelines (10%) — and the five
+role-based **Advanced** tracks that require Core: **Architect** (ARA-C01), **Data
+Engineer** (DEA-C02), **Data Analyst** (DAA-C01), **Data Scientist** (DSA-C03), and
+**Administrator** (ADA-C01). Every credential was verified against
+learn.snowflake.com on 27 July 2026, which surfaced the Core refresh to COF-C03, the
+new Associate tier, and Cortex AI content across the exams. The volume carries **one
+walkthrough lab per exam-guide domain (38 in all)** — real Snowflake SQL
+(warehouses, RBAC, `COPY INTO`/stages, streams/tasks, time travel/cloning,
+`VARIANT`/`FLATTEN`, resource monitors, and Cortex) runnable on a free trial — and a
+course-catalog appendix (Master Appendices Chapter 23). Snowflake extends the
+encyclopedia's data-platform coverage with a second AI-native cloud-data-warehouse
+credential family.

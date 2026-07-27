@@ -58,11 +58,12 @@ does not by itself verify every technical claim in it.
 | XLVI — NVIDIA Certification Tracks | 9 | Drafted |
 | XLVII — Oracle Certification Tracks | 9 | Drafted |
 | XLVIII — Databricks Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 22 | Drafted |
+| XLIX — Snowflake Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 23 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 493 of 493 drafted (100%). Every volume has a
+**Total declared chapters:** 503 of 503 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
