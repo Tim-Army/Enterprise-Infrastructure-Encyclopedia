@@ -32,6 +32,7 @@ one place instead of scattered through volume READMEs.
 22. [Appendix — Databricks Certifications and Course Access](chapters/22-appendix-databricks-certifications-and-course-access.md) — the Databricks role-based certifications (Data Analyst, Data Engineer, ML, the new Generative AI and Context Engineer, Apache Spark Developer) and free accreditations, with exam-guide focus, Databricks Academy/Free Edition training, online-proctored delivery, and the two-year renew-by-exam model; snapshot dated 26 July 2026.
 23. [Appendix — Snowflake Certifications and Course Access](chapters/23-appendix-snowflake-certifications-and-course-access.md) — the SnowPro program (Associate, the required Core COF-C03 with its six weighted domains, and the five Advanced tracks — Architect, Data Engineer, Data Analyst, Data Scientist, Administrator) with prerequisites, Snowflake University/free-trial training, Pearson VUE delivery, and the two-year recertify-by-exam model; snapshot dated 27 July 2026.
 24. [Appendix — CrowdStrike Certifications and Course Access](chapters/24-appendix-crowdstrike-certifications-and-course-access.md) — the seven Falcon credentials by group (platform CCFA/CCFR/CCFH, Next-Gen SIEM CCSA/CCSE, specialist CCIS/CCCS) with their exam-guide domains, the 90-minute/60-question Pearson VUE format, CrowdStrike University training, no published domain weights, and the three-year recertify-by-exam model; snapshot dated 27 July 2026.
+25. [Appendix — Nutanix Certifications and Course Access](chapters/25-appendix-nutanix-certifications-and-course-access.md) — the four-level Nutanix University program (Associate NCA; Professional NCP-MCI/MCA/DB/US/CI-AWS/CI-Azure; Master NCM-MCI; Expert NCX-MCI) with blueprint sections, fees (NCA $99 / NCP $199 / NCM $299), Pearson VUE delivery, Community Edition practice, and the three-year (since Aug 2025) recertify-by-current-version model; snapshot dated 27 July 2026.
 
 ## Appendix catalog
 
@@ -62,6 +63,7 @@ one place instead of scattered through volume READMEs.
 | Databricks certifications and course access | [Volume XLVIII](../volume-48-databricks-certifications/README.md) | [22](chapters/22-appendix-databricks-certifications-and-course-access.md) |
 | Snowflake certifications and course access | [Volume XLIX](../volume-49-snowflake-certifications/README.md) | [23](chapters/23-appendix-snowflake-certifications-and-course-access.md) |
 | CrowdStrike certifications and course access | [Volume L](../volume-50-crowdstrike-certifications/README.md) | [24](chapters/24-appendix-crowdstrike-certifications-and-course-access.md) |
+| Nutanix certifications and course access | [Volume LI](../volume-51-nutanix-certifications/README.md) | [25](chapters/25-appendix-nutanix-certifications-and-course-access.md) |
 
 ## Conventions
 

@@ -47,6 +47,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XLVIII — Databricks Certification Tracks | The whole Databricks program in one volume (certification-tracks) on the lakehouse Data Intelligence Platform. Role-based certifications: **Data Analyst Associate**; **Data Engineer** Associate + Professional; **Machine Learning** Associate + Professional; **Generative AI Engineer Associate** (NEW) and **Context Engineer Associate** (NEW, agent context); **Apache Spark Developer Associate**. Free **accreditations**: Databricks/Generative AI/AI Agent Fundamentals, Platform Architect (AWS/Azure/GCP), Platform Administrator. **One walkthrough lab per exam-guide section** (~55; PySpark/Spark SQL/Delta/MLflow/Unity Catalog/Mosaic AI on Free Edition). Online-proctored; ~2-yr renew-by-exam. Hadoop Migration Architect retired 1 Aug 2024. Verified on databricks.com 26 Jul 2026 | databricks.com exam guides |
 | XLIX — Snowflake Certification Tracks | The whole Snowflake **SnowPro** program in one volume (certification-tracks) on the **AI Data Cloud**. **SnowPro Associate: Platform** (entry); **SnowPro Core** — current code **COF-C03** (live 16 Feb 2026, replaced COF-C02; 100 Q / 115 min; 6 weighted domains: Architecture 25%, Access/Security 20%, Performance 15%, Loading/Transformation 20%, Protection/Sharing 10%, Pipelines 10%); five **SnowPro Advanced** tracks (require Core): **Architect** (ARA-C01), **Data Engineer** (DEA-C02), **Data Analyst** (DAA-C01), **Data Scientist** (DSA-C03), **Administrator** (ADA-C01). **One walkthrough lab per exam-guide domain** (38; real Snowflake SQL — warehouses/RBAC/COPY INTO/streams/tasks/time travel/VARIANT/Cortex on a free trial). Pearson VUE; 2-yr recertify-by-exam. Verified on learn.snowflake.com 27 Jul 2026 | learn.snowflake.com study guides |
 | L — CrowdStrike Certification Tracks | The whole CrowdStrike **Falcon** program in one volume (certification-tracks). Platform: **CCFA** (Administrator, 8 domains), **CCFR** (Responder, 6), **CCFH** (Hunter, 7, CQL). Next-Gen SIEM: **CCSA** (Analyst, 4), **CCSE** (Engineer, 5). Specialist: **CCIS** (Identity, 12, GraphQL), **CCCS** (Cloud, 7, CSPM/CWP/CIEM). All exams 90 min / 60 Q, Pearson VUE, **no published % weights**, valid **3 years** (recert by exam). **One walkthrough lab per exam-guide domain** (49 domain labs; 54 total — real falconctl/FalconPy/OAuth2/CQL/GraphQL against a Falcon tenant). Defensive EDR/XDR only. Verified on crowdstrike.com 27 Jul 2026 | crowdstrike.com/crowdstrike-university exam guides |
+| LI — Nutanix Certification Tracks | The whole Nutanix University program in one volume (certification-tracks) on the Nutanix Cloud Platform (NCI/AHV/AOS/Prism). Four levels: **Associate NCA** (4 sections); **Professional NCP** tracks — **MCI** (Infrastructure, 6), **MCA** (Automation, 3), **DB** (Database/NDB, 4), **US** (Unified Storage, 4), **CI-AWS** (NC2 on AWS, 4), **CI-Azure** (NC2 on Azure, 4); **Master NCM-MCI** (6); **Expert NCX-MCI** (design). Pearson VUE; NCA $99 / NCP $199 / NCM $299; valid **3 years** (since 1 Aug 2025); **NCA/NCP-MCI 7.5** current. **One walkthrough lab per blueprint section** (40 section labs + 3 design exercises; real ncli/acli/Prism-API/NDB-API on Community Edition). Verified on nutanix.com 27 Jul 2026 | nutanix.com exam blueprint guides |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -647,3 +648,18 @@ course-catalog appendix (Master Appendices Chapter 24). All content is defensive
 authorized administration, detection, hunting, and response only. CrowdStrike anchors
 the encyclopedia's endpoint/XDR, identity, and cloud-security coverage on one
 platform.
+
+Volume LI (Nutanix Certification Tracks) was created on **27 July 2026** as the
+certification map for the **Nutanix Cloud Platform**, joining the encyclopedia's
+virtualization/HCI cluster (VMware V, Proxmox XXVI) and the cloud volumes (AWS XVII,
+Azure XXXIII) where **NC2 (Nutanix Cloud Clusters)** run. It covers the whole
+four-level program — Associate (**NCA**), Professional (**NCP-MCI, NCP-MCA, NCP-DB,
+NCP-US, NCP-CI-AWS, NCP-CI-Azure**), Master (**NCM-MCI**), and Expert (**NCX-MCI**).
+Every credential was verified against nutanix.com on 27 July 2026, which surfaced the
+version **7.5** refresh for NCA/NCP-MCI and the move to a **three-year validity** (since
+1 August 2025). The volume carries **one walkthrough lab per blueprint section (40
+section labs)** plus **3 expert design exercises** — real Nutanix tooling (`ncli`,
+`acli`, the Prism REST API, the NDB API, and cloud CLIs for NC2) runnable on
+**Community Edition** — and a course-catalog appendix (Master Appendices Chapter 25).
+Nutanix extends the encyclopedia's hyperconverged and hybrid-multicloud coverage with
+a full HCI credential family.
