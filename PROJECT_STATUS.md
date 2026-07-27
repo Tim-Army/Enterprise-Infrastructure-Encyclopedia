@@ -69,11 +69,12 @@ does not by itself verify every technical claim in it.
 | LVII — Python for Infrastructure and Automation | 9 | Drafted |
 | LVIII — Python for Network Engineers | 9 | Drafted |
 | LIX — Ansible | 9 | Drafted |
+| LX — Rust for Systems and Infrastructure | 9 | Drafted |
 | XCVII — Master Appendices | 26 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 597 of 597 drafted (100%). Every volume has a
+**Total declared chapters:** 606 of 606 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
