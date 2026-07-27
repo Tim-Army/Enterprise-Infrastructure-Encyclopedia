@@ -63,11 +63,12 @@ does not by itself verify every technical claim in it.
 | LI — Nutanix Certification Tracks | 10 | Drafted |
 | LII — NetBox Community Edition | 9 | Drafted |
 | LIII — LibreNMS | 9 | Drafted |
+| LIV — OpenTelemetry | 9 | Drafted |
 | XCVII — Master Appendices | 25 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 542 of 542 drafted (100%). Every volume has a
+**Total declared chapters:** 551 of 551 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
