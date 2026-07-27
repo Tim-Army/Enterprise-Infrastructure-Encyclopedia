@@ -49,6 +49,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | L — CrowdStrike Certification Tracks | The whole CrowdStrike **Falcon** program in one volume (certification-tracks). Platform: **CCFA** (Administrator, 8 domains), **CCFR** (Responder, 6), **CCFH** (Hunter, 7, CQL). Next-Gen SIEM: **CCSA** (Analyst, 4), **CCSE** (Engineer, 5). Specialist: **CCIS** (Identity, 12, GraphQL), **CCCS** (Cloud, 7, CSPM/CWP/CIEM). All exams 90 min / 60 Q, Pearson VUE, **no published % weights**, valid **3 years** (recert by exam). **One walkthrough lab per exam-guide domain** (49 domain labs; 54 total — real falconctl/FalconPy/OAuth2/CQL/GraphQL against a Falcon tenant). Defensive EDR/XDR only. Verified on crowdstrike.com 27 Jul 2026 | crowdstrike.com/crowdstrike-university exam guides |
 | LI — Nutanix Certification Tracks | The whole Nutanix University program in one volume (certification-tracks) on the Nutanix Cloud Platform (NCI/AHV/AOS/Prism). Four levels: **Associate NCA** (4 sections); **Professional NCP** tracks — **MCI** (Infrastructure, 6), **MCA** (Automation, 3), **DB** (Database/NDB, 4), **US** (Unified Storage, 4), **CI-AWS** (NC2 on AWS, 4), **CI-Azure** (NC2 on Azure, 4); **Master NCM-MCI** (6); **Expert NCX-MCI** (design). Pearson VUE; NCA $99 / NCP $199 / NCM $299; valid **3 years** (since 1 Aug 2025); **NCA/NCP-MCI 7.5** current. **One walkthrough lab per blueprint section** (40 section labs + 3 design exercises; real ncli/acli/Prism-API/NDB-API on Community Edition). Verified on nutanix.com 27 Jul 2026 | nutanix.com exam blueprint guides |
 | LVI — Infoblox Certification Tracks | The whole Infoblox program in one volume (certification-tracks) for **DDI** (DNS/DHCP/IPAM) and DNS-layer security. **NIOS DDI** ladder: **INO** Operator, **INA** Administrator, **INE** Expert. **Universal DDI** (NIOS-X + Infoblox Portal) and **Threat Defense** microcredentials (knowledge checks). **NetMRI** Administrator (**IMA**). Vendor-agnostic **Industry Learning**: **DDIA/DDIP** (DDI) and **DSA/DSP** (DNS security). Topic areas published, **no weightings**; digital badges. **One walkthrough lab per topic area** (38; real WAPI/Infoblox-Portal-API/NetMRI-API + dig). Threat Defense is defensive DNS security. Verified on education.infoblox.com 27 Jul 2026 | launchpad.education.infoblox.com |
+| LXI — Cribl Certification Tracks | The whole Cribl University ladder in one volume (certification-tracks) for the observability pipeline (**Stream**, **Edge**, **Search**, **Lake**). **CC User** (foundation, all products); **CC Admin - Stream** (sources/routes/pipelines/functions/packs/optimization) and **CC Admin - Edge** (nodes/fleets/collection); **CC Engineer** (end-to-end design + optimization); partner **CCSC** (deployment readiness + distributed leader/workers). **Free**, online self-study, valid **3 years**; Admin requires CC User, Engineer requires Admin. Topic areas (no weightings). **One walkthrough lab per topic area** (36; real Cribl Stream config/REST API/expressions/Search on the Cribl.Cloud free tier). Verified on cribl.io/university 27 Jul 2026 | cribl.io/university |
 
 Volumes not listed (I, VI–VIII, XI–XIII, LII–LV, LVII–LX, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -680,3 +681,17 @@ topic area (38 in all)** — real Infoblox tooling (the NIOS **WAPI**, the Infob
 standard **`dig`** for the vendor-agnostic material). The Threat Defense content is
 defensive DNS-layer security only. Infoblox anchors the encyclopedia's DNS/DHCP/IPAM
 and DNS-security coverage.
+
+Volume LXI (Cribl Certification Tracks) was created on **27 July 2026** as the
+certification map for **Cribl**, the observability-pipeline vendor, joining the
+encyclopedia's observability cluster (Observability XI, Splunk XLV, OpenTelemetry LIV,
+Prometheus LV). It covers the whole free Cribl University ladder — **CC User**
+(foundation), **CC Admin - Stream** and **CC Admin - Edge**, **CC Engineer**, and the
+partner **CCSC** — across the Stream/Edge/Search/Lake portfolio. Every credential was
+verified against cribl.io/university on 27 July 2026; the certifications are free, online
+self-study, and valid three years, with published topic areas (no weightings). The volume
+carries **one walkthrough lab per topic area (36 in all)** — real Cribl Stream
+configuration (sources/routes/pipelines/functions), the Cribl REST API, Cribl expressions
+and Search queries, and the distributed commit/deploy model — runnable on the Cribl.Cloud
+free tier, plus a course-catalog appendix (Master Appendices Chapter 27). Cribl completes
+the encyclopedia's observability-pipeline and data-reduction coverage.

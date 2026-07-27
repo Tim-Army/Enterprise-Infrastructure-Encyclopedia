@@ -70,11 +70,12 @@ does not by itself verify every technical claim in it.
 | LVIII — Python for Network Engineers | 9 | Drafted |
 | LIX — Ansible | 9 | Drafted |
 | LX — Rust for Systems and Infrastructure | 9 | Drafted |
-| XCVII — Master Appendices | 26 | Drafted |
+| LXI — Cribl Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 27 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 606 of 606 drafted (100%). Every volume has a
+**Total declared chapters:** 616 of 616 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

@@ -34,6 +34,7 @@ one place instead of scattered through volume READMEs.
 24. [Appendix — CrowdStrike Certifications and Course Access](chapters/24-appendix-crowdstrike-certifications-and-course-access.md) — the seven Falcon credentials by group (platform CCFA/CCFR/CCFH, Next-Gen SIEM CCSA/CCSE, specialist CCIS/CCCS) with their exam-guide domains, the 90-minute/60-question Pearson VUE format, CrowdStrike University training, no published domain weights, and the three-year recertify-by-exam model; snapshot dated 27 July 2026.
 25. [Appendix — Nutanix Certifications and Course Access](chapters/25-appendix-nutanix-certifications-and-course-access.md) — the four-level Nutanix University program (Associate NCA; Professional NCP-MCI/MCA/DB/US/CI-AWS/CI-Azure; Master NCM-MCI; Expert NCX-MCI) with blueprint sections, fees (NCA $99 / NCP $199 / NCM $299), Pearson VUE delivery, Community Edition practice, and the three-year (since Aug 2025) recertify-by-current-version model; snapshot dated 27 July 2026.
 26. [Appendix — Infoblox Certifications and Course Access](chapters/26-appendix-infoblox-certifications-and-course-access.md) — the Infoblox program by family (NIOS DDI INO/INA/INE; Universal DDI and Threat Defense microcredentials; NetMRI IMA; vendor-agnostic Industry Learning DDIA/DDIP and DSA/DSP) with topic areas, Infoblox Education/LaunchPad training, digital badges, and the topic-area (no weightings) blueprint model; snapshot dated 27 July 2026.
+27. [Appendix — Cribl Certifications and Course Access](chapters/27-appendix-cribl-certifications-and-course-access.md) — the free Cribl University ladder (CC User; CC Admin - Stream / - Edge; CC Engineer; partner CCSC) across the observability pipeline (Stream, Edge, Search, Lake) with topic areas, prerequisites, online self-study delivery, Cribl.Cloud free-tier practice, and the three-year validity; snapshot dated 27 July 2026.
 
 ## Appendix catalog
 
@@ -66,6 +67,7 @@ one place instead of scattered through volume READMEs.
 | CrowdStrike certifications and course access | [Volume L](../volume-50-crowdstrike-certifications/README.md) | [24](chapters/24-appendix-crowdstrike-certifications-and-course-access.md) |
 | Nutanix certifications and course access | [Volume LI](../volume-51-nutanix-certifications/README.md) | [25](chapters/25-appendix-nutanix-certifications-and-course-access.md) |
 | Infoblox certifications and course access | [Volume LVI](../volume-56-infoblox-certifications/README.md) | [26](chapters/26-appendix-infoblox-certifications-and-course-access.md) |
+| Cribl certifications and course access | [Volume LXI](../volume-61-cribl-certifications/README.md) | [27](chapters/27-appendix-cribl-certifications-and-course-access.md) |
 
 ## Conventions
 
