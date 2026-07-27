@@ -55,11 +55,12 @@ does not by itself verify every technical claim in it.
 | XLIII — Offensive Security (OffSec) Certification Tracks | 9 | Drafted |
 | XLIV — ISACA Certification Tracks | 9 | Drafted |
 | XLV — Splunk Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 19 | Drafted |
+| XLVI — NVIDIA Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 20 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 463 of 463 drafted (100%). Every volume has a
+**Total declared chapters:** 473 of 473 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

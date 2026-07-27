@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.51-blue)
+![Release](https://img.shields.io/badge/release-v1.2.52-blue)
 
-**v1.2.51 — latest release.** 48 volumes, 463 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.51) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.52 — latest release.** 49 volumes, 473 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.52) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -75,7 +75,8 @@ The series combines architecture and theory with implementation guidance, automa
 | XLIII | [Offensive Security (OffSec) Certification Tracks](volumes/volume-43-offensive-security-certifications/README.md) | 9 |
 | XLIV | [ISACA Certification Tracks](volumes/volume-44-isaca-certifications/README.md) | 9 |
 | XLV | [Splunk Certification Tracks](volumes/volume-45-splunk-certifications/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 19 |
+| XLVI | [NVIDIA Certification Tracks](volumes/volume-46-nvidia-certifications/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 20 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
@@ -117,6 +118,7 @@ ascending order.
 | Offensive Security (OffSec) | [XLIII Offensive Security (OffSec) Certification Tracks](volumes/volume-43-offensive-security-certifications/README.md) — the whole hands-on OffSec program in one volume: OSCP+ and the penetration-testing, web, exploit-development, defensive, and AI red-teaming credentials — taught ethically, authorization-first, and paired with defenses |
 | ISACA | [XLIV ISACA Certification Tracks](volumes/volume-44-isaca-certifications/README.md) — the whole ISACA program in one volume: CISA, CISM, CRISC, CGEIT, CDPSE, the hands-on CCOA, and the new Advanced in AI family (AAIA, AAISM, AAIR) — the audit, governance, and risk tier beside ISC2 |
 | Splunk | [XLV Splunk Certification Tracks](volumes/volume-45-splunk-certifications/README.md) — the whole Splunk program in one volume: the Core (SPL) track, Administration, Architecture, the Cybersecurity Defense track, and Observability — SIEM, SOC, and observability skills for the data platform |
+| NVIDIA | [XLVI NVIDIA Certification Tracks](volumes/volume-46-nvidia-certifications/README.md) — the whole NVIDIA-Certified program in one volume: the Associate (NCA) and Professional (NCP) credentials across AI infrastructure, operations, networking, accelerated data science, and generative/agentic AI |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) |
