@@ -44,6 +44,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XLV — Splunk Certification Tracks | The whole Splunk (**now a Cisco company**) program in one volume (certification-tracks) — SIEM/SOC/observability on the data platform. **Core (SPL)**: Certified User, **Power User** (10 topics; Correlating Events 15%, Data Models+CIM 20%), **Advanced Power User** (advanced SPL, acceleration, dashboards). **Admin**: Enterprise Certified Admin (17 topics; Indexes/Distributed Search/Forwarder Mgmt 10% each), Cloud Certified Admin. **Architecture**: Enterprise Certified Architect, Core Certified Consultant. **Cybersecurity Defense** (NEW track): Analyst, Engineer, Architect (SPL/ES detection, RBA, SOAR, ATT&CK). **Observability**: O11y Cloud Certified Metrics User (OpenTelemetry). Plus SOAR Automation Developer, ITSI Admin, Enterprise Security Admin. **One walkthrough lab per blueprint topic area** (~55; illustrative SPL + admin config). Pearson VUE; 3-yr renew-by-exam. Blueprints (test-blueprint PDFs) verified on splunk.com 26 Jul 2026 | splunk.com test blueprints |
 | XLVI — NVIDIA Certification Tracks | The whole NVIDIA-Certified program in one volume (certification-tracks) — AI infrastructure and generative AI. **Associate (NCA, $125, 50 Q)**: AI Infrastructure and Operations (**NCA-AIIO**), Accelerated Data Science (**NCA-ADS**), Generative AI LLM (**NCA-GENL**), Generative AI Multimodal (**NCA-GENM**). **Professional (NCP, 2 hr)**: AI Infrastructure (**NCP-AII**, $400; Slurm, K8s GPU Operator, Base Command Manager, DGX/InfiniBand), AI Operations (**NCP-AIO**, $500; DCGM, Xid/ECC, MIG), AI Networking (**NCP-AIN**, $400; InfiniBand/Spectrum-X, RDMA/GPUDirect, NCCL), Accelerated Data Science (**NCP-ADS**), Generative AI LLMs (**NCP-GENL**), **Agentic AI (NCP-AAI)**, **OpenUSD (NCP-OUSD)** — the last two NEW. **One walkthrough lab per blueprint area** (~48; nvidia-smi/DCGM/Slurm/GPU Operator/RAPIDS/NeMo). Pearson VUE; DLI training; ~2-yr renew-by-exam. Verified on nvidia.com 26 Jul 2026 | nvidia.com certification blueprints |
 | XLVII — Oracle Certification Tracks | The whole Oracle program in one volume (certification-tracks) across four families with **year-versioned exam codes**. **OCI**: Foundations (1Z0-1085), AI Foundations (1Z0-1122), Architect Associate (1Z0-1072)/Professional, Developer (1Z0-1084), Operations/DevOps, Networking/Security, **Multicloud Architect** (NEW), Data Science (1Z0-1110), **Generative AI Professional** (1Z0-1127, NEW: prompting/T-Few/RAG/vector/agents). **Oracle Database**: SQL Associate (1Z0-071), DBA Associate (1Z0-082)/Professional (1Z0-083), **Database 23ai** (AI Vector Search), Autonomous Database. **MySQL**: DBA + Developer. **Java**: Java SE 21 Developer (1Z0-830). **One walkthrough lab per exam-topic area** (~54; real Oracle SQL/OCI CLI/MySQL/Java on free tiers). Pearson VUE; CertView; annual/release versioning + recertification. Verified on education.oracle.com 26 Jul 2026 | education.oracle.com certification pages |
+| XLVIII — Databricks Certification Tracks | The whole Databricks program in one volume (certification-tracks) on the lakehouse Data Intelligence Platform. Role-based certifications: **Data Analyst Associate**; **Data Engineer** Associate + Professional; **Machine Learning** Associate + Professional; **Generative AI Engineer Associate** (NEW) and **Context Engineer Associate** (NEW, agent context); **Apache Spark Developer Associate**. Free **accreditations**: Databricks/Generative AI/AI Agent Fundamentals, Platform Architect (AWS/Azure/GCP), Platform Administrator. **One walkthrough lab per exam-guide section** (~55; PySpark/Spark SQL/Delta/MLflow/Unity Catalog/Mosaic AI on Free Edition). Online-proctored; ~2-yr renew-by-exam. Hadoop Migration Architect retired 1 Aug 2024. Verified on databricks.com 26 Jul 2026 | databricks.com exam guides |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -591,3 +592,20 @@ Oracle SQL, OCI CLI, MySQL, and Java SE 21 on free tiers — and a course-catalo
 appendix (Master Appendices Chapter 21). Oracle rounds out the encyclopedia's
 cloud coverage alongside AWS (XVII), Azure (XXXIII), and Google Cloud (XXXIV) and
 its data coverage alongside the database and data volumes.
+
+Volume XLVIII (Databricks Certification Tracks) was created on **26 July 2026** as
+the certification map for the **lakehouse Data Intelligence Platform**, sitting
+between the data (Splunk, XLV) and AI-infrastructure (NVIDIA, XLVI) volumes. It
+covers the role-based certifications — Data Analyst, Data Engineer (Associate +
+Professional), Machine Learning (Associate + Professional), the new **Generative AI
+Engineer** and **Context Engineer** Associates, and the Apache Spark Developer
+Associate — plus the free Fundamentals and Platform accreditations. Every
+credential was verified against databricks.com on 26 July 2026, which surfaced the
+platform's AI-and-agent expansion (the GenAI Engineer and Context Engineer certs
+and the AI Agent Fundamentals accreditation) and the retirement of the Hadoop
+Migration Architect certification (1 August 2024). The volume carries **one
+walkthrough lab per exam-guide section (~55 in all)** — PySpark/Spark SQL, Delta
+Lake, Unity Catalog, MLflow, and Mosaic AI on Databricks Free Edition — and a
+course-catalog appendix (Master Appendices Chapter 22). Databricks unifies the
+encyclopedia's data-engineering, ML, and generative-AI coverage on one governed
+platform.

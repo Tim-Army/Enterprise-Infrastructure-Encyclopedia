@@ -57,11 +57,12 @@ does not by itself verify every technical claim in it.
 | XLV — Splunk Certification Tracks | 9 | Drafted |
 | XLVI — NVIDIA Certification Tracks | 9 | Drafted |
 | XLVII — Oracle Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 21 | Drafted |
+| XLVIII — Databricks Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 22 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 483 of 483 drafted (100%). Every volume has a
+**Total declared chapters:** 493 of 493 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

@@ -29,6 +29,7 @@ one place instead of scattered through volume READMEs.
 19. [Appendix — Splunk Certifications and Course Access](chapters/19-appendix-splunk-certifications-and-course-access.md) — the Splunk (now Cisco) credentials by track (Core/SPL, Admin, Architecture, Cybersecurity Defense, Observability, plus SOAR/ITSI/ES) with blueprint topic areas, prerequisites, Pearson VUE delivery, free eLearning and trials, and the three-year renew-by-exam model; snapshot dated 26 July 2026.
 20. [Appendix — NVIDIA Certifications and Course Access](chapters/20-appendix-nvidia-certifications-and-course-access.md) — the NVIDIA-Certified Associate (NCA) and Professional (NCP) credentials across AI infrastructure/operations/networking, accelerated data science, and generative/agentic AI/OpenUSD, with prices, blueprint focus, DLI training, Pearson VUE delivery, and the renew-by-exam model; snapshot dated 26 July 2026.
 21. [Appendix — Oracle Certifications and Course Access](chapters/21-appendix-oracle-certifications-and-course-access.md) — the Oracle program across four families (OCI, Oracle Database, MySQL, Java) with key credentials, the year-versioned exam-code system, free Learning Explorer/OCI-free-tier training, Pearson VUE delivery, CertView, and recertification; snapshot dated 26 July 2026.
+22. [Appendix — Databricks Certifications and Course Access](chapters/22-appendix-databricks-certifications-and-course-access.md) — the Databricks role-based certifications (Data Analyst, Data Engineer, ML, the new Generative AI and Context Engineer, Apache Spark Developer) and free accreditations, with exam-guide focus, Databricks Academy/Free Edition training, online-proctored delivery, and the two-year renew-by-exam model; snapshot dated 26 July 2026.
 
 ## Appendix catalog
 
@@ -56,6 +57,7 @@ one place instead of scattered through volume READMEs.
 | Splunk certifications and course access | [Volume XLV](../volume-45-splunk-certifications/README.md) | [19](chapters/19-appendix-splunk-certifications-and-course-access.md) |
 | NVIDIA certifications and course access | [Volume XLVI](../volume-46-nvidia-certifications/README.md) | [20](chapters/20-appendix-nvidia-certifications-and-course-access.md) |
 | Oracle certifications and course access | [Volume XLVII](../volume-47-oracle-certifications/README.md) | [21](chapters/21-appendix-oracle-certifications-and-course-access.md) |
+| Databricks certifications and course access | [Volume XLVIII](../volume-48-databricks-certifications/README.md) | [22](chapters/22-appendix-databricks-certifications-and-course-access.md) |
 
 ## Conventions
 
