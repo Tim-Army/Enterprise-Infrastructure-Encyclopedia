@@ -31,6 +31,7 @@ one place instead of scattered through volume READMEs.
 21. [Appendix — Oracle Certifications and Course Access](chapters/21-appendix-oracle-certifications-and-course-access.md) — the Oracle program across four families (OCI, Oracle Database, MySQL, Java) with key credentials, the year-versioned exam-code system, free Learning Explorer/OCI-free-tier training, Pearson VUE delivery, CertView, and recertification; snapshot dated 26 July 2026.
 22. [Appendix — Databricks Certifications and Course Access](chapters/22-appendix-databricks-certifications-and-course-access.md) — the Databricks role-based certifications (Data Analyst, Data Engineer, ML, the new Generative AI and Context Engineer, Apache Spark Developer) and free accreditations, with exam-guide focus, Databricks Academy/Free Edition training, online-proctored delivery, and the two-year renew-by-exam model; snapshot dated 26 July 2026.
 23. [Appendix — Snowflake Certifications and Course Access](chapters/23-appendix-snowflake-certifications-and-course-access.md) — the SnowPro program (Associate, the required Core COF-C03 with its six weighted domains, and the five Advanced tracks — Architect, Data Engineer, Data Analyst, Data Scientist, Administrator) with prerequisites, Snowflake University/free-trial training, Pearson VUE delivery, and the two-year recertify-by-exam model; snapshot dated 27 July 2026.
+24. [Appendix — CrowdStrike Certifications and Course Access](chapters/24-appendix-crowdstrike-certifications-and-course-access.md) — the seven Falcon credentials by group (platform CCFA/CCFR/CCFH, Next-Gen SIEM CCSA/CCSE, specialist CCIS/CCCS) with their exam-guide domains, the 90-minute/60-question Pearson VUE format, CrowdStrike University training, no published domain weights, and the three-year recertify-by-exam model; snapshot dated 27 July 2026.
 
 ## Appendix catalog
 
@@ -60,6 +61,7 @@ one place instead of scattered through volume READMEs.
 | Oracle certifications and course access | [Volume XLVII](../volume-47-oracle-certifications/README.md) | [21](chapters/21-appendix-oracle-certifications-and-course-access.md) |
 | Databricks certifications and course access | [Volume XLVIII](../volume-48-databricks-certifications/README.md) | [22](chapters/22-appendix-databricks-certifications-and-course-access.md) |
 | Snowflake certifications and course access | [Volume XLIX](../volume-49-snowflake-certifications/README.md) | [23](chapters/23-appendix-snowflake-certifications-and-course-access.md) |
+| CrowdStrike certifications and course access | [Volume L](../volume-50-crowdstrike-certifications/README.md) | [24](chapters/24-appendix-crowdstrike-certifications-and-course-access.md) |
 
 ## Conventions
 

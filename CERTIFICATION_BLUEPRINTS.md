@@ -46,6 +46,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | XLVII — Oracle Certification Tracks | The whole Oracle program in one volume (certification-tracks) across four families with **year-versioned exam codes**. **OCI**: Foundations (1Z0-1085), AI Foundations (1Z0-1122), Architect Associate (1Z0-1072)/Professional, Developer (1Z0-1084), Operations/DevOps, Networking/Security, **Multicloud Architect** (NEW), Data Science (1Z0-1110), **Generative AI Professional** (1Z0-1127, NEW: prompting/T-Few/RAG/vector/agents). **Oracle Database**: SQL Associate (1Z0-071), DBA Associate (1Z0-082)/Professional (1Z0-083), **Database 23ai** (AI Vector Search), Autonomous Database. **MySQL**: DBA + Developer. **Java**: Java SE 21 Developer (1Z0-830). **One walkthrough lab per exam-topic area** (~54; real Oracle SQL/OCI CLI/MySQL/Java on free tiers). Pearson VUE; CertView; annual/release versioning + recertification. Verified on education.oracle.com 26 Jul 2026 | education.oracle.com certification pages |
 | XLVIII — Databricks Certification Tracks | The whole Databricks program in one volume (certification-tracks) on the lakehouse Data Intelligence Platform. Role-based certifications: **Data Analyst Associate**; **Data Engineer** Associate + Professional; **Machine Learning** Associate + Professional; **Generative AI Engineer Associate** (NEW) and **Context Engineer Associate** (NEW, agent context); **Apache Spark Developer Associate**. Free **accreditations**: Databricks/Generative AI/AI Agent Fundamentals, Platform Architect (AWS/Azure/GCP), Platform Administrator. **One walkthrough lab per exam-guide section** (~55; PySpark/Spark SQL/Delta/MLflow/Unity Catalog/Mosaic AI on Free Edition). Online-proctored; ~2-yr renew-by-exam. Hadoop Migration Architect retired 1 Aug 2024. Verified on databricks.com 26 Jul 2026 | databricks.com exam guides |
 | XLIX — Snowflake Certification Tracks | The whole Snowflake **SnowPro** program in one volume (certification-tracks) on the **AI Data Cloud**. **SnowPro Associate: Platform** (entry); **SnowPro Core** — current code **COF-C03** (live 16 Feb 2026, replaced COF-C02; 100 Q / 115 min; 6 weighted domains: Architecture 25%, Access/Security 20%, Performance 15%, Loading/Transformation 20%, Protection/Sharing 10%, Pipelines 10%); five **SnowPro Advanced** tracks (require Core): **Architect** (ARA-C01), **Data Engineer** (DEA-C02), **Data Analyst** (DAA-C01), **Data Scientist** (DSA-C03), **Administrator** (ADA-C01). **One walkthrough lab per exam-guide domain** (38; real Snowflake SQL — warehouses/RBAC/COPY INTO/streams/tasks/time travel/VARIANT/Cortex on a free trial). Pearson VUE; 2-yr recertify-by-exam. Verified on learn.snowflake.com 27 Jul 2026 | learn.snowflake.com study guides |
+| L — CrowdStrike Certification Tracks | The whole CrowdStrike **Falcon** program in one volume (certification-tracks). Platform: **CCFA** (Administrator, 8 domains), **CCFR** (Responder, 6), **CCFH** (Hunter, 7, CQL). Next-Gen SIEM: **CCSA** (Analyst, 4), **CCSE** (Engineer, 5). Specialist: **CCIS** (Identity, 12, GraphQL), **CCCS** (Cloud, 7, CSPM/CWP/CIEM). All exams 90 min / 60 Q, Pearson VUE, **no published % weights**, valid **3 years** (recert by exam). **One walkthrough lab per exam-guide domain** (49 domain labs; 54 total — real falconctl/FalconPy/OAuth2/CQL/GraphQL against a Falcon tenant). Defensive EDR/XDR only. Verified on crowdstrike.com 27 Jul 2026 | crowdstrike.com/crowdstrike-university exam guides |
 
 Volumes not listed (I, VI–VIII, XI–XIII, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -629,3 +630,20 @@ walkthrough lab per exam-guide domain (38 in all)** — real Snowflake SQL
 course-catalog appendix (Master Appendices Chapter 23). Snowflake extends the
 encyclopedia's data-platform coverage with a second AI-native cloud-data-warehouse
 credential family.
+
+Volume L (CrowdStrike Certification Tracks) was created on **27 July 2026** as the
+certification map for the **CrowdStrike Falcon** platform, joining the encyclopedia's
+security cluster (Cybersecurity X, Zscaler XXXV, Fortinet XIX, Palo Alto XVI) and
+neighboring the Splunk SIEM volume (XLV). It covers all seven Falcon credentials in
+two groups — platform (**CCFA** Administrator, **CCFR** Responder, **CCFH** Hunter),
+Next-Gen SIEM (**CCSA** Analyst, **CCSE** Engineer), and specialist (**CCIS**
+Identity, **CCCS** Cloud). Every credential was verified against crowdstrike.com on
+27 July 2026; the guides are 90-minute/60-question Pearson VUE exams valid three
+years, and CrowdStrike publishes **domains but no percentage weights**, so the volume
+carries **one walkthrough lab per exam-guide domain (49 domain labs; 54 in all)** —
+real Falcon tooling (`falconctl`, FalconPy, the OAuth2 REST API, the CrowdStrike
+Query Language for Next-Gen SIEM, and the Identity Protection GraphQL API) — plus a
+course-catalog appendix (Master Appendices Chapter 24). All content is defensive:
+authorized administration, detection, hunting, and response only. CrowdStrike anchors
+the encyclopedia's endpoint/XDR, identity, and cloud-security coverage on one
+platform.
