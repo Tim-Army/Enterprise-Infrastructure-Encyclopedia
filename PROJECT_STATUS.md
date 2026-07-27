@@ -66,11 +66,12 @@ does not by itself verify every technical claim in it.
 | LIV — OpenTelemetry | 9 | Drafted |
 | LV — Prometheus | 9 | Drafted |
 | LVI — Infoblox Certification Tracks | 9 | Drafted |
+| LVII — Python for Infrastructure and Automation | 9 | Drafted |
 | XCVII — Master Appendices | 26 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 570 of 570 drafted (100%). Every volume has a
+**Total declared chapters:** 579 of 579 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

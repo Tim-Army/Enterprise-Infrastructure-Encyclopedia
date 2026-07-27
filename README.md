@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.62-blue)
+![Release](https://img.shields.io/badge/release-v1.2.63-blue)
 
-**v1.2.62 — latest release.** 59 volumes, 570 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.62) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.63 — latest release.** 60 volumes, 579 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.63) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 59-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 60-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-59 volumes, 570 chapters. Each volume has a dedicated
+60 volumes, 579 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -86,6 +86,7 @@ The series combines architecture and theory with implementation guidance, automa
 | LIV | [OpenTelemetry](volumes/volume-54-opentelemetry/README.md) | 9 |
 | LV | [Prometheus](volumes/volume-55-prometheus/README.md) | 9 |
 | LVI | [Infoblox Certification Tracks](volumes/volume-56-infoblox-certifications/README.md) | 9 |
+| LVII | [Python for Infrastructure and Automation](volumes/volume-57-python-infrastructure-automation/README.md) | 9 |
 | XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 26 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
@@ -142,6 +143,7 @@ ascending order.
 | Virtualization | [V VMware](volumes/volume-05-vmware-virtualization/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Cloud | [VII Cloud Infrastructure](volumes/volume-07-cloud-infrastructure/README.md) → [XVII AWS Architecture and Security](volumes/volume-17-aws-architecture-security/README.md) |
 | Network source of truth and tooling | [LII NetBox Community Edition](volumes/volume-52-netbox-community/README.md) — the open-source network source of truth (DCIM, IPAM, virtualization, circuits, tenancy) and the REST/GraphQL automation built on it |
+| Programming and automation | [IX Infrastructure Automation](volumes/volume-09-infrastructure-automation/README.md) → [LVII Python for Infrastructure and Automation](volumes/volume-57-python-infrastructure-automation/README.md) — automation foundations and Python as the infrastructure engineer's toolkit |
 | Reference | [XCVII Master Appendices](volumes/volume-97-master-appendices/README.md), [XCVIII Acronyms](volumes/volume-98-acronyms/README.md), and [XCIX Reference Library](volumes/volume-99-reference-library/README.md) — appendices, the acronym dictionary, and cross-volume reference material, always last |
 
 ## Volume-first layout
