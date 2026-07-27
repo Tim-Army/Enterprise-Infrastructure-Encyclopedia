@@ -28,6 +28,7 @@ one place instead of scattered through volume READMEs.
 18. [Appendix — ISACA Certifications and Course Access](chapters/18-appendix-isaca-certifications-and-course-access.md) — the ISACA audit/governance/risk credentials (CISA, CISM, CRISC, CGEIT, CDPSE, the hands-on CCOA, and the Advanced in AI family AAIA/AAISM/AAIR) with verified weighted job-practice domains, exam mechanics, experience verification, the three-year CPE + annual-fee maintenance model, and the CMMC roles and certificate programs; snapshot dated 26 July 2026.
 19. [Appendix — Splunk Certifications and Course Access](chapters/19-appendix-splunk-certifications-and-course-access.md) — the Splunk (now Cisco) credentials by track (Core/SPL, Admin, Architecture, Cybersecurity Defense, Observability, plus SOAR/ITSI/ES) with blueprint topic areas, prerequisites, Pearson VUE delivery, free eLearning and trials, and the three-year renew-by-exam model; snapshot dated 26 July 2026.
 20. [Appendix — NVIDIA Certifications and Course Access](chapters/20-appendix-nvidia-certifications-and-course-access.md) — the NVIDIA-Certified Associate (NCA) and Professional (NCP) credentials across AI infrastructure/operations/networking, accelerated data science, and generative/agentic AI/OpenUSD, with prices, blueprint focus, DLI training, Pearson VUE delivery, and the renew-by-exam model; snapshot dated 26 July 2026.
+21. [Appendix — Oracle Certifications and Course Access](chapters/21-appendix-oracle-certifications-and-course-access.md) — the Oracle program across four families (OCI, Oracle Database, MySQL, Java) with key credentials, the year-versioned exam-code system, free Learning Explorer/OCI-free-tier training, Pearson VUE delivery, CertView, and recertification; snapshot dated 26 July 2026.
 
 ## Appendix catalog
 
@@ -54,6 +55,7 @@ one place instead of scattered through volume READMEs.
 | ISACA certifications and course access | [Volume XLIV](../volume-44-isaca-certifications/README.md) | [18](chapters/18-appendix-isaca-certifications-and-course-access.md) |
 | Splunk certifications and course access | [Volume XLV](../volume-45-splunk-certifications/README.md) | [19](chapters/19-appendix-splunk-certifications-and-course-access.md) |
 | NVIDIA certifications and course access | [Volume XLVI](../volume-46-nvidia-certifications/README.md) | [20](chapters/20-appendix-nvidia-certifications-and-course-access.md) |
+| Oracle certifications and course access | [Volume XLVII](../volume-47-oracle-certifications/README.md) | [21](chapters/21-appendix-oracle-certifications-and-course-access.md) |
 
 ## Conventions
 
