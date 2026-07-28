@@ -1,0 +1,37 @@
+# Volume LXXIII Index
+
+Alphabetized topical index for **Volume LXXIII — Check Point Certification Tracks**.
+See also the [volume glossary](GLOSSARY.md) for term definitions and the
+[master index](../../INDEX.md) for cross-volume topics.
+
+- **Access Control policy / rule base** — [Chapter 03](chapters/03-ccsa-security-policy-and-nat.md)
+- **CCSA (Certified Security Administrator, 156-215.82)** — [Chapter 01](chapters/01-the-check-point-certification-program.md), [Chapter 02](chapters/02-ccsa-gaia-and-deployment.md)
+- **CCSE (Certified Security Expert, 156-315.82)** — [Chapter 01](chapters/01-the-check-point-certification-program.md), [Chapter 05](chapters/05-ccse-advanced-gateway.md)
+- **CCSM / CCSM Elite** — [Chapter 08](chapters/08-cloudguard-harmony-maestro-and-isas.md), [Chapter 09](chapters/09-ccsm-elite-currency-and-career.md)
+- **CCTE (Certified Troubleshooting Expert, 156-588)** — [Chapter 06](chapters/06-ccte-troubleshooting.md)
+- **CloudGuard** — [Chapter 08](chapters/08-cloudguard-harmony-maestro-and-isas.md)
+- **ClusterXL (HA / failover)** — [Chapter 05](chapters/05-ccse-advanced-gateway.md)
+- **cpview / cpstat monitoring** — [Chapter 04](chapters/04-ccsa-software-blades-and-monitoring.md), [Chapter 06](chapters/06-ccte-troubleshooting.md)
+- **Cleanup rule** — [Chapter 03](chapters/03-ccsa-security-policy-and-nat.md)
+- **CoreXL** — [Chapter 05](chapters/05-ccse-advanced-gateway.md)
+- **fw monitor / inspection chain** — [Chapter 06](chapters/06-ccte-troubleshooting.md)
+- **Gaia OS / clish** — [Chapter 02](chapters/02-ccsa-gaia-and-deployment.md)
+- **Harmony** — [Chapter 08](chapters/08-cloudguard-harmony-maestro-and-isas.md)
+- **Identity Awareness** — [Chapter 04](chapters/04-ccsa-software-blades-and-monitoring.md)
+- **Infinity Specialist Accreditations (ISAs)** — [Chapter 08](chapters/08-cloudguard-harmony-maestro-and-isas.md), [Chapter 09](chapters/09-ccsm-elite-currency-and-career.md)
+- **Install Policy** — [Chapter 03](chapters/03-ccsa-security-policy-and-nat.md)
+- **Maestro (hyperscale)** — [Chapter 08](chapters/08-cloudguard-harmony-maestro-and-isas.md)
+- **Management API (mgmt_cli)** — [Chapter 07](chapters/07-management-api-and-automation.md)
+- **NAT (Automatic / Manual)** — [Chapter 03](chapters/03-ccsa-security-policy-and-nat.md)
+- **Pearson VUE / exam codes** — [Chapter 01](chapters/01-the-check-point-certification-program.md), [Chapter 09](chapters/09-ccsm-elite-currency-and-career.md)
+- **Policy as code / Ansible** — [Chapter 07](chapters/07-management-api-and-automation.md)
+- **Quantum platform** — [Chapter 01](chapters/01-the-check-point-certification-program.md)
+- **R82 release / currency** — [Chapter 01](chapters/01-the-check-point-certification-program.md), [Chapter 09](chapters/09-ccsm-elite-currency-and-career.md)
+- **SecureXL** — [Chapter 05](chapters/05-ccse-advanced-gateway.md)
+- **SIC (Secure Internal Communication)** — [Chapter 02](chapters/02-ccsa-gaia-and-deployment.md)
+- **SmartConsole** — [Chapter 02](chapters/02-ccsa-gaia-and-deployment.md), [Chapter 03](chapters/03-ccsa-security-policy-and-nat.md)
+- **Software Blades** — [Chapter 04](chapters/04-ccsa-software-blades-and-monitoring.md)
+- **Threat Prevention (Detect → Prevent)** — [Chapter 04](chapters/04-ccsa-software-blades-and-monitoring.md)
+- **Upgrades (CPUSE, management-first)** — [Chapter 05](chapters/05-ccse-advanced-gateway.md)
+- **VPN (site-to-site, IKE/IPsec)** — [Chapter 05](chapters/05-ccse-advanced-gateway.md)
+- **VSX (virtual gateways)** — [Chapter 08](chapters/08-cloudguard-harmony-maestro-and-isas.md)

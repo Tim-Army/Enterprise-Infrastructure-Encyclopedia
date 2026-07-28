@@ -44,6 +44,7 @@ one place instead of scattered through volume READMEs.
 34. [Appendix — MikroTik Certifications and Course Access](chapters/34-appendix-mikrotik-certifications-and-course-access.md) — the MikroTik RouterOS program with the MTCNA prerequisite foundation and the specialist certificates (MTCRE, MTCTCE, MTCWE/MTCEWE, MTCUME, MTCINE, MTCSE, MTCSWE, MTCIPv6E), the prerequisite structure, MikroTik-Certified-Trainer delivery with online exams, three-year validity, License Level 4/P1, and free CHR practice; snapshot dated 28 July 2026.
 35. [Appendix — CWNP Certifications and Course Access](chapters/35-appendix-cwnp-certifications-and-course-access.md) — the vendor-neutral CWNP wireless program by career level (entry CWSS/CWTS; the CWNA foundation; professional Wi-Fi CWSP/CWAP/CWDP and IoT CWISA/CWICP/CWIIP/CWIDP; experts CWNE/CWISE) with the CWNA-109 fee, the Prometric delivery transition (1 Aug 2024), three-year validity, the Wi-Fi 6E/7 focus, and free Wireshark/python RF-analysis practice; snapshot dated 28 July 2026.
 36. [Appendix — Trellix Certifications and Course Access](chapters/36-appendix-trellix-certifications-and-course-access.md) — the Trellix (McAfee Enterprise + FireEye) per-product Certified Product Specialist program across ePO, ENS, EDR, Network Security/ATD, DLP, and Helix, with Trellix Education Services delivery, the legacy McAfee MA0-### exam-code transition, the XDR/DXL consolidation, and the free open-source OpenDXL SDK; snapshot dated 28 July 2026.
+37. [Appendix — Check Point Certifications and Course Access](chapters/37-appendix-check-point-certifications-and-course-access.md) — the Check Point ladder (CCSA 156-215.82 → CCSE 156-315.82 → CCSM/Elite via Infinity Specialist Accreditations) plus CCTE 156-588, on the R82 Quantum platform, with authorized-training-center and Pearson VUE delivery, the 2026 R81.20/156-587 retirements, the CloudGuard/Harmony/Maestro/VSX specializations, and CheckMates/evaluation-VM practice; snapshot dated 28 July 2026.
 
 ## Appendix catalog
 
@@ -86,6 +87,7 @@ one place instead of scattered through volume READMEs.
 | MikroTik certifications and course access | [Volume LXVIII](../volume-68-mikrotik-certifications/README.md) | [34](chapters/34-appendix-mikrotik-certifications-and-course-access.md) |
 | CWNP certifications and course access | [Volume LXIX](../volume-69-cwnp-certifications/README.md) | [35](chapters/35-appendix-cwnp-certifications-and-course-access.md) |
 | Trellix certifications and course access | [Volume LXX](../volume-70-trellix-certifications/README.md) | [36](chapters/36-appendix-trellix-certifications-and-course-access.md) |
+| Check Point certifications and course access | [Volume LXXIII](../volume-73-check-point-certifications/README.md) | [37](chapters/37-appendix-check-point-certifications-and-course-access.md) |
 
 ## Conventions
 
