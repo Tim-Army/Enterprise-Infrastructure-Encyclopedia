@@ -51,6 +51,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | LVI — Infoblox Certification Tracks | The whole Infoblox program in one volume (certification-tracks) for **DDI** (DNS/DHCP/IPAM) and DNS-layer security. **NIOS DDI** ladder: **INO** Operator, **INA** Administrator, **INE** Expert. **Universal DDI** (NIOS-X + Infoblox Portal) and **Threat Defense** microcredentials (knowledge checks). **NetMRI** Administrator (**IMA**). Vendor-agnostic **Industry Learning**: **DDIA/DDIP** (DDI) and **DSA/DSP** (DNS security). Topic areas published, **no weightings**; digital badges. **One walkthrough lab per topic area** (38; real WAPI/Infoblox-Portal-API/NetMRI-API + dig). Threat Defense is defensive DNS security. Verified on education.infoblox.com 27 Jul 2026 | launchpad.education.infoblox.com |
 | LXI — Cribl Certification Tracks | The whole Cribl University ladder in one volume (certification-tracks) for the observability pipeline (**Stream**, **Edge**, **Search**, **Lake**). **CC User** (foundation, all products); **CC Admin - Stream** (sources/routes/pipelines/functions/packs/optimization) and **CC Admin - Edge** (nodes/fleets/collection); **CC Engineer** (end-to-end design + optimization); partner **CCSC** (deployment readiness + distributed leader/workers). **Free**, online self-study, valid **3 years**; Admin requires CC User, Engineer requires Admin. Topic areas (no weightings). **One walkthrough lab per topic area** (36; real Cribl Stream config/REST API/expressions/Search on the Cribl.Cloud free tier). Verified on cribl.io/university 27 Jul 2026 | cribl.io/university |
 | LXII — Arista Certification Tracks | The whole Arista Certified Engineer (ACE) program in one volume (certification-tracks), revised **1 June 2025** into a Learning Track model on **EOS** and **CloudVision**. Tiers **Associate (L1) → Specialist (L3) → Professional (L4)**. Tracks: **Network Foundations** (Associate — EOS, switching, routing); **Data Center** (Specialist — Operations and Engineering; leaf-spine, MLAG, EVPN/VXLAN, anycast gateway); **Campus** (Specialist — Operations and Engineering; PoE, 802.1X, campus fabric, MSS); **WAN Routing** (Specialist — MPLS Core; LDP, L3VPN); **Automation** (Specialist Foundations + Advanced → **Professional**; eAPI/pyeapi, Ansible `arista.eos`, Jinja/Git, AVD, CloudVision). Self-paced Arista Academy; **1 Jun 2025** recertification policy. Published blueprints. **One walkthrough lab per topic area** (36; real EOS CLI/eAPI/EVPN-VXLAN/MPLS/Ansible-AVD/CloudVision on free cEOS/vEOS). Verified on training.arista.com 27 Jul 2026 | training.arista.com |
+| LXIII — Public Sector Data Governance (PSDGP) | The **ICCP** Public Sector Data Governance Professional credential in one volume (certification-tracks), taught by **R2C (TheR2C)** and **Buchanan & Edwards**. Exam **100 questions / 90 minutes**, proctored; prerequisite is an **Associate's degree or higher + >2 years experience**, or a **core ICCP cert (DGSP)**; valid **3 years** via **CPD**. Four content areas: **Mission Drivers** (service delivery, open data, transparency, compliance); **Deliverables** (charter, policies, catalog/metadata, data-quality scorecard, stewardship); **Roles and Responsibilities** (council, CDO/owner/steward/custodian, RACI, engagement); **Legal and Regulatory Environment** (FOIA, Privacy Act/PII, Federal Records Act/NARA, FISMA/NIST 800-53/FedRAMP, Evidence Act/OPEN Government Data Act). Plus the **DGSP core body of knowledge**. **One walkthrough lab per sub-topic** (35; governance artifacts — charter/policy/catalog/RACI/retention schedule/DQ scorecard via shell + `python3`/`sqlite3`). Verified on ther2c.com and iccp.org 28 Jul 2026 | ther2c.com, iccp.org |
 
 Volumes not listed (I, VI–VIII, XI–XIII, LII–LV, LVII–LX, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -712,3 +713,20 @@ EVPN/VXLAN and MPLS configuration, Ansible `arista.eos` and AVD, and the CloudVi
 runnable on free cEOS/vEOS images or Arista Test Drive, plus a course-catalog appendix
 (Master Appendices Chapter 28). Arista broadens the encyclopedia's data-center and campus
 switching coverage alongside Cisco and Juniper.
+
+Volume LXIII (Public Sector Data Governance) was created on **28 July 2026** as the
+certification map for the **ICCP Public Sector Data Governance Professional (PSDGP)**
+credential, joining the encyclopedia's governance, risk, and compliance volumes (ISC2 XL,
+ISACA XLIV, Enterprise Cybersecurity X) and data-platform volumes (NetBox LII). It covers the
+whole program — issued by **ICCP**, taught by **R2C (TheR2C)** and **Buchanan & Edwards**,
+examined in 100 questions over 90 minutes, gated by a degree-plus-experience or core-cert
+prerequisite, and renewed every three years through CPD — across the four content areas
+(Mission Drivers; Deliverables; Roles and Responsibilities; the Legal and Regulatory
+Environment) plus the DGSP core body of knowledge. Every fact was verified against ther2c.com
+and iccp.org on 28 July 2026. Because PSDGP is process- and policy-oriented, the volume carries
+**one walkthrough lab per sub-topic (35 in all)** producing real governance artifacts — a
+charter, a classification policy, a metadata catalog entry, a data-quality scorecard, a RACI
+matrix, a NARA-style retention schedule, a NIST/FedRAMP control mapping, and an executive
+one-pager — reproducible with only a shell, `python3`, and `sqlite3`, plus a course-catalog
+appendix (Master Appendices Chapter 29). PSDGP adds the encyclopedia's first public-sector,
+records-and-privacy-centered data governance credential.

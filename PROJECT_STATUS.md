@@ -72,11 +72,12 @@ does not by itself verify every technical claim in it.
 | LX — Rust for Systems and Infrastructure | 9 | Drafted |
 | LXI — Cribl Certification Tracks | 9 | Drafted |
 | LXII — Arista Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 28 | Drafted |
+| LXIII — Public Sector Data Governance (PSDGP) | 9 | Drafted |
+| XCVII — Master Appendices | 29 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 626 of 626 drafted (100%). Every volume has a
+**Total declared chapters:** 636 of 636 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

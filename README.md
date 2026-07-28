@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.68-blue)
+![Release](https://img.shields.io/badge/release-v1.2.69-blue)
 
-**v1.2.68 — latest release.** 65 volumes, 626 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.68) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.69 — latest release.** 66 volumes, 636 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.69) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 65-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 66-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-65 volumes, 626 chapters. Each volume has a dedicated
+66 volumes, 636 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -92,7 +92,8 @@ The series combines architecture and theory with implementation guidance, automa
 | LX | [Rust for Systems and Infrastructure](volumes/volume-60-rust-systems-infrastructure/README.md) | 9 |
 | LXI | [Cribl Certification Tracks](volumes/volume-61-cribl-certifications/README.md) | 9 |
 | LXII | [Arista Certification Tracks](volumes/volume-62-arista-certifications/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 28 |
+| LXIII | [Public Sector Data Governance (PSDGP)](volumes/volume-63-public-sector-data-governance/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 29 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
@@ -143,6 +144,7 @@ ascending order.
 | Infoblox | [LVI Infoblox Certification Tracks](volumes/volume-56-infoblox-certifications/README.md) — the whole Infoblox program in one volume: the NIOS DDI ladder (Operator INO, Administrator INA, Expert INE), Universal DDI and Threat Defense, NetMRI Administrator, and the vendor-agnostic Industry Learning credentials, with WAPI/Portal-API labs |
 | Cribl | [LXI Cribl Certification Tracks](volumes/volume-61-cribl-certifications/README.md) — the whole Cribl University ladder in one volume: CC User, CC Admin (Stream and Edge), CC Engineer, and the partner CCSC across the observability pipeline (Stream, Edge, Search, Lake), with Cribl config/REST-API/pipeline labs |
 | Arista | [LXII Arista Certification Tracks](volumes/volume-62-arista-certifications/README.md) — the whole Arista Certified Engineer (ACE) program in one volume: Network Foundations (Associate), the Data Center, Campus, and WAN Routing Specialist tracks, and the Automation track to Professional, on EOS and CloudVision, with EOS CLI, eAPI/pyeapi, EVPN/VXLAN, and Ansible/AVD labs |
+| ICCP (Public Sector Data Governance) | [LXIII Public Sector Data Governance (PSDGP)](volumes/volume-63-public-sector-data-governance/README.md) — the ICCP Public Sector Data Governance Professional credential in one volume: the four content areas (Mission Drivers, Deliverables, Roles and Responsibilities, and the Legal and Regulatory Environment), the DGSP core body of knowledge, and the exam, with governance-artifact walkthroughs (charter, policy, catalog, RACI, retention schedule, quality scorecard) |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) → [LIII LibreNMS](volumes/volume-53-librenms/README.md) → [LIV OpenTelemetry](volumes/volume-54-opentelemetry/README.md) → [LV Prometheus](volumes/volume-55-prometheus/README.md) |

@@ -36,6 +36,7 @@ one place instead of scattered through volume READMEs.
 26. [Appendix — Infoblox Certifications and Course Access](chapters/26-appendix-infoblox-certifications-and-course-access.md) — the Infoblox program by family (NIOS DDI INO/INA/INE; Universal DDI and Threat Defense microcredentials; NetMRI IMA; vendor-agnostic Industry Learning DDIA/DDIP and DSA/DSP) with topic areas, Infoblox Education/LaunchPad training, digital badges, and the topic-area (no weightings) blueprint model; snapshot dated 27 July 2026.
 27. [Appendix — Cribl Certifications and Course Access](chapters/27-appendix-cribl-certifications-and-course-access.md) — the free Cribl University ladder (CC User; CC Admin - Stream / - Edge; CC Engineer; partner CCSC) across the observability pipeline (Stream, Edge, Search, Lake) with topic areas, prerequisites, online self-study delivery, Cribl.Cloud free-tier practice, and the three-year validity; snapshot dated 27 July 2026.
 28. [Appendix — Arista Certifications and Course Access](chapters/28-appendix-arista-certifications-and-course-access.md) — the Arista Certified Engineer (ACE) program, revised 1 June 2025 into a Learning Track model, by track and tier (Network Foundations Associate; Data Center, Campus, and WAN Routing Specialist; Automation to Professional) with topic areas, Arista Academy self-paced delivery, cEOS/vEOS free practice, and the 1 June 2025 recertification policy; snapshot dated 27 July 2026.
+29. [Appendix — PSDGP Public Sector Data Governance and Course Access](chapters/29-appendix-psdgp-public-sector-data-governance-and-course-access.md) — the ICCP Public Sector Data Governance Professional (PSDGP) credential and the DGSP core, with the four content areas, the 100-question/90-minute proctored exam, the degree-plus-experience (or core-cert) prerequisite, R2C/Buchanan & Edwards three-day course delivery, and the three-year CPD renewal; snapshot dated 28 July 2026.
 
 ## Appendix catalog
 
@@ -70,6 +71,7 @@ one place instead of scattered through volume READMEs.
 | Infoblox certifications and course access | [Volume LVI](../volume-56-infoblox-certifications/README.md) | [26](chapters/26-appendix-infoblox-certifications-and-course-access.md) |
 | Cribl certifications and course access | [Volume LXI](../volume-61-cribl-certifications/README.md) | [27](chapters/27-appendix-cribl-certifications-and-course-access.md) |
 | Arista certifications and course access | [Volume LXII](../volume-62-arista-certifications/README.md) | [28](chapters/28-appendix-arista-certifications-and-course-access.md) |
+| PSDGP public sector data governance and course access | [Volume LXIII](../volume-63-public-sector-data-governance/README.md) | [29](chapters/29-appendix-psdgp-public-sector-data-governance-and-course-access.md) |
 
 ## Conventions
 
