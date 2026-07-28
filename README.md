@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.76-blue)
+![Release](https://img.shields.io/badge/release-v1.2.77-blue)
 
-**v1.2.76 — latest release.** 73 volumes, 706 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.76) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.77 — latest release.** 74 volumes, 715 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.77) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 73-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 74-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-73 volumes, 706 chapters. Each volume has a dedicated
+74 volumes, 715 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -100,6 +100,7 @@ The series combines architecture and theory with implementation guidance, automa
 | LXVIII | [MikroTik Certification Tracks](volumes/volume-68-mikrotik-certifications/README.md) | 9 |
 | LXIX | [CWNP Certification Tracks](volumes/volume-69-cwnp-certifications/README.md) | 9 |
 | LXX | [Trellix Certification Tracks](volumes/volume-70-trellix-certifications/README.md) | 9 |
+| LXXI | [VMware vSphere 7](volumes/volume-71-vmware-vsphere-7/README.md) | 9 |
 | XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 36 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
@@ -163,7 +164,7 @@ ascending order.
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) → [LIII LibreNMS](volumes/volume-53-librenms/README.md) → [LIV OpenTelemetry](volumes/volume-54-opentelemetry/README.md) → [LV Prometheus](volumes/volume-55-prometheus/README.md) |
 | Operating systems | [XIV Red Hat Enterprise Linux 10](volumes/volume-14-red-hat-enterprise-linux-10/README.md) → [XXI Ubuntu Server and Cloud 26.04 LTS](volumes/volume-21-ubuntu-server-cloud-26-04-lts/README.md) → [XXXVI Windows Server 2025 and Active Directory](volumes/volume-36-windows-server-2025-active-directory/README.md) |
-| Virtualization | [V VMware](volumes/volume-05-vmware-virtualization/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
+| Virtualization | [V VMware](volumes/volume-05-vmware-virtualization/README.md) → [LXXI VMware vSphere 7](volumes/volume-71-vmware-vsphere-7/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Cloud | [VII Cloud Infrastructure](volumes/volume-07-cloud-infrastructure/README.md) → [XVII AWS Architecture and Security](volumes/volume-17-aws-architecture-security/README.md) |
 | Network source of truth and tooling | [LII NetBox Community Edition](volumes/volume-52-netbox-community/README.md) — the open-source network source of truth (DCIM, IPAM, virtualization, circuits, tenancy) and the REST/GraphQL automation built on it |
 | Programming and automation | [IX Infrastructure Automation](volumes/volume-09-infrastructure-automation/README.md) → [LVII Python for Infrastructure and Automation](volumes/volume-57-python-infrastructure-automation/README.md) → [LVIII Python for Network Engineers](volumes/volume-58-python-network-engineers/README.md) → [LIX Ansible](volumes/volume-59-ansible/README.md) → [LX Rust for Systems and Infrastructure](volumes/volume-60-rust-systems-infrastructure/README.md) — automation foundations, Python as the infrastructure engineer's toolkit, the network-automation stack, declarative configuration management with Ansible, and Rust for fast, reliable infrastructure binaries |
