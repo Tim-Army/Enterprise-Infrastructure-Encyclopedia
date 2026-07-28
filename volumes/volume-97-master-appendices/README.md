@@ -42,6 +42,7 @@ one place instead of scattered through volume READMEs.
 32. [Appendix — F5 Certifications and Course Access](chapters/32-appendix-f5-certifications-and-course-access.md) — the F5 ladder by level (Administrator, Technology Specialist, Solution Expert) and specialization (LTM, DNS, Advanced WAF/ASM, APM) with the 2025 five-exam Administrator restructure (F5CAB1–F5CAB5), the CTS exam numbers (301a/301b, 302, 303, 304) and CSE 401, Pearson VUE delivery, F5 Education Services training, and BIG-IP VE practice; snapshot dated 28 July 2026.
 33. [Appendix — Nokia Certifications and Course Access](chapters/33-appendix-nokia-certifications-and-course-access.md) — the Nokia Service Routing Certification (SRC) program by level (NRS I, NRS II, SRA) with the exam codes (4A0-100; the NRS II composite-written 4A0-C03/C04 plus the 4A0-N01 practical lab; SRA 4A0-112), Pearson VUE written delivery plus the hands-on lab, SR OS VSR practice, and the SR/SRv6/EVPN currency note; snapshot dated 28 July 2026.
 34. [Appendix — MikroTik Certifications and Course Access](chapters/34-appendix-mikrotik-certifications-and-course-access.md) — the MikroTik RouterOS program with the MTCNA prerequisite foundation and the specialist certificates (MTCRE, MTCTCE, MTCWE/MTCEWE, MTCUME, MTCINE, MTCSE, MTCSWE, MTCIPv6E), the prerequisite structure, MikroTik-Certified-Trainer delivery with online exams, three-year validity, License Level 4/P1, and free CHR practice; snapshot dated 28 July 2026.
+35. [Appendix — CWNP Certifications and Course Access](chapters/35-appendix-cwnp-certifications-and-course-access.md) — the vendor-neutral CWNP wireless program by career level (entry CWSS/CWTS; the CWNA foundation; professional Wi-Fi CWSP/CWAP/CWDP and IoT CWISA/CWICP/CWIIP/CWIDP; experts CWNE/CWISE) with the CWNA-109 fee, the Prometric delivery transition (1 Aug 2024), three-year validity, the Wi-Fi 6E/7 focus, and free Wireshark/python RF-analysis practice; snapshot dated 28 July 2026.
 
 ## Appendix catalog
 
@@ -82,6 +83,7 @@ one place instead of scattered through volume READMEs.
 | F5 certifications and course access | [Volume LXVI](../volume-66-f5-certifications/README.md) | [32](chapters/32-appendix-f5-certifications-and-course-access.md) |
 | Nokia certifications and course access | [Volume LXVII](../volume-67-nokia-certifications/README.md) | [33](chapters/33-appendix-nokia-certifications-and-course-access.md) |
 | MikroTik certifications and course access | [Volume LXVIII](../volume-68-mikrotik-certifications/README.md) | [34](chapters/34-appendix-mikrotik-certifications-and-course-access.md) |
+| CWNP certifications and course access | [Volume LXIX](../volume-69-cwnp-certifications/README.md) | [35](chapters/35-appendix-cwnp-certifications-and-course-access.md) |
 
 ## Conventions
 

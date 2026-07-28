@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.74-blue)
+![Release](https://img.shields.io/badge/release-v1.2.75-blue)
 
-**v1.2.74 — latest release.** 71 volumes, 686 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.74) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.75 — latest release.** 72 volumes, 696 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.75) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 71-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 72-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-71 volumes, 686 chapters. Each volume has a dedicated
+72 volumes, 696 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -98,7 +98,8 @@ The series combines architecture and theory with implementation guidance, automa
 | LXVI | [F5 Certification Tracks](volumes/volume-66-f5-certifications/README.md) | 9 |
 | LXVII | [Nokia Certification Tracks](volumes/volume-67-nokia-certifications/README.md) | 9 |
 | LXVIII | [MikroTik Certification Tracks](volumes/volume-68-mikrotik-certifications/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 34 |
+| LXIX | [CWNP Certification Tracks](volumes/volume-69-cwnp-certifications/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 35 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
@@ -155,6 +156,7 @@ ascending order.
 | F5 | [LXVI F5 Certification Tracks](volumes/volume-66-f5-certifications/README.md) — the whole F5 ladder in one volume: the BIG-IP Administrator (rebuilt 2025 into five F5CAB exams), the Technology Specialist specializations (LTM, DNS, Advanced WAF/ASM, APM), and the Security Solution Expert, on BIG-IP/TMOS, with tmsh, iControl REST, AS3, and iRules labs |
 | Nokia | [LXVII Nokia Certification Tracks](volumes/volume-67-nokia-certifications/README.md) — the whole Nokia Service Routing Certification program in one volume: NRS I fundamentals, the NRS II professional credential (composite written 4A0-C03/C04 plus the 4A0-N01 practical lab), and the Service Routing Architect, on SR OS, with classic-CLI/MD-CLI, OSPF/IS-IS/BGP/MPLS/Segment-Routing, services (Epipe/VPLS/VPRN/EVPN), and pySROS labs |
 | MikroTik | [LXVIII MikroTik Certification Tracks](volumes/volume-68-mikrotik-certifications/README.md) — the whole MikroTik program in one volume: the MTCNA foundation and the specialist certificates (MTCRE routing, MTCTCE traffic control, MTCWE wireless, MTCUME user management, MTCINE BGP/MPLS, MTCSE/MTCSWE/MTCIPv6E), on RouterOS, with CLI/WinBox, firewall/NAT/queues, OSPF/BGP/MPLS, CAPsMAN, PPPoE/hotspot/RADIUS, and REST-API labs on CHR |
+| CWNP (vendor-neutral wireless) | [LXIX CWNP Certification Tracks](volumes/volume-69-cwnp-certifications/README.md) — the whole CWNP program in one volume: the entry level, the CWNA foundation, the professional Wi-Fi (CWSP security, CWAP analysis, CWDP design) and IoT (CWISA and beyond) tracks, and the CWNE/CWISE experts, with vendor-neutral RF-math (dBm/FSPL/link-budget/EIRP) and 802.11 protocol-analysis (Wireshark/tshark) labs |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) → [LIII LibreNMS](volumes/volume-53-librenms/README.md) → [LIV OpenTelemetry](volumes/volume-54-opentelemetry/README.md) → [LV Prometheus](volumes/volume-55-prometheus/README.md) |

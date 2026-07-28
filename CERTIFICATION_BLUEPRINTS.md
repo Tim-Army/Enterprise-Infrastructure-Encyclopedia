@@ -57,6 +57,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | LXVI — F5 Certification Tracks | The whole **F5** certification ladder in one volume (certification-tracks) for **BIG-IP/TMOS**. **F5 Certified Administrator (F5-CA)** — rebuilt in **2025** into five focused exams **F5CAB1–F5CAB5** (install/config/upgrade; data plane concepts; data plane configuration; control plane admin; support & troubleshooting), retiring legacy 101/201. **F5 Certified Technology Specialist (F5-CTS)** — LTM (**301a**+**301b**), DNS (**302**), Advanced WAF/ASM (**303**), APM (**304**). **F5 Certified Solution Expert, Security (F5-CSE, 401)** — requires F5-CA + all four CTS. Delivered by **Pearson VUE**. Defensive scope for the WAF/APM modules. **One walkthrough lab per exam domain** (36; real tmsh, iControl REST, AS3, iRules on BIG-IP Virtual Edition). Verified on education.f5.com and clouddocs.f5.com 28 Jul 2026 | education.f5.com, clouddocs.f5.com |
 | LXVII — Nokia Certification Tracks | The whole **Nokia Service Routing Certification (SRC)** program in one volume (certification-tracks) for **SR OS** (7750 SR / 7450 ESS / 7950 XRS). **NRS I** — exam **4A0-100** (IP Networks and Services Fundamentals). **NRS II** — Composite Written **4A0-C03** (IS-IS) or **4A0-C04** (OSPF) **plus** the **4A0-N01** 3.5-hour practical lab; covers OSPF/IS-IS, BGP, MPLS (LDP/RSVP-TE) and Segment Routing, and services (Epipe/VLL, VPLS, VPRN, EVPN). **SRA** — exam **4A0-112** (requires NRS II; end-to-end design). Written delivery by **Pearson VUE** plus the hands-on lab. **One walkthrough lab per exam domain** (35; classic CLI + MD-CLI, IGP/BGP/MPLS/SR, services, pySROS/NETCONF on SR OS VSR). Verified on nokia.com 28 Jul 2026 | nokia.com |
 | LXVIII — MikroTik Certification Tracks | The whole **MikroTik** program in one volume (certification-tracks) for **RouterOS** (v6/**v7** on RouterBOARD/CHR/x86). **MTCNA** (Network Associate) is the **prerequisite for every other certificate**; **MTCINE** additionally requires **MTCRE**. Specialist certificates: **MTCRE** (routing — static/OSPF/tunnels), **MTCTCE** (traffic control — firewall/mangle/queues/proxy), **MTCWE/MTCEWE** (wireless — CAPsMAN), **MTCUME** (user management — PPPoE/hotspot/RADIUS), **MTCINE** (BGP/MPLS/VPLS), **MTCSE** (security/IPsec), **MTCSWE** (switching/VLANs), **MTCIPv6E** (IPv6). Trainer-led with online exam; **3-year** validity. **One walkthrough lab per certificate domain** (36; RouterOS CLI/REST API/scripting on free CHR). Verified on mikrotik.com 28 Jul 2026 | mikrotik.com |
+| LXIX — CWNP Certification Tracks | The whole **CWNP** vendor-neutral wireless program in one volume (certification-tracks), **6 career levels**. Entry: **CWSS**, **CWTS**. Administrator: **CWNA** (exam **CWNA-109**) — the **foundation**. Professional Wi-Fi: **CWSP** (security — 802.1X/EAP, WPA3, PMF, WIPS), **CWAP** (802.11 protocol analysis), **CWDP** (design/site survey). Professional IoT: **CWISA**, **CWICP**, **CWIIP**, **CWIDP**. Expert: **CWNE** (Wi-Fi; CWNA+CWSP+CWAP+CWDP+CWISA + 3rd-party + board review) and **CWISE** (IoT). Delivered by **Prometric** (from Pearson VUE, 1 Aug 2024); **3-year** validity; Wi-Fi 6E/7 focus. Defensive analysis scope. **One walkthrough lab per exam domain** (33; RF math in python3 + 802.11 protocol analysis in Wireshark/tshark on authorized captures). Verified on cwnp.com 28 Jul 2026 | cwnp.com |
 
 Volumes not listed (I, VI–VIII, XI–XIII, LII–LV, LVII–LX, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -810,3 +811,17 @@ all)** — the RouterOS CLI, the v7 REST API, RouterOS scripting, and the full f
 runnable free on the CHR (Cloud Hosted Router), plus a course-catalog appendix (Master Appendices
 Chapter 34). MikroTik broadens the encyclopedia's routing, wireless, and ISP-access certification
 coverage with an accessible RouterOS platform.
+
+Volume LXIX (CWNP Certification Tracks) was created on **28 July 2026** as the certification map
+for **CWNP**, the vendor-neutral wireless standard, complementing the vendor wireless in HPE Aruba
+(LXIV), MikroTik (LXVIII), and Cisco (XXV) with the RF and 802.11 theory that underlies them all.
+It covers the six career levels — entry (CWSS/CWTS), the **CWNA** foundation, the professional
+Wi-Fi (CWSP/CWAP/CWDP) and IoT (CWISA/CWICP/CWIIP/CWIDP) tracks, and the two experts (**CWNE** for
+Wi-Fi, **CWISE** for IoT). Every credential was verified against cwnp.com on 28 July 2026, including
+the transition of exam delivery to **Prometric** on 1 August 2024 and the current **Wi-Fi 6E/7**
+content focus. Because CWNP is vendor-neutral and RF/analysis-heavy, the volume carries **one
+walkthrough lab per exam domain (33 in all)** — RF math in `python3` (dBm/mW, FSPL, link budget,
+EIRP, capacity) and 802.11 protocol analysis in Wireshark/tshark on **authorized** captures — all
+free tools and strictly defensive, plus a course-catalog appendix (Master Appendices Chapter 35).
+CWNP adds the encyclopedia's vendor-neutral wireless-design, analysis, and security certification
+coverage.
