@@ -39,6 +39,7 @@ one place instead of scattered through volume READMEs.
 29. [Appendix — PSDGP Public Sector Data Governance and Course Access](chapters/29-appendix-psdgp-public-sector-data-governance-and-course-access.md) — the ICCP Public Sector Data Governance Professional (PSDGP) credential and the DGSP core, with the four content areas, the 100-question/90-minute proctored exam, the degree-plus-experience (or core-cert) prerequisite, R2C/Buchanan & Edwards three-day course delivery, and the three-year CPD renewal; snapshot dated 28 July 2026.
 30. [Appendix — HPE Aruba Networking Certifications and Course Access](chapters/30-appendix-hpe-aruba-networking-certifications-and-course-access.md) — the HPE Aruba Networking program by tier (Associate/Professional/Expert, Network Architect, Advanced Product Certifications) and track (Campus Access, Switching, Network Security, Mobility, Data Center) with verified HPE6-/HPE7- exam codes, Pearson VUE delivery, HPE Networking Education Services and HPE Press training, and the typical three-year renewal; snapshot dated 28 July 2026.
 31. [Appendix — Palo Alto Networks Certification Tracks and Course Access](chapters/31-appendix-palo-alto-networks-certification-tracks-and-course-access.md) — the 2025 role-based framework by level (Foundational/Professional/Specialist/Architect) and track (Network Security, Security Operations, Cloud Security) with the current credentials, the retirement of the legacy PCNSA/PCNSE/PCCSE-era exams, Pearson VUE delivery, Education Services/Beacon training, and the typical two-year renewal; the cert-tracks companion to Chapter 05 and Volume XVI; snapshot dated 28 July 2026.
+32. [Appendix — F5 Certifications and Course Access](chapters/32-appendix-f5-certifications-and-course-access.md) — the F5 ladder by level (Administrator, Technology Specialist, Solution Expert) and specialization (LTM, DNS, Advanced WAF/ASM, APM) with the 2025 five-exam Administrator restructure (F5CAB1–F5CAB5), the CTS exam numbers (301a/301b, 302, 303, 304) and CSE 401, Pearson VUE delivery, F5 Education Services training, and BIG-IP VE practice; snapshot dated 28 July 2026.
 
 ## Appendix catalog
 
@@ -76,6 +77,7 @@ one place instead of scattered through volume READMEs.
 | PSDGP public sector data governance and course access | [Volume LXIII](../volume-63-public-sector-data-governance/README.md) | [29](chapters/29-appendix-psdgp-public-sector-data-governance-and-course-access.md) |
 | HPE Aruba Networking certifications and course access | [Volume LXIV](../volume-64-aruba-certifications/README.md) | [30](chapters/30-appendix-hpe-aruba-networking-certifications-and-course-access.md) |
 | Palo Alto Networks certification tracks and course access | [Volume LXV](../volume-65-palo-alto-networks-certifications/README.md) | [31](chapters/31-appendix-palo-alto-networks-certification-tracks-and-course-access.md) |
+| F5 certifications and course access | [Volume LXVI](../volume-66-f5-certifications/README.md) | [32](chapters/32-appendix-f5-certifications-and-course-access.md) |
 
 ## Conventions
 
