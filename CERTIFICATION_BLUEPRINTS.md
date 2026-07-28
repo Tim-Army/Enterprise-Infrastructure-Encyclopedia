@@ -50,6 +50,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | LI — Nutanix Certification Tracks | The whole Nutanix University program in one volume (certification-tracks) on the Nutanix Cloud Platform (NCI/AHV/AOS/Prism). Four levels: **Associate NCA** (4 sections); **Professional NCP** tracks — **MCI** (Infrastructure, 6), **MCA** (Automation, 3), **DB** (Database/NDB, 4), **US** (Unified Storage, 4), **CI-AWS** (NC2 on AWS, 4), **CI-Azure** (NC2 on Azure, 4); **Master NCM-MCI** (6); **Expert NCX-MCI** (design). Pearson VUE; NCA $99 / NCP $199 / NCM $299; valid **3 years** (since 1 Aug 2025); **NCA/NCP-MCI 7.5** current. **One walkthrough lab per blueprint section** (40 section labs + 3 design exercises; real ncli/acli/Prism-API/NDB-API on Community Edition). Verified on nutanix.com 27 Jul 2026 | nutanix.com exam blueprint guides |
 | LVI — Infoblox Certification Tracks | The whole Infoblox program in one volume (certification-tracks) for **DDI** (DNS/DHCP/IPAM) and DNS-layer security. **NIOS DDI** ladder: **INO** Operator, **INA** Administrator, **INE** Expert. **Universal DDI** (NIOS-X + Infoblox Portal) and **Threat Defense** microcredentials (knowledge checks). **NetMRI** Administrator (**IMA**). Vendor-agnostic **Industry Learning**: **DDIA/DDIP** (DDI) and **DSA/DSP** (DNS security). Topic areas published, **no weightings**; digital badges. **One walkthrough lab per topic area** (38; real WAPI/Infoblox-Portal-API/NetMRI-API + dig). Threat Defense is defensive DNS security. Verified on education.infoblox.com 27 Jul 2026 | launchpad.education.infoblox.com |
 | LXI — Cribl Certification Tracks | The whole Cribl University ladder in one volume (certification-tracks) for the observability pipeline (**Stream**, **Edge**, **Search**, **Lake**). **CC User** (foundation, all products); **CC Admin - Stream** (sources/routes/pipelines/functions/packs/optimization) and **CC Admin - Edge** (nodes/fleets/collection); **CC Engineer** (end-to-end design + optimization); partner **CCSC** (deployment readiness + distributed leader/workers). **Free**, online self-study, valid **3 years**; Admin requires CC User, Engineer requires Admin. Topic areas (no weightings). **One walkthrough lab per topic area** (36; real Cribl Stream config/REST API/expressions/Search on the Cribl.Cloud free tier). Verified on cribl.io/university 27 Jul 2026 | cribl.io/university |
+| LXII — Arista Certification Tracks | The whole Arista Certified Engineer (ACE) program in one volume (certification-tracks), revised **1 June 2025** into a Learning Track model on **EOS** and **CloudVision**. Tiers **Associate (L1) → Specialist (L3) → Professional (L4)**. Tracks: **Network Foundations** (Associate — EOS, switching, routing); **Data Center** (Specialist — Operations and Engineering; leaf-spine, MLAG, EVPN/VXLAN, anycast gateway); **Campus** (Specialist — Operations and Engineering; PoE, 802.1X, campus fabric, MSS); **WAN Routing** (Specialist — MPLS Core; LDP, L3VPN); **Automation** (Specialist Foundations + Advanced → **Professional**; eAPI/pyeapi, Ansible `arista.eos`, Jinja/Git, AVD, CloudVision). Self-paced Arista Academy; **1 Jun 2025** recertification policy. Published blueprints. **One walkthrough lab per topic area** (36; real EOS CLI/eAPI/EVPN-VXLAN/MPLS/Ansible-AVD/CloudVision on free cEOS/vEOS). Verified on training.arista.com 27 Jul 2026 | training.arista.com |
 
 Volumes not listed (I, VI–VIII, XI–XIII, LII–LV, LVII–LX, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -695,3 +696,19 @@ configuration (sources/routes/pipelines/functions), the Cribl REST API, Cribl ex
 and Search queries, and the distributed commit/deploy model — runnable on the Cribl.Cloud
 free tier, plus a course-catalog appendix (Master Appendices Chapter 27). Cribl completes
 the encyclopedia's observability-pipeline and data-reduction coverage.
+
+Volume LXII (Arista Certification Tracks) was created on **27 July 2026** as the
+certification map for **Arista**, joining the encyclopedia's networking volumes (Cisco III,
+XXV, XXVII–XXX; Juniper XXXI) and the automation volumes its Automation track builds on
+(NetBox LII, Python for Network Engineers LVIII, Ansible LIX). It covers the whole **Arista
+Certified Engineer (ACE)** program — revised **1 June 2025** into a tiered Learning Track
+model (Associate → Specialist → Professional) on **EOS** and **CloudVision** — across the
+**Network Foundations** (Associate), **Data Center**, **Campus**, and **WAN Routing**
+Specialist tracks and the **Automation** track to Professional. Every credential was verified
+against training.arista.com on 27 July 2026; the program is self-paced through Arista Academy
+with published blueprints and a 1 June 2025 recertification policy. The volume carries **one
+walkthrough lab per topic area (36 in all)** — real EOS CLI, eAPI (JSON-RPC) and pyeapi,
+EVPN/VXLAN and MPLS configuration, Ansible `arista.eos` and AVD, and the CloudVision API —
+runnable on free cEOS/vEOS images or Arista Test Drive, plus a course-catalog appendix
+(Master Appendices Chapter 28). Arista broadens the encyclopedia's data-center and campus
+switching coverage alongside Cisco and Juniper.
