@@ -76,11 +76,12 @@ does not by itself verify every technical claim in it.
 | LXIV — HPE Aruba Networking Certification Tracks | 9 | Drafted |
 | LXV — Palo Alto Networks Certification Tracks | 9 | Drafted |
 | LXVI — F5 Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 32 | Drafted |
+| LXVII — Nokia Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 33 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 666 of 666 drafted (100%). Every volume has a
+**Total declared chapters:** 676 of 676 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
