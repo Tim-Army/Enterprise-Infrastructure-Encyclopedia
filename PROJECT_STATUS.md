@@ -83,11 +83,12 @@ does not by itself verify every technical claim in it.
 | LXXI — VMware vSphere 7 | 9 | Drafted |
 | LXXII — VMware vSphere 8 | 9 | Drafted |
 | LXXIII — Check Point Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 37 | Drafted |
+| LXXIV — GIAC (SANS) Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 38 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 734 of 734 drafted (100%). Every volume has a
+**Total declared chapters:** 744 of 744 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

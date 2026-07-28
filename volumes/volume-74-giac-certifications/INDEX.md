@@ -1,0 +1,37 @@
+# Volume LXXIV Index
+
+Alphabetized topical index for **Volume LXXIV — GIAC (SANS) Certification Tracks**.
+See also the [volume glossary](GLOSSARY.md) for term definitions and the
+[master index](../../INDEX.md) for cross-volume topics.
+
+- **Artificial Intelligence focus area (GMLE, GAIPS, GASAE, GOAA)** — [Chapter 09](chapters/09-artificial-intelligence-currency-and-career.md)
+- **CIS Critical Controls (GCCC)** — [Chapter 08](chapters/08-cybersecurity-leadership.md)
+- **Cloud forensics (GCFR)** — [Chapter 06](chapters/06-cloud-security.md)
+- **Cloud Security focus area (GCLD, GCSA, GWEB)** — [Chapter 06](chapters/06-cloud-security.md)
+- **Cyber Defense focus area** — [Chapter 03](chapters/03-cyber-defense-blue-team.md)
+- **CyberLive practical testing** — [Chapter 01](chapters/01-the-giac-certification-program.md)
+- **Detection engineering (GCDA)** — [Chapter 03](chapters/03-cyber-defense-blue-team.md)
+- **Defensible architecture (GDSA)** — [Chapter 03](chapters/03-cyber-defense-blue-team.md)
+- **DevSecOps / IaC scanning (GCSA)** — [Chapter 06](chapters/06-cloud-security.md)
+- **Digital Forensics and Incident Response focus area** — [Chapter 05](chapters/05-digital-forensics-and-incident-response.md)
+- **Essentials focus area (GFACT, GISF, GSEC)** — [Chapter 02](chapters/02-essentials-gfact-gisf-gsec.md)
+- **Focus areas (eight)** — [Chapter 01](chapters/01-the-giac-certification-program.md)
+- **Forensic analysis (GCFA)** — [Chapter 05](chapters/05-digital-forensics-and-incident-response.md)
+- **Incident handling (GCIH)** — [Chapter 05](chapters/05-digital-forensics-and-incident-response.md)
+- **Industrial Control Systems focus area (GICSP, GRID, GCIP)** — [Chapter 07](chapters/07-industrial-control-systems-security.md)
+- **Intrusion analysis (GCIA)** — [Chapter 03](chapters/03-cyber-defense-blue-team.md)
+- **Leadership focus area (GSLC, GSTRT, GSOM)** — [Chapter 08](chapters/08-cybersecurity-leadership.md)
+- **LLM pipeline security (GAIPS)** — [Chapter 09](chapters/09-artificial-intelligence-currency-and-career.md)
+- **Malware reverse-engineering (GREM)** — [Chapter 05](chapters/05-digital-forensics-and-incident-response.md)
+- **MITRE ATT&CK / GDAT** — [Chapter 03](chapters/03-cyber-defense-blue-team.md)
+- **Network forensics (GNFA)** — [Chapter 05](chapters/05-digital-forensics-and-incident-response.md)
+- **Offensive Operations focus area (authorized)** — [Chapter 04](chapters/04-offensive-operations-authorized.md)
+- **Penetration-test scope / rules of engagement (GPEN)** — [Chapter 04](chapters/04-offensive-operations-authorized.md)
+- **Proctored, open-book exams** — [Chapter 01](chapters/01-the-giac-certification-program.md)
+- **Purdue model (ICS segmentation)** — [Chapter 07](chapters/07-industrial-control-systems-security.md)
+- **Renewal / four-year validity** — [Chapter 01](chapters/01-the-giac-certification-program.md), [Chapter 09](chapters/09-artificial-intelligence-currency-and-career.md)
+- **SANS Institute** — [Chapter 01](chapters/01-the-giac-certification-program.md)
+- **SOC metrics (MTTD/MTTR, GSOM)** — [Chapter 08](chapters/08-cybersecurity-leadership.md)
+- **Threat intelligence (GCTI)** — [Chapter 05](chapters/05-digital-forensics-and-incident-response.md)
+- **Vulnerability assessment (GEVA)** — [Chapter 04](chapters/04-offensive-operations-authorized.md)
+- **Web application defense (GWEB)** — [Chapter 06](chapters/06-cloud-security.md)
