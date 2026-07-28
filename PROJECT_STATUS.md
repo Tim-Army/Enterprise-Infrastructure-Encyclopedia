@@ -74,11 +74,12 @@ does not by itself verify every technical claim in it.
 | LXII — Arista Certification Tracks | 9 | Drafted |
 | LXIII — Public Sector Data Governance (PSDGP) | 9 | Drafted |
 | LXIV — HPE Aruba Networking Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 30 | Drafted |
+| LXV — Palo Alto Networks Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 31 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 646 of 646 drafted (100%). Every volume has a
+**Total declared chapters:** 656 of 656 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
