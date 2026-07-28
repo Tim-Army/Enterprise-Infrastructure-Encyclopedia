@@ -58,6 +58,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | LXVII — Nokia Certification Tracks | The whole **Nokia Service Routing Certification (SRC)** program in one volume (certification-tracks) for **SR OS** (7750 SR / 7450 ESS / 7950 XRS). **NRS I** — exam **4A0-100** (IP Networks and Services Fundamentals). **NRS II** — Composite Written **4A0-C03** (IS-IS) or **4A0-C04** (OSPF) **plus** the **4A0-N01** 3.5-hour practical lab; covers OSPF/IS-IS, BGP, MPLS (LDP/RSVP-TE) and Segment Routing, and services (Epipe/VLL, VPLS, VPRN, EVPN). **SRA** — exam **4A0-112** (requires NRS II; end-to-end design). Written delivery by **Pearson VUE** plus the hands-on lab. **One walkthrough lab per exam domain** (35; classic CLI + MD-CLI, IGP/BGP/MPLS/SR, services, pySROS/NETCONF on SR OS VSR). Verified on nokia.com 28 Jul 2026 | nokia.com |
 | LXVIII — MikroTik Certification Tracks | The whole **MikroTik** program in one volume (certification-tracks) for **RouterOS** (v6/**v7** on RouterBOARD/CHR/x86). **MTCNA** (Network Associate) is the **prerequisite for every other certificate**; **MTCINE** additionally requires **MTCRE**. Specialist certificates: **MTCRE** (routing — static/OSPF/tunnels), **MTCTCE** (traffic control — firewall/mangle/queues/proxy), **MTCWE/MTCEWE** (wireless — CAPsMAN), **MTCUME** (user management — PPPoE/hotspot/RADIUS), **MTCINE** (BGP/MPLS/VPLS), **MTCSE** (security/IPsec), **MTCSWE** (switching/VLANs), **MTCIPv6E** (IPv6). Trainer-led with online exam; **3-year** validity. **One walkthrough lab per certificate domain** (36; RouterOS CLI/REST API/scripting on free CHR). Verified on mikrotik.com 28 Jul 2026 | mikrotik.com |
 | LXIX — CWNP Certification Tracks | The whole **CWNP** vendor-neutral wireless program in one volume (certification-tracks), **6 career levels**. Entry: **CWSS**, **CWTS**. Administrator: **CWNA** (exam **CWNA-109**) — the **foundation**. Professional Wi-Fi: **CWSP** (security — 802.1X/EAP, WPA3, PMF, WIPS), **CWAP** (802.11 protocol analysis), **CWDP** (design/site survey). Professional IoT: **CWISA**, **CWICP**, **CWIIP**, **CWIDP**. Expert: **CWNE** (Wi-Fi; CWNA+CWSP+CWAP+CWDP+CWISA + 3rd-party + board review) and **CWISE** (IoT). Delivered by **Prometric** (from Pearson VUE, 1 Aug 2024); **3-year** validity; Wi-Fi 6E/7 focus. Defensive analysis scope. **One walkthrough lab per exam domain** (33; RF math in python3 + 802.11 protocol analysis in Wireshark/tshark on authorized captures). Verified on cwnp.com 28 Jul 2026 | cwnp.com |
+| LXX — Trellix Certification Tracks | The whole **Trellix** (**McAfee Enterprise + FireEye**) program in one volume (certification-tracks), a **per-product Certified Product Specialist** model via Trellix Education Services. Products/tracks: **ePolicy Orchestrator (ePO)** central management (legacy MA0-101); **Endpoint Security (ENS)** — Threat Prevention/Firewall/Web Control/ATP (legacy MA0-100); **EDR** — hunting/investigation/reactions; **Network Security (IPS)** + **Advanced Threat Defense** sandboxing (legacy MA0-104); **Data Loss Prevention (DLP)**; **Helix** — SecOps/SIEM/XDR. Tied together by the **Data Exchange Layer (DXL)** with the open-source **OpenDXL** Python SDK. McAfee→Trellix rebrand: legacy MA0-### codes in transition — verify on trellix.com. Defensive scope only. **One walkthrough lab per product domain** (34; ePO/EDR/Helix policy + API patterns, ENS/DLP config, detection/hunt queries, OpenDXL Python, authorized). Verified on trellix.com 28 Jul 2026 | trellix.com |
 
 Volumes not listed (I, VI–VIII, XI–XIII, LII–LV, LVII–LX, XCIX) are vendor-neutral or
 cross-domain and are not mapped to a single certification blueprint; they
@@ -825,3 +826,18 @@ EIRP, capacity) and 802.11 protocol analysis in Wireshark/tshark on **authorized
 free tools and strictly defensive, plus a course-catalog appendix (Master Appendices Chapter 35).
 CWNP adds the encyclopedia's vendor-neutral wireless-design, analysis, and security certification
 coverage.
+
+Volume LXX (Trellix Certification Tracks) was created on **28 July 2026** as the certification map
+for **Trellix** — the security company formed in 2022 from **McAfee Enterprise + FireEye** — joining
+the encyclopedia's security volumes (CrowdStrike L, Palo Alto XVI/LXV, Cisco Security XXV, Fortinet
+XIX, Zscaler XXXV, Forescout XV). It covers Trellix Education Services' **per-product Certified
+Product Specialist** model across **ePO** (management), **ENS** (endpoint), **EDR**, **Network
+Security/ATD**, **DLP**, and **Helix** (SecOps/XDR), tied together by the **Data Exchange Layer
+(DXL)** and its open-source **OpenDXL** SDK. Every product and credential was verified against
+trellix.com on 28 July 2026; because of the McAfee → Trellix rebrand, the legacy MA0-### exam codes
+are in transition and must be confirmed on trellix.com. The volume carries **one walkthrough lab per
+product domain (34 in all)** — ePO/EDR/Helix policy and API patterns, ENS and DLP configuration,
+detection and hunting queries, and the OpenDXL Python SDK — all **defensive** (authorized
+administration, detection, response, and automation) and practiced on authorized lab instances, plus
+a course-catalog appendix (Master Appendices Chapter 36). Trellix broadens the encyclopedia's
+endpoint, network, data-protection, and XDR/SecOps certification coverage.

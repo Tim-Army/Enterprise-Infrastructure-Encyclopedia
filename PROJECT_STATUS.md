@@ -79,11 +79,12 @@ does not by itself verify every technical claim in it.
 | LXVII — Nokia Certification Tracks | 9 | Drafted |
 | LXVIII — MikroTik Certification Tracks | 9 | Drafted |
 | LXIX — CWNP Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 35 | Drafted |
+| LXX — Trellix Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 36 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 696 of 696 drafted (100%). Every volume has a
+**Total declared chapters:** 706 of 706 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
