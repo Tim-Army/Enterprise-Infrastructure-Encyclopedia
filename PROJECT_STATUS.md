@@ -85,11 +85,12 @@ does not by itself verify every technical claim in it.
 | LXXIII — Check Point Certification Tracks | 9 | Drafted |
 | LXXIV — GIAC (SANS) Certification Tracks | 9 | Drafted |
 | LXXV — EC-Council Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 39 | Drafted |
+| LXXVI — Okta Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 40 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 754 of 754 drafted (100%). Every volume has a
+**Total declared chapters:** 764 of 764 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.81-blue)
+![Release](https://img.shields.io/badge/release-v1.2.82-blue)
 
-**v1.2.81 — latest release.** 78 volumes, 754 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.81) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.82 — latest release.** 79 volumes, 764 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.82) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 78-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 79-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-78 volumes, 754 chapters. Each volume has a dedicated
+79 volumes, 764 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -105,7 +105,8 @@ The series combines architecture and theory with implementation guidance, automa
 | LXXIII | [Check Point Certification Tracks](volumes/volume-73-check-point-certifications/README.md) | 9 |
 | LXXIV | [GIAC (SANS) Certification Tracks](volumes/volume-74-giac-certifications/README.md) | 9 |
 | LXXV | [EC-Council Certification Tracks](volumes/volume-75-ec-council-certifications/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 39 |
+| LXXVI | [Okta Certification Tracks](volumes/volume-76-okta-certifications/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 40 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
@@ -167,6 +168,7 @@ ascending order.
 | Check Point | [LXXIII Check Point Certification Tracks](volumes/volume-73-check-point-certifications/README.md) — the whole Check Point ladder in one volume: CCSA (156-215.82) → CCSE (156-315.82) → CCSM/Elite (via Infinity Specialist Accreditations), plus CCTE (156-588), on the R82 Quantum platform, with defensive Gaia clish, SmartConsole policy/NAT, Software Blades, ClusterXL/VPN, Management-API automation, and fw-monitor troubleshooting labs |
 | GIAC (SANS) | [LXXIV GIAC (SANS) Certification Tracks](volumes/volume-74-giac-certifications/README.md) — the whole GIAC program in one volume: the eight focus areas (Essentials GFACT/GISF/GSEC, Cyber Defense, Offensive Operations, DFIR, Cloud, ICS, Leadership, and the new AI area) across 60-plus SANS-aligned, CyberLive-tested credentials, with defensive labs — intrusion/traffic analysis, detection engineering, forensics/IR, cloud DevSecOps, ICS/Purdue segmentation, SOC leadership — and offensive tracks as authorized methodology only |
 | EC-Council | [LXXV EC-Council Certification Tracks](volumes/volume-75-ec-council-certifications/README.md) — the whole EC-Council program in one volume: the flagship CEH v13 (with AI) plus the pentest (CPENT/WAHS/LPT), network-defense (CND/ICS-SCADA), forensics (CHFI), SOC/IR/intel (CSA/ECIH/CTIA), cloud/DevSecOps/AppSec (CCSE/ECDE/CASE/ECES), executive (CCISO), and new AI-security (CAIPM/COASP/CRAGE) tracks, ANSI-accredited and DoD-8140-aligned, with defensive labs — ethical-hacking methodology paired with countermeasures, and offensive tracks as authorized methodology only |
+| Okta | [LXXVI Okta Certification Tracks](volumes/volume-76-okta-certifications/README.md) — the whole Okta identity/IAM program in one volume: the Professional → Administrator → Consultant → Technical Architect ladder plus Developer, Workflows, Access Gateway, and Auth0, across the Workforce and Customer identity clouds, with defensive labs — Universal Directory, SAML/OIDC SSO, adaptive/phishing-resistant MFA, lifecycle/SCIM provisioning, API Access Management, and Identity Governance |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) → [LIII LibreNMS](volumes/volume-53-librenms/README.md) → [LIV OpenTelemetry](volumes/volume-54-opentelemetry/README.md) → [LV Prometheus](volumes/volume-55-prometheus/README.md) |
