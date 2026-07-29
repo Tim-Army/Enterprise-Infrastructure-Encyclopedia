@@ -49,6 +49,7 @@ one place instead of scattered through volume READMEs.
 39. [Appendix — EC-Council Certifications and Course Access](chapters/39-appendix-ec-council-certifications-and-course-access.md) — the EC-Council program led by CEH v13 (with AI), with the CEH Master iLabs practical, the pentest/network-defense/forensics/SOC/cloud/executive/AI tracks, ANSI 17024 accreditation, US DoD 8140 alignment for CEH/CND/CHFI, the ECC-portal/iLabs exam model, and ECE-credit renewal; snapshot dated 28 July 2026.
 40. [Appendix — Okta Certifications and Course Access](chapters/40-appendix-okta-certifications-and-course-access.md) — the Okta identity/IAM program: the Professional → Administrator → Consultant → Technical Architect ladder (with board defense) plus Developer, Workflows, Access Gateway, and Auth0, across the Workforce and Customer identity clouds, with the ProctorU exam model, free developer-org practice, and 2-year (Architect 3-year) validity; snapshot dated 28 July 2026.
 41. [Appendix — CyberArk Certifications and Course Access](chapters/41-appendix-cyberark-certifications-and-course-access.md) — the CyberArk PAM/Identity Security program: the Trustee → Defender → Sentry → Guardian progression across PAM Self-Hosted, Privilege Cloud, EPM, Secrets Manager, Identity, and Secure Cloud Access, with the Pearson VUE exam model, CyberArk University training, the Palo Alto Networks / Idira platform note, and authorized-lab practice; snapshot dated 28 July 2026.
+42. [Appendix — Tenable Certifications and Course Access](chapters/42-appendix-tenable-certifications-and-course-access.md) — the Tenable vulnerability/exposure-management program: the Vulnerability Management, Security Center, and OT Exposure product certifications with the two-part written + practical exam model, Tenable University training, free Nessus Essentials practice, the Tenable One exposure-management direction, and 2-year validity; snapshot dated 28 July 2026.
 
 ## Appendix catalog
 
@@ -96,6 +97,7 @@ one place instead of scattered through volume READMEs.
 | EC-Council certifications and course access | [Volume LXXV](../volume-75-ec-council-certifications/README.md) | [39](chapters/39-appendix-ec-council-certifications-and-course-access.md) |
 | Okta certifications and course access | [Volume LXXVI](../volume-76-okta-certifications/README.md) | [40](chapters/40-appendix-okta-certifications-and-course-access.md) |
 | CyberArk certifications and course access | [Volume LXXVII](../volume-77-cyberark-certifications/README.md) | [41](chapters/41-appendix-cyberark-certifications-and-course-access.md) |
+| Tenable certifications and course access | [Volume LXXVIII](../volume-78-tenable-certifications/README.md) | [42](chapters/42-appendix-tenable-certifications-and-course-access.md) |
 
 ## Conventions
 
