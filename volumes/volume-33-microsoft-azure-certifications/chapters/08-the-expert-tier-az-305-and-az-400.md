@@ -187,7 +187,7 @@ az deployment group what-if --resource-group rg-az305-lab \
 - [Microsoft Certified: Azure Solutions Architect Expert](https://learn.microsoft.com/en-us/credentials/certifications/azure-solutions-architect/) (AZ-305)
 - [Microsoft Certified: DevOps Engineer Expert](https://learn.microsoft.com/en-us/credentials/certifications/devops-engineer/) (AZ-400)
 - [Azure Well-Architected Framework](https://learn.microsoft.com/en-us/azure/well-architected/)
-- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-97-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
+- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-997-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
 - See [Chapter 03](03-azure-administrator-az-104.md) for the governance
   foundation, and
   [Volume XVII, Chapter 12](../../volume-17-aws-architecture-security/chapters/12-the-professional-tier-solutions-architect-devops-engineer-and-generative-ai-developer.md)

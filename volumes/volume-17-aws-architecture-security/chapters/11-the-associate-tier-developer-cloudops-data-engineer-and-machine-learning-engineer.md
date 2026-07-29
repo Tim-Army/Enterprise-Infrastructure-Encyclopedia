@@ -245,7 +245,7 @@ aws athena start-query-execution \
 - [AWS Certified Machine Learning Engineer – Associate](https://aws.amazon.com/certification/certified-machine-learning-engineer-associate/) (MLA-C01; MLA-C02 registration opens 1 September 2026)
 - [AWS Skill Builder](https://skillbuilder.aws/) — free exam-prep plans per
   certification.
-- [Appendix — AWS Certifications and Course Access](../../volume-97-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md)
+- [Appendix — AWS Certifications and Course Access](../../volume-997-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md)
 - See [Chapter 10](10-the-aws-certification-program-structure-foundational-tier-and-recertification.md)
   for the program structure, and
   [Chapter 12](12-the-professional-tier-solutions-architect-devops-engineer-and-generative-ai-developer.md)

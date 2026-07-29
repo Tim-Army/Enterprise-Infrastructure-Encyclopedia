@@ -81,7 +81,7 @@ volume_title() {
   if [[ -f "$output/interactive/cisco-u-learning-paths.html" ]]; then
     echo "<h2>Interactive companions</h2>"
     echo "<ul>"
-    echo "<li><a href=\"interactive/cisco-u-learning-paths.html\">Cisco U. Learning Paths &mdash; searchable CE-credit &amp; access catalog</a> (companion to <a href=\"html/volume-97-master-appendices/01-appendix-cisco-u-learning-paths-and-continuing-education-credits.html\">Master Appendices, Chapter 01</a>)</li>"
+    echo "<li><a href=\"interactive/cisco-u-learning-paths.html\">Cisco U. Learning Paths &mdash; searchable CE-credit &amp; access catalog</a> (companion to <a href=\"html/volume-997-master-appendices/01-appendix-cisco-u-learning-paths-and-continuing-education-credits.html\">Master Appendices, Chapter 01</a>)</li>"
     echo "</ul>"
   fi
   echo "<h2>Volumes</h2>"

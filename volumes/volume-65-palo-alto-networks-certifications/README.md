@@ -62,8 +62,8 @@ knowledge checks.
 This volume *is* the certification map for Palo Alto Networks, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog with levels,
 tracks, and the training model is in the
-[Palo Alto Networks certification-tracks appendix](../volume-97-master-appendices/chapters/31-appendix-palo-alto-networks-certification-tracks-and-course-access.md)
-(Master Appendices, Volume XCVII). The complementary product volume is
+[Palo Alto Networks certification-tracks appendix](../volume-997-master-appendices/chapters/31-appendix-palo-alto-networks-certification-tracks-and-course-access.md)
+(Master Appendices, Volume CMXCVII). The complementary product volume is
 [Volume XVI](../../volume-16-palo-alto-networks-security/README.md); related practice lives in
 the Cisco Security (XXV), Fortinet (XIX), Zscaler (XXXV), CrowdStrike (L), and Enterprise
 Cybersecurity (X) volumes.

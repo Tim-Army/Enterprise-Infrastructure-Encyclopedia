@@ -61,8 +61,8 @@ This volume *is* the certification map for Oracle, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog
 with families, tiers, the year-versioned codes, and the free training/practice
 model is in the
-[Oracle certification appendix](../volume-97-master-appendices/chapters/21-appendix-oracle-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the cloud (XVII,
+[Oracle certification appendix](../volume-997-master-appendices/chapters/21-appendix-oracle-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the cloud (XVII,
 XXXIII, XXXIV), containers/Kubernetes (VIII, XLI), and automation (IX, XLII)
 volumes.
 

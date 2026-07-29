@@ -66,8 +66,8 @@ This volume *is* the certification map for ISC2, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full
 catalog with the ladder, exam mechanics, experience requirements, endorsement,
 the Code of Ethics, and CPE/AMF renewal is in the
-[ISC2 certification appendix](../volume-97-master-appendices/chapters/14-appendix-isc2-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Foundational hands-on security practice for
+[ISC2 certification appendix](../volume-997-master-appendices/chapters/14-appendix-isc2-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Foundational hands-on security practice for
 these credentials lives across the encyclopedia — the cybersecurity (X), cloud
 (XVII/XXXIII/XXXIV), and automation (IX) volumes.
 

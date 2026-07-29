@@ -101,7 +101,7 @@ A currency check fails if it cannot tell these apart:
   why.
 - **Propagate findings completely.** A check that updates only this
   chapter leaves the volume README, the
-  [appendix](../../volume-97-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md),
+  [appendix](../../volume-997-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md),
   and [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md)
   stale.
 
@@ -208,7 +208,7 @@ Date       | Item                    | Was       | Now                    | Acti
 - [Microsoft Certified: Azure Virtual Desktop Specialty](https://learn.microsoft.com/en-us/credentials/certifications/azure-virtual-desktop-specialty/) (AZ-140)
 - [Microsoft Certified: Azure for SAP Workloads Specialty](https://learn.microsoft.com/en-us/credentials/certifications/azure-for-sap-workloads-specialty/) (AZ-120)
 - [Certification renewal](https://learn.microsoft.com/en-us/credentials/support/renew-your-microsoft-certification)
-- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-97-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
+- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-997-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
 
 **Knowledge checks** *(original conceptual review questions — not
 reproductions of any Microsoft exam item)*

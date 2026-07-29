@@ -58,8 +58,8 @@ labs and knowledge checks. The Threat Defense content is **defensive** DNS secur
 This volume *is* the certification map for Infoblox, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog with
 credentials, topic areas, and the Infoblox Education training model is in the
-[Infoblox certification appendix](../volume-97-master-appendices/chapters/26-appendix-infoblox-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the network foundations (II),
+[Infoblox certification appendix](../volume-997-master-appendices/chapters/26-appendix-infoblox-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the network foundations (II),
 cybersecurity (X), and NetBox (LII) volumes.
 
 ## Lab coverage

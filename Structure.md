@@ -53,9 +53,22 @@ Enterprise-Infrastructure-Encyclopedia/
   kebab-case name: `volume-01-enterprise-engineering-foundations`.
 - Chapter slugs are zero-padded two-digit numbers followed by a short
   kebab-case title: `01-network-models-and-protocol-architecture.md`.
-- The 24th volume's title uses **Volume XCIX** (the Roman numeral for 99)
-  rather than continuing the sequential I–XXIII numbering used by every
-  other volume. Its directory slug is `volume-99-reference-library` —
-  99 written in Arabic numerals, matching XCIX's value rather than the
-  volume's ordinal position in the series — so it still sorts correctly
-  after `volume-23-...` in a plain lexicographic directory listing.
+- The three **reference volumes** at the end of the series are numbered out
+  of sequence, in a reserved high block rather than continuing the ordinal
+  numbering used by every instructional volume:
+
+  | Volume | Slug | Content |
+  | --- | --- | --- |
+  | **CMXCVII** | `volume-997-master-appendices` | Course-catalog appendices |
+  | **CMXCVIII** | `volume-998-acronyms` | Acronym dictionary |
+  | **CMXCIX** | `volume-999-reference-library` | Cross-volume reference material |
+
+  In every case the slug's Arabic number matches the Roman numeral's value
+  (997 = CMXCVII, 998 = CMXCVIII, 999 = CMXCIX) rather than the volume's
+  ordinal position in the series. Because these numbers are three digits and
+  no instructional volume reaches 100, the reference block still sorts last
+  in a plain lexicographic directory listing — `volume-997-...` follows
+  `volume-92-...` — which is what keeps the build's `volumes/*/` glob
+  emitting them at the end of the series.
+- The reserved block was renumbered from 97/98/99 to 997/998/999 so the
+  instructional sequence can grow past 92 without colliding with it.

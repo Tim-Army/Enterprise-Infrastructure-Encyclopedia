@@ -61,8 +61,8 @@ hands-on labs and knowledge checks.
 This volume *is* the certification map for NVIDIA, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog
 with levels, blueprint areas, prices, delivery, and DLI training is in the
-[NVIDIA certification appendix](../volume-97-master-appendices/chapters/20-appendix-nvidia-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the containers/platform
+[NVIDIA certification appendix](../volume-997-master-appendices/chapters/20-appendix-nvidia-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the containers/platform
 (VIII), automation (IX), observability (XI), and cloud volumes.
 
 ## Lab coverage

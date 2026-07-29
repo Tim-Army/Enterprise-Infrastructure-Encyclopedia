@@ -207,5 +207,5 @@ scripts/bash/build-book.sh --format all \
 
 The build's address tables — **Appendix A: IPv4 Table** (as built) and
 **Appendix B: IPv6 Table** (template; the build is IPv4-only) — live in
-[Volume XCVII — Master Appendices](../volume-97-master-appendices/chapters/02-appendix-proxmox-lab-ipv4-and-ipv6-address-tables.md),
+[Volume CMXCVII — Master Appendices](../volume-997-master-appendices/chapters/02-appendix-proxmox-lab-ipv4-and-ipv6-address-tables.md),
 the encyclopedia's single home for appendices.

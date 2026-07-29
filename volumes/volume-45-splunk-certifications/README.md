@@ -63,8 +63,8 @@ hands-on labs and knowledge checks.
 This volume *is* the certification map for Splunk, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog
 with tracks, blueprint topic areas, prerequisites, delivery, and renewal is in the
-[Splunk certification appendix](../volume-97-master-appendices/chapters/19-appendix-splunk-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related observability and security practice
+[Splunk certification appendix](../volume-997-master-appendices/chapters/19-appendix-splunk-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related observability and security practice
 lives in Volume XI (Observability), Volume X (Cybersecurity), and the visibility
 volumes (XVIII, XX).
 

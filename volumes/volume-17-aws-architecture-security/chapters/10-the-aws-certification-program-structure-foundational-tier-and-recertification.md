@@ -265,7 +265,7 @@ TRACKER
   training, including free exam-prep plans per certification.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this repository's certification-to-volume mapping.
-- [Appendix — AWS Certifications and Course Access](../../volume-97-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md) —
+- [Appendix — AWS Certifications and Course Access](../../volume-997-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md) —
   every certification with its code, exam end date, and training access.
 - See [Chapter 1](01-cloud-foundations-accounts-and-well-architected-design.md)
   for the shared responsibility model and Well-Architected content the

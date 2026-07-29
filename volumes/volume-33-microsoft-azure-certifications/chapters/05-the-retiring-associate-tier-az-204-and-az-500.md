@@ -201,7 +201,7 @@ for c in d["certifications"]:
 - [Microsoft Certified: Azure Security Engineer Associate](https://learn.microsoft.com/en-us/credentials/certifications/azure-security-engineer/) (AZ-500 — retires 31 August 2026)
 - [Certification renewal](https://learn.microsoft.com/en-us/credentials/support/renew-your-microsoft-certification) —
   the annual model whose withdrawal makes these closures permanent.
-- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-97-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
+- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-997-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
 - See [Chapter 06](06-the-ai-centric-associate-tier-ai-103-ai-200-and-ab-620.md)
   for the certifications that now occupy the developer space, and
   [Chapter 09](09-specialty-certifications-and-certification-operations.md)

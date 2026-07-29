@@ -203,7 +203,7 @@ Professional Cloud Architect| professional |        |         | $200
   representative pages showing format, fee, and validity.
 - [Google Cloud certification FAQ](https://support.google.com/cloud-certification/answer/9438208) —
   eligibility, cost, and recertification policy.
-- [Appendix — Google Cloud Certifications and Course Access](../../volume-97-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
+- [Appendix — Google Cloud Certifications and Course Access](../../volume-997-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
 - See [Volume XXXIII](../../volume-33-microsoft-azure-certifications/README.md)
   and [Volume XVII](../../volume-17-aws-architecture-security/README.md)
   for the Azure and AWS programs this one is usefully contrasted with.

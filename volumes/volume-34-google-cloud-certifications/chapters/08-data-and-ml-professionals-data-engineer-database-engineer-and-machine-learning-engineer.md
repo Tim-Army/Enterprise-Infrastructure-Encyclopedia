@@ -199,7 +199,7 @@ gcloud ai endpoints list --region=us-central1 \
 - [Professional Machine Learning Engineer](https://cloud.google.com/certification/machine-learning-engineer)
 - [BigQuery documentation](https://cloud.google.com/bigquery/docs)
 - [Vertex AI documentation](https://cloud.google.com/vertex-ai/docs)
-- [Appendix — Google Cloud Certifications and Course Access](../../volume-97-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
+- [Appendix — Google Cloud Certifications and Course Access](../../volume-997-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
 - See [Chapter 04](04-associate-workspace-administrator-and-data-practitioner.md)
   for Data Practitioner, the on-ramp to this track.
 

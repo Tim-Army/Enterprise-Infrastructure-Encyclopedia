@@ -58,8 +58,8 @@ knowledge checks.
 This volume *is* the certification map for F5, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog with levels,
 specializations, and exams is in the
-[F5 certification appendix](../volume-97-master-appendices/chapters/32-appendix-f5-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the Cisco (XXV), Palo Alto (XVI, LXV),
+[F5 certification appendix](../volume-997-master-appendices/chapters/32-appendix-f5-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the Cisco (XXV), Palo Alto (XVI, LXV),
 Zscaler (XXXV), NetBox (LII), Python for Network Engineers (LVIII), and Ansible (LIX) volumes.
 
 ## Lab coverage

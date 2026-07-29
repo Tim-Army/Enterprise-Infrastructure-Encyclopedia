@@ -242,7 +242,7 @@ Justification (why this, not the alternative):
   product reference for the VCF 9.0 role exams.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this repository's certification-to-volume mapping.
-- [Appendix — VMware and Broadcom Certifications and Course Access](../../volume-97-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) —
+- [Appendix — VMware and Broadcom Certifications and Course Access](../../volume-997-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) —
   official training mapped to each advanced exam.
 - See [Chapter 17](17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md)
   for the professional tier below this one, and

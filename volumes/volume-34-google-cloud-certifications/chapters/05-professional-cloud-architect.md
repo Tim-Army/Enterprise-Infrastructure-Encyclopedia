@@ -185,7 +185,7 @@ gcloud resource-manager org-policies deny \
   2 hours, $200, two-year validity, with the exam guide and case studies.
 - [Google Cloud Architecture Framework](https://cloud.google.com/architecture/framework)
 - [Organization policy constraints](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints)
-- [Appendix — Google Cloud Certifications and Course Access](../../volume-97-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
+- [Appendix — Google Cloud Certifications and Course Access](../../volume-997-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
 - See [Chapter 03](03-associate-cloud-engineer.md) for the IAM foundation
   this builds on.
 

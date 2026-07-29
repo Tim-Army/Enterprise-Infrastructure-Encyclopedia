@@ -61,8 +61,8 @@ This volume *is* the certification map for Databricks, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog
 with certifications, accreditations, exam-guide sections, and the free
 training/practice model is in the
-[Databricks certification appendix](../volume-97-master-appendices/chapters/22-appendix-databricks-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the data (XLV),
+[Databricks certification appendix](../volume-997-master-appendices/chapters/22-appendix-databricks-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the data (XLV),
 AI-infrastructure (XLVI), automation (IX), and cloud volumes.
 
 ## Lab coverage

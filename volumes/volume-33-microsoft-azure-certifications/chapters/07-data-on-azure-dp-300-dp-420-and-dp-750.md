@@ -195,7 +195,7 @@ az cosmosdb show -g rg-dp300-lab -n <ACCOUNT> \
 - [Microsoft Certified: Azure Cosmos DB Developer Specialty](https://learn.microsoft.com/en-us/credentials/certifications/azure-cosmos-db-developer-specialty/) (DP-420)
 - [Microsoft Certified: Azure Databricks Data Engineer Associate](https://learn.microsoft.com/en-us/credentials/certifications/implementing-data-engineering-solutions-using-azure-databricks/) (DP-750)
 - [Microsoft Certified: Azure Data Scientist Associate](https://learn.microsoft.com/en-us/credentials/certifications/azure-data-scientist/) (DP-100 — retired)
-- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-97-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
+- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-997-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
 - See [Chapter 02](02-fundamentals-az-900-ai-901-and-dp-900.md) for DP-900.
 
 **Knowledge checks** *(original conceptual review questions — not

@@ -233,7 +233,7 @@ throughout.
 - [Volume index](INDEX.md)
 - [Volume glossary](GLOSSARY.md)
 - [Master table of contents](../../MASTER_TOC.md)
-- [Juniper courses appendix — Volume XCVII](../volume-97-master-appendices/README.md)
+- [Juniper courses appendix — Volume CMXCVII](../volume-997-master-appendices/README.md)
 
 ## Building and validating this volume
 

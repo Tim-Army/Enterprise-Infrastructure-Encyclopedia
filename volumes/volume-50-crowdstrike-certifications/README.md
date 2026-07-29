@@ -61,8 +61,8 @@ This volume *is* the certification map for CrowdStrike, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog
 with credentials, exam-guide domains, and the CrowdStrike University training model
 is in the
-[CrowdStrike certification appendix](../volume-97-master-appendices/chapters/24-appendix-crowdstrike-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the cybersecurity (X),
+[CrowdStrike certification appendix](../volume-997-master-appendices/chapters/24-appendix-crowdstrike-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the cybersecurity (X),
 Zscaler (XXXV), Splunk (XLV), and cloud volumes.
 
 ## Lab coverage

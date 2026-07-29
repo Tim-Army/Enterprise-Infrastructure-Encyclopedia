@@ -142,7 +142,7 @@ cadence, against primary sources.
   "AWS certification list" is a lead to verify, never a source to cite.
 - **Propagate findings completely.** A check that updates only this chapter
   leaves the volume README, the
-  [course-catalog appendix](../../volume-97-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md),
+  [course-catalog appendix](../../volume-997-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md),
   and [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md)
   stale. Update all of them in one pass.
 
@@ -259,7 +259,7 @@ Date       | Item                        | Was              | Now               
 - [AWS Skill Builder](https://skillbuilder.aws/) — official training; its
   exam-prep links are the reliable code source for the check above.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) and
-  [Appendix — AWS Certifications and Course Access](../../volume-97-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md) —
+  [Appendix — AWS Certifications and Course Access](../../volume-997-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md) —
   the two artifacts this check keeps in step with the volume.
 - See [Chapter 3](03-secure-networking-hybrid-connectivity-and-edge.md)
   for the networking material behind ANS-C01 and

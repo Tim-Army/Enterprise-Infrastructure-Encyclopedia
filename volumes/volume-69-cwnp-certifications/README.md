@@ -59,8 +59,8 @@ knowledge checks.
 This volume *is* the certification map for CWNP, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog with the career
 levels, tracks, and expert requirements is in the
-[CWNP certification appendix](../volume-97-master-appendices/chapters/35-appendix-cwnp-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the HPE Aruba (LXIV), MikroTik
+[CWNP certification appendix](../volume-997-master-appendices/chapters/35-appendix-cwnp-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the HPE Aruba (LXIV), MikroTik
 (LXVIII), Cisco (XXV), Wireshark (XX), and Network Foundations (II) volumes.
 
 ## Lab coverage

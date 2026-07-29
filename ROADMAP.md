@@ -33,7 +33,7 @@ as prerequisite reading.
 | 24 | XXIV — Dell VxRail Hyperconverged Infrastructure | `volume-24-dell-vxrail-hci` | 9 | Volume V |
 | 25 | XXV — Cisco Security | `volume-25-cisco-security` | 9 | Volumes III, X |
 | 26 | XXVI — Proxmox Virtualization Lab on Dell PowerEdge R640 | `volume-26-proxmox-lab-poweredge-r640` | 9 | Volumes XXII, XXIII |
-| 27 | XCIX — Reference Library | `volume-99-reference-library` | 9 | Volumes I–XXVI |
+| 27 | CMXCIX — Reference Library | `volume-999-reference-library` | 9 | Volumes I–XXVI |
 
 ## Ownership and scope control
 

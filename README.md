@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.98-blue)
+![Release](https://img.shields.io/badge/release-v1.2.99-blue)
 
-**v1.2.98 — latest release.** 95 volumes, 923 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.98) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.99 — latest release.** 95 volumes, 923 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.99) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -122,9 +122,9 @@ The series combines architecture and theory with implementation guidance, automa
 | XC | [Datadog Certification Tracks](volumes/volume-90-datadog-certifications/README.md) | 9 |
 | XCI | [Puppet Certification Tracks](volumes/volume-91-puppet-certifications/README.md) | 9 |
 | XCII | [Docker Certification Tracks](volumes/volume-92-docker-certifications/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 55 |
-| XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
-| XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
+| CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 55 |
+| CMXCVIII | [Acronyms](volumes/volume-998-acronyms/README.md) | 4 |
+| CMXCIX | [Reference Library](volumes/volume-999-reference-library/README.md) | 9 |
 
 Technical review and lab-validation sign-off for all 405 chapters are
 tracked in [PROJECT_STATUS.md](PROJECT_STATUS.md). The
@@ -209,7 +209,7 @@ ascending order.
 | Cloud | [VII Cloud Infrastructure](volumes/volume-07-cloud-infrastructure/README.md) → [XVII AWS Architecture and Security](volumes/volume-17-aws-architecture-security/README.md) |
 | Network source of truth and tooling | [LII NetBox Community Edition](volumes/volume-52-netbox-community/README.md) — the open-source network source of truth (DCIM, IPAM, virtualization, circuits, tenancy) and the REST/GraphQL automation built on it |
 | Programming and automation | [IX Infrastructure Automation](volumes/volume-09-infrastructure-automation/README.md) → [LVII Python for Infrastructure and Automation](volumes/volume-57-python-infrastructure-automation/README.md) → [LVIII Python for Network Engineers](volumes/volume-58-python-network-engineers/README.md) → [LIX Ansible](volumes/volume-59-ansible/README.md) → [LX Rust for Systems and Infrastructure](volumes/volume-60-rust-systems-infrastructure/README.md) — automation foundations, Python as the infrastructure engineer's toolkit, the network-automation stack, declarative configuration management with Ansible, and Rust for fast, reliable infrastructure binaries |
-| Reference | [XCVII Master Appendices](volumes/volume-97-master-appendices/README.md), [XCVIII Acronyms](volumes/volume-98-acronyms/README.md), and [XCIX Reference Library](volumes/volume-99-reference-library/README.md) — appendices, the acronym dictionary, and cross-volume reference material, always last |
+| Reference | [CMXCVII Master Appendices](volumes/volume-997-master-appendices/README.md), [CMXCVIII Acronyms](volumes/volume-998-acronyms/README.md), and [CMXCIX Reference Library](volumes/volume-999-reference-library/README.md) — appendices, the acronym dictionary, and cross-volume reference material, always last |
 
 ## Volume-first layout
 

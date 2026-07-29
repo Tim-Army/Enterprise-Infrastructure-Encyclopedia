@@ -121,7 +121,7 @@ in this encyclopedia.
   a source to cite.
 - **Feed findings all the way through.** A currency check that updates only
   this chapter leaves the volume README, the study plans, the
-  [Master Appendices course catalog](../../volume-97-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md),
+  [Master Appendices course catalog](../../volume-997-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md),
   and [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md)
   stale. Propagate every change to all of them in one pass.
 
@@ -189,7 +189,7 @@ Date       | Exam / item          | Was          | Now / status      | Action
   quietly no-ops is worse than none, because it manufactures false
   confidence.
 - **Cross-check the appendix and blueprint.** After updating chapters,
-  verify the [course catalog appendix](../../volume-97-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md)
+  verify the [course catalog appendix](../../volume-997-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md)
   and [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md)
   carry the same codes and the same retirements. A mismatch between them and
   this volume is itself a drift finding.
@@ -227,7 +227,7 @@ Date       | Exam / item          | Was          | Now / status      | Action
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   the repository's certification-to-volume mapping that the check keeps
   current.
-- [Appendix — VMware and Broadcom Certifications and Course Access](../../volume-97-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) —
+- [Appendix — VMware and Broadcom Certifications and Course Access](../../volume-997-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) —
   the course catalog the check updates alongside this volume.
 - See [Chapters 17–19](17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md)
   for the VCP, VCAP, and Distinguished Expert tiers this check verifies.

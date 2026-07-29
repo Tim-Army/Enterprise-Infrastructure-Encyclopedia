@@ -211,7 +211,7 @@ gcloud monitoring time-series list \
 - [Professional Cloud Developer](https://cloud.google.com/certification/cloud-developer)
 - [Google SRE books](https://sre.google/books/) — the source of the SLI,
   SLO, error budget, and toil vocabulary.
-- [Appendix — Google Cloud Certifications and Course Access](../../volume-97-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
+- [Appendix — Google Cloud Certifications and Course Access](../../volume-997-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
 - See [Chapter 05](05-professional-cloud-architect.md) for the landing-zone
   design these operate inside.
 

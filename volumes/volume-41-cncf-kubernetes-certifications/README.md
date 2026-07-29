@@ -69,8 +69,8 @@ This volume *is* the certification map for CNCF/Kubernetes, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog
 with the credential lines, exam mechanics, the Linux Foundation training and
 killer.sh model, and the pinned Kubernetes version is in the
-[CNCF/Kubernetes certification appendix](../volume-97-master-appendices/chapters/15-appendix-cncf-kubernetes-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Deeper hands-on Kubernetes practice lives in
+[CNCF/Kubernetes certification appendix](../volume-997-master-appendices/chapters/15-appendix-cncf-kubernetes-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Deeper hands-on Kubernetes practice lives in
 Volume VIII (Containers and Platform Engineering) and the automation volume (IX).
 
 ## Lab coverage

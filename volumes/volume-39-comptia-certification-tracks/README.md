@@ -86,8 +86,8 @@ This volume *is* the certification map for CompTIA, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full
 catalog with pathways, exam codes, the free/for-cost training options, and the
 Continuing Education renewal model is in the
-[CompTIA certification appendix](../volume-97-master-appendices/chapters/13-appendix-comptia-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). CompTIA credentials are the foundation that
+[CompTIA certification appendix](../volume-997-master-appendices/chapters/13-appendix-comptia-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). CompTIA credentials are the foundation that
 the vendor volumes build on — Security+ under the security tracks, Network+
 under the networking tracks, Linux+ under Volumes XIV/XXI, Cloud+ under the
 cloud volumes, and Server+ under Volume XXXVI.

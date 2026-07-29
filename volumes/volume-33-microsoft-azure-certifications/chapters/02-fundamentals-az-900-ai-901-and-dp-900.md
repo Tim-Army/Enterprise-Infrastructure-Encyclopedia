@@ -167,7 +167,7 @@ az account list-locations \
 - [Microsoft Certified: Azure Data Fundamentals](https://learn.microsoft.com/en-us/credentials/certifications/azure-data-fundamentals/) (DP-900)
 - [Microsoft Learn training](https://learn.microsoft.com/en-us/training/) —
   free paths covering all three exams.
-- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-97-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
+- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-997-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
 - See [Chapter 01](01-the-azure-certification-program-levels-codes-and-renewal.md)
   for the program map and renewal model.
 

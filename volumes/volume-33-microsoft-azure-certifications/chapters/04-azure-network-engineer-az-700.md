@@ -193,7 +193,7 @@ az network route-table route create -g rg-az700-lab --route-table-name rt-spoke 
 - [Microsoft Certified: Azure Network Engineer Associate](https://learn.microsoft.com/en-us/credentials/certifications/azure-network-engineer-associate/) (AZ-700)
 - [Azure networking documentation](https://learn.microsoft.com/en-us/azure/networking/)
 - [Azure Network Watcher](https://learn.microsoft.com/en-us/azure/network-watcher/)
-- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-97-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
+- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-997-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
 - See [Chapter 03](03-azure-administrator-az-104.md) for the virtual
   networking this builds on.
 

@@ -221,7 +221,7 @@ curl -k -s -u 'admin:<NSX_ADMIN_PASSWORD>' \
   product reference for VCP-AVI preparation.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this repository's certification-to-volume mapping.
-- [Appendix — VMware and Broadcom Certifications and Course Access](../../volume-97-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) —
+- [Appendix — VMware and Broadcom Certifications and Course Access](../../volume-997-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) —
   the course catalog mapping official training to each exam.
 - See [Chapter 8](08-vsphere-and-nsx-security-architecture.md) for the
   security foundation behind VCP-PCS.

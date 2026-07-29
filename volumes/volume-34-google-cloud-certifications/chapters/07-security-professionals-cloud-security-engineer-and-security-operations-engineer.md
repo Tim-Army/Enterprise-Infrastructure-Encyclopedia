@@ -205,7 +205,7 @@ gcloud logging read \
 - [Professional Security Operations Engineer](https://cloud.google.com/learn/certification/security-operations-engineer)
 - [VPC Service Controls](https://cloud.google.com/vpc-service-controls/docs)
 - [Security Command Center](https://cloud.google.com/security-command-center/docs)
-- [Appendix — Google Cloud Certifications and Course Access](../../volume-97-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
+- [Appendix — Google Cloud Certifications and Course Access](../../volume-997-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
 - See [Chapter 03](03-associate-cloud-engineer.md) for the IAM model and
   [Chapter 05](05-professional-cloud-architect.md) for organization policy.
 

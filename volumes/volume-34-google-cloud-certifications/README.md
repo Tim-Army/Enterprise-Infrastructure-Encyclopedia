@@ -312,7 +312,7 @@ learning path for every certification in this volume, with on-demand
 courses and hands-on labs. Professional Cloud Architect additionally
 publishes **case studies in advance** — reading them before exam day is
 free preparation. Exams themselves are paid. The
-[course-catalog appendix](../volume-97-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
+[course-catalog appendix](../volume-997-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
 records the training path and access model per certification.
 
 ## Software and platform baseline

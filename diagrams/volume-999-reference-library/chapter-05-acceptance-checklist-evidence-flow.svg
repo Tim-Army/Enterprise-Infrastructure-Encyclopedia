@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 5 lab flow: an acceptance checklist populated with falsifiable items and evidence-backed dispositions, tested against one item deliberately recorded as Fail</title>
+  <desc>
+    A reusable acceptance-checklist-template.md is copied to a change-specific file and populated with four checklist items, each with a specific, falsifiable expected result rather than a vague one. Executing each check and capturing evidence, command output, a screenshot, a test report, or a log excerpt, produces four timestamped artifacts, each linked from its row; a disposition of Pass, Fail, or Waived is then assigned to each item strictly from that linked evidence. As a negative test, one item is deliberately recorded as Fail, using a real observed failure or a condition known not yet to be met, and the resulting action, rollback, follow-up change, or escalation, is documented, proving the checklist has a real, working Fail path and not only a happy path.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: Every Disposition Traces to Linked Evidence, Never to Memory</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Four falsifiable checklist items are validated with captured artifacts, and one deliberate Fail proves the checklist has a real failure path</text>
+  <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">4 falsifiable checklist items</text>
+  <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">evidence captured per item</text>
+  <text x="190.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(output, screenshot, log, report)</text>
+  <rect x="400" y="140" width="240" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Dispositions assigned</text>
+  <text x="520.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">Pass/Fail/Waived, each</text>
+  <text x="520.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">traceable to linked evidence</text>
+  <line x1="320" y1="200" x2="400" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="177.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="195.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">one item deliberately Fail</text>
+  <text x="810.0" y="213.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ documented rollback/</text>
+  <text x="810.0" y="231.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">follow-up/escalation action</text>
+  <line x1="640" y1="200" x2="700" y2="200" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="330" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="370.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">an overall disposition and accepting reviewer are recorded at the bottom, and the completed checklist</text>
+  <text x="490.0" y="388.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">plus its evidence directory are committed together as one versioned acceptance record.</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="464" font-size="11" fill="#33415c">Falsifiable checklist + evidence</text>
+  <line x1="426" y1="460" x2="466" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="474" y="464" font-size="11" fill="#166534">Evidence-traceable disposition</text>
+  <line x1="774" y1="460" x2="814" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="822" y="464" font-size="11" fill="#b91c1c">Documented Fail path</text>
+</svg>

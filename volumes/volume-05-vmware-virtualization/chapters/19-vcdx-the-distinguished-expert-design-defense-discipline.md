@@ -234,7 +234,7 @@ Round 4: Diagnose one unseen troubleshooting scenario aloud.
   directly, as the apex program's administration changes.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this repository's certification-to-volume mapping.
-- [Appendix — VMware and Broadcom Certifications and Course Access](../../volume-97-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) —
+- [Appendix — VMware and Broadcom Certifications and Course Access](../../volume-997-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) —
   where the Distinguished Expert path sits in the wider program, with the
   design-oriented training that leads to it.
 - See [Chapter 17](17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md)

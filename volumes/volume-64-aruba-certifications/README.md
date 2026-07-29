@@ -60,8 +60,8 @@ knowledge checks.
 This volume *is* the certification map for HPE Aruba Networking, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog with tiers,
 tracks, exam codes, and the HPE training model is in the
-[HPE Aruba Networking certification appendix](../volume-97-master-appendices/chapters/30-appendix-hpe-aruba-networking-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the Cisco (III, XXV, XXVII–XXX),
+[HPE Aruba Networking certification appendix](../volume-997-master-appendices/chapters/30-appendix-hpe-aruba-networking-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the Cisco (III, XXV, XXVII–XXX),
 Juniper (XXXI), Arista (LXII), NetBox (LII), Python for Network Engineers (LVIII), and Ansible
 (LIX) volumes.
 

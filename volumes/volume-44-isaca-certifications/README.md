@@ -63,8 +63,8 @@ This volume *is* the certification map for ISACA, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog
 with the credentials, weighted domains, exam mechanics, experience requirements,
 CPE maintenance, and the CMMC/certificate programs is in the
-[ISACA certification appendix](../volume-97-master-appendices/chapters/18-appendix-isaca-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related governance and security practice lives
+[ISACA certification appendix](../volume-997-master-appendices/chapters/18-appendix-isaca-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related governance and security practice lives
 in Volume XL (ISC2), Volume X (Cybersecurity), and Volume XXXIX (CompTIA).
 
 ## Lab coverage

@@ -53,8 +53,8 @@ knowledge checks.
 This volume *is* the certification map for MikroTik, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog with the
 certificates, prerequisites, and delivery model is in the
-[MikroTik certification appendix](../volume-97-master-appendices/chapters/34-appendix-mikrotik-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the Cisco (XXV, XXIX), Juniper (XXXI),
+[MikroTik certification appendix](../volume-997-master-appendices/chapters/34-appendix-mikrotik-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the Cisco (XXV, XXIX), Juniper (XXXI),
 Nokia (LXVII), NetBox (LII), and Python for Network Engineers (LVIII) volumes.
 
 ## Lab coverage

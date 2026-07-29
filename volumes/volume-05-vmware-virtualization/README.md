@@ -470,7 +470,7 @@ A service-provider NFV specialization on the older 5V0 generation —
 Platform (5V0-36.22), NFV (5V0-37.22), and Automation (5V0-44.21) — off
 the mainstream path. Chapter 20 also defines the four-step, primary-source
 currency check that keeps this whole map, the
-[course-catalog appendix](../volume-97-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md),
+[course-catalog appendix](../volume-997-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md),
 and [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md)
 accurate over time.
 

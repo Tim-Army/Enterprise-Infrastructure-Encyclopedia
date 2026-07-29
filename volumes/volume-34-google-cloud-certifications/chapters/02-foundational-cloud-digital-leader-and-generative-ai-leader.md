@@ -175,7 +175,7 @@ gcloud projects get-iam-policy <PROJECT_ID> \
 - [Generative AI Leader](https://cloud.google.com/learn/certification/generative-ai-leader)
 - [Google Skills](https://cloud.google.com/learn) — free learning paths
   covering both exams.
-- [Appendix — Google Cloud Certifications and Course Access](../../volume-97-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
+- [Appendix — Google Cloud Certifications and Course Access](../../volume-997-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
 - See [Chapter 01](01-the-google-cloud-certification-program-levels-and-validity.md)
   for the program map and the Next '26 refresh.
 

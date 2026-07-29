@@ -176,7 +176,7 @@ az policy assignment create --name deny-public-blob \
 - [Microsoft Certified: Azure Administrator Associate](https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/) (AZ-104)
 - [Azure RBAC documentation](https://learn.microsoft.com/en-us/azure/role-based-access-control/)
 - [Azure Policy documentation](https://learn.microsoft.com/en-us/azure/governance/policy/)
-- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-97-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
+- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-997-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
 - See [Chapter 04](04-azure-network-engineer-az-700.md) for the networking
   depth beyond the administrator's scope, and
   [Chapter 08](08-the-expert-tier-az-305-and-az-400.md) for the architect

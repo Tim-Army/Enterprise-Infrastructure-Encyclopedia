@@ -63,8 +63,8 @@ This volume *is* the certification map for Nutanix, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog
 with credentials, blueprint sections, and the Nutanix University training model is in
 the
-[Nutanix certification appendix](../volume-97-master-appendices/chapters/25-appendix-nutanix-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the VMware (V), Proxmox
+[Nutanix certification appendix](../volume-997-master-appendices/chapters/25-appendix-nutanix-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the VMware (V), Proxmox
 (XXVI), and cloud volumes.
 
 ## Lab coverage

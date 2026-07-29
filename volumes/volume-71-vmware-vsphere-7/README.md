@@ -59,7 +59,7 @@ blueprint. The complementary volumes are [VMware Virtualization (V)](../../volum
 [VMware vSphere 8 (LXXII)](../../volume-72-vmware-vsphere-8/README.md), and, for automation,
 [Python for Infrastructure (LVII)](../../volume-57-python-infrastructure-automation/README.md) and
 [Ansible (LIX)](../../volume-59-ansible/README.md). The Broadcom/VMware certification catalog is in
-the [Master Appendices](../volume-97-master-appendices/README.md).
+the [Master Appendices](../volume-997-master-appendices/README.md).
 
 ## Lab coverage
 

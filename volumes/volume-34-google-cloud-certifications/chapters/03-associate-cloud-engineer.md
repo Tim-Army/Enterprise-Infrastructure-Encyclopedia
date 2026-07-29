@@ -196,7 +196,7 @@ gcloud compute instances create vm-with-sa --zone=us-central1-a \
 - [Google Cloud IAM documentation](https://cloud.google.com/iam/docs)
 - [Google Skills](https://cloud.google.com/learn) — the free learning path
   for this certification.
-- [Appendix — Google Cloud Certifications and Course Access](../../volume-97-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
+- [Appendix — Google Cloud Certifications and Course Access](../../volume-997-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
 - See [Chapter 05](05-professional-cloud-architect.md) for the design
   credential this leads to.
 

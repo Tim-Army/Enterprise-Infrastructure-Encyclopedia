@@ -121,7 +121,7 @@ Data Analytics, Database, SAP on AWS) already left the catalog with their
 subject matter folded into role-based exams, and one of the two survivors
 retires in August 2026. Chapter 13 defines the recurring currency check
 that keeps this table, the
-[course-catalog appendix](../volume-97-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md),
+[course-catalog appendix](../volume-997-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md),
 and the repository blueprint in step.
 
 ## Topic-level lab coverage

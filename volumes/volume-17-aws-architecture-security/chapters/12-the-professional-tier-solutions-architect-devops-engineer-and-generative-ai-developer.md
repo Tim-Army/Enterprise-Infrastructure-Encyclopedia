@@ -220,7 +220,7 @@ aws deploy stop-deployment --deployment-id <DEPLOYMENT_ID> --auto-rollback-enabl
 - [AWS Certified Generative AI Developer – Professional](https://aws.amazon.com/certification/certified-generative-ai-developer-professional/) (AIP-C01)
 - [AWS Skill Builder](https://skillbuilder.aws/) — official exam-prep plans,
   including full-length practice at professional pacing.
-- [Appendix — AWS Certifications and Course Access](../../volume-97-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md)
+- [Appendix — AWS Certifications and Course Access](../../volume-997-master-appendices/chapters/08-appendix-aws-certifications-and-course-access.md)
 - See [Chapter 11](11-the-associate-tier-developer-cloudops-data-engineer-and-machine-learning-engineer.md)
   for the tier below and
   [Chapter 13](13-specialty-certifications-and-keeping-the-aws-certification-program-current.md)

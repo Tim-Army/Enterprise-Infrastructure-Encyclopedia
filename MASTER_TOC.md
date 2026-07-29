@@ -577,9 +577,9 @@ table of contents for that volume.
 8. Continuing Education and Renewal
 9. Building a CompTIA Career Path
 
-## Volume XCVII — Master Appendices
+## Volume CMXCVII — Master Appendices
 
-[Volume README](volumes/volume-97-master-appendices/README.md) · [Index](volumes/volume-97-master-appendices/INDEX.md) · [Glossary](volumes/volume-97-master-appendices/GLOSSARY.md)
+[Volume README](volumes/volume-997-master-appendices/README.md) · [Index](volumes/volume-997-master-appendices/INDEX.md) · [Glossary](volumes/volume-997-master-appendices/GLOSSARY.md)
 
 1. Appendix — Cisco U. Learning Paths and Continuing Education Credits
 2. Appendix — Proxmox Lab IPv4 and IPv6 Address Tables
@@ -595,18 +595,18 @@ table of contents for that volume.
 12. Appendix — Microsoft Certifications Beyond Azure and Course Access
 13. Appendix — CompTIA Certifications and Course Access
 
-## Volume XCVIII — Acronyms
+## Volume CMXCVIII — Acronyms
 
-[Volume README](volumes/volume-98-acronyms/README.md) · [Index](volumes/volume-98-acronyms/INDEX.md) · [Glossary](volumes/volume-98-acronyms/GLOSSARY.md)
+[Volume README](volumes/volume-998-acronyms/README.md) · [Index](volumes/volume-998-acronyms/INDEX.md) · [Glossary](volumes/volume-998-acronyms/GLOSSARY.md)
 
 1. Acronyms A through D
 2. Acronyms E through L
 3. Acronyms M through R
 4. Acronyms S through Z
 
-## Volume XCIX — Reference Library
+## Volume CMXCIX — Reference Library
 
-[Volume README](volumes/volume-99-reference-library/README.md) · [Index](volumes/volume-99-reference-library/INDEX.md) · [Glossary](volumes/volume-99-reference-library/GLOSSARY.md)
+[Volume README](volumes/volume-999-reference-library/README.md) · [Index](volumes/volume-999-reference-library/INDEX.md) · [Glossary](volumes/volume-999-reference-library/GLOSSARY.md)
 
 1. Command Quick Reference and Safe Administration
 2. Ports, Protocols, Services, and Traffic Flows

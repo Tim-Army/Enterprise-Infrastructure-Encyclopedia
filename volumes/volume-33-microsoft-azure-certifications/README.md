@@ -242,7 +242,7 @@ this volume**, which makes paid courses hard to justify at the
 fundamentals level and optional above it. Practice assessments are
 published free for many exams. Exams themselves are paid and booked
 through Microsoft's scheduling flow. The
-[course-catalog appendix](../volume-97-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
+[course-catalog appendix](../volume-997-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
 records the training path and access model per certification.
 
 ## Software and platform baseline

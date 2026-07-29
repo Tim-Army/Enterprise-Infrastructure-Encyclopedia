@@ -192,7 +192,7 @@ curl -s https://learn.microsoft.com/en-us/credentials/certifications/azure-devel
   machine-readable certification and exam data.
 - [Certification renewal](https://learn.microsoft.com/en-us/credentials/support/renew-your-microsoft-certification) —
   the annual free renewal-assessment model.
-- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-97-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md) —
+- [Appendix — Microsoft Azure Certifications and Course Access](../../volume-997-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md) —
   every certification with code, exam end date, and training access.
 - See [Volume XVII](../../volume-17-aws-architecture-security/README.md)
   for the AWS program this one is usefully contrasted with.

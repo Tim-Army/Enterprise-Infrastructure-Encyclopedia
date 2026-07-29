@@ -58,8 +58,8 @@ labs and knowledge checks.
 This volume *is* the certification map for Arista, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog with
 tracks, tiers, and the Arista Academy training model is in the
-[Arista certification appendix](../volume-97-master-appendices/chapters/28-appendix-arista-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the Cisco (III, XXV,
+[Arista certification appendix](../volume-997-master-appendices/chapters/28-appendix-arista-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the Cisco (III, XXV,
 XXVII–XXX), Juniper (XXXI), NetBox (LII), Python for Network Engineers (LVIII), and Ansible
 (LIX) volumes.
 

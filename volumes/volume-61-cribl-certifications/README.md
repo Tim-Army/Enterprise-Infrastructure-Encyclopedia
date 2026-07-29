@@ -58,8 +58,8 @@ labs and knowledge checks.
 This volume *is* the certification map for Cribl, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog with
 credentials, topic areas, and the Cribl University training model is in the
-[Cribl certification appendix](../volume-97-master-appendices/chapters/27-appendix-cribl-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the observability (XI),
+[Cribl certification appendix](../volume-997-master-appendices/chapters/27-appendix-cribl-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the observability (XI),
 Splunk (XLV), OpenTelemetry (LIV), and Prometheus (LV) volumes.
 
 ## Lab coverage

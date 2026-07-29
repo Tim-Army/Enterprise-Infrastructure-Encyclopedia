@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 6 lab flow: a single simulated failure diagnosed through a decision tree to a specific conclusion and resolved back to baseline, tested by reproducing the identical failure a second time</title>
+  <desc>
+    A lab service's working baseline and response time are documented before exactly one failure condition is induced without pre-announcing which one. Working through the appropriate decision tree node by node, recording each check and its result, ends at a specific, correct diagnosis; the incident is then classified by severity and escalation trigger using the chapter's matrix, and a timestamped incident timeline is produced from detection through resolution. Resolving the failure and re-running the original detection check confirms the service matches its original baseline, not merely that it appears to work. As a negative test, the identical failure condition is reintroduced, and the same decision tree is walked again; it reaches the same diagnosis a second time, confirming the tree is repeatable rather than a one-time coincidence.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 6 Hands-On Lab: The Same Decision Tree Reaches the Same Diagnosis Twice, Not by Coincidence</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A single induced failure is diagnosed node by node from a documented baseline, then reproduced to confirm the tree is repeatable</text>
+  <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Baseline documented</text>
+  <text x="180.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">one failure condition induced</text>
+  <rect x="360" y="130" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Decision tree walked</text>
+  <text x="480.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">node by node →</text>
+  <text x="480.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">specific correct diagnosis</text>
+  <line x1="300" y1="185" x2="360" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Resolved + re-checked</text>
+  <text x="810.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">matches original baseline</text>
+  <line x1="600" y1="185" x2="700" y2="185" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="360" y="300" width="400" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="560.0" y="341.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="560.0" y="359.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">same failure reintroduced</text>
+  <text x="560.0" y="377.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ same diagnosis reached again</text>
+  <line x1="480" y1="240" x2="480" y2="300" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="460" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="500.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">severity and escalation trigger are classified from the matrix's criteria, not intuition, and the</text>
+  <text x="490.0" y="518.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">resulting timeline links evidence at every stage from detection through confirmed resolution.</text>
+  <line x1="60" y1="590" x2="100" y2="590" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="594" font-size="11" fill="#33415c">Baseline + induced failure</text>
+  <line x1="372" y1="590" x2="412" y2="590" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="420" y="594" font-size="11" fill="#166534">Diagnosis + confirmed resolution</text>
+  <line x1="738" y1="590" x2="778" y2="590" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="786" y="594" font-size="11" fill="#b91c1c">Repeatability confirmed</text>
+</svg>

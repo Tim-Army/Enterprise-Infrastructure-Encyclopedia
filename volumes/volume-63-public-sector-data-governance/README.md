@@ -57,8 +57,8 @@ knowledge checks.
 This volume *is* the certification map for PSDGP, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog with the
 ICCP levels, the DGSP core relationship, and the R2C training model is in the
-[PSDGP certification appendix](../volume-97-master-appendices/chapters/29-appendix-psdgp-public-sector-data-governance-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the ISC2 (XL), ISACA (XLIV),
+[PSDGP certification appendix](../volume-997-master-appendices/chapters/29-appendix-psdgp-public-sector-data-governance-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the ISC2 (XL), ISACA (XLIV),
 Enterprise Cybersecurity (X), and NetBox (LII) volumes.
 
 ## Lab coverage

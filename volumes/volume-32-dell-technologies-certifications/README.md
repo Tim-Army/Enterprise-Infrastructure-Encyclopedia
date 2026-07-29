@@ -364,7 +364,7 @@ artifacts its labs demand. Re-verify every code the week you book.
 - [Volume index](INDEX.md)
 - [Volume glossary](GLOSSARY.md)
 - [Master table of contents](../../MASTER_TOC.md)
-- [Dell courses appendix — Volume XCVII](../volume-97-master-appendices/README.md)
+- [Dell courses appendix — Volume CMXCVII](../volume-997-master-appendices/README.md)
 
 ## Building and validating this volume
 

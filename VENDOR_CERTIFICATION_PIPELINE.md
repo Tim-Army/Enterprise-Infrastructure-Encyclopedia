@@ -34,7 +34,7 @@ and deploy verification, without pausing for confirmation between them.
 ### What runs without being asked
 
 A Tracks row in the root README, a course-catalog appendix in Master
-Appendices (Volume XCVII) carrying **exam** and **exam end date** columns,
+Appendices (Volume CMXCVII) carrying **exam** and **exam end date** columns,
 United States English spelling, and the full ship-and-verify sequence.
 
 ### What still interrupts
@@ -159,7 +159,7 @@ Stage the paths the task touched — never `git add -A`, which sweeps in
 concurrent sessions' work:
 
 ```bash
-git add book.yml README.md SUMMARY.md MASTER_TOC.md PROJECT_STATUS.md CERTIFICATION_BLUEPRINTS.md cspell.json volumes/volume-NN-vendor volumes/volume-97-master-appendices diagrams/volume-NN-vendor zip/
+git add book.yml README.md SUMMARY.md MASTER_TOC.md PROJECT_STATUS.md CERTIFICATION_BLUEPRINTS.md cspell.json volumes/volume-NN-vendor volumes/volume-997-master-appendices diagrams/volume-NN-vendor zip/
 ```
 
 ```bash

@@ -101,7 +101,7 @@ Verified 23 July 2026. Fourteen certifications, three levels.
   because there is no code to make the change obvious.
 - **Propagate findings completely.** A check that updates only this
   chapter leaves the volume README, the
-  [appendix](../../volume-97-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md),
+  [appendix](../../volume-997-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md),
   and [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md)
   stale.
 
@@ -213,7 +213,7 @@ Date       | Item                          | Was        | Now                   
   eligibility, cost, and recertification policy.
 - [Google Skills](https://cloud.google.com/learn) — free learning paths per
   certification.
-- [Appendix — Google Cloud Certifications and Course Access](../../volume-97-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
+- [Appendix — Google Cloud Certifications and Course Access](../../volume-997-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
 - See [Volume XVII, Chapter 13](../../volume-17-aws-architecture-security/chapters/13-specialty-certifications-and-keeping-the-aws-certification-program-current.md)
   and [Volume XXXIII, Chapter 09](../../volume-33-microsoft-azure-certifications/chapters/09-specialty-certifications-and-certification-operations.md)
   for the equivalent AWS and Azure checks.

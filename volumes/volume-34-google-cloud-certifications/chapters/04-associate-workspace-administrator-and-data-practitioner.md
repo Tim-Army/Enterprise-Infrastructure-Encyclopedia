@@ -181,7 +181,7 @@ bq query --use_legacy_sql=false --dry_run \
 - [Associate Data Practitioner](https://cloud.google.com/learn/certification/data-practitioner)
 - [Google Cloud certification](https://cloud.google.com/learn/certification) —
   the level groupings, and the Next '26 refresh notice.
-- [Appendix — Google Cloud Certifications and Course Access](../../volume-97-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
+- [Appendix — Google Cloud Certifications and Course Access](../../volume-997-master-appendices/chapters/10-appendix-google-cloud-certifications-and-course-access.md)
 - See [Chapter 08](08-data-and-ml-professionals-data-engineer-database-engineer-and-machine-learning-engineer.md)
   for the professional data certifications Data Practitioner leads to.
 

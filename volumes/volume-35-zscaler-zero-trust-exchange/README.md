@@ -21,7 +21,7 @@ for each of the three professional exams (ZDTA, ZDTE, ZDXA); the associate
 ZTCA is course-only. This volume is organized by the platform's product
 pillars so one volume serves all four credentials, with the published
 domain weightings, exam formats, fees, and two-year validity recorded in
-the [Zscaler certification appendix](../volume-97-master-appendices/chapters/11-appendix-zscaler-certifications-and-course-access.md).
+the [Zscaler certification appendix](../volume-997-master-appendices/chapters/11-appendix-zscaler-certifications-and-course-access.md).
 Every claim about the program was taken from Zscaler's own Customer Success
 Center, Cyber Academy, Certification Program Brief, and Certification Exam
 FAQs, never a third-party exam-dump summary.
@@ -64,7 +64,7 @@ completes *Zscaler for Users — Engineer*, EDU-202; ZDXA completes *ZDX
 Operationalization*, EDU-310; ZTCA has its own associate eLearning). The
 three professional exams each publish a **weighted blueprint** — recorded,
 with exam format, US$300 fee, delivery method, and two-year validity, in
-the [Zscaler certification appendix](../volume-97-master-appendices/chapters/11-appendix-zscaler-certifications-and-course-access.md);
+the [Zscaler certification appendix](../volume-997-master-appendices/chapters/11-appendix-zscaler-certifications-and-course-access.md);
 ZTCA is course-only. This volume follows the platform pillars so it serves
 all four credentials at once. Confirm the current exam name, cost,
 language, and learning path on Zscaler's Cyber Academy pages before
@@ -100,8 +100,8 @@ through the **Partner Academy** (`partneracademy.zscaler.com`).
 The full certification catalog — every exam's format, US$300 fee (the
 three proctored exams), two-year validity, Pearson VUE / OnVUE delivery,
 and learning path — is in the
-[Zscaler certification appendix](../volume-97-master-appendices/chapters/11-appendix-zscaler-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII).
+[Zscaler certification appendix](../volume-997-master-appendices/chapters/11-appendix-zscaler-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII).
 
 ## Software and platform baseline
 

@@ -62,8 +62,8 @@ This volume *is* the certification map for HashiCorp, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog
 with the four active exams, objectives, mechanics, two-year validity, and the
 HashiCorp Learn training model is in the
-[HashiCorp certification appendix](../volume-97-master-appendices/chapters/16-appendix-hashicorp-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Deeper hands-on practice with these tools lives
+[HashiCorp certification appendix](../volume-997-master-appendices/chapters/16-appendix-hashicorp-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Deeper hands-on practice with these tools lives
 in the automation (IX) and cloud (XVII/XXXIII/XXXIV) volumes.
 
 ## Lab coverage

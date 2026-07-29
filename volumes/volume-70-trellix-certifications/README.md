@@ -60,8 +60,8 @@ knowledge checks.
 This volume *is* the certification map for Trellix, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog with the products,
 certifications, and lineage is in the
-[Trellix certification appendix](../volume-97-master-appendices/chapters/36-appendix-trellix-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the CrowdStrike (L), Palo Alto (XVI,
+[Trellix certification appendix](../volume-997-master-appendices/chapters/36-appendix-trellix-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the CrowdStrike (L), Palo Alto (XVI,
 LXV), Cisco Security (XXV), and Enterprise Cybersecurity (X) volumes.
 
 ## Lab coverage

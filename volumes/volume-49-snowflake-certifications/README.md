@@ -59,8 +59,8 @@ hands-on labs and knowledge checks.
 This volume *is* the certification map for Snowflake, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog
 with credentials, exam-guide domains, and the free training/practice model is in the
-[Snowflake certification appendix](../volume-97-master-appendices/chapters/23-appendix-snowflake-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the Databricks (XLVIII),
+[Snowflake certification appendix](../volume-997-master-appendices/chapters/23-appendix-snowflake-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the Databricks (XLVIII),
 data/observability (XLV), and cloud volumes.
 
 ## Lab coverage

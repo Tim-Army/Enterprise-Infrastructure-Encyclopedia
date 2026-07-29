@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 2 lab flow: a service-to-port reference card validated by a live TCP handshake capture and a cross-host reachability test, tested against a connection to an unopened port</title>
+  <desc>
+    A port-reference-card.md table is populated with real services from the lab environment, each row extended with its observed bound address from a listening-state check. A reachability test from a second host confirms which services are actually reachable across the network, and capturing one TCP service's handshake shows SYN, SYN-ACK, ACK in order, confirming the flow matches the row recorded for it. As a negative test, a connection is attempted to a port that was never opened, and the observable result, a TCP RST, an ICMP unreachable, or silent timeout, is recorded, documenting the practical difference between a closed port and a firewalled port that this reference card exists to capture.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 2 Hands-On Lab: A Closed Port and a Firewalled Port Look Different on the Wire, Not the Same</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A port reference card is validated by a live handshake capture, and the negative test distinguishes a reset from a silent timeout</text>
+  <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">port-reference-card.md</text>
+  <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">+ Bound Address column</text>
+  <text x="190.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(listening-state check)</text>
+  <rect x="400" y="140" width="240" height="120" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="520.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">tcpdump capture</text>
+  <text x="520.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">SYN, SYN-ACK, ACK</text>
+  <text x="520.0" y="222.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">confirms the flow statement</text>
+  <line x1="320" y1="200" x2="400" y2="200" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="140" width="220" height="120" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="177.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="810.0" y="195.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">connect to unopened port</text>
+  <text x="810.0" y="213.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ RST, ICMP unreachable,</text>
+  <text x="810.0" y="231.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">or silent timeout</text>
+  <line x1="640" y1="200" x2="700" y2="200" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="330" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="370.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">which of the three outcomes actually occurs is itself the recurring troubleshooting distinction —</text>
+  <text x="490.0" y="388.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">closed and firewalled ports are observably different, not interchangeable failure modes.</text>
+  <line x1="60" y1="460" x2="100" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="464" font-size="11" fill="#33415c">Card + bound-address evidence</text>
+  <line x1="399" y1="460" x2="439" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="447" y="464" font-size="11" fill="#166534">Captured handshake</text>
+  <line x1="639" y1="460" x2="679" y2="460" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="687" y="464" font-size="11" fill="#b91c1c">Observed closed/firewalled distinction</text>
+</svg>

@@ -69,8 +69,8 @@ This volume *is* the certification map for OffSec, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog
 with the courses, credentials, practical-exam formats, the "+" renewal model, and
 the OffSec training model is in the
-[OffSec certification appendix](../volume-97-master-appendices/chapters/17-appendix-offsec-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related hands-on security practice lives in
+[OffSec certification appendix](../volume-997-master-appendices/chapters/17-appendix-offsec-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related hands-on security practice lives in
 Volume X (Cybersecurity) and the vendor-security volumes (XVI, XIX, XXV, XXXV).
 
 ## Lab coverage

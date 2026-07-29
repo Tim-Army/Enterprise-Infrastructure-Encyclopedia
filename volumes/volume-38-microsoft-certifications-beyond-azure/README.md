@@ -69,8 +69,8 @@ This volume *is* the certification map for Microsoft beyond Azure, recorded
 in [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The
 full catalog with tiers, exam codes, retirements, the Microsoft Learn free
 training model, and free annual renewal is in the
-[Microsoft (beyond Azure) certification appendix](../volume-97-master-appendices/chapters/12-appendix-microsoft-beyond-azure-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Hands-on practice for these credentials
+[Microsoft (beyond Azure) certification appendix](../volume-997-master-appendices/chapters/12-appendix-microsoft-beyond-azure-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Hands-on practice for these credentials
 lives in Volumes XXXVI (Windows Server/AD) and XXXVII (Microsoft 365), and in
 Volume XXXIII for the shared Azure and data/AI foundations.
 

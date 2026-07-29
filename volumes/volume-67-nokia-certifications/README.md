@@ -52,8 +52,8 @@ knowledge checks.
 This volume *is* the certification map for Nokia, recorded in
 [CERTIFICATION_BLUEPRINTS.md](../../CERTIFICATION_BLUEPRINTS.md). The full catalog with levels and
 exams is in the
-[Nokia certification appendix](../volume-97-master-appendices/chapters/33-appendix-nokia-certifications-and-course-access.md)
-(Master Appendices, Volume XCVII). Related practice lives in the Cisco Service Provider (XXIX),
+[Nokia certification appendix](../volume-997-master-appendices/chapters/33-appendix-nokia-certifications-and-course-access.md)
+(Master Appendices, Volume CMXCVII). Related practice lives in the Cisco Service Provider (XXIX),
 Juniper (XXXI), Arista (LXII), NetBox (LII), and Python for Network Engineers (LVIII) volumes.
 
 ## Lab coverage
