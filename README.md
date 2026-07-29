@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.95-blue)
+![Release](https://img.shields.io/badge/release-v1.2.96-blue)
 
-**v1.2.95 — latest release.** 92 volumes, 893 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.95) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.96 — latest release.** 93 volumes, 903 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.96) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 92-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 93-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-92 volumes, 893 chapters. Each volume has a dedicated
+93 volumes, 903 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -119,7 +119,8 @@ The series combines architecture and theory with implementation guidance, automa
 | LXXXVII | [Microsegmentation Options](volumes/volume-87-microsegmentation-options/README.md) | 9 |
 | LXXXVIII | [MongoDB Certification Tracks](volumes/volume-88-mongodb-certifications/README.md) | 9 |
 | LXXXIX | [GitHub Certification Tracks](volumes/volume-89-github-certifications/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 52 |
+| XC | [Datadog Certification Tracks](volumes/volume-90-datadog-certifications/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 53 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
@@ -194,6 +195,7 @@ ascending order.
 | Elastic | [LXXXVI Elastic Certification Tracks](volumes/volume-86-elastic-certifications/README.md) — the whole Elastic program in one volume: the Certified Engineer, Certified Analyst, Observability Engineer, and SIEM Analyst, across the Elastic Stack (Elasticsearch, Kibana, Elastic Agent/Fleet, Beats, Logstash), with hands-on Elasticsearch/Kibana walkthroughs — node roles/shards/data tiers, index mappings + dynamic templates + data streams + ILM, ingest pipelines + Query DSL + ES\|QL + aggregations, Kibana Discover/KQL/Lens/dashboards, Elastic Agent metrics/logs + Heartbeat uptime, APM + machine-learning anomalies + Kibana alerting, defensive Elastic Security SIEM (detection rules + threat hunting + Timelines), and cluster health + RBAC + snapshots (Engineer exam 8.15→9.3 on 1 Sep 2026) |
 | MongoDB | [LXXXVIII MongoDB Certification Tracks](volumes/volume-88-mongodb-certifications/README.md) — the whole MongoDB program in one volume: the four Associate certifications (Developer, Data Modeler, Database Administrator, Atlas Administrator) on the leading document database, with hands-on mongosh walkthroughs — BSON documents + CRUD, query operators + projection + cursors + drivers, the aggregation pipeline ($match/$group/$lookup/$unwind), schema design (embedding vs referencing + patterns), indexes + explain + the ESR rule + covered queries, replica sets + write concern + sharding + shard keys, MongoDB Atlas (clusters/backup/PITR/network/Atlas Search), and defensive SCRAM/RBAC/TLS/encryption; free MongoDB University Learning Paths (50% off, free for students) |
 | GitHub | [LXXXIX GitHub Certification Tracks](volumes/volume-89-github-certifications/README.md) — the whole GitHub program in one volume: the five certifications (Foundations, Actions, Advanced Security/GHAS, Administration, Copilot) on the world's largest development platform, with hands-on git/gh CLI and Actions labs — Git + repositories + pull requests, issues/reviews/Projects collaboration, Actions workflows (events/jobs/steps/runners/matrix) + CI/CD + secrets + GITHUB_TOKEN/OIDC hardening, defensive GHAS (CodeQL code scanning + secret scanning/push protection + Dependabot), org/enterprise administration (teams/RBAC + rulesets + SAML SSO/SCIM + audit log), and responsible Copilot (prompt engineering + content exclusions + privacy); all exams $99 via PSI (Foundations 50% off) |
+| Datadog | [XC Datadog Certification Tracks](volumes/volume-90-datadog-certifications/README.md) — the whole Datadog program in one volume: the relaunched certifications (Datadog Fundamentals, APM & Distributed Tracing, Log Management, plus Database Monitoring and Cloud SIEM) on the observability platform, with hands-on Agent/API/pipeline labs — Agent config + metric types + unified service tagging + DogStatsD, integrations + Metrics Explorer + host map, timeboards + widgets + template variables, monitors + thresholds + notifications + SLOs + downtimes, APM traces/spans + service map + trace search, log pipelines + grok + indexes + facets + exclusion filters, and Database Monitoring (query metrics/explain plans) + defensive Cloud SIEM (detection rules + signals); each exam $100, 90 questions, free Learning Center prep |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Microsegmentation and zero trust | [LXXXVII Microsegmentation Options](volumes/volume-87-microsegmentation-options/README.md) — a vendor-neutral decision guide to microsegmentation: the enforcement models and the leading platforms (VMware NSX, Cisco, Illumio, Akamai Guardicore, Zero Networks, TrueFort, ColorTokens Xshield, cloud-native, and Kubernetes), with the pros, cons, compatibility, and requirements of each, plus a weighted selection rubric and a monitor-first rollout plan — pairs with [XXXV Zscaler Zero Trust Exchange](volumes/volume-35-zscaler-zero-trust-exchange/README.md) |

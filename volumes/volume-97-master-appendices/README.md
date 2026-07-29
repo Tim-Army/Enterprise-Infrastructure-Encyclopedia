@@ -60,6 +60,7 @@ one place instead of scattered through volume READMEs.
 50. [Appendix — Elastic Certifications and Course Access](chapters/50-appendix-elastic-certifications-and-course-access.md) — the four Elastic Stack certifications (Certified Engineer, Analyst, Observability Engineer, and the cognitive SIEM Analyst), with free on-demand training, a free self-managed Stack for hands-on practice, online-proctored performance-based exams (Engineer/Observability $500), and the Certified Engineer's 8.15→9.3 update on 1 September 2026; snapshot dated 29 July 2026.
 51. [Appendix — MongoDB Certifications and Course Access](chapters/51-appendix-mongodb-certifications-and-course-access.md) — the four MongoDB Associate certifications (Developer, Data Modeler, Database Administrator, Atlas Administrator), with free MongoDB University Learning Paths (50% exam discount; free for students/educators), free Community/Atlas M0 practice, online-proctored ProctorU exams ($150), and Credly badges; snapshot dated 29 July 2026.
 52. [Appendix — GitHub Certifications and Course Access](chapters/52-appendix-github-certifications-and-course-access.md) — the five GitHub certifications (Foundations, Actions, Advanced Security, Administration, Copilot), with free GitHub Skills interactive courses and learning paths, a free GitHub account for hands-on practice, PSI-delivered exams ($99; Foundations 50% off; 100 minutes), and cross-listing on Microsoft Learn; snapshot dated 29 July 2026.
+53. [Appendix — Datadog Certifications and Course Access](chapters/53-appendix-datadog-certifications-and-course-access.md) — the relaunched Datadog certifications (Datadog Fundamentals, APM & Distributed Tracing, Log Management, plus Database Monitoring and Cloud SIEM), with the free Datadog Learning Center (courses/labs/practice exams), a free 14-day trial and Agent, and $100/90-question exams with three attempts per 180 days; snapshot dated 29 July 2026.
 
 ## Appendix catalog
 
@@ -118,6 +119,7 @@ one place instead of scattered through volume READMEs.
 | Elastic certifications and course access | [Volume LXXXVI](../volume-86-elastic-certifications/README.md) | [50](chapters/50-appendix-elastic-certifications-and-course-access.md) |
 | MongoDB certifications and course access | [Volume LXXXVIII](../volume-88-mongodb-certifications/README.md) | [51](chapters/51-appendix-mongodb-certifications-and-course-access.md) |
 | GitHub certifications and course access | [Volume LXXXIX](../volume-89-github-certifications/README.md) | [52](chapters/52-appendix-github-certifications-and-course-access.md) |
+| Datadog certifications and course access | [Volume XC](../volume-90-datadog-certifications/README.md) | [53](chapters/53-appendix-datadog-certifications-and-course-access.md) |
 
 ## Conventions
 
