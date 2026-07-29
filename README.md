@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.86-blue)
+![Release](https://img.shields.io/badge/release-v1.2.87-blue)
 
-**v1.2.86 — latest release.** 83 volumes, 804 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.86) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.87 — latest release.** 84 volumes, 814 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.87) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is an 83-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is an 84-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-83 volumes, 804 chapters. Each volume has a dedicated
+84 volumes, 814 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -110,7 +110,8 @@ The series combines architecture and theory with implementation guidance, automa
 | LXXVIII | [Tenable Certification Tracks](volumes/volume-78-tenable-certifications/README.md) | 9 |
 | LXXIX | [Qualys Certification Tracks](volumes/volume-79-qualys-certifications/README.md) | 9 |
 | LXXX | [ServiceNow Certification Tracks](volumes/volume-80-servicenow-certifications/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 44 |
+| LXXXI | [SUSE Certification Tracks](volumes/volume-81-suse-certifications/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 45 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
@@ -177,6 +178,7 @@ ascending order.
 | Tenable | [LXXVIII Tenable Certification Tracks](volumes/volume-78-tenable-certifications/README.md) — the whole Tenable vulnerability/exposure-management program in one volume: the Vulnerability Management, Security Center, and OT Exposure product certifications (two-part written + practical) across Nessus, Tenable VM, Security Center, Web App Scanning, Cloud Security, OT Security, and Tenable One, with defensive labs — credentialed scanning, CVSS/VPR/AES prioritization, repositories/RBAC, WAS/CSPM toxic combinations, passive OT inventory, and exposure/attack-path analysis |
 | Qualys | [LXXIX Qualys Certification Tracks](volumes/volume-79-qualys-certifications/README.md) — the whole Qualys program in one volume: the free Certified Specialist paths across the flagship VMDR (Vulnerability Management, Detection and Response), CSAM, Enterprise TruRisk, Policy/PCI Compliance, TotalAppSec, Container Security, File Integrity Monitoring, TotalCloud, and EDR — on the Qualys Cloud Platform (Cloud Agents/QQL) — with defensive labs: asset inventory/EASM, TruRisk prioritization, patch/mitigation response, compliance controls, DAST/container scanning, cloud CSPM, endpoint detection/response, and QFlow/CAR automation |
 | ServiceNow | [LXXX ServiceNow Certification Tracks](volumes/volume-80-servicenow-certifications/README.md) — the whole ServiceNow program in one volume: the CSA foundation → CAD developer → the CIS product specializations (ITSM/ITOM, CSM, HRSD, SecOps VR/SIR, IRM/GRC) → the CTA/CMA architect tiers, plus Now Assist (GenAI), on the Now Platform, with hands-on labs — table inheritance/roles/ACLs, GlideRecord/Business Rules scripting, Update Sets, Discovery/Event Management, Flow Designer, defensive Security Operations orchestration, IntegrationHub, and Performance Analytics |
+| SUSE | [LXXXI SUSE Certification Tracks](volumes/volume-81-suse-certifications/README.md) — the whole SUSE program in one volume: the SCA/SCDS/SCE levels across SUSE Linux Enterprise Server, SUSE Manager, Rancher/Kubernetes (RKE2/K3s), Longhorn, and NeuVector, with hands-on labs — zypper software/patching, Btrfs/Snapper rollback, firewalld/AppArmor hardening, Pacemaker/Corosync HA, AutoYaST, transactional-update, Salt fleet config, kubectl/Helm, and defensive NeuVector container security |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) → [LIII LibreNMS](volumes/volume-53-librenms/README.md) → [LIV OpenTelemetry](volumes/volume-54-opentelemetry/README.md) → [LV Prometheus](volumes/volume-55-prometheus/README.md) |
