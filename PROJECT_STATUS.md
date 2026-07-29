@@ -94,11 +94,12 @@ does not by itself verify every technical claim in it.
 | LXXXII — Alibaba Cloud Certification Tracks | 9 | Drafted |
 | LXXXIII — Salesforce Certification Tracks | 9 | Drafted |
 | LXXXIV — NetApp Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 48 | Drafted |
+| LXXXV — Veeam Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 49 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 844 of 844 drafted (100%). Every volume has a
+**Total declared chapters:** 854 of 854 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
