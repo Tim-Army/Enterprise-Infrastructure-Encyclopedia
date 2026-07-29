@@ -46,6 +46,7 @@ one place instead of scattered through volume READMEs.
 36. [Appendix — Trellix Certifications and Course Access](chapters/36-appendix-trellix-certifications-and-course-access.md) — the Trellix (McAfee Enterprise + FireEye) per-product Certified Product Specialist program across ePO, ENS, EDR, Network Security/ATD, DLP, and Helix, with Trellix Education Services delivery, the legacy McAfee MA0-### exam-code transition, the XDR/DXL consolidation, and the free open-source OpenDXL SDK; snapshot dated 28 July 2026.
 37. [Appendix — Check Point Certifications and Course Access](chapters/37-appendix-check-point-certifications-and-course-access.md) — the Check Point ladder (CCSA 156-215.82 → CCSE 156-315.82 → CCSM/Elite via Infinity Specialist Accreditations) plus CCTE 156-588, on the R82 Quantum platform, with authorized-training-center and Pearson VUE delivery, the 2026 R81.20/156-587 retirements, the CloudGuard/Harmony/Maestro/VSX specializations, and CheckMates/evaluation-VM practice; snapshot dated 28 July 2026.
 38. [Appendix — GIAC Certifications and Course Access](chapters/38-appendix-giac-certifications-and-course-access.md) — the GIAC (SANS) program across eight focus areas (Essentials, Cyber Defense, Offensive Operations, DFIR, Cloud, ICS, Leadership, and the new AI area) with the proctored open-book/CyberLive practical model, SANS course alignment (course optional), 4-year validity, and the recent AI additions (GMLE/GAIPS/GASAE/GOAA); snapshot dated 28 July 2026.
+39. [Appendix — EC-Council Certifications and Course Access](chapters/39-appendix-ec-council-certifications-and-course-access.md) — the EC-Council program led by CEH v13 (with AI), with the CEH Master iLabs practical, the pentest/network-defense/forensics/SOC/cloud/executive/AI tracks, ANSI 17024 accreditation, US DoD 8140 alignment for CEH/CND/CHFI, the ECC-portal/iLabs exam model, and ECE-credit renewal; snapshot dated 28 July 2026.
 
 ## Appendix catalog
 
@@ -90,6 +91,7 @@ one place instead of scattered through volume READMEs.
 | Trellix certifications and course access | [Volume LXX](../volume-70-trellix-certifications/README.md) | [36](chapters/36-appendix-trellix-certifications-and-course-access.md) |
 | Check Point certifications and course access | [Volume LXXIII](../volume-73-check-point-certifications/README.md) | [37](chapters/37-appendix-check-point-certifications-and-course-access.md) |
 | GIAC (SANS) certifications and course access | [Volume LXXIV](../volume-74-giac-certifications/README.md) | [38](chapters/38-appendix-giac-certifications-and-course-access.md) |
+| EC-Council certifications and course access | [Volume LXXV](../volume-75-ec-council-certifications/README.md) | [39](chapters/39-appendix-ec-council-certifications-and-course-access.md) |
 
 ## Conventions
 
