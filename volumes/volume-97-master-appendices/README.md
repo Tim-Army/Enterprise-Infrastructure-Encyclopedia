@@ -61,6 +61,7 @@ one place instead of scattered through volume READMEs.
 51. [Appendix — MongoDB Certifications and Course Access](chapters/51-appendix-mongodb-certifications-and-course-access.md) — the four MongoDB Associate certifications (Developer, Data Modeler, Database Administrator, Atlas Administrator), with free MongoDB University Learning Paths (50% exam discount; free for students/educators), free Community/Atlas M0 practice, online-proctored ProctorU exams ($150), and Credly badges; snapshot dated 29 July 2026.
 52. [Appendix — GitHub Certifications and Course Access](chapters/52-appendix-github-certifications-and-course-access.md) — the five GitHub certifications (Foundations, Actions, Advanced Security, Administration, Copilot), with free GitHub Skills interactive courses and learning paths, a free GitHub account for hands-on practice, PSI-delivered exams ($99; Foundations 50% off; 100 minutes), and cross-listing on Microsoft Learn; snapshot dated 29 July 2026.
 53. [Appendix — Datadog Certifications and Course Access](chapters/53-appendix-datadog-certifications-and-course-access.md) — the relaunched Datadog certifications (Datadog Fundamentals, APM & Distributed Tracing, Log Management, plus Database Monitoring and Cloud SIEM), with the free Datadog Learning Center (courses/labs/practice exams), a free 14-day trial and Agent, and $100/90-question exams with three attempts per 180 days; snapshot dated 29 July 2026.
+54. [Appendix — Puppet Certifications and Course Access](chapters/54-appendix-puppet-certifications-and-course-access.md) — the Puppet Certified Professional (PPT-PCP-24) across eight exam domains on the declarative configuration-management platform (a Perforce company), with free open-source Puppet 8 for hands-on practice, Puppet training courses, and the Questionmark-delivered exam ($200; 60 questions; 90 minutes); snapshot dated 29 July 2026.
 
 ## Appendix catalog
 
@@ -120,6 +121,7 @@ one place instead of scattered through volume READMEs.
 | MongoDB certifications and course access | [Volume LXXXVIII](../volume-88-mongodb-certifications/README.md) | [51](chapters/51-appendix-mongodb-certifications-and-course-access.md) |
 | GitHub certifications and course access | [Volume LXXXIX](../volume-89-github-certifications/README.md) | [52](chapters/52-appendix-github-certifications-and-course-access.md) |
 | Datadog certifications and course access | [Volume XC](../volume-90-datadog-certifications/README.md) | [53](chapters/53-appendix-datadog-certifications-and-course-access.md) |
+| Puppet certifications and course access | [Volume XCI](../volume-91-puppet-certifications/README.md) | [54](chapters/54-appendix-puppet-certifications-and-course-access.md) |
 
 ## Conventions
 

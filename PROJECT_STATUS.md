@@ -100,11 +100,12 @@ does not by itself verify every technical claim in it.
 | LXXXVIII — MongoDB Certification Tracks | 9 | Drafted |
 | LXXXIX — GitHub Certification Tracks | 9 | Drafted |
 | XC — Datadog Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 53 | Drafted |
+| XCI — Puppet Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 54 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 903 of 903 drafted (100%). Every volume has a
+**Total declared chapters:** 913 of 913 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
