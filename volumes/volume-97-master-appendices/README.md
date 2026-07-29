@@ -54,6 +54,7 @@ one place instead of scattered through volume READMEs.
 44. [Appendix — ServiceNow Certifications and Course Access](chapters/44-appendix-servicenow-certifications-and-course-access.md) — the ServiceNow program on the Now Platform: the CSA foundation through CAD and the CIS product specializations to the CTA/CMA architect tiers plus Now Assist, with ServiceNow University/Now Learning training, the free Personal Developer Instance, online-proctored exams, and named-release delta-exam currency; snapshot dated 28 July 2026.
 45. [Appendix — SUSE Certifications and Course Access](chapters/45-appendix-suse-certifications-and-course-access.md) — the SUSE program across the SCA/SCDS/SCE levels and the SLES, SUSE Manager, Rancher (RKE2/K3s), Longhorn, and NeuVector products, with Questionmark exam delivery, free openSUSE Leap and K3s practice, and product-version-tied currency; snapshot dated 29 July 2026.
 46. [Appendix — Alibaba Cloud Certifications and Course Access](chapters/46-appendix-alibaba-cloud-certifications-and-course-access.md) — the Alibaba Cloud program across the ACA/ACP/ACE levels and the Cloud Computing, Cloud Security, Big Data, Cloud Native, Database, Networking, DevOps, and ML/AI domains, with Alibaba Cloud Academy training, online-proctored exams, free-tier + aliyun-CLI practice, and ~2-year currency; snapshot dated 29 July 2026.
+47. [Appendix — Salesforce Certifications and Course Access](chapters/47-appendix-salesforce-certifications-and-course-access.md) — the Salesforce program across the Administrator, App Builder, Developer, Consultant, Architect (to CTA), and new Agentforce/AI tracks, with free Trailhead training, a free non-expiring Developer Edition org, online-proctored exams, and free release-module maintenance across the three annual releases; snapshot dated 29 July 2026.
 
 ## Appendix catalog
 
@@ -106,6 +107,7 @@ one place instead of scattered through volume READMEs.
 | ServiceNow certifications and course access | [Volume LXXX](../volume-80-servicenow-certifications/README.md) | [44](chapters/44-appendix-servicenow-certifications-and-course-access.md) |
 | SUSE certifications and course access | [Volume LXXXI](../volume-81-suse-certifications/README.md) | [45](chapters/45-appendix-suse-certifications-and-course-access.md) |
 | Alibaba Cloud certifications and course access | [Volume LXXXII](../volume-82-alibaba-cloud-certifications/README.md) | [46](chapters/46-appendix-alibaba-cloud-certifications-and-course-access.md) |
+| Salesforce certifications and course access | [Volume LXXXIII](../volume-83-salesforce-certifications/README.md) | [47](chapters/47-appendix-salesforce-certifications-and-course-access.md) |
 
 ## Conventions
 

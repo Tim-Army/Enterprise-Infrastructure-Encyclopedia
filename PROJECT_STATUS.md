@@ -92,11 +92,12 @@ does not by itself verify every technical claim in it.
 | LXXX — ServiceNow Certification Tracks | 9 | Drafted |
 | LXXXI — SUSE Certification Tracks | 9 | Drafted |
 | LXXXII — Alibaba Cloud Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 46 | Drafted |
+| LXXXIII — Salesforce Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 47 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 824 of 824 drafted (100%). Every volume has a
+**Total declared chapters:** 834 of 834 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
