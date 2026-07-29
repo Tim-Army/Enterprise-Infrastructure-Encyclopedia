@@ -98,11 +98,12 @@ does not by itself verify every technical claim in it.
 | LXXXVI — Elastic Certification Tracks | 9 | Drafted |
 | LXXXVII — Microsegmentation Options | 9 | Drafted |
 | LXXXVIII — MongoDB Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 51 | Drafted |
+| LXXXIX — GitHub Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 52 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 883 of 883 drafted (100%). Every volume has a
+**Total declared chapters:** 893 of 893 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

@@ -59,6 +59,7 @@ one place instead of scattered through volume READMEs.
 49. [Appendix — Veeam Certifications and Course Access](chapters/49-appendix-veeam-certifications-and-course-access.md) — the Veeam Data Platform program: the v13-aligned VMCE+ flagship and the coming VMCSE (VMCA retired, VMCE retiring 31 Mar 2026), with the hard required-training model via Veeam University Pro, the free Backup & Replication Community Edition for hands-on practice, Pearson VUE delivery, and Credly badges; snapshot dated 29 July 2026.
 50. [Appendix — Elastic Certifications and Course Access](chapters/50-appendix-elastic-certifications-and-course-access.md) — the four Elastic Stack certifications (Certified Engineer, Analyst, Observability Engineer, and the cognitive SIEM Analyst), with free on-demand training, a free self-managed Stack for hands-on practice, online-proctored performance-based exams (Engineer/Observability $500), and the Certified Engineer's 8.15→9.3 update on 1 September 2026; snapshot dated 29 July 2026.
 51. [Appendix — MongoDB Certifications and Course Access](chapters/51-appendix-mongodb-certifications-and-course-access.md) — the four MongoDB Associate certifications (Developer, Data Modeler, Database Administrator, Atlas Administrator), with free MongoDB University Learning Paths (50% exam discount; free for students/educators), free Community/Atlas M0 practice, online-proctored ProctorU exams ($150), and Credly badges; snapshot dated 29 July 2026.
+52. [Appendix — GitHub Certifications and Course Access](chapters/52-appendix-github-certifications-and-course-access.md) — the five GitHub certifications (Foundations, Actions, Advanced Security, Administration, Copilot), with free GitHub Skills interactive courses and learning paths, a free GitHub account for hands-on practice, PSI-delivered exams ($99; Foundations 50% off; 100 minutes), and cross-listing on Microsoft Learn; snapshot dated 29 July 2026.
 
 ## Appendix catalog
 
@@ -116,6 +117,7 @@ one place instead of scattered through volume READMEs.
 | Veeam certifications and course access | [Volume LXXXV](../volume-85-veeam-certifications/README.md) | [49](chapters/49-appendix-veeam-certifications-and-course-access.md) |
 | Elastic certifications and course access | [Volume LXXXVI](../volume-86-elastic-certifications/README.md) | [50](chapters/50-appendix-elastic-certifications-and-course-access.md) |
 | MongoDB certifications and course access | [Volume LXXXVIII](../volume-88-mongodb-certifications/README.md) | [51](chapters/51-appendix-mongodb-certifications-and-course-access.md) |
+| GitHub certifications and course access | [Volume LXXXIX](../volume-89-github-certifications/README.md) | [52](chapters/52-appendix-github-certifications-and-course-access.md) |
 
 ## Conventions
 
