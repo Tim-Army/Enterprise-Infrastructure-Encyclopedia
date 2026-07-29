@@ -57,6 +57,7 @@ one place instead of scattered through volume READMEs.
 47. [Appendix — Salesforce Certifications and Course Access](chapters/47-appendix-salesforce-certifications-and-course-access.md) — the Salesforce program across the Administrator, App Builder, Developer, Consultant, Architect (to CTA), and new Agentforce/AI tracks, with free Trailhead training, a free non-expiring Developer Edition org, online-proctored exams, and free release-module maintenance across the three annual releases; snapshot dated 29 July 2026.
 48. [Appendix — NetApp Certifications and Course Access](chapters/48-appendix-netapp-certifications-and-course-access.md) — the NetApp program across the ONTAP, Hybrid Cloud, Cloud Services, Installation, Support, FlexPod, AI, and Cyber Resilience paths (Professional/Specialist/Expert), anchored by the Data Administrator ONTAP (NCDA, NS0-163), with free exam-prep videos, the free Simulate ONTAP simulator, Pearson VUE delivery, Credly badges, the April 2026 exam refresh, and ~2-year currency; snapshot dated 29 July 2026.
 49. [Appendix — Veeam Certifications and Course Access](chapters/49-appendix-veeam-certifications-and-course-access.md) — the Veeam Data Platform program: the v13-aligned VMCE+ flagship and the coming VMCSE (VMCA retired, VMCE retiring 31 Mar 2026), with the hard required-training model via Veeam University Pro, the free Backup & Replication Community Edition for hands-on practice, Pearson VUE delivery, and Credly badges; snapshot dated 29 July 2026.
+50. [Appendix — Elastic Certifications and Course Access](chapters/50-appendix-elastic-certifications-and-course-access.md) — the four Elastic Stack certifications (Certified Engineer, Analyst, Observability Engineer, and the cognitive SIEM Analyst), with free on-demand training, a free self-managed Stack for hands-on practice, online-proctored performance-based exams (Engineer/Observability $500), and the Certified Engineer's 8.15→9.3 update on 1 September 2026; snapshot dated 29 July 2026.
 
 ## Appendix catalog
 
@@ -112,6 +113,7 @@ one place instead of scattered through volume READMEs.
 | Salesforce certifications and course access | [Volume LXXXIII](../volume-83-salesforce-certifications/README.md) | [47](chapters/47-appendix-salesforce-certifications-and-course-access.md) |
 | NetApp certifications and course access | [Volume LXXXIV](../volume-84-netapp-certifications/README.md) | [48](chapters/48-appendix-netapp-certifications-and-course-access.md) |
 | Veeam certifications and course access | [Volume LXXXV](../volume-85-veeam-certifications/README.md) | [49](chapters/49-appendix-veeam-certifications-and-course-access.md) |
+| Elastic certifications and course access | [Volume LXXXVI](../volume-86-elastic-certifications/README.md) | [50](chapters/50-appendix-elastic-certifications-and-course-access.md) |
 
 ## Conventions
 
