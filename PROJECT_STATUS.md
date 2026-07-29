@@ -88,11 +88,12 @@ does not by itself verify every technical claim in it.
 | LXXVI — Okta Certification Tracks | 9 | Drafted |
 | LXXVII — CyberArk Certification Tracks | 9 | Drafted |
 | LXXVIII — Tenable Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 42 | Drafted |
+| LXXIX — Qualys Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 43 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 784 of 784 drafted (100%). Every volume has a
+**Total declared chapters:** 794 of 794 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
