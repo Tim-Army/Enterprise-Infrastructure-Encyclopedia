@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.93-blue)
+![Release](https://img.shields.io/badge/release-v1.2.94-blue)
 
-**v1.2.93 — latest release.** 90 volumes, 873 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.93) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.94 — latest release.** 91 volumes, 883 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.94) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 90-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 91-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-90 volumes, 873 chapters. Each volume has a dedicated
+91 volumes, 883 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -117,7 +117,8 @@ The series combines architecture and theory with implementation guidance, automa
 | LXXXV | [Veeam Certification Tracks](volumes/volume-85-veeam-certifications/README.md) | 9 |
 | LXXXVI | [Elastic Certification Tracks](volumes/volume-86-elastic-certifications/README.md) | 9 |
 | LXXXVII | [Microsegmentation Options](volumes/volume-87-microsegmentation-options/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 50 |
+| LXXXVIII | [MongoDB Certification Tracks](volumes/volume-88-mongodb-certifications/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 51 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
@@ -190,6 +191,7 @@ ascending order.
 | NetApp | [LXXXIV NetApp Certification Tracks](volumes/volume-84-netapp-certifications/README.md) — the whole NetApp program in one volume: the ONTAP, Hybrid Cloud, Cloud Services, Installation, Support, FlexPod, AI, and Cyber Resilience paths from Professional (Technology Solutions, Data Administrator ONTAP / NCDA NS0-163) through Specialist (Implementation Engineer SAN NS0-521 / Data Protection NS0-528 / MetroCluster / FlexPod) to Expert (Hybrid Cloud Architect NS0-604 / AI / Cyber Resiliency), with hands-on ONTAP walkthroughs — aggregates + RAID-DP, SVMs/volumes + storage efficiency, LIFs + NFS/SMB/iSCSI/S3, SnapMirror/SnapVault + MetroCluster, FabricPool + StorageGRID, AutoSupport + QoS, encryption + RBAC hardening, and defensive Autonomous Ransomware Protection + SnapLock WORM |
 | Veeam | [LXXXV Veeam Certification Tracks](volumes/volume-85-veeam-certifications/README.md) — the whole Veeam program in one volume: the new v13-aligned VMCE+ flagship and the coming VMCSE security expert (VMCA retired, VMCE retiring 31 Mar 2026), across the Veeam Data Platform — Backup & Replication, Veeam ONE, Recovery Orchestrator, and Data Cloud — with hands-on Veeam PowerShell walkthroughs: backup server/proxy/repository, backup jobs + GFS + application-aware processing, replication + failover + Instant Recovery, scale-out repositories + immutable object storage + 3-2-1-1-0, Veeam ONE monitoring/reporting, orchestrated DR testing + SureBackup, and defensive immutability + ransomware detection + Zero Trust Data Resilience |
 | Elastic | [LXXXVI Elastic Certification Tracks](volumes/volume-86-elastic-certifications/README.md) — the whole Elastic program in one volume: the Certified Engineer, Certified Analyst, Observability Engineer, and SIEM Analyst, across the Elastic Stack (Elasticsearch, Kibana, Elastic Agent/Fleet, Beats, Logstash), with hands-on Elasticsearch/Kibana walkthroughs — node roles/shards/data tiers, index mappings + dynamic templates + data streams + ILM, ingest pipelines + Query DSL + ES\|QL + aggregations, Kibana Discover/KQL/Lens/dashboards, Elastic Agent metrics/logs + Heartbeat uptime, APM + machine-learning anomalies + Kibana alerting, defensive Elastic Security SIEM (detection rules + threat hunting + Timelines), and cluster health + RBAC + snapshots (Engineer exam 8.15→9.3 on 1 Sep 2026) |
+| MongoDB | [LXXXVIII MongoDB Certification Tracks](volumes/volume-88-mongodb-certifications/README.md) — the whole MongoDB program in one volume: the four Associate certifications (Developer, Data Modeler, Database Administrator, Atlas Administrator) on the leading document database, with hands-on mongosh walkthroughs — BSON documents + CRUD, query operators + projection + cursors + drivers, the aggregation pipeline ($match/$group/$lookup/$unwind), schema design (embedding vs referencing + patterns), indexes + explain + the ESR rule + covered queries, replica sets + write concern + sharding + shard keys, MongoDB Atlas (clusters/backup/PITR/network/Atlas Search), and defensive SCRAM/RBAC/TLS/encryption; free MongoDB University Learning Paths (50% off, free for students) |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Microsegmentation and zero trust | [LXXXVII Microsegmentation Options](volumes/volume-87-microsegmentation-options/README.md) — a vendor-neutral decision guide to microsegmentation: the enforcement models and the leading platforms (VMware NSX, Cisco, Illumio, Akamai Guardicore, Zero Networks, TrueFort, ColorTokens Xshield, cloud-native, and Kubernetes), with the pros, cons, compatibility, and requirements of each, plus a weighted selection rubric and a monitor-first rollout plan — pairs with [XXXV Zscaler Zero Trust Exchange](volumes/volume-35-zscaler-zero-trust-exchange/README.md) |
