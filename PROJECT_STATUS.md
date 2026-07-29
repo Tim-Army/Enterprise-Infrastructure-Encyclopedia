@@ -91,11 +91,12 @@ does not by itself verify every technical claim in it.
 | LXXIX — Qualys Certification Tracks | 9 | Drafted |
 | LXXX — ServiceNow Certification Tracks | 9 | Drafted |
 | LXXXI — SUSE Certification Tracks | 9 | Drafted |
-| XCVII — Master Appendices | 45 | Drafted |
+| LXXXII — Alibaba Cloud Certification Tracks | 9 | Drafted |
+| XCVII — Master Appendices | 46 | Drafted |
 | XCVIII — Acronyms | 4 | Drafted |
 | XCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 814 of 814 drafted (100%). Every volume has a
+**Total declared chapters:** 824 of 824 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
