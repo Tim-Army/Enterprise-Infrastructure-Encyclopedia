@@ -62,6 +62,7 @@ one place instead of scattered through volume READMEs.
 52. [Appendix — GitHub Certifications and Course Access](chapters/52-appendix-github-certifications-and-course-access.md) — the five GitHub certifications (Foundations, Actions, Advanced Security, Administration, Copilot), with free GitHub Skills interactive courses and learning paths, a free GitHub account for hands-on practice, PSI-delivered exams ($99; Foundations 50% off; 100 minutes), and cross-listing on Microsoft Learn; snapshot dated 29 July 2026.
 53. [Appendix — Datadog Certifications and Course Access](chapters/53-appendix-datadog-certifications-and-course-access.md) — the relaunched Datadog certifications (Datadog Fundamentals, APM & Distributed Tracing, Log Management, plus Database Monitoring and Cloud SIEM), with the free Datadog Learning Center (courses/labs/practice exams), a free 14-day trial and Agent, and $100/90-question exams with three attempts per 180 days; snapshot dated 29 July 2026.
 54. [Appendix — Puppet Certifications and Course Access](chapters/54-appendix-puppet-certifications-and-course-access.md) — the Puppet Certified Professional (PPT-PCP-24) across eight exam domains on the declarative configuration-management platform (a Perforce company), with free open-source Puppet 8 for hands-on practice, Puppet training courses, and the Questionmark-delivered exam ($200; 60 questions; 90 minutes); snapshot dated 29 July 2026.
+55. [Appendix — Docker Certifications and Course Access](chapters/55-appendix-docker-certifications-and-course-access.md) — the Docker Certified Associate (DCA), overseen by Mirantis, across six weighted domains on the containerization platform, with the free Docker Engine for hands-on practice, a Mirantis bootcamp, and the exam ($199; 13 MC + 42 DOMC; 90 minutes; valid 2 years); snapshot dated 29 July 2026.
 
 ## Appendix catalog
 
@@ -122,6 +123,7 @@ one place instead of scattered through volume READMEs.
 | GitHub certifications and course access | [Volume LXXXIX](../volume-89-github-certifications/README.md) | [52](chapters/52-appendix-github-certifications-and-course-access.md) |
 | Datadog certifications and course access | [Volume XC](../volume-90-datadog-certifications/README.md) | [53](chapters/53-appendix-datadog-certifications-and-course-access.md) |
 | Puppet certifications and course access | [Volume XCI](../volume-91-puppet-certifications/README.md) | [54](chapters/54-appendix-puppet-certifications-and-course-access.md) |
+| Docker certifications and course access | [Volume XCII](../volume-92-docker-certifications/README.md) | [55](chapters/55-appendix-docker-certifications-and-course-access.md) |
 
 ## Conventions
 

@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.97-blue)
+![Release](https://img.shields.io/badge/release-v1.2.98-blue)
 
-**v1.2.97 — latest release.** 94 volumes, 913 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.97) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.98 — latest release.** 95 volumes, 923 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.98) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 94-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 95-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-94 volumes, 913 chapters. Each volume has a dedicated
+95 volumes, 923 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -121,7 +121,8 @@ The series combines architecture and theory with implementation guidance, automa
 | LXXXIX | [GitHub Certification Tracks](volumes/volume-89-github-certifications/README.md) | 9 |
 | XC | [Datadog Certification Tracks](volumes/volume-90-datadog-certifications/README.md) | 9 |
 | XCI | [Puppet Certification Tracks](volumes/volume-91-puppet-certifications/README.md) | 9 |
-| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 54 |
+| XCII | [Docker Certification Tracks](volumes/volume-92-docker-certifications/README.md) | 9 |
+| XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 55 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
 
@@ -198,6 +199,7 @@ ascending order.
 | GitHub | [LXXXIX GitHub Certification Tracks](volumes/volume-89-github-certifications/README.md) — the whole GitHub program in one volume: the five certifications (Foundations, Actions, Advanced Security/GHAS, Administration, Copilot) on the world's largest development platform, with hands-on git/gh CLI and Actions labs — Git + repositories + pull requests, issues/reviews/Projects collaboration, Actions workflows (events/jobs/steps/runners/matrix) + CI/CD + secrets + GITHUB_TOKEN/OIDC hardening, defensive GHAS (CodeQL code scanning + secret scanning/push protection + Dependabot), org/enterprise administration (teams/RBAC + rulesets + SAML SSO/SCIM + audit log), and responsible Copilot (prompt engineering + content exclusions + privacy); all exams $99 via PSI (Foundations 50% off) |
 | Datadog | [XC Datadog Certification Tracks](volumes/volume-90-datadog-certifications/README.md) — the whole Datadog program in one volume: the relaunched certifications (Datadog Fundamentals, APM & Distributed Tracing, Log Management, plus Database Monitoring and Cloud SIEM) on the observability platform, with hands-on Agent/API/pipeline labs — Agent config + metric types + unified service tagging + DogStatsD, integrations + Metrics Explorer + host map, timeboards + widgets + template variables, monitors + thresholds + notifications + SLOs + downtimes, APM traces/spans + service map + trace search, log pipelines + grok + indexes + facets + exclusion filters, and Database Monitoring (query metrics/explain plans) + defensive Cloud SIEM (detection rules + signals); each exam $100, 90 questions, free Learning Center prep |
 | Puppet | [XCI Puppet Certification Tracks](volumes/volume-91-puppet-certifications/README.md) — the Puppet Certified Professional (PPT-PCP-24) in one volume, across the eight exam domains on the declarative configuration-management platform (a Perforce company), with hands-on puppet apply labs — resource abstraction + idempotence + facts + catalog lifecycle, the Puppet language (resources/classes/defined types/relationships), module authoring (structure/Forge/roles & profiles/puppet-lint + rspec-puppet), Hiera data separation + automatic parameter lookup + hiera-eyaml, classification + directory environments + r10k/Code Manager, Puppet Enterprise administration (primary server/agents/PuppetDB/certs/reports), Bolt orchestration + tasks/plans, and troubleshooting; exam 60 questions / 90 minutes / $200 via Questionmark |
+| Docker | [XCII Docker Certification Tracks](volumes/volume-92-docker-certifications/README.md) — the Docker Certified Associate (DCA) in one volume, across its six weighted exam domains on the containerization platform (exam overseen by Mirantis), with hands-on docker CLI labs — the image/container model, Docker Engine install + daemon.json + contexts + logging drivers, Dockerfile builds + layers + tags + multi-stage + registry, container lifecycle + exec + limits + health checks, storage (named volumes/bind mounts/tmpfs/overlay2), networking (bridge/host/overlay/none + publish + DNS), Swarm orchestration (services/stacks/rolling updates/secrets), Kubernetes basics, and defensive security (image scanning + content trust + secrets + rootless hardening); exam 13 MC + 42 DOMC / 90 minutes / $199, valid 2 years |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
 | Microsegmentation and zero trust | [LXXXVII Microsegmentation Options](volumes/volume-87-microsegmentation-options/README.md) — a vendor-neutral decision guide to microsegmentation: the enforcement models and the leading platforms (VMware NSX, Cisco, Illumio, Akamai Guardicore, Zero Networks, TrueFort, ColorTokens Xshield, cloud-native, and Kubernetes), with the pros, cons, compatibility, and requirements of each, plus a weighted selection rubric and a monitor-first rollout plan — pairs with [XXXV Zscaler Zero Trust Exchange](volumes/volume-35-zscaler-zero-trust-exchange/README.md) |
