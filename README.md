@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.92-blue)
+![Release](https://img.shields.io/badge/release-v1.2.93-blue)
 
-**v1.2.92 — latest release.** 89 volumes, 864 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.92) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.93 — latest release.** 90 volumes, 873 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.93) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is an 89-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 90-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-89 volumes, 864 chapters. Each volume has a dedicated
+90 volumes, 873 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -116,6 +116,7 @@ The series combines architecture and theory with implementation guidance, automa
 | LXXXIV | [NetApp Certification Tracks](volumes/volume-84-netapp-certifications/README.md) | 9 |
 | LXXXV | [Veeam Certification Tracks](volumes/volume-85-veeam-certifications/README.md) | 9 |
 | LXXXVI | [Elastic Certification Tracks](volumes/volume-86-elastic-certifications/README.md) | 9 |
+| LXXXVII | [Microsegmentation Options](volumes/volume-87-microsegmentation-options/README.md) | 9 |
 | XCVII | [Master Appendices](volumes/volume-97-master-appendices/README.md) | 50 |
 | XCVIII | [Acronyms](volumes/volume-98-acronyms/README.md) | 4 |
 | XCIX | [Reference Library](volumes/volume-99-reference-library/README.md) | 9 |
@@ -191,6 +192,7 @@ ascending order.
 | Elastic | [LXXXVI Elastic Certification Tracks](volumes/volume-86-elastic-certifications/README.md) — the whole Elastic program in one volume: the Certified Engineer, Certified Analyst, Observability Engineer, and SIEM Analyst, across the Elastic Stack (Elasticsearch, Kibana, Elastic Agent/Fleet, Beats, Logstash), with hands-on Elasticsearch/Kibana walkthroughs — node roles/shards/data tiers, index mappings + dynamic templates + data streams + ILM, ingest pipelines + Query DSL + ES\|QL + aggregations, Kibana Discover/KQL/Lens/dashboards, Elastic Agent metrics/logs + Heartbeat uptime, APM + machine-learning anomalies + Kibana alerting, defensive Elastic Security SIEM (detection rules + threat hunting + Timelines), and cluster health + RBAC + snapshots (Engineer exam 8.15→9.3 on 1 Sep 2026) |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-22-dell-openmanage-enterprise/README.md) → [XXIII iDRAC 9 and 10](volumes/volume-23-dell-idrac-9-10-administration/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
 | Security | [X Enterprise Cybersecurity](volumes/volume-10-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-15-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-16-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-19-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-25-cisco-security/README.md) |
+| Microsegmentation and zero trust | [LXXXVII Microsegmentation Options](volumes/volume-87-microsegmentation-options/README.md) — a vendor-neutral decision guide to microsegmentation: the enforcement models and the leading platforms (VMware NSX, Cisco, Illumio, Akamai Guardicore, Zero Networks, TrueFort, ColorTokens Xshield, cloud-native, and Kubernetes), with the pros, cons, compatibility, and requirements of each, plus a weighted selection rubric and a monitor-first rollout plan — pairs with [XXXV Zscaler Zero Trust Exchange](volumes/volume-35-zscaler-zero-trust-exchange/README.md) |
 | Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-11-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-18-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-20-wireshark-packet-analysis/README.md) → [LIII LibreNMS](volumes/volume-53-librenms/README.md) → [LIV OpenTelemetry](volumes/volume-54-opentelemetry/README.md) → [LV Prometheus](volumes/volume-55-prometheus/README.md) |
 | Operating systems | [XIV Red Hat Enterprise Linux 10](volumes/volume-14-red-hat-enterprise-linux-10/README.md) → [XXI Ubuntu Server and Cloud 26.04 LTS](volumes/volume-21-ubuntu-server-cloud-26-04-lts/README.md) → [XXXVI Windows Server 2025 and Active Directory](volumes/volume-36-windows-server-2025-active-directory/README.md) |
 | Virtualization | [V VMware](volumes/volume-05-vmware-virtualization/README.md) → [LXXI VMware vSphere 7](volumes/volume-71-vmware-vsphere-7/README.md) → [LXXII VMware vSphere 8](volumes/volume-72-vmware-vsphere-8/README.md) → [XXIV VxRail](volumes/volume-24-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) |
