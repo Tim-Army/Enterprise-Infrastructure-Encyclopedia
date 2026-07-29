@@ -1,0 +1,36 @@
+# Volume LXXXIV Index
+
+Alphabetized topical index for **Volume LXXXIV — NetApp Certification Tracks**.
+See also the [volume glossary](GLOSSARY.md) for term definitions and the
+[master index](../../INDEX.md) for cross-volume topics.
+
+- **Aggregate / RAID-DP / RAID-TEC** — [Chapter 02](chapters/02-technology-solutions-and-foundations.md)
+- **AI Expert / AI Data Infrastructure (ONTAP AI)** — [Chapter 09](chapters/09-ai-cyber-resilience-and-career.md)
+- **AutoSupport (ASUP) / Active IQ** — [Chapter 07](chapters/07-installation-and-support.md)
+- **Autonomous Ransomware Protection (ARP)** — [Chapter 09](chapters/09-ai-cyber-resilience-and-career.md)
+- **Cluster / HA pair** — [Chapter 01](chapters/01-the-netapp-certification-program.md), [Chapter 02](chapters/02-technology-solutions-and-foundations.md)
+- **Cyber Resiliency (Expert)** — [Chapter 09](chapters/09-ai-cyber-resilience-and-career.md)
+- **Data Administrator ONTAP (NCDA, NS0-163)** — [Chapter 03](chapters/03-data-administrator-ontap-ncda.md)
+- **E-Series / SANtricity** — [Chapter 07](chapters/07-installation-and-support.md)
+- **Encryption (NVE/NAE) / key manager** — [Chapter 08](chapters/08-flexpod-and-security-hardening.md)
+- **Export policy / NFS** — [Chapter 04](chapters/04-networking-and-protocols.md)
+- **FabricPool (tiering)** — [Chapter 06](chapters/06-hybrid-cloud-and-cloud-services.md)
+- **FlexPod (Cisco + NetApp)** — [Chapter 08](chapters/08-flexpod-and-security-hardening.md)
+- **FlexVol / FlexGroup** — [Chapter 03](chapters/03-data-administrator-ontap-ncda.md)
+- **Hybrid Cloud Administrator (NS0-304) / Architect (NS0-604)** — [Chapter 06](chapters/06-hybrid-cloud-and-cloud-services.md)
+- **igroup / LUN (SAN)** — [Chapter 04](chapters/04-networking-and-protocols.md)
+- **Implementation Engineer SAN (NS0-521) / Data Protection (NS0-528)** — [Chapter 05](chapters/05-implementation-engineer-san-and-data-protection.md)
+- **LIF / IPspace / broadcast domain** — [Chapter 04](chapters/04-networking-and-protocols.md)
+- **MetroCluster** — [Chapter 05](chapters/05-implementation-engineer-san-and-data-protection.md)
+- **ONTAP S3 (object)** — [Chapter 04](chapters/04-networking-and-protocols.md)
+- **Pearson VUE / Credly / CertCenter** — [Chapter 01](chapters/01-the-netapp-certification-program.md)
+- **QoS (min/max throughput)** — [Chapter 07](chapters/07-installation-and-support.md)
+- **RBAC / security login roles** — [Chapter 01](chapters/01-the-netapp-certification-program.md), [Chapter 08](chapters/08-flexpod-and-security-hardening.md)
+- **SnapLock (WORM)** — [Chapter 09](chapters/09-ai-cyber-resilience-and-career.md)
+- **SnapMirror / SnapVault** — [Chapter 05](chapters/05-implementation-engineer-san-and-data-protection.md), [Chapter 06](chapters/06-hybrid-cloud-and-cloud-services.md)
+- **Snapshot (point-in-time)** — [Chapter 05](chapters/05-implementation-engineer-san-and-data-protection.md)
+- **Storage efficiency (dedup/compression)** — [Chapter 03](chapters/03-data-administrator-ontap-ncda.md)
+- **StorageGRID (object)** — [Chapter 06](chapters/06-hybrid-cloud-and-cloud-services.md)
+- **Storage virtual machine (SVM/vserver)** — [Chapter 03](chapters/03-data-administrator-ontap-ncda.md)
+- **Technology Solutions / Associate accreditations** — [Chapter 01](chapters/01-the-netapp-certification-program.md), [Chapter 02](chapters/02-technology-solutions-and-foundations.md)
+- **Qtree / quota** — [Chapter 03](chapters/03-data-administrator-ontap-ncda.md)
