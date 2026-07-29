@@ -9,7 +9,7 @@ Dynamics 365 (MB), Data and Analytics (DP), AI, and GitHub (GH)**. The lineup
 and exam codes were harvested on **26 July 2026** from the **Microsoft Learn
 Catalog API** and the **individual certification pages** — the same harvest
 that anchors
-[Volume XXXVIII — Microsoft Certifications Beyond Azure](../../volume-38-microsoft-certifications-beyond-azure/README.md).
+[Volume XXXVIII — Microsoft Certifications Beyond Azure](../../volume-038-microsoft-certifications-beyond-azure/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at Microsoft.** Training is delivered free through

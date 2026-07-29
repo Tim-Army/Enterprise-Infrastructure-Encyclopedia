@@ -4,7 +4,7 @@ The **Check Point** certification program — the credentials for deploying, ope
 troubleshooting Check Point Quantum network security — organized by the certification ladder, with
 the exam codes, the training model, and the delivery and renewal model. The program was verified on
 **28 July 2026** from **checkpoint.com** and **Pearson VUE** — the same sources that anchor
-[Volume LXXIII — Check Point Certification Tracks](../../volume-73-check-point-certifications/README.md).
+[Volume LXXIII — Check Point Certification Tracks](../../volume-073-check-point-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Check Point delivers training through **Check Point authorized training

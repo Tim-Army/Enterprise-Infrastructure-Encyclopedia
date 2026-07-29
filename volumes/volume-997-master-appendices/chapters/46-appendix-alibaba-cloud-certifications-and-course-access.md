@@ -4,7 +4,7 @@ The **Alibaba Cloud** certification program — the credentials for building on 
 Asia-Pacific cloud — organized by level and domain, with the exam model, the training model, and the
 practice options. The program was verified on **29 July 2026** from **alibabacloud.com** and
 **Alibaba Cloud Academy** — the same sources that anchor
-[Volume LXXXII — Alibaba Cloud Certification Tracks](../../volume-82-alibaba-cloud-certifications/README.md).
+[Volume LXXXII — Alibaba Cloud Certification Tracks](../../volume-082-alibaba-cloud-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Alibaba Cloud delivers training and certification through **Alibaba Cloud

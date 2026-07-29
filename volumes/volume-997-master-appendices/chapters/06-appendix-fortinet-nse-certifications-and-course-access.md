@@ -6,9 +6,9 @@ The certification lineup and level mappings were verified against
 Fortinet Training Institute's certification pages and the official 2026
 program-change transition mapping on **22 July 2026** — the same
 harvest that anchors
-[Volume XIX — Fortinet NSE Certification Program](../../volume-19-fortinet-network-security/README.md)
+[Volume XIX — Fortinet NSE Certification Program](../../volume-019-fortinet-network-security/README.md)
 and complements
-[Volume XIX — Fortinet Network Security](../../volume-19-fortinet-network-security/README.md)
+[Volume XIX — Fortinet Network Security](../../volume-019-fortinet-network-security/README.md)
 (NSE 1–4).
 
 **How access works at Fortinet.** Fortinet's model is unusually open:

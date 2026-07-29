@@ -4,7 +4,7 @@ The **ServiceNow** certification program — the credentials for administering, 
 architecting on the Now Platform — organized by tier, with the exam model, the product
 specializations, and the training and practice model. The program was verified on **28 July 2026**
 from **servicenow.com** and the ServiceNow Community — the same sources that anchor
-[Volume LXXX — ServiceNow Certification Tracks](../../volume-80-servicenow-certifications/README.md).
+[Volume LXXX — ServiceNow Certification Tracks](../../volume-080-servicenow-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** ServiceNow delivers training through **ServiceNow University** (Now Learning) —

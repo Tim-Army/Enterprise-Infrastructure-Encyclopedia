@@ -5,7 +5,7 @@ with the **Veeam Data Platform** — organized by credential, with the exam mode
 model, and the recertification model. The program was verified on **29 July 2026** from **veeam.com**
 (the VMCE certification and Veeam University Pro pages) and the official **Veeam Community Resource
 Hub** — the same sources that anchor
-[Volume LXXXV — Veeam Certification Tracks](../../volume-85-veeam-certifications/README.md).
+[Volume LXXXV — Veeam Certification Tracks](../../volume-085-veeam-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Veeam's training is delivered through a **Veeam University Pro** subscription,

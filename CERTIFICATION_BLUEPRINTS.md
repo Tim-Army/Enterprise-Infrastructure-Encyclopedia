@@ -776,7 +776,7 @@ coverage alongside Cisco, Juniper, and Arista.
 
 Volume LXV (Palo Alto Networks Certification Tracks) was created on **28 July 2026** as the
 certification map for **Palo Alto Networks**, the **cert-tracks companion** to the product-focused
-[Volume XVI](../volume-16-palo-alto-networks-security/README.md) (the two coexist as Cisco's
+[Volume XVI](../volume-016-palo-alto-networks-security/README.md) (the two coexist as Cisco's
 product and cert-tracks volumes do). It covers the program Palo Alto **rebuilt in 2025** into a
 role-based framework — retiring the legacy code-based exams (PCNSA/PCNSE/PCCSE/PCDRA/PCSAE/
 PCSFE/PCCET) — across four levels (**Foundational → Professional → Specialist → Architect**) and

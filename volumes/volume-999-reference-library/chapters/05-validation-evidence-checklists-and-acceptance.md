@@ -109,7 +109,7 @@ established in [Chapter 01](01-command-quick-reference-and-safe-administration.m
 | Automated test suite | Structured test report | JUnit XML / TAP output archived by the CI pipeline |
 | Security scan | Scan report with scan date and tool version | Exported vendor report ([Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)) |
 | Log-based confirmation | Log excerpt with surrounding context | `journalctl` / centralized log query output, timestamp-bounded |
-| Performance/capacity check | Metric snapshot or dashboard export | Monitoring platform export ([Volume XI](../../volume-11-observability-enterprise-operations/README.md)) |
+| Performance/capacity check | Metric snapshot or dashboard export | Monitoring platform export ([Volume XI](../../volume-011-observability-enterprise-operations/README.md)) |
 
 ### Acceptance checklist template
 
@@ -212,7 +212,7 @@ partial acceptance.
   evidence handling.
 - [ISO/IEC 19011](https://www.iso.org/standard/70017.html) — Guidelines for auditing management systems (general
   audit-evidence principles referenced across frameworks).
-- [Volume XI](../../volume-11-observability-enterprise-operations/README.md) — Observability and Enterprise Operations (metric and log
+- [Volume XI](../../volume-011-observability-enterprise-operations/README.md) — Observability and Enterprise Operations (metric and log
   evidence sources).
 
 **Knowledge checks**

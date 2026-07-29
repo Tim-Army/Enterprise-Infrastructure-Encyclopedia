@@ -5,7 +5,7 @@ practical security credentials — organized by discipline, with each course's
 certification, exam format, and the "+" renewal model. The lineup and course
 codes were harvested on **26 July 2026** from **offsec.com/courses** — the same
 source that anchors
-[Volume XLIII — Offensive Security (OffSec) Certification Tracks](../../volume-43-offensive-security-certifications/README.md).
+[Volume XLIII — Offensive Security (OffSec) Certification Tracks](../../volume-043-offensive-security-certifications/README.md).
 Third-party exam-dump sites were excluded as sources, and this appendix records
 certification facts only — it teaches nothing offensive.
 

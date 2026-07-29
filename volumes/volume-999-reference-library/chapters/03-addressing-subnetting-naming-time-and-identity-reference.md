@@ -28,8 +28,8 @@ certificate is issued to a name, validated against a time window, and
 often binds to an identity that resolves through directory services running
 on a specific address. Treating them as one reference chapter reflects how
 they are actually consumed during real work, even though each has its own
-theoretical foundation covered in depth elsewhere ([Volume II](../../volume-02-network-engineering-foundations/README.md) for addressing,
-[Volume IV](../../volume-04-enterprise-systems-administration/README.md) for identity and naming infrastructure).
+theoretical foundation covered in depth elsewhere ([Volume II](../../volume-002-network-engineering-foundations/README.md) for addressing,
+[Volume IV](../../volume-004-enterprise-systems-administration/README.md) for identity and naming infrastructure).
 
 - **IPv4 addressing** is a 32-bit space divided by a prefix length (CIDR)
   into a network portion and a host portion. Classless Inter-Domain
@@ -60,7 +60,7 @@ theoretical foundation covered in depth elsewhere ([Volume II](../../volume-02-n
 
 - **Size subnets for the actual host count plus planned growth, not for
   round numbers.** A /24 (254 usable hosts) is a habit, not a requirement;
-  right-sizing VLANs and subnets ([Volume II](../../volume-02-network-engineering-foundations/README.md)) reduces broadcast domain size
+  right-sizing VLANs and subnets ([Volume II](../../volume-002-network-engineering-foundations/README.md)) reduces broadcast domain size
   and conserves address space in environments running out of [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918)
   space across many sites or environments (dev/stage/prod × multiple
   regions).
@@ -175,13 +175,13 @@ ntp server 10.10.1.11
 
 | System | Format | Example | Primary Reference Volume |
 | --- | --- | --- | --- |
-| LDAP/AD Distinguished Name (DN) | `CN=<name>,OU=<org unit>,DC=<domain>,DC=<tld>` | `CN=Jane Doe,OU=Engineering,DC=corp,DC=example,DC=com` | [Volume IV](../../volume-04-enterprise-systems-administration/README.md) |
-| User Principal Name (UPN) | `<user>@<UPN suffix>` | `jane.doe@corp.example.com` | [Volume IV](../../volume-04-enterprise-systems-administration/README.md) |
-| Kerberos principal | `<primary>/<instance>@<REALM>` | `host/web-use1-prod-01.example.com@CORP.EXAMPLE.COM` | [Volume IV](../../volume-04-enterprise-systems-administration/README.md) |
-| Service Principal Name (SPN) | `<service class>/<host>:<port>` | `HTTP/web-use1-prod-01.example.com` | [Volume IV](../../volume-04-enterprise-systems-administration/README.md) |
-| AWS Amazon Resource Name (ARN) | `arn:<partition>:<service>:<region>:<account-id>:<resource>` | `arn:aws:iam::123456789012:role/DeployRole` | [Volume XVII](../../volume-17-aws-architecture-security/README.md) |
-| X.509 certificate Subject | `CN=<name>, O=<org>, C=<country>` plus SAN extension for actual validated names | `CN=web-use1-prod-01.example.com, O=Example Corp, C=US` | [Volume X](../../volume-10-enterprise-cybersecurity/README.md) |
-| Kubernetes RBAC subject | `ServiceAccount:<namespace>:<name>` or a federated identity (OIDC subject) | `system:serviceaccount:payments:api-deployer` | [Volume VIII](../../volume-08-containers-platform-engineering/README.md) |
+| LDAP/AD Distinguished Name (DN) | `CN=<name>,OU=<org unit>,DC=<domain>,DC=<tld>` | `CN=Jane Doe,OU=Engineering,DC=corp,DC=example,DC=com` | [Volume IV](../../volume-004-enterprise-systems-administration/README.md) |
+| User Principal Name (UPN) | `<user>@<UPN suffix>` | `jane.doe@corp.example.com` | [Volume IV](../../volume-004-enterprise-systems-administration/README.md) |
+| Kerberos principal | `<primary>/<instance>@<REALM>` | `host/web-use1-prod-01.example.com@CORP.EXAMPLE.COM` | [Volume IV](../../volume-004-enterprise-systems-administration/README.md) |
+| Service Principal Name (SPN) | `<service class>/<host>:<port>` | `HTTP/web-use1-prod-01.example.com` | [Volume IV](../../volume-004-enterprise-systems-administration/README.md) |
+| AWS Amazon Resource Name (ARN) | `arn:<partition>:<service>:<region>:<account-id>:<resource>` | `arn:aws:iam::123456789012:role/DeployRole` | [Volume XVII](../../volume-017-aws-architecture-security/README.md) |
+| X.509 certificate Subject | `CN=<name>, O=<org>, C=<country>` plus SAN extension for actual validated names | `CN=web-use1-prod-01.example.com, O=Example Corp, C=US` | [Volume X](../../volume-010-enterprise-cybersecurity/README.md) |
+| Kubernetes RBAC subject | `ServiceAccount:<namespace>:<name>` or a federated identity (OIDC subject) | `system:serviceaccount:payments:api-deployer` | [Volume VIII](../../volume-008-containers-platform-engineering/README.md) |
 
 ## Validation and Troubleshooting
 
@@ -232,7 +232,7 @@ ntp server 10.10.1.11
 - Scope Kerberos SPNs and AD delegation narrowly; an SPN registered
   against the wrong account or an over-broad constrained-delegation
   configuration is a well-documented Active Directory privilege-escalation
-  path ([Volume IV](../../volume-04-enterprise-systems-administration/README.md), [Volume X](../../volume-10-enterprise-cybersecurity/README.md)).
+  path ([Volume IV](../../volume-004-enterprise-systems-administration/README.md), [Volume X](../../volume-010-enterprise-cybersecurity/README.md)).
 - Rotate and scope cloud IAM identities referenced by ARNs to the minimum
   required resource and action; treat an ARN in a policy document as
   sensitive-adjacent, since it discloses account IDs and resource
@@ -251,10 +251,10 @@ ntp server 10.10.1.11
   documentation (`learn.microsoft.com/windows-server/identity`).](https://learn.microsoft.com/en-us/windows-server/identity/identity-and-access)
 - [AWS ARN format reference (`docs.aws.amazon.com/IAM`](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html) — ARN general
   syntax).
-- [Volume II](../../volume-02-network-engineering-foundations/README.md) — Network Engineering Foundations.
-- [Volume IV](../../volume-04-enterprise-systems-administration/README.md) — Enterprise Systems Administration (identity and directory
+- [Volume II](../../volume-002-network-engineering-foundations/README.md) — Network Engineering Foundations.
+- [Volume IV](../../volume-004-enterprise-systems-administration/README.md) — Enterprise Systems Administration (identity and directory
   services).
-- [Volume XVII](../../volume-17-aws-architecture-security/README.md) — AWS Architecture and Security (IAM and ARN scoping).
+- [Volume XVII](../../volume-017-aws-architecture-security/README.md) — AWS Architecture and Security (IAM and ARN scoping).
 
 **Knowledge checks**
 

@@ -6,7 +6,7 @@ Every code and date below was harvested on **23 July 2026** from AWS's own
 certification pages — read from the AWS Skill Builder exam-prep link each
 certification page carries, because AWS no longer prints the exam code in
 page body text — the same harvest that anchors
-[Volume XVII — AWS Architecture and Security](../../volume-17-aws-architecture-security/README.md),
+[Volume XVII — AWS Architecture and Security](../../volume-017-aws-architecture-security/README.md),
 whose Chapters 10–13 map this program to hands-on content.
 
 **How access works at AWS.** AWS's model is unusually generous at the

@@ -4,7 +4,7 @@ The **Datadog** certification program — the credentials for monitoring, tracin
 systems on the Datadog observability platform — organized by certification, with the exam model, the
 training model, and the retake model. The program was verified on **29 July 2026** from
 **datadoghq.com** and the **Datadog Learning Center** — the same sources that anchor
-[Volume XC — Datadog Certification Tracks](../../volume-90-datadog-certifications/README.md).
+[Volume XC — Datadog Certification Tracks](../../volume-090-datadog-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Datadog's training is **free** through the **Datadog Learning Center**

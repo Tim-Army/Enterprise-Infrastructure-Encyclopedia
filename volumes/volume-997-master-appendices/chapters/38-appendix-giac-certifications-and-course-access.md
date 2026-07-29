@@ -4,7 +4,7 @@ The **GIAC (Global Information Assurance Certification)** program — the SANS I
 cybersecurity certifications — organized by the eight focus areas, with the CyberLive practical
 model, the SANS course alignment, and the delivery and renewal model. The program was verified on
 **28 July 2026** from **giac.org** — the same source that anchors
-[Volume LXXIV — GIAC (SANS) Certification Tracks](../../volume-74-giac-certifications/README.md).
+[Volume LXXIV — GIAC (SANS) Certification Tracks](../../volume-074-giac-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** GIAC is owned by the **SANS Institute**. Each certification aligns to a SANS

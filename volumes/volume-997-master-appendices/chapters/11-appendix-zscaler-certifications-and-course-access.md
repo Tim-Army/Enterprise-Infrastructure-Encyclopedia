@@ -6,7 +6,7 @@ prepares it. The lineup and access facts were harvested on **25 July 2026** from
 Zscaler's own **Customer Success Center** and **Cyber Academy**, and anchored to
 Zscaler's official **Certification Program Brief** and **Certification Exam FAQs**
 (last updated 7 May 2026) — the same harvest that anchors
-[Volume XXXV — Zscaler Zero Trust Exchange](../../volume-35-zscaler-zero-trust-exchange/README.md),
+[Volume XXXV — Zscaler Zero Trust Exchange](../../volume-035-zscaler-zero-trust-exchange/README.md),
 whose nine chapters map this program to hands-on content. Third-party exam-dump
 sites were excluded as sources.
 
@@ -110,7 +110,7 @@ From the **Certification Exam FAQs**:
 
 The three professional exams each publish a **weighted domain blueprint** on
 their exam pages. The tables below map each domain to the
-[Volume XXXV](../../volume-35-zscaler-zero-trust-exchange/README.md) chapters
+[Volume XXXV](../../volume-035-zscaler-zero-trust-exchange/README.md) chapters
 that build the underlying skills. Each exam's **Study Guide** holds the
 expansive objective list beneath the weighting; *Zscaler notes the guidelines
 may change without notice.*

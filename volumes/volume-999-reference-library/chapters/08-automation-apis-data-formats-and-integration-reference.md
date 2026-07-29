@@ -135,9 +135,9 @@ troubleshooting).
 
 | Tool | Model | Agent Requirement | Primary Domain in This Encyclopedia |
 | --- | --- | --- | --- |
-| Ansible | Declarative-leaning imperative (ordered tasks, idempotent modules) | Agentless (SSH/WinRM) | Configuration management, network device automation, ad hoc operational tasks ([Volume IX](../../volume-09-infrastructure-automation/README.md)) |
-| Terraform | Declarative | Agentless (API-driven providers) | Cloud and platform infrastructure provisioning ([Volume VII](../../volume-07-cloud-infrastructure/README.md), [Volume IX](../../volume-09-infrastructure-automation/README.md), [Volume XVII](../../volume-17-aws-architecture-security/README.md)) |
-| Kubernetes manifests / Helm | Declarative | Agent-based (kubelet, controllers) | Container workload orchestration ([Volume VIII](../../volume-08-containers-platform-engineering/README.md)) |
+| Ansible | Declarative-leaning imperative (ordered tasks, idempotent modules) | Agentless (SSH/WinRM) | Configuration management, network device automation, ad hoc operational tasks ([Volume IX](../../volume-009-infrastructure-automation/README.md)) |
+| Terraform | Declarative | Agentless (API-driven providers) | Cloud and platform infrastructure provisioning ([Volume VII](../../volume-007-cloud-infrastructure/README.md), [Volume IX](../../volume-009-infrastructure-automation/README.md), [Volume XVII](../../volume-017-aws-architecture-security/README.md)) |
+| Kubernetes manifests / Helm | Declarative | Agent-based (kubelet, controllers) | Container workload orchestration ([Volume VIII](../../volume-008-containers-platform-engineering/README.md)) |
 | Vendor Python/Go SDKs (boto3, pyVmomi, `requests`-based REST clients) | Imperative | Agentless | Custom scripting against a specific platform's native API |
 | PowerShell (PowerCLI, AWS Tools for PowerShell) | Imperative | Agentless | Windows-centric and VMware/AWS administrative automation |
 | Shell/Bash scripting | Imperative | Agentless / local | Linux host-local automation, glue logic between other tools |
@@ -146,8 +146,8 @@ troubleshooting).
 
 | Platform Family | Common Authentication Pattern | Notes |
 | --- | --- | --- |
-| AWS APIs | IAM: access key/secret (static, discouraged for long-lived use) or STS temporary credentials via IAM roles/OIDC federation | Prefer role assumption and federation over static keys ([Volume XVII](../../volume-17-aws-architecture-security/README.md)) |
-| Kubernetes API server | Client certificates, bearer tokens (ServiceAccount), OIDC | Scope ServiceAccount tokens narrowly with RBAC ([Volume VIII](../../volume-08-containers-platform-engineering/README.md)) |
+| AWS APIs | IAM: access key/secret (static, discouraged for long-lived use) or STS temporary credentials via IAM roles/OIDC federation | Prefer role assumption and federation over static keys ([Volume XVII](../../volume-017-aws-architecture-security/README.md)) |
+| Kubernetes API server | Client certificates, bearer tokens (ServiceAccount), OIDC | Scope ServiceAccount tokens narrowly with RBAC ([Volume VIII](../../volume-008-containers-platform-engineering/README.md)) |
 | PAN-OS API | API key derived from a one-time username/password exchange, then reused | Rotate the derived API key; do not embed the originating password in automation |
 | FortiOS REST API | API token (administrator-scoped, created per integration) | Scope tokens to the minimum required administrator profile |
 | vCenter REST/SOAP API | Session token obtained via username/password or SSO, then reused for the session | Prefer a dedicated service account with minimum required roles, not a personal administrator account |
@@ -243,10 +243,10 @@ curl -s -X GET https://api.example.com/v2/resources \
 - [RFC 6749](https://www.rfc-editor.org/rfc/rfc6749) (OAuth 2.0 Authorization Framework).
 - [JSON Schema specification (`json-schema.org`).](https://json-schema.org/)
 - [YAML specification (`yaml.org/spec`).](https://yaml.org/spec/)
-- [Volume VIII](../../volume-08-containers-platform-engineering/README.md) — Containers and Platform Engineering (Kubernetes API and
+- [Volume VIII](../../volume-008-containers-platform-engineering/README.md) — Containers and Platform Engineering (Kubernetes API and
   manifest model in depth).
-- [Volume IX](../../volume-09-infrastructure-automation/README.md) — Infrastructure Automation (Ansible/Terraform in depth).
-- [Volume XVII](../../volume-17-aws-architecture-security/README.md) — AWS Architecture and Security (IAM authentication
+- [Volume IX](../../volume-009-infrastructure-automation/README.md) — Infrastructure Automation (Ansible/Terraform in depth).
+- [Volume XVII](../../volume-017-aws-architecture-security/README.md) — AWS Architecture and Security (IAM authentication
   patterns).
 - [Chapter 04](04-configuration-templates-baselines-and-change-records.md) of this volume — declarative baselines and drift detection
   referenced by the automation-model comparison.

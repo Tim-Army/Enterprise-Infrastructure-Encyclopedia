@@ -5,7 +5,7 @@ across endpoint, Next-Gen SIEM, identity, and cloud — organized by group, with
 credential's focus, exam-guide domains, and the training and delivery model. The
 lineup was verified on **27 July 2026** from
 **crowdstrike.com/crowdstrike-university** — the same source that anchors
-[Volume L — CrowdStrike Certification Tracks](../../volume-50-crowdstrike-certifications/README.md).
+[Volume L — CrowdStrike Certification Tracks](../../volume-050-crowdstrike-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at CrowdStrike.** Training is delivered through **CrowdStrike

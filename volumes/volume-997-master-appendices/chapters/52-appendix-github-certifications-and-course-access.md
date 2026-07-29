@@ -4,7 +4,7 @@ The **GitHub** certification program — the credentials for developing, automat
 administering software on GitHub — organized by certification, with the exam model, the training model,
 and the delivery model. The program was verified on **29 July 2026** from **docs.github.com** and
 GitHub's certification resources — the same sources that anchor
-[Volume LXXXIX — GitHub Certification Tracks](../../volume-89-github-certifications/README.md).
+[Volume LXXXIX — GitHub Certification Tracks](../../volume-089-github-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** GitHub's training is **free**: the interactive **GitHub Skills** courses (which run

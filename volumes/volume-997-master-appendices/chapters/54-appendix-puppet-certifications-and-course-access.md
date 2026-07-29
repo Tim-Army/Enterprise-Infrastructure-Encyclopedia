@@ -4,7 +4,7 @@ The **Puppet** certification program — the credential for automating and admin
 infrastructure with Puppet — organized by the exam, its domains, and the training model. The program was
 verified on **29 July 2026** from **puppet.com** (the certification and exam-details pages) and the
 **Perforce** certification portal — the same sources that anchor
-[Volume XCI — Puppet Certification Tracks](../../volume-91-puppet-certifications/README.md).
+[Volume XCI — Puppet Certification Tracks](../../volume-091-puppet-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Puppet (a **Perforce** company) offers training and certification through

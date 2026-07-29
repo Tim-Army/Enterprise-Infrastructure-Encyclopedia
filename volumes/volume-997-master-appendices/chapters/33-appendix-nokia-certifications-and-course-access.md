@@ -4,7 +4,7 @@ The **Nokia Service Routing Certification (SRC)** program — the credentials fo
 operating IP/MPLS service-provider networks on **SR OS** — organized by level, with each
 credential's exams and the training and delivery model. The program was verified on **28 July
 2026** from **nokia.com** — the same source that anchors
-[Volume LXVII — Nokia Certification Tracks](../../volume-67-nokia-certifications/README.md).
+[Volume LXVII — Nokia Certification Tracks](../../volume-067-nokia-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Training is delivered through **Nokia's Service Routing Certification

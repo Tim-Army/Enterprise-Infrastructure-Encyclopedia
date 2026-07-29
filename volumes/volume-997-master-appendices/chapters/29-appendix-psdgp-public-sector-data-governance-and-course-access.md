@@ -4,7 +4,7 @@ The **Public Sector Data Governance Professional (PSDGP)** certification — the
 credential for running a data governance program in government — with its content areas, exam
 mechanics, prerequisites, and the training and delivery model. The program was verified on
 **28 July 2026** from **ther2c.com** and **iccp.org** — the same sources that anchor
-[Volume LXIII — Public Sector Data Governance (PSDGP)](../../volume-63-public-sector-data-governance/README.md).
+[Volume LXIII — Public Sector Data Governance (PSDGP)](../../volume-063-public-sector-data-governance/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Certification is issued by the **Institute for the Certification of

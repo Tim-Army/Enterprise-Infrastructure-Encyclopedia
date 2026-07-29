@@ -4,7 +4,7 @@ Every current Palo Alto Networks certification, its official page, and
 how its training is accessed. The certification list was verified
 against Palo Alto Networks' certification pages on **22 July 2026** —
 the same harvest that extended
-[Volume XVI — Palo Alto Networks Security](../../volume-16-palo-alto-networks-security/README.md)
+[Volume XVI — Palo Alto Networks Security](../../volume-016-palo-alto-networks-security/README.md)
 with the Security Operations and Cloud Security tracks.
 
 **How access works at Palo Alto Networks.** In 2025 Palo Alto Networks

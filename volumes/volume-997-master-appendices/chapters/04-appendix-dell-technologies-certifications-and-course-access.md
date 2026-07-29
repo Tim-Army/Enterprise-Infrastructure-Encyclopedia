@@ -5,7 +5,7 @@ its exam code, its official page, and how its training is accessed.
 The certification list was verified against Dell Learning's
 certification catalog on **22 July 2026** — the same harvest that
 anchors
-[Volume XXXII — Dell Technologies Certification Tracks](../../volume-32-dell-technologies-certifications/README.md).
+[Volume XXXII — Dell Technologies Certification Tracks](../../volume-032-dell-technologies-certifications/README.md).
 
 **How access works at Dell.** Unlike Cisco U. or Juniper Open
 Learning, Dell's course catalog sits behind a Dell Learning login and

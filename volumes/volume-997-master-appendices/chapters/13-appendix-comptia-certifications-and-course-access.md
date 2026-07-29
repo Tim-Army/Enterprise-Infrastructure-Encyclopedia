@@ -4,7 +4,7 @@ CompTIA's **vendor-neutral** certification program, organized by pathway, with
 each credential's current exam code, the official training that prepares it, and
 the Continuing Education renewal model. The lineup and exam codes were harvested
 on **26 July 2026** from **comptia.org** — the same source that anchors
-[Volume XXXIX — CompTIA Certification Tracks](../../volume-39-comptia-certification-tracks/README.md).
+[Volume XXXIX — CompTIA Certification Tracks](../../volume-039-comptia-certification-tracks/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at CompTIA.** Official training is delivered through

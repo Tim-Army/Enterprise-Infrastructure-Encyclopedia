@@ -2,7 +2,7 @@
 
 The as-built addressing for the Dell PowerEdge R640 Proxmox lab
 documented in
-[Volume XXVI — Proxmox Virtualization Lab on Dell PowerEdge R640](../../volume-26-proxmox-lab-poweredge-r640/README.md).
+[Volume XXVI — Proxmox Virtualization Lab on Dell PowerEdge R640](../../volume-026-proxmox-lab-poweredge-r640/README.md).
 **Appendix A** records the IPv4 plan as deployed; **Appendix B** is the
 IPv6 template, awaiting an assigned prefix, because the build is
 IPv4-only. The environment specification and build chapters live in the

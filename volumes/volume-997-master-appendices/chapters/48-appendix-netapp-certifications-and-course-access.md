@@ -5,7 +5,7 @@ architecting NetApp **ONTAP** storage and the hybrid-cloud data fabric around it
 with the tier model, the training model, and the recertification model. The program was verified on
 **29 July 2026** from **netapp.com** (the certification hub and the individual program pages) — the same
 sources that anchor
-[Volume LXXXIV — NetApp Certification Tracks](../../volume-84-netapp-certifications/README.md).
+[Volume LXXXIV — NetApp Certification Tracks](../../volume-084-netapp-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** NetApp's learning platform is the **Learning Center** (a NetApp **Support Site ID**

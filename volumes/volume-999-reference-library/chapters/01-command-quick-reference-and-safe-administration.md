@@ -159,7 +159,7 @@ sudo systemctl status nginx --no-pager  # verify
   `auditd`, PowerShell transcription, AWS CloudTrail) so that Tier 1–3
   commands are logged centrally, not only on the local device.
 - Never paste production credentials into command history; use credential
-  vaults and short-lived tokens (see [Volume X](../../volume-10-enterprise-cybersecurity/README.md) and [Volume XVII](../../volume-17-aws-architecture-security/README.md)) instead of
+  vaults and short-lived tokens (see [Volume X](../../volume-010-enterprise-cybersecurity/README.md) and [Volume XVII](../../volume-017-aws-architecture-security/README.md)) instead of
   inline `-p password` style flags, which persist in shell history and
   process lists.
 - Time-box standing privileged access; prefer just-in-time elevation

@@ -5,7 +5,7 @@ managing the MongoDB document database and MongoDB Atlas — organized by certif
 model, the training model, and the discount model. The program was verified on **29 July 2026** from
 **mongodb.com** and **MongoDB University** (the certification-program hub and the individual exam pages)
 — the same sources that anchor
-[Volume LXXXVIII — MongoDB Certification Tracks](../../volume-88-mongodb-certifications/README.md).
+[Volume LXXXVIII — MongoDB Certification Tracks](../../volume-088-mongodb-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** MongoDB's training platform is **MongoDB University**, offering **free** on-demand

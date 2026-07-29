@@ -5,7 +5,7 @@ administration, architecture, security, and observability credentials — organi
 by track, with each certification's blueprint focus, prerequisites, and delivery.
 The lineup and blueprint topic areas were harvested on **26 July 2026** from
 **splunk.com** — the same source that anchors
-[Volume XLV — Splunk Certification Tracks](../../volume-45-splunk-certifications/README.md).
+[Volume XLV — Splunk Certification Tracks](../../volume-045-splunk-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at Splunk.** Official training is delivered through **Splunk

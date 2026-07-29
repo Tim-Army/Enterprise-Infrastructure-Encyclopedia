@@ -5,7 +5,7 @@ engineering, and automating **Arista EOS** networks managed by **CloudVision** �
 by track and tier, with each credential's focus, topic areas, and the training and delivery
 model. The program was **revised on 1 June 2025** into a Learning Track model and was
 verified on **27 July 2026** from **training.arista.com** — the same source that anchors
-[Volume LXII — Arista Certification Tracks](../../volume-62-arista-certifications/README.md).
+[Volume LXII — Arista Certification Tracks](../../volume-062-arista-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at Arista.** Training and certification are delivered through **Arista

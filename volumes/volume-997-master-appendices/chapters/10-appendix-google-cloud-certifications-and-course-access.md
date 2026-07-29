@@ -5,7 +5,7 @@ exam format, fee, validity period, any announced exam end date, and the
 official training that prepares it. Every fact below was harvested on
 **23 July 2026** from Google Cloud's own certification pages — the same
 harvest that anchors
-[Volume XXXIV — Google Cloud Certification Tracks](../../volume-34-google-cloud-certifications/README.md),
+[Volume XXXIV — Google Cloud Certification Tracks](../../volume-034-google-cloud-certifications/README.md),
 whose nine chapters map this program to hands-on content.
 
 **How access works at Google.** **[Google Skills](https://cloud.google.com/learn)**

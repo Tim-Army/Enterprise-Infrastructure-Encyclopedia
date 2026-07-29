@@ -5,7 +5,7 @@ Threat Defense microcredentials, NetMRI Administrator, and the vendor-agnostic I
 Learning credentials — organized by family, with each credential's focus, topic areas,
 and the training and delivery model. The lineup was verified on **27 July 2026** from
 **launchpad.education.infoblox.com** — the same source that anchors
-[Volume LVI — Infoblox Certification Tracks](../../volume-56-infoblox-certifications/README.md).
+[Volume LVI — Infoblox Certification Tracks](../../volume-056-infoblox-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at Infoblox.** Training is delivered through **Infoblox Education**

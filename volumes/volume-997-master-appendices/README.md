@@ -69,61 +69,61 @@ one place instead of scattered through volume READMEs.
 | Appendix | Serves | Chapter |
 | --- | --- | --- |
 | Cisco U. Learning Paths and CE credits | The Cisco certification tracks (Volumes III, XXV, XXVII–XXX) | [01](chapters/01-appendix-cisco-u-learning-paths-and-continuing-education-credits.md) |
-| Appendix A: IPv4 Table (R640 lab, as built) | [Volume XXVI](../volume-26-proxmox-lab-poweredge-r640/README.md) | [02](chapters/02-appendix-proxmox-lab-ipv4-and-ipv6-address-tables.md) |
-| Appendix B: IPv6 Table (R640 lab, template) | [Volume XXVI](../volume-26-proxmox-lab-poweredge-r640/README.md) | [02](chapters/02-appendix-proxmox-lab-ipv4-and-ipv6-address-tables.md) |
-| Juniper courses and certification alignment | [Volume XXXI](../volume-31-juniper-networks-certifications/README.md) | [03](chapters/03-appendix-juniper-courses-and-certification-alignment.md) |
-| Dell certifications and course access | [Volume XXXII](../volume-32-dell-technologies-certifications/README.md) | [04](chapters/04-appendix-dell-technologies-certifications-and-course-access.md) |
-| Palo Alto Networks certifications and course access | [Volume XVI](../volume-16-palo-alto-networks-security/README.md) | [05](chapters/05-appendix-palo-alto-networks-certifications-and-course-access.md) |
-| Fortinet NSE certifications and course access | [Volume XIX](../volume-19-fortinet-network-security/README.md) | [06](chapters/06-appendix-fortinet-nse-certifications-and-course-access.md) |
-| VMware and Broadcom certifications and course access | [Volume V](../volume-05-vmware-virtualization/README.md) | [07](chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) |
-| AWS certifications and course access | [Volume XVII](../volume-17-aws-architecture-security/README.md) | [08](chapters/08-appendix-aws-certifications-and-course-access.md) |
-| Microsoft Azure certifications and course access | [Volume XXXIII](../volume-33-microsoft-azure-certifications/README.md) | [09](chapters/09-appendix-microsoft-azure-certifications-and-course-access.md) |
-| Google Cloud certifications and course access | [Volume XXXIV](../volume-34-google-cloud-certifications/README.md) | [10](chapters/10-appendix-google-cloud-certifications-and-course-access.md) |
-| Zscaler certifications and course access | [Volume XXXV](../volume-35-zscaler-zero-trust-exchange/README.md) | [11](chapters/11-appendix-zscaler-certifications-and-course-access.md) |
-| Microsoft (beyond Azure) certifications and course access | [Volume XXXVIII](../volume-38-microsoft-certifications-beyond-azure/README.md) | [12](chapters/12-appendix-microsoft-beyond-azure-certifications-and-course-access.md) |
-| CompTIA certifications and course access | [Volume XXXIX](../volume-39-comptia-certification-tracks/README.md) | [13](chapters/13-appendix-comptia-certifications-and-course-access.md) |
-| ISC2 certifications and course access | [Volume XL](../volume-40-isc2-certifications/README.md) | [14](chapters/14-appendix-isc2-certifications-and-course-access.md) |
-| CNCF and Kubernetes certifications and course access | [Volume XLI](../volume-41-cncf-kubernetes-certifications/README.md) | [15](chapters/15-appendix-cncf-kubernetes-certifications-and-course-access.md) |
-| HashiCorp certifications and course access | [Volume XLII](../volume-42-hashicorp-certifications/README.md) | [16](chapters/16-appendix-hashicorp-certifications-and-course-access.md) |
-| OffSec certifications and course access | [Volume XLIII](../volume-43-offensive-security-certifications/README.md) | [17](chapters/17-appendix-offsec-certifications-and-course-access.md) |
-| ISACA certifications and course access | [Volume XLIV](../volume-44-isaca-certifications/README.md) | [18](chapters/18-appendix-isaca-certifications-and-course-access.md) |
-| Splunk certifications and course access | [Volume XLV](../volume-45-splunk-certifications/README.md) | [19](chapters/19-appendix-splunk-certifications-and-course-access.md) |
-| NVIDIA certifications and course access | [Volume XLVI](../volume-46-nvidia-certifications/README.md) | [20](chapters/20-appendix-nvidia-certifications-and-course-access.md) |
-| Oracle certifications and course access | [Volume XLVII](../volume-47-oracle-certifications/README.md) | [21](chapters/21-appendix-oracle-certifications-and-course-access.md) |
-| Databricks certifications and course access | [Volume XLVIII](../volume-48-databricks-certifications/README.md) | [22](chapters/22-appendix-databricks-certifications-and-course-access.md) |
-| Snowflake certifications and course access | [Volume XLIX](../volume-49-snowflake-certifications/README.md) | [23](chapters/23-appendix-snowflake-certifications-and-course-access.md) |
-| CrowdStrike certifications and course access | [Volume L](../volume-50-crowdstrike-certifications/README.md) | [24](chapters/24-appendix-crowdstrike-certifications-and-course-access.md) |
-| Nutanix certifications and course access | [Volume LI](../volume-51-nutanix-certifications/README.md) | [25](chapters/25-appendix-nutanix-certifications-and-course-access.md) |
-| Infoblox certifications and course access | [Volume LVI](../volume-56-infoblox-certifications/README.md) | [26](chapters/26-appendix-infoblox-certifications-and-course-access.md) |
-| Cribl certifications and course access | [Volume LXI](../volume-61-cribl-certifications/README.md) | [27](chapters/27-appendix-cribl-certifications-and-course-access.md) |
-| Arista certifications and course access | [Volume LXII](../volume-62-arista-certifications/README.md) | [28](chapters/28-appendix-arista-certifications-and-course-access.md) |
-| PSDGP public sector data governance and course access | [Volume LXIII](../volume-63-public-sector-data-governance/README.md) | [29](chapters/29-appendix-psdgp-public-sector-data-governance-and-course-access.md) |
-| HPE Aruba Networking certifications and course access | [Volume LXIV](../volume-64-aruba-certifications/README.md) | [30](chapters/30-appendix-hpe-aruba-networking-certifications-and-course-access.md) |
-| Palo Alto Networks certification tracks and course access | [Volume LXV](../volume-65-palo-alto-networks-certifications/README.md) | [31](chapters/31-appendix-palo-alto-networks-certification-tracks-and-course-access.md) |
-| F5 certifications and course access | [Volume LXVI](../volume-66-f5-certifications/README.md) | [32](chapters/32-appendix-f5-certifications-and-course-access.md) |
-| Nokia certifications and course access | [Volume LXVII](../volume-67-nokia-certifications/README.md) | [33](chapters/33-appendix-nokia-certifications-and-course-access.md) |
-| MikroTik certifications and course access | [Volume LXVIII](../volume-68-mikrotik-certifications/README.md) | [34](chapters/34-appendix-mikrotik-certifications-and-course-access.md) |
-| CWNP certifications and course access | [Volume LXIX](../volume-69-cwnp-certifications/README.md) | [35](chapters/35-appendix-cwnp-certifications-and-course-access.md) |
-| Trellix certifications and course access | [Volume LXX](../volume-70-trellix-certifications/README.md) | [36](chapters/36-appendix-trellix-certifications-and-course-access.md) |
-| Check Point certifications and course access | [Volume LXXIII](../volume-73-check-point-certifications/README.md) | [37](chapters/37-appendix-check-point-certifications-and-course-access.md) |
-| GIAC (SANS) certifications and course access | [Volume LXXIV](../volume-74-giac-certifications/README.md) | [38](chapters/38-appendix-giac-certifications-and-course-access.md) |
-| EC-Council certifications and course access | [Volume LXXV](../volume-75-ec-council-certifications/README.md) | [39](chapters/39-appendix-ec-council-certifications-and-course-access.md) |
-| Okta certifications and course access | [Volume LXXVI](../volume-76-okta-certifications/README.md) | [40](chapters/40-appendix-okta-certifications-and-course-access.md) |
-| CyberArk certifications and course access | [Volume LXXVII](../volume-77-cyberark-certifications/README.md) | [41](chapters/41-appendix-cyberark-certifications-and-course-access.md) |
-| Tenable certifications and course access | [Volume LXXVIII](../volume-78-tenable-certifications/README.md) | [42](chapters/42-appendix-tenable-certifications-and-course-access.md) |
-| Qualys certifications and course access | [Volume LXXIX](../volume-79-qualys-certifications/README.md) | [43](chapters/43-appendix-qualys-certifications-and-course-access.md) |
-| ServiceNow certifications and course access | [Volume LXXX](../volume-80-servicenow-certifications/README.md) | [44](chapters/44-appendix-servicenow-certifications-and-course-access.md) |
-| SUSE certifications and course access | [Volume LXXXI](../volume-81-suse-certifications/README.md) | [45](chapters/45-appendix-suse-certifications-and-course-access.md) |
-| Alibaba Cloud certifications and course access | [Volume LXXXII](../volume-82-alibaba-cloud-certifications/README.md) | [46](chapters/46-appendix-alibaba-cloud-certifications-and-course-access.md) |
-| Salesforce certifications and course access | [Volume LXXXIII](../volume-83-salesforce-certifications/README.md) | [47](chapters/47-appendix-salesforce-certifications-and-course-access.md) |
-| NetApp certifications and course access | [Volume LXXXIV](../volume-84-netapp-certifications/README.md) | [48](chapters/48-appendix-netapp-certifications-and-course-access.md) |
-| Veeam certifications and course access | [Volume LXXXV](../volume-85-veeam-certifications/README.md) | [49](chapters/49-appendix-veeam-certifications-and-course-access.md) |
-| Elastic certifications and course access | [Volume LXXXVI](../volume-86-elastic-certifications/README.md) | [50](chapters/50-appendix-elastic-certifications-and-course-access.md) |
-| MongoDB certifications and course access | [Volume LXXXVIII](../volume-88-mongodb-certifications/README.md) | [51](chapters/51-appendix-mongodb-certifications-and-course-access.md) |
-| GitHub certifications and course access | [Volume LXXXIX](../volume-89-github-certifications/README.md) | [52](chapters/52-appendix-github-certifications-and-course-access.md) |
-| Datadog certifications and course access | [Volume XC](../volume-90-datadog-certifications/README.md) | [53](chapters/53-appendix-datadog-certifications-and-course-access.md) |
-| Puppet certifications and course access | [Volume XCI](../volume-91-puppet-certifications/README.md) | [54](chapters/54-appendix-puppet-certifications-and-course-access.md) |
-| Docker certifications and course access | [Volume XCII](../volume-92-docker-certifications/README.md) | [55](chapters/55-appendix-docker-certifications-and-course-access.md) |
+| Appendix A: IPv4 Table (R640 lab, as built) | [Volume XXVI](../volume-026-proxmox-lab-poweredge-r640/README.md) | [02](chapters/02-appendix-proxmox-lab-ipv4-and-ipv6-address-tables.md) |
+| Appendix B: IPv6 Table (R640 lab, template) | [Volume XXVI](../volume-026-proxmox-lab-poweredge-r640/README.md) | [02](chapters/02-appendix-proxmox-lab-ipv4-and-ipv6-address-tables.md) |
+| Juniper courses and certification alignment | [Volume XXXI](../volume-031-juniper-networks-certifications/README.md) | [03](chapters/03-appendix-juniper-courses-and-certification-alignment.md) |
+| Dell certifications and course access | [Volume XXXII](../volume-032-dell-technologies-certifications/README.md) | [04](chapters/04-appendix-dell-technologies-certifications-and-course-access.md) |
+| Palo Alto Networks certifications and course access | [Volume XVI](../volume-016-palo-alto-networks-security/README.md) | [05](chapters/05-appendix-palo-alto-networks-certifications-and-course-access.md) |
+| Fortinet NSE certifications and course access | [Volume XIX](../volume-019-fortinet-network-security/README.md) | [06](chapters/06-appendix-fortinet-nse-certifications-and-course-access.md) |
+| VMware and Broadcom certifications and course access | [Volume V](../volume-005-vmware-virtualization/README.md) | [07](chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) |
+| AWS certifications and course access | [Volume XVII](../volume-017-aws-architecture-security/README.md) | [08](chapters/08-appendix-aws-certifications-and-course-access.md) |
+| Microsoft Azure certifications and course access | [Volume XXXIII](../volume-033-microsoft-azure-certifications/README.md) | [09](chapters/09-appendix-microsoft-azure-certifications-and-course-access.md) |
+| Google Cloud certifications and course access | [Volume XXXIV](../volume-034-google-cloud-certifications/README.md) | [10](chapters/10-appendix-google-cloud-certifications-and-course-access.md) |
+| Zscaler certifications and course access | [Volume XXXV](../volume-035-zscaler-zero-trust-exchange/README.md) | [11](chapters/11-appendix-zscaler-certifications-and-course-access.md) |
+| Microsoft (beyond Azure) certifications and course access | [Volume XXXVIII](../volume-038-microsoft-certifications-beyond-azure/README.md) | [12](chapters/12-appendix-microsoft-beyond-azure-certifications-and-course-access.md) |
+| CompTIA certifications and course access | [Volume XXXIX](../volume-039-comptia-certification-tracks/README.md) | [13](chapters/13-appendix-comptia-certifications-and-course-access.md) |
+| ISC2 certifications and course access | [Volume XL](../volume-040-isc2-certifications/README.md) | [14](chapters/14-appendix-isc2-certifications-and-course-access.md) |
+| CNCF and Kubernetes certifications and course access | [Volume XLI](../volume-041-cncf-kubernetes-certifications/README.md) | [15](chapters/15-appendix-cncf-kubernetes-certifications-and-course-access.md) |
+| HashiCorp certifications and course access | [Volume XLII](../volume-042-hashicorp-certifications/README.md) | [16](chapters/16-appendix-hashicorp-certifications-and-course-access.md) |
+| OffSec certifications and course access | [Volume XLIII](../volume-043-offensive-security-certifications/README.md) | [17](chapters/17-appendix-offsec-certifications-and-course-access.md) |
+| ISACA certifications and course access | [Volume XLIV](../volume-044-isaca-certifications/README.md) | [18](chapters/18-appendix-isaca-certifications-and-course-access.md) |
+| Splunk certifications and course access | [Volume XLV](../volume-045-splunk-certifications/README.md) | [19](chapters/19-appendix-splunk-certifications-and-course-access.md) |
+| NVIDIA certifications and course access | [Volume XLVI](../volume-046-nvidia-certifications/README.md) | [20](chapters/20-appendix-nvidia-certifications-and-course-access.md) |
+| Oracle certifications and course access | [Volume XLVII](../volume-047-oracle-certifications/README.md) | [21](chapters/21-appendix-oracle-certifications-and-course-access.md) |
+| Databricks certifications and course access | [Volume XLVIII](../volume-048-databricks-certifications/README.md) | [22](chapters/22-appendix-databricks-certifications-and-course-access.md) |
+| Snowflake certifications and course access | [Volume XLIX](../volume-049-snowflake-certifications/README.md) | [23](chapters/23-appendix-snowflake-certifications-and-course-access.md) |
+| CrowdStrike certifications and course access | [Volume L](../volume-050-crowdstrike-certifications/README.md) | [24](chapters/24-appendix-crowdstrike-certifications-and-course-access.md) |
+| Nutanix certifications and course access | [Volume LI](../volume-051-nutanix-certifications/README.md) | [25](chapters/25-appendix-nutanix-certifications-and-course-access.md) |
+| Infoblox certifications and course access | [Volume LVI](../volume-056-infoblox-certifications/README.md) | [26](chapters/26-appendix-infoblox-certifications-and-course-access.md) |
+| Cribl certifications and course access | [Volume LXI](../volume-061-cribl-certifications/README.md) | [27](chapters/27-appendix-cribl-certifications-and-course-access.md) |
+| Arista certifications and course access | [Volume LXII](../volume-062-arista-certifications/README.md) | [28](chapters/28-appendix-arista-certifications-and-course-access.md) |
+| PSDGP public sector data governance and course access | [Volume LXIII](../volume-063-public-sector-data-governance/README.md) | [29](chapters/29-appendix-psdgp-public-sector-data-governance-and-course-access.md) |
+| HPE Aruba Networking certifications and course access | [Volume LXIV](../volume-064-aruba-certifications/README.md) | [30](chapters/30-appendix-hpe-aruba-networking-certifications-and-course-access.md) |
+| Palo Alto Networks certification tracks and course access | [Volume LXV](../volume-065-palo-alto-networks-certifications/README.md) | [31](chapters/31-appendix-palo-alto-networks-certification-tracks-and-course-access.md) |
+| F5 certifications and course access | [Volume LXVI](../volume-066-f5-certifications/README.md) | [32](chapters/32-appendix-f5-certifications-and-course-access.md) |
+| Nokia certifications and course access | [Volume LXVII](../volume-067-nokia-certifications/README.md) | [33](chapters/33-appendix-nokia-certifications-and-course-access.md) |
+| MikroTik certifications and course access | [Volume LXVIII](../volume-068-mikrotik-certifications/README.md) | [34](chapters/34-appendix-mikrotik-certifications-and-course-access.md) |
+| CWNP certifications and course access | [Volume LXIX](../volume-069-cwnp-certifications/README.md) | [35](chapters/35-appendix-cwnp-certifications-and-course-access.md) |
+| Trellix certifications and course access | [Volume LXX](../volume-070-trellix-certifications/README.md) | [36](chapters/36-appendix-trellix-certifications-and-course-access.md) |
+| Check Point certifications and course access | [Volume LXXIII](../volume-073-check-point-certifications/README.md) | [37](chapters/37-appendix-check-point-certifications-and-course-access.md) |
+| GIAC (SANS) certifications and course access | [Volume LXXIV](../volume-074-giac-certifications/README.md) | [38](chapters/38-appendix-giac-certifications-and-course-access.md) |
+| EC-Council certifications and course access | [Volume LXXV](../volume-075-ec-council-certifications/README.md) | [39](chapters/39-appendix-ec-council-certifications-and-course-access.md) |
+| Okta certifications and course access | [Volume LXXVI](../volume-076-okta-certifications/README.md) | [40](chapters/40-appendix-okta-certifications-and-course-access.md) |
+| CyberArk certifications and course access | [Volume LXXVII](../volume-077-cyberark-certifications/README.md) | [41](chapters/41-appendix-cyberark-certifications-and-course-access.md) |
+| Tenable certifications and course access | [Volume LXXVIII](../volume-078-tenable-certifications/README.md) | [42](chapters/42-appendix-tenable-certifications-and-course-access.md) |
+| Qualys certifications and course access | [Volume LXXIX](../volume-079-qualys-certifications/README.md) | [43](chapters/43-appendix-qualys-certifications-and-course-access.md) |
+| ServiceNow certifications and course access | [Volume LXXX](../volume-080-servicenow-certifications/README.md) | [44](chapters/44-appendix-servicenow-certifications-and-course-access.md) |
+| SUSE certifications and course access | [Volume LXXXI](../volume-081-suse-certifications/README.md) | [45](chapters/45-appendix-suse-certifications-and-course-access.md) |
+| Alibaba Cloud certifications and course access | [Volume LXXXII](../volume-082-alibaba-cloud-certifications/README.md) | [46](chapters/46-appendix-alibaba-cloud-certifications-and-course-access.md) |
+| Salesforce certifications and course access | [Volume LXXXIII](../volume-083-salesforce-certifications/README.md) | [47](chapters/47-appendix-salesforce-certifications-and-course-access.md) |
+| NetApp certifications and course access | [Volume LXXXIV](../volume-084-netapp-certifications/README.md) | [48](chapters/48-appendix-netapp-certifications-and-course-access.md) |
+| Veeam certifications and course access | [Volume LXXXV](../volume-085-veeam-certifications/README.md) | [49](chapters/49-appendix-veeam-certifications-and-course-access.md) |
+| Elastic certifications and course access | [Volume LXXXVI](../volume-086-elastic-certifications/README.md) | [50](chapters/50-appendix-elastic-certifications-and-course-access.md) |
+| MongoDB certifications and course access | [Volume LXXXVIII](../volume-088-mongodb-certifications/README.md) | [51](chapters/51-appendix-mongodb-certifications-and-course-access.md) |
+| GitHub certifications and course access | [Volume LXXXIX](../volume-089-github-certifications/README.md) | [52](chapters/52-appendix-github-certifications-and-course-access.md) |
+| Datadog certifications and course access | [Volume XC](../volume-090-datadog-certifications/README.md) | [53](chapters/53-appendix-datadog-certifications-and-course-access.md) |
+| Puppet certifications and course access | [Volume XCI](../volume-091-puppet-certifications/README.md) | [54](chapters/54-appendix-puppet-certifications-and-course-access.md) |
+| Docker certifications and course access | [Volume XCII](../volume-092-docker-certifications/README.md) | [55](chapters/55-appendix-docker-certifications-and-course-access.md) |
 
 ## Conventions
 

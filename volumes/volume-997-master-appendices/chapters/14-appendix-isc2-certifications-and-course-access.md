@@ -6,7 +6,7 @@ credential ladder, with each credential's weighted exam domains, mechanics,
 experience requirement, and the CPE/AMF renewal model. The lineup, domains, and
 weights were harvested on **26 July 2026** from the official **ISC2 exam
 outlines** at **isc2.org** — the same source that anchors
-[Volume XL — ISC2 Certification Tracks](../../volume-40-isc2-certifications/README.md).
+[Volume XL — ISC2 Certification Tracks](../../volume-040-isc2-certifications/README.md).
 Third-party brain-dump sites were excluded as sources (and violate the ISC2 Code
 of Ethics).
 

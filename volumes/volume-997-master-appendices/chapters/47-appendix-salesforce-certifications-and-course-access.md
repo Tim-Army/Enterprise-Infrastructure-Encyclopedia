@@ -4,7 +4,7 @@ The **Salesforce** certification program — the credentials for administering, 
 on, and architecting the Salesforce CRM/low-code platform — organized by track, with the exam model,
 the Trailhead training model, and the maintenance model. The program was verified on **29 July 2026**
 from **salesforce.com** and **Trailhead** — the same sources that anchor
-[Volume LXXXIII — Salesforce Certification Tracks](../../volume-83-salesforce-certifications/README.md).
+[Volume LXXXIII — Salesforce Certification Tracks](../../volume-083-salesforce-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Salesforce's primary learning platform is **Trailhead** — free, gamified

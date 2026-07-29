@@ -4,7 +4,7 @@ The **Okta** certification program — the credentials for administering Okta's 
 management platform — organized by the role ladder and specialties, with the exam model, the
 platform clouds, and the delivery and renewal model. The program was verified on **28 July 2026**
 from **okta.com** — the same source that anchors
-[Volume LXXVI — Okta Certification Tracks](../../volume-76-okta-certifications/README.md).
+[Volume LXXVI — Okta Certification Tracks](../../volume-076-okta-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Okta delivers training through **Okta Learning** (self-paced courses and

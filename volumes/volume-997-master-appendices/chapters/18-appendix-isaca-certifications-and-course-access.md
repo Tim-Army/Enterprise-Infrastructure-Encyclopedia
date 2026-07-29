@@ -5,7 +5,7 @@ risk credentials — organized by discipline, with each certification's weighted
 job-practice domains, exam mechanics, and the CPE maintenance model. The lineup,
 domains, and weights were harvested on **26 July 2026** from **isaca.org** — the
 same source that anchors
-[Volume XLIV — ISACA Certification Tracks](../../volume-44-isaca-certifications/README.md).
+[Volume XLIV — ISACA Certification Tracks](../../volume-044-isaca-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at ISACA.** Official preparation is delivered through **ISACA

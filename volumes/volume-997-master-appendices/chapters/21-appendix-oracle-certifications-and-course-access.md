@@ -5,7 +5,7 @@ Oracle Database, MySQL, and Java — organized by family, with each family's key
 credentials, the year-versioned exam-code system, and the training and practice
 model. The lineup was harvested on **26 July 2026** from **education.oracle.com** —
 the same source that anchors
-[Volume XLVII — Oracle Certification Tracks](../../volume-47-oracle-certifications/README.md).
+[Volume XLVII — Oracle Certification Tracks](../../volume-047-oracle-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at Oracle.** Free training is available through **Oracle

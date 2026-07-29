@@ -5,7 +5,7 @@ networking, data-science, and generative/agentic-AI credentials — organized by
 level, with each certification's focus, price, and delivery. The lineup was
 harvested on **26 July 2026** from **nvidia.com/learn/certification** — the same
 source that anchors
-[Volume XLVI — NVIDIA Certification Tracks](../../volume-46-nvidia-certifications/README.md).
+[Volume XLVI — NVIDIA Certification Tracks](../../volume-046-nvidia-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at NVIDIA.** Official training is delivered through the **NVIDIA

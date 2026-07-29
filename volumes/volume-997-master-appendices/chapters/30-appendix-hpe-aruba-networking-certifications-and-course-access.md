@@ -5,7 +5,7 @@ and automating Aruba's campus, wireless, security, and data-center platform (**A
 Central**, **ClearPass**) — organized by tier and track, with each credential's exam code and
 the training and delivery model. The program was verified on **28 July 2026** from
 **certification-learning.hpe.com** and **hpepress.hpe.com** — the same sources that anchor
-[Volume LXIV — HPE Aruba Networking Certification Tracks](../../volume-64-aruba-certifications/README.md).
+[Volume LXIV — HPE Aruba Networking Certification Tracks](../../volume-064-aruba-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Certification is delivered through **HPE Networking Education Services**;

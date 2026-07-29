@@ -4,7 +4,7 @@ The **MikroTik** certification program — the credentials for deploying **Route
 RouterBOARD, CHR, and x86 — organized around the MTCNA foundation and the specialist certificates,
 with the prerequisite structure and the training and delivery model. The program was verified on
 **28 July 2026** from **mikrotik.com** — the same source that anchors
-[Volume LXVIII — MikroTik Certification Tracks](../../volume-68-mikrotik-certifications/README.md).
+[Volume LXVIII — MikroTik Certification Tracks](../../volume-068-mikrotik-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Training is delivered by **MikroTik Certified Trainers** at authorized

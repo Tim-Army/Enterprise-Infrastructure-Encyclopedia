@@ -59,7 +59,7 @@ platform in this encyclopedia.
 ## Design Considerations
 
 - **Store templates and baselines as code, in the same repository
-  discipline as application source** ([Volume I, Chapter 02](../../volume-01-enterprise-engineering-foundations/chapters/02-repository-architecture.md)): version
+  discipline as application source** ([Volume I, Chapter 02](../../volume-001-enterprise-engineering-foundations/chapters/02-repository-architecture.md)): version
   control, pull request review, and CI validation apply to a Jinja2
   template or a Terraform module exactly as they apply to a Python
   service.
@@ -239,7 +239,7 @@ system referenced by ID.
   at render or apply time.
 - Require pull request review for any change to a baseline or template
   that affects a production-tier fleet segment, mirroring the CODEOWNERS
-  pattern established in [Volume I](../../volume-01-enterprise-engineering-foundations/README.md).
+  pattern established in [Volume I](../../volume-001-enterprise-engineering-foundations/README.md).
 - Restrict who can approve Tier 2/3 change records to named individuals
   distinct from the person executing the change, and log both identities
   in the change record itself, not only in an external ticketing system
@@ -262,10 +262,10 @@ system referenced by ID.
 
 **References**
 
-- [Volume I, Chapter 02](../../volume-01-enterprise-engineering-foundations/chapters/02-repository-architecture.md) — Repository Architecture (version control
+- [Volume I, Chapter 02](../../volume-001-enterprise-engineering-foundations/chapters/02-repository-architecture.md) — Repository Architecture (version control
   discipline applied to configuration).
-- [Volume I, Chapter 03](../../volume-01-enterprise-engineering-foundations/chapters/03-automation-architecture.md) — Automation Architecture (plan/apply separation).
-- [Volume IX](../../volume-09-infrastructure-automation/README.md) — Infrastructure Automation (full Ansible/Terraform template
+- [Volume I, Chapter 03](../../volume-001-enterprise-engineering-foundations/chapters/03-automation-architecture.md) — Automation Architecture (plan/apply separation).
+- [Volume IX](../../volume-009-infrastructure-automation/README.md) — Infrastructure Automation (full Ansible/Terraform template
   and module design treatment).
 - [Ansible Jinja2 templating documentation
   (`docs.ansible.com/ansible/latest/playbook_guide`).](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html)

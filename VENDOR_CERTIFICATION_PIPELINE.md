@@ -121,11 +121,11 @@ Takes several minutes across the full series; run it in the background.
 Scoped variants are much faster while drafting:
 
 ```bash
-scripts/bash/build-book.sh --format all --volume volume-17-aws-architecture-security
+scripts/bash/build-book.sh --format all --volume volume-017-aws-architecture-security
 ```
 
 ```bash
-scripts/bash/build-book.sh --format all --chapter volumes/volume-17-aws-architecture-security/chapters/10-the-aws-certification-program-structure-foundational-tier-and-recertification.md
+scripts/bash/build-book.sh --format all --chapter volumes/volume-017-aws-architecture-security/chapters/10-the-aws-certification-program-structure-foundational-tier-and-recertification.md
 ```
 
 ### Build the portal

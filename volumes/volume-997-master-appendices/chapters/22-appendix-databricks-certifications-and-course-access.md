@@ -5,7 +5,7 @@ credentials plus the free accreditations — organized by role, with each
 credential's focus, level, and the training and practice model. The lineup was
 harvested on **26 July 2026** from **databricks.com/learn/certification** — the
 same source that anchors
-[Volume XLVIII — Databricks Certification Tracks](../../volume-48-databricks-certifications/README.md).
+[Volume XLVIII — Databricks Certification Tracks](../../volume-048-databricks-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at Databricks.** Training is delivered through **Databricks

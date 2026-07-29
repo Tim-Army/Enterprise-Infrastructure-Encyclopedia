@@ -5,7 +5,7 @@ exam code, any announced exam end date, and the official training that
 prepares it. Every code and date below was harvested on **23 July 2026**
 from Microsoft Learn — read from each certification's own page and the
 public catalog API — the same harvest that anchors
-[Volume XXXIII — Microsoft Azure Certification Tracks](../../volume-33-microsoft-azure-certifications/README.md),
+[Volume XXXIII — Microsoft Azure Certification Tracks](../../volume-033-microsoft-azure-certifications/README.md),
 whose nine chapters map this program to hands-on content.
 
 **How access works at Microsoft.** Microsoft's model is the most generous

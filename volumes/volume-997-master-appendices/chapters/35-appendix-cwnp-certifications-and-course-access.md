@@ -4,7 +4,7 @@ The **CWNP** (Certified Wireless Network Professional) program — the vendor-ne
 enterprise Wi-Fi and wireless-IoT certification — organized by career level, with each
 certification's focus, the expert requirements, and the training and delivery model. The program
 was verified on **28 July 2026** from **cwnp.com** — the same source that anchors
-[Volume LXIX — CWNP Certification Tracks](../../volume-69-cwnp-certifications/README.md).
+[Volume LXIX — CWNP Certification Tracks](../../volume-069-cwnp-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** CWNP publishes official study guides, learning resources, and practice

@@ -38,7 +38,7 @@ Enterprise-Infrastructure-Encyclopedia/
 ├── scripts/          Repository and publishing automation
 ├── templates/         Reusable content templates
 ├── tests/            Repository and content validation tests
-├── volumes/           All 27 volumes (see above)
+├── volumes/           All 95 volumes (see above)
 ├── INDEX.md           Master index across all volumes
 ├── GLOSSARY.md         Master glossary across all volumes
 ├── MASTER_TOC.md        Canonical series table of contents
@@ -49,8 +49,13 @@ Enterprise-Infrastructure-Encyclopedia/
 
 ## Naming rules
 
-- Volume slugs are zero-padded two-digit numbers followed by a short
-  kebab-case name: `volume-01-enterprise-engineering-foundations`.
+- Volume slugs are zero-padded **three-digit** numbers followed by a short
+  kebab-case name: `volume-001-enterprise-engineering-foundations`. Three
+  digits is a deliberate width choice: it keeps a plain lexicographic listing
+  (and therefore the build's `volumes/*/` glob) in true series order all the
+  way to volume 999, which two-digit padding cannot do — under the old scheme
+  a hypothetical `volume-100-...` sorted between `volume-10-...` and
+  `volume-11-...`.
 - Chapter slugs are zero-padded two-digit numbers followed by a short
   kebab-case title: `01-network-models-and-protocol-architecture.md`.
 - The three **reference volumes** at the end of the series are numbered out
@@ -65,10 +70,13 @@ Enterprise-Infrastructure-Encyclopedia/
 
   In every case the slug's Arabic number matches the Roman numeral's value
   (997 = CMXCVII, 998 = CMXCVIII, 999 = CMXCIX) rather than the volume's
-  ordinal position in the series. Because these numbers are three digits and
-  no instructional volume reaches 100, the reference block still sorts last
-  in a plain lexicographic directory listing — `volume-997-...` follows
-  `volume-92-...` — which is what keeps the build's `volumes/*/` glob
-  emitting them at the end of the series.
+  ordinal position in the series. Because every volume slug is padded to the
+  same three-digit width, the reference block sorts last in a plain
+  lexicographic directory listing purely on its numeric value —
+  `volume-997-...` follows `volume-092-...` — which is what keeps the build's
+  `volumes/*/` glob emitting them at the end of the series.
 - The reserved block was renumbered from 97/98/99 to 997/998/999 so the
-  instructional sequence can grow past 92 without colliding with it.
+  instructional sequence can grow past 92 without colliding with it. The
+  instructional volumes were subsequently widened from two digits to three so
+  that the whole series shares one width and stays correctly ordered past
+  volume 99.

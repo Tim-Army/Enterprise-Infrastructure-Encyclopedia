@@ -6,7 +6,7 @@ table of contents for that volume.
 
 ## Volume I — Enterprise Engineering Foundations
 
-[Volume README](volumes/volume-01-enterprise-engineering-foundations/README.md) · [Index](volumes/volume-01-enterprise-engineering-foundations/INDEX.md) · [Glossary](volumes/volume-01-enterprise-engineering-foundations/GLOSSARY.md)
+[Volume README](volumes/volume-001-enterprise-engineering-foundations/README.md) · [Index](volumes/volume-001-enterprise-engineering-foundations/INDEX.md) · [Glossary](volumes/volume-001-enterprise-engineering-foundations/GLOSSARY.md)
 
 1. Building the Enterprise Developer Workstation
 2. Repository Architecture
@@ -19,7 +19,7 @@ table of contents for that volume.
 
 ## Volume II — Network Engineering Foundations
 
-[Volume README](volumes/volume-02-network-engineering-foundations/README.md) · [Index](volumes/volume-02-network-engineering-foundations/INDEX.md) · [Glossary](volumes/volume-02-network-engineering-foundations/GLOSSARY.md)
+[Volume README](volumes/volume-002-network-engineering-foundations/README.md) · [Index](volumes/volume-002-network-engineering-foundations/INDEX.md) · [Glossary](volumes/volume-002-network-engineering-foundations/GLOSSARY.md)
 
 1. Network Models and Protocol Architecture
 2. IP Addressing and Subnetting
@@ -33,7 +33,7 @@ table of contents for that volume.
 
 ## Volume III — Cisco Enterprise Networking
 
-[Volume README](volumes/volume-03-cisco-enterprise-networking/README.md) · [Index](volumes/volume-03-cisco-enterprise-networking/INDEX.md) · [Glossary](volumes/volume-03-cisco-enterprise-networking/GLOSSARY.md)
+[Volume README](volumes/volume-003-cisco-enterprise-networking/README.md) · [Index](volumes/volume-003-cisco-enterprise-networking/INDEX.md) · [Glossary](volumes/volume-003-cisco-enterprise-networking/GLOSSARY.md)
 
 1. Cisco Enterprise Architecture and IOS XE Foundations
 2. Catalyst Campus Switching and Resiliency
@@ -47,7 +47,7 @@ table of contents for that volume.
 
 ## Volume IV — Enterprise Systems Administration
 
-[Volume README](volumes/volume-04-enterprise-systems-administration/README.md) · [Index](volumes/volume-04-enterprise-systems-administration/INDEX.md) · [Glossary](volumes/volume-04-enterprise-systems-administration/GLOSSARY.md)
+[Volume README](volumes/volume-004-enterprise-systems-administration/README.md) · [Index](volumes/volume-004-enterprise-systems-administration/INDEX.md) · [Glossary](volumes/volume-004-enterprise-systems-administration/GLOSSARY.md)
 
 1. Systems Administration Architecture and Operating Model
 2. Enterprise Linux Administration
@@ -61,7 +61,7 @@ table of contents for that volume.
 
 ## Volume V — VMware Virtualization
 
-[Volume README](volumes/volume-05-vmware-virtualization/README.md) · [Index](volumes/volume-05-vmware-virtualization/INDEX.md) · [Glossary](volumes/volume-05-vmware-virtualization/GLOSSARY.md)
+[Volume README](volumes/volume-005-vmware-virtualization/README.md) · [Index](volumes/volume-005-vmware-virtualization/INDEX.md) · [Glossary](volumes/volume-005-vmware-virtualization/GLOSSARY.md)
 
 1. VMware Virtualization Architecture and Design
 2. ESXi Installation, Configuration, and Host Operations
@@ -86,7 +86,7 @@ table of contents for that volume.
 
 ## Volume VI — Enterprise Storage and Data Protection
 
-[Volume README](volumes/volume-06-enterprise-storage-data-protection/README.md) · [Index](volumes/volume-06-enterprise-storage-data-protection/INDEX.md) · [Glossary](volumes/volume-06-enterprise-storage-data-protection/GLOSSARY.md)
+[Volume README](volumes/volume-006-enterprise-storage-data-protection/README.md) · [Index](volumes/volume-006-enterprise-storage-data-protection/INDEX.md) · [Glossary](volumes/volume-006-enterprise-storage-data-protection/GLOSSARY.md)
 
 1. Enterprise Storage Architecture and Service Design
 2. Block Storage and Storage Area Networks
@@ -100,7 +100,7 @@ table of contents for that volume.
 
 ## Volume VII — Cloud Infrastructure
 
-[Volume README](volumes/volume-07-cloud-infrastructure/README.md) · [Index](volumes/volume-07-cloud-infrastructure/INDEX.md) · [Glossary](volumes/volume-07-cloud-infrastructure/GLOSSARY.md)
+[Volume README](volumes/volume-007-cloud-infrastructure/README.md) · [Index](volumes/volume-007-cloud-infrastructure/INDEX.md) · [Glossary](volumes/volume-007-cloud-infrastructure/GLOSSARY.md)
 
 1. Cloud Operating Models and Architecture Foundations
 2. Landing Zones, Resource Organization, and Guardrails
@@ -114,7 +114,7 @@ table of contents for that volume.
 
 ## Volume VIII — Containers and Platform Engineering
 
-[Volume README](volumes/volume-08-containers-platform-engineering/README.md) · [Index](volumes/volume-08-containers-platform-engineering/INDEX.md) · [Glossary](volumes/volume-08-containers-platform-engineering/GLOSSARY.md)
+[Volume README](volumes/volume-008-containers-platform-engineering/README.md) · [Index](volumes/volume-008-containers-platform-engineering/INDEX.md) · [Glossary](volumes/volume-008-containers-platform-engineering/GLOSSARY.md)
 
 1. Container Architecture, Images, Runtimes, and Registries
 2. Kubernetes Architecture and Cluster Lifecycle
@@ -128,7 +128,7 @@ table of contents for that volume.
 
 ## Volume IX — Infrastructure Automation
 
-[Volume README](volumes/volume-09-infrastructure-automation/README.md) · [Index](volumes/volume-09-infrastructure-automation/INDEX.md) · [Glossary](volumes/volume-09-infrastructure-automation/GLOSSARY.md)
+[Volume README](volumes/volume-009-infrastructure-automation/README.md) · [Index](volumes/volume-009-infrastructure-automation/INDEX.md) · [Glossary](volumes/volume-009-infrastructure-automation/GLOSSARY.md)
 
 1. Automation Operating Models and Engineering Foundations
 2. Infrastructure as Code, State, Providers, and Modules
@@ -142,7 +142,7 @@ table of contents for that volume.
 
 ## Volume X — Enterprise Cybersecurity
 
-[Volume README](volumes/volume-10-enterprise-cybersecurity/README.md) · [Index](volumes/volume-10-enterprise-cybersecurity/INDEX.md) · [Glossary](volumes/volume-10-enterprise-cybersecurity/GLOSSARY.md)
+[Volume README](volumes/volume-010-enterprise-cybersecurity/README.md) · [Index](volumes/volume-010-enterprise-cybersecurity/INDEX.md) · [Glossary](volumes/volume-010-enterprise-cybersecurity/GLOSSARY.md)
 
 1. Cybersecurity Governance, Risk, and Architecture
 2. Enterprise Identity, Zero Trust, and Privileged Access
@@ -156,7 +156,7 @@ table of contents for that volume.
 
 ## Volume XI — Observability and Enterprise Operations
 
-[Volume README](volumes/volume-11-observability-enterprise-operations/README.md) · [Index](volumes/volume-11-observability-enterprise-operations/INDEX.md) · [Glossary](volumes/volume-11-observability-enterprise-operations/GLOSSARY.md)
+[Volume README](volumes/volume-011-observability-enterprise-operations/README.md) · [Index](volumes/volume-011-observability-enterprise-operations/INDEX.md) · [Glossary](volumes/volume-011-observability-enterprise-operations/GLOSSARY.md)
 
 1. Observability Operating Model and Service Ownership
 2. Telemetry Architecture, Instrumentation, and Pipelines
@@ -170,7 +170,7 @@ table of contents for that volume.
 
 ## Volume XII — Resilience and Lifecycle Management
 
-[Volume README](volumes/volume-12-resilience-lifecycle-management/README.md) · [Index](volumes/volume-12-resilience-lifecycle-management/INDEX.md) · [Glossary](volumes/volume-12-resilience-lifecycle-management/GLOSSARY.md)
+[Volume README](volumes/volume-012-resilience-lifecycle-management/README.md) · [Index](volumes/volume-012-resilience-lifecycle-management/INDEX.md) · [Glossary](volumes/volume-012-resilience-lifecycle-management/GLOSSARY.md)
 
 1. Resilience Engineering and Critical-Service Design
 2. Business Impact Analysis and Continuity Planning
@@ -184,7 +184,7 @@ table of contents for that volume.
 
 ## Volume XIII — Integrated Enterprise Labs
 
-[Volume README](volumes/volume-13-integrated-enterprise-labs/README.md) · [Index](volumes/volume-13-integrated-enterprise-labs/INDEX.md) · [Glossary](volumes/volume-13-integrated-enterprise-labs/GLOSSARY.md)
+[Volume README](volumes/volume-013-integrated-enterprise-labs/README.md) · [Index](volumes/volume-013-integrated-enterprise-labs/INDEX.md) · [Glossary](volumes/volume-013-integrated-enterprise-labs/GLOSSARY.md)
 
 1. Lab Engineering, Safety, Reproducibility, and Evidence
 2. Integrated Identity, DNS, Time, and Core Services Lab
@@ -198,7 +198,7 @@ table of contents for that volume.
 
 ## Volume XIV — Red Hat Enterprise Linux 10
 
-[Volume README](volumes/volume-14-red-hat-enterprise-linux-10/README.md) · [Index](volumes/volume-14-red-hat-enterprise-linux-10/INDEX.md) · [Glossary](volumes/volume-14-red-hat-enterprise-linux-10/GLOSSARY.md)
+[Volume README](volumes/volume-014-red-hat-enterprise-linux-10/README.md) · [Index](volumes/volume-014-red-hat-enterprise-linux-10/INDEX.md) · [Glossary](volumes/volume-014-red-hat-enterprise-linux-10/GLOSSARY.md)
 
 1. Installation, Subscriptions, Repositories, and Cockpit
 2. Essential Tools, Shell Scripting, and Software Management
@@ -212,7 +212,7 @@ table of contents for that volume.
 
 ## Volume XV — Forescout Platform and Certifications
 
-[Volume README](volumes/volume-15-forescout-platform-certifications/README.md) · [Index](volumes/volume-15-forescout-platform-certifications/INDEX.md) · [Glossary](volumes/volume-15-forescout-platform-certifications/GLOSSARY.md)
+[Volume README](volumes/volume-015-forescout-platform-certifications/README.md) · [Index](volumes/volume-015-forescout-platform-certifications/INDEX.md) · [Glossary](volumes/volume-015-forescout-platform-certifications/GLOSSARY.md)
 
 1. Platform Architecture, Installation, and Deployment Planning
 2. Console, Plugins, Properties, and Asset Classification
@@ -226,7 +226,7 @@ table of contents for that volume.
 
 ## Volume XVI — Palo Alto Networks Security
 
-[Volume README](volumes/volume-16-palo-alto-networks-security/README.md) · [Index](volumes/volume-16-palo-alto-networks-security/INDEX.md) · [Glossary](volumes/volume-16-palo-alto-networks-security/GLOSSARY.md)
+[Volume README](volumes/volume-016-palo-alto-networks-security/README.md) · [Index](volumes/volume-016-palo-alto-networks-security/INDEX.md) · [Glossary](volumes/volume-016-palo-alto-networks-security/GLOSSARY.md)
 
 1. Cybersecurity Apprentice Foundations
 2. Cybersecurity Practitioner and Platform Portfolio
@@ -243,7 +243,7 @@ table of contents for that volume.
 
 ## Volume XVII — AWS Architecture and Security
 
-[Volume README](volumes/volume-17-aws-architecture-security/README.md) · [Index](volumes/volume-17-aws-architecture-security/INDEX.md) · [Glossary](volumes/volume-17-aws-architecture-security/GLOSSARY.md)
+[Volume README](volumes/volume-017-aws-architecture-security/README.md) · [Index](volumes/volume-017-aws-architecture-security/INDEX.md) · [Glossary](volumes/volume-017-aws-architecture-security/GLOSSARY.md)
 
 1. Cloud Foundations, Accounts, and Well-Architected Design
 2. Multi-Account Identity, Governance, and Landing Zones
@@ -261,7 +261,7 @@ table of contents for that volume.
 
 ## Volume XVIII — Gigamon Network Visibility
 
-[Volume README](volumes/volume-18-gigamon-network-visibility/README.md) · [Index](volumes/volume-18-gigamon-network-visibility/INDEX.md) · [Glossary](volumes/volume-18-gigamon-network-visibility/GLOSSARY.md)
+[Volume README](volumes/volume-018-gigamon-network-visibility/README.md) · [Index](volumes/volume-018-gigamon-network-visibility/INDEX.md) · [Glossary](volumes/volume-018-gigamon-network-visibility/GLOSSARY.md)
 
 1. Visibility Architecture, Traffic Acquisition, and Tool Delivery
 2. GigaVUE Appliance First Deployment and Fabric Foundations
@@ -275,7 +275,7 @@ table of contents for that volume.
 
 ## Volume XIX — Fortinet Network Security
 
-[Volume README](volumes/volume-19-fortinet-network-security/README.md) · [Index](volumes/volume-19-fortinet-network-security/INDEX.md) · [Glossary](volumes/volume-19-fortinet-network-security/GLOSSARY.md)
+[Volume README](volumes/volume-019-fortinet-network-security/README.md) · [Index](volumes/volume-019-fortinet-network-security/INDEX.md) · [Glossary](volumes/volume-019-fortinet-network-security/GLOSSARY.md)
 
 1. NSE 1 Cybersecurity Awareness and Digital Safety
 2. NSE 2 Threat Landscape, Security Technologies, and Fortinet Portfolio
@@ -295,7 +295,7 @@ table of contents for that volume.
 
 ## Volume XX — Wireshark and Packet Analysis
 
-[Volume README](volumes/volume-20-wireshark-packet-analysis/README.md) · [Index](volumes/volume-20-wireshark-packet-analysis/INDEX.md) · [Glossary](volumes/volume-20-wireshark-packet-analysis/GLOSSARY.md)
+[Volume README](volumes/volume-020-wireshark-packet-analysis/README.md) · [Index](volumes/volume-020-wireshark-packet-analysis/INDEX.md) · [Glossary](volumes/volume-020-wireshark-packet-analysis/GLOSSARY.md)
 
 1. Packet Analysis Foundations, Wireshark Installation, and Evidence
 2. Enterprise Capture Engineering, Taps, Mirrors, and Ring Buffers
@@ -309,7 +309,7 @@ table of contents for that volume.
 
 ## Volume XXI — Ubuntu Server and Cloud 26.04 LTS
 
-[Volume README](volumes/volume-21-ubuntu-server-cloud-26-04-lts/README.md) · [Index](volumes/volume-21-ubuntu-server-cloud-26-04-lts/INDEX.md) · [Glossary](volumes/volume-21-ubuntu-server-cloud-26-04-lts/GLOSSARY.md)
+[Volume README](volumes/volume-021-ubuntu-server-cloud-26-04-lts/README.md) · [Index](volumes/volume-021-ubuntu-server-cloud-26-04-lts/INDEX.md) · [Glossary](volumes/volume-021-ubuntu-server-cloud-26-04-lts/GLOSSARY.md)
 
 1. Installation, Autoinstall, Ubuntu Pro, Repositories, and Landscape
 2. Essential Tools, Shell Scripting, APT, and Snap Management
@@ -323,7 +323,7 @@ table of contents for that volume.
 
 ## Volume XXII — Dell OpenManage Enterprise
 
-[Volume README](volumes/volume-22-dell-openmanage-enterprise/README.md) · [Index](volumes/volume-22-dell-openmanage-enterprise/INDEX.md) · [Glossary](volumes/volume-22-dell-openmanage-enterprise/GLOSSARY.md)
+[Volume README](volumes/volume-022-dell-openmanage-enterprise/README.md) · [Index](volumes/volume-022-dell-openmanage-enterprise/INDEX.md) · [Glossary](volumes/volume-022-dell-openmanage-enterprise/GLOSSARY.md)
 
 1. Architecture, Requirements, Deployment, and First Configuration
 2. Identity, Licensing, Security, and Administrative Control
@@ -337,7 +337,7 @@ table of contents for that volume.
 
 ## Volume XXIII — Dell iDRAC 9 and 10 Administration
 
-[Volume README](volumes/volume-23-dell-idrac-9-10-administration/README.md) · [Index](volumes/volume-23-dell-idrac-9-10-administration/INDEX.md) · [Glossary](volumes/volume-23-dell-idrac-9-10-administration/GLOSSARY.md)
+[Volume README](volumes/volume-023-dell-idrac-9-10-administration/README.md) · [Index](volumes/volume-023-dell-idrac-9-10-administration/INDEX.md) · [Glossary](volumes/volume-023-dell-idrac-9-10-administration/GLOSSARY.md)
 
 1. Architecture, Generations, Licensing, and First Access
 2. Configuration, Restart, Factory Reset, Full Power Cycle, and Recovery
@@ -351,7 +351,7 @@ table of contents for that volume.
 
 ## Volume XXIV — Dell VxRail Hyperconverged Infrastructure
 
-[Volume README](volumes/volume-24-dell-vxrail-hci/README.md) · [Index](volumes/volume-24-dell-vxrail-hci/INDEX.md) · [Glossary](volumes/volume-24-dell-vxrail-hci/GLOSSARY.md)
+[Volume README](volumes/volume-024-dell-vxrail-hci/README.md) · [Index](volumes/volume-024-dell-vxrail-hci/INDEX.md) · [Glossary](volumes/volume-024-dell-vxrail-hci/GLOSSARY.md)
 
 1. HCI Architecture, VxRail Positioning, and Platform Models
 2. Physical Installation, Network Prerequisites, and Pre-Deployment Planning
@@ -365,7 +365,7 @@ table of contents for that volume.
 
 ## Volume XXV — Cisco Security
 
-[Volume README](volumes/volume-25-cisco-security/README.md) · [Index](volumes/volume-25-cisco-security/INDEX.md) · [Glossary](volumes/volume-25-cisco-security/GLOSSARY.md)
+[Volume README](volumes/volume-025-cisco-security/README.md) · [Index](volumes/volume-025-cisco-security/INDEX.md) · [Glossary](volumes/volume-025-cisco-security/GLOSSARY.md)
 
 1. Security Concepts, the Threat Landscape, and the CCNP Security Track
 2. Network Security with Cisco Secure Firewall and IPS
@@ -379,7 +379,7 @@ table of contents for that volume.
 
 ## Volume XXVI — Proxmox Virtualization Lab on Dell PowerEdge R640
 
-[Volume README](volumes/volume-26-proxmox-lab-poweredge-r640/README.md) · [Index](volumes/volume-26-proxmox-lab-poweredge-r640/INDEX.md) · [Glossary](volumes/volume-26-proxmox-lab-poweredge-r640/GLOSSARY.md)
+[Volume README](volumes/volume-026-proxmox-lab-poweredge-r640/README.md) · [Index](volumes/volume-026-proxmox-lab-poweredge-r640/INDEX.md) · [Glossary](volumes/volume-026-proxmox-lab-poweredge-r640/GLOSSARY.md)
 
 1. iDRAC Out-of-Band Access and First Configuration
 2. Storage: The BOSS Boot Mirror and the river RAID 5 Array
@@ -393,7 +393,7 @@ table of contents for that volume.
 
 ## Volume XXVII — Cisco Data Center
 
-[Volume README](volumes/volume-27-cisco-data-center/README.md) · [Index](volumes/volume-27-cisco-data-center/INDEX.md) · [Glossary](volumes/volume-27-cisco-data-center/GLOSSARY.md)
+[Volume README](volumes/volume-027-cisco-data-center/README.md) · [Index](volumes/volume-027-cisco-data-center/INDEX.md) · [Glossary](volumes/volume-027-cisco-data-center/GLOSSARY.md)
 
 1. Data Center Architecture and the CCNP Data Center Track
 2. Nexus Switching, vPC, and VXLAN EVPN Fabrics
@@ -407,7 +407,7 @@ table of contents for that volume.
 
 ## Volume XXVIII — Cisco Collaboration
 
-[Volume README](volumes/volume-28-cisco-collaboration/README.md) · [Index](volumes/volume-28-cisco-collaboration/INDEX.md) · [Glossary](volumes/volume-28-cisco-collaboration/GLOSSARY.md)
+[Volume README](volumes/volume-028-cisco-collaboration/README.md) · [Index](volumes/volume-028-cisco-collaboration/INDEX.md) · [Glossary](volumes/volume-028-cisco-collaboration/GLOSSARY.md)
 
 1. Collaboration Architecture and the CCNP Collaboration Track
 2. Signaling and Media: SIP, Codecs, and Endpoints
@@ -421,7 +421,7 @@ table of contents for that volume.
 
 ## Volume XXIX — Cisco Service Provider
 
-[Volume README](volumes/volume-29-cisco-service-provider/README.md) · [Index](volumes/volume-29-cisco-service-provider/INDEX.md) · [Glossary](volumes/volume-29-cisco-service-provider/GLOSSARY.md)
+[Volume README](volumes/volume-029-cisco-service-provider/README.md) · [Index](volumes/volume-029-cisco-service-provider/INDEX.md) · [Glossary](volumes/volume-029-cisco-service-provider/GLOSSARY.md)
 
 1. Service Provider Architecture and the IOS XR Operating Model
 2. Provider Core Routing: IS-IS and OSPF at Scale
@@ -435,7 +435,7 @@ table of contents for that volume.
 
 ## Volume XXX — Cisco CCDE Network Design
 
-[Volume README](volumes/volume-30-cisco-ccde-network-design/README.md) · [Index](volumes/volume-30-cisco-ccde-network-design/INDEX.md) · [Glossary](volumes/volume-30-cisco-ccde-network-design/GLOSSARY.md)
+[Volume README](volumes/volume-030-cisco-ccde-network-design/README.md) · [Index](volumes/volume-030-cisco-ccde-network-design/INDEX.md) · [Glossary](volumes/volume-030-cisco-ccde-network-design/GLOSSARY.md)
 
 1. The CCDE and the Discipline of Network Design
 2. Business Strategy Design
@@ -449,7 +449,7 @@ table of contents for that volume.
 
 ## Volume XXXI — Juniper Networks Certification Tracks
 
-[Volume README](volumes/volume-31-juniper-networks-certifications/README.md) · [Index](volumes/volume-31-juniper-networks-certifications/INDEX.md) · [Glossary](volumes/volume-31-juniper-networks-certifications/GLOSSARY.md)
+[Volume README](volumes/volume-031-juniper-networks-certifications/README.md) · [Index](volumes/volume-031-juniper-networks-certifications/INDEX.md) · [Glossary](volumes/volume-031-juniper-networks-certifications/GLOSSARY.md)
 
 1. Junos OS Foundations and the JNCIA-Junos
 2. Enterprise Routing and Switching — JNCIS-ENT to JNCIP-ENT
@@ -463,7 +463,7 @@ table of contents for that volume.
 
 ## Volume XXXII — Dell Technologies Certification Tracks
 
-[Volume README](volumes/volume-32-dell-technologies-certifications/README.md) · [Index](volumes/volume-32-dell-technologies-certifications/INDEX.md) · [Glossary](volumes/volume-32-dell-technologies-certifications/GLOSSARY.md)
+[Volume README](volumes/volume-032-dell-technologies-certifications/README.md) · [Index](volumes/volume-032-dell-technologies-certifications/INDEX.md) · [Glossary](volumes/volume-032-dell-technologies-certifications/GLOSSARY.md)
 
 1. The Proven Professional Program and Storage Foundations
 2. PowerEdge Servers — from Foundations to XE
@@ -477,7 +477,7 @@ table of contents for that volume.
 
 ## Volume XXXIII — Microsoft Azure Certification Tracks
 
-[Volume README](volumes/volume-33-microsoft-azure-certifications/README.md) · [Index](volumes/volume-33-microsoft-azure-certifications/INDEX.md) · [Glossary](volumes/volume-33-microsoft-azure-certifications/GLOSSARY.md)
+[Volume README](volumes/volume-033-microsoft-azure-certifications/README.md) · [Index](volumes/volume-033-microsoft-azure-certifications/INDEX.md) · [Glossary](volumes/volume-033-microsoft-azure-certifications/GLOSSARY.md)
 
 1. The Azure Certification Program — Levels, Codes, and Renewal
 2. Fundamentals — AZ-900, AI-901, and DP-900
@@ -491,7 +491,7 @@ table of contents for that volume.
 
 ## Volume XXXIV — Google Cloud Certification Tracks
 
-[Volume README](volumes/volume-34-google-cloud-certifications/README.md) · [Index](volumes/volume-34-google-cloud-certifications/INDEX.md) · [Glossary](volumes/volume-34-google-cloud-certifications/GLOSSARY.md)
+[Volume README](volumes/volume-034-google-cloud-certifications/README.md) · [Index](volumes/volume-034-google-cloud-certifications/INDEX.md) · [Glossary](volumes/volume-034-google-cloud-certifications/GLOSSARY.md)
 
 1. The Google Cloud Certification Program — Levels and Validity
 2. Foundational — Cloud Digital Leader and Generative AI Leader
@@ -505,7 +505,7 @@ table of contents for that volume.
 
 ## Volume XXXV — Zscaler Zero Trust Exchange
 
-[Volume README](volumes/volume-35-zscaler-zero-trust-exchange/README.md) · [Index](volumes/volume-35-zscaler-zero-trust-exchange/INDEX.md) · [Glossary](volumes/volume-35-zscaler-zero-trust-exchange/GLOSSARY.md)
+[Volume README](volumes/volume-035-zscaler-zero-trust-exchange/README.md) · [Index](volumes/volume-035-zscaler-zero-trust-exchange/INDEX.md) · [Glossary](volumes/volume-035-zscaler-zero-trust-exchange/GLOSSARY.md)
 
 1. The Zscaler Certification Program and the Zero Trust Exchange
 2. ZIA — Secure Web Gateway and TLS Inspection
@@ -519,7 +519,7 @@ table of contents for that volume.
 
 ## Volume XXXVI — Windows Server 2025 and Active Directory
 
-[Volume README](volumes/volume-36-windows-server-2025-active-directory/README.md) · [Index](volumes/volume-36-windows-server-2025-active-directory/INDEX.md) · [Glossary](volumes/volume-36-windows-server-2025-active-directory/GLOSSARY.md)
+[Volume README](volumes/volume-036-windows-server-2025-active-directory/README.md) · [Index](volumes/volume-036-windows-server-2025-active-directory/INDEX.md) · [Glossary](volumes/volume-036-windows-server-2025-active-directory/GLOSSARY.md)
 
 1. Windows Server 2025 — Editions, Installation, Server Core, and Windows Admin Center
 2. PowerShell, Remoting, and Desired State Configuration
@@ -535,7 +535,7 @@ table of contents for that volume.
 
 ## Volume XXXVII — Microsoft 365 and Modern Work
 
-[Volume README](volumes/volume-37-microsoft-365-modern-work/README.md) · [Index](volumes/volume-37-microsoft-365-modern-work/INDEX.md) · [Glossary](volumes/volume-37-microsoft-365-modern-work/GLOSSARY.md)
+[Volume README](volumes/volume-037-microsoft-365-modern-work/README.md) · [Index](volumes/volume-037-microsoft-365-modern-work/INDEX.md) · [Glossary](volumes/volume-037-microsoft-365-modern-work/GLOSSARY.md)
 
 1. Microsoft 365 and the Modern Work Platform
 2. Microsoft Entra ID — Identities, Groups, Devices, and Roles
@@ -551,7 +551,7 @@ table of contents for that volume.
 
 ## Volume XXXVIII — Microsoft Certifications Beyond Azure
 
-[Volume README](volumes/volume-38-microsoft-certifications-beyond-azure/README.md) · [Index](volumes/volume-38-microsoft-certifications-beyond-azure/INDEX.md) · [Glossary](volumes/volume-38-microsoft-certifications-beyond-azure/GLOSSARY.md)
+[Volume README](volumes/volume-038-microsoft-certifications-beyond-azure/README.md) · [Index](volumes/volume-038-microsoft-certifications-beyond-azure/INDEX.md) · [Glossary](volumes/volume-038-microsoft-certifications-beyond-azure/GLOSSARY.md)
 
 1. The Microsoft Certification Program Beyond Azure
 2. Microsoft 365 Certifications
@@ -565,7 +565,7 @@ table of contents for that volume.
 
 ## Volume XXXIX — CompTIA Certification Tracks
 
-[Volume README](volumes/volume-39-comptia-certification-tracks/README.md) · [Index](volumes/volume-39-comptia-certification-tracks/INDEX.md) · [Glossary](volumes/volume-39-comptia-certification-tracks/GLOSSARY.md)
+[Volume README](volumes/volume-039-comptia-certification-tracks/README.md) · [Index](volumes/volume-039-comptia-certification-tracks/INDEX.md) · [Glossary](volumes/volume-039-comptia-certification-tracks/GLOSSARY.md)
 
 1. The CompTIA Certification Program
 2. Core Pathway — Tech+, A+, Network+, and Security+

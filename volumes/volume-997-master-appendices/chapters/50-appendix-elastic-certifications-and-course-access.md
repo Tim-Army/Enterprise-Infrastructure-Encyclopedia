@@ -5,7 +5,7 @@ The **Elastic** certification program — the credentials for building on the El
 security — organized by certification, with the exam model, the training model, and the version model.
 The program was verified on **29 July 2026** from **elastic.co** (the certification hub and the
 individual exam pages) — the same sources that anchor
-[Volume LXXXVI — Elastic Certification Tracks](../../volume-86-elastic-certifications/README.md).
+[Volume LXXXVI — Elastic Certification Tracks](../../volume-086-elastic-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Elastic offers **free on-demand training** and paid instructor-led courses through

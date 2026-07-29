@@ -4,7 +4,7 @@ The **Docker** certification program — the credential for building, running, a
 with Docker — organized by the exam, its domains, and the training model. The program was verified on
 **29 July 2026** from **Mirantis training** (training.mirantis.com), which oversees the Docker
 certification program — the same source that anchors
-[Volume XCII — Docker Certification Tracks](../../volume-92-docker-certifications/README.md).
+[Volume XCII — Docker Certification Tracks](../../volume-092-docker-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** The **Docker Certified Associate (DCA)** is administered by **Mirantis**, which

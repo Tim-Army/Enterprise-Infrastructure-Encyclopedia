@@ -5,12 +5,12 @@ operating, and defending with Palo Alto's platform (**PAN-OS/NGFW**, **Cortex XD
 **Prisma/Cortex Cloud**) — organized by level and track, with the training and delivery model.
 The program was verified on **28 July 2026** from **paloaltonetworks.com** — the same source that
 anchors
-[Volume LXV — Palo Alto Networks Certification Tracks](../../volume-65-palo-alto-networks-certifications/README.md).
+[Volume LXV — Palo Alto Networks Certification Tracks](../../volume-065-palo-alto-networks-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 This appendix is the **cert-tracks companion** to the product-focused
 [Palo Alto Networks appendix (Chapter 05)](05-appendix-palo-alto-networks-certifications-and-course-access.md)
-and [Volume XVI](../../volume-16-palo-alto-networks-security/README.md); it records the current
+and [Volume XVI](../../volume-016-palo-alto-networks-security/README.md); it records the current
 **role-based** framework.
 
 **How access works.** Training is delivered through **Palo Alto Networks Education Services**

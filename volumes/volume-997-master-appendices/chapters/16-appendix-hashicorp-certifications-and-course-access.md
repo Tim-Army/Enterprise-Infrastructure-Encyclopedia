@@ -5,7 +5,7 @@ infrastructure-automation and security-automation credentials — organized by
 product and tier, with each exam's objectives, format, price, and validity. The
 lineup and objectives were harvested on **26 July 2026** from
 **developer.hashicorp.com/certifications** — the same source that anchors
-[Volume XLII — HashiCorp Certification Tracks](../../volume-42-hashicorp-certifications/README.md).
+[Volume XLII — HashiCorp Certification Tracks](../../volume-042-hashicorp-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at HashiCorp.** Official preparation is free through

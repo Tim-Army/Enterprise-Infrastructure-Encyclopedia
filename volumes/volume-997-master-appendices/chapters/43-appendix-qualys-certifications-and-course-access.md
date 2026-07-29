@@ -4,7 +4,7 @@ The **Qualys** certification program — the credentials for operating Qualys's 
 vulnerability-management, compliance, and exposure-management platform — organized by Certified
 Specialist path, with the free training model, the platform architecture, and the course structure.
 The program was verified on **28 July 2026** from **qualys.com** — the same source that anchors
-[Volume LXXIX — Qualys Certification Tracks](../../volume-79-qualys-certifications/README.md).
+[Volume LXXIX — Qualys Certification Tracks](../../volume-079-qualys-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Qualys delivers training and certification through the **Qualys Certification &

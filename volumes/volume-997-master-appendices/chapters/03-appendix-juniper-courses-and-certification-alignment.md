@@ -5,7 +5,7 @@ the exam each course prepares you for and whether it is free. The
 course-to-exam mapping is copied from the **Recommended Training**
 section of each exam's page on Juniper's certification site — the same
 pages that anchor
-[Volume XXXI — Juniper Networks Certification Tracks](../../volume-31-juniper-networks-certifications/README.md)
+[Volume XXXI — Juniper Networks Certification Tracks](../../volume-031-juniper-networks-certifications/README.md)
 — so every row is primary-source verified; nothing is inferred.
 
 **Snapshot — 22 July 2026.** Access labels reflect Juniper's **Open

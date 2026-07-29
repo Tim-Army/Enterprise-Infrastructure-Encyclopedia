@@ -4,7 +4,7 @@ The **CyberArk** certification program — the credentials for administering Cyb
 Access Management and Identity Security platform — organized by the level progression and products,
 with the exam model, the platform architecture, and the delivery and renewal model. The program was
 verified on **28 July 2026** from **cyberark.com** and **Pearson VUE** — the same sources that anchor
-[Volume LXXVII — CyberArk Certification Tracks](../../volume-77-cyberark-certifications/README.md).
+[Volume LXXVII — CyberArk Certification Tracks](../../volume-077-cyberark-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** CyberArk delivers training through **CyberArk University** (self-paced and

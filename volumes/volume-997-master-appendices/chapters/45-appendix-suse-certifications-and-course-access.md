@@ -4,7 +4,7 @@ The **SUSE** certification program — the credentials for administering and eng
 enterprise open-source portfolio — organized by level and product, with the exam model, the training
 model, and the practice options. The program was verified on **29 July 2026** from **suse.com** — the
 same source that anchors
-[Volume LXXXI — SUSE Certification Tracks](../../volume-81-suse-certifications/README.md).
+[Volume LXXXI — SUSE Certification Tracks](../../volume-081-suse-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** SUSE delivers training through **SUSE Training** (instructor-led and digital

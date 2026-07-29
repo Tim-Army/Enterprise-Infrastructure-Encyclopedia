@@ -36,7 +36,7 @@ different:
 - **Defense in depth** layers independent controls so that a single
   control's failure does not equal a breach: network segmentation
   ([Chapter 02](02-ports-protocols-services-and-traffic-flows.md)), host hardening (this chapter), identity and access
-  management ([Chapter 03](03-addressing-subnetting-naming-time-and-identity-reference.md), [Volume X](../../volume-10-enterprise-cybersecurity/README.md)), logging and detection ([Volume XI](../../volume-11-observability-enterprise-operations/README.md)),
+  management ([Chapter 03](03-addressing-subnetting-naming-time-and-identity-reference.md), [Volume X](../../volume-010-enterprise-cybersecurity/README.md)), logging and detection ([Volume XI](../../volume-011-observability-enterprise-operations/README.md)),
   and incident response (this chapter) are deliberately redundant rather
   than each covering a unique, non-overlapping slice of risk.
 - **Hardening baselines** (CIS Benchmarks, DISA STIGs, vendor security
@@ -192,7 +192,7 @@ most organizations, executive/board-level visibility.
   this one principle.
 - Treat logging and alerting as a control in its own right, not an
   afterthought — an incident that cannot be detected cannot be responded
-  to, regardless of how strong preventive controls are ([Volume XI](../../volume-11-observability-enterprise-operations/README.md)).
+  to, regardless of how strong preventive controls are ([Volume XI](../../volume-011-observability-enterprise-operations/README.md)).
 - Test incident response plans with tabletop exercises on a recurring
   cadence, not only when a real incident forces the first execution;
   an untested plan reliably surfaces gaps at the worst possible time.
@@ -224,7 +224,7 @@ most organizations, executive/board-level visibility.
   systems to.
 - [Chapter 05](05-validation-evidence-checklists-and-acceptance.md) of this volume — evidence and acceptance discipline applied
   to hardening and recovery validation.
-- [Volume X](../../volume-10-enterprise-cybersecurity/README.md) — Enterprise Cybersecurity (full architectural and control
+- [Volume X](../../volume-010-enterprise-cybersecurity/README.md) — Enterprise Cybersecurity (full architectural and control
   treatment).
 
 **Knowledge checks**

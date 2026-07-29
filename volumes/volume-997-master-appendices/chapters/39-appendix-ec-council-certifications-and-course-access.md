@@ -4,7 +4,7 @@ The **EC-Council** certification program — the International Council of E-Comm
 cybersecurity credentials, led by the **Certified Ethical Hacker (CEH)** — organized by track, with
 the exam model, the accreditation and DoD alignment, and the delivery and renewal model. The program
 was verified on **28 July 2026** from **eccouncil.org** — the same source that anchors
-[Volume LXXV — EC-Council Certification Tracks](../../volume-75-ec-council-certifications/README.md).
+[Volume LXXV — EC-Council Certification Tracks](../../volume-075-ec-council-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** EC-Council delivers training through accredited training centers, iClass

@@ -29,7 +29,7 @@ hypothesis that can be tested. Three complementary methodologies cover
 nearly every situation in this encyclopedia:
 
 - **Bottom-up (layered) troubleshooting** starts at the physical/link
-  layer and works up the OSI stack ([Volume II](../../volume-02-network-engineering-foundations/README.md)): cable/link state, then
+  layer and works up the OSI stack ([Volume II](../../volume-002-network-engineering-foundations/README.md)): cable/link state, then
   IP reachability, then transport (port open?), then application. This is
   the right default for "no connectivity" symptoms because each layer's
   failure has a distinct, checkable signature and lower layers are
@@ -287,9 +287,9 @@ health check failing).
 - [Chapter 05](05-validation-evidence-checklists-and-acceptance.md) of this volume — evidence capture for incident timelines.
 - [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md) of this volume — incident response process for
   security-relevant findings surfaced during troubleshooting.
-- [Volume XI](../../volume-11-observability-enterprise-operations/README.md) — Observability and Enterprise Operations (metrics, tracing,
+- [Volume XI](../../volume-011-observability-enterprise-operations/README.md) — Observability and Enterprise Operations (metrics, tracing,
   and alerting that supply Decision tree 2's inputs).
-- [Volume XX](../../volume-20-wireshark-packet-analysis/README.md) — Wireshark and Packet Analysis (packet-level evidence for
+- [Volume XX](../../volume-020-wireshark-packet-analysis/README.md) — Wireshark and Packet Analysis (packet-level evidence for
   Decision tree 1).
 
 **Knowledge checks**

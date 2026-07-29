@@ -5,7 +5,7 @@ SnowPro Core, and the five role-based SnowPro Advanced tracks — organized by t
 with each credential's focus, level, and the training and practice model. The
 lineup was verified on **27 July 2026** from **learn.snowflake.com/certifications**
 — the same source that anchors
-[Volume XLIX — Snowflake Certification Tracks](../../volume-49-snowflake-certifications/README.md).
+[Volume XLIX — Snowflake Certification Tracks](../../volume-049-snowflake-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at Snowflake.** Training is delivered through **Snowflake

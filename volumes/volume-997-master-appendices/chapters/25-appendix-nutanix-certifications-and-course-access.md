@@ -6,7 +6,7 @@ and cloud tracks — organized by level, with each credential's focus, blueprint
 sections, and the training and delivery model. The lineup was verified on **27 July
 2026** from **nutanix.com/support-services/training-certification** — the same source
 that anchors
-[Volume LI — Nutanix Certification Tracks](../../volume-51-nutanix-certifications/README.md).
+[Volume LI — Nutanix Certification Tracks](../../volume-051-nutanix-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at Nutanix.** Training is delivered through **Nutanix University**

@@ -4,7 +4,7 @@ The **Trellix** certification program — the credentials for administering, det
 responding with Trellix's endpoint, network, data, and SecOps platform — organized by product, with
 the lineage, the certification model, and the training and delivery model. The program was verified
 on **28 July 2026** from **trellix.com** — the same source that anchors
-[Volume LXX — Trellix Certification Tracks](../../volume-70-trellix-certifications/README.md).
+[Volume LXX — Trellix Certification Tracks](../../volume-070-trellix-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Trellix was formed in 2022 from **McAfee Enterprise + FireEye**, and its

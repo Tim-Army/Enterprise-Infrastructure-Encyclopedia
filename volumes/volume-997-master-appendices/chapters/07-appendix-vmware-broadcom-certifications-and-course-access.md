@@ -7,7 +7,7 @@ date below was harvested on **23 July 2026** from Broadcom's own
 certification pages — read from the `getjson` education-program API
 endpoint each page injects, because the raw page HTML omits the code —
 the same harvest that anchors
-[Volume V — VMware Virtualization](../../volume-05-vmware-virtualization/README.md),
+[Volume V — VMware Virtualization](../../volume-005-vmware-virtualization/README.md),
 whose Chapters 12–20 map this program to hands-on content.
 
 **How access works at Broadcom.** VMware's model is

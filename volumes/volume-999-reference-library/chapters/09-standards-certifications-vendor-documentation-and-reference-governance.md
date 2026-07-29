@@ -79,7 +79,7 @@ except at series scale, across 23 other volumes' worth of material.
   same pattern to standards and vendor documentation references in this
   chapter.
 - **Assign explicit ownership for keeping each reference table current**,
-  consistent with the CODEOWNERS pattern from [Volume I](../../volume-01-enterprise-engineering-foundations/README.md); a reference table
+  consistent with the CODEOWNERS pattern from [Volume I](../../volume-001-enterprise-engineering-foundations/README.md); a reference table
   with no owner has, in practice, no maintenance process.
 - **Schedule reference review against two independent triggers**: a
   calendar cadence (for example, aligned with each `SOFTWARE_VERSIONS.md`
@@ -102,7 +102,7 @@ except at series scale, across 23 other volumes' worth of material.
 | IETF (Internet Engineering Task Force) | Internet protocols | [RFC 793](https://www.rfc-editor.org/rfc/rfc793)/768/792 (TCP/UDP/ICMP), [RFC 1918](https://www.rfc-editor.org/rfc/rfc1918) (private addressing), [RFC 4291](https://www.rfc-editor.org/rfc/rfc4291) (IPv6), [RFC 5905](https://www.rfc-editor.org/rfc/rfc5905) (NTP), [RFC 6749](https://www.rfc-editor.org/rfc/rfc6749) (OAuth 2.0), [RFC 4120](https://www.rfc-editor.org/rfc/rfc4120) (Kerberos) | `rfc-editor.org`, `ietf.org` |
 | IEEE (Institute of Electrical and Electronics Engineers) | Networking hardware/link-layer standards | 802.1Q (VLAN tagging), 802.1AB (LLDP), 802.3 (Ethernet), 802.11 (Wi-Fi) | `standards.ieee.org` |
 | ISO/IEC | Management systems and information security | ISO/IEC 27001 (information security management), ISO/IEC 20000 (IT service management), ISO/IEC 19011 (audit guidelines, [Chapter 05](05-validation-evidence-checklists-and-acceptance.md)) | `iso.org` |
-| NIST (National Institute of Standards and Technology) | US federal security and risk standards, widely adopted beyond federal use | SP 800-53 (controls), SP 800-61 (incident response, [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)), SP 800-88 (media sanitization, [Volume I](../../volume-01-enterprise-engineering-foundations/README.md)), CSF (Cybersecurity Framework) | `csrc.nist.gov` |
+| NIST (National Institute of Standards and Technology) | US federal security and risk standards, widely adopted beyond federal use | SP 800-53 (controls), SP 800-61 (incident response, [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)), SP 800-88 (media sanitization, [Volume I](../../volume-001-enterprise-engineering-foundations/README.md)), CSF (Cybersecurity Framework) | `csrc.nist.gov` |
 | CIS (Center for Internet Security) | Configuration hardening benchmarks | CIS Benchmarks and CIS Controls ([Chapter 04](04-configuration-templates-baselines-and-change-records.md), [Chapter 07](07-security-hardening-incident-response-and-risk-reference.md)) | `cisecurity.org` |
 | PCI SSC (Payment Card Industry Security Standards Council) | Payment card data security | PCI DSS | `pcisecuritystandards.org` |
 | ITU-T | Telecommunications standards | Referenced indirectly through vendor WAN/telecom features | `itu.int` |

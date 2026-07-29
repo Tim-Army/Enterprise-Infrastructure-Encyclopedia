@@ -4,7 +4,7 @@ The **Cribl** certification program — the free, self-study ladder across the o
 pipeline (Stream, Edge, Search, Lake) — organized by level, with each credential's focus,
 topic areas, and the training and delivery model. The lineup was verified on **27 July
 2026** from **cribl.io/university** — the same source that anchors
-[Volume LXI — Cribl Certification Tracks](../../volume-61-cribl-certifications/README.md).
+[Volume LXI — Cribl Certification Tracks](../../volume-061-cribl-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at Cribl.** Training and certification are delivered **free** through

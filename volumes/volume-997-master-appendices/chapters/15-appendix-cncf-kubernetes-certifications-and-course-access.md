@@ -6,7 +6,7 @@ credentials — organized by line, with each credential's weighted curriculum
 domains, exam format, and the training and simulator model. The lineup, domains,
 and weights were harvested on **26 July 2026** from **training.linuxfoundation.org**
 and the **cncf/curriculum** GitHub repository — the same sources that anchor
-[Volume XLI — CNCF and Kubernetes Certification Tracks](../../volume-41-cncf-kubernetes-certifications/README.md).
+[Volume XLI — CNCF and Kubernetes Certification Tracks](../../volume-041-cncf-kubernetes-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works at the Linux Foundation.** Official training is delivered as

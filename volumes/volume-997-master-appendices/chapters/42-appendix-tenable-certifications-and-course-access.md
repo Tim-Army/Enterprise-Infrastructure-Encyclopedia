@@ -4,7 +4,7 @@ The **Tenable** certification program — the credentials for operating Tenable'
 exposure-management platform — organized by product certification, with the two-part exam model, the
 platform products, and the delivery and renewal model. The program was verified on **28 July 2026**
 from **tenable.com** — the same source that anchors
-[Volume LXXVIII — Tenable Certification Tracks](../../volume-78-tenable-certifications/README.md).
+[Volume LXXVIII — Tenable Certification Tracks](../../volume-078-tenable-certifications/README.md).
 Third-party exam-dump sites were excluded as sources.
 
 **How access works.** Tenable delivers training through **Tenable University** and instructor-led

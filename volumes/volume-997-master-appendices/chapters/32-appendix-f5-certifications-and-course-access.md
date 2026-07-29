@@ -5,7 +5,7 @@ The **F5** certification program — the credentials for deploying, securing, an
 and specialization, with each credential's exams and the training and delivery model. The program
 was verified on **28 July 2026** from **education.f5.com** and **clouddocs.f5.com** — the same
 sources that anchor
-[Volume LXVI — F5 Certification Tracks](../../volume-66-f5-certifications/README.md). Third-party
+[Volume LXVI — F5 Certification Tracks](../../volume-066-f5-certifications/README.md). Third-party
 exam-dump sites were excluded as sources.
 
 **How access works.** Training is delivered through **F5 Education Services** (instructor-led and
