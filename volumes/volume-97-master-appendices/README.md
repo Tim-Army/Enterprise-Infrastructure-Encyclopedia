@@ -51,6 +51,7 @@ one place instead of scattered through volume READMEs.
 41. [Appendix — CyberArk Certifications and Course Access](chapters/41-appendix-cyberark-certifications-and-course-access.md) — the CyberArk PAM/Identity Security program: the Trustee → Defender → Sentry → Guardian progression across PAM Self-Hosted, Privilege Cloud, EPM, Secrets Manager, Identity, and Secure Cloud Access, with the Pearson VUE exam model, CyberArk University training, the Palo Alto Networks / Idira platform note, and authorized-lab practice; snapshot dated 28 July 2026.
 42. [Appendix — Tenable Certifications and Course Access](chapters/42-appendix-tenable-certifications-and-course-access.md) — the Tenable vulnerability/exposure-management program: the Vulnerability Management, Security Center, and OT Exposure product certifications with the two-part written + practical exam model, Tenable University training, free Nessus Essentials practice, the Tenable One exposure-management direction, and 2-year validity; snapshot dated 28 July 2026.
 43. [Appendix — Qualys Certifications and Course Access](chapters/43-appendix-qualys-certifications-and-course-access.md) — the Qualys Certified Specialist program (free training) across the VMDR, CSAM, TruRisk, Policy/PCI Compliance, EDR, TotalCloud, TotalAppSec, Container Security, and automation paths, on the Qualys Cloud Platform (Cloud Agents/QQL), with the free Community Edition for practice and the Enterprise TruRisk direction; snapshot dated 28 July 2026.
+44. [Appendix — ServiceNow Certifications and Course Access](chapters/44-appendix-servicenow-certifications-and-course-access.md) — the ServiceNow program on the Now Platform: the CSA foundation through CAD and the CIS product specializations to the CTA/CMA architect tiers plus Now Assist, with ServiceNow University/Now Learning training, the free Personal Developer Instance, online-proctored exams, and named-release delta-exam currency; snapshot dated 28 July 2026.
 
 ## Appendix catalog
 
@@ -100,6 +101,7 @@ one place instead of scattered through volume READMEs.
 | CyberArk certifications and course access | [Volume LXXVII](../volume-77-cyberark-certifications/README.md) | [41](chapters/41-appendix-cyberark-certifications-and-course-access.md) |
 | Tenable certifications and course access | [Volume LXXVIII](../volume-78-tenable-certifications/README.md) | [42](chapters/42-appendix-tenable-certifications-and-course-access.md) |
 | Qualys certifications and course access | [Volume LXXIX](../volume-79-qualys-certifications/README.md) | [43](chapters/43-appendix-qualys-certifications-and-course-access.md) |
+| ServiceNow certifications and course access | [Volume LXXX](../volume-80-servicenow-certifications/README.md) | [44](chapters/44-appendix-servicenow-certifications-and-course-access.md) |
 
 ## Conventions
 

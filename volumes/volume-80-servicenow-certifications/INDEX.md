@@ -1,0 +1,37 @@
+# Volume LXXX Index
+
+Alphabetized topical index for **Volume LXXX — ServiceNow Certification Tracks**.
+See also the [volume glossary](GLOSSARY.md) for term definitions and the
+[master index](../../INDEX.md) for cross-volume topics.
+
+- **Access Control Lists (ACLs)** — [Chapter 03](chapters/03-csa-data-and-security.md)
+- **Business Rules** — [Chapter 04](chapters/04-cad-application-development.md)
+- **CAD (Certified Application Developer)** — [Chapter 04](chapters/04-cad-application-development.md)
+- **Change Management** — [Chapter 05](chapters/05-cis-itsm-and-itom.md)
+- **CMDB / Configuration Items** — [Chapter 02](chapters/02-csa-platform-foundations.md), [Chapter 05](chapters/05-cis-itsm-and-itom.md)
+- **CSA (Certified System Administrator)** — [Chapter 02](chapters/02-csa-platform-foundations.md), [Chapter 03](chapters/03-csa-data-and-security.md)
+- **CTA / CMA (architect tiers)** — [Chapter 09](chapters/09-architect-currency-and-career.md)
+- **Customer Service Management (CSM)** — [Chapter 06](chapters/06-cis-csm-hr-and-workflow-automation.md)
+- **Discovery / MID Server** — [Chapter 05](chapters/05-cis-itsm-and-itom.md)
+- **Event Management** — [Chapter 05](chapters/05-cis-itsm-and-itom.md)
+- **Flow Designer** — [Chapter 06](chapters/06-cis-csm-hr-and-workflow-automation.md)
+- **GlideRecord / GlideSystem** — [Chapter 04](chapters/04-cad-application-development.md)
+- **HR Service Delivery (HRSD)** — [Chapter 06](chapters/06-cis-csm-hr-and-workflow-automation.md)
+- **Import Sets / Transform Maps** — [Chapter 03](chapters/03-csa-data-and-security.md)
+- **Incident Management** — [Chapter 05](chapters/05-cis-itsm-and-itom.md)
+- **IntegrationHub / spokes** — [Chapter 08](chapters/08-integration-performance-analytics-and-now-assist.md)
+- **Integrated Risk Management (IRM/GRC)** — [Chapter 07](chapters/07-cis-security-operations-and-grc.md)
+- **Now Assist (GenAI)** — [Chapter 08](chapters/08-integration-performance-analytics-and-now-assist.md)
+- **Now Platform** — [Chapter 01](chapters/01-the-servicenow-certification-program.md), [Chapter 02](chapters/02-csa-platform-foundations.md)
+- **Performance Analytics** — [Chapter 08](chapters/08-integration-performance-analytics-and-now-assist.md)
+- **Personal Developer Instance (PDI)** — [Chapter 01](chapters/01-the-servicenow-certification-program.md)
+- **REST integration** — [Chapter 04](chapters/04-cad-application-development.md)
+- **Roles / groups / users** — [Chapter 02](chapters/02-csa-platform-foundations.md)
+- **Scoped applications** — [Chapter 04](chapters/04-cad-application-development.md)
+- **Security Incident Response (SIR)** — [Chapter 07](chapters/07-cis-security-operations-and-grc.md)
+- **Service Catalog** — [Chapter 03](chapters/03-csa-data-and-security.md)
+- **Service Portal** — [Chapter 06](chapters/06-cis-csm-hr-and-workflow-automation.md)
+- **SLAs** — [Chapter 06](chapters/06-cis-csm-hr-and-workflow-automation.md)
+- **Table inheritance** — [Chapter 02](chapters/02-csa-platform-foundations.md)
+- **Update Sets** — [Chapter 03](chapters/03-csa-data-and-security.md)
+- **Vulnerability Response (VR)** — [Chapter 07](chapters/07-cis-security-operations-and-grc.md)
