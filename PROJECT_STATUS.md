@@ -103,11 +103,12 @@ does not by itself verify every technical claim in it.
 | XCI — Puppet Certification Tracks | 9 | Drafted |
 | XCII — Docker Certification Tracks | 9 | Drafted |
 | XCIII — ColorTokens Xshield Build-It-Yourself Lab | 9 | Drafted |
+| XCIV — Illumio Segmentation Build-It-Yourself Lab | 9 | Drafted |
 | CMXCVII — Master Appendices | 55 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 938 of 938 drafted (100%). Every volume has a
+**Total declared chapters:** 947 of 947 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
