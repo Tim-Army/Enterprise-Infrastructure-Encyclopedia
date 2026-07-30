@@ -1,0 +1,71 @@
+<svg viewBox="0 0 960 720" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab topology: a five-VM estate segmented with Elisity, identity-based policy enforced on the network with the database isolated behind the enforcement point</title>
+  <desc>
+    A Windows 11 host running VMware Workstation Pro hosts four virtual-network segments joined by one four-legged Linux router, el-gw, which stands in for the Elisity-managed access switch and is the single network enforcement point every cross-segment flow crosses. The IT/Corporate segment (VMnet8 NAT, 192.168.170.0/24) carries the host, which doubles as the attacker 'IT laptop', and the VMware NAT gateway. The Data Center segment (VMnet2 host-only, 10.10.20.0/24) holds el-app01 (nginx, classified AppServer) and el-win01 (Windows SCADA/HMI, classified HMI). The Database segment (VMnet4 host-only, 10.10.40.0/24) isolates el-db01 (PostgreSQL, classified Database, the crown jewels) behind el-gw so all access to it is policed at the enforcement point. The OT cell (VMnet3 host-only, 10.10.30.0/24) is isolated with no host adapter and holds el-ot01, an agentless Modbus PLC classified as PLC in the IdentityGraph. Two legitimate identity-to-identity flows are allowed: AppServer to Database on TCP 5432, and HMI to PLC on Modbus TCP 502. The lateral-movement flow from the compromised HMI to the Database on 5432 is denied at el-gw by identity-based policy, with no agent on any endpoint.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="720" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Elisity Identity-Based Segmentation Across Four Segments</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">el-gw is the network enforcement point (Elisity access-switch stand-in) every cross-segment flow crosses; the database is isolated behind it; policy is written by identity, enforced with no endpoint agents</text>
+  <rect x="320" y="58" width="330" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="485.0" y="77.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Windows 11 Host · Workstation Pro 17</text>
+  <text x="485.0" y="91.2" text-anchor="middle" font-size="9.5" font-weight="400" fill="#374151">Elisity admin + 'IT laptop' (attacker, Lab 5.3)</text>
+  <line x1="485" y1="102" x2="485" y2="132" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="55" y="150" width="170" height="470" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="140.0" y="318.2" text-anchor="middle" font-size="15" font-weight="700" fill="#111827">el-gw</text>
+  <text x="140.0" y="336.2" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">Ubuntu 22.04</text>
+  <text x="140.0" y="354.2" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">4-legged router</text>
+  <text x="140.0" y="372.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#b45309">= NETWORK</text>
+  <text x="140.0" y="390.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#b45309">ENFORCEMENT POINT</text>
+  <text x="140.0" y="408.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">(Elisity access-</text>
+  <text x="140.0" y="426.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">switch stand-in)</text>
+  <text x="140.0" y="444.2" text-anchor="middle" font-size="9" font-weight="700" fill="#374151">.170.10 / .20.254</text>
+  <text x="140.0" y="462.2" text-anchor="middle" font-size="9" font-weight="700" fill="#374151">.30.254 / .40.254</text>
+  <rect x="240" y="132" width="665" height="26" rx="6" fill="#eef2f8" stroke="#33415c" stroke-width="1.5"/>
+  <text x="572.5" y="150.0" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2937">VMnet8 — NAT · 'IT / Corporate' · 192.168.170.0/24</text>
+  <rect x="720" y="166" width="180" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="810.0" y="189.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">VMware NAT · .2</text>
+  <line x1="225" y1="145" x2="240" y2="145" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="240" y="250" width="665" height="26" rx="6" fill="#f0faf2" stroke="#166534" stroke-width="1.5"/>
+  <text x="572.5" y="268.0" text-anchor="middle" font-size="14" font-weight="600" fill="#14532d">VMnet2 — Host-only · 'Data Center' · 10.10.20.0/24 · no DHCP</text>
+  <rect x="250" y="285" width="250" height="62" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="375.0" y="305.0" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">el-app01</text>
+  <text x="375.0" y="320.4" text-anchor="middle" font-size="9.5" font-weight="400" fill="#374151">nginx :80 · AppServer</text>
+  <text x="375.0" y="335.7" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">10.10.20.11</text>
+  <rect x="650" y="285" width="250" height="62" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="775.0" y="305.0" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">el-win01</text>
+  <text x="775.0" y="320.4" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Win2022 · SCADA/HMI · HMI</text>
+  <text x="775.0" y="335.7" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">10.10.20.21</text>
+  <line x1="225" y1="263" x2="240" y2="263" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="240" y="385" width="665" height="26" rx="6" fill="#fff7ed" stroke="#b45309" stroke-width="1.5" stroke-dasharray="7 4"/>
+  <text x="572.5" y="403.0" text-anchor="middle" font-size="14" font-weight="600" fill="#7c2d12">VMnet4 — Host-only · 'Database' (isolated behind el-gw) · 10.10.40.0/24</text>
+  <rect x="430" y="420" width="270" height="62" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="565.0" y="440.0" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">el-db01 · Database</text>
+  <text x="565.0" y="455.4" text-anchor="middle" font-size="9" font-weight="700" fill="#7f1d1d">PostgreSQL :5432 · CROWN JEWELS</text>
+  <text x="565.0" y="470.7" text-anchor="middle" font-size="9.5" font-weight="700" fill="#374151">10.10.40.40</text>
+  <line x1="225" y1="398" x2="240" y2="398" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <rect x="240" y="520" width="665" height="26" rx="6" fill="#fff7ed" stroke="#b45309" stroke-width="1.5" stroke-dasharray="7 4"/>
+  <text x="572.5" y="538.0" text-anchor="middle" font-size="14" font-weight="600" fill="#7c2d12">VMnet3 — Host-only · 'OT Cell' (isolated, no host adapter) · 10.10.30.0/24</text>
+  <rect x="430" y="555" width="270" height="66" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="1.25" stroke-dasharray="4 3"/>
+  <text x="565.0" y="575.7" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">el-ot01 · 'PLC'</text>
+  <text x="565.0" y="592.4" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Modbus TCP :502 · PLC</text>
+  <text x="565.0" y="609.0" text-anchor="middle" font-size="9" font-weight="700" fill="#7c2d12">AGENTLESS · 10.10.30.50</text>
+  <line x1="225" y1="533" x2="240" y2="533" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="375" y1="347" x2="470" y2="420" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="300" y="372" font-size="10.5" fill="#166534">5432 (AppServer→Database)</text>
+  <line x1="720" y1="347" x2="640" y2="420" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="640" y="372" font-size="10.5" fill="#b91c1c">5432 DENIED (HMI→Database)</text>
+  <line x1="775" y1="347" x2="690" y2="555" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="760" y="500" font-size="10.5" fill="#166534">502 (HMI→PLC)</text>
+  <line x1="60" y1="665" x2="100" y2="665" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="108" y="669" font-size="11" fill="#166534">Legitimate flow (allowed)</text>
+  <line x1="363" y1="665" x2="403" y2="665" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="411" y="669" font-size="11" fill="#b91c1c">Lateral movement (denied)</text>
+  <line x1="666" y1="665" x2="706" y2="665" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="714" y="669" font-size="11" fill="#33415c">Enforced at el-gw</text>
+</svg>
