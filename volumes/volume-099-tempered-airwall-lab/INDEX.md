@@ -1,0 +1,36 @@
+# Volume XCIX Index
+
+Alphabetized topical index for **Volume XCIX — Tempered Airwall Build-It-Yourself Lab**.
+See also the [volume glossary](GLOSSARY.md) for term definitions and the
+[master index](../../INDEX.md) for cross-volume topics.
+
+- **Address plan (underlay + overlay)** — [Chapter 01](chapters/01-lab-overview-and-topology.md)
+- **Airwall Agent** — [Chapter 01](chapters/01-lab-overview-and-topology.md), [Chapter 06](chapters/06-the-hip-overlay-and-cloaking.md)
+- **Airwall Conductor** — [Chapter 01](chapters/01-lab-overview-and-topology.md), [Chapter 07](chapters/07-overlay-microsegmentation.md)
+- **Airwall Gateway** — [Chapter 08](chapters/08-airwall-gateway-for-the-plc.md)
+- **Bill of materials** — [Chapter 01](chapters/01-lab-overview-and-topology.md)
+- **Break-glass rollback** — [Chapter 09](chapters/09-operations-troubleshooting-teardown.md)
+- **Cloaking (dark underlay)** — [Chapter 06](chapters/06-the-hip-overlay-and-cloaking.md), [Chapter 07](chapters/07-overlay-microsegmentation.md)
+- **Cryptographic identity (public key)** — [Chapter 06](chapters/06-the-hip-overlay-and-cloaking.md)
+- **Default-deny / dark** — [Chapter 07](chapters/07-overlay-microsegmentation.md)
+- **Design exercises** — [Chapter 07](chapters/07-overlay-microsegmentation.md)
+- **Encryption in transit** — [Chapter 07](chapters/07-overlay-microsegmentation.md)
+- **Flat underlay** — [Chapter 05](chapters/05-flat-network-and-lateral-movement.md)
+- **HIP (Host Identity Protocol)** — [Chapter 01](chapters/01-lab-overview-and-topology.md), [Chapter 06](chapters/06-the-hip-overlay-and-cloaking.md)
+- **Hyper-V / VBS conflict** — [Chapter 02](chapters/02-host-preparation.md)
+- **Lateral movement (simulated)** — [Chapter 05](chapters/05-flat-network-and-lateral-movement.md)
+- **Management path (out-of-band underlay)** — [Chapter 01](chapters/01-lab-overview-and-topology.md), [Chapter 09](chapters/09-operations-troubleshooting-teardown.md)
+- **Modbus TCP** — [Chapter 04](chapters/04-building-the-virtual-machines.md), [Chapter 08](chapters/08-airwall-gateway-for-the-plc.md)
+- **Overlay hub** — [Chapter 06](chapters/06-the-hip-overlay-and-cloaking.md), [Chapter 07](chapters/07-overlay-microsegmentation.md)
+- **Overlay network / trust policy** — [Chapter 07](chapters/07-overlay-microsegmentation.md)
+- **PLC (agentless workload)** — [Chapter 04](chapters/04-building-the-virtual-machines.md), [Chapter 08](chapters/08-airwall-gateway-for-the-plc.md)
+- **PostgreSQL tier** — [Chapter 04](chapters/04-building-the-virtual-machines.md)
+- **SCADA/HMI station** — [Chapter 04](chapters/04-building-the-virtual-machines.md)
+- **Snapshots (baseline set)** — [Chapter 04](chapters/04-building-the-virtual-machines.md)
+- **Topology (underlay + overlay)** — [Chapter 01](chapters/01-lab-overview-and-topology.md)
+- **Track 1 / Track 2** — [Chapter 01](chapters/01-lab-overview-and-topology.md)
+- **Troubleshooting playbook** — [Chapter 09](chapters/09-operations-troubleshooting-teardown.md)
+- **VMnet2 (Data Center underlay)** — [Chapter 03](chapters/03-virtual-networks.md)
+- **VMnet3 (isolated OT cell)** — [Chapter 03](chapters/03-virtual-networks.md)
+- **VMnet8 (NAT/IT underlay)** — [Chapter 03](chapters/03-virtual-networks.md)
+- **WireGuard (native overlay)** — [Chapter 06](chapters/06-the-hip-overlay-and-cloaking.md)

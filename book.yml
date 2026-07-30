@@ -3441,6 +3441,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Operations, Troubleshooting, and Teardown"
         path: volumes/volume-098-elisity-lab/chapters/09-operations-troubleshooting-teardown.md
+  - id: volume-099
+    number: "XCIX"
+    slug: volume-099-tempered-airwall-lab
+    title: "Tempered Airwall Build-It-Yourself Lab"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Lab Overview and Topology"
+        path: volumes/volume-099-tempered-airwall-lab/chapters/01-lab-overview-and-topology.md
+      - id: 02
+        title: "Chapter 02: Host Preparation"
+        path: volumes/volume-099-tempered-airwall-lab/chapters/02-host-preparation.md
+      - id: 03
+        title: "Chapter 03: Building the Virtual Networks"
+        path: volumes/volume-099-tempered-airwall-lab/chapters/03-virtual-networks.md
+      - id: 04
+        title: "Chapter 04: Building the Virtual Machines"
+        path: volumes/volume-099-tempered-airwall-lab/chapters/04-building-the-virtual-machines.md
+      - id: 05
+        title: "Chapter 05: The Flat Network and Lateral Movement"
+        path: volumes/volume-099-tempered-airwall-lab/chapters/05-flat-network-and-lateral-movement.md
+      - id: 06
+        title: "Chapter 06: The HIP Overlay and Cloaking"
+        path: volumes/volume-099-tempered-airwall-lab/chapters/06-the-hip-overlay-and-cloaking.md
+      - id: 07
+        title: "Chapter 07: Overlay Microsegmentation"
+        path: volumes/volume-099-tempered-airwall-lab/chapters/07-overlay-microsegmentation.md
+      - id: 08
+        title: "Chapter 08: The Airwall Gateway for the Agentless PLC"
+        path: volumes/volume-099-tempered-airwall-lab/chapters/08-airwall-gateway-for-the-plc.md
+      - id: 09
+        title: "Chapter 09: Operations, Troubleshooting, and Teardown"
+        path: volumes/volume-099-tempered-airwall-lab/chapters/09-operations-troubleshooting-teardown.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
