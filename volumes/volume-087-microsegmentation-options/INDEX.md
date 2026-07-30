@@ -59,3 +59,6 @@ See also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **Vendor viability checks** — [Chapter 13](chapters/13-identity-based-and-overlay-independents.md)
 - **Xage Security** — [Chapter 14](chapters/14-ot-and-cyber-physical-segmentation.md)
 - **Zscaler / Airgap** — [Chapter 14](chapters/14-ot-and-cyber-physical-segmentation.md)
+- **Federal contract vehicles (GSA MAS, SEWP)** — [Chapter 15](chapters/15-comparison-matrix-and-sources.md)
+- **Support contacts** — [Chapter 15](chapters/15-comparison-matrix-and-sources.md)
+- **TAA (Trade Agreements Act) compliance** — [Chapter 15](chapters/15-comparison-matrix-and-sources.md)

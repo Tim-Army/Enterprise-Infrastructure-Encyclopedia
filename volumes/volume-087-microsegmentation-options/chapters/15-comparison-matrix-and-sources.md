@@ -130,6 +130,115 @@ registry yourself — it does not mean absent.
 [NIST CMVP validated modules search](https://csrc.nist.gov/projects/cryptographic-module-validation-program/validated-modules/search)
 and FedRAMP in the [FedRAMP Marketplace](https://marketplace.fedramp.gov/).
 
+## Federal procurement: TAA, contract vehicles, and support contacts
+
+### How TAA compliance actually works
+
+The **Trade Agreements Act of 1979 (TAA)** governs federal procurement of foreign goods. Federal
+agencies may buy only articles that are wholly the growth, product, or manufacture of the United States
+or a **designated country**, or that have been **substantially transformed** in the US or a designated
+country into a new and different article of commerce with a distinct name, character, or use.
+
+Three consequences shape the table below, and they are why this volume does **not** print a
+company-wide "TAA: Yes" column:
+
+1. **TAA attaches to a product, not a company.** Compliance is determined per SKU by where that unit
+   was manufactured or substantially transformed. The same vendor can ship a compliant and a
+   non-compliant SKU of the same product family in the same quarter.
+2. **The evidence is a document you request.** Acceptable proof is a **manufacturer's TAA letter** or a
+   **Certificate of Origin** naming the SKU. A marketing page saying "TAA compliant" is not evidence.
+3. **Getting it wrong is not a paperwork problem.** A single non-compliant SKU on a GSA catalog can
+   trigger a deletion modification, a refund demand, or in the worst case a **False Claims Act**
+   referral. Treat a vendor's verbal assurance as unusable.
+
+For **software and SaaS**, the test is substantial transformation — generally, where the software was
+developed — and for cloud services FedRAMP authorization is usually the controlling federal
+requirement rather than TAA. For **open-source** options there is no manufacturer to issue a letter at
+all: TAA attaches to whatever commercial distribution and support subscription you actually purchase,
+not to the upstream project.
+
+### Table 4 — TAA posture and evidence path
+
+*Category determines how TAA applies. Obtain the SKU-level document before purchase.*
+
+| Option | TAA category | What to request |
+| --- | --- | --- |
+| Cisco (ACI, ISE, Secure Workload) | Hardware + software | TAA letter per appliance model and per software SKU |
+| Arista MSS-Group | Hardware + subscription | TAA letter per switch model; CloudVision origin statement |
+| HPE Aruba CX 10000 | Hardware (DPU switch) | TAA letter naming the CX 10000 SKU and DPU |
+| Juniper / Fortinet / Check Point | Hardware + software | TAA letter per appliance model; Fortinet routes federal through Fortinet Federal, Inc. |
+| NVIDIA BlueField | Hardware (adapter) | TAA letter per adapter part number, via the server OEM |
+| Nutanix Flow | Software on OEM hardware | Software origin statement; TAA letter for the node hardware from its OEM |
+| VMware NSX | Software | Software origin statement |
+| Illumio / Guardicore / TrueFort / ColorTokens / Zero Networks | Software / SaaS | Substantial-transformation statement; FedRAMP status usually controls |
+| Elisity | SaaS + on-switch enforcement | Substantial-transformation statement; confirm control-plane hosting |
+| Tempered Airwall | Hardware gateways + software | TAA letter per gateway model (via Johnson Controls) |
+| Xage / Claroty / Nozomi / TXOne | Appliance/sensor + software | TAA letter per sensor or appliance model |
+| Zscaler / Airgap | SaaS | Substantial-transformation statement; FedRAMP controls |
+| Istio / Linkerd / Consul / Calico / Cilium | Open source | No upstream TAA letter exists — request it from the commercial distributor you buy support from |
+
+### Table 5 — US government contracts and federal entities
+
+Two facts make contract lookup confusing, and both were confirmed while compiling this table.
+
+First, **the manufacturer usually is not the contract holder.** GSA eLibrary lists most software
+security vendors as a *manufacturer* whose products are available through partners; the MAS contract
+number belongs to a reseller. Searching eLibrary for Illumio, for example, returns Illumio as a
+manufacturer under MAS rather than a contract number of its own. Ask the vendor which contract holders
+carry its SKUs.
+
+Second, **several vendors operate distinct federal entities or portals**, which is where federal
+support, authorized products, and cleared personnel actually live.
+
+| Option | Federal entity or portal | Vehicles to check |
+| --- | --- | --- |
+| Fortinet | **Fortinet Federal, Inc.** — [fortinetfederal.com](https://www.fortinetfederal.com) | GSA MAS, NASA SEWP, DoD ESI |
+| Palo Alto Networks | Federal support portal — [support-fed.paloaltonetworks.us](https://support-fed.paloaltonetworks.us/Support/) | GSA MAS, NASA SEWP |
+| Illumio | Illumio Government Cloud (**FedRAMP Authorized, Moderate**) | GSA MAS via partners (listed as manufacturer) |
+| Zscaler | Government offerings incl. ZPA-Gov (**FedRAMP Authorized**) | GSA MAS, NASA SEWP |
+| Claroty | xDome for Government (**FedRAMP In Process, High**) | Confirm before federal commitment |
+| Cisco / Juniper / Arista / HPE / Check Point / NVIDIA / Nutanix | Established federal programs and partner networks | GSA MAS, NASA SEWP, ITES-SW2, DoD ESI |
+| Xage / Nozomi / TXOne / Elisity / Tempered | Verify per vendor | GSA MAS via partners |
+| Open-source options | None | Vehicle belongs to the support vendor you buy from |
+
+**Look contracts up yourself** — vehicle participation changes far faster than any book:
+
+- [GSA eLibrary](https://www.gsaelibrary.gsa.gov/) — MAS contract holders, by contractor or manufacturer
+- [GSA Advantage](https://www.gsaadvantage.gov/) — published federal pricing for listed SKUs
+- [NASA SEWP](https://www.sewp.nasa.gov/) — the government-wide IT vehicle most of this hardware moves on
+- [SAM.gov](https://sam.gov/) — entity registration and award history
+- [FedRAMP Marketplace](https://marketplace.fedramp.gov/) — cloud service authorization status
+
+### Table 6 — Support contacts
+
+Support routing is **entitlement-based**: the number you are meant to call depends on your contract,
+severity level, and region, and several vendors publish no public number at all because access requires
+portal authentication. Only numbers published on a vendor's own contact page are printed here; where a
+vendor publishes none, the official page is linked instead of a guess.
+
+Federal customers should assume a **different** contact path from the commercial one — see Table 5.
+
+| Option | Published support telephone | Support email | Official contact page |
+| --- | --- | --- | --- |
+| **Fortinet** | **+1 408 542 7780** (US, English/Spanish); **+1 613 670 8994** (Canada) | none published | [fortinet.com/support/contact](https://www.fortinet.com/support/contact) |
+| Cisco | Published per region on the worldwide contacts page | portal-based | [Cisco worldwide contacts](https://www.cisco.com/c/en/us/support/web/tsd-cisco-worldwide-contacts.html) |
+| Palo Alto Networks | Published on the contact-support page | portal-based | [paloaltonetworks.com/company/contact-support](https://www.paloaltonetworks.com/company/contact-support) |
+| Arista | Portal and regional numbers | `support@arista.com` (public alias) | [arista.com/en/support](https://www.arista.com/en/support) |
+| HPE Aruba | Regional numbers via HPE support | portal-based | [hpe.com/support](https://www.hpe.com/us/en/services/support.html) |
+| Juniper | Regional JTAC numbers | portal-based | [juniper.net/support](https://www.juniper.net/us/en/support.html) |
+| Check Point | Regional numbers | portal-based | [checkpoint.com/support-services](https://www.checkpoint.com/support-services/contact-support/) |
+| Nutanix | Regional numbers | portal-based | [nutanix.com/support-services](https://www.nutanix.com/support-services) |
+| VMware / Broadcom | Regional numbers | portal-based | [broadcom.com/support](https://www.broadcom.com/support) |
+| Illumio / Guardicore / Zero Networks / TrueFort / ColorTokens / Elisity | Portal or named CSM | portal-based | Vendor links in Table 1 |
+| Xage / Claroty / Nozomi / TXOne / Tempered | Portal or named CSM | portal-based | Vendor links in Table 1 |
+| Zscaler | Regional numbers in the portal | portal-based | [zscaler.com/company/contact](https://www.zscaler.com/company/contact) |
+| Istio / Linkerd / Consul / Calico / Cilium | None (community) | none | Project sites in Table 1; commercial support via Buoyant, IBM/HashiCorp, Tigera, Cisco/Isovalent |
+
+**Do not paste a number from any book — including this one — into an incident runbook.** Record the
+number your own entitlement gives you, and re-check it when the contract renews. Everything above was
+read from vendor contact pages on **30 July 2026**; Cisco's page blocks automated retrieval, so its
+numbers are deliberately not reproduced here.
+
 ## Hands-On Lab
 
 ### Lab 15.1 — Filter the matrix by hard constraints

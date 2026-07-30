@@ -33,3 +33,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **SPIFFE / SPIRE** — a standard workload-identity format (`spiffe://…`) and its reference issuing system, enabling cryptographic rather than address-based policy.
 - **SXP** — the TrustSec protocol that carries IP-to-SGT bindings out of band where switches cannot tag inline; subject to per-node binding limits.
 - **Visibility platform vs enforcement platform** — in OT, the distinction between products that map assets and flows (Nozomi, Claroty) and products that constrain traffic (Xage, TXOne, Zscaler/Airgap).
+- **Designated country** — a country with a qualifying trade agreement with the United States; TAA permits federal purchase of articles made or substantially transformed there.
+- **GSA MAS (Multiple Award Schedule)** — the principal federal purchasing vehicle. For most software security vendors the contract is held by a reseller, with the vendor listed only as manufacturer.
+- **Substantial transformation** — the TAA test by which an article becomes a new and different article of commerce, with a distinct name, character, or use, in the country where the work was done.
+- **TAA (Trade Agreements Act of 1979)** — the statute governing federal procurement of foreign goods. Compliance is determined **per SKU** and evidenced by a manufacturer's TAA letter or Certificate of Origin, not by a marketing claim.
