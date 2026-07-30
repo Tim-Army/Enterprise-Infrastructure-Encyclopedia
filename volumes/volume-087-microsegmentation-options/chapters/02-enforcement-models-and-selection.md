@@ -28,6 +28,22 @@ Microsegmentation products differ mainly in **where they enforce** policy. The m
    Native and free; cloud-only and coarse.
 8. **Container/eBPF** — Kubernetes NetworkPolicy, Calico, Cilium (eBPF, identity-based). Native to
    clusters; CNI-dependent.
+9. **NAC group tag** — identity assigns a tag at authentication; switches enforce group-to-group ACLs
+   (Cisco ISE/TrustSec SGT-SGACL, Arista MSS-Group). Agentless and topology-independent; gated by
+   switch hardware support. See [Chapter 10](10-network-fabric-and-nac-based.md).
+10. **DPU/SmartNIC offload** — a stateful firewall in programmable silicon in the data path (HPE Aruba
+    CX 10000 with AMD Pensando, NVIDIA BlueField). Wire-rate, and enforces from **outside the host's
+    trust domain**, so it survives host compromise; requires specific hardware. See
+    [Chapter 11](11-dpu-and-platform-native.md).
+11. **Service mesh / workload identity** — mutual TLS on cryptographic workload identity with L7
+    authorization (Istio, Linkerd, Consul, SPIFFE/SPIRE). The finest granularity available, and free of
+    license cost; covers only workloads inside the mesh. See
+    [Chapter 12](12-service-mesh-and-workload-identity.md).
+
+Models 9–11 were added after the original eight. They matter because each answers a question the first
+eight cannot: model 9 reaches devices with no host firewall to program, model 10 keeps enforcing when
+the host itself is owned, and model 11 authorizes on identity rather than address. A complete design
+usually layers several models rather than choosing one.
 
 No model is universally best. The **selection rubric** weighs: **coverage** (Windows/Linux/legacy/OT/
 IoT/cloud/K8s/network gear), **visibility & dependency mapping**, **policy automation**, **enforcement
@@ -53,7 +69,8 @@ the framework used to compare the options in the following chapters.
 Confirm the framework:
 
 ```text
-Models: network | hypervisor | host-agent | agentless-OS-FW | EDR-leveraged | appliance | cloud-native | container/eBPF
+Models: network | hypervisor | host-agent | agentless-OS-FW | EDR-leveraged | appliance |
+cloud-native | container/eBPF | NAC-group-tag | DPU/SmartNIC | service-mesh
 Rubric: coverage + visibility/mapping + automation + granularity + scale + failure-mode + compliance + TCO
 Weight the rubric to YOUR environment; score each option; no universal winner
 ```
@@ -182,7 +199,8 @@ match your risk.
 ## Summary and Completion Checklist
 
 Microsegmentation is enforced through eight models — network, hypervisor, host-agent, agentless
-OS-firewall, EDR-leveraged, agentless appliance, cloud-native, and container/eBPF — each with distinct
+OS-firewall, EDR-leveraged, agentless appliance, cloud-native, container/eBPF, NAC group tag,
+DPU/SmartNIC offload, and service mesh — each with distinct
 trade-offs. A weighted rubric (coverage, visibility, automation, granularity, scale, failure mode,
 compliance, TCO) tuned to your environment turns the comparison from opinion into a score.
 

@@ -21,3 +21,15 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **Ring-fencing** — isolating a group of assets (a flat or high-risk zone) behind a segmentation boundary.
 - **Security group** — an AWS stateful, instance-level allowlist of permitted traffic.
 - **Xshield** — ColorTokens' microsegmentation platform spanning host-agent, EDR, cloud, Kubernetes, and Gatekeeper enforcement.
+- **Air-gapped deployment** — an installation with no connectivity to external networks; requires on-premises control planes and offline update paths.
+- **CMVP (Cryptographic Module Validation Program)** — the NIST program that issues FIPS 140 certificates to specific cryptographic modules and versions. A certificate number is the only evidence of validation.
+- **DPU (Data Processing Unit)** — a programmable processor on a NIC or switch that runs enforcement outside the host's trust domain, so policy survives host compromise.
+- **FedRAMP "In Process"** — a Marketplace state indicating an authorization is being pursued. It is **not** authorization and permits no federal use.
+- **HIP (Host Identity Protocol)** — the identity-based protocol underlying Tempered Airwall's encrypted overlay, which makes protected devices unaddressable rather than merely filtered.
+- **IdentityGraph** — Elisity's aggregated view of each asset's identity and behavior, enriched from directory, EDR, and CMDB sources, used to drive policy.
+- **MSS-Group** — Arista's Multi-Domain Segmentation Service group policy, enforced on EOS switches and managed through CloudVision.
+- **SGACL (Security Group ACL)** — the Cisco TrustSec construct that enforces group-to-group permissions at the egress device.
+- **SGT (Security Group Tag)** — the tag Cisco ISE assigns at authentication, carried inline or by SXP and enforced by SGACLs.
+- **SPIFFE / SPIRE** — a standard workload-identity format (`spiffe://…`) and its reference issuing system, enabling cryptographic rather than address-based policy.
+- **SXP** — the TrustSec protocol that carries IP-to-SGT bindings out of band where switches cannot tag inline; subject to per-node binding limits.
+- **Visibility platform vs enforcement platform** — in OT, the distinction between products that map assets and flows (Nozomi, Claroty) and products that constrain traffic (Xage, TXOne, Zscaler/Airgap).

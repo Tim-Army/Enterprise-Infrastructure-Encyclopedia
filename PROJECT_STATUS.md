@@ -96,7 +96,7 @@ does not by itself verify every technical claim in it.
 | LXXXIV — NetApp Certification Tracks | 9 | Drafted |
 | LXXXV — Veeam Certification Tracks | 9 | Drafted |
 | LXXXVI — Elastic Certification Tracks | 9 | Drafted |
-| LXXXVII — Microsegmentation Options | 9 | Drafted |
+| LXXXVII — Microsegmentation Options | 15 | Drafted |
 | LXXXVIII — MongoDB Certification Tracks | 9 | Drafted |
 | LXXXIX — GitHub Certification Tracks | 9 | Drafted |
 | XC — Datadog Certification Tracks | 9 | Drafted |
@@ -107,7 +107,7 @@ does not by itself verify every technical claim in it.
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 932 of 932 drafted (100%). Every volume has a
+**Total declared chapters:** 938 of 938 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

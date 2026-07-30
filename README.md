@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.104-blue)
+![Release](https://img.shields.io/badge/release-v1.2.105-blue)
 
-**v1.2.104 — latest release.** 96 volumes, 932 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.104) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.105 — latest release.** 96 volumes, 938 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.105) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -25,7 +25,7 @@ The series combines architecture and theory with implementation guidance, automa
 
 ## Curriculum
 
-96 volumes, 932 chapters. Each volume has a dedicated
+96 volumes, 938 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -116,7 +116,7 @@ The series combines architecture and theory with implementation guidance, automa
 | LXXXIV | [NetApp Certification Tracks](volumes/volume-084-netapp-certifications/README.md) | 9 |
 | LXXXV | [Veeam Certification Tracks](volumes/volume-085-veeam-certifications/README.md) | 9 |
 | LXXXVI | [Elastic Certification Tracks](volumes/volume-086-elastic-certifications/README.md) | 9 |
-| LXXXVII | [Microsegmentation Options](volumes/volume-087-microsegmentation-options/README.md) | 9 |
+| LXXXVII | [Microsegmentation Options](volumes/volume-087-microsegmentation-options/README.md) | 15 |
 | LXXXVIII | [MongoDB Certification Tracks](volumes/volume-088-mongodb-certifications/README.md) | 9 |
 | LXXXIX | [GitHub Certification Tracks](volumes/volume-089-github-certifications/README.md) | 9 |
 | XC | [Datadog Certification Tracks](volumes/volume-090-datadog-certifications/README.md) | 9 |

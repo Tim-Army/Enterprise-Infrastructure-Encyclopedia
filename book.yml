@@ -3019,7 +3019,7 @@ volumes:
     number: "LXXXVII"
     slug: volume-087-microsegmentation-options
     title: "Microsegmentation Options"
-    chapter_count: 9
+    chapter_count: 15
     build_eligible: true
     chapters:
       - id: 01
@@ -3049,6 +3049,24 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing and Rolling Out Microsegmentation"
         path: volumes/volume-087-microsegmentation-options/chapters/09-choosing-and-rolling-out.md
+      - id: 10
+        title: "Chapter 10: Network-Fabric and NAC-Based Segmentation"
+        path: volumes/volume-087-microsegmentation-options/chapters/10-network-fabric-and-nac-based.md
+      - id: 11
+        title: "Chapter 11: DPU-Accelerated and Platform-Native Segmentation"
+        path: volumes/volume-087-microsegmentation-options/chapters/11-dpu-and-platform-native.md
+      - id: 12
+        title: "Chapter 12: Service Mesh and Workload-Identity Segmentation"
+        path: volumes/volume-087-microsegmentation-options/chapters/12-service-mesh-and-workload-identity.md
+      - id: 13
+        title: "Chapter 13: Identity-Based and Overlay Independents"
+        path: volumes/volume-087-microsegmentation-options/chapters/13-identity-based-and-overlay-independents.md
+      - id: 14
+        title: "Chapter 14: OT and Cyber-Physical Segmentation"
+        path: volumes/volume-087-microsegmentation-options/chapters/14-ot-and-cyber-physical-segmentation.md
+      - id: 15
+        title: "Chapter 15: Comparison Matrix, Compliance, and Sources"
+        path: volumes/volume-087-microsegmentation-options/chapters/15-comparison-matrix-and-sources.md
   - id: volume-088
     number: "LXXXVIII"
     slug: volume-088-mongodb-certifications
