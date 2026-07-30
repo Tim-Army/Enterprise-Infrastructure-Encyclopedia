@@ -1,11 +1,16 @@
 # Volume XCIII — ColorTokens Xshield Build-It-Yourself Lab
 
-> A single-laptop, five-virtual-machine microsegmentation lab: build a heterogeneous enterprise in
-> miniature on VMware Workstation, prove that a flat network lets an attacker move sideways, then
-> contain that movement with ColorTokens Xshield concepts — host-agent enforcement on Linux and
-> Windows, tag-based policy, Observe-before-Enforce, and the agentless Gatekeeper fronting a device
-> that can host no agent. Every exercise is written on two tracks: real Xshield console steps, and a
-> native-equivalent path using the same enforcement primitives the agent programs.
+> A build-it-yourself microsegmentation lab on a single Windows 11 host: five virtual machines
+> across three isolated VMware segments — a three-legged Linux router, an nginx application tier, a
+> PostgreSQL database, a Windows SCADA/HMI station, and an agentless "PLC" speaking Modbus TCP 502 —
+> built, deliberately broken to reproduce lateral movement across a flat network, then contained
+> with ColorTokens Xshield: choosing one of the **five enforcement modes** per asset, **Progressive
+> Segmentation** (discover, visualize, ring-fence, tighten), **Observe** before **Enforce**,
+> tag-based policy, Windows Filtering Platform enforcement, and the **agentless Gatekeeper**
+> fronting the one device that can host no agent. **30 walkthrough labs** across nine chapters, each
+> written on two tracks — the real Xshield console, or the native `nftables` and Windows Filtering
+> Platform primitives the agent itself programs — with every policy proved by a negative test before
+> it is enforced, and a break-glass rollback rehearsed before teardown.
 
 ## Overview
 
