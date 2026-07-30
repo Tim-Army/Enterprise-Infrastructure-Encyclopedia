@@ -1,0 +1,68 @@
+<svg viewBox="0 0 960 680" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab topology: a five-VM IT/OT estate segmented with Akamai Guardicore, agents on the servers and agentless protection for the PLC</title>
+  <desc>
+    A Windows 11 host running VMware Workstation Pro hosts three virtual-network segments joined by one three-legged Linux router, gc-gw, which runs a Guardicore agent and is the managed enforcement point for the OT cell. The IT/Corporate segment (VMnet8 NAT, 192.168.170.0/24) carries the host itself, which doubles as the attacker 'IT laptop', and the VMware NAT gateway. The Data Center segment (VMnet2 host-only, 10.10.20.0/24) holds three agent-enforced workloads: gc-app01 (nginx), gc-db01 (PostgreSQL, the crown jewels), and gc-win01 (Windows Server SCADA/HMI, enforced through the Windows Filtering Platform). The OT cell (VMnet3 host-only, 10.10.30.0/24) is isolated with no host adapter and holds gc-ot01, a Modbus PLC that can run no agent; it is protected by policy on its managed neighbors and on gc-gw. Two flows are legitimate and allowed: gc-app01 to gc-db01 on TCP 5432, and gc-win01 (the HMI) to gc-ot01 on Modbus TCP 502. The lateral-movement flow from the compromised gc-win01 to gc-db01 on 5432 is denied by the enforced policy, and the PLC is reachable only by routing through gc-gw.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="680" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Akamai Guardicore Across an IT/OT Estate</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Agents on the router and servers, agentless protection for the PLC — gc-gw is the one routing choke point between three segments</text>
+  <rect x="300" y="68" width="360" height="54" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="90.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Windows 11 Host · Workstation Pro 17</text>
+  <text x="480.0" y="108.4" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Guardicore admin (Centra access) + 'IT laptop' (attacker, Lab 5.3)</text>
+  <rect x="60" y="140" width="840" height="30" rx="6" fill="#eef2f8" stroke="#33415c" stroke-width="1.5"/>
+  <text x="480.0" y="160.0" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2937">VMnet8 — NAT · 'IT / Corporate' · 192.168.170.0/24 · DHCP .128–.254</text>
+  <rect x="60" y="188" width="170" height="52" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="145.0" y="209.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#111827">VMware NAT</text>
+  <text x="145.0" y="227.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#374151">192.168.170.2</text>
+  <line x1="480" y1="122" x2="480" y2="140" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="380" y="196" width="200" height="104" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="225.9" text-anchor="middle" font-size="14" font-weight="700" fill="#111827">gc-gw</text>
+  <text x="480.0" y="243.9" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">Ubuntu 22.04 · 3-legged router</text>
+  <text x="480.0" y="261.9" text-anchor="middle" font-size="10.5" font-weight="700" fill="#b45309">agent · enforcement pt for OT</text>
+  <text x="480.0" y="279.9" text-anchor="middle" font-size="10" font-weight="700" fill="#374151">.170.10 / .20.254 / .30.254</text>
+  <line x1="480" y1="170" x2="480" y2="196" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <line x1="480" y1="315" x2="335" y2="315" stroke="#33415c" stroke-width="1.5"/>
+  <line x1="335" y1="315" x2="335" y2="468" stroke="#33415c" stroke-width="1.5"/>
+  <line x1="480" y1="300" x2="480" y2="330" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="60" y="330" width="840" height="30" rx="6" fill="#f0faf2" stroke="#166534" stroke-width="1.5"/>
+  <text x="480.0" y="350.0" text-anchor="middle" font-size="14" font-weight="600" fill="#14532d">VMnet2 — Host-only · 'Data Center' · 10.10.20.0/24 · no DHCP</text>
+  <rect x="70" y="372" width="250" height="74" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="195.0" y="395.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">gc-app01</text>
+  <text x="195.0" y="413.6" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">nginx :80 · app tier</text>
+  <text x="195.0" y="431.6" text-anchor="middle" font-size="10" font-weight="700" fill="#166534">agent · 10.10.20.11</text>
+  <rect x="355" y="372" width="250" height="74" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="395.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">gc-db01</text>
+  <text x="480.0" y="413.6" text-anchor="middle" font-size="9.5" font-weight="700" fill="#7f1d1d">PostgreSQL :5432 · CROWN JEWELS</text>
+  <text x="480.0" y="431.6" text-anchor="middle" font-size="10" font-weight="700" fill="#166534">agent · 10.10.20.12</text>
+  <rect x="640" y="372" width="250" height="74" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="765.0" y="395.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">gc-win01</text>
+  <text x="765.0" y="413.6" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">Win2022 · SCADA / HMI</text>
+  <text x="765.0" y="431.6" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">agent (WFP) · 10.10.20.21</text>
+  <line x1="195" y1="360" x2="195" y2="372" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <line x1="765" y1="360" x2="765" y2="372" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <line x1="320" y1="405" x2="355" y2="405" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="324" y="398" font-size="10.5" fill="#166534">5432</text>
+  <line x1="640" y1="424" x2="605" y2="424" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="612" y="462" font-size="10.5" fill="#b91c1c">5432 DENIED</text>
+  <line x1="335" y1="456" x2="335" y2="474" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="60" y="474" width="840" height="30" rx="6" fill="#fff7ed" stroke="#b45309" stroke-width="1.5" stroke-dasharray="7 4"/>
+  <text x="480.0" y="494.0" text-anchor="middle" font-size="14" font-weight="600" fill="#7c2d12">VMnet3 — Host-only · 'OT Cell' · 10.10.30.0/24 · isolated (no host adapter)</text>
+  <rect x="355" y="516" width="250" height="78" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="1.25" stroke-dasharray="4 3"/>
+  <text x="480.0" y="536.3" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">gc-ot01 · 'PLC'</text>
+  <text x="480.0" y="551.8" text-anchor="middle" font-size="10" font-weight="400" fill="#374151">Modbus TCP :502</text>
+  <text x="480.0" y="567.3" text-anchor="middle" font-size="9.5" font-weight="700" fill="#7c2d12">AGENTLESS — protected via gc-gw</text>
+  <text x="480.0" y="582.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#374151">10.10.30.50</text>
+  <line x1="765" y1="446" x2="585" y2="516" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="735" y="462" font-size="10.5" fill="#166534">502</text>
+  <line x1="60" y1="640" x2="100" y2="640" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="108" y="644" font-size="11" fill="#166534">Legitimate flow (allowed)</text>
+  <line x1="363" y1="640" x2="403" y2="640" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="411" y="644" font-size="11" fill="#b91c1c">Lateral movement (denied)</text>
+  <line x1="666" y1="640" x2="706" y2="640" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="714" y="644" font-size="11" fill="#33415c">Routing via gc-gw</text>
+</svg>

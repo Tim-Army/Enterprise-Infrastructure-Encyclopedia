@@ -3305,6 +3305,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Operations, Troubleshooting, and Teardown"
         path: volumes/volume-094-illumio-lab/chapters/09-operations-troubleshooting-teardown.md
+  - id: volume-095
+    number: "XCV"
+    slug: volume-095-akamai-guardicore-lab
+    title: "Akamai Guardicore Segmentation Build-It-Yourself Lab"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Lab Overview and Topology"
+        path: volumes/volume-095-akamai-guardicore-lab/chapters/01-lab-overview-and-topology.md
+      - id: 02
+        title: "Chapter 02: Host Preparation"
+        path: volumes/volume-095-akamai-guardicore-lab/chapters/02-host-preparation.md
+      - id: 03
+        title: "Chapter 03: Building the Virtual Networks"
+        path: volumes/volume-095-akamai-guardicore-lab/chapters/03-virtual-networks.md
+      - id: 04
+        title: "Chapter 04: Building the Virtual Machines"
+        path: volumes/volume-095-akamai-guardicore-lab/chapters/04-building-the-virtual-machines.md
+      - id: 05
+        title: "Chapter 05: The Flat Network and Lateral Movement"
+        path: volumes/volume-095-akamai-guardicore-lab/chapters/05-flat-network-and-lateral-movement.md
+      - id: 06
+        title: "Chapter 06: Reveal, Agents, and Labels"
+        path: volumes/volume-095-akamai-guardicore-lab/chapters/06-reveal-agents-and-labels.md
+      - id: 07
+        title: "Chapter 07: Policy — Allow, Block, Alert, then Enforce"
+        path: volumes/volume-095-akamai-guardicore-lab/chapters/07-policy-alert-then-enforce.md
+      - id: 08
+        title: "Chapter 08: The Agentless PLC and Guardicore Detection"
+        path: volumes/volume-095-akamai-guardicore-lab/chapters/08-agentless-ot-and-detection.md
+      - id: 09
+        title: "Chapter 09: Operations, Troubleshooting, and Teardown"
+        path: volumes/volume-095-akamai-guardicore-lab/chapters/09-operations-troubleshooting-teardown.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
