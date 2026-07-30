@@ -37,6 +37,10 @@ for volume_dir in volumes/*/; do
   done
 done
 
+if [[ -f book.yml ]]; then
+  python3 scripts/python/check_book_yml.py || fail=1
+fi
+
 if command -v pnpm >/dev/null 2>&1 && [[ -f package.json ]]; then
   pnpm exec markdownlint-cli2 "**/*.md" || fail=1
   pnpm exec cspell lint --no-progress "**/*.md" || fail=1
