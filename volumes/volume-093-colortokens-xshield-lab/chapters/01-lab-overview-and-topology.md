@@ -185,7 +185,9 @@ rollback.
 Three isolated Layer 2 segments, joined by a single multi-homed Linux
 router that doubles as the Gatekeeper-equivalent for the OT cell.
 
-![Lab topology: the Windows 11 host, three VMware virtual networks (VMnet8 NAT “IT/Corporate”, VMnet2 host-only “Data Center”, VMnet3 host-only “OT Cell”), the five virtual machines, and the legitimate versus lateral-movement flows. ct-gw is the sole path between segments and the enforcement choke point for the OT cell.](../../../diagrams/volume-093-colortokens-xshield-lab/chapter-01-lab-topology.png)
+![Lab topology: the Windows 11 host, three VMware virtual networks (VMnet8 NAT “IT/Corporate”, VMnet2 host-only “Data Center”, VMnet3 host-only “OT Cell”), the five virtual machines, and the legitimate versus lateral-movement flows. ct-gw is the sole path between segments and the enforcement choke point for the OT cell.](../../../diagrams/volume-093-colortokens-xshield-lab/chapter-01-lab-topology.svg)
+
+*Figure 1-1. The five-VM IT/OT estate this lab builds: host agents on the Data Center servers, the agentless Gatekeeper (ct-gw) fronting the isolated Modbus PLC, the two legitimate east-west flows allowed, and the compromised-HMI-to-database lateral movement denied.*
 
 A text-only rendering of the same topology follows for reference:
 

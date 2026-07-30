@@ -1,5 +1,9 @@
 # Chapter 07: ColorTokens Xshield
 
+![Topology diagram of the Chapter 7 microsegmentation lab: a Windows 11 Workstation host with three virtual-network segments joined by the ct-gw router, which also serves as the agentless ColorTokens Xshield Gatekeeper for the OT cell. Host agents enforce policy on the three Data Center servers, while the isolated Modbus PLC is protected only by the Gatekeeper in front of it. The app-to-database flow on TCP 5432 and the HMI-to-PLC flow on Modbus TCP 502 are allowed, and the compromised-HMI-to-database lateral movement on 5432 is denied.](../../../diagrams/volume-087-microsegmentation-options/chapter-07-colortokens-xshield-topology.svg)
+
+*Figure 7-1. The five-VM IT/OT estate segmented with ColorTokens Xshield: host agents on the Data Center servers, the agentless Gatekeeper (ct-gw) fronting the isolated Modbus PLC, the two legitimate east-west flows allowed, and the lateral movement to the database denied.*
+
 ## Learning Objectives
 
 - Explain Xshield's hybrid enforcement (agent, EDR, cloud, agentless Gatekeeper).
