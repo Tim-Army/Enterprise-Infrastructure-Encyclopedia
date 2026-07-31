@@ -3577,6 +3577,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Operations, Troubleshooting, and Teardown"
         path: volumes/volume-102-cilium-lab/chapters/09-operations-troubleshooting-teardown.md
+  - id: volume-103
+    number: "CIII"
+    slug: volume-103-istio-lab
+    title: "Istio Build-It-Yourself Lab"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Lab Overview and Topology"
+        path: volumes/volume-103-istio-lab/chapters/01-lab-overview-and-topology.md
+      - id: 02
+        title: "Chapter 02: Host Preparation"
+        path: volumes/volume-103-istio-lab/chapters/02-host-preparation.md
+      - id: 03
+        title: "Chapter 03: Building the Cluster and Installing Istio"
+        path: volumes/volume-103-istio-lab/chapters/03-building-the-cluster.md
+      - id: 04
+        title: "Chapter 04: Deploying the Workloads"
+        path: volumes/volume-103-istio-lab/chapters/04-deploying-the-workloads.md
+      - id: 05
+        title: "Chapter 05: The Flat Mesh and Lateral Movement"
+        path: volumes/volume-103-istio-lab/chapters/05-flat-mesh-and-lateral-movement.md
+      - id: 06
+        title: "Chapter 06: mTLS and Workload Identity"
+        path: volumes/volume-103-istio-lab/chapters/06-mtls-and-workload-identity.md
+      - id: 07
+        title: "Chapter 07: AuthorizationPolicy"
+        path: volumes/volume-103-istio-lab/chapters/07-authorizationpolicy.md
+      - id: 08
+        title: "Chapter 08: The Mesh Boundary"
+        path: volumes/volume-103-istio-lab/chapters/08-the-mesh-boundary.md
+      - id: 09
+        title: "Chapter 09: Operations, Troubleshooting, and Teardown"
+        path: volumes/volume-103-istio-lab/chapters/09-operations-troubleshooting-teardown.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
