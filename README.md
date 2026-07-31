@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.126-blue)
+![Release](https://img.shields.io/badge/release-v1.2.127-blue)
 
-**v1.2.126 — latest release.** 115 volumes, 1109 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.126) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.127 — latest release.** 116 volumes, 1118 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.127) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 115-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 116-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-115 volumes, 1109 chapters. Each volume has a dedicated
+116 volumes, 1118 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -142,6 +142,7 @@ The series combines architecture and theory with implementation guidance, automa
 | CX | [Check Point CloudGuard Build-It-Yourself Lab](volumes/volume-110-checkpoint-cloudguard-lab/README.md) | 9 |
 | CXI | [VMware NSX Distributed Firewall Build-It-Yourself Lab](volumes/volume-111-vmware-nsx-dfw-lab/README.md) | 9 |
 | CXII | [Xage Security Build-It-Yourself Lab](volumes/volume-112-xage-security-lab/README.md) | 9 |
+| CXIII | [Claroty xDome Build-It-Yourself Lab](volumes/volume-113-claroty-xdome-lab/README.md) | 9 |
 | CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 55 |
 | CMXCVIII | [Acronyms](volumes/volume-998-acronyms/README.md) | 4 |
 | CMXCIX | [Reference Library](volumes/volume-999-reference-library/README.md) | 9 |
