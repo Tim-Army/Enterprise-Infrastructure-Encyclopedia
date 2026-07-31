@@ -113,11 +113,12 @@ does not by itself verify every technical claim in it.
 | CI — Calico Build-It-Yourself Lab | 9 | Drafted |
 | CII — Cilium Build-It-Yourself Lab | 9 | Drafted |
 | CIII — Istio Build-It-Yourself Lab | 9 | Drafted |
+| CIV — Linkerd Build-It-Yourself Lab | 9 | Drafted |
 | CMXCVII — Master Appendices | 55 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1028 of 1028 drafted (100%). Every volume has a
+**Total declared chapters:** 1037 of 1037 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

@@ -1,0 +1,56 @@
+<svg viewBox="0 0 960 470" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab topology: a kind Kubernetes cluster with the Linkerd service mesh, meshed workloads with proxies and one un-meshed PLC</title>
+  <desc>
+    A single Linux host runs Docker, kind, kubectl, and the linkerd CLI. Inside it a kind Kubernetes cluster runs the Linkerd control plane. Namespace dc (data center) holds web (ServiceAccount sa-web), api (sa-api, an HTTP service), and db (sa-db, PostgreSQL on 5432); each has an injected Linkerd Rust micro-proxy and a ServiceAccount identity. Namespace ot (operations) holds hmi (sa-hmi, meshed) and plc (app=plc, a Modbus listener on 502) which is deliberately un-meshed with no proxy. Linkerd secures all mesh traffic with automatic zero-configuration mutual TLS and authorizes by identity: a Server plus AuthorizationPolicy permits web to db on 5432 and web to api on 8080, and hmi to the un-meshed plc via egress. The compromised-hmi-to-db flow is denied because the sa-hmi identity is not authorized. Because the plc is un-meshed, Linkerd cannot enforce on it, so a CNI network policy is paired with the mesh.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="470" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Kubernetes Microsegmentation with the Linkerd Service Mesh</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Rust micro-proxies give each workload a ServiceAccount identity; automatic zero-config mTLS; Server + AuthorizationPolicy authorize by identity; the PLC is un-meshed</text>
+  <rect x="60" y="54" width="840" height="34" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="74.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">Single Linux host · Docker + kind + kubectl + linkerd</text>
+  <rect x="60" y="100" width="840" height="26" rx="6" fill="#f4f7fb" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="480.0" y="118.0" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">kind Kubernetes cluster · Linkerd control plane · Rust micro-proxies · automatic mTLS + Server/AuthorizationPolicy</text>
+  <rect x="70" y="156" width="300" height="24" rx="6" fill="#f0faf2" stroke="#166534" stroke-width="1.5"/>
+  <text x="220.0" y="173.0" text-anchor="middle" font-size="14" font-weight="600" fill="#14532d">namespace: dc  (linkerd.io/inject)</text>
+  <rect x="85" y="190" width="130" height="60" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="150.0" y="209.2" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">web  +proxy</text>
+  <text x="150.0" y="223.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">sa-web</text>
+  <text x="150.0" y="238.5" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">client</text>
+  <rect x="232" y="190" width="130" height="60" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="297.0" y="209.2" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">db  +proxy</text>
+  <text x="297.0" y="223.8" text-anchor="middle" font-size="9" font-weight="700" fill="#7f1d1d">sa-db · :5432</text>
+  <text x="297.0" y="238.5" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">PostgreSQL</text>
+  <rect x="158" y="268" width="140" height="60" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="228.0" y="287.2" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">api  +proxy</text>
+  <text x="228.0" y="301.9" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">sa-api</text>
+  <text x="228.0" y="316.5" text-anchor="middle" font-size="9" font-weight="700" fill="#374151">HTTP :8080</text>
+  <line x1="215" y1="220" x2="232" y2="220" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="140" y="292" font-size="10.5" fill="#166534">5432 (auto mTLS, by identity)</text>
+  <line x1="150" y1="250" x2="210" y2="268" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="150" y="348" font-size="10.5" fill="#166534">8080 (authorized by sa-web identity)</text>
+  <rect x="500" y="156" width="380" height="24" rx="6" fill="#fff7ed" stroke="#b45309" stroke-width="1.5" stroke-dasharray="7 4"/>
+  <text x="690.0" y="173.0" text-anchor="middle" font-size="14" font-weight="600" fill="#7c2d12">namespace: ot  (hmi meshed, plc un-meshed)</text>
+  <rect x="520" y="190" width="150" height="60" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="595.0" y="209.2" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">hmi  +proxy</text>
+  <text x="595.0" y="223.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">sa-hmi</text>
+  <text x="595.0" y="238.5" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">operator</text>
+  <rect x="700" y="190" width="150" height="60" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="1.25" stroke-dasharray="4 3"/>
+  <text x="775.0" y="209.2" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">plc  NO proxy</text>
+  <text x="775.0" y="223.8" text-anchor="middle" font-size="9" font-weight="700" fill="#7c2d12">app=plc · :502</text>
+  <text x="775.0" y="238.5" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">un-meshed</text>
+  <line x1="670" y1="220" x2="700" y2="220" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="650" y="292" font-size="10.5" fill="#166534">502 (egress)</text>
+  <line x1="520" y1="300" x2="372" y2="300" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="360" y="328" font-size="10.5" fill="#b91c1c">hmi → db DENIED (sa-hmi identity not authorized)</text>
+  <line x1="70" y1="392" x2="110" y2="392" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="118" y="396" font-size="11" fill="#166534">Allowed (auto mTLS + authz)</text>
+  <line x1="391" y1="392" x2="431" y2="392" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="439" y="396" font-size="11" fill="#b91c1c">Lateral movement (denied)</text>
+  <line x1="694" y1="392" x2="734" y2="392" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="742" y="396" font-size="11" fill="#6b7280">Meshed pod (proxy)</text>
+</svg>
