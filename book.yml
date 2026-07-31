@@ -3509,6 +3509,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Operations, Troubleshooting, and Teardown"
         path: volumes/volume-100-cisco-secure-workload-lab/chapters/09-operations-troubleshooting-teardown.md
+  - id: volume-101
+    number: "CI"
+    slug: volume-101-calico-lab
+    title: "Calico Build-It-Yourself Lab"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Lab Overview and Topology"
+        path: volumes/volume-101-calico-lab/chapters/01-lab-overview-and-topology.md
+      - id: 02
+        title: "Chapter 02: Host Preparation"
+        path: volumes/volume-101-calico-lab/chapters/02-host-preparation.md
+      - id: 03
+        title: "Chapter 03: Building the Cluster with Calico"
+        path: volumes/volume-101-calico-lab/chapters/03-building-the-cluster.md
+      - id: 04
+        title: "Chapter 04: Deploying the Workloads"
+        path: volumes/volume-101-calico-lab/chapters/04-deploying-the-workloads.md
+      - id: 05
+        title: "Chapter 05: The Flat Cluster and Lateral Movement"
+        path: volumes/volume-101-calico-lab/chapters/05-flat-cluster-and-lateral-movement.md
+      - id: 06
+        title: "Chapter 06: NetworkPolicy and the Calico Model"
+        path: volumes/volume-101-calico-lab/chapters/06-networkpolicy-and-the-calico-model.md
+      - id: 07
+        title: "Chapter 07: GlobalNetworkPolicy and Tiers"
+        path: volumes/volume-101-calico-lab/chapters/07-globalnetworkpolicy-and-tiers.md
+      - id: 08
+        title: "Chapter 08: Beyond Pods — HostEndpoints and NetworkSets"
+        path: volumes/volume-101-calico-lab/chapters/08-beyond-pods-hostendpoints-and-networksets.md
+      - id: 09
+        title: "Chapter 09: Operations, Troubleshooting, and Teardown"
+        path: volumes/volume-101-calico-lab/chapters/09-operations-troubleshooting-teardown.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
