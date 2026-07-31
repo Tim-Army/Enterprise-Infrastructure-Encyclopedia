@@ -1,0 +1,52 @@
+<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab topology: a vSRX firewall enforcing zone policies over a four-zone estate</title>
+  <desc>
+    A vSRX firewall, optionally managed by Security Director, segments a four-zone estate. The web endpoint is in zone APP, db is in zone DB listening on 5432, hmi is in zone MGMT, and plc is in zone OT listening on 502. Security policies permit APP to DB on 5432 and MGMT to OT on 502, and the SRX default inter-zone deny drops everything else, including the MGMT to DB lateral flow from hmi to db. Connected Security adds reactive containment: a dynamic address group can quarantine a compromised host by membership, with a standing deny policy, without editing a rule. The volume is two-track: Track 1 uses a real vSRX, Track 2 reproduces zones and policies with Linux nftables.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Firewall Microsegmentation with Juniper Connected Security</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A vSRX segments four security zones; policies permit APP-&gt;DB:5432 and MGMT-&gt;OT:502, the default denies the rest, and a dynamic group can quarantine a host</text>
+  <rect x="330" y="50" width="300" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="68.8" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">vSRX firewall  ·  Security Director</text>
+  <text x="480.0" y="82.8" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">zones · policies · dynamic-address groups</text>
+  <rect x="190" y="118" width="580" height="28" rx="6" fill="#f4f7fb" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="480.0" y="137.0" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">vSRX enforcement  ·  default inter-zone deny  ·  permit by policy (address + application)</text>
+  <line x1="480" y1="94" x2="480" y2="118" stroke="#33415c" stroke-width="1.4"/>
+  <rect x="60" y="190" width="130" height="62" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="125.0" y="209.5" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">web</text>
+  <text x="125.0" y="224.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">zone APP</text>
+  <text x="125.0" y="240.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">10.20.1.10</text>
+  <rect x="285" y="190" width="130" height="62" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="350.0" y="209.5" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">db</text>
+  <text x="350.0" y="224.8" text-anchor="middle" font-size="9" font-weight="700" fill="#7f1d1d">zone DB · :5432</text>
+  <text x="350.0" y="240.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">PostgreSQL</text>
+  <rect x="510" y="190" width="130" height="62" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="575.0" y="209.5" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">hmi</text>
+  <text x="575.0" y="224.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">zone MGMT</text>
+  <text x="575.0" y="240.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">operator</text>
+  <rect x="735" y="190" width="130" height="62" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="800.0" y="209.5" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">plc</text>
+  <text x="800.0" y="224.8" text-anchor="middle" font-size="9" font-weight="700" fill="#7c2d12">zone OT · :502</text>
+  <text x="800.0" y="240.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Modbus</text>
+  <line x1="125" y1="146" x2="125" y2="190" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="350" y1="146" x2="350" y2="190" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="575" y1="146" x2="575" y2="190" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="800" y1="146" x2="800" y2="190" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="190" y1="214" x2="285" y2="214" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="120" y="296" font-size="10.5" fill="#166534">APP-&gt;DB 5432 permit</text>
+  <line x1="510" y1="236" x2="415" y2="236" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="356" y="330" font-size="10.5" fill="#b91c1c">MGMT-&gt;DB DENIED (lateral)</text>
+  <line x1="640" y1="214" x2="735" y2="214" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="600" y="296" font-size="10.5" fill="#166534">MGMT-&gt;OT 502 permit</text>
+  <line x1="60" y1="420" x2="100" y2="420" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="108" y="424" font-size="11" fill="#166534">Permitted by security policy</text>
+  <line x1="390" y1="420" x2="430" y2="420" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="438" y="424" font-size="11" fill="#b91c1c">Lateral movement (default inter-zone deny)</text>
+  <line x1="846" y1="420" x2="886" y2="420" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="894" y="424" font-size="11" fill="#33415c">Firewall + central management</text>
+</svg>

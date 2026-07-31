@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.121-blue)
+![Release](https://img.shields.io/badge/release-v1.2.122-blue)
 
-**v1.2.121 — latest release.** 110 volumes, 1064 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.121) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.122 — latest release.** 111 volumes, 1073 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.122) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 110-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 111-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-110 volumes, 1064 chapters. Each volume has a dedicated
+111 volumes, 1073 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -137,6 +137,7 @@ The series combines architecture and theory with implementation guidance, automa
 | CV | [HashiCorp Consul Build-It-Yourself Lab](volumes/volume-105-consul-lab/README.md) | 9 |
 | CVI | [Cloud-Native Segmentation Build-It-Yourself Lab](volumes/volume-106-cloud-native-segmentation-lab/README.md) | 9 |
 | CVII | [Cisco ISE and TrustSec Build-It-Yourself Lab](volumes/volume-107-cisco-ise-trustsec-lab/README.md) | 9 |
+| CVIII | [Juniper Connected Security Build-It-Yourself Lab](volumes/volume-108-juniper-connected-security-lab/README.md) | 9 |
 | CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 55 |
 | CMXCVIII | [Acronyms](volumes/volume-998-acronyms/README.md) | 4 |
 | CMXCIX | [Reference Library](volumes/volume-999-reference-library/README.md) | 9 |
