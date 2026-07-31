@@ -3645,6 +3645,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Operations, Troubleshooting, and Teardown"
         path: volumes/volume-104-linkerd-lab/chapters/09-operations-troubleshooting-teardown.md
+  - id: volume-105
+    number: "CV"
+    slug: volume-105-consul-lab
+    title: "HashiCorp Consul Build-It-Yourself Lab"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Lab Overview and Topology"
+        path: volumes/volume-105-consul-lab/chapters/01-lab-overview-and-topology.md
+      - id: 02
+        title: "Chapter 02: Host Preparation"
+        path: volumes/volume-105-consul-lab/chapters/02-host-preparation.md
+      - id: 03
+        title: "Chapter 03: Building the Cluster and Installing Consul"
+        path: volumes/volume-105-consul-lab/chapters/03-installing-consul.md
+      - id: 04
+        title: "Chapter 04: Deploying the Workloads"
+        path: volumes/volume-105-consul-lab/chapters/04-deploying-the-workloads.md
+      - id: 05
+        title: "Chapter 05: The Flat Mesh and Lateral Movement"
+        path: volumes/volume-105-consul-lab/chapters/05-flat-mesh-and-lateral-movement.md
+      - id: 06
+        title: "Chapter 06: mTLS and Identity with Connect"
+        path: volumes/volume-105-consul-lab/chapters/06-mtls-and-identity.md
+      - id: 07
+        title: "Chapter 07: Service Intentions"
+        path: volumes/volume-105-consul-lab/chapters/07-service-intentions.md
+      - id: 08
+        title: "Chapter 08: Multi-Platform Reach and the Boundary"
+        path: volumes/volume-105-consul-lab/chapters/08-multi-platform-and-the-boundary.md
+      - id: 09
+        title: "Chapter 09: Operations, Troubleshooting, and Teardown"
+        path: volumes/volume-105-consul-lab/chapters/09-operations-troubleshooting-teardown.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
