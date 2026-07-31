@@ -1,0 +1,38 @@
+# Volume C Index
+
+Alphabetized topical index for **Volume C — Cisco Secure Workload Build-It-Yourself Lab**.
+See also the [volume glossary](GLOSSARY.md) for term definitions and the
+[master index](../../INDEX.md) for cross-volume topics.
+
+- **Address plan** — [Chapter 01](chapters/01-lab-overview-and-topology.md)
+- **Agent (Secure Workload)** — [Chapter 01](chapters/01-lab-overview-and-topology.md), [Chapter 06](chapters/06-telemetry-adm-and-auto-policy.md)
+- **Application Dependency Mapping (ADM)** — [Chapter 06](chapters/06-telemetry-adm-and-auto-policy.md)
+- **Auto-generated policy** — [Chapter 06](chapters/06-telemetry-adm-and-auto-policy.md)
+- **Bill of materials** — [Chapter 01](chapters/01-lab-overview-and-topology.md)
+- **Break-glass rollback** — [Chapter 09](chapters/09-operations-troubleshooting-teardown.md)
+- **Cluster (control plane)** — [Chapter 01](chapters/01-lab-overview-and-topology.md), [Chapter 06](chapters/06-telemetry-adm-and-auto-policy.md)
+- **conntrack telemetry** — [Chapter 06](chapters/06-telemetry-adm-and-auto-policy.md)
+- **Default-deny (forward chain)** — [Chapter 08](chapters/08-protecting-the-agentless-plc.md)
+- **Design exercises** — [Chapter 07](chapters/07-policy-analysis-and-enforcement.md)
+- **Enforcement (host firewall)** — [Chapter 07](chapters/07-policy-analysis-and-enforcement.md)
+- **Flat network** — [Chapter 05](chapters/05-flat-network-and-lateral-movement.md)
+- **Hyper-V / VBS conflict** — [Chapter 02](chapters/02-host-preparation.md)
+- **ipset enforcement** — [Chapter 07](chapters/07-policy-analysis-and-enforcement.md)
+- **Lateral movement (simulated)** — [Chapter 05](chapters/05-flat-network-and-lateral-movement.md)
+- **Management path (out-of-band)** — [Chapter 01](chapters/01-lab-overview-and-topology.md), [Chapter 09](chapters/09-operations-troubleshooting-teardown.md)
+- **Modbus TCP** — [Chapter 04](chapters/04-building-the-virtual-machines.md), [Chapter 08](chapters/08-protecting-the-agentless-plc.md)
+- **PLC (agentless workload)** — [Chapter 04](chapters/04-building-the-virtual-machines.md), [Chapter 08](chapters/08-protecting-the-agentless-plc.md)
+- **Policy analysis (what-if)** — [Chapter 07](chapters/07-policy-analysis-and-enforcement.md)
+- **PostgreSQL tier** — [Chapter 04](chapters/04-building-the-virtual-machines.md)
+- **Ring-fencing** — [Chapter 06](chapters/06-telemetry-adm-and-auto-policy.md), [Chapter 07](chapters/07-policy-analysis-and-enforcement.md)
+- **SCADA/HMI station** — [Chapter 04](chapters/04-building-the-virtual-machines.md)
+- **Scopes (hierarchy)** — [Chapter 06](chapters/06-telemetry-adm-and-auto-policy.md), [Chapter 07](chapters/07-policy-analysis-and-enforcement.md)
+- **Snapshots (baseline set)** — [Chapter 04](chapters/04-building-the-virtual-machines.md)
+- **Telemetry (comprehensive)** — [Chapter 06](chapters/06-telemetry-adm-and-auto-policy.md)
+- **Topology** — [Chapter 01](chapters/01-lab-overview-and-topology.md)
+- **Track 1 / Track 2** — [Chapter 01](chapters/01-lab-overview-and-topology.md)
+- **Troubleshooting playbook** — [Chapter 09](chapters/09-operations-troubleshooting-teardown.md)
+- **VMnet2 (Data Center segment)** — [Chapter 03](chapters/03-virtual-networks.md)
+- **VMnet3 (isolated OT cell)** — [Chapter 03](chapters/03-virtual-networks.md)
+- **VMnet8 (NAT/IT segment)** — [Chapter 03](chapters/03-virtual-networks.md)
+- **Windows Filtering Platform (WFP)** — [Chapter 07](chapters/07-policy-analysis-and-enforcement.md)

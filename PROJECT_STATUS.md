@@ -109,11 +109,12 @@ does not by itself verify every technical claim in it.
 | XCVII — TrueFort Build-It-Yourself Lab | 9 | Drafted |
 | XCVIII — Elisity Build-It-Yourself Lab | 9 | Drafted |
 | XCIX — Tempered Airwall Build-It-Yourself Lab | 9 | Drafted |
+| C — Cisco Secure Workload Build-It-Yourself Lab | 9 | Drafted |
 | CMXCVII — Master Appendices | 55 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 992 of 992 drafted (100%). Every volume has a
+**Total declared chapters:** 1001 of 1001 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
