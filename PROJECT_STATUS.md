@@ -124,11 +124,12 @@ does not by itself verify every technical claim in it.
 | CXII — Xage Security Build-It-Yourself Lab | 9 | Drafted |
 | CXIII — Claroty xDome Build-It-Yourself Lab | 9 | Drafted |
 | CXIV — Nozomi Networks Build-It-Yourself Lab | 9 | Drafted |
+| CXV — TXOne Networks Build-It-Yourself Lab | 9 | Drafted |
 | CMXCVII — Master Appendices | 55 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1127 of 1127 drafted (100%). Every volume has a
+**Total declared chapters:** 1136 of 1136 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

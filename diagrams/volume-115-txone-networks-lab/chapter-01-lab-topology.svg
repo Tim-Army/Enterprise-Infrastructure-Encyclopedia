@@ -1,0 +1,51 @@
+<svg viewBox="0 0 960 440" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab topology: TXOne EdgeIPS inline in front of an unpatchable PLC, plus StellarProtect endpoint lockdown</title>
+  <desc>
+    TXOne EdgeIPS is inserted inline as a transparent bump-in-the-wire in front of an unpatchable PLC on port 502, applying a virtual patch, a trust list, and command filtering without changing the PLC's IP. The operator's sanctioned Modbus read passes through to the PLC. The attacker's exploit and any untrusted traffic are dropped inline, so the vulnerable PLC is shielded without being patched. StellarProtect locks the engineering workstation to a hash-based application allowlist, so an unapproved malware binary is blocked from executing. The volume is two-track: Track 1 describes EdgeIPS, EdgeFire, and StellarProtect, Track 2 builds a transparent inline inspector and an application-lockdown launcher in Python plus nftables.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="440" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Inline OT Protection with TXOne EdgeIPS + StellarProtect</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A transparent inline EdgeIPS virtual-patches an unpatchable PLC and enforces a trust list and command filter; StellarProtect locks the engineering host to an allowlist</text>
+  <rect x="40" y="108" width="120" height="50" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="100.0" y="128.3" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">hmi</text>
+  <text x="100.0" y="145.3" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">operator</text>
+  <rect x="40" y="190" width="120" height="50" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="100.0" y="210.3" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">atk</text>
+  <text x="100.0" y="227.3" text-anchor="middle" font-size="9" font-weight="400" fill="#7f1d1d">attacker</text>
+  <rect x="320" y="118" width="280" height="122" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="460.0" y="146.8" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">TXOne EdgeIPS (inline)</text>
+  <text x="460.0" y="164.8" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">transparent bump-in-the-wire</text>
+  <text x="460.0" y="182.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">virtual patch</text>
+  <text x="460.0" y="200.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">trust list · command filter</text>
+  <text x="460.0" y="218.8" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">no IP change to the PLC</text>
+  <rect x="730" y="140" width="175" height="76" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="1.25" stroke-dasharray="4 3"/>
+  <text x="817.5" y="163.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">plc · :502</text>
+  <text x="817.5" y="181.7" text-anchor="middle" font-size="9" font-weight="700" fill="#7c2d12">unpatchable</text>
+  <text x="817.5" y="199.7" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">shielded, not patched</text>
+  <line x1="160" y1="133" x2="320" y2="150" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="175" y="120" font-size="10.5" fill="#166534">Modbus read</text>
+  <line x1="160" y1="215" x2="320" y2="205" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="165" y="250" font-size="10.5" fill="#b91c1c">exploit / untrusted</text>
+  <line x1="600" y1="178" x2="730" y2="178" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="615" y="150" font-size="10.5" fill="#166534">sanctioned only</text>
+  <text x="618" y="238" font-size="9.5" font-weight="700" fill="#b91c1c">exploit dropped inline; PLC never patched</text>
+  <rect x="40" y="300" width="120" height="50" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="100.0" y="320.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">malware</text>
+  <text x="100.0" y="337.2" text-anchor="middle" font-size="9" font-weight="400" fill="#7f1d1d">binary</text>
+  <rect x="320" y="296" width="280" height="58" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="460.0" y="319.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">ews (engineering host)</text>
+  <text x="460.0" y="337.7" text-anchor="middle" font-size="9" font-weight="700" fill="#166534">StellarProtect: application lockdown</text>
+  <line x1="160" y1="325" x2="320" y2="325" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="168" y="372" font-size="10.5" fill="#b91c1c">blocked: not allowlisted</text>
+  <line x1="40" y1="400" x2="80" y2="400" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="88" y="404" font-size="11" fill="#166534">Allowed</text>
+  <line x1="181" y1="400" x2="221" y2="400" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="229" y="404" font-size="11" fill="#b91c1c">Blocked (inline / lockdown)</text>
+  <line x1="502" y1="400" x2="542" y2="400" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="550" y="404" font-size="11" fill="#33415c">TXOne controls</text>
+</svg>
