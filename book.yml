@@ -4019,6 +4019,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Operations, Troubleshooting, and Teardown"
         path: volumes/volume-115-txone-networks-lab/chapters/09-operations-troubleshooting-teardown.md
+  - id: volume-116
+    number: "CXVI"
+    slug: volume-116-zscaler-airgap-lab
+    title: "Zscaler/Airgap Build-It-Yourself Lab"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Lab Overview and Topology"
+        path: volumes/volume-116-zscaler-airgap-lab/chapters/01-lab-overview-and-topology.md
+      - id: 02
+        title: "Chapter 02: Lab Preparation"
+        path: volumes/volume-116-zscaler-airgap-lab/chapters/02-lab-preparation.md
+      - id: 03
+        title: "Chapter 03: Lateral Spread on the Flat VLAN"
+        path: volumes/volume-116-zscaler-airgap-lab/chapters/03-lateral-spread.md
+      - id: 04
+        title: "Chapter 04: Network of One"
+        path: volumes/volume-116-zscaler-airgap-lab/chapters/04-network-of-one.md
+      - id: 05
+        title: "Chapter 05: Zero-Trust East-West Policy"
+        path: volumes/volume-116-zscaler-airgap-lab/chapters/05-zero-trust-policy.md
+      - id: 06
+        title: "Chapter 06: The Ransomware Kill Switch"
+        path: volumes/volume-116-zscaler-airgap-lab/chapters/06-ransomware-kill-switch.md
+      - id: 07
+        title: "Chapter 07: Enforcement and Verification"
+        path: volumes/volume-116-zscaler-airgap-lab/chapters/07-enforcement-and-verification.md
+      - id: 08
+        title: "Chapter 08: Zero Trust Exchange, Scale, and the Boundary"
+        path: volumes/volume-116-zscaler-airgap-lab/chapters/08-zero-trust-exchange-and-boundary.md
+      - id: 09
+        title: "Chapter 09: Operations, Troubleshooting, and Teardown"
+        path: volumes/volume-116-zscaler-airgap-lab/chapters/09-operations-troubleshooting-teardown.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
