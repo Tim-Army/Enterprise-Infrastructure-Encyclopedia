@@ -116,11 +116,12 @@ does not by itself verify every technical claim in it.
 | CIV — Linkerd Build-It-Yourself Lab | 9 | Drafted |
 | CV — HashiCorp Consul Build-It-Yourself Lab | 9 | Drafted |
 | CVI — Cloud-Native Segmentation Build-It-Yourself Lab | 9 | Drafted |
+| CVII — Cisco ISE and TrustSec Build-It-Yourself Lab | 9 | Drafted |
 | CMXCVII — Master Appendices | 55 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1055 of 1055 drafted (100%). Every volume has a
+**Total declared chapters:** 1064 of 1064 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
