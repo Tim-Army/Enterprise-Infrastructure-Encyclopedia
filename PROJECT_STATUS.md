@@ -120,11 +120,12 @@ does not by itself verify every technical claim in it.
 | CVIII — Juniper Connected Security Build-It-Yourself Lab | 9 | Drafted |
 | CIX — Fortinet ISFW and VDOM Build-It-Yourself Lab | 9 | Drafted |
 | CX — Check Point CloudGuard Build-It-Yourself Lab | 9 | Drafted |
+| CXI — VMware NSX Distributed Firewall Build-It-Yourself Lab | 9 | Drafted |
 | CMXCVII — Master Appendices | 55 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1091 of 1091 drafted (100%). Every volume has a
+**Total declared chapters:** 1100 of 1100 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
