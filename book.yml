@@ -3679,6 +3679,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Operations, Troubleshooting, and Teardown"
         path: volumes/volume-105-consul-lab/chapters/09-operations-troubleshooting-teardown.md
+  - id: volume-106
+    number: "CVI"
+    slug: volume-106-cloud-native-segmentation-lab
+    title: "Cloud-Native Segmentation Build-It-Yourself Lab"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Lab Overview and Topology"
+        path: volumes/volume-106-cloud-native-segmentation-lab/chapters/01-lab-overview-and-topology.md
+      - id: 02
+        title: "Chapter 02: Accounts, CLIs, and Cost Guardrails"
+        path: volumes/volume-106-cloud-native-segmentation-lab/chapters/02-accounts-clis-and-cost-guardrails.md
+      - id: 03
+        title: "Chapter 03: AWS — Security Groups and Network ACLs"
+        path: volumes/volume-106-cloud-native-segmentation-lab/chapters/03-aws-security-groups-and-nacls.md
+      - id: 04
+        title: "Chapter 04: Azure — Network Security Groups and Application Security Groups"
+        path: volumes/volume-106-cloud-native-segmentation-lab/chapters/04-azure-nsgs-and-asgs.md
+      - id: 05
+        title: "Chapter 05: GCP — VPC Firewall Rules, Tags, and Service Accounts"
+        path: volumes/volume-106-cloud-native-segmentation-lab/chapters/05-gcp-firewall-rules-and-tags.md
+      - id: 06
+        title: "Chapter 06: Cross-Cloud Comparison"
+        path: volumes/volume-106-cloud-native-segmentation-lab/chapters/06-cross-cloud-comparison.md
+      - id: 07
+        title: "Chapter 07: Advanced Native Controls"
+        path: volumes/volume-106-cloud-native-segmentation-lab/chapters/07-advanced-native-controls.md
+      - id: 08
+        title: "Chapter 08: Flow Logs and Detection"
+        path: volumes/volume-106-cloud-native-segmentation-lab/chapters/08-flow-logs-and-detection.md
+      - id: 09
+        title: "Chapter 09: Operations, Cost Control, and Teardown"
+        path: volumes/volume-106-cloud-native-segmentation-lab/chapters/09-operations-cost-control-and-teardown.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
