@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.131-blue)
+![Release](https://img.shields.io/badge/release-v1.2.132-blue)
 
-**v1.2.131 — latest release.** 120 volumes, 1154 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.131) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.132 — latest release.** 121 volumes, 1163 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.132) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 120-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 121-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-120 volumes, 1154 chapters. Each volume has a dedicated
+121 volumes, 1163 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -147,6 +147,7 @@ The series combines architecture and theory with implementation guidance, automa
 | CXV | [TXOne Networks Build-It-Yourself Lab](volumes/volume-115-txone-networks-lab/README.md) | 9 |
 | CXVI | [Zscaler/Airgap Build-It-Yourself Lab](volumes/volume-116-zscaler-airgap-lab/README.md) | 9 |
 | CXVII | [Cisco ACI Build-It-Yourself Lab](volumes/volume-117-cisco-aci-lab/README.md) | 9 |
+| CXVIII | [Arista MSS-Group Build-It-Yourself Lab](volumes/volume-118-arista-mss-group-lab/README.md) | 9 |
 | CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 55 |
 | CMXCVIII | [Acronyms](volumes/volume-998-acronyms/README.md) | 4 |
 | CMXCIX | [Reference Library](volumes/volume-999-reference-library/README.md) | 9 |

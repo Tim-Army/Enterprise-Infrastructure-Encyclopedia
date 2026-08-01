@@ -1,0 +1,56 @@
+<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab topology: Arista EOS enforcing group policy with an MSS macro firewall redirect</title>
+  <desc>
+    CloudVision manages an Arista EOS fabric that enforces group-based policy in the switch silicon at line rate. Endpoints are in security groups: web in SG-Web, db in SG-DB listening on 5432, hmi in SG-Mgmt, and plc in SG-OT listening on 502. MSS-Group permits only SG-Web to SG-DB on 5432 and SG-Mgmt to SG-OT on 502, denying every other group pair including SG-Mgmt to SG-DB. MSS macro-segmentation redirects the SG-Web to SG-DB flow through an inserted firewall for inspection without re-cabling, so a malicious payload on that flow is dropped. The volume is two-track: Track 1 describes EOS and CloudVision, Track 2 reproduces group policy and the firewall redirect with Linux nftables.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Group-Based Fabric Segmentation with Arista MSS-Group</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">EOS enforces group policy at line rate (SG-Web-&gt;SG-DB, SG-Mgmt-&gt;SG-OT; default deny); MSS macro redirects the SG-Web-&gt;SG-DB flow through a firewall for inspection</text>
+  <rect x="320" y="50" width="320" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="68.8" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">CloudVision · EOS fabric</text>
+  <text x="480.0" y="82.8" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">security groups + MSS policy</text>
+  <rect x="190" y="118" width="580" height="28" rx="6" fill="#f4f7fb" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="480.0" y="137.0" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">EOS fabric  ·  group policy at line rate  ·  default deny between groups</text>
+  <line x1="480" y1="94" x2="480" y2="118" stroke="#33415c" stroke-width="1.4"/>
+  <rect x="60" y="190" width="130" height="62" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="125.0" y="209.5" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">web</text>
+  <text x="125.0" y="224.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">SG-Web</text>
+  <text x="125.0" y="240.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">10.120.1.10</text>
+  <rect x="285" y="190" width="130" height="62" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="350.0" y="209.5" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">db</text>
+  <text x="350.0" y="224.8" text-anchor="middle" font-size="9" font-weight="700" fill="#7f1d1d">SG-DB · :5432</text>
+  <text x="350.0" y="240.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">PostgreSQL</text>
+  <rect x="510" y="190" width="130" height="62" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="575.0" y="209.5" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">hmi</text>
+  <text x="575.0" y="224.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#166534">SG-Mgmt</text>
+  <text x="575.0" y="240.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">operator</text>
+  <rect x="735" y="190" width="130" height="62" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="800.0" y="209.5" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">plc</text>
+  <text x="800.0" y="224.8" text-anchor="middle" font-size="9" font-weight="700" fill="#7c2d12">SG-OT · :502</text>
+  <text x="800.0" y="240.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Modbus</text>
+  <line x1="125" y1="146" x2="125" y2="190" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="350" y1="146" x2="350" y2="190" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="575" y1="146" x2="575" y2="190" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="800" y1="146" x2="800" y2="190" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="190" y1="214" x2="285" y2="214" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="105" y="300" font-size="10.5" fill="#166534">SG-Web-&gt;SG-DB 5432</text>
+  <line x1="510" y1="236" x2="415" y2="236" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="350" y="330" font-size="10.5" fill="#b91c1c">SG-Mgmt-&gt;SG-DB DENIED</text>
+  <line x1="640" y1="214" x2="735" y2="214" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="600" y="300" font-size="10.5" fill="#166534">SG-Mgmt-&gt;SG-OT 502</text>
+  <rect x="150" y="356" width="260" height="44" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="280.0" y="374.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">MSS macro: firewall redirect</text>
+  <text x="280.0" y="388.5" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">SG-Web -&gt; SG-DB inspected</text>
+  <line x1="237" y1="228" x2="237" y2="356" stroke="#166534" stroke-width="1.1" stroke-dasharray="4 3"/>
+  <line x1="60" y1="430" x2="100" y2="430" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="108" y="434" font-size="11" fill="#166534">Permitted by group policy</text>
+  <line x1="363" y1="430" x2="403" y2="430" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="411" y="434" font-size="11" fill="#b91c1c">Denied (default between groups)</text>
+  <line x1="720" y1="430" x2="760" y2="430" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="768" y="434" font-size="11" fill="#33415c">CloudVision (groups + MSS)</text>
+</svg>
