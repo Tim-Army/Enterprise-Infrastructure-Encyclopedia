@@ -1,0 +1,53 @@
+<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab topology: the Aruba CX 10000 top-of-rack DPU applying a stateful firewall to east-west traffic</title>
+  <desc>
+    The HPE Aruba CX 10000 top-of-rack switch embeds an AMD Pensando DPU that runs a stateful firewall for east-west traffic at line rate, managed by the Pensando Policy and Services Manager and Aruba Fabric Composer. Endpoints are web at 10.130.1.10, db at 10.130.2.20 listening on 5432, hmi at 10.130.3.30, and plc at 10.130.4.40 listening on 502. A default-deny stateful policy permits only web to db on 5432 and hmi to plc on 502; return traffic is permitted automatically by connection state with no reverse rule, and the hmi to db lateral flow plus any unsolicited or invalid packet on the reverse tuple is dropped. The volume is design-leaning two-track: Track 1 describes the CX 10000 and PSM, Track 2 reproduces the stateful firewall with Linux nftables connection tracking.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Stateful East-West Firewalling with the Aruba CX 10000 DPU</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">The CX 10000 ToR DPU firewalls east-west with connection tracking at line rate; web-&gt;db:5432 and hmi-&gt;plc:502 permitted, return traffic by state, hmi-&gt;db and unsolicited packets dropped</text>
+  <rect x="320" y="50" width="320" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="68.8" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">PSM / Aruba Fabric Composer</text>
+  <text x="480.0" y="82.8" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">stateful policy + per-flow telemetry</text>
+  <rect x="170" y="118" width="620" height="28" rx="6" fill="#f4f7fb" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="480.0" y="137.0" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">CX 10000 ToR · embedded DPU · stateful firewall east-west (line rate, no hairpin)</text>
+  <line x1="480" y1="94" x2="480" y2="118" stroke="#33415c" stroke-width="1.4"/>
+  <rect x="60" y="190" width="130" height="62" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="125.0" y="209.5" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">web</text>
+  <text x="125.0" y="224.8" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">client</text>
+  <text x="125.0" y="240.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">10.130.1.10</text>
+  <rect x="285" y="190" width="130" height="62" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="350.0" y="209.2" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">db · :5432</text>
+  <text x="350.0" y="224.5" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">PostgreSQL</text>
+  <text x="350.0" y="239.8" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">10.130.2.20</text>
+  <rect x="510" y="190" width="130" height="62" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="575.0" y="209.5" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">hmi</text>
+  <text x="575.0" y="224.8" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">operator</text>
+  <text x="575.0" y="240.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">10.130.3.30</text>
+  <rect x="735" y="190" width="130" height="62" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="800.0" y="209.2" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">plc · :502</text>
+  <text x="800.0" y="224.5" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Modbus</text>
+  <text x="800.0" y="239.8" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">10.130.4.40</text>
+  <line x1="125" y1="146" x2="125" y2="190" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="350" y1="146" x2="350" y2="190" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="575" y1="146" x2="575" y2="190" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="800" y1="146" x2="800" y2="190" stroke="#94a3b8" stroke-width="1.1"/>
+  <line x1="190" y1="214" x2="285" y2="214" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="100" y="300" font-size="10.5" fill="#166534">web-&gt;db 5432 (return by state)</text>
+  <line x1="510" y1="236" x2="415" y2="236" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="360" y="330" font-size="10.5" fill="#b91c1c">hmi-&gt;db DENIED</text>
+  <line x1="640" y1="214" x2="735" y2="214" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="610" y="300" font-size="10.5" fill="#166534">hmi-&gt;plc 502</text>
+  <text x="230" y="372" font-size="9.5" font-weight="700" fill="#374151">reply permitted by connection state (no reverse rule); unsolicited / invalid packets dropped</text>
+  <line x1="60" y1="420" x2="100" y2="420" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="108" y="424" font-size="11" fill="#166534">Permitted (stateful)</text>
+  <line x1="318" y1="420" x2="358" y2="420" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="366" y="424" font-size="11" fill="#b91c1c">Denied (default / unsolicited)</text>
+  <line x1="666" y1="420" x2="706" y2="420" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="714" y="424" font-size="11" fill="#33415c">PSM (stateful policy)</text>
+</svg>
