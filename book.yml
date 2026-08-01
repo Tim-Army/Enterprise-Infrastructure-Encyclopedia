@@ -4053,6 +4053,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Operations, Troubleshooting, and Teardown"
         path: volumes/volume-116-zscaler-airgap-lab/chapters/09-operations-troubleshooting-teardown.md
+  - id: volume-117
+    number: "CXVII"
+    slug: volume-117-cisco-aci-lab
+    title: "Cisco ACI Build-It-Yourself Lab"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Lab Overview and Topology"
+        path: volumes/volume-117-cisco-aci-lab/chapters/01-lab-overview-and-topology.md
+      - id: 02
+        title: "Chapter 02: Lab Preparation"
+        path: volumes/volume-117-cisco-aci-lab/chapters/02-lab-preparation.md
+      - id: 03
+        title: "Chapter 03: The Flat Network and Lateral Movement"
+        path: volumes/volume-117-cisco-aci-lab/chapters/03-flat-network-and-lateral-movement.md
+      - id: 04
+        title: "Chapter 04: Contracts — the Application-Centric Whitelist"
+        path: volumes/volume-117-cisco-aci-lab/chapters/04-contracts-whitelist.md
+      - id: 05
+        title: "Chapter 05: uSeg Micro-EPGs"
+        path: volumes/volume-117-cisco-aci-lab/chapters/05-useg-micro-epgs.md
+      - id: 06
+        title: "Chapter 06: Intra-EPG Isolation"
+        path: volumes/volume-117-cisco-aci-lab/chapters/06-intra-epg-isolation.md
+      - id: 07
+        title: "Chapter 07: Enforcement and Verification"
+        path: volumes/volume-117-cisco-aci-lab/chapters/07-enforcement-and-verification.md
+      - id: 08
+        title: "Chapter 08: Multi-Site, Scale, and the Boundary"
+        path: volumes/volume-117-cisco-aci-lab/chapters/08-multi-site-scale-and-boundary.md
+      - id: 09
+        title: "Chapter 09: Operations, Troubleshooting, and Teardown"
+        path: volumes/volume-117-cisco-aci-lab/chapters/09-operations-troubleshooting-teardown.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices

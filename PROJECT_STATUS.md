@@ -126,11 +126,12 @@ does not by itself verify every technical claim in it.
 | CXIV — Nozomi Networks Build-It-Yourself Lab | 9 | Drafted |
 | CXV — TXOne Networks Build-It-Yourself Lab | 9 | Drafted |
 | CXVI — Zscaler/Airgap Build-It-Yourself Lab | 9 | Drafted |
+| CXVII — Cisco ACI Build-It-Yourself Lab | 9 | Drafted |
 | CMXCVII — Master Appendices | 55 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1145 of 1145 drafted (100%). Every volume has a
+**Total declared chapters:** 1154 of 1154 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
