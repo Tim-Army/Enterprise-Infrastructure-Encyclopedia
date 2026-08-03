@@ -17,6 +17,10 @@ config:
 globs:
   - "**/*.md"
 ignores:
-  - "node_modules/**"
+  - "**/node_modules/**"
   - "output/**"
   - "_site/**"
+  # Claude Code worktrees under .claude/worktrees/ carry full repo checkouts
+  # (and their own node_modules); linting them from the repo root double-counts
+  # every file and fails on third-party READMEs.
+  - ".claude/**"
