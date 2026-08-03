@@ -10,7 +10,7 @@
 
 Volume LXV maps the **Palo Alto Networks** certification program — the credentials for securing,
 operating, and defending with Palo Alto's platform. It is the **certification companion** to
-[Volume XVI — Palo Alto Networks Security](../../volume-016-palo-alto-networks-security/README.md),
+[Volume XVI — Palo Alto Networks Security](../volume-016-palo-alto-networks-security/README.md),
 which covers the product platform in depth; this volume follows the **exam blueprints**, one
 walkthrough lab per role and domain. It joins the encyclopedia's security volumes (Cisco
 Security XXV, Fortinet XIX, Zscaler XXXV, CrowdStrike L, Enterprise Cybersecurity X, ISC2 XL).
@@ -64,7 +64,7 @@ This volume *is* the certification map for Palo Alto Networks, recorded in
 tracks, and the training model is in the
 [Palo Alto Networks certification-tracks appendix](../volume-997-master-appendices/chapters/31-appendix-palo-alto-networks-certification-tracks-and-course-access.md)
 (Master Appendices, Volume CMXCVII). The complementary product volume is
-[Volume XVI](../../volume-016-palo-alto-networks-security/README.md); related practice lives in
+[Volume XVI](../volume-016-palo-alto-networks-security/README.md); related practice lives in
 the Cisco Security (XXV), Fortinet (XIX), Zscaler (XXXV), CrowdStrike (L), and Enterprise
 Cybersecurity (X) volumes.
 

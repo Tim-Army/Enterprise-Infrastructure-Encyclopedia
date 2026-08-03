@@ -9,9 +9,9 @@
 ## Overview
 
 Volume LXXII is a **product deep-dive** of **VMware vSphere 8**, the successor to
-[Volume LXXI (VMware vSphere 7)](../../volume-071-vmware-vsphere-7/README.md). It teaches the platform
+[Volume LXXI (VMware vSphere 7)](../volume-071-vmware-vsphere-7/README.md). It teaches the platform
 from install through operation with hands-on labs, **emphasizing what changed** from vSphere 7. It
-is distinct from [Volume V (VMware Virtualization)](../../volume-005-vmware-virtualization/README.md)
+is distinct from [Volume V (VMware Virtualization)](../volume-005-vmware-virtualization/README.md)
 and sits in the encyclopedia's **virtualization** reading path alongside VxRail (XXIV) and the
 Proxmox lab (XXVI).
 
@@ -58,10 +58,10 @@ knowledge checks.
 ## Related volumes
 
 vSphere 8 is a product volume, not a certification-tracks volume; it is not mapped to a single exam
-blueprint. The complementary volumes are [VMware vSphere 7 (LXXI)](../../volume-071-vmware-vsphere-7/README.md),
-[VMware Virtualization (V)](../../volume-005-vmware-virtualization/README.md), and, for automation,
-[Python for Infrastructure (LVII)](../../volume-057-python-infrastructure-automation/README.md) and
-[Ansible (LIX)](../../volume-059-ansible/README.md). The Broadcom/VMware certification catalog is in
+blueprint. The complementary volumes are [VMware vSphere 7 (LXXI)](../volume-071-vmware-vsphere-7/README.md),
+[VMware Virtualization (V)](../volume-005-vmware-virtualization/README.md), and, for automation,
+[Python for Infrastructure (LVII)](../volume-057-python-infrastructure-automation/README.md) and
+[Ansible (LIX)](../volume-059-ansible/README.md). The Broadcom/VMware certification catalog is in
 the [Master Appendices](../volume-997-master-appendices/README.md).
 
 ## Lab coverage

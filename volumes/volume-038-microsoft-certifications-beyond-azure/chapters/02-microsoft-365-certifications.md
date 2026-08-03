@@ -102,7 +102,7 @@ renew on time through the free annual assessment.
 ## References and Knowledge Checks
 
 - Microsoft Learn: certification pages for MS-900, MS-102, MD-102, MS-700, MS-721.
-- Cross-reference: [Volume XXXVII — Microsoft 365 and Modern Work](../volume-037-microsoft-365-modern-work/README.md).
+- Cross-reference: [Volume XXXVII — Microsoft 365 and Modern Work](../../volume-037-microsoft-365-modern-work/README.md).
 
 **Knowledge checks**
 

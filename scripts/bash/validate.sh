@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Non-networked structural validation: every volume has README/INDEX/GLOSSARY,
-# a contiguous chapters/ sequence, and book.yml matches the chapters on disk.
+# a contiguous chapters/ sequence, book.yml matches the chapters on disk, and
+# every relative Markdown link resolves to a real file.
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -40,6 +41,8 @@ done
 if [[ -f book.yml ]]; then
   python3 scripts/python/check_book_yml.py || fail=1
 fi
+
+python3 scripts/python/check_internal_links.py || fail=1
 
 if command -v pnpm >/dev/null 2>&1 && [[ -f package.json ]]; then
   pnpm exec markdownlint-cli2 "**/*.md" || fail=1

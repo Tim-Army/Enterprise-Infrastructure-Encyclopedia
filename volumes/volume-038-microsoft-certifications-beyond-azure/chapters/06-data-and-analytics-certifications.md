@@ -103,7 +103,7 @@ through the free assessment.
 ## References and Knowledge Checks
 
 - Microsoft Learn: certification pages for DP-900, DP-700, DP-600, DP-300, DP-420, DP-100, DP-750, DP-800.
-- Cross-reference: [Chapter 07 — AI and Copilot](07-ai-and-copilot-certifications.md); [Volume XXXIII](../volume-033-microsoft-azure-certifications/README.md).
+- Cross-reference: [Chapter 07 — AI and Copilot](07-ai-and-copilot-certifications.md); [Volume XXXIII](../../volume-033-microsoft-azure-certifications/README.md).
 
 **Knowledge checks**
 

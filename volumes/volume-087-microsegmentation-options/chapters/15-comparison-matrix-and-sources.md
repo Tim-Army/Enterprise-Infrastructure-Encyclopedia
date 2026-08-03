@@ -37,7 +37,7 @@ volume; the two discontinued entries have none.
 
 | Option | Enforcement model | Chapter | Status | Vendor home | Lab |
 | --- | --- | --- | --- | --- | --- |
-| VMware NSX (DFW) | Hypervisor | [03](03-network-and-hypervisor-based.md) | Current | [broadcom.com](https://www.broadcom.com/products/vmware-cloud-foundation/networking) | [CXI](../../volume-111-vmware-nsx-dfw-lab/README.md) |
+| VMware NSX (DFW) | Hypervisor | [03](03-network-and-hypervisor-based.md) | Current | [vmware.com](https://www.vmware.com/products/cloud-infrastructure/vcf-networking) | [CXI](../../volume-111-vmware-nsx-dfw-lab/README.md) |
 | Cisco ACI | Network/fabric | [03](03-network-and-hypervisor-based.md) | Current | [cisco.com](https://www.cisco.com/site/us/en/products/networking/cloud-networking/application-centric-infrastructure/index.html) | [CXVII](../../volume-117-cisco-aci-lab/README.md) |
 | Cisco Secure Workload | Host agent | [04](04-workload-agent-based-platforms.md) | Current | [cisco.com](https://www.cisco.com/site/us/en/products/security/secure-workload/index.html) | [C](../../volume-100-cisco-secure-workload-lab/README.md) |
 | Cisco ISE + TrustSec | NAC group tag | [10](10-network-fabric-and-nac-based.md) | Current | [cisco.com](https://www.cisco.com/site/us/en/products/security/identity-services-engine/index.html) | [CVII](../../volume-107-cisco-ise-trustsec-lab/README.md) |
@@ -230,7 +230,7 @@ Federal customers should assume a **different** contact path from the commercial
 | Palo Alto Networks | Published on the contact-support page | portal-based | [paloaltonetworks.com/company/contact-support](https://www.paloaltonetworks.com/company/contact-support) |
 | Arista | Portal and regional numbers | `support@arista.com` (public alias) | [arista.com/en/support](https://www.arista.com/en/support) |
 | HPE Aruba | Regional numbers via HPE support | portal-based | [hpe.com/support](https://www.hpe.com/us/en/services/support.html) |
-| Juniper | Regional JTAC numbers | portal-based | [juniper.net/support](https://www.juniper.net/us/en/support.html) |
+| Juniper | Regional JTAC numbers | portal-based | [support.juniper.net](https://support.juniper.net/) |
 | Check Point | Regional numbers | portal-based | [checkpoint.com/support-services](https://www.checkpoint.com/support-services/contact-support/) |
 | Nutanix | Regional numbers | portal-based | [nutanix.com/support-services](https://www.nutanix.com/support-services) |
 | VMware / Broadcom | Regional numbers | portal-based | [broadcom.com/support](https://www.broadcom.com/support) |

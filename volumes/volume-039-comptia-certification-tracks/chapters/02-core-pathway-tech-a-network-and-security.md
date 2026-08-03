@@ -107,7 +107,7 @@ certifications under **DoD 8140/8570**.
 ## References and Knowledge Checks
 
 - comptia.org: certification pages for Tech+, A+, Network+, Security+.
-- Cross-reference: [Volume II — Network Engineering Foundations](../volume-002-network-engineering-foundations/README.md); [Volume X — Enterprise Cybersecurity](../volume-010-enterprise-cybersecurity/README.md).
+- Cross-reference: [Volume II — Network Engineering Foundations](../../volume-002-network-engineering-foundations/README.md); [Volume X — Enterprise Cybersecurity](../../volume-010-enterprise-cybersecurity/README.md).
 
 **Knowledge checks**
 

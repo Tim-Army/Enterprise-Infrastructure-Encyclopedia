@@ -207,7 +207,7 @@ Date       | Item                    | Was       | Now                    | Acti
 - [Microsoft Learn Catalog API](https://learn.microsoft.com/api/catalog/)
 - [Microsoft Certified: Azure Virtual Desktop Specialty](https://learn.microsoft.com/en-us/credentials/certifications/azure-virtual-desktop-specialty/) (AZ-140)
 - [Microsoft Certified: Azure for SAP Workloads Specialty](https://learn.microsoft.com/en-us/credentials/certifications/azure-for-sap-workloads-specialty/) (AZ-120)
-- [Certification renewal](https://learn.microsoft.com/en-us/credentials/support/renew-your-microsoft-certification)
+- [Certification renewal](https://learn.microsoft.com/en-us/credentials/certifications/renew-your-microsoft-certification)
 - [Appendix — Microsoft Azure Certifications and Course Access](../../volume-997-master-appendices/chapters/09-appendix-microsoft-azure-certifications-and-course-access.md)
 
 **Knowledge checks** *(original conceptual review questions — not

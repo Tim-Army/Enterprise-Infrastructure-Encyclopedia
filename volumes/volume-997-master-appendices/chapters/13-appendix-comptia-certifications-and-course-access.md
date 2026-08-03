@@ -41,7 +41,7 @@ and earn a shareable digital badge (Credly-style).
   study scope and domain weights
 - **Certification roadmap** — the pathway map from Core through the specialist
   and Xpert tracks
-- **[CompTIA CertMaster](https://www.comptia.org/en-us/training/)** — official
+- **[CompTIA CertMaster](https://www.comptia.org/en-us/resources/certmaster-training/)** — official
   paid Learn, Labs, Practice, and CE training (the hands-on complement for the
   performance-based questions)
 - **CompTIA Continuing Education** — the renewal program and CEU catalog

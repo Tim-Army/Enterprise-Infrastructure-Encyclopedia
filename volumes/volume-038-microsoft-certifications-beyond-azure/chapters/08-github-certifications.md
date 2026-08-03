@@ -101,7 +101,7 @@ stated validity on Microsoft Learn.
 ## References and Knowledge Checks
 
 - Microsoft Learn: certification pages for GitHub Foundations (GH-900), Administration (GH-100), Advanced Security (GH-500), Copilot (GH-300), Agentic AI Developer (GH-600).
-- Cross-reference: [Volume IX — Infrastructure Automation](../volume-009-infrastructure-automation/README.md).
+- Cross-reference: [Volume IX — Infrastructure Automation](../../volume-009-infrastructure-automation/README.md).
 
 **Knowledge checks**
 

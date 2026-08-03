@@ -17,7 +17,7 @@
 
 This is a build-it-yourself microsegmentation lab on **Juniper Connected Security** — Juniper's model in which the **SRX Series firewall** is the enforcement point, traffic is organized into **security zones**, and **security policies** decide which zone (and which address group and application) may talk to which. "Connected Security" is the larger idea that policy is driven centrally (by **Security Director** and **Policy Enforcer**) and can react to threat intelligence — for example, quarantining an infected host by adding it to a **dynamic address group** that a policy denies. This lab builds the enforcement core you can operate by hand.
 
-Where the previous volume ([Volume CVII](../volume-107-cisco-ise-trustsec-lab/README.md)) segmented by carrying a **group tag** in the fabric, this volume segments with a **stateful firewall**: zones and policies with address and application granularity, plus dynamic groups for reactive containment. The two are complementary models of the same goal, and worth contrasting directly.
+Where the previous volume ([Volume CVII](../../volume-107-cisco-ise-trustsec-lab/README.md)) segmented by carrying a **group tag** in the fabric, this volume segments with a **stateful firewall**: zones and policies with address and application granularity, plus dynamic groups for reactive containment. The two are complementary models of the same goal, and worth contrasting directly.
 
 SRX/Junos is commercial, so this volume is **two-track**:
 

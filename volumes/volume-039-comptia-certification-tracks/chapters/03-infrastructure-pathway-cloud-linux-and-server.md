@@ -102,7 +102,7 @@ renewal** (Chapter 08), noting Server+'s historically non-expiring status.
 ## References and Knowledge Checks
 
 - comptia.org: certification pages for Cloud+, Linux+, Server+.
-- Cross-reference: [Volume XIV (RHEL)](../volume-014-red-hat-enterprise-linux-10/README.md), [Volume XXI (Ubuntu)](../volume-021-ubuntu-server-cloud-26-04-lts/README.md), [Volume XXXVI (Windows Server)](../volume-036-windows-server-2025-active-directory/README.md).
+- Cross-reference: [Volume XIV (RHEL)](../../volume-014-red-hat-enterprise-linux-10/README.md), [Volume XXI (Ubuntu)](../../volume-021-ubuntu-server-cloud-26-04-lts/README.md), [Volume XXXVI (Windows Server)](../../volume-036-windows-server-2025-active-directory/README.md).
 
 **Knowledge checks**
 

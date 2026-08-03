@@ -48,7 +48,7 @@ exam expects you to recognize it — but new services are EVPN.
 **EVPN** moves MAC/IP learning into **BGP** — the same MP-BGP control
 plane as Chapters 03 and 06, with the `l2vpn evpn` address family. It
 is the provider-scale sibling of the data-center EVPN in
-[Volume XXVII](../volume-027-cisco-data-center/README.md), and the
+[Volume XXVII](../../volume-027-cisco-data-center/README.md), and the
 route types are the shared vocabulary:
 
 - **Type 2** — MAC/IP advertisement: control-plane MAC learning, no

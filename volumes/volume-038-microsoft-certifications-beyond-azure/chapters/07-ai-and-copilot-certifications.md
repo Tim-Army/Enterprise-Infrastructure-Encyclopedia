@@ -106,7 +106,7 @@ governance** (Volume XXXVII). Renew annually through the free assessment.
 ## References and Knowledge Checks
 
 - Microsoft Learn: certification pages for AI-901, AI-102, AI-103, AI-200, AI-500, and Copilot and Agent Administration Fundamentals.
-- Cross-reference: [Volume XXXVII Ch 11](../volume-037-microsoft-365-modern-work/chapters/11-microsoft-defender-xdr-secure-score-copilot-governance-and-capstone.md); [Chapter 06 — Data and Analytics](06-data-and-analytics-certifications.md).
+- Cross-reference: [Volume XXXVII Ch 11](../../volume-037-microsoft-365-modern-work/chapters/11-microsoft-defender-xdr-secure-score-copilot-governance-and-capstone.md); [Chapter 06 — Data and Analytics](06-data-and-analytics-certifications.md).
 
 **Knowledge checks**
 

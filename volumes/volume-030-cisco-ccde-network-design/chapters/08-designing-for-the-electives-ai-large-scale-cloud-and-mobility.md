@@ -32,7 +32,7 @@ rewards depth of design judgment in that area.
 ### AI Infrastructure elective
 
 New prominence in v3.1. Designing infrastructure for AI/ML workloads
-(the implementation is [Volume XXVII, Chapter 07](../volume-027-cisco-data-center/chapters/07-data-center-ai-infrastructure.md)):
+(the implementation is [Volume XXVII, Chapter 07](../../volume-027-cisco-data-center/chapters/07-data-center-ai-infrastructure.md)):
 
 - **The workload drives everything** — training's synchronized
   collective traffic makes **non-blocking, lossless** backend fabrics
@@ -51,7 +51,7 @@ New prominence in v3.1. Designing infrastructure for AI/ML workloads
 ### Large Scale Networks elective
 
 Designing at service-provider and hyperscale magnitudes (implementation
-in [Volume XXIX](../volume-029-cisco-service-provider/README.md)):
+in [Volume XXIX](../../volume-029-cisco-service-provider/README.md)):
 
 - **Scale techniques as design** — hierarchy, route
   summarization/reflection, and **segment routing** (SR-MPLS/SRv6) to
@@ -89,7 +89,7 @@ Designing for users and devices anywhere:
 
 - **Wireless design** — high-density campus Wi-Fi (Wi-Fi 6/7),
   roaming, and location services (the CCNP Wireless implementation is
-  [Volume III, the CCNP Wireless track](../volume-003-cisco-enterprise-networking/README.md)).
+  [Volume III, the CCNP Wireless track](../../volume-003-cisco-enterprise-networking/README.md)).
 - **Remote and hybrid access** — SASE/SSE, VPN-less zero-trust access
   (Chapter 07), and enforcement that follows the user (no backhaul).
 - **Unified policy** — one policy model for on-prem, remote, and

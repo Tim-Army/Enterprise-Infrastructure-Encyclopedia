@@ -55,5 +55,5 @@ and bypassed traffic need zone design or host controls beneath the firewall.
 ## See also
 
 - [Volume CVII — Cisco ISE and TrustSec](../volume-107-cisco-ise-trustsec-lab/README.md) — the tag-fabric model to contrast with this stateful-firewall model.
-- [Volume XXXI — Juniper Networks Certification Tracks](../volume-031-juniper-certification-tracks/README.md) — broader Junos and SRX coverage.
+- [Volume XXXI — Juniper Networks Certification Tracks](../volume-031-juniper-networks-certifications/README.md) — broader Junos and SRX coverage.
 - [Volume LXXXVII — Microsegmentation Options](../volume-087-microsegmentation-options/README.md) — the vendor-neutral decision guide this lab pairs with.

@@ -62,5 +62,5 @@ a budget alert before creating anything and run a complete teardown at the end.
 ## See also
 
 - [Volume LXXXVII — Microsegmentation Options](../volume-087-microsegmentation-options/README.md) — the vendor-neutral decision guide this lab pairs with.
-- [Volume XVII — AWS Architecture and Security](../volume-017-aws-architecture-security/README.md) and [Volume XXXIII — Microsoft Azure Certification Tracks](../volume-033-azure-certification-tracks/README.md) — deeper cloud platform coverage.
+- [Volume XVII — AWS Architecture and Security](../volume-017-aws-architecture-security/README.md) and [Volume XXXIII — Microsoft Azure Certification Tracks](../volume-033-microsoft-azure-certifications/README.md) — deeper cloud platform coverage.
 - [Volume CI — Calico](../volume-101-calico-lab/README.md) through [Volume CV — Consul](../volume-105-consul-lab/README.md) — the overlay products you pair with native controls for workload identity and L7.

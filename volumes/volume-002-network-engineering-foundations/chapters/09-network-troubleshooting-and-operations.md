@@ -384,7 +384,7 @@ section describes, applied rather than only explained.
 - [ITIL 4 — Problem Management Practice Guide](https://www.axelos.com/certifications/itil-service-management/itil-4-foundation)
 - [Google — Site Reliability Engineering: "Postmortem Culture: Learning from Failure"](https://sre.google/sre-book/postmortem-culture/)
 - [NIST SP 800-61 Rev. 2 — Computer Security Incident Handling Guide](https://csrc.nist.gov/pubs/sp/800/61/r2/final)
-- [RFC 1149 is intentionally omitted — see instead: IETF BCP 78/79 process documents for how operational RFC guidance itself is produced and reviewed](https://www.ietf.org/standards/process/)
+- [RFC 1149 is intentionally omitted — see instead: IETF BCP 78/79 process documents for how operational RFC guidance itself is produced and reviewed](https://www.ietf.org/process/process/)
 
 **Knowledge Checks**
 

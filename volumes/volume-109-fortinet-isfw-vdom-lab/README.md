@@ -55,5 +55,5 @@ traffic still need segmentation design or host controls.
 ## See also
 
 - [Volume CVII — Cisco ISE and TrustSec](../volume-107-cisco-ise-trustsec-lab/README.md) and [Volume CVIII — Juniper Connected Security](../volume-108-juniper-connected-security-lab/README.md) — the other fabric/firewall models to contrast.
-- [Volume XIX — Fortinet NSE Certification Program](../volume-019-fortinet-nse-certification/README.md) — broader FortiGate and FortiOS coverage.
+- [Volume XIX — Fortinet NSE Certification Program](../volume-019-fortinet-network-security/README.md) — broader FortiGate and FortiOS coverage.
 - [Volume LXXXVII — Microsegmentation Options](../volume-087-microsegmentation-options/README.md) — the vendor-neutral decision guide this lab pairs with.

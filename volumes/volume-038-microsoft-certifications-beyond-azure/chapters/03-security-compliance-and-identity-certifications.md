@@ -98,7 +98,7 @@ assessment.
 ## References and Knowledge Checks
 
 - Microsoft Learn: certification pages for SC-900, SC-300, SC-200, SC-401, SC-100, SC-500.
-- Cross-reference: [Volume XXXVII](../volume-037-microsoft-365-modern-work/README.md), [Volume X — Enterprise Cybersecurity](../volume-010-enterprise-cybersecurity/README.md).
+- Cross-reference: [Volume XXXVII](../../volume-037-microsoft-365-modern-work/README.md), [Volume X — Enterprise Cybersecurity](../../volume-010-enterprise-cybersecurity/README.md).
 
 **Knowledge checks**
 

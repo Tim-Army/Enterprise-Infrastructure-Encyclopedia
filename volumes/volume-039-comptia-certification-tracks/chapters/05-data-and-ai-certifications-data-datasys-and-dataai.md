@@ -121,7 +121,7 @@ both cover) to real controls. Plan **CE renewal** (Chapter 08).
 ## References and Knowledge Checks
 
 - comptia.org: certification pages for Data+, DataSys+, DataAI, and the AI Essentials line.
-- Cross-reference: [Volume XXXVIII — Microsoft Certifications Beyond Azure](../volume-038-microsoft-certifications-beyond-azure/README.md) (PL-300, DP family).
+- Cross-reference: [Volume XXXVIII — Microsoft Certifications Beyond Azure](../../volume-038-microsoft-certifications-beyond-azure/README.md) (PL-300, DP family).
 
 **Knowledge checks**
 
