@@ -10,4 +10,15 @@ exclude_path = [
   "_site",
 ]
 
+# Deliberately dangling in the repository tree; also exempted in
+# scripts/python/check_internal_links.py. Pandoc reads title-page.md with
+# the repo root as its cwd, so the cover image resolves via the cwd (lychee
+# resolves it to publishing/publishing/). The interactive catalog exists
+# only in the built portal/zip layout, where the volume pages sit beside an
+# interactive/ directory.
+exclude = [
+  "publishing/publishing/cover\\.png$",
+  "volumes/interactive/cisco-u-learning-paths\\.html$",
+]
+
 accept = [200, 429]
