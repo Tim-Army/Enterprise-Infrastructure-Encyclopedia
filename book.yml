@@ -4257,11 +4257,45 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your Track, Currency, and Career"
         path: volumes/volume-122-citrix-certifications/chapters/09-choosing-currency-and-career.md
+  - id: volume-123
+    number: "CXXIII"
+    slug: volume-123-ibm-certifications
+    title: "IBM Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The IBM Certification Program"
+        path: volumes/volume-123-ibm-certifications/chapters/01-the-ibm-certification-program.md
+      - id: 02
+        title: "Chapter 02: AI, watsonx, and Quantum Certifications"
+        path: volumes/volume-123-ibm-certifications/chapters/02-ai-watsonx-and-quantum.md
+      - id: 03
+        title: "Chapter 03: Security Certifications"
+        path: volumes/volume-123-ibm-certifications/chapters/03-security.md
+      - id: 04
+        title: "Chapter 04: Data Platform Certifications"
+        path: volumes/volume-123-ibm-certifications/chapters/04-data-platforms.md
+      - id: 05
+        title: "Chapter 05: Analytics Certifications"
+        path: volumes/volume-123-ibm-certifications/chapters/05-analytics.md
+      - id: 06
+        title: "Chapter 06: Integration and Messaging Certifications"
+        path: volumes/volume-123-ibm-certifications/chapters/06-integration-and-messaging.md
+      - id: 07
+        title: "Chapter 07: Automation, Observability, and AIOps Certifications"
+        path: volumes/volume-123-ibm-certifications/chapters/07-automation-observability-aiops.md
+      - id: 08
+        title: "Chapter 08: Systems and Asset Management Certifications"
+        path: volumes/volume-123-ibm-certifications/chapters/08-systems-and-asset-management.md
+      - id: 09
+        title: "Chapter 09: Red Hat Combos, Choosing a Path, Currency, and Career"
+        path: volumes/volume-123-ibm-certifications/chapters/09-red-hat-combos-choosing-currency-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
     title: "Master Appendices"
-    chapter_count: 56
+    chapter_count: 57
     build_eligible: true
     chapters:
       - id: 01
@@ -4432,6 +4466,9 @@ volumes:
       - id: 56
         title: "Chapter 56: Appendix — Citrix Certifications and Course Access"
         path: volumes/volume-997-master-appendices/chapters/56-appendix-citrix-certifications-and-course-access.md
+      - id: 57
+        title: "Chapter 57: Appendix — IBM Certifications and Course Access"
+        path: volumes/volume-997-master-appendices/chapters/57-appendix-ibm-certifications-and-course-access.md
   - id: volume-998
     number: "CMXCVIII"
     slug: volume-998-acronyms
