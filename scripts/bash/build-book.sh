@@ -333,7 +333,8 @@ elif [[ -n "$volume" ]]; then
   done
   [[ "$want_html" -eq 1 ]] && build_volume_html "$volume_dir"
 else
-  echo "build-book.sh: building all 24 volumes and the complete series"
+  volume_count="$(find volumes -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')"
+  echo "build-book.sh: building all $volume_count volumes and the complete series"
   for volume_dir in volumes/*/; do
     volume_slug="$(basename "${volume_dir%/}")"
     for ch in "$volume_dir"chapters/*.md; do
