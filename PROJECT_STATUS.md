@@ -131,11 +131,12 @@ does not by itself verify every technical claim in it.
 | CXIX — HPE Aruba CX 10000 Build-It-Yourself Lab | 9 | Drafted |
 | CXX — NVIDIA BlueField Build-It-Yourself Lab | 9 | Drafted |
 | CXXI — Nutanix Flow Build-It-Yourself Lab | 9 | Drafted |
-| CMXCVII — Master Appendices | 55 | Drafted |
+| CXXII — Citrix Certification Tracks | 9 | Drafted |
+| CMXCVII — Master Appendices | 56 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1190 of 1190 drafted (100%). Every volume has a
+**Total declared chapters:** 1200 of 1200 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
