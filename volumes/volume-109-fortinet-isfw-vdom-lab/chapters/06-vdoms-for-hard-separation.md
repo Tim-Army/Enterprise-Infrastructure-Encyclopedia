@@ -100,7 +100,7 @@ The OT VDOM needs a matching policy on `itot1 → port5` permitting MODBUS to pl
 
 ```bash
 sudo nft add rule inet fgt_it forward ip saddr 10.30.3.10 ip daddr 10.30.4.10 tcp dport 502 accept
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.4.10 502 && echo hmi->plc OPEN (via inter-vdom)'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.4.10 502 && echo "hmi->plc OPEN (via inter-vdom)"'
 ```
 
 **Expected result.** `hmi->plc OPEN (via inter-vdom)` — the single scoped crossing works; nothing else crosses.

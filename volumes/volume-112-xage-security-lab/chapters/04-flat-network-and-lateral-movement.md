@@ -19,10 +19,10 @@ Before any broker, the estate is a flat routed network: the database answers any
 **Track 2 — Walkthrough.**
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.60.1.20 5432 && echo web->db REACH'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.60.1.20 5432 && echo hmi->db REACH (lateral!)'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.60.9.40 502  && echo hmi->plc REACH'
-sudo ip netns exec web bash -c 'nc -z -w2 10.60.9.40 502  && echo web->plc REACH (should never happen!)'
+sudo ip netns exec web bash -c 'nc -z -w2 10.60.1.20 5432 && echo "web->db REACH"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.60.1.20 5432 && echo "hmi->db REACH (lateral!)"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.60.9.40 502  && echo "hmi->plc REACH"'
+sudo ip netns exec web bash -c 'nc -z -w2 10.60.9.40 502  && echo "web->plc REACH (should never happen!)"'
 ```
 
 **Expected result.** All four REACH. Note the last one: the web tier can reach the OT controller directly — the flat network offers no protection to the legacy device.

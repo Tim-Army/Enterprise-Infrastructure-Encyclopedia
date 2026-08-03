@@ -46,9 +46,9 @@ sudo nft list chain inet cx forward
 **Track 2 — Walkthrough.**
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.130.2.20 5432 && echo web->db OPEN  || echo web->db BLOCKED'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.2.20 5432 && echo hmi->db OPEN  || echo hmi->db BLOCKED'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.4.40 502  && echo hmi->plc OPEN || echo hmi->plc BLOCKED'
+sudo ip netns exec web bash -c 'nc -z -w2 10.130.2.20 5432 && echo "web->db OPEN"  || echo "web->db BLOCKED"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.2.20 5432 && echo "hmi->db OPEN"  || echo "hmi->db BLOCKED"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.4.40 502  && echo "hmi->plc OPEN" || echo "hmi->plc BLOCKED"'
 ```
 
 **Expected result.**

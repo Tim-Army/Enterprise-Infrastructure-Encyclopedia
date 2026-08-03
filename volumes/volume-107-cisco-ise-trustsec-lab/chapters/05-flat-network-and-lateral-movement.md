@@ -37,9 +37,9 @@ show cts role-based permissions
 **Track 2 — Walkthrough.**
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.10.1.20 5432 && echo web->db REACH'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.10.1.20 5432 && echo hmi->db REACH (lateral!)'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.10.1.40 502  && echo hmi->plc REACH'
+sudo ip netns exec web bash -c 'nc -z -w2 10.10.1.20 5432 && echo "web->db REACH"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.10.1.20 5432 && echo "hmi->db REACH (lateral!)"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.10.1.40 502  && echo "hmi->plc REACH"'
 ```
 
 **Expected result.** All three REACH. The forward chain policy is still `accept`; classification is in place but nothing is enforced.

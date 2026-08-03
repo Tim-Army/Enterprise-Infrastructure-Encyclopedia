@@ -15,10 +15,10 @@
 **Track 2 — Walkthrough.**
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.20 5432 && echo A:web->db OPEN  || echo A:web->db BLOCKED'
-sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.40 502  && echo B:web->plc OPEN || echo B:web->plc BLOCKED'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.140.0.20 5432 && echo C:hmi->db OPEN  || echo C:hmi->db BLOCKED'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.140.0.40 502  && echo D:hmi->plc OPEN || echo D:hmi->plc BLOCKED'
+sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.20 5432 && echo "A:web->db OPEN"  || echo "A:web->db BLOCKED"'
+sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.40 502  && echo "B:web->plc OPEN" || echo "B:web->plc BLOCKED"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.140.0.20 5432 && echo "C:hmi->db OPEN"  || echo "C:hmi->db BLOCKED"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.140.0.40 502  && echo "D:hmi->plc OPEN" || echo "D:hmi->plc BLOCKED"'
 ```
 
 **Expected result.**
@@ -60,7 +60,7 @@ sudo dmesg | grep -oE 'DPU-(WEB|HMI)-DENY.*DPT=[0-9]+' | tail -2
 
 ```bash
 sudo ip netns exec web nft flush ruleset 2>/dev/null
-sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.40 502 && echo web->plc OPEN (BROKEN) || echo web->plc STILL BLOCKED'
+sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.40 502 && echo "web->plc OPEN (BROKEN)" || echo "web->plc STILL BLOCKED"'
 ```
 
 **Expected result.** `web->plc STILL BLOCKED` — even after the workload flushes its own rules again, the DPU policy denies the lateral flow. The property from Chapter 05 is not a one-off.

@@ -77,7 +77,7 @@ gw> dynamic_objects -n role_web -r 10.40.1.11 10.40.1.11 -a   # new tagged web i
 sudo nft add element inet cpg role_web '{ 10.40.1.11 }'
 sudo nft get element inet cpg role_web '{ 10.40.1.11 }'
 sudo nft delete element inet cpg role_web '{ 10.40.1.10 }'
-sudo ip netns exec web bash -c 'nc -z -w2 10.40.2.10 5432 && echo web->db OPEN || echo web->db BLOCKED'
+sudo ip netns exec web bash -c 'nc -z -w2 10.40.2.10 5432 && echo "web->db OPEN" || echo "web->db BLOCKED"'
 ```
 
 **Expected result.** After removing 10.40.1.10 from `role_web`, the original web host is `BLOCKED` from db — the rule is unchanged; only the tag membership moved. Re-add it to restore access.

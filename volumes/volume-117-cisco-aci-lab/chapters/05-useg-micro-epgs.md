@@ -48,7 +48,7 @@ sudo nft list set inet aci quarantine
 ```bash
 sudo nft add element inet aci quarantine '{ 10.110.3.30 }'
 # its previously-contracted flow (hmi -> plc) is now denied
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.110.4.40 502 && echo hmi->plc OPEN || echo hmi->plc QUARANTINED'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.110.4.40 502 && echo "hmi->plc OPEN" || echo "hmi->plc QUARANTINED"'
 ```
 
 **Expected result.** `hmi->plc QUARANTINED` — the endpoint that had a valid `mgmt-ot` contract is now isolated because its attribute pulled it into the deny-all micro-EPG, with no change to any contract.
@@ -57,7 +57,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.110.4.40 502 && echo hmi->plc OPEN 
 
 ```bash
 sudo nft delete element inet aci quarantine '{ 10.110.3.30 }'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.110.4.40 502 && echo hmi->plc OPEN (released)'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.110.4.40 502 && echo "hmi->plc OPEN (released)"'
 ```
 
 `hmi->plc OPEN (released)` — membership, driven by attribute, decided isolation; the base contracts never changed.

@@ -19,9 +19,9 @@ Until the DPU's stateful policy is applied, the ToR forwards all east-west traff
 **Track 2 — Walkthrough.**
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.130.2.20 5432 && echo web->db REACH'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.2.20 5432 && echo hmi->db REACH (lateral!)'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.4.40 502  && echo hmi->plc REACH'
+sudo ip netns exec web bash -c 'nc -z -w2 10.130.2.20 5432 && echo "web->db REACH"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.2.20 5432 && echo "hmi->db REACH (lateral!)"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.4.40 502  && echo "hmi->plc REACH"'
 ```
 
 **Expected result.** All REACH — every endpoint reaches every other, including the operator reaching the database.

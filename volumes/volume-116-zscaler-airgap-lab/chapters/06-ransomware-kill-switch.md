@@ -31,7 +31,7 @@ echo "KILL SWITCH ENGAGED"
 **Expected result.** Every east-west flow, including the sanctioned one, is now severed:
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.100.1.20 5432 && echo web->db OPEN || echo web->db CUT'
+sudo ip netns exec web bash -c 'nc -z -w2 10.100.1.20 5432 && echo "web->db OPEN" || echo "web->db CUT"'
 web->db CUT
 ```
 
@@ -57,8 +57,8 @@ A `KILL-SWITCH` log line confirms the sever is active and total.
 ```bash
 handle=$(sudo nft -a list chain inet airgap forward | awk '/KILL-SWITCH/{print $NF; exit}')
 sudo nft delete rule inet airgap forward handle "$handle"
-sudo ip netns exec web    bash -c 'nc -z -w2 10.100.1.20 5432 && echo web->db OPEN || echo web->db CUT'
-sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.20 5432 && echo victim->db OPEN || echo victim->db BLOCKED'
+sudo ip netns exec web    bash -c 'nc -z -w2 10.100.1.20 5432 && echo "web->db OPEN" || echo "web->db CUT"'
+sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.20 5432 && echo "victim->db OPEN" || echo "victim->db BLOCKED"'
 ```
 
 **Expected result.**

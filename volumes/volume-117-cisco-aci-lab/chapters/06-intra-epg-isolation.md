@@ -24,7 +24,7 @@ sudo ip link set db2-b master bd2 up; sudo ip link set db2-e netns db2
 sudo ip netns exec db2 ip addr add 10.110.2.21/24 dev db2-e; sudo ip netns exec db2 ip link set db2-e up
 sudo ip netns exec db2 ip route add default via 10.110.2.1
 sudo ip netns exec db2 bash -c 'nohup nc -lk -p 5432 >/dev/null 2>&1 &'
-sudo ip netns exec db bash -c 'nc -z -w2 10.110.2.21 5432 && echo db->db2 REACH (intra-EPG)'
+sudo ip netns exec db bash -c 'nc -z -w2 10.110.2.21 5432 && echo "db->db2 REACH (intra-EPG)"'
 ```
 
 **Expected result.** `db->db2 REACH (intra-EPG)` — two members of the same EPG reach each other, a lateral path if one is compromised.
@@ -43,13 +43,13 @@ sudo ip netns exec db bash -c 'nc -z -w2 10.110.2.21 5432 && echo db->db2 REACH 
 
 ```bash
 sudo nft insert rule inet aci forward ip saddr 10.110.2.0/24 ip daddr 10.110.2.0/24 log prefix '"INTRA-EPG-DENY "' drop
-sudo ip netns exec db bash -c 'nc -z -w2 10.110.2.21 5432 && echo db->db2 OPEN || echo db->db2 ISOLATED'
+sudo ip netns exec db bash -c 'nc -z -w2 10.110.2.21 5432 && echo "db->db2 OPEN" || echo "db->db2 ISOLATED"'
 ```
 
 **Expected result.** `db->db2 ISOLATED` — members of EPG-DB can no longer reach each other, closing the intra-group lateral path. The `web → db` contract still works because it is inter-EPG:
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.110.2.20 5432 && echo web->db OPEN (contract intact)'
+sudo ip netns exec web bash -c 'nc -z -w2 10.110.2.20 5432 && echo "web->db OPEN (contract intact)"'
 ```
 
 **Negative test.** Intra-EPG isolation without an intra-EPG contract denies *all* peer traffic; if two members legitimately must talk, add a narrow intra-EPG contract rather than disabling isolation.

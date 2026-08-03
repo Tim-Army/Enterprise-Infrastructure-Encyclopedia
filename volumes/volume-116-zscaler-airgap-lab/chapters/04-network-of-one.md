@@ -61,7 +61,7 @@ for ip in 10.100.1.20 10.100.1.40; do nc -z -w1 $ip 502 2>/dev/null || nc -z -w1
 **Expected result.** The worm now reaches nothing — every east-west connection is dropped at the enforcer because there is no direct path and no policy permits it:
 
 ```bash
-sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.20 5432 && echo victim->db OPEN || echo victim->db BLOCKED'
+sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.20 5432 && echo "victim->db OPEN" || echo "victim->db BLOCKED"'
 victim->db BLOCKED
 ```
 

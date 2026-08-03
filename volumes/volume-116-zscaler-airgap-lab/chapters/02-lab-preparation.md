@@ -56,7 +56,7 @@ sudo ip netns exec plc bash -c 'nohup nc -lk -p 502  >/dev/null 2>&1 &'
 **Expected result.**
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.100.1.20 5432 && echo web->db OPEN'
+sudo ip netns exec web bash -c 'nc -z -w2 10.100.1.20 5432 && echo "web->db OPEN"'
 web->db OPEN
 ```
 
@@ -73,9 +73,9 @@ All five devices are on `10.100.1.0/24` and can reach each other directly — th
 **Track 2 — Walkthrough.**
 
 ```bash
-sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.20 5432 && echo victim->db REACH'
-sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.40 502  && echo victim->plc REACH'
-sudo ip netns exec hmi    bash -c 'nc -z -w2 10.100.1.20 5432 && echo hmi->db REACH'
+sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.20 5432 && echo "victim->db REACH"'
+sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.40 502  && echo "victim->plc REACH"'
+sudo ip netns exec hmi    bash -c 'nc -z -w2 10.100.1.20 5432 && echo "hmi->db REACH"'
 ```
 
 **Expected result.** All REACH — on a flat VLAN, a compromised `victim` can reach the database, the PLC, and everything else. This is the lateral surface Chapter 04 eliminates.

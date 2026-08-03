@@ -45,7 +45,7 @@ sudo nft insert rule inet cx forward index 0 ct state established,related accept
 **Track 2 — Walkthrough.** Have db try to *initiate* to web on the same ports the replies use — a stateless reverse-allow would permit it, but state does not:
 
 ```bash
-sudo ip netns exec db bash -c 'nc -z -w2 10.130.1.10 5432 && echo db->web OPEN || echo db->web BLOCKED (no state)'
+sudo ip netns exec db bash -c 'nc -z -w2 10.130.1.10 5432 && echo "db->web OPEN" || echo "db->web BLOCKED (no state)"'
 ```
 
 **Expected result.** `db->web BLOCKED (no state)` — db cannot open a new connection to web, because there is no permit and no existing state; only genuine replies to web's connections are allowed. A stateless fabric that opened the reverse tuple would have permitted this.

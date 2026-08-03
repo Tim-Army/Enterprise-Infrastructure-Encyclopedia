@@ -16,13 +16,13 @@
 
 ```bash
 # A: contracted web -> db
-sudo ip netns exec web bash -c 'nc -z -w2 10.110.2.20 5432 && echo A:web->db OPEN || echo A:web->db BLOCKED'
+sudo ip netns exec web bash -c 'nc -z -w2 10.110.2.20 5432 && echo "A:web->db OPEN" || echo "A:web->db BLOCKED"'
 # B: uncontracted hmi -> db (whitelist deny)
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.110.2.20 5432 && echo B:hmi->db OPEN || echo B:hmi->db BLOCKED'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.110.2.20 5432 && echo "B:hmi->db OPEN" || echo "B:hmi->db BLOCKED"'
 # C: contracted hmi -> plc
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.110.4.40 502  && echo C:hmi->plc OPEN || echo C:hmi->plc BLOCKED'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.110.4.40 502  && echo "C:hmi->plc OPEN" || echo "C:hmi->plc BLOCKED"'
 # D: intra-EPG db -> db2 (isolation)
-sudo ip netns exec db  bash -c 'nc -z -w2 10.110.2.21 5432 && echo D:db->db2 OPEN || echo D:db->db2 ISOLATED'
+sudo ip netns exec db  bash -c 'nc -z -w2 10.110.2.21 5432 && echo "D:db->db2 OPEN" || echo "D:db->db2 ISOLATED"'
 ```
 
 **Expected result.**

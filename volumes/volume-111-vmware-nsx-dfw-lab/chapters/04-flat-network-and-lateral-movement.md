@@ -29,9 +29,9 @@ nsx> GET /policy/api/v1/infra/domains/default/security-policies/default-layer3-s
 **Track 2 — Walkthrough.** With no per-namespace rules yet, the shared bridge forwards everything:
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.50.1.20 5432 && echo web->db REACH'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.20 5432 && echo hmi->db REACH (lateral!)'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.40 502  && echo hmi->plc REACH'
+sudo ip netns exec web bash -c 'nc -z -w2 10.50.1.20 5432 && echo "web->db REACH"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.20 5432 && echo "hmi->db REACH (lateral!)"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.40 502  && echo "hmi->plc REACH"'
 ```
 
 **Expected result.** All three flows REACH. The `hmi->db` connection — between two VMs on the same subnet — is the lateral movement a distributed firewall will stop.

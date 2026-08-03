@@ -73,7 +73,7 @@ sudo dmesg | grep -o 'DFW-DROP.*SRC=10.50.1.30.*DPT=5432' | tail -1
 
 ```bash
 sudo ip netns exec db nft delete element inet vnic g_web '{ 10.50.1.10 }'
-sudo ip netns exec web bash -c 'nc -z -w2 10.50.1.20 5432 && echo web->db OPEN || echo web->db BLOCKED'
+sudo ip netns exec web bash -c 'nc -z -w2 10.50.1.20 5432 && echo "web->db OPEN" || echo "web->db BLOCKED"'
 sudo ip netns exec db nft add element inet vnic g_web '{ 10.50.1.10 }'
 ```
 

@@ -16,12 +16,12 @@
 
 ```bash
 # legitimate, brokered by identity
-sudo ip netns exec web bash -c 'printf "svc-web TOKEN-WEB-9c21\n" | nc -w2 10.60.1.5 15432 && echo A:web(svc-web)->db OK'
-sudo ip netns exec hmi bash -c 'printf "op-hmi TOKEN-HMI-7f3a\n"  | nc -w2 10.60.1.5 1502  && echo B:hmi(op-hmi)->plc OK'
+sudo ip netns exec web bash -c 'printf "svc-web TOKEN-WEB-9c21\n" | nc -w2 10.60.1.5 15432 && echo "A:web(svc-web)->db OK"'
+sudo ip netns exec hmi bash -c 'printf "op-hmi TOKEN-HMI-7f3a\n"  | nc -w2 10.60.1.5 1502  && echo "B:hmi(op-hmi)->plc OK"'
 # direct (no broker) — blocked by isolation
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.60.9.40 502 || echo C:hmi->plc DIRECT blocked'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.60.9.40 502 || echo "C:hmi->plc DIRECT blocked"'
 # wrong identity to the broker — denied
-sudo ip netns exec web bash -c 'printf "svc-web TOKEN-WEB-9c21\n" | nc -w2 10.60.1.5 1502 || echo D:svc-web->plc DENIED (no grant)'
+sudo ip netns exec web bash -c 'printf "svc-web TOKEN-WEB-9c21\n" | nc -w2 10.60.1.5 1502 || echo "D:svc-web->plc DENIED (no grant)"'
 ```
 
 **Expected result.**

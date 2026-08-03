@@ -71,7 +71,7 @@ mkdpu hmi 3 10.140.3.30 13
 **Expected result.** Two protected workloads (`web`, `hmi`), each reaching the network only through its DPU namespace (`dpu-web`, `dpu-hmi`); the targets (`db`, `plc`) on the network:
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.20 5432 && echo web->db OPEN'
+sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.20 5432 && echo "web->db OPEN"'
 web->db OPEN
 ```
 
@@ -86,8 +86,8 @@ web->db OPEN
 **Track 2 — Walkthrough.**
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.40 502  && echo web->plc REACH (should be denied later)'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.140.0.20 5432 && echo hmi->db REACH (lateral!)'
+sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.40 502  && echo "web->plc REACH (should be denied later)"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.140.0.20 5432 && echo "hmi->db REACH (lateral!)"'
 ```
 
 **Expected result.** Both REACH — before DPU policy, the workloads reach targets they should not. Chapter 04 denies these at each DPU.

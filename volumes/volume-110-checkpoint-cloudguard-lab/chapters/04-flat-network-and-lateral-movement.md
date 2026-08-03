@@ -38,9 +38,9 @@ Test the flows (from the endpoints):
 ```bash
 sudo nft flush chain inet cpg forward
 sudo nft add rule inet cpg forward ip saddr 10.40.0.0/16 ip daddr 10.40.0.0/16 accept
-sudo ip netns exec web bash -c 'nc -z -w2 10.40.2.10 5432 && echo web->db REACH'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.40.2.10 5432 && echo hmi->db REACH (lateral!)'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.40.4.10 502  && echo hmi->plc REACH'
+sudo ip netns exec web bash -c 'nc -z -w2 10.40.2.10 5432 && echo "web->db REACH"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.40.2.10 5432 && echo "hmi->db REACH (lateral!)"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.40.4.10 502  && echo "hmi->plc REACH"'
 ```
 
 **Expected result.** All three flows REACH — the gateway is in the path but the top rule accepts everything. The `hmi->db` connection is the lateral movement.

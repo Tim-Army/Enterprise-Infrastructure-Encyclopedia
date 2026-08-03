@@ -46,9 +46,9 @@ FGT # diagnose sniffer packet any 'host 10.30.2.10 and port 5432' 4
 
 ```bash
 sudo nft add chain inet fgt forward '{ type filter hook forward priority 0 ; policy accept ; }'
-sudo ip netns exec web bash -c 'nc -z -w2 10.30.2.10 5432 && echo web->db REACH'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.2.10 5432 && echo hmi->db REACH (lateral!)'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.4.10 502  && echo hmi->plc REACH'
+sudo ip netns exec web bash -c 'nc -z -w2 10.30.2.10 5432 && echo "web->db REACH"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.2.10 5432 && echo "hmi->db REACH (lateral!)"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.4.10 502  && echo "hmi->plc REACH"'
 ```
 
 **Expected result.** All three flows REACH — the ISFW is in the path but wide open. The `hmi->db` connection is the lateral movement.

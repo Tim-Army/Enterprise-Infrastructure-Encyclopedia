@@ -16,13 +16,13 @@
 
 ```bash
 # A: sanctioned flow
-sudo ip netns exec web    bash -c 'nc -z -w2 10.100.1.20 5432 && echo A:web->db OPEN || echo A:web->db BLOCKED'
+sudo ip netns exec web    bash -c 'nc -z -w2 10.100.1.20 5432 && echo "A:web->db OPEN" || echo "A:web->db BLOCKED"'
 # B: worm to database (blocked)
-sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.20 5432 && echo B:victim->db OPEN || echo B:victim->db BLOCKED'
+sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.20 5432 && echo "B:victim->db OPEN" || echo "B:victim->db BLOCKED"'
 # C: worm to PLC (blocked)
-sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.40 502  && echo C:victim->plc OPEN || echo C:victim->plc BLOCKED'
+sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.40 502  && echo "C:victim->plc OPEN" || echo "C:victim->plc BLOCKED"'
 # D: operator to PLC, no sanctioned east-west rule (blocked)
-sudo ip netns exec hmi    bash -c 'nc -z -w2 10.100.1.40 502  && echo D:hmi->plc OPEN || echo D:hmi->plc BLOCKED'
+sudo ip netns exec hmi    bash -c 'nc -z -w2 10.100.1.40 502  && echo "D:hmi->plc OPEN" || echo "D:hmi->plc BLOCKED"'
 ```
 
 **Expected result.**

@@ -16,13 +16,13 @@
 
 ```bash
 # A: permitted web -> db (with stateful reply)
-sudo ip netns exec web bash -c 'nc -z -w2 10.130.2.20 5432 && echo A:web->db OPEN || echo A:web->db BLOCKED'
+sudo ip netns exec web bash -c 'nc -z -w2 10.130.2.20 5432 && echo "A:web->db OPEN" || echo "A:web->db BLOCKED"'
 # B: lateral hmi -> db (default deny)
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.2.20 5432 && echo B:hmi->db OPEN || echo B:hmi->db BLOCKED'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.2.20 5432 && echo "B:hmi->db OPEN" || echo "B:hmi->db BLOCKED"'
 # C: permitted hmi -> plc
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.4.40 502  && echo C:hmi->plc OPEN || echo C:hmi->plc BLOCKED'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.4.40 502  && echo "C:hmi->plc OPEN" || echo "C:hmi->plc BLOCKED"'
 # D: unsolicited db -> web (no state, no permit)
-sudo ip netns exec db  bash -c 'nc -z -w2 10.130.1.10 5432 && echo D:db->web OPEN || echo D:db->web BLOCKED'
+sudo ip netns exec db  bash -c 'nc -z -w2 10.130.1.10 5432 && echo "D:db->web OPEN" || echo "D:db->web BLOCKED"'
 ```
 
 **Expected result.**

@@ -52,7 +52,7 @@ sudo ip netns exec plc bash -c 'nohup nc -lk -p 502  >/dev/null 2>&1 &'
 **Expected result.**
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.120.2.20 5432 && echo web->db OPEN'
+sudo ip netns exec web bash -c 'nc -z -w2 10.120.2.20 5432 && echo "web->db OPEN"'
 web->db OPEN
 ```
 

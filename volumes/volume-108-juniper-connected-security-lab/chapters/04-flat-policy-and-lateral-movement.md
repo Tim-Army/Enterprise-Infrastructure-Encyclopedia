@@ -37,9 +37,9 @@ srx> (from hmi) telnet 10.20.4.10 502    -> connects  (legitimate)
 
 ```bash
 sudo nft add chain inet jsec forward '{ type filter hook forward priority 0 ; policy accept ; }'
-sudo ip netns exec web bash -c 'nc -z -w2 10.20.2.10 5432 && echo web->db REACH'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.20.2.10 5432 && echo hmi->db REACH (lateral!)'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.20.4.10 502  && echo hmi->plc REACH'
+sudo ip netns exec web bash -c 'nc -z -w2 10.20.2.10 5432 && echo "web->db REACH"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.20.2.10 5432 && echo "hmi->db REACH (lateral!)"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.20.4.10 502  && echo "hmi->plc REACH"'
 ```
 
 **Expected result.** All three flows REACH — the firewall is present but wide open. The `hmi->db` connection is the lateral movement.

@@ -73,7 +73,7 @@ Now `hmi → plc:502` (previously permitted) is denied because the quarantine de
 
 ```bash
 sudo nft add element inet jsec quarantine '{ 10.20.3.10 }'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.20.4.10 502 && echo hmi->plc OPEN || echo hmi->plc BLOCKED'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.20.4.10 502 && echo "hmi->plc OPEN" || echo "hmi->plc BLOCKED"'
 ```
 
 **Expected result.** `hmi->plc BLOCKED` — the previously-legitimate flow is contained because `hmi` is now in the quarantine set, matched before the permit.
@@ -82,7 +82,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.20.4.10 502 && echo hmi->plc OPEN |
 
 ```bash
 sudo nft delete element inet jsec quarantine '{ 10.20.3.10 }'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.20.4.10 502 && echo hmi->plc OPEN'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.20.4.10 502 && echo "hmi->plc OPEN"'
 ```
 
 `hmi->plc OPEN` again — membership, not the rule, decided containment. That reversibility is the point: policy stays fixed while the response is dynamic.

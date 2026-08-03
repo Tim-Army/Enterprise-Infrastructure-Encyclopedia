@@ -39,9 +39,9 @@ sudo nft list chain inet airgap forward
 **Track 2 — Walkthrough.**
 
 ```bash
-sudo ip netns exec web    bash -c 'nc -z -w2 10.100.1.20 5432 && echo web->db OPEN    || echo web->db BLOCKED'
-sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.20 5432 && echo victim->db OPEN || echo victim->db BLOCKED'
-sudo ip netns exec hmi    bash -c 'nc -z -w2 10.100.1.40 502  && echo hmi->plc OPEN   || echo hmi->plc BLOCKED'
+sudo ip netns exec web    bash -c 'nc -z -w2 10.100.1.20 5432 && echo "web->db OPEN"    || echo "web->db BLOCKED"'
+sudo ip netns exec victim bash -c 'nc -z -w2 10.100.1.20 5432 && echo "victim->db OPEN" || echo "victim->db BLOCKED"'
+sudo ip netns exec hmi    bash -c 'nc -z -w2 10.100.1.40 502  && echo "hmi->plc OPEN"   || echo "hmi->plc BLOCKED"'
 ```
 
 **Expected result.**

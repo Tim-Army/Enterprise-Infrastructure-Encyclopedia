@@ -19,10 +19,10 @@ The DPUs are in the path but not yet enforcing. This chapter proves the flat sta
 **Track 2 — Walkthrough.**
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.20 5432 && echo web->db REACH'
-sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.40 502  && echo web->plc REACH (should be denied)'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.140.0.20 5432 && echo hmi->db REACH (lateral!)'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.140.0.40 502  && echo hmi->plc REACH'
+sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.20 5432 && echo "web->db REACH"'
+sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.40 502  && echo "web->plc REACH (should be denied)"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.140.0.20 5432 && echo "hmi->db REACH (lateral!)"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.140.0.40 502  && echo "hmi->plc REACH"'
 ```
 
 **Expected result.** All REACH — before DPU policy, `web` reaches the PLC and `hmi` reaches the database, neither of which it should.

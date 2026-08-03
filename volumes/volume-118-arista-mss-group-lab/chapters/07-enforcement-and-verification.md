@@ -16,13 +16,13 @@
 
 ```bash
 # A: SG-Web -> SG-DB clean (via firewall)
-sudo ip netns exec web bash -c 'printf "SELECT 1\n" | nc -w2 10.120.2.20 5432 && echo A:web->db OK'
+sudo ip netns exec web bash -c 'printf "SELECT 1\n" | nc -w2 10.120.2.20 5432 && echo "A:web->db OK"'
 # B: SG-Web -> SG-DB malicious (firewall drops)
 sudo ip netns exec web bash -c 'printf "EXPLOIT\n" | nc -w2 10.120.2.20 5432'; echo "(B above)"
 # C: SG-Mgmt -> SG-DB uncontracted (group deny)
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.120.2.20 5432 && echo C:hmi->db OPEN || echo C:hmi->db BLOCKED'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.120.2.20 5432 && echo "C:hmi->db OPEN" || echo "C:hmi->db BLOCKED"'
 # D: SG-Mgmt -> SG-OT (direct group policy)
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.120.4.40 502 && echo D:hmi->plc OPEN || echo D:hmi->plc BLOCKED'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.120.4.40 502 && echo "D:hmi->plc OPEN" || echo "D:hmi->plc BLOCKED"'
 ```
 
 **Expected result.**

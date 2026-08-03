@@ -33,8 +33,8 @@ esxi> vsipioctl getrules -f <db-vnic-filter>
 **Track 2 — Walkthrough.**
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.50.1.20 5432 && echo web->db OPEN || echo web->db BLOCKED'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.20 5432 && echo hmi->db OPEN || echo hmi->db BLOCKED'
+sudo ip netns exec web bash -c 'nc -z -w2 10.50.1.20 5432 && echo "web->db OPEN" || echo "web->db BLOCKED"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.20 5432 && echo "hmi->db OPEN" || echo "hmi->db BLOCKED"'
 ```
 
 **Expected result.**
@@ -50,7 +50,7 @@ hmi->db BLOCKED
 
 ```bash
 sudo ip netns exec db nft flush ruleset
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.20 5432 && echo hmi->db OPEN (rule removed)'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.20 5432 && echo "hmi->db OPEN (rule removed)"'
 ```
 
 **Cleanup.** Restore db's ruleset.
@@ -62,8 +62,8 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.20 5432 && echo hmi->db OPEN (
 **Track 1 & 2 — Walkthrough.**
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.50.1.20 5432 && echo web->db OPEN'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.40 502  && echo hmi->plc OPEN'
+sudo ip netns exec web bash -c 'nc -z -w2 10.50.1.20 5432 && echo "web->db OPEN"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.40 502  && echo "hmi->plc OPEN"'
 ```
 
 **Expected result.**

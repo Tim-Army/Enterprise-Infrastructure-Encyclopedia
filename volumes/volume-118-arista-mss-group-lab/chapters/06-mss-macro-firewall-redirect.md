@@ -73,7 +73,7 @@ sudo ip netns exec web bash -c 'printf "DROP TABLE users\n" | nc -w2 10.120.2.20
 
 ```bash
 # SG-Mgmt -> SG-OT is enforced directly by group policy, not redirected
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.120.4.40 502 && echo hmi->plc OPEN (direct group policy)'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.120.4.40 502 && echo "hmi->plc OPEN (direct group policy)"'
 # the firewall only saw the web->db flow
 sudo grep -c . /tmp/mssfw.log
 ```

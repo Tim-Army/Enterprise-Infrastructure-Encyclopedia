@@ -23,7 +23,7 @@ A host-agent microsegmentation product runs *on* the host — an attacker with r
 sudo ip netns exec web nft flush ruleset 2>/dev/null; echo "flushed web's own ruleset"
 sudo ip netns exec web nft add table inet x 2>/dev/null; sudo ip netns exec web nft add chain inet x y '{ type filter hook forward priority 0 ; policy accept ; }' 2>/dev/null
 # attacker tries to reach the PLC it is not permitted to reach
-sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.40 502 && echo web->plc OPEN (BROKEN) || echo web->plc STILL BLOCKED'
+sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.40 502 && echo "web->plc OPEN (BROKEN)" || echo "web->plc STILL BLOCKED"'
 ```
 
 **Expected result.**

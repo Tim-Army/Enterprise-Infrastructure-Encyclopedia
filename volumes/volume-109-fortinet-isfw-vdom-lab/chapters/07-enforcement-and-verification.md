@@ -32,9 +32,9 @@ FGT # diagnose firewall iprope lookup 10.30.1.10 12345 10.30.2.10 5432 6 port2
 **Track 2 — Walkthrough.**
 
 ```bash
-sudo ip netns exec web bash -c 'nc -z -w2 10.30.2.10 5432 && echo web->db OPEN || echo web->db BLOCKED'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.2.10 5432 && echo hmi->db OPEN || echo hmi->db BLOCKED'
-sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.4.10 502  && echo hmi->plc OPEN || echo hmi->plc BLOCKED'
+sudo ip netns exec web bash -c 'nc -z -w2 10.30.2.10 5432 && echo "web->db OPEN" || echo "web->db BLOCKED"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.2.10 5432 && echo "hmi->db OPEN" || echo "hmi->db BLOCKED"'
+sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.4.10 502  && echo "hmi->plc OPEN" || echo "hmi->plc BLOCKED"'
 ```
 
 **Expected result.**
