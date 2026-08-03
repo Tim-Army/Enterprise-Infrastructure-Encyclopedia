@@ -4189,6 +4189,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Operations, Troubleshooting, and Teardown"
         path: volumes/volume-120-nvidia-bluefield-lab/chapters/09-operations-troubleshooting-teardown.md
+  - id: volume-121
+    number: "CXXI"
+    slug: volume-121-nutanix-flow-lab
+    title: "Nutanix Flow Build-It-Yourself Lab"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Lab Overview and Topology"
+        path: volumes/volume-121-nutanix-flow-lab/chapters/01-lab-overview-and-topology.md
+      - id: 02
+        title: "Chapter 02: Lab Preparation"
+        path: volumes/volume-121-nutanix-flow-lab/chapters/02-lab-preparation.md
+      - id: 03
+        title: "Chapter 03: The Flat Network and Lateral Movement"
+        path: volumes/volume-121-nutanix-flow-lab/chapters/03-flat-network-and-lateral-movement.md
+      - id: 04
+        title: "Chapter 04: Categories and Monitor Mode"
+        path: volumes/volume-121-nutanix-flow-lab/chapters/04-categories-and-monitor-mode.md
+      - id: 05
+        title: "Chapter 05: Applying the Application Policies"
+        path: volumes/volume-121-nutanix-flow-lab/chapters/05-application-policies-apply.md
+      - id: 06
+        title: "Chapter 06: Isolation and Quarantine Policies"
+        path: volumes/volume-121-nutanix-flow-lab/chapters/06-isolation-and-quarantine.md
+      - id: 07
+        title: "Chapter 07: Enforcement and Verification"
+        path: volumes/volume-121-nutanix-flow-lab/chapters/07-enforcement-and-verification.md
+      - id: 08
+        title: "Chapter 08: Prism Central, Scale, and the Boundary"
+        path: volumes/volume-121-nutanix-flow-lab/chapters/08-prism-central-scale-and-boundary.md
+      - id: 09
+        title: "Chapter 09: Operations, Troubleshooting, and Teardown"
+        path: volumes/volume-121-nutanix-flow-lab/chapters/09-operations-troubleshooting-teardown.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices

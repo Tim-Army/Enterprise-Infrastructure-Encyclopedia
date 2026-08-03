@@ -1,0 +1,59 @@
+<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 lab topology: Nutanix Flow Network Security enforcing category-driven policy at the AHV virtual switch</title>
+  <desc>
+    Four VMs sit on one AHV virtual switch: web and db carry the Environment corp category, hmi and plc carry the Environment ot category, and each carries an AppTier category. Prism Central holds the category-driven policy and distributes it to every AHV host, which enforces at the virtual switch with no agent in any guest. An application policy permits web to db on 5432 and hmi to plc on 502; an isolation policy forbids all traffic between Environment corp and Environment ot, which kills the lateral hmi to db path; and a quarantine policy can remove a compromised VM's connectivity entirely, overriding every permit. Policies are written in monitor mode first, where flows are visualized without being dropped, then applied. The volume is two-track: Track 1 describes Prism Central, Track 2 builds the model with a Linux bridge, nftables sets as categories, and enforcement in the host's bridge table.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Category-Driven Microsegmentation with Nutanix Flow</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Prism Central distributes category-driven policy to every AHV host; enforcement is at the virtual switch — agentless, monitor mode first, quarantine &gt; isolation &gt; application</text>
+  <rect x="310" y="42" width="340" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.4" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">Prism Central (Flow)</text>
+  <text x="480.0" y="73.3" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">categories + policy · monitor -&gt; apply</text>
+  <rect x="45" y="130" width="870" height="40" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="153.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">AHV virtual switch — enforcement point (agentless, beneath every guest)</text>
+  <line x1="480" y1="84" x2="480" y2="130" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="492" y="112" font-size="10.5" fill="#33415c">policy</text>
+  <rect x="45" y="210" width="180" height="64" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="135.0" y="229.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">web · .10</text>
+  <text x="135.0" y="245.7" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">AppTier: web</text>
+  <text x="135.0" y="261.7" text-anchor="middle" font-size="9" font-weight="700" fill="#1d4ed8">Environment: corp</text>
+  <line x1="135" y1="170" x2="135" y2="210" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <rect x="275" y="210" width="180" height="64" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="365.0" y="229.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">db · :5432 · .20</text>
+  <text x="365.0" y="245.7" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">AppTier: db</text>
+  <text x="365.0" y="261.7" text-anchor="middle" font-size="9" font-weight="700" fill="#1d4ed8">Environment: corp</text>
+  <line x1="365" y1="170" x2="365" y2="210" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <rect x="505" y="210" width="180" height="64" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="595.0" y="229.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">hmi · .30</text>
+  <text x="595.0" y="245.7" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">AppTier: hmi</text>
+  <text x="595.0" y="261.7" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Environment: ot</text>
+  <line x1="595" y1="170" x2="595" y2="210" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <rect x="735" y="210" width="180" height="64" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="825.0" y="229.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">plc · :502 · .40</text>
+  <text x="825.0" y="245.7" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">AppTier: plc</text>
+  <text x="825.0" y="261.7" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Environment: ot</text>
+  <line x1="825" y1="170" x2="825" y2="210" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <line x1="225" y1="242" x2="275" y2="242" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="228" y="232" font-size="10.5" fill="#166534">5432</text>
+  <line x1="685" y1="242" x2="735" y2="242" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="696" y="232" font-size="10.5" fill="#166534">502</text>
+  <text x="45" y="320" font-size="9.5" font-weight="700" fill="#b91c1c">isolation: Environment:corp &lt;-X-&gt; Environment:ot — the lateral hmi -&gt; db path dies by name</text>
+  <text x="45" y="340" font-size="9.5" font-weight="400" fill="#374151">application: only web -&gt; db:5432 and hmi -&gt; plc:502 are permitted (default-deny)</text>
+  <rect x="700" y="360" width="220" height="74" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810.0" y="378.8" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">Quarantine</text>
+  <text x="810.0" y="393.2" text-anchor="middle" font-size="9" font-weight="400" fill="#7f1d1d">one category assignment</text>
+  <text x="810.0" y="407.8" text-anchor="middle" font-size="9" font-weight="400" fill="#7f1d1d">cuts a VM off entirely —</text>
+  <text x="810.0" y="422.2" text-anchor="middle" font-size="9" font-weight="700" fill="#7f1d1d">beats every permit</text>
+  <line x1="45" y1="430" x2="85" y2="430" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="93" y="434" font-size="11" fill="#166534">Permitted by application policy</text>
+  <line x1="402" y1="430" x2="442" y2="430" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="450" y="434" font-size="11" fill="#b91c1c">Quarantine (top precedence)</text>
+  <line x1="723" y1="430" x2="763" y2="430" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="771" y="434" font-size="11" fill="#33415c">Prism Central / categories</text>
+</svg>

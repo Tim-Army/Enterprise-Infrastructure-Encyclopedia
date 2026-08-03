@@ -85,14 +85,21 @@ Chapter 13 also records vendors that are **no longer viable** — vArmour was di
 in January 2025, and Unisys Stealth no longer exists as a named product — because both still appear in
 older comparisons and incumbent proposals.
 
+## Companion lab volumes
+
+Every current option in this volume's comparison matrix has a companion **build-it-yourself lab
+volume** — Volumes **XCIII–CXXI**, one per option, each a two-track, nine-chapter walkthrough that
+describes the real product and builds a free, native model of its enforcement behavior on one Linux
+host. [Chapter 15's Table 1](chapters/15-comparison-matrix-and-sources.md) links each option to its lab.
+
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all nine chapters.
+- [Index](INDEX.md) — alphabetized topical index across all fifteen chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## How to use this volume
 
-Read Chapters 01–02 for the mental model and the rubric, then read the option chapters (03–08) that
+Read Chapters 01–02 for the mental model and the rubric, then read the option chapters (03–08 and 10–14) that
 match your environment, scoring each against the rubric. Chapter 09 turns those scores into a decision
 and a rollout plan. Related coverage: Zscaler (**XXXV**) and Palo Alto (**XVI**, **LXV**) for
 zero-trust access, VMware (**V**, **LXXI**, **LXXII**) for the NSX/vSphere platform, CNCF/Kubernetes

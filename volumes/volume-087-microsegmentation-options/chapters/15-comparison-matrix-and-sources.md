@@ -30,39 +30,44 @@ relying on any of it.
 
 ## Table 1 — Options, models, and current status
 
-| Option | Enforcement model | Chapter | Status | Vendor home |
-| --- | --- | --- | --- | --- |
-| VMware NSX (DFW) | Hypervisor | [03](03-network-and-hypervisor-based.md) | Current | [broadcom.com](https://www.broadcom.com/products/vmware-cloud-foundation/networking) |
-| Cisco ACI | Network/fabric | [03](03-network-and-hypervisor-based.md) | Current | [cisco.com](https://www.cisco.com/site/us/en/products/networking/cloud-networking/application-centric-infrastructure/index.html) |
-| Cisco Secure Workload | Host agent | [04](04-workload-agent-based-platforms.md) | Current | [cisco.com](https://www.cisco.com/site/us/en/products/security/secure-workload/index.html) |
-| Cisco ISE + TrustSec | NAC group tag | [10](10-network-fabric-and-nac-based.md) | Current | [cisco.com](https://www.cisco.com/site/us/en/products/security/identity-services-engine/index.html) |
-| Arista MSS-Group | Network/fabric | [10](10-network-fabric-and-nac-based.md) | Current | [arista.com](https://www.arista.com/en/products/multi-domain-segmentation) |
-| HPE Aruba CX 10000 | DPU/SmartNIC | [11](11-dpu-and-platform-native.md) | Current | [hpe.com](https://www.hpe.com/us/en/aruba-networking-cx-10000-switch-series.html) |
-| Juniper Connected Security | Network/fabric | [10](10-network-fabric-and-nac-based.md) | Current | [juniper.net](https://www.juniper.net/us/en/security.html) |
-| Fortinet ISFW / VDOM | Network/fabric | [10](10-network-fabric-and-nac-based.md) | Current | [fortinet.com](https://www.fortinet.com/) |
-| Check Point CloudGuard | Network/fabric | [10](10-network-fabric-and-nac-based.md) | Current | [checkpoint.com](https://www.checkpoint.com/cloudguard/) |
-| Nutanix Flow Network Security | Hypervisor | [11](11-dpu-and-platform-native.md) | Current | [nutanix.com](https://www.nutanix.com/products/flow-network-security) |
-| NVIDIA BlueField | DPU/SmartNIC | [11](11-dpu-and-platform-native.md) | Current | [nvidia.com](https://www.nvidia.com/en-us/networking/products/data-processing-unit/) |
-| Illumio | Host agent | [04](04-workload-agent-based-platforms.md) | Current | [illumio.com](https://www.illumio.com/) |
-| Akamai Guardicore | Host agent | [04](04-workload-agent-based-platforms.md) | Current | [akamai.com](https://www.akamai.com/products/akamai-guardicore-segmentation) |
-| Zero Networks | Agentless OS-firewall | [05](05-zero-networks.md) | Current | [zeronetworks.com](https://zeronetworks.com/) |
-| TrueFort | Host agent / EDR-leveraged | [06](06-truefort.md) | Current | [truefort.com](https://truefort.com/) |
-| ColorTokens Xshield | Multi-mode + Gatekeeper | [07](07-colortokens-xshield.md) | Current | [colortokens.com](https://colortokens.com/) |
-| Elisity | Identity via existing switching | [13](13-identity-based-and-overlay-independents.md) | Current | [elisity.com](https://www.elisity.com/) |
-| Tempered Airwall | HIP encrypted overlay | [13](13-identity-based-and-overlay-independents.md) | Current (Johnson Controls) | [temperednetworks.com](https://www.temperednetworks.com/) |
-| **vArmour** | Host agent | [13](13-identity-based-and-overlay-independents.md) | **Discontinued** — IP to Fenix24, Jan 2025 | — |
-| **Unisys Stealth** | Identity overlay | [13](13-identity-based-and-overlay-independents.md) | **Absorbed** into a managed service | [unisys.com](https://www.unisys.com/solutions/cybersecurity-solutions/) |
-| AWS / Azure / GCP native | Cloud-native | [08](08-cloud-native-and-kubernetes.md) | Current | provider consoles |
-| Calico | Container/eBPF | [08](08-cloud-native-and-kubernetes.md) | Current | [tigera.io](https://www.tigera.io/project-calico/) |
-| Cilium | Container/eBPF | [08](08-cloud-native-and-kubernetes.md) | Current (Cisco/Isovalent) | [cilium.io](https://cilium.io/) |
-| Istio | Service mesh | [12](12-service-mesh-and-workload-identity.md) | Current | [istio.io](https://istio.io/) |
-| Linkerd | Service mesh | [12](12-service-mesh-and-workload-identity.md) | Current | [linkerd.io](https://linkerd.io/) |
-| HashiCorp Consul | Service mesh (+VMs) | [12](12-service-mesh-and-workload-identity.md) | Current (IBM) | [consul.io](https://www.consul.io/) |
-| Xage Security | OT identity broker | [14](14-ot-and-cyber-physical-segmentation.md) | Current | [xage.com](https://xage.com/) |
-| Claroty xDome | OT visibility (+integrated enforcement) | [14](14-ot-and-cyber-physical-segmentation.md) | Current | [claroty.com](https://claroty.com/) |
-| Nozomi Networks | OT visibility (+integrated enforcement) | [14](14-ot-and-cyber-physical-segmentation.md) | Current | [nozominetworks.com](https://www.nozominetworks.com/) |
-| TXOne Networks | OT endpoint/network | [14](14-ot-and-cyber-physical-segmentation.md) | Current | [txone.com](https://www.txone.com/) |
-| Zscaler / Airgap | Agentless DHCP-proxy isolation | [14](14-ot-and-cyber-physical-segmentation.md) | Current | [zscaler.com](https://www.zscaler.com/) |
+Every current option in this table has a companion **build-it-yourself lab volume** (Volumes
+XCIII–CXXI): a two-track, nine-chapter walkthrough that describes the real product and builds a free,
+native model of its enforcement behavior on one Linux host. The **Lab** column links each option to its
+volume; the two discontinued entries have none.
+
+| Option | Enforcement model | Chapter | Status | Vendor home | Lab |
+| --- | --- | --- | --- | --- | --- |
+| VMware NSX (DFW) | Hypervisor | [03](03-network-and-hypervisor-based.md) | Current | [broadcom.com](https://www.broadcom.com/products/vmware-cloud-foundation/networking) | [CXI](../../volume-111-vmware-nsx-dfw-lab/README.md) |
+| Cisco ACI | Network/fabric | [03](03-network-and-hypervisor-based.md) | Current | [cisco.com](https://www.cisco.com/site/us/en/products/networking/cloud-networking/application-centric-infrastructure/index.html) | [CXVII](../../volume-117-cisco-aci-lab/README.md) |
+| Cisco Secure Workload | Host agent | [04](04-workload-agent-based-platforms.md) | Current | [cisco.com](https://www.cisco.com/site/us/en/products/security/secure-workload/index.html) | [C](../../volume-100-cisco-secure-workload-lab/README.md) |
+| Cisco ISE + TrustSec | NAC group tag | [10](10-network-fabric-and-nac-based.md) | Current | [cisco.com](https://www.cisco.com/site/us/en/products/security/identity-services-engine/index.html) | [CVII](../../volume-107-cisco-ise-trustsec-lab/README.md) |
+| Arista MSS-Group | Network/fabric | [10](10-network-fabric-and-nac-based.md) | Current | [arista.com](https://www.arista.com/en/products/multi-domain-segmentation) | [CXVIII](../../volume-118-arista-mss-group-lab/README.md) |
+| HPE Aruba CX 10000 | DPU/SmartNIC | [11](11-dpu-and-platform-native.md) | Current | [hpe.com](https://www.hpe.com/us/en/aruba-networking-cx-10000-switch-series.html) | [CXIX](../../volume-119-hpe-aruba-cx10000-lab/README.md) |
+| Juniper Connected Security | Network/fabric | [10](10-network-fabric-and-nac-based.md) | Current | [juniper.net](https://www.juniper.net/us/en/security.html) | [CVIII](../../volume-108-juniper-connected-security-lab/README.md) |
+| Fortinet ISFW / VDOM | Network/fabric | [10](10-network-fabric-and-nac-based.md) | Current | [fortinet.com](https://www.fortinet.com/) | [CIX](../../volume-109-fortinet-isfw-vdom-lab/README.md) |
+| Check Point CloudGuard | Network/fabric | [10](10-network-fabric-and-nac-based.md) | Current | [checkpoint.com](https://www.checkpoint.com/cloudguard/) | [CX](../../volume-110-checkpoint-cloudguard-lab/README.md) |
+| Nutanix Flow Network Security | Hypervisor | [11](11-dpu-and-platform-native.md) | Current | [nutanix.com](https://www.nutanix.com/products/flow-network-security) | [CXXI](../../volume-121-nutanix-flow-lab/README.md) |
+| NVIDIA BlueField | DPU/SmartNIC | [11](11-dpu-and-platform-native.md) | Current | [nvidia.com](https://www.nvidia.com/en-us/networking/products/data-processing-unit/) | [CXX](../../volume-120-nvidia-bluefield-lab/README.md) |
+| Illumio | Host agent | [04](04-workload-agent-based-platforms.md) | Current | [illumio.com](https://www.illumio.com/) | [XCIV](../../volume-094-illumio-lab/README.md) |
+| Akamai Guardicore | Host agent | [04](04-workload-agent-based-platforms.md) | Current | [akamai.com](https://www.akamai.com/products/akamai-guardicore-segmentation) | [XCV](../../volume-095-akamai-guardicore-lab/README.md) |
+| Zero Networks | Agentless OS-firewall | [05](05-zero-networks.md) | Current | [zeronetworks.com](https://zeronetworks.com/) | [XCVI](../../volume-096-zero-networks-lab/README.md) |
+| TrueFort | Host agent / EDR-leveraged | [06](06-truefort.md) | Current | [truefort.com](https://truefort.com/) | [XCVII](../../volume-097-truefort-lab/README.md) |
+| ColorTokens Xshield | Multi-mode + Gatekeeper | [07](07-colortokens-xshield.md) | Current | [colortokens.com](https://colortokens.com/) | [XCIII](../../volume-093-colortokens-xshield-lab/README.md) |
+| Elisity | Identity via existing switching | [13](13-identity-based-and-overlay-independents.md) | Current | [elisity.com](https://www.elisity.com/) | [XCVIII](../../volume-098-elisity-lab/README.md) |
+| Tempered Airwall | HIP encrypted overlay | [13](13-identity-based-and-overlay-independents.md) | Current (Johnson Controls) | [temperednetworks.com](https://www.temperednetworks.com/) | [XCIX](../../volume-099-tempered-airwall-lab/README.md) |
+| **vArmour** | Host agent | [13](13-identity-based-and-overlay-independents.md) | **Discontinued** — IP to Fenix24, Jan 2025 | — | — |
+| **Unisys Stealth** | Identity overlay | [13](13-identity-based-and-overlay-independents.md) | **Absorbed** into a managed service | [unisys.com](https://www.unisys.com/solutions/cybersecurity-solutions/) | — |
+| AWS / Azure / GCP native | Cloud-native | [08](08-cloud-native-and-kubernetes.md) | Current | provider consoles | [CVI](../../volume-106-cloud-native-segmentation-lab/README.md) |
+| Calico | Container/eBPF | [08](08-cloud-native-and-kubernetes.md) | Current | [tigera.io](https://www.tigera.io/project-calico/) | [CI](../../volume-101-calico-lab/README.md) |
+| Cilium | Container/eBPF | [08](08-cloud-native-and-kubernetes.md) | Current (Cisco/Isovalent) | [cilium.io](https://cilium.io/) | [CII](../../volume-102-cilium-lab/README.md) |
+| Istio | Service mesh | [12](12-service-mesh-and-workload-identity.md) | Current | [istio.io](https://istio.io/) | [CIII](../../volume-103-istio-lab/README.md) |
+| Linkerd | Service mesh | [12](12-service-mesh-and-workload-identity.md) | Current | [linkerd.io](https://linkerd.io/) | [CIV](../../volume-104-linkerd-lab/README.md) |
+| HashiCorp Consul | Service mesh (+VMs) | [12](12-service-mesh-and-workload-identity.md) | Current (IBM) | [consul.io](https://www.consul.io/) | [CV](../../volume-105-consul-lab/README.md) |
+| Xage Security | OT identity broker | [14](14-ot-and-cyber-physical-segmentation.md) | Current | [xage.com](https://xage.com/) | [CXII](../../volume-112-xage-security-lab/README.md) |
+| Claroty xDome | OT visibility (+integrated enforcement) | [14](14-ot-and-cyber-physical-segmentation.md) | Current | [claroty.com](https://claroty.com/) | [CXIII](../../volume-113-claroty-xdome-lab/README.md) |
+| Nozomi Networks | OT visibility (+integrated enforcement) | [14](14-ot-and-cyber-physical-segmentation.md) | Current | [nozominetworks.com](https://www.nozominetworks.com/) | [CXIV](../../volume-114-nozomi-networks-lab/README.md) |
+| TXOne Networks | OT endpoint/network | [14](14-ot-and-cyber-physical-segmentation.md) | Current | [txone.com](https://www.txone.com/) | [CXV](../../volume-115-txone-networks-lab/README.md) |
+| Zscaler / Airgap | Agentless DHCP-proxy isolation | [14](14-ot-and-cyber-physical-segmentation.md) | Current | [zscaler.com](https://www.zscaler.com/) | [CXVI](../../volume-116-zscaler-airgap-lab/README.md) |
 
 ## Table 2 — Cost, effort, and system requirements
 
