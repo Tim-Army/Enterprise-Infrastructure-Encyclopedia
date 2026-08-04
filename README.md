@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.156-blue)
+![Release](https://img.shields.io/badge/release-v1.2.157-blue)
 
-**v1.2.156 — latest release.** 140 volumes, 1350 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.156) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.157 — latest release.** 141 volumes, 1360 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.157) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 140-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 141-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-140 volumes, 1350 chapters. Each volume has a dedicated
+141 volumes, 1360 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -167,7 +167,8 @@ The series combines architecture and theory with implementation guidance, automa
 | CXXXV | [Confluent Certification Tracks](volumes/volume-135-confluent-certifications/README.md) | 9 |
 | CXXXVI | [GitLab Certification Tracks](volumes/volume-136-gitlab-certifications/README.md) | 9 |
 | CXXXVII | [Rapid7 Certification Tracks](volumes/volume-137-rapid7-certifications/README.md) | 9 |
-| CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 71 |
+| CXXXVIII | [Everpure (formerly Pure Storage) Certification Tracks](volumes/volume-138-everpure-purestorage-certifications/README.md) | 9 |
+| CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 72 |
 | CMXCVIII | [Acronyms](volumes/volume-998-acronyms/README.md) | 4 |
 | CMXCIX | [Reference Library](volumes/volume-999-reference-library/README.md) | 9 |
 

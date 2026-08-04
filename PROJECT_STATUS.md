@@ -147,11 +147,12 @@ does not by itself verify every technical claim in it.
 | CXXXV — Confluent Certification Tracks | 9 | Drafted |
 | CXXXVI — GitLab Certification Tracks | 9 | Drafted |
 | CXXXVII — Rapid7 Certification Tracks | 9 | Drafted |
-| CMXCVII — Master Appendices | 71 | Drafted |
+| CXXXVIII — Everpure (formerly Pure Storage) Certification Tracks | 9 | Drafted |
+| CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1350 of 1350 drafted (100%). Every volume has a
+**Total declared chapters:** 1360 of 1360 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

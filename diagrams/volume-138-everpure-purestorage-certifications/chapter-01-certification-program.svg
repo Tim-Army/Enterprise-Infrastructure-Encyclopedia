@@ -1,0 +1,58 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Everpure IT Professional Certification program</title>
+  <desc>
+    Everpure, the company formerly known as Pure Storage, offers twelve IT Professional Certifications across four levels through Everpure Academy. The Associate level has one certification, Data Storage, at 200 US dollars. The Professional level has four at 300 dollars each: FlashArray Storage, FlashBlade Storage, Portworx Enterprise, and Cyber Resilience. The Specialist level has six at 300 dollars each: FlashArray Implementation, FlashBlade Implementation, FlashArray Support, FlashBlade Support, Cloud, and Migration. The Expert level has one, Platform Architect, at 400 dollars. All exams are multiple choice, delivered online and proctored with a webcam, and are closed book with no external materials permitted. Training is not required because each exam is designed to test on-the-job experience. Certifications are valid for three years and renewed by retaking the updated exam; additionally the Associate Data Storage certification renews automatically when any higher certification is earned, and Continuing Everpure Education credits apply to selected FlashArray exams. Badges issue through Credly. The rebrand is partial: the company and certifications are now Everpure, while the FlashArray, FlashBlade, Portworx, and Evergreen product names are unchanged, the conference remains Pure Accelerate, and the academy is still hosted at academy.purestorage.com.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Everpure (formerly Pure Storage) Certification</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">12 certifications across 4 levels · $200/$300/$400 · online proctored, closed book · valid 3 years · DSA auto-renews</text>
+  <rect x="200" y="42" width="560" height="46" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="55.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">Everpure, Inc. — formerly PURE STORAGE</text>
+  <text x="480.0" y="68.7" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">company + certifications renamed; FlashArray/FlashBlade/Portworx/Evergreen unchanged</text>
+  <text x="480.0" y="81.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">academy still hosted at academy.purestorage.com — an old-looking URL that is current</text>
+  <rect x="40" y="132" width="200" height="62" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="140.0" y="146.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">ASSOCIATE   $200</text>
+  <text x="140.0" y="159.8" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Data Storage (DSA)</text>
+  <text x="140.0" y="172.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#166534">auto-renews when you</text>
+  <text x="140.0" y="185.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#166534">earn any higher cert</text>
+  <rect x="250" y="132" width="230" height="62" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="365.0" y="146.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">PROFESSIONAL   $300</text>
+  <text x="365.0" y="159.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">FlashArray Storage</text>
+  <text x="365.0" y="172.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">FlashBlade Storage</text>
+  <text x="365.0" y="185.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Portworx · Cyber Resilience</text>
+  <rect x="490" y="132" width="240" height="62" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="610.0" y="146.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">SPECIALIST   $300</text>
+  <text x="610.0" y="159.8" text-anchor="middle" font-size="7" font-weight="400" fill="#374151">FlashArray/Blade Implementation</text>
+  <text x="610.0" y="172.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">FlashArray/Blade Support</text>
+  <text x="610.0" y="185.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Cloud · Migration</text>
+  <rect x="740" y="132" width="180" height="62" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="830.0" y="146.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">EXPERT   $400</text>
+  <text x="830.0" y="159.8" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Platform Architect</text>
+  <text x="830.0" y="172.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">designs whole</text>
+  <text x="830.0" y="185.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">solutions</text>
+  <line x1="240" y1="163" x2="250" y2="163" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="480" y1="163" x2="490" y2="163" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="730" y1="163" x2="740" y2="163" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="40" y="214" width="880" height="40" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="237.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Products: FlashArray (block) · FlashBlade (file + object) · FlashBlade//EXA (AI/HPC) · Portworx (Kubernetes) · Evergreen//One (as-a-service)</text>
+  <rect x="40" y="268" width="880" height="56" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="285.6" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">Exam mechanics: multiple choice · ONLINE PROCTORED (webcam) · CLOSED BOOK — no external materials</text>
+  <text x="480.0" y="299.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Training NOT required: &quot;each exam is designed to test your on-the-job experience&quot; · Credly badges</text>
+  <text x="480.0" y="312.3" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Valid 3 YEARS — retake the updated exam, OR: DSA auto-renews · CEE credits (SELECT FlashArray exams only)</text>
+  <text x="40" y="358" font-size="9.5" font-weight="700" fill="#166534">Note the Specialist split: IMPLEMENTATION (deploying) vs SUPPORT (diagnosing) are different jobs — choose the one that matches your work.</text>
+  <text x="40" y="377" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: upgrade sequencing &amp; controller headroom · volume/host mapping · file-vs-object · reduction ratios · RPO &amp; the speed of light · immutability vs dwell time · K8s PVs.</text>
+  <line x1="40" y1="408" x2="80" y2="408" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="88" y="412" font-size="11" fill="#6b7280">Associate / mechanics</text>
+  <line x1="307" y1="408" x2="347" y2="408" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="355" y="412" font-size="11" fill="#b45309">Professional / Specialist</text>
+  <line x1="610" y1="408" x2="650" y2="408" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="658" y="412" font-size="11" fill="#166534">Expert</text>
+  <line x1="742" y1="408" x2="782" y2="408" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="790" y="412" font-size="11" fill="#33415c">Company &amp; products</text>
+</svg>

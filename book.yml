@@ -4767,11 +4767,45 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing an Exam, Currency, and Career"
         path: volumes/volume-137-rapid7-certifications/chapters/09-choosing-an-exam-currency-career.md
+  - id: volume-138
+    number: "CXXXVIII"
+    slug: volume-138-everpure-purestorage-certifications
+    title: "Everpure (formerly Pure Storage) Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Everpure Program and the Rebrand"
+        path: volumes/volume-138-everpure-purestorage-certifications/chapters/01-the-everpure-program-and-the-rebrand.md
+      - id: 02
+        title: "Chapter 02: All-Flash Architecture and the Evergreen Model"
+        path: volumes/volume-138-everpure-purestorage-certifications/chapters/02-all-flash-architecture-and-evergreen.md
+      - id: 03
+        title: "Chapter 03: FlashArray Fundamentals"
+        path: volumes/volume-138-everpure-purestorage-certifications/chapters/03-flasharray-fundamentals.md
+      - id: 04
+        title: "Chapter 04: FlashBlade and Unstructured Data"
+        path: volumes/volume-138-everpure-purestorage-certifications/chapters/04-flashblade-and-unstructured-data.md
+      - id: 05
+        title: "Chapter 05: Data Reduction and Efficiency"
+        path: volumes/volume-138-everpure-purestorage-certifications/chapters/05-data-reduction-and-efficiency.md
+      - id: 06
+        title: "Chapter 06: Data Protection and Replication"
+        path: volumes/volume-138-everpure-purestorage-certifications/chapters/06-data-protection-and-replication.md
+      - id: 07
+        title: "Chapter 07: Cyber Resilience"
+        path: volumes/volume-138-everpure-purestorage-certifications/chapters/07-cyber-resilience.md
+      - id: 08
+        title: "Chapter 08: Portworx and Cloud-Native Storage"
+        path: volumes/volume-138-everpure-purestorage-certifications/chapters/08-portworx-and-cloud-native-storage.md
+      - id: 09
+        title: "Chapter 09: Choosing a Level, Recertification, and Career"
+        path: volumes/volume-138-everpure-purestorage-certifications/chapters/09-choosing-a-level-recertification-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
     title: "Master Appendices"
-    chapter_count: 71
+    chapter_count: 72
     build_eligible: true
     chapters:
       - id: 01
@@ -4987,6 +5021,9 @@ volumes:
       - id: 71
         title: "Chapter 71: Appendix — Rapid7 Certifications and Course Access"
         path: volumes/volume-997-master-appendices/chapters/71-appendix-rapid7-certifications-and-course-access.md
+      - id: 72
+        title: "Chapter 72: Appendix — Everpure (formerly Pure Storage) Certifications and Course Access"
+        path: volumes/volume-997-master-appendices/chapters/72-appendix-everpure-purestorage-certifications-and-course-access.md
   - id: volume-998
     number: "CMXCVIII"
     slug: volume-998-acronyms
