@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 127-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 128-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-127 volumes, 1220 chapters. Each volume has a dedicated
+128 volumes, 1230 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -154,6 +154,7 @@ The series combines architecture and theory with implementation guidance, automa
 | CXXII | [Citrix Certification Tracks](volumes/volume-122-citrix-certifications/README.md) | 9 |
 | CXXIII | [IBM Certification Tracks](volumes/volume-123-ibm-certifications/README.md) | 9 |
 | CXXIV | [Linux Foundation and LPI Certification Tracks](volumes/volume-124-linux-certifications/README.md) | 9 |
+| CXXV | [Red Hat Certification Tracks](volumes/volume-125-red-hat-certifications/README.md) | 9 |
 | CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 55 |
 | CMXCVIII | [Acronyms](volumes/volume-998-acronyms/README.md) | 4 |
 | CMXCIX | [Reference Library](volumes/volume-999-reference-library/README.md) | 9 |

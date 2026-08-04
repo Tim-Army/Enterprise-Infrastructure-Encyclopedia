@@ -134,11 +134,12 @@ does not by itself verify every technical claim in it.
 | CXXII — Citrix Certification Tracks | 9 | Drafted |
 | CXXIII — IBM Certification Tracks | 9 | Drafted |
 | CXXIV — Linux Foundation and LPI Certification Tracks | 9 | Drafted |
-| CMXCVII — Master Appendices | 58 | Drafted |
+| CXXV — Red Hat Certification Tracks | 9 | Drafted |
+| CMXCVII — Master Appendices | 59 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1220 of 1220 drafted (100%). Every volume has a
+**Total declared chapters:** 1230 of 1230 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
