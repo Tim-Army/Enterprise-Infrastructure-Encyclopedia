@@ -4835,6 +4835,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Badge Paths, Currency, and Career"
         path: volumes/volume-139-grafana-observability/chapters/09-badge-paths-currency-career.md
+  - id: volume-140
+    number: "CXL"
+    slug: volume-140-dynatrace-certifications
+    title: "Dynatrace Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Dynatrace Certification Program"
+        path: volumes/volume-140-dynatrace-certifications/chapters/01-the-dynatrace-certification-program.md
+      - id: 02
+        title: "Chapter 02: OneAgent, ActiveGate, and Deployment"
+        path: volumes/volume-140-dynatrace-certifications/chapters/02-oneagent-activegate-and-deployment.md
+      - id: 03
+        title: "Chapter 03: Grail, DQL, and DPL"
+        path: volumes/volume-140-dynatrace-certifications/chapters/03-grail-dql-and-dpl.md
+      - id: 04
+        title: "Chapter 04: Entities, Topology, and Management Zones"
+        path: volumes/volume-140-dynatrace-certifications/chapters/04-entities-topology-and-management-zones.md
+      - id: 05
+        title: "Chapter 05: Digital Experience Monitoring"
+        path: volumes/volume-140-dynatrace-certifications/chapters/05-digital-experience-monitoring.md
+      - id: 06
+        title: "Chapter 06: Davis AI, Problems, and Root Cause"
+        path: volumes/volume-140-dynatrace-certifications/chapters/06-davis-ai-problems-and-root-cause.md
+      - id: 07
+        title: "Chapter 07: Application Security"
+        path: volumes/volume-140-dynatrace-certifications/chapters/07-application-security.md
+      - id: 08
+        title: "Chapter 08: SLOs, Workflows, and Site Reliability Guardian"
+        path: volumes/volume-140-dynatrace-certifications/chapters/08-slos-workflows-and-site-reliability-guardian.md
+      - id: 09
+        title: "Chapter 09: Choosing a Certification, Currency, and Career"
+        path: volumes/volume-140-dynatrace-certifications/chapters/09-choosing-a-certification-currency-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices

@@ -149,11 +149,12 @@ does not by itself verify every technical claim in it.
 | CXXXVII — Rapid7 Certification Tracks | 9 | Drafted |
 | CXXXVIII — Everpure (formerly Pure Storage) Certification Tracks | 9 | Drafted |
 | CXXXIX — Grafana Observability Platform and GROT Academy | 9 | Drafted |
+| CXL — Dynatrace Certification Tracks | 9 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1369 of 1369 drafted (100%). Every volume has a
+**Total declared chapters:** 1378 of 1378 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
