@@ -144,11 +144,12 @@ does not by itself verify every technical claim in it.
 | CXXXII — SailPoint Certification Tracks | 9 | Drafted |
 | CXXXIII — Commvault Certification Tracks | 9 | Drafted |
 | CXXXIV — SolarWinds Certification Tracks | 9 | Drafted |
-| CMXCVII — Master Appendices | 68 | Drafted |
+| CXXXV — Confluent Certification Tracks | 9 | Drafted |
+| CMXCVII — Master Appendices | 69 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1320 of 1320 drafted (100%). Every volume has a
+**Total declared chapters:** 1330 of 1330 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

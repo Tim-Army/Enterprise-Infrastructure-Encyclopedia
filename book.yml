@@ -4665,11 +4665,45 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing an Exam, Currency, and Career"
         path: volumes/volume-134-solarwinds-certifications/chapters/09-choosing-an-exam-currency-career.md
+  - id: volume-135
+    number: "CXXXV"
+    slug: volume-135-confluent-certifications
+    title: "Confluent Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Confluent Program and Apache Kafka"
+        path: volumes/volume-135-confluent-certifications/chapters/01-the-confluent-program-and-kafka.md
+      - id: 02
+        title: "Chapter 02: Kafka Architecture and the Partitioned Log"
+        path: volumes/volume-135-confluent-certifications/chapters/02-kafka-architecture-and-the-log.md
+      - id: 03
+        title: "Chapter 03: Producers and Delivery Semantics"
+        path: volumes/volume-135-confluent-certifications/chapters/03-producers-and-delivery-semantics.md
+      - id: 04
+        title: "Chapter 04: Consumers and Consumer Groups"
+        path: volumes/volume-135-confluent-certifications/chapters/04-consumers-and-consumer-groups.md
+      - id: 05
+        title: "Chapter 05: Schemas and Stream Governance"
+        path: volumes/volume-135-confluent-certifications/chapters/05-schemas-and-stream-governance.md
+      - id: 06
+        title: "Chapter 06: Kafka Connect and Connectors"
+        path: volumes/volume-135-confluent-certifications/chapters/06-kafka-connect-and-connectors.md
+      - id: 07
+        title: "Chapter 07: Stream Processing — Kafka Streams and Flink"
+        path: volumes/volume-135-confluent-certifications/chapters/07-stream-processing-kafka-streams-and-flink.md
+      - id: 08
+        title: "Chapter 08: Operating Clusters and Confluent Cloud"
+        path: volumes/volume-135-confluent-certifications/chapters/08-operating-clusters-and-confluent-cloud.md
+      - id: 09
+        title: "Chapter 09: Choosing a Certification, Currency, and Career"
+        path: volumes/volume-135-confluent-certifications/chapters/09-choosing-a-certification-currency-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
     title: "Master Appendices"
-    chapter_count: 68
+    chapter_count: 69
     build_eligible: true
     chapters:
       - id: 01
@@ -4876,6 +4910,9 @@ volumes:
       - id: 68
         title: "Chapter 68: Appendix — SolarWinds Certifications and Course Access"
         path: volumes/volume-997-master-appendices/chapters/68-appendix-solarwinds-certifications-and-course-access.md
+      - id: 69
+        title: "Chapter 69: Appendix — Confluent Certifications and Course Access"
+        path: volumes/volume-997-master-appendices/chapters/69-appendix-confluent-certifications-and-course-access.md
   - id: volume-998
     number: "CMXCVIII"
     slug: volume-998-acronyms

@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.152-blue)
+![Release](https://img.shields.io/badge/release-v1.2.153-blue)
 
-**v1.2.152 — latest release.** 137 volumes, 1320 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.152) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.153 — latest release.** 138 volumes, 1330 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.153) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -19,13 +19,13 @@
 
 ## Overview
 
-The Enterprise Infrastructure Encyclopedia is a 137-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
+The Enterprise Infrastructure Encyclopedia is a 138-volume technical curriculum for infrastructure engineers, architects, administrators, cloud engineers, automation engineers, security professionals, students, and instructors.
 
 The series combines architecture and theory with implementation guidance, automation, validation, troubleshooting, security, best practices, knowledge checks, and hands-on labs. Sources are maintained in Markdown and organized by volume for multi-format publishing.
 
 ## Curriculum
 
-137 volumes, 1320 chapters. Each volume has a dedicated
+138 volumes, 1330 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -164,7 +164,8 @@ The series combines architecture and theory with implementation guidance, automa
 | CXXXII | [SailPoint Certification Tracks](volumes/volume-132-sailpoint-certifications/README.md) | 9 |
 | CXXXIII | [Commvault Certification Tracks](volumes/volume-133-commvault-certifications/README.md) | 9 |
 | CXXXIV | [SolarWinds Certification Tracks](volumes/volume-134-solarwinds-certifications/README.md) | 9 |
-| CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 68 |
+| CXXXV | [Confluent Certification Tracks](volumes/volume-135-confluent-certifications/README.md) | 9 |
+| CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 69 |
 | CMXCVIII | [Acronyms](volumes/volume-998-acronyms/README.md) | 4 |
 | CMXCIX | [Reference Library](volumes/volume-999-reference-library/README.md) | 9 |
 
