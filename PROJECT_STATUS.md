@@ -145,11 +145,12 @@ does not by itself verify every technical claim in it.
 | CXXXIII — Commvault Certification Tracks | 9 | Drafted |
 | CXXXIV — SolarWinds Certification Tracks | 9 | Drafted |
 | CXXXV — Confluent Certification Tracks | 9 | Drafted |
-| CMXCVII — Master Appendices | 69 | Drafted |
+| CXXXVI — GitLab Certification Tracks | 9 | Drafted |
+| CMXCVII — Master Appendices | 70 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1330 of 1330 drafted (100%). Every volume has a
+**Total declared chapters:** 1340 of 1340 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
