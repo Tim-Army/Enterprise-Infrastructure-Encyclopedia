@@ -1,0 +1,40 @@
+<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Aviatrix Certified Engineer (ACE) program</title>
+  <desc>
+    The Aviatrix Certified Engineer program has a free, self-paced ACE Associate covering multicloud networking foundations across AWS, Azure, Google Cloud, and OCI; it is the mandatory prerequisite for the instructor-led ACE Professional, which is hands-on across multicloud transit and high availability, egress security, firewall insertion, and secure user and site connectivity. The ACE Design Expert is the capstone for designing scalable resilient multicloud networks. Focused ACE courses add depth: Security, Hybrid Cloud, Cloud Backbone, Automation with Terraform, and Operations with CoPilot. Everything runs over the Aviatrix overlay: a central Controller as the control plane, CoPilot for observability, and gateways forming transit and spoke topology with FireNet firewall insertion and Distributed Cloud Firewall segmentation. The ACE Associate needs no cloud accounts, so the volume's labs run free on Linux primitives.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Aviatrix Certified Engineer (ACE) Program</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Free self-paced ACE Associate gates the instructor-led ACE Professional and the ACE Design Expert capstone, plus focused courses — all over the Aviatrix overlay (Controller + CoPilot + gateways)</text>
+  <rect x="45" y="42" width="870" height="40" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="65.3" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">Aviatrix overlay: Controller (control plane) + CoPilot (observability) + gateways over AWS / Azure / GCP / OCI</text>
+  <rect x="45" y="120" width="260" height="56" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="175.0" y="138.2" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">ACE Associate  (FREE, self-paced)</text>
+  <text x="175.0" y="151.5" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">multicloud networking foundations</text>
+  <text x="175.0" y="164.8" text-anchor="middle" font-size="8" font-weight="700" fill="#166534">mandatory prerequisite</text>
+  <rect x="350" y="120" width="260" height="56" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="138.2" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">ACE Professional  (instructor-led)</text>
+  <text x="480.0" y="151.5" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">transit/HA · egress · FireNet · connectivity</text>
+  <text x="480.0" y="164.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">hands-on labs</text>
+  <rect x="655" y="120" width="260" height="56" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="785.0" y="138.2" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">ACE Design Expert</text>
+  <text x="785.0" y="151.5" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">scalable, resilient</text>
+  <text x="785.0" y="164.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">multicloud design (capstone)</text>
+  <line x1="305" y1="148" x2="350" y2="148" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <line x1="610" y1="148" x2="655" y2="148" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <rect x="45" y="210" width="870" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="233.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Focused ACE courses: Security · Hybrid Cloud · Cloud Backbone · Automation (Terraform) · Operations (CoPilot)</text>
+  <text x="45" y="300" font-size="9.5" font-weight="700" fill="#1d4ed8">The overlay solves native multicloud pain: route-table limits, overlapping CIDRs, inconsistent transit (TGW/vWAN/NCC/DRG)</text>
+  <text x="45" y="320" font-size="9.5" font-weight="400" fill="#374151">Associate needs no cloud accounts — every lab in this volume runs free on Linux (namespaces / nftables / FRR / WireGuard / Terraform)</text>
+  <line x1="45" y1="350" x2="85" y2="350" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="93" y="354" font-size="11" fill="#6b7280">Free / self-paced tier</text>
+  <line x1="321" y1="350" x2="361" y2="350" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="369" y="354" font-size="11" fill="#166534">Instructor-led Professional</text>
+  <line x1="642" y1="350" x2="682" y2="350" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="690" y="354" font-size="11" fill="#b45309">Design Expert capstone</text>
+</svg>

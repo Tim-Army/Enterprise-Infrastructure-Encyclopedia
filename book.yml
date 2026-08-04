@@ -4359,11 +4359,45 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing a Track, Currency, and Career"
         path: volumes/volume-125-red-hat-certifications/chapters/09-choosing-currency-and-career.md
+  - id: volume-126
+    number: "CXXVI"
+    slug: volume-126-aviatrix-certifications
+    title: "Aviatrix Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Aviatrix Certified Engineer (ACE) Program"
+        path: volumes/volume-126-aviatrix-certifications/chapters/01-the-ace-program.md
+      - id: 02
+        title: "Chapter 02: ACE Associate — Cloud-Native Networking Foundations"
+        path: volumes/volume-126-aviatrix-certifications/chapters/02-associate-cloud-native-networking.md
+      - id: 03
+        title: "Chapter 03: ACE Associate — Aviatrix Architecture and Design Patterns"
+        path: volumes/volume-126-aviatrix-certifications/chapters/03-associate-aviatrix-architecture.md
+      - id: 04
+        title: "Chapter 04: ACE Professional — Multicloud Transit and High Availability"
+        path: volumes/volume-126-aviatrix-certifications/chapters/04-professional-multicloud-transit.md
+      - id: 05
+        title: "Chapter 05: ACE Professional — Egress Security and FQDN Filtering"
+        path: volumes/volume-126-aviatrix-certifications/chapters/05-professional-egress-security.md
+      - id: 06
+        title: "Chapter 06: ACE Professional — Firewall Insertion (FireNet) and DCF"
+        path: volumes/volume-126-aviatrix-certifications/chapters/06-professional-firewall-insertion.md
+      - id: 07
+        title: "Chapter 07: ACE Professional — Secure User and Site Connectivity"
+        path: volumes/volume-126-aviatrix-certifications/chapters/07-professional-user-and-site-connectivity.md
+      - id: 08
+        title: "Chapter 08: ACE Automation and Operations"
+        path: volumes/volume-126-aviatrix-certifications/chapters/08-professional-automation-and-operations.md
+      - id: 09
+        title: "Chapter 09: ACE Design Expert, Choosing a Path, and Currency"
+        path: volumes/volume-126-aviatrix-certifications/chapters/09-design-expert-choosing-currency-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
     title: "Master Appendices"
-    chapter_count: 59
+    chapter_count: 60
     build_eligible: true
     chapters:
       - id: 01
@@ -4543,6 +4577,9 @@ volumes:
       - id: 59
         title: "Chapter 59: Appendix — Red Hat Certifications and Course Access"
         path: volumes/volume-997-master-appendices/chapters/59-appendix-red-hat-certifications-and-course-access.md
+      - id: 60
+        title: "Chapter 60: Appendix — Aviatrix Certifications and Course Access"
+        path: volumes/volume-997-master-appendices/chapters/60-appendix-aviatrix-certifications-and-course-access.md
   - id: volume-998
     number: "CMXCVIII"
     slug: volume-998-acronyms
