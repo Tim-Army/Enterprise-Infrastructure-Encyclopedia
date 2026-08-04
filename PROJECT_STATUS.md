@@ -136,11 +136,12 @@ does not by itself verify every technical claim in it.
 | CXXIV — Linux Foundation and LPI Certification Tracks | 9 | Drafted |
 | CXXV — Red Hat Certification Tracks | 9 | Drafted |
 | CXXVI — Aviatrix Certification Tracks | 9 | Drafted |
-| CMXCVII — Master Appendices | 60 | Drafted |
+| CXXVII — Netskope Certification Tracks | 9 | Drafted |
+| CMXCVII — Master Appendices | 61 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1240 of 1240 drafted (100%). Every volume has a
+**Total declared chapters:** 1250 of 1250 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
