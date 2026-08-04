@@ -4495,11 +4495,45 @@ volumes:
       - id: 09
         title: "Chapter 09: The CyberOps Track, Choosing a Path, and Currency"
         path: volumes/volume-129-opswat-certifications/chapters/09-cyberops-choosing-currency-career.md
+  - id: volume-130
+    number: "CXXX"
+    slug: volume-130-rubrik-certifications
+    title: "Rubrik Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Rubrik Program and Cyber Resilience"
+        path: volumes/volume-130-rubrik-certifications/chapters/01-the-rubrik-program-and-cyber-resilience.md
+      - id: 02
+        title: "Chapter 02: Rubrik Security Cloud Architecture and Data Protection (RCSA Core)"
+        path: volumes/volume-130-rubrik-certifications/chapters/02-rsc-architecture-data-protection.md
+      - id: 03
+        title: "Chapter 03: Immutability and Air-Gap"
+        path: volumes/volume-130-rubrik-certifications/chapters/03-immutability-and-air-gap.md
+      - id: 04
+        title: "Chapter 04: Ransomware and Cyber Recovery"
+        path: volumes/volume-130-rubrik-certifications/chapters/04-ransomware-cyber-recovery.md
+      - id: 05
+        title: "Chapter 05: Data Security Posture Management (DSPM)"
+        path: volumes/volume-130-rubrik-certifications/chapters/05-dspm.md
+      - id: 06
+        title: "Chapter 06: Recovery Orchestration and Testing"
+        path: volumes/volume-130-rubrik-certifications/chapters/06-recovery-orchestration.md
+      - id: 07
+        title: "Chapter 07: Protecting Workloads — Cloud-Native, Database, and SaaS"
+        path: volumes/volume-130-rubrik-certifications/chapters/07-workloads.md
+      - id: 08
+        title: "Chapter 08: Security Best Practices, RBAC, and Identity Resilience"
+        path: volumes/volume-130-rubrik-certifications/chapters/08-security-rbac-identity-resilience.md
+      - id: 09
+        title: "Chapter 09: Choosing a Path, Currency, and Career"
+        path: volumes/volume-130-rubrik-certifications/chapters/09-choosing-currency-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
     title: "Master Appendices"
-    chapter_count: 63
+    chapter_count: 64
     build_eligible: true
     chapters:
       - id: 01
@@ -4691,6 +4725,9 @@ volumes:
       - id: 63
         title: "Chapter 63: Appendix — OPSWAT Certifications and Course Access"
         path: volumes/volume-997-master-appendices/chapters/63-appendix-opswat-certifications-and-course-access.md
+      - id: 64
+        title: "Chapter 64: Appendix — Rubrik Certifications and Course Access"
+        path: volumes/volume-997-master-appendices/chapters/64-appendix-rubrik-certifications-and-course-access.md
   - id: volume-998
     number: "CMXCVIII"
     slug: volume-998-acronyms

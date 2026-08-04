@@ -1,0 +1,38 @@
+<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Rubrik certification program</title>
+  <desc>
+    The Rubrik certification program is focused on one active certification, RCSA, Rubrik Certified System Administrator, which validates operational administration of Rubrik Security Cloud. It is earned through Rubrik University via a free self-paced learning path with eLearning and unlimited practice exams, or a paid four-day hands-on Rubrik Security Cloud Administration bootcamp. Badges issue on Credly and Rubrik University access requires Rubrik Support credentials. The older RCE, Rubrik Certified Engineer, is retired. Everything is grounded in Rubrik Security Cloud, the Cyber Resilience Platform for Data and Identity, whose domains are policy-driven data protection via SLA Domains, immutability and logical air-gap, ransomware and cyber recovery with anomaly detection and Data Threat Analytics, Data Security Posture Management, recovery orchestration and testing, broad workload protection, and identity resilience. The premise is assume breach, protect immutably, recover fast and clean. The volume models these free in Python.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Rubrik Certification (Cyber Resilience for Data &amp; Identity)</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">One active cert — RCSA — via a free self-paced path or a paid hands-on RSC Administration bootcamp (RCE retired); all on Rubrik Security Cloud</text>
+  <rect x="280" y="42" width="400" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.0" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">Rubrik Security Cloud — Cyber Resilience for Data &amp; Identity</text>
+  <text x="480.0" y="73.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">premise: assume breach — protect immutably, recover fast &amp; clean</text>
+  <rect x="330" y="120" width="300" height="52" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="140.3" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">RCSA — Rubrik Certified System Administrator</text>
+  <text x="480.0" y="158.3" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">operate Rubrik Security Cloud (RCE retired)</text>
+  <rect x="60" y="210" width="380" height="46" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="250.0" y="229.0" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">FREE learning path</text>
+  <text x="250.0" y="244.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">eLearning + unlimited practice exams -&gt; final</text>
+  <rect x="520" y="210" width="380" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="710.0" y="229.0" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">PAID bootcamp (4-day, ~60% labs)</text>
+  <text x="710.0" y="244.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">RSC Administration; exam Qs from bootcamp</text>
+  <line x1="300" y1="146" x2="250" y2="210" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <line x1="660" y1="146" x2="710" y2="210" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="60" y="290" width="840" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="313.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">RSC domains: data protection (SLA) · immutability/air-gap · ransomware recovery + Data Threat Analytics · DSPM · orchestrated recovery · identity resilience</text>
+  <text x="60" y="375" font-size="9.5" font-weight="700" fill="#166534">The backup is the last line of defense: immutable (ransomware can't alter it), analyzable (detect + hunt), recoverable (tested)</text>
+  <text x="60" y="394" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: append-only immutable store · backup-delta anomaly detection · classification · recovery orchestration · RBAC</text>
+  <line x1="60" y1="420" x2="100" y2="420" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="108" y="424" font-size="11" fill="#b45309">The active certification (RCSA)</text>
+  <line x1="417" y1="420" x2="457" y2="420" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="465" y="424" font-size="11" fill="#6b7280">Free study route</text>
+  <line x1="639" y1="420" x2="679" y2="420" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="687" y="424" font-size="11" fill="#166534">Paid bootcamp route</text>
+</svg>
