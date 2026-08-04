@@ -32,9 +32,27 @@ exam effectively free.
 
 > **Currency.** The portfolio has been **rebranded around SolarWinds Observability**, split into **SaaS**
 > and **Self-Hosted** (the on-premises Orion lineage), and the exam names follow the products. Verify the
-> current exam list on the program page before booking. The page's FAQ also covers **certification
-> validity, retake policy, prerequisites, rescheduling, and what the fee includes** — read those directly
-> rather than trusting any secondary summary, including this appendix.
+> current exam list on the program page before booking — third-party material citing "SCP-NPM" or similar
+> codes describes the previous scheme.
+
+## Fees, eligibility, and validity
+
+Verified from the program page and its [FAQ](https://support.solarwinds.com/solarwinds-certified-professional-program#anchor5) on 4 August 2026.
+
+- **Fee: US$200** — or **60,000 THWACK points** exchanged in the THWACK store for an **SCP Voucher**,
+  emailed within **three business days** and applied at PSI checkout. Follow the "How to Register for an
+  SCP Exam" payment instructions before registering with PSI.
+- **Eligibility: none.** SolarWinds does not require eligibility to sit an SCP exam; you schedule with PSI
+  after registering on the SolarWinds website.
+- **Recommended experience** (a recommendation, not a requirement): at minimum **one year in a technical
+  role** across network, systems, applications, or security and compliance management or engineering;
+  **six months of on-the-job experience with SolarWinds products**; and familiarity with the technology
+  and processes behind product features including **PerfStack**, **NetPath**, and **AppStack**. The exams
+  target people who actively perform day-to-day operational tasks in their environment.
+- **Validity: three years** from the date of issue — SolarWinds' stated rationale is keeping certified
+  professionals current with evolving product features.
+- **Included preparation:** with an **active maintenance agreement**, virtual classes are available
+  through the **SolarWinds Customer Portal**, alongside each exam's preparation guide.
 
 ## Free and low-cost resources and entry points
 

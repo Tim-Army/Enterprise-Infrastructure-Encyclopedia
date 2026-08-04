@@ -36,6 +36,20 @@ The program is deliberately simple, described by SolarWinds as **three easy step
 
 Exams are delivered by **PSI Services** using proprietary **remote proctoring** — "anywhere, anytime testing with integrity." That means an ID check, environment and system requirements, a compatibility check beforehand, and admission rules you should read rather than discover on exam day. Special accommodations are available.
 
+### Who should sit it, and validity
+
+**There are no eligibility prerequisites** — SolarWinds does not gate registration, so you can schedule with PSI as soon as you have registered on the SolarWinds site. What SolarWinds publishes instead is a **recommended profile**, and it is worth measuring yourself against honestly:
+
+| Recommended minimum | Detail |
+|:---|:---|
+| **One year** in a technical role | Network, systems, applications, or security and compliance management or engineering |
+| **Six months** hands-on with SolarWinds products | Day-to-day operational work, not occasional exposure |
+| Familiarity with key product technologies | Including **PerfStack**, **NetPath**, and **AppStack** |
+
+The exams are aimed at people who **actively participate in day-to-day operational tasks** supporting their environment — which is the honest test of readiness, since the questions are scenario-shaped rather than definitional.
+
+**Your certification is valid for three years** from its date of issue. SolarWinds frames this as keeping certified professionals current with evolving product features — reasonable given that the portfolio itself was rebranded within that window.
+
 ### Cost — and the THWACK route
 
 The exam fee is **US$200**. But there is a second path worth knowing about:

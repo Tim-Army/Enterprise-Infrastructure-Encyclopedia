@@ -58,8 +58,9 @@ SolarWinds' distinctive position is **breadth across traditional enterprise IT**
 ## Currency
 
 - **The portfolio was rebranded** around SolarWinds Observability (SaaS and Self-Hosted). Exam names follow the products, so **verify the current exam list** on the SolarWinds Certified Professional program page before booking — third-party material referencing "SCP-NPM" or similar codes is describing the previous scheme.
-- **Verify the details this volume deliberately does not assert.** The program page's FAQ covers certification validity period, retake policy, prerequisites, cancellation and rescheduling, and what the exam fee includes. Those answers can change, and they are authoritative only from SolarWinds — read the FAQ directly rather than trusting a secondary summary (including this one).
-- **Verified 4 August 2026** from the official program page: the eleven-exam list, the three-step process, PSI Services remote proctoring, the US$200 fee, and the 60,000-point THWACK alternative.
+- **Certification validity is three years** from the date of issue — SolarWinds' stated reason is to keep certified professionals current with evolving product features. Record your expiry when you pass.
+- **There are no eligibility prerequisites.** SolarWinds does not gate exam registration; you can schedule with PSI as soon as you have registered on the SolarWinds site. The experience figures below are *recommendations*, not requirements.
+- **Verified 4 August 2026** from the official program page and its FAQ: the eleven-exam list, the three-step process, PSI Services remote proctoring, the US$200 fee, the 60,000-point THWACK alternative, three-year validity, no eligibility prerequisites, and the recommended-experience profile. Re-read the FAQ before booking — these answers are authoritative only from SolarWinds and can change.
 
 ## Hands-On Lab
 
