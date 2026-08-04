@@ -137,11 +137,12 @@ does not by itself verify every technical claim in it.
 | CXXV — Red Hat Certification Tracks | 9 | Drafted |
 | CXXVI — Aviatrix Certification Tracks | 9 | Drafted |
 | CXXVII — Netskope Certification Tracks | 9 | Drafted |
-| CMXCVII — Master Appendices | 61 | Drafted |
+| CXXVIII — ISA/IEC 62443 Certification Tracks | 9 | Drafted |
+| CMXCVII — Master Appendices | 62 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1250 of 1250 drafted (100%). Every volume has a
+**Total declared chapters:** 1260 of 1260 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

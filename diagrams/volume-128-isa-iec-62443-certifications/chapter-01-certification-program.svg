@@ -1,0 +1,46 @@
+<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the ISA/IEC 62443 Cybersecurity Certificate Program</title>
+  <desc>
+    The ISA/IEC 62443 Cybersecurity Certificate Program has four certificates mapped to the industrial automation and control systems security lifecycle. Certificate 1, Cybersecurity Fundamentals Specialist, course IC32, is the mandatory gate covering zones and conduits, security levels, and the seven foundational requirements. After it, in any order: Certificate 2 Cybersecurity Risk Assessment Specialist, course IC33, the Assess phase; Certificate 3 Cybersecurity Design Specialist, course IC34, the Design phase; and Certificate 4 Cybersecurity Maintenance Specialist, course IC37, the Operate and Maintain phase. Earning all four automatically confers the ISA/IEC 62443 Cybersecurity Expert designation, with no separate exam. The credentials do not expire. Everything is grounded in the IEC 62443 standard family, and the volume models zones, conduits, security levels, and risk scoring with free Linux primitives.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: ISA/IEC 62443 Cybersecurity Certificate Program</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Certificate 1 Fundamentals Specialist (IC32) is the mandatory gate; Risk Assessment (IC33), Design (IC34), and Maintenance (IC37) follow in any order; all four confer the Expert designation</text>
+  <rect x="300" y="42" width="360" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.0" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">IEC 62443 standard family (1-x / 2-x / 3-x / 4-x)</text>
+  <text x="480.0" y="73.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">credentials do not expire · standard evolves — re-read editions</text>
+  <rect x="340" y="120" width="280" height="52" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="140.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">Certificate 1 — Fundamentals Specialist</text>
+  <text x="480.0" y="158.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#166534">course IC32 · MANDATORY GATE</text>
+  <rect x="30" y="220" width="280" height="52" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="170.0" y="240.3" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">Cert 2 — Risk Assessment</text>
+  <text x="170.0" y="258.3" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">course IC33 · Assess</text>
+  <line x1="480" y1="172" x2="170" y2="220" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="340" y="220" width="280" height="52" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="240.3" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">Cert 3 — Design</text>
+  <text x="480.0" y="258.3" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">course IC34 · Design</text>
+  <line x1="480" y1="172" x2="480" y2="220" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="650" y="220" width="280" height="52" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="790.0" y="240.3" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">Cert 4 — Maintenance</text>
+  <text x="790.0" y="258.3" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">course IC37 · Operate/Maintain</text>
+  <line x1="480" y1="172" x2="790" y2="220" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="300" y="320" width="360" height="44" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="338.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">ISA/IEC 62443 Cybersecurity Expert</text>
+  <text x="480.0" y="352.7" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">automatic on all four certificates — no separate exam</text>
+  <line x1="170" y1="272" x2="400" y2="320" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="480" y1="272" x2="480" y2="320" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="790" y1="272" x2="560" y2="320" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="30" y="405" font-size="9.5" font-weight="700" fill="#b91c1c">OT priority inversion: availability &amp; safety outrank confidentiality (A-I-C) — every control decision follows from it</text>
+  <text x="30" y="424" font-size="9.5" font-weight="400" fill="#374151">Core mechanics: zones + conduits, security levels (SL 0-4) as a vector over FR1-FR7 — modeled free on Linux (namespaces/nftables/python)</text>
+  <line x1="30" y1="450" x2="70" y2="450" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="78" y="454" font-size="11" fill="#6b7280">Mandatory Fundamentals gate</text>
+  <line x1="351" y1="450" x2="391" y2="450" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="399" y="454" font-size="11" fill="#166534">Lifecycle specialist (any order)</text>
+  <line x1="717" y1="450" x2="757" y2="450" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="765" y="454" font-size="11" fill="#b45309">Expert (all four)</text>
+</svg>

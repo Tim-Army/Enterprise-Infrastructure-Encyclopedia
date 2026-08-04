@@ -4427,11 +4427,45 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing a Path, Currency, and Career"
         path: volumes/volume-127-netskope-certifications/chapters/09-choosing-currency-and-career.md
+  - id: volume-128
+    number: "CXXVIII"
+    slug: volume-128-isa-iec-62443-certifications
+    title: "ISA/IEC 62443 Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The ISA/IEC 62443 Program and the Standard"
+        path: volumes/volume-128-isa-iec-62443-certifications/chapters/01-the-program-and-the-standard.md
+      - id: 02
+        title: "Chapter 02: Fundamentals (IC32) — Core Concepts and the Reference Model"
+        path: volumes/volume-128-isa-iec-62443-certifications/chapters/02-fundamentals-concepts.md
+      - id: 03
+        title: "Chapter 03: Fundamentals (IC32) — Zones, Conduits, Security Levels, and Foundational Requirements"
+        path: volumes/volume-128-isa-iec-62443-certifications/chapters/03-fundamentals-zones-and-security-levels.md
+      - id: 04
+        title: "Chapter 04: Risk Assessment (IC33) — High-Level Assessment"
+        path: volumes/volume-128-isa-iec-62443-certifications/chapters/04-risk-assessment-high-level.md
+      - id: 05
+        title: "Chapter 05: Risk Assessment (IC33) — Detailed Assessment and Target Security Levels"
+        path: volumes/volume-128-isa-iec-62443-certifications/chapters/05-risk-assessment-detailed.md
+      - id: 06
+        title: "Chapter 06: Design (IC34) — Cybersecurity Requirements and Zone/Conduit Design"
+        path: volumes/volume-128-isa-iec-62443-certifications/chapters/06-design-requirements.md
+      - id: 07
+        title: "Chapter 07: Design (IC34) — Countermeasures and Verifying Security Levels"
+        path: volumes/volume-128-isa-iec-62443-certifications/chapters/07-design-countermeasures.md
+      - id: 08
+        title: "Chapter 08: Maintenance (IC37) — Operations and Maintenance"
+        path: volumes/volume-128-isa-iec-62443-certifications/chapters/08-maintenance-operations.md
+      - id: 09
+        title: "Chapter 09: The Expert Path, Currency, and Career"
+        path: volumes/volume-128-isa-iec-62443-certifications/chapters/09-expert-path-currency-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
     title: "Master Appendices"
-    chapter_count: 61
+    chapter_count: 62
     build_eligible: true
     chapters:
       - id: 01
@@ -4617,6 +4651,9 @@ volumes:
       - id: 61
         title: "Chapter 61: Appendix — Netskope Certifications and Course Access"
         path: volumes/volume-997-master-appendices/chapters/61-appendix-netskope-certifications-and-course-access.md
+      - id: 62
+        title: "Chapter 62: Appendix — ISA/IEC 62443 Certifications and Course Access"
+        path: volumes/volume-997-master-appendices/chapters/62-appendix-isa-iec-62443-certifications-and-course-access.md
   - id: volume-998
     number: "CMXCVIII"
     slug: volume-998-acronyms
