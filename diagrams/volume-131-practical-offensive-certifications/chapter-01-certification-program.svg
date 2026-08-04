@@ -1,0 +1,49 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the practical certification providers HTB, TCM, and INE</title>
+  <desc>
+    This volume maps three practical, hands-on security certification providers whose shared model is certification by working a real exam lab, a network, web application, Active Directory domain, or SOC scenario, and writing a professional report, rather than answering multiple-choice questions. Hack The Box, through HTB Academy, offers offensive certifications such as CPTS, CWES, CWEE, CAPE, and CJCA, the defensive CDSA, and the AI-focused COAE co-developed with Google. TCM Security offers the offensive PJPT, PNPT, PWPx, PORP, PMRP, PIPA, and PMPA, the blue-team PSAA, PSAP, and PHDA, and the AI-focused PAPA. INE Security, formerly eLearnSecurity, offers the offensive eJPT, eCPPT, eWPT, eWPTX, and eMAPT, the defensive eSOC, eCIR, eCTHP, eEDA, eIAMA, and eCDFP, and the AI-focused eAIS. The volume is written defensively: every offensive technique is presented to be understood, detected, prevented, and reported, always in an authorized, in-scope, educational context only. Authorization governs everything: the same skill set is a respected profession or a crime, and the only difference is signed, in-scope permission. Labs model methodology, detection, and fixes free in Python.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Practical Certifications (HTB · TCM · INE)</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Three providers, one model — a real exam lab plus a professional report; each spans offensive, defensive/blue, and AI tracks; authorization governs everything</text>
+  <rect x="230" y="42" width="500" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">Practical, hands-on certification — prove it by doing</text>
+  <text x="480.0" y="74.7" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">a real exam lab (network / web / AD / SOC) + a professional report, not multiple-choice</text>
+  <rect x="40" y="130" width="280" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="180.0" y="149.0" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">Hack The Box (HTB Academy)</text>
+  <text x="180.0" y="164.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">module-rich, job-role mapped</text>
+  <rect x="340" y="130" width="280" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="149.0" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">TCM Security</text>
+  <text x="480.0" y="164.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">affordable, scenario-realistic</text>
+  <rect x="640" y="130" width="280" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="780.0" y="149.0" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">INE Security (eLearnSecurity)</text>
+  <text x="780.0" y="164.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">subscription + hand-graded exams</text>
+  <line x1="480" y1="86" x2="180" y2="130" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="480" y1="86" x2="480" y2="130" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="480" y1="86" x2="780" y2="130" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <rect x="40" y="220" width="880" height="44" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="238.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">OFFENSIVE (understood to defend): HTB CPTS/CWES/CWEE/CAPE/CJCA · TCM PJPT/PNPT/PWPx/PORP/PIPA/PMPA · INE eJPT/eCPPT/eWPT/eWPTX/eMAPT</text>
+  <text x="480.0" y="252.0" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">reconnaissance -&gt; methodology -&gt; network/AD -&gt; web app — always authorized, in-scope, lab-only</text>
+  <rect x="40" y="280" width="880" height="44" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="298.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">DEFENSIVE / BLUE TEAM: HTB CDSA · TCM PSAA/PSAP/PHDA · INE eSOC/eCIR/eCTHP/eEDA/eIAMA/eCDFP</text>
+  <text x="480.0" y="312.0" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">SOC detection -&gt; incident response -&gt; threat hunting -&gt; forensics</text>
+  <rect x="40" y="340" width="880" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="358.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">AI / LLM SECURITY (newest, both sides): HTB COAE (with Google) · TCM PAPA · INE eAIS</text>
+  <text x="480.0" y="372.0" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">prompt injection · output handling · agentic guardrails — OWASP LLM Top 10 as a defender's checklist</text>
+  <text x="40" y="428" font-size="10" font-weight="700" fill="#991b1b">Authorization governs everything: the same skill set is a profession or a crime — the only difference is signed, in-scope permission.</text>
+  <text x="40" y="448" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: attack-path graphs to defend · detection rules · IR timelines · secure coding · report structure — never operational tooling against real targets.</text>
+  <line x1="40" y1="476" x2="80" y2="476" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="480" font-size="11" fill="#b45309">Providers</text>
+  <line x1="199" y1="476" x2="239" y2="476" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="247" y="480" font-size="11" fill="#166534">Offensive (to defend)</text>
+  <line x1="466" y1="476" x2="506" y2="476" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="514" y="480" font-size="11" fill="#6b7280">Defensive / blue</text>
+  <line x1="688" y1="476" x2="728" y2="476" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="736" y="480" font-size="11" fill="#33415c">AI/LLM security</text>
+</svg>
