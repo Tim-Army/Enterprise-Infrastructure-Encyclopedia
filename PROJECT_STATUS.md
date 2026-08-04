@@ -142,11 +142,12 @@ does not by itself verify every technical claim in it.
 | CXXX — Rubrik Certification Tracks | 9 | Drafted |
 | CXXXI — Practical Offensive and Defensive Certification Tracks (HTB, TCM, INE) | 9 | Drafted |
 | CXXXII — SailPoint Certification Tracks | 9 | Drafted |
-| CMXCVII — Master Appendices | 66 | Drafted |
+| CXXXIII — Commvault Certification Tracks | 9 | Drafted |
+| CMXCVII — Master Appendices | 67 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1300 of 1300 drafted (100%). Every volume has a
+**Total declared chapters:** 1310 of 1310 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

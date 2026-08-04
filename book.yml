@@ -4597,11 +4597,45 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing a Path, Recertification, Currency, and Career"
         path: volumes/volume-132-sailpoint-certifications/chapters/09-choosing-recertification-currency-career.md
+  - id: volume-133
+    number: "CXXXIII"
+    slug: volume-133-commvault-certifications
+    title: "Commvault Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Commvault Program and Readiverse Academy"
+        path: volumes/volume-133-commvault-certifications/chapters/01-the-commvault-program-and-readiverse-academy.md
+      - id: 02
+        title: "Chapter 02: Commvault Cloud Architecture"
+        path: volumes/volume-133-commvault-certifications/chapters/02-commvault-cloud-architecture.md
+      - id: 03
+        title: "Chapter 03: Storage, Plans, and Retention Policies"
+        path: volumes/volume-133-commvault-certifications/chapters/03-storage-plans-and-policies.md
+      - id: 04
+        title: "Chapter 04: Deduplication and Storage Efficiency"
+        path: volumes/volume-133-commvault-certifications/chapters/04-deduplication-and-efficiency.md
+      - id: 05
+        title: "Chapter 05: Backup and Recovery Operations"
+        path: volumes/volume-133-commvault-certifications/chapters/05-backup-and-recovery-operations.md
+      - id: 06
+        title: "Chapter 06: Cyber Resilience — Immutability, Air Gap, and Threat Scan"
+        path: volumes/volume-133-commvault-certifications/chapters/06-cyber-resilience-immutability-threat-scan.md
+      - id: 07
+        title: "Chapter 07: Cleanroom Recovery and Cloud Rewind"
+        path: volumes/volume-133-commvault-certifications/chapters/07-cleanroom-recovery-and-cloud-rewind.md
+      - id: 08
+        title: "Chapter 08: Workload Protection"
+        path: volumes/volume-133-commvault-certifications/chapters/08-workload-protection.md
+      - id: 09
+        title: "Chapter 09: Choosing a Tier, Currency, and Career"
+        path: volumes/volume-133-commvault-certifications/chapters/09-choosing-tiers-currency-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
     title: "Master Appendices"
-    chapter_count: 66
+    chapter_count: 67
     build_eligible: true
     chapters:
       - id: 01
@@ -4802,6 +4836,9 @@ volumes:
       - id: 66
         title: "Chapter 66: Appendix — SailPoint Certifications and Course Access"
         path: volumes/volume-997-master-appendices/chapters/66-appendix-sailpoint-certifications-and-course-access.md
+      - id: 67
+        title: "Chapter 67: Appendix — Commvault Certifications and Course Access"
+        path: volumes/volume-997-master-appendices/chapters/67-appendix-commvault-certifications-and-course-access.md
   - id: volume-998
     number: "CMXCVIII"
     slug: volume-998-acronyms

@@ -1,0 +1,66 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Commvault Readiverse Academy certification program</title>
+  <desc>
+    Commvault's certification program runs in Readiverse Academy and was rebuilt in June 2026 around four tiers on one path. Commvault Cloud Practitioner covers foundational platform and cyber resilience knowledge and is earned through the Commvault Cloud Administrator course of about four hours, the Cyber Resilience course of about four hours, one workload course of about thirty minutes, exams for both the Administrator and Cyber Resilience components, and claiming a digital badge. Commvault Cloud Specialist adds expanded operational, workload, and security depth. Commvault Cloud Professional adds advanced recovery and workload expertise including Cloud Rewind or Cleanroom Recovery coursework. Commvault Cloud Expert covers cloud engineering and resilience leadership with Cloud Engineer coursework, advanced feature courses, Cloud Rewind, and Cleanroom Recovery. All four tiers rest on the same three learning pillars: foundational platform skills, cyber resilience, and workload and feature expertise. Named certifications include Commvault Cloud Administrator, the Cyber Resilience Certification, and SaaS certifications for Threat Scan, Cleanroom Recovery, and Cloud Rewind. Workload courses cover Microsoft 365, Active Directory and Entra ID, file server protection, VMware, and Oracle. Credentials are vendor-validated through coursework, hands-on lab activities, and validated assessments, and Commvault is an ISC2 CPE Authorized Submitter so the training also earns continuing education credit. The volume models these disciplines free in Python.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Commvault Certification (Readiverse Academy)</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Four tiers, one path — Practitioner to Expert — on three pillars: platform skills, cyber resilience, workload expertise; coursework + labs + assessments; ISC2 CPE credit</text>
+  <rect x="230" y="42" width="500" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">Readiverse Academy — FOUR TIERS, ONE PATH</text>
+  <text x="480.0" y="74.7" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">vendor-validated: coursework + hands-on labs + validated assessments</text>
+  <rect x="40" y="128" width="210" height="78" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="145.0" y="144.3" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">PRACTITIONER</text>
+  <text x="145.0" y="157.3" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">platform + resilience</text>
+  <text x="145.0" y="170.3" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Administrator course 4h</text>
+  <text x="145.0" y="183.3" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Cyber Resilience 4h</text>
+  <text x="145.0" y="196.3" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">+1 workload · 2 exams</text>
+  <rect x="268" y="128" width="210" height="78" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="373.0" y="147.1" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">SPECIALIST</text>
+  <text x="373.0" y="162.6" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">expanded operational,</text>
+  <text x="373.0" y="178.1" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">workload &amp; security</text>
+  <text x="373.0" y="193.6" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">depth</text>
+  <rect x="496" y="128" width="210" height="78" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="601.0" y="147.1" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">PROFESSIONAL</text>
+  <text x="601.0" y="162.6" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">advanced recovery +</text>
+  <text x="601.0" y="178.1" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">workload expertise</text>
+  <text x="601.0" y="193.6" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Cloud Rewind / Cleanroom</text>
+  <rect x="724" y="128" width="196" height="78" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="822.0" y="147.1" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">EXPERT</text>
+  <text x="822.0" y="162.6" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">cloud engineering +</text>
+  <text x="822.0" y="178.1" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">resilience leadership</text>
+  <text x="822.0" y="193.6" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Cloud Engineer + both</text>
+  <line x1="250" y1="167" x2="268" y2="167" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="478" y1="167" x2="496" y2="167" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="706" y1="167" x2="724" y2="167" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="40" y="236" width="280" height="60" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="254.5" text-anchor="middle" font-size="9" font-weight="700" fill="#111827">PILLAR 1 — Platform skills</text>
+  <text x="180.0" y="269.2" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">CommCell architecture · plans &amp; retention</text>
+  <text x="180.0" y="283.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">deduplication/DDB · backup &amp; recovery ops</text>
+  <rect x="340" y="236" width="280" height="60" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="254.5" text-anchor="middle" font-size="9" font-weight="700" fill="#111827">PILLAR 2 — Cyber resilience</text>
+  <text x="480.0" y="269.2" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">immutability/WORM · air gap · anomaly detect</text>
+  <text x="480.0" y="283.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">Threat Scan · Cleanroom · Cloud Rewind</text>
+  <rect x="640" y="236" width="280" height="60" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="780.0" y="254.5" text-anchor="middle" font-size="9" font-weight="700" fill="#111827">PILLAR 3 — Workload expertise</text>
+  <text x="780.0" y="269.2" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">M365 · Active Directory &amp; Entra ID</text>
+  <text x="780.0" y="283.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">VMware · Oracle · file servers</text>
+  <rect x="40" y="320" width="880" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="343.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Named certifications: Commvault Cloud Administrator · Cyber Resilience · SaaS Threat Scan · SaaS Cleanroom Recovery · SaaS Cloud Rewind</text>
+  <text x="40" y="400" font-size="9.5" font-weight="700" fill="#166534">Backup is a SECURITY control: resilience is examined from the Practitioner tier up, not bolted on at the top</text>
+  <text x="40" y="419" font-size="9.5" font-weight="400" fill="#374151">Commvault is an ISC2 CPE Authorized Submitter — coursework also earns CPEs. Modeled free in Python: retention/cycles · dedup · RPO/RTO · immutability · cleanroom.</text>
+  <line x1="40" y1="450" x2="80" y2="450" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="88" y="454" font-size="11" fill="#6b7280">Entry tier / certs</text>
+  <line x1="280" y1="450" x2="320" y2="450" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="328" y="454" font-size="11" fill="#b45309">Mid tiers</text>
+  <line x1="439" y1="450" x2="479" y2="450" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="487" y="454" font-size="11" fill="#166534">Expert tier</text>
+  <line x1="616" y1="450" x2="656" y2="450" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="664" y="454" font-size="11" fill="#33415c">Learning pillars</text>
+</svg>
