@@ -224,6 +224,65 @@ resource_path_for() {
   printf '%s' "${dirs[*]}"
 }
 
+# --- Bounding the EPUB step so a hang fails fast ------------------------------
+#
+# The EPUB is one long serial step at the tail of the build; an intermittent
+# wedge there (observed once, most likely in the pre-Pandoc rewrite churn)
+# would otherwise block the whole build forever. run_bounded caps each
+# sub-step's wall-clock time and turns a hang into a clean, fast failure.
+#
+# It prefers coreutils `timeout`/`gtimeout` (present in CI); where neither
+# exists — notably macOS's stock bash 3.2 — it falls back to a portable
+# watchdog that polls the child and SIGTERMs (then SIGKILLs) it past the limit.
+timeout_bin=""
+if command -v timeout >/dev/null 2>&1; then
+  timeout_bin="timeout"
+elif command -v gtimeout >/dev/null 2>&1; then
+  timeout_bin="gtimeout"
+fi
+
+# Generous caps (seconds) — well above normal runtimes, so they only trip on a
+# genuine wedge, never on a merely slow machine.
+rewrite_timeout=300     # the batched link rewrite: normally well under a minute
+pandoc_timeout=1800     # the whole-encyclopedia EPUB conversion: minutes
+finalize_timeout=300    # the in-memory EPUB repackage: seconds
+
+run_bounded() {
+  local secs="$1"; shift
+  local rc=0
+  if [[ -n "$timeout_bin" ]]; then
+    "$timeout_bin" -k 10 "$secs" "$@" || rc=$?
+  else
+    # Portable fallback for hosts without timeout/gtimeout (e.g. bash 3.2).
+    "$@" &
+    local cmd_pid=$!
+    (
+      waited=0
+      while kill -0 "$cmd_pid" 2>/dev/null; do
+        if [[ "$waited" -ge "$secs" ]]; then
+          kill -TERM "$cmd_pid" 2>/dev/null
+          sleep 10
+          kill -KILL "$cmd_pid" 2>/dev/null
+          break
+        fi
+        sleep 5
+        waited=$((waited + 5))
+      done
+    ) &
+    local watch_pid=$!
+    wait "$cmd_pid" || rc=$?
+    # The command has ended; stop the watchdog (it may still be mid-poll).
+    kill "$watch_pid" 2>/dev/null || true
+    wait "$watch_pid" 2>/dev/null || true
+  fi
+  case "$rc" in
+    124|137|143)
+      echo "build-book.sh: ERROR — step exceeded ${secs}s and was terminated (likely a hang): $*" >&2
+      ;;
+  esac
+  return "$rc"
+}
+
 build_chapter_html() {
   local chapter_file="$1" volume_slug="$2"
   local base title outdir rewritten
@@ -282,19 +341,38 @@ build_volume_html() {
 
 build_series_epub() {
   local volume_dir ch rewritten_readme rewritten_body rewritten_colophon rewritten_title_page
-  rewritten_readme="$(rewrite_file "README.md" epub-absolute)"
+  local manifest="$link_tmp/epub-rewrite-manifest.tsv"
+  : > "$manifest"
+
+  # Rewrite every file for the EPUB in ONE python process (lib/rewrite_batch.py)
+  # rather than spawning the per-file rewrite/demote scripts ~2,600 times. The
+  # loop below only records each job in the manifest and the dest path it will
+  # produce; those dest paths are exactly the ones this script has always used
+  # ($link_tmp/<src>, plus a .demoted.md sibling for demoted chapters), so the
+  # Pandoc argument list and resource paths further down are unchanged.
+  #
   # Same volume-by-volume walk as the HTML edition, for the same reason: the
   # volume READMEs carry the "Volume N" headings the table of contents needs.
+  printf '%s\tepub-absolute\t\tno\n' "README.md" >> "$manifest"
+  rewritten_readme="$link_tmp/README.md"
   rewritten_body=()
   for volume_dir in volumes/*/; do
-    rewritten_body+=("$(rewrite_file "${volume_dir}README.md" epub-absolute)")
+    printf '%s\tepub-absolute\t\tno\n' "${volume_dir}README.md" >> "$manifest"
+    rewritten_body+=("$link_tmp/${volume_dir}README.md")
     for ch in "${volume_dir}"chapters/*.md; do
-      rewritten_body+=("$(rewrite_and_demote "$ch" epub-absolute)")
+      printf '%s\tepub-absolute\t\tyes\n' "$ch" >> "$manifest"
+      rewritten_body+=("$link_tmp/${ch}.demoted.md")
     done
   done
-  rewritten_colophon="$(rewrite_file "publishing/colophon.md" epub-absolute)"
+  printf '%s\tepub-absolute\t\tno\n' "publishing/colophon.md" >> "$manifest"
+  rewritten_colophon="$link_tmp/publishing/colophon.md"
+
+  run_bounded "$rewrite_timeout" \
+    python3 "$repo_root/scripts/bash/lib/rewrite_batch.py" "$manifest" "$link_tmp"
+
   rewritten_title_page="$(title_page_for --no-cover)"
-  pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_body[@]}" "$rewritten_colophon" \
+  run_bounded "$pandoc_timeout" \
+    pandoc "$rewritten_title_page" "$rewritten_readme" "${rewritten_body[@]}" "$rewritten_colophon" \
     -f markdown-implicit_figures \
     --epub-cover-image=publishing/cover.png \
     --toc --toc-depth=2 \
@@ -306,7 +384,8 @@ build_series_epub() {
     -o "output/epub/Enterprise-Infrastructure-Encyclopedia.epub"
   # Pandoc leaves the cover first in the spine but not in the navigation
   # metadata, so readers that consult the guide or landmarks open elsewhere.
-  python3 "$repo_root/scripts/bash/lib/finalize_epub.py" \
+  run_bounded "$finalize_timeout" \
+    python3 "$repo_root/scripts/bash/lib/finalize_epub.py" \
     "output/epub/Enterprise-Infrastructure-Encyclopedia.epub"
 }
 

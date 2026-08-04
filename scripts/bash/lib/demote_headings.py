@@ -25,30 +25,43 @@ FENCE = re.compile(r"^(`{3,}|~{3,})")
 HEADING = re.compile(r"^(#{1,6})(\s)")
 
 
+def demote_text(text: str) -> str:
+    """Demote every ATX heading in ``text`` by one level, outside code fences.
+
+    Splitting and rejoining on ``\\n`` is lossless for the LF-only Markdown
+    this project produces, so the result is byte-identical to reading the same
+    text from a file and processing it line by line. Exposed as a function so
+    build-book.sh can rewrite the whole EPUB body in one process (see
+    rewrite_batch.py) instead of spawning this script once per chapter.
+    """
+    fence = None  # the fence marker that opened the current code block, or None
+    out = []
+    for line in text.split("\n"):
+        stripped = line.lstrip()
+        marker = FENCE.match(stripped)
+        if marker:
+            token = marker.group(1)[0] * 3
+            if fence is None:
+                fence = token
+            elif stripped.startswith(fence):
+                fence = None
+            out.append(line)
+            continue
+        if fence is None:
+            m = HEADING.match(line)
+            if m and len(m.group(1)) < 6:
+                line = "#" + line
+        out.append(line)
+    return "\n".join(out)
+
+
 def main():
     if len(sys.argv) != 2:
         print("usage: demote_headings.py <file.md>", file=sys.stderr)
         sys.exit(2)
 
-    fence = None  # the fence marker that opened the current code block, or None
-    out = []
     with open(sys.argv[1], encoding="utf-8") as handle:
-        for line in handle:
-            marker = FENCE.match(line.lstrip())
-            if marker:
-                token = marker.group(1)[0] * 3
-                if fence is None:
-                    fence = token
-                elif line.lstrip().startswith(fence):
-                    fence = None
-                out.append(line)
-                continue
-            if fence is None:
-                m = HEADING.match(line)
-                if m and len(m.group(1)) < 6:
-                    line = "#" + line
-            out.append(line)
-    sys.stdout.write("".join(out))
+        sys.stdout.write(demote_text(handle.read()))
 
 
 if __name__ == "__main__":
