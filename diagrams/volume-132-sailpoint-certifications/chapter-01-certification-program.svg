@@ -1,0 +1,55 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the SailPoint certification program</title>
+  <desc>
+    SailPoint's Professional Certification and Credentialing Program runs in Identity University and has two parallel tracks. The Knowledge Credentials are training-gated, online, immediate, and adaptive, with badges that never expire: Identity Security Leader, a free product-agnostic path with three free attempts and up to 45 minutes for up to 30 questions; Identity Security Professional, with two free attempts and up to 90 minutes for up to 51 questions; and Identity Security Expert, with two free attempts and up to 90 minutes for up to 65 questions, covering transforms, rules, workflows, event triggers, APIs, and connectivity. The Professional Certifications are proctored and role-based, each including two attempts with 364 days to schedule, and renewing on a two-year Recertification Program launched in February 2026: on Identity Security Cloud, the Certified Identity Security Administrator at 400 dollars with six months of experience recommended and the Certified Identity Security Engineer at 400 dollars with one year recommended, which adds Architecture and Rules and Transforms; on on-premises IdentityIQ, the Certified IdentityIQ Associate at 300 dollars and the Certified IdentityIQ Engineer at 400 dollars. Seven exams serve over 12,000 certified professionals, badged on Credly. Both tracks rest on identity governance and administration: sources and identity data, access modeling, lifecycle management and provisioning, governance and compliance, platform and virtual appliances, and rules and transforms. The volume models all of it free in Python.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: SailPoint Certification (Identity Governance)</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Two tracks — free, never-expiring Knowledge Credentials and proctored, 2-year Professional Certifications — across Identity Security Cloud and IdentityIQ</text>
+  <rect x="230" y="42" width="500" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">SailPoint Identity Security — who has access to what, and should they?</text>
+  <text x="480.0" y="74.7" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Identity University · 7 exams · 12,000+ certified · Credly badges</text>
+  <rect x="40" y="130" width="420" height="46" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="250.0" y="148.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">KNOWLEDGE CREDENTIALS — training-gated, free attempts</text>
+  <text x="250.0" y="163.8" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">online · adaptive · one sitting · badge NEVER expires</text>
+  <rect x="500" y="130" width="420" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="710.0" y="148.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">PROFESSIONAL CERTIFICATIONS — proctored, $300-$400</text>
+  <text x="710.0" y="163.8" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">2 attempts included · 364 days to schedule · recertify every 2 yrs</text>
+  <line x1="480" y1="86" x2="250" y2="130" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <line x1="480" y1="86" x2="710" y2="130" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <rect x="40" y="205" width="420" height="62" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="250.0" y="223.6" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Identity Security Leader   free path · 3 free tries · &lt;=45min/&lt;=30Q</text>
+  <text x="250.0" y="239.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Identity Security Professional   2 free tries · &lt;=90min/&lt;=51Q</text>
+  <text x="250.0" y="254.3" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Identity Security Expert   2 free tries · &lt;=90min/&lt;=65Q</text>
+  <rect x="500" y="205" width="420" height="30" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="710.0" y="223.2" text-anchor="middle" font-size="9" font-weight="700" fill="#111827">Identity Security Cloud (SaaS)</text>
+  <rect x="500" y="243" width="420" height="40" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="710.0" y="259.5" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Certified Identity Security Administrator  $400 · 6 mo exp</text>
+  <text x="710.0" y="272.5" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Certified Identity Security Engineer  $400 · 1 yr · +Architecture/Rules</text>
+  <rect x="500" y="293" width="420" height="30" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="710.0" y="311.1" text-anchor="middle" font-size="9" font-weight="700" fill="#111827">IdentityIQ (on-premises)</text>
+  <rect x="500" y="331" width="420" height="40" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="710.0" y="347.5" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Certified IdentityIQ Associate  $300</text>
+  <text x="710.0" y="360.5" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Certified IdentityIQ Engineer  $400 · install/build/deploy · LCM</text>
+  <rect x="40" y="293" width="420" height="78" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="250.0" y="311.9" text-anchor="middle" font-size="9" font-weight="700" fill="#111827">The IGA disciplines both tracks test:</text>
+  <text x="250.0" y="327.4" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">sources &amp; identity data · access modeling</text>
+  <text x="250.0" y="342.9" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">lifecycle &amp; provisioning · governance &amp; compliance</text>
+  <text x="250.0" y="358.4" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">platform &amp; virtual appliances · rules &amp; transforms</text>
+  <text x="40" y="410" font-size="9.5" font-weight="700" fill="#166534">IGA answers what access is APPROPRIATE and proves it — the governance third alongside Okta (access) and CyberArk (PAM)</text>
+  <text x="40" y="429" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: identity correlation · role mining · joiner-mover-leaver · SoD policy · certification campaigns · transforms</text>
+  <line x1="40" y1="460" x2="80" y2="460" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="88" y="464" font-size="11" fill="#6b7280">Knowledge Credentials</text>
+  <line x1="307" y1="460" x2="347" y2="460" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="355" y="464" font-size="11" fill="#b45309">Professional Certs</text>
+  <line x1="547" y1="460" x2="587" y2="460" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="595" y="464" font-size="11" fill="#166534">Product line</text>
+  <line x1="733" y1="460" x2="773" y2="460" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="781" y="464" font-size="11" fill="#33415c">IGA domains</text>
+</svg>

@@ -4563,11 +4563,45 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing a Path, Ethics and Authorization, and Career"
         path: volumes/volume-131-practical-offensive-certifications/chapters/09-choosing-ethics-currency-career.md
+  - id: volume-132
+    number: "CXXXII"
+    slug: volume-132-sailpoint-certifications
+    title: "SailPoint Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The SailPoint Program and Identity Security"
+        path: volumes/volume-132-sailpoint-certifications/chapters/01-the-sailpoint-program-and-identity-security.md
+      - id: 02
+        title: "Chapter 02: The Identity Data Model and Sources"
+        path: volumes/volume-132-sailpoint-certifications/chapters/02-identity-data-model-and-sources.md
+      - id: 03
+        title: "Chapter 03: Access Modeling — Roles, Entitlements, and Access Profiles"
+        path: volumes/volume-132-sailpoint-certifications/chapters/03-access-modeling.md
+      - id: 04
+        title: "Chapter 04: Identity Lifecycle Management and Provisioning"
+        path: volumes/volume-132-sailpoint-certifications/chapters/04-lifecycle-management-and-provisioning.md
+      - id: 05
+        title: "Chapter 05: Governance and Compliance — Certifications, Policies, and Audit"
+        path: volumes/volume-132-sailpoint-certifications/chapters/05-governance-and-compliance.md
+      - id: 06
+        title: "Chapter 06: Platform, Virtual Appliances, and Connectivity"
+        path: volumes/volume-132-sailpoint-certifications/chapters/06-platform-virtual-appliances-connectivity.md
+      - id: 07
+        title: "Chapter 07: Rules, Transforms, Workflows, and APIs"
+        path: volumes/volume-132-sailpoint-certifications/chapters/07-rules-transforms-workflows-apis.md
+      - id: 08
+        title: "Chapter 08: IdentityIQ On-Premises"
+        path: volumes/volume-132-sailpoint-certifications/chapters/08-identityiq-on-premises.md
+      - id: 09
+        title: "Chapter 09: Choosing a Path, Recertification, Currency, and Career"
+        path: volumes/volume-132-sailpoint-certifications/chapters/09-choosing-recertification-currency-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
     title: "Master Appendices"
-    chapter_count: 65
+    chapter_count: 66
     build_eligible: true
     chapters:
       - id: 01
@@ -4765,6 +4799,9 @@ volumes:
       - id: 65
         title: "Chapter 65: Appendix — Practical Offensive/Defensive Certifications (HTB, TCM, INE) and Course Access"
         path: volumes/volume-997-master-appendices/chapters/65-appendix-practical-offensive-certifications-and-course-access.md
+      - id: 66
+        title: "Chapter 66: Appendix — SailPoint Certifications and Course Access"
+        path: volumes/volume-997-master-appendices/chapters/66-appendix-sailpoint-certifications-and-course-access.md
   - id: volume-998
     number: "CMXCVIII"
     slug: volume-998-acronyms
