@@ -4461,11 +4461,45 @@ volumes:
       - id: 09
         title: "Chapter 09: The Expert Path, Currency, and Career"
         path: volumes/volume-128-isa-iec-62443-certifications/chapters/09-expert-path-currency-career.md
+  - id: volume-129
+    number: "CXXIX"
+    slug: volume-129-opswat-certifications
+    title: "OPSWAT Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The OPSWAT Academy and Critical Infrastructure Protection"
+        path: volumes/volume-129-opswat-certifications/chapters/01-the-opswat-academy-and-cip.md
+      - id: 02
+        title: "Chapter 02: CIP Fundamentals (ICIP / OCFA)"
+        path: volumes/volume-129-opswat-certifications/chapters/02-cip-fundamentals.md
+      - id: 03
+        title: "Chapter 03: File Security (OFSA) — Content Disarm and Reconstruction"
+        path: volumes/volume-129-opswat-certifications/chapters/03-file-security-cdr.md
+      - id: 04
+        title: "Chapter 04: File Security (OFSA) — Multiscanning, DLP, and Analysis"
+        path: volumes/volume-129-opswat-certifications/chapters/04-file-security-multiscanning.md
+      - id: 05
+        title: "Chapter 05: Endpoint Compliance (OECA)"
+        path: volumes/volume-129-opswat-certifications/chapters/05-endpoint-compliance.md
+      - id: 06
+        title: "Chapter 06: Network Security (ONSA)"
+        path: volumes/volume-129-opswat-certifications/chapters/06-network-security.md
+      - id: 07
+        title: "Chapter 07: Secure Data Flow into OT (OSSA, Kiosk, Vault)"
+        path: volumes/volume-129-opswat-certifications/chapters/07-secure-data-flow-ot.md
+      - id: 08
+        title: "Chapter 08: MetaDefender Professional and OT Security Expert"
+        path: volumes/volume-129-opswat-certifications/chapters/08-metadefender-professional-ot-expert.md
+      - id: 09
+        title: "Chapter 09: The CyberOps Track, Choosing a Path, and Currency"
+        path: volumes/volume-129-opswat-certifications/chapters/09-cyberops-choosing-currency-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
     title: "Master Appendices"
-    chapter_count: 62
+    chapter_count: 63
     build_eligible: true
     chapters:
       - id: 01
@@ -4654,6 +4688,9 @@ volumes:
       - id: 62
         title: "Chapter 62: Appendix — ISA/IEC 62443 Certifications and Course Access"
         path: volumes/volume-997-master-appendices/chapters/62-appendix-isa-iec-62443-certifications-and-course-access.md
+      - id: 63
+        title: "Chapter 63: Appendix — OPSWAT Certifications and Course Access"
+        path: volumes/volume-997-master-appendices/chapters/63-appendix-opswat-certifications-and-course-access.md
   - id: volume-998
     number: "CMXCVIII"
     slug: volume-998-acronyms

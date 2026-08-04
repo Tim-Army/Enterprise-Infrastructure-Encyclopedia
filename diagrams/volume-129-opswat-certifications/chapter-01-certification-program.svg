@@ -1,0 +1,37 @@
+<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the OPSWAT Academy certification program</title>
+  <desc>
+    The OPSWAT Academy is a free-first Critical Infrastructure Protection program across four tracks: CIP Essentials, CyberOps, OPSWAT Product Training, and End-User Guides. The Associate ladder, many of them free, is ICIP Introduction to Critical Infrastructure Protection, OCFA Cybersecurity Fundamentals Associate, OFSA File Security Associate, OECA Endpoint Compliance Associate, ONSA Network Security Associate, and OSSA Secure Storage Associate. These build into the paid MetaDefender product Professional certifications, Core, ICAP, Kiosk, and MFT, and the OPSWAT OT Security Expert designation. Badges issue on Credly with ISC2 CPE credit, and some certifications carry a validity window. The signature technologies are Deep CDR content disarm and reconstruction, multiscanning with many engines, endpoint posture and network access control, and secure data transfer across boundaries via Kiosk and Vault. The volume models these free in Python.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: OPSWAT Academy (Critical Infrastructure Protection)</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Free-first: vendor-neutral CIP foundation + Associate certs (many free) build into paid MetaDefender Professional certs and the OT Security Expert; Credly badges + ISC2 CPE</text>
+  <rect x="280" y="42" width="400" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">OPSWAT Academy — free-first CIP program</text>
+  <text x="480.0" y="73.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Credly badges · ISC2 CPE · some certs expire — verify validity</text>
+  <rect x="35" y="120" width="890" height="56" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="142.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">Associate certifications (Credly, many FREE) — vendor-neutral CIP foundation</text>
+  <text x="480.0" y="160.5" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">ICIP · OCFA (fundamentals) · OFSA (file/CDR) · OECA (endpoint) · ONSA (network) · OSSA (secure storage)</text>
+  <rect x="35" y="210" width="550" height="56" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="310.0" y="232.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">MetaDefender Professional (paid ~$1,000)</text>
+  <text x="310.0" y="250.5" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Core (multiscan+CDR+DLP hub) · ICAP (web) · Kiosk (media) · MFT (transfer)</text>
+  <rect x="620" y="210" width="305" height="56" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="772.5" y="228.2" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">OPSWAT OT Security Expert</text>
+  <text x="772.5" y="241.5" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">end-to-end CIP/OT defense</text>
+  <text x="772.5" y="254.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">(products + 62443 + OT ops)</text>
+  <line x1="310" y1="176" x2="310" y2="210" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <line x1="770" y1="176" x2="770" y2="210" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="35" y="305" font-size="9.5" font-weight="700" fill="#166534">Signature defenses: Deep CDR (rebuild files clean — zero-day-proof) + Multiscanning (many engines) — "trust no file, no device"</text>
+  <text x="35" y="324" font-size="9.5" font-weight="400" fill="#374151">Boundary into OT: Kiosk (scan removable media) + Vault (scanned storage/transfer) — modeled free in Python (no OPSWAT software)</text>
+  <line x1="35" y1="350" x2="75" y2="350" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="83" y="354" font-size="11" fill="#6b7280">Associate tier (free foundation)</text>
+  <line x1="401" y1="350" x2="441" y2="350" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="449" y="354" font-size="11" fill="#166534">MetaDefender Professional (paid)</text>
+  <line x1="767" y1="350" x2="807" y2="350" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="815" y="354" font-size="11" fill="#b45309">OT Security Expert (capstone)</text>
+</svg>

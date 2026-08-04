@@ -138,11 +138,12 @@ does not by itself verify every technical claim in it.
 | CXXVI — Aviatrix Certification Tracks | 9 | Drafted |
 | CXXVII — Netskope Certification Tracks | 9 | Drafted |
 | CXXVIII — ISA/IEC 62443 Certification Tracks | 9 | Drafted |
-| CMXCVII — Master Appendices | 62 | Drafted |
+| CXXIX — OPSWAT Certification Tracks | 9 | Drafted |
+| CMXCVII — Master Appendices | 63 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1260 of 1260 drafted (100%). Every volume has a
+**Total declared chapters:** 1270 of 1270 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
