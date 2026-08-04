@@ -4291,11 +4291,45 @@ volumes:
       - id: 09
         title: "Chapter 09: Red Hat Combos, Choosing a Path, Currency, and Career"
         path: volumes/volume-123-ibm-certifications/chapters/09-red-hat-combos-choosing-currency-career.md
+  - id: volume-124
+    number: "CXXIV"
+    slug: volume-124-linux-certifications
+    title: "Linux Foundation and LPI Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Two Vendor-Neutral Linux Programs"
+        path: volumes/volume-124-linux-certifications/chapters/01-the-two-programs.md
+      - id: 02
+        title: "Chapter 02: The Entry Tier — LPI Essentials and LFCA"
+        path: volumes/volume-124-linux-certifications/chapters/02-entry-tier-essentials-and-lfca.md
+      - id: 03
+        title: "Chapter 03: LPIC-1 — Exam 101 (101-500)"
+        path: volumes/volume-124-linux-certifications/chapters/03-lpic1-exam-101.md
+      - id: 04
+        title: "Chapter 04: LPIC-1 — Exam 102 (102-500)"
+        path: volumes/volume-124-linux-certifications/chapters/04-lpic1-exam-102.md
+      - id: 05
+        title: "Chapter 05: LPIC-2 — Exam 201 (201-450)"
+        path: volumes/volume-124-linux-certifications/chapters/05-lpic2-exam-201.md
+      - id: 06
+        title: "Chapter 06: LPIC-2 — Exam 202 (202-450)"
+        path: volumes/volume-124-linux-certifications/chapters/06-lpic2-exam-202.md
+      - id: 07
+        title: "Chapter 07: LPIC-3 — The Four Specialties"
+        path: volumes/volume-124-linux-certifications/chapters/07-lpic3-specialties.md
+      - id: 08
+        title: "Chapter 08: LFCS — The Performance-Based Exam"
+        path: volumes/volume-124-linux-certifications/chapters/08-lfcs-performance-based.md
+      - id: 09
+        title: "Chapter 09: Open Technology Track, Choosing a Path, and Currency"
+        path: volumes/volume-124-linux-certifications/chapters/09-open-technology-choosing-currency.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
     title: "Master Appendices"
-    chapter_count: 57
+    chapter_count: 58
     build_eligible: true
     chapters:
       - id: 01
@@ -4469,6 +4503,9 @@ volumes:
       - id: 57
         title: "Chapter 57: Appendix — IBM Certifications and Course Access"
         path: volumes/volume-997-master-appendices/chapters/57-appendix-ibm-certifications-and-course-access.md
+      - id: 58
+        title: "Chapter 58: Appendix — Linux (LPI and Linux Foundation) Certifications and Course Access"
+        path: volumes/volume-997-master-appendices/chapters/58-appendix-linux-lpi-lf-certifications-and-course-access.md
   - id: volume-998
     number: "CMXCVIII"
     slug: volume-998-acronyms
