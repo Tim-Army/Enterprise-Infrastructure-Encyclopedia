@@ -4801,6 +4801,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing a Level, Recertification, and Career"
         path: volumes/volume-138-everpure-purestorage-certifications/chapters/09-choosing-a-level-recertification-career.md
+  - id: volume-139
+    number: "CXXXIX"
+    slug: volume-139-grafana-observability
+    title: "Grafana Observability Platform and GROT Academy"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Grafana Platform and GROT Academy"
+        path: volumes/volume-139-grafana-observability/chapters/01-the-grafana-platform-and-grot-academy.md
+      - id: 02
+        title: "Chapter 02: Collection with Alloy"
+        path: volumes/volume-139-grafana-observability/chapters/02-collection-with-alloy.md
+      - id: 03
+        title: "Chapter 03: Data Sources, Queries, and Transformations"
+        path: volumes/volume-139-grafana-observability/chapters/03-data-sources-queries-transformations.md
+      - id: 04
+        title: "Chapter 04: PromQL for Metrics"
+        path: volumes/volume-139-grafana-observability/chapters/04-promql-for-metrics.md
+      - id: 05
+        title: "Chapter 05: Loki and LogQL"
+        path: volumes/volume-139-grafana-observability/chapters/05-loki-and-logql.md
+      - id: 06
+        title: "Chapter 06: Traces and Correlating the Three Signals"
+        path: volumes/volume-139-grafana-observability/chapters/06-traces-and-correlation.md
+      - id: 07
+        title: "Chapter 07: Dashboards and the Four Golden Signals"
+        path: volumes/volume-139-grafana-observability/chapters/07-dashboards-and-the-four-golden-signals.md
+      - id: 08
+        title: "Chapter 08: Recording Rules, Alerting, and SLOs"
+        path: volumes/volume-139-grafana-observability/chapters/08-recording-rules-alerting-and-slos.md
+      - id: 09
+        title: "Chapter 09: Badge Paths, Currency, and Career"
+        path: volumes/volume-139-grafana-observability/chapters/09-badge-paths-currency-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices

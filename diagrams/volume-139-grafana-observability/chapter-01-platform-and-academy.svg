@@ -1,0 +1,69 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 map: the Grafana observability platform and the GROT Academy badge program</title>
+  <desc>
+    Grafana's defining architectural choice is that it queries data where it lives rather than owning a store, so a single dashboard can span many backends. The open-source LGTM stack is Loki for logs, Grafana for visualization, Tempo for traces, and Mimir for long-term metrics, with Pyroscope for continuous profiling. Surrounding components include Alloy, the OpenTelemetry-native collector, Beyla for eBPF auto-instrumentation, Faro for frontend observability, k6 for load testing, and OnCall or IRM for incident response. The platform is delivered three ways: Grafana OSS, which you run yourself; Grafana Cloud, the managed service with a free tier; and the Enterprise Stack, which is self-managed with commercial support and additional data source plugins. The credential program is GROT Academy at learn dot grafana dot com, and it currently awards free digital badges rather than paid certifications. There are six badges in three tiers. Trailblazer is awarded for the introductory Technical Practitioner 101 learning path and Explorer for the intermediate-level Technical Practitioner 201 path; both require a completed learning path AND a passed aligned assessment. Four Navigator badges cover PromQL Zero to Hero, LogQL Zero to Hero, Observability Signals Foundations, and Dashboard Design and Visual Storytelling; these require only path completion, with no assessment. All GROT Academy learning content is currently available at no cost, badges issue through Credly and can be made private in Credly's own settings, and Grafana states that new badges are expected to launch each quarter. The Technical Practitioner 101 path contains nineteen items: seven modules, ten hands-on labs, the assessment, and the badge, with lessons to be completed in order. No paid Certified Grafana Associate exam appears in Grafana's own catalog, so third-party courses advertising one should be treated with caution.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Platform &amp; Program Map: Grafana and GROT Academy</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">LGTM stack · queries data where it lives · 6 FREE badges in 3 tiers · Credly · new badges each quarter</text>
+  <rect x="180" y="42" width="600" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">GRAFANA — queries data WHERE IT LIVES (it does not own a store)</text>
+  <text x="480.0" y="74.7" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">one dashboard spans metrics + logs + traces + profiles + ordinary SQL</text>
+  <rect x="40" y="124" width="200" height="66" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="140.0" y="140.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">METRICS</text>
+  <text x="140.0" y="153.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">Mimir — long-term store</text>
+  <text x="140.0" y="166.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Prometheus-compatible</text>
+  <text x="140.0" y="179.8" text-anchor="middle" font-size="7.5" font-weight="700" fill="#166534">query: PromQL  (ch04)</text>
+  <rect x="250" y="124" width="200" height="66" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="350.0" y="140.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">LOGS</text>
+  <text x="350.0" y="153.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">Loki — LABELS-ONLY index</text>
+  <text x="350.0" y="166.8" text-anchor="middle" font-size="7" font-weight="400" fill="#374151">cheap ingest, needs a selector</text>
+  <text x="350.0" y="179.8" text-anchor="middle" font-size="7.5" font-weight="700" fill="#166534">query: LogQL  (ch05)</text>
+  <rect x="460" y="124" width="200" height="66" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="560.0" y="140.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">TRACES</text>
+  <text x="560.0" y="153.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">Tempo — one request's path</text>
+  <text x="560.0" y="166.8" text-anchor="middle" font-size="7" font-weight="400" fill="#374151">read by SELF TIME, not total</text>
+  <text x="560.0" y="179.8" text-anchor="middle" font-size="7.5" font-weight="700" fill="#166534">correlate: exemplars  (ch06)</text>
+  <rect x="670" y="124" width="250" height="66" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="795.0" y="140.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">PROFILES</text>
+  <text x="795.0" y="153.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">Pyroscope — inside a process</text>
+  <text x="795.0" y="166.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Alloy collects · Beyla (eBPF)</text>
+  <text x="795.0" y="179.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Faro (frontend) · k6 · OnCall</text>
+  <rect x="40" y="212" width="880" height="40" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="235.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Delivery: GRAFANA OSS (self-run, free) · GRAFANA CLOUD (managed, free tier) · ENTERPRISE STACK (self-managed + support and extra plugins)</text>
+  <rect x="40" y="276" width="880" height="34" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="296.1" text-anchor="middle" font-size="9" font-weight="700" fill="#111827">GROT ACADEMY (learn.grafana.com) — FREE digital BADGES, not paid certifications · issued via Credly · new badges expected EACH QUARTER</text>
+  <rect x="40" y="330" width="285" height="70" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="182.5" y="348.1" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">TRAILBLAZER  ·  introductory</text>
+  <text x="182.5" y="361.6" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Technical Practitioner 101</text>
+  <text x="182.5" y="375.1" text-anchor="middle" font-size="8" font-weight="700" fill="#166534">learning path + PASSED ASSESSMENT</text>
+  <text x="182.5" y="388.6" text-anchor="middle" font-size="7" font-weight="400" fill="#374151">19 items = 7 modules + 10 LABS + assessment</text>
+  <rect x="335" y="330" width="285" height="70" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="477.5" y="348.1" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">EXPLORER  ·  intermediate-level</text>
+  <text x="477.5" y="361.6" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Technical Practitioner 201</text>
+  <text x="477.5" y="375.1" text-anchor="middle" font-size="8" font-weight="700" fill="#166534">learning path + PASSED ASSESSMENT</text>
+  <text x="477.5" y="388.6" text-anchor="middle" font-size="6.5" font-weight="400" fill="#374151">blurbs nearly identical to 101 — compare curricula</text>
+  <rect x="630" y="330" width="290" height="70" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="775.0" y="348.1" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">NAVIGATOR  ·  four targeted badges</text>
+  <text x="775.0" y="361.6" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">PromQL Zero to Hero · LogQL Zero to Hero</text>
+  <text x="775.0" y="375.1" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Observability Signals Foundations</text>
+  <text x="775.0" y="388.6" text-anchor="middle" font-size="7.5" font-weight="700" fill="#166534">Dashboard Design — PATH ONLY, NO ASSESSMENT</text>
+  <line x1="325" y1="365" x2="335" y2="365" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="40" y="432" font-size="9.5" font-weight="700" fill="#166534">Everything is free, so sequencing is about what you need, not what you can afford — and the Navigator badges close gaps with no assessment risk.</text>
+  <text x="40" y="451" font-size="9.5" font-weight="400" fill="#374151">"Introductory" describes the Grafana Cloud content, NOT the prerequisites: 101 assumes you can operate Kubernetes and are not frightened by a query language.</text>
+  <text x="40" y="470" font-size="9.5" font-weight="400" fill="#b91c1c">No paid "Certified Grafana Associate" exam appears in Grafana's catalog — treat third-party courses selling one with caution.</text>
+  <line x1="40" y1="500" x2="80" y2="500" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="504" font-size="11" fill="#b45309">Signal backends</text>
+  <line x1="253" y1="500" x2="293" y2="500" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="301" y="504" font-size="11" fill="#6b7280">Adjacent tools / path-only</text>
+  <line x1="565" y1="500" x2="605" y2="500" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="613" y="504" font-size="11" fill="#166534">Academy &amp; gated badges</text>
+  <line x1="841" y1="500" x2="881" y2="500" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="889" y="504" font-size="11" fill="#33415c">Platform</text>
+</svg>

@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.157-blue)
+![Release](https://img.shields.io/badge/release-v1.2.158-blue)
 
-**v1.2.157 — latest release.** 141 volumes, 1360 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.157) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.158 — latest release.** 142 volumes, 1369 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.158) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -25,7 +25,7 @@ The series combines architecture and theory with implementation guidance, automa
 
 ## Curriculum
 
-141 volumes, 1360 chapters. Each volume has a dedicated
+142 volumes, 1369 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -168,6 +168,7 @@ The series combines architecture and theory with implementation guidance, automa
 | CXXXVI | [GitLab Certification Tracks](volumes/volume-136-gitlab-certifications/README.md) | 9 |
 | CXXXVII | [Rapid7 Certification Tracks](volumes/volume-137-rapid7-certifications/README.md) | 9 |
 | CXXXVIII | [Everpure (formerly Pure Storage) Certification Tracks](volumes/volume-138-everpure-purestorage-certifications/README.md) | 9 |
+| CXXXIX | [Grafana Observability Platform and GROT Academy](volumes/volume-139-grafana-observability/README.md) | 9 |
 | CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 72 |
 | CMXCVIII | [Acronyms](volumes/volume-998-acronyms/README.md) | 4 |
 | CMXCIX | [Reference Library](volumes/volume-999-reference-library/README.md) | 9 |
@@ -250,7 +251,7 @@ ascending order.
 | Security | [X Enterprise Cybersecurity](volumes/volume-010-enterprise-cybersecurity/README.md) → [XV Forescout](volumes/volume-015-forescout-platform-certifications/README.md) → [XVI Palo Alto Networks](volumes/volume-016-palo-alto-networks-security/README.md) → [XIX Fortinet](volumes/volume-019-fortinet-network-security/README.md) → [XXV Cisco Security](volumes/volume-025-cisco-security/README.md) |
 | Microsegmentation and zero trust | [LXXXVII Microsegmentation Options](volumes/volume-087-microsegmentation-options/README.md) — a vendor-neutral decision guide to microsegmentation: the enforcement models and the leading platforms (VMware NSX, Cisco, Illumio, Akamai Guardicore, Zero Networks, TrueFort, ColorTokens Xshield, cloud-native, and Kubernetes), with the pros, cons, compatibility, and requirements of each, plus a weighted selection rubric and a monitor-first rollout plan — pairs with [XXXV Zscaler Zero Trust Exchange](volumes/volume-035-zscaler-zero-trust-exchange/README.md), and is built hands-on, one platform per volume, in the microsegmentation Build-It-Yourself Labs series beginning at [XCIII ColorTokens Xshield](volumes/volume-093-colortokens-xshield-lab/README.md) (ColorTokens, Illumio, Akamai Guardicore, Zero Networks, and more) |
 | Build-it-yourself labs | [XXVI Proxmox Virtualization Lab on Dell PowerEdge R640](volumes/volume-026-proxmox-lab-poweredge-r640/README.md) → [XIII Integrated Enterprise Labs](volumes/volume-013-integrated-enterprise-labs/README.md) → the microsegmentation Build-It-Yourself Labs series beginning at [XCIII ColorTokens Xshield](volumes/volume-093-colortokens-xshield-lab/README.md) — single-host lab builds that stand up a real Proxmox cluster on PowerEdge hardware, the cross-volume integrated labs, and a growing series of five-VM microsegmentation labs that prove lateral movement on a flat network and then contain it with one platform per volume (ColorTokens Xshield, Illumio, Akamai Guardicore, Zero Networks, and more), each on two tracks: the real vendor console, or the native `nftables`/Windows Filtering Platform equivalent |
-| Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-011-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-018-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-020-wireshark-packet-analysis/README.md) → [LIII LibreNMS](volumes/volume-053-librenms/README.md) → [LIV OpenTelemetry](volumes/volume-054-opentelemetry/README.md) → [LV Prometheus](volumes/volume-055-prometheus/README.md) |
+| Visibility and analysis | [XI Observability and Enterprise Operations](volumes/volume-011-observability-enterprise-operations/README.md) → [XVIII Gigamon](volumes/volume-018-gigamon-network-visibility/README.md) → [XX Wireshark and Packet Analysis](volumes/volume-020-wireshark-packet-analysis/README.md) → [LIII LibreNMS](volumes/volume-053-librenms/README.md) → [LIV OpenTelemetry](volumes/volume-054-opentelemetry/README.md) → [LV Prometheus](volumes/volume-055-prometheus/README.md) → [CXXXIX Grafana Observability Platform and GROT Academy](volumes/volume-139-grafana-observability/README.md) — the visualization and correlation layer above them: the LGTM stack (Loki, Grafana, Tempo, Mimir) plus Alloy and Pyroscope, taught along Grafana's own Technical Practitioner curriculum, with PromQL, LogQL, trace correlation, Golden Signals dashboards, and burn-rate SLO alerting — and its free GROT Academy badge program |
 | Operating systems | [XIV Red Hat Enterprise Linux 10](volumes/volume-014-red-hat-enterprise-linux-10/README.md) → [XXI Ubuntu Server and Cloud 26.04 LTS](volumes/volume-021-ubuntu-server-cloud-26-04-lts/README.md) → [XXXVI Windows Server 2025 and Active Directory](volumes/volume-036-windows-server-2025-active-directory/README.md) |
 | Virtualization | [V VMware](volumes/volume-005-vmware-virtualization/README.md) → [LXXI VMware vSphere 7](volumes/volume-071-vmware-vsphere-7/README.md) → [LXXII VMware vSphere 8](volumes/volume-072-vmware-vsphere-8/README.md) → [XXIV VxRail](volumes/volume-024-dell-vxrail-hci/README.md) → [XXVI Proxmox lab on PowerEdge R640](volumes/volume-026-proxmox-lab-poweredge-r640/README.md) |
 | Cloud | [VII Cloud Infrastructure](volumes/volume-007-cloud-infrastructure/README.md) → [XVII AWS Architecture and Security](volumes/volume-017-aws-architecture-security/README.md) |
