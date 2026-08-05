@@ -154,11 +154,12 @@ does not by itself verify every technical claim in it.
 | CXLII — Cloudflare Certification Tracks | 9 | Drafted |
 | CXLIII — Akamai Certification Tracks | 9 | Drafted |
 | CXLIV — SAP Certification Tracks | 9 | Drafted |
+| CXLV — Atlassian Certification Tracks | 9 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1414 of 1414 drafted (100%). Every volume has a
+**Total declared chapters:** 1423 of 1423 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

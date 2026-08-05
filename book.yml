@@ -5005,6 +5005,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing a Path, Currency, and Career"
         path: volumes/volume-144-sap-certifications/chapters/09-choosing-a-path-currency-career.md
+  - id: volume-145
+    number: "CXLV"
+    slug: volume-145-atlassian-certifications
+    title: "Atlassian Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Atlassian Credential Program"
+        path: volumes/volume-145-atlassian-certifications/chapters/01-the-atlassian-credential-program.md
+      - id: 02
+        title: "Chapter 02: Jira Administration — Projects and Schemes"
+        path: volumes/volume-145-atlassian-certifications/chapters/02-jira-administration-projects-and-schemes.md
+      - id: 03
+        title: "Chapter 03: Workflows, JQL, and Automation"
+        path: volumes/volume-145-atlassian-certifications/chapters/03-workflows-jql-and-automation.md
+      - id: 04
+        title: "Chapter 04: Confluence Administration"
+        path: volumes/volume-145-atlassian-certifications/chapters/04-confluence-administration.md
+      - id: 05
+        title: "Chapter 05: Cloud Organization Admin and Access"
+        path: volumes/volume-145-atlassian-certifications/chapters/05-cloud-organization-admin-and-access.md
+      - id: 06
+        title: "Chapter 06: Jira Service Management and ITSM"
+        path: volumes/volume-145-atlassian-certifications/chapters/06-jira-service-management-and-itsm.md
+      - id: 07
+        title: "Chapter 07: Agile at Scale and the Marketplace"
+        path: volumes/volume-145-atlassian-certifications/chapters/07-agile-at-scale-and-marketplace.md
+      - id: 08
+        title: "Chapter 08: Migration and Data Center"
+        path: volumes/volume-145-atlassian-certifications/chapters/08-migration-and-data-center.md
+      - id: 09
+        title: "Chapter 09: Choosing a Path, Currency, and Career"
+        path: volumes/volume-145-atlassian-certifications/chapters/09-choosing-a-path-currency-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
