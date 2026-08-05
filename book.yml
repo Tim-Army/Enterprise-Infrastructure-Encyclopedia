@@ -5243,6 +5243,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your SentinelOne Path"
         path: volumes/volume-151-sentinelone-certifications/chapters/09-choosing-your-sentinelone-path.md
+  - id: volume-152
+    number: "CLII"
+    slug: volume-152-jfrog-certifications
+    title: "JFrog Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The JFrog Certification Program"
+        path: volumes/volume-152-jfrog-certifications/chapters/01-the-jfrog-certification-program.md
+      - id: 02
+        title: "Chapter 02: Artifactory — The Universal Binary Repository"
+        path: volumes/volume-152-jfrog-certifications/chapters/02-artifactory-the-universal-binary-repository.md
+      - id: 03
+        title: "Chapter 03: Repository Types and the Binary Flow"
+        path: volumes/volume-152-jfrog-certifications/chapters/03-repository-types-and-the-binary-flow.md
+      - id: 04
+        title: "Chapter 04: Build Info, Promotion, and Immutability"
+        path: volumes/volume-152-jfrog-certifications/chapters/04-build-info-promotion-and-immutability.md
+      - id: 05
+        title: "Chapter 05: Xray — Security and License Compliance"
+        path: volumes/volume-152-jfrog-certifications/chapters/05-xray-security-and-license-compliance.md
+      - id: 06
+        title: "Chapter 06: Software Supply Chain Security"
+        path: volumes/volume-152-jfrog-certifications/chapters/06-software-supply-chain-security.md
+      - id: 07
+        title: "Chapter 07: High Availability and Disaster Recovery"
+        path: volumes/volume-152-jfrog-certifications/chapters/07-high-availability-and-disaster-recovery.md
+      - id: 08
+        title: "Chapter 08: The DevOps Pipeline and Distribution"
+        path: volumes/volume-152-jfrog-certifications/chapters/08-the-devops-pipeline-and-distribution.md
+      - id: 09
+        title: "Chapter 09: Choosing Your JFrog Path"
+        path: volumes/volume-152-jfrog-certifications/chapters/09-choosing-your-jfrog-path.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices

@@ -1,0 +1,52 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: JFrog Academy certifications over the Software Supply Chain Platform</title>
+  <desc>
+    The JFrog certification program is delivered through JFrog Academy with free and paid courses, learning paths, and certifications. Three Associate-level certifications, each valid for two years, cover distinct domains: Associate JFrog Artifactory for artifact management and deployment, Associate JFrog DevOps High Availability and Disaster Recovery for distributed systems and repository federation, and Associate JFrog Security for application security. Above them, the JFrog Artifactory Certified DevOps Engineer is the flagship credential, a web-based proctored exam of forty-seven multiple-choice and multiple-answer questions in ninety minutes with a passing score of seventy percent, valid two years, validating binary repository management, security, and CI/CD pipelines. The platform beneath is the JFrog Software Supply Chain Platform, centered on Artifactory, the universal binary repository manager that stores every package type in local, remote, and virtual repositories and is the single source of truth for binaries. Xray provides deep recursive vulnerability and license scanning with impact analysis; JFrog Advanced Security and Curation defend the supply chain by blocking malicious packages at the gate; Distribution delivers signed release bundles to edges; and Pipelines provides CI/CD. Binaries are built once, stored with build info for traceability, scanned, promoted immutably from development through staging to production, and distributed to the edge, traceable, secure, reproducible, and available the entire way.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: JFrog Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">3 Associate certs + DevOps Engineer (47Q/90min/70%/2yr, proctored) · JFrog Academy · Software Supply Chain Platform</text>
+  <rect x="160" y="42" width="640" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">JFROG — the BINARY hub + Software Supply Chain Platform</text>
+  <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">Git owns the SOURCE code; JFrog owns the BINARIES it becomes — the single source of truth</text>
+  <rect x="40" y="120" width="880" height="26" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="135.8" text-anchor="middle" font-size="8" font-weight="700" fill="#111827">JFrog ACADEMY (free + paid courses, learning paths) · all certs 2-YEAR validity · JFrog PUBLISHES the DevOps Engineer mechanics</text>
+  <rect x="40" y="152" width="280" height="54" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="180.0" y="169.1" text-anchor="middle" font-size="8.8" font-weight="700" fill="#111827">Associate ARTIFACTORY</text>
+  <text x="180.0" y="182.1" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">artifact mgmt + deployment</text>
+  <text x="180.0" y="195.1" text-anchor="middle" font-size="7.3" font-weight="700" fill="#166534">the FOUNDATION</text>
+  <rect x="340" y="152" width="270" height="54" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="475.0" y="169.1" text-anchor="middle" font-size="8.8" font-weight="700" fill="#111827">Associate HA/DR</text>
+  <text x="475.0" y="182.1" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">high availability, disaster</text>
+  <text x="475.0" y="195.1" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">recovery, federation</text>
+  <rect x="630" y="152" width="290" height="54" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="775.0" y="169.1" text-anchor="middle" font-size="8.8" font-weight="700" fill="#111827">Associate SECURITY</text>
+  <text x="775.0" y="182.1" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">Xray, Curation,</text>
+  <text x="775.0" y="195.1" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">supply-chain security</text>
+  <rect x="40" y="218" width="880" height="34" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="237.9" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">★ JFrog Artifactory Certified DEVOPS ENGINEER (capstone) — repos + security + CI/CD together · 47 questions / 90 min / 70% to pass / proctored / 2-yr</text>
+  <line x1="180" y1="206" x2="400" y2="218" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="760" y1="206" x2="500" y2="218" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <rect x="40" y="268" width="880" height="60" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="286.3" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">SOFTWARE SUPPLY CHAIN PLATFORM</text>
+  <text x="480.0" y="301.0" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">ARTIFACTORY (universal binary repo — ALL package types; LOCAL/REMOTE-cache/VIRTUAL-aggregate; build info + immutable PROMOTION dev→stg→prod)</text>
+  <text x="480.0" y="315.6" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">XRAY (deep-recursive vuln+license scan · IMPACT ANALYSIS) · CURATION (block bad packages at the GATE) · DISTRIBUTION (release bundles → edges) · Pipelines (CI/CD)</text>
+  <text x="40" y="354" font-size="9.5" font-weight="700" fill="#166534">The end-to-end journey (DevOps Engineer mindset): BUILD ONCE → store + build info → Xray scan (Curation-gated deps) → PROMOTE immutably → DISTRIBUTE to edge — traceable, secure, reproducible.</text>
+  <text x="40" y="373" font-size="9.5" font-weight="400" fill="#b91c1c">The binary hub is on the CRITICAL PATH of every build + deploy — so it must be HIGHLY AVAILABLE (a hub outage halts the whole pipeline org-wide). HA (cluster) != DR (site replication).</text>
+  <text x="40" y="392" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: program reading · source-vs-binaries · universal-repo consolidation · remote-cache resilience · virtual-repo aggregation · build-once-promote-many + immutability ·</text>
+  <text x="40" y="409" font-size="9.5" font-weight="400" fill="#374151">deep-recursive Xray scan · CVE impact analysis · Curation gate · HA availability math · end-to-end pipeline. Completes the DevOps toolchain (GitLab CXXXVI, GitHub LXXXIX); Xray complements Snyk (CXLVIII).</text>
+  <line x1="40" y1="440" x2="80" y2="440" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="88" y="444" font-size="11" fill="#166534">Associate certs</text>
+  <line x1="253" y1="440" x2="293" y2="440" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="301" y="444" font-size="11" fill="#b45309">DevOps Engineer</text>
+  <line x1="466" y1="440" x2="506" y2="440" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="514" y="444" font-size="11" fill="#6b7280">Program shape</text>
+  <line x1="661" y1="440" x2="701" y2="440" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="709" y="444" font-size="11" fill="#33415c">Platform</text>
+</svg>
