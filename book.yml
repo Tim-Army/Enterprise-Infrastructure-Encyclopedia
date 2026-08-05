@@ -5073,6 +5073,74 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your Jamf Path"
         path: volumes/volume-146-jamf-certifications/chapters/09-choosing-your-path.md
+  - id: volume-147
+    number: "CXLVII"
+    slug: volume-147-wiz-certifications
+    title: "Wiz Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Wiz Certified Program"
+        path: volumes/volume-147-wiz-certifications/chapters/01-the-wiz-certified-program.md
+      - id: 02
+        title: "Chapter 02: CNAPP and the Wiz Security Graph"
+        path: volumes/volume-147-wiz-certifications/chapters/02-cnapp-and-the-security-graph.md
+      - id: 03
+        title: "Chapter 03: Attack Paths and Toxic Combinations"
+        path: volumes/volume-147-wiz-certifications/chapters/03-attack-paths-and-toxic-combinations.md
+      - id: 04
+        title: "Chapter 04: Agentless Posture — CSPM and Vulnerabilities"
+        path: volumes/volume-147-wiz-certifications/chapters/04-agentless-posture-and-vulnerabilities.md
+      - id: 05
+        title: "Chapter 05: CIEM and DSPM — Identity and Data"
+        path: volumes/volume-147-wiz-certifications/chapters/05-ciem-and-dspm-identity-and-data.md
+      - id: 06
+        title: "Chapter 06: Wiz Code — Shift-Left"
+        path: volumes/volume-147-wiz-certifications/chapters/06-wiz-code-shift-left.md
+      - id: 07
+        title: "Chapter 07: Wiz Defend — Detection and Response"
+        path: volumes/volume-147-wiz-certifications/chapters/07-wiz-defend-detection-and-response.md
+      - id: 08
+        title: "Chapter 08: Operationalizing Wiz"
+        path: volumes/volume-147-wiz-certifications/chapters/08-operationalizing-wiz.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Wiz Path"
+        path: volumes/volume-147-wiz-certifications/chapters/09-choosing-your-wiz-path.md
+  - id: volume-148
+    number: "CXLVIII"
+    slug: volume-148-snyk-certifications
+    title: "Snyk Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Snyk Learn Program"
+        path: volumes/volume-148-snyk-certifications/chapters/01-the-snyk-learn-program.md
+      - id: 02
+        title: "Chapter 02: Developer-First Application Security"
+        path: volumes/volume-148-snyk-certifications/chapters/02-developer-first-application-security.md
+      - id: 03
+        title: "Chapter 03: Snyk Open Source — SCA"
+        path: volumes/volume-148-snyk-certifications/chapters/03-snyk-open-source-sca.md
+      - id: 04
+        title: "Chapter 04: Snyk Code — SAST"
+        path: volumes/volume-148-snyk-certifications/chapters/04-snyk-code-sast.md
+      - id: 05
+        title: "Chapter 05: Snyk Container and Kubernetes"
+        path: volumes/volume-148-snyk-certifications/chapters/05-snyk-container-and-kubernetes.md
+      - id: 06
+        title: "Chapter 06: Snyk Infrastructure as Code"
+        path: volumes/volume-148-snyk-certifications/chapters/06-snyk-infrastructure-as-code.md
+      - id: 07
+        title: "Chapter 07: AI and Secure Development"
+        path: volumes/volume-148-snyk-certifications/chapters/07-ai-and-secure-development.md
+      - id: 08
+        title: "Chapter 08: Prioritization, Governance, and ASPM"
+        path: volumes/volume-148-snyk-certifications/chapters/08-prioritization-governance-and-aspm.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Snyk Path"
+        path: volumes/volume-148-snyk-certifications/chapters/09-choosing-your-snyk-path.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
