@@ -5311,6 +5311,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your Cato/SASE Path"
         path: volumes/volume-153-cato-networks-certifications/chapters/09-choosing-your-cato-sase-path.md
+  - id: volume-154
+    number: "CLIV"
+    slug: volume-154-tableau-certifications
+    title: "Tableau Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Tableau Certification Program"
+        path: volumes/volume-154-tableau-certifications/chapters/01-the-tableau-certification-program.md
+      - id: 02
+        title: "Chapter 02: What Is Data Visualization?"
+        path: volumes/volume-154-tableau-certifications/chapters/02-what-is-data-visualization.md
+      - id: 03
+        title: "Chapter 03: Connecting and Preparing Data"
+        path: volumes/volume-154-tableau-certifications/chapters/03-connecting-and-preparing-data.md
+      - id: 04
+        title: "Chapter 04: Dimensions, Measures, and the Grammar"
+        path: volumes/volume-154-tableau-certifications/chapters/04-dimensions-measures-and-the-grammar.md
+      - id: 05
+        title: "Chapter 05: Building Visualizations"
+        path: volumes/volume-154-tableau-certifications/chapters/05-building-visualizations.md
+      - id: 06
+        title: "Chapter 06: Calculations — Calculated Fields, LOD, and Table Calcs"
+        path: volumes/volume-154-tableau-certifications/chapters/06-calculations-lod-and-table-calcs.md
+      - id: 07
+        title: "Chapter 07: Dashboards and Interactivity"
+        path: volumes/volume-154-tableau-certifications/chapters/07-dashboards-and-interactivity.md
+      - id: 08
+        title: "Chapter 08: Sharing, Governance, and the Server"
+        path: volumes/volume-154-tableau-certifications/chapters/08-sharing-governance-and-the-server.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Tableau Path"
+        path: volumes/volume-154-tableau-certifications/chapters/09-choosing-your-tableau-path.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices

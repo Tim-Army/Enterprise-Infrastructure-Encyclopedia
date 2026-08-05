@@ -163,6 +163,7 @@ does not by itself verify every technical claim in it.
 | CLI — SentinelOne Certification Tracks | 9 | Drafted |
 | CLII — JFrog Certification Tracks | 9 | Drafted |
 | CLIII — Cato Networks Certification Tracks | 9 | Drafted |
+| CLIV — Tableau Certification Tracks | 9 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |

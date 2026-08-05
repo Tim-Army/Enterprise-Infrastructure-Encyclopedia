@@ -1,0 +1,50 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the three-step Tableau certification track over the platform</title>
+  <desc>
+    Tableau, owned by Salesforce, offers a three-step certification track. The Tableau Desktop Specialist, also called Desktop Foundations, is the entry-level credential: a proctored exam of forty-five questions in sixty minutes with a passing score of seven hundred fifty, priced around seventy-five dollars, validating connecting to and preparing data and building basic visualizations. The Salesforce Certified Tableau Data Analyst is the mid-level, most recognized credential: forty to forty-five questions plus eight to ten hands-on labs in one hundred twenty minutes, validating data visualization and analysis proficiency. The Salesforce Certified Tableau Architect is the advanced credential for enterprise deployment, Server and Cloud architecture, and governance. The recommended progression runs Desktop Specialist to Certified Data Analyst to Certified Architect. The platform beneath follows a connect, prepare, visualize, share workflow: connect to data live or by extract; prepare and model with joins, relationships, and Tableau Prep; build visualizations with the VizQL engine, choosing the right chart for the question and adding calculated fields, level-of-detail expressions, and table calculations; assemble interactive dashboards and stories with actions; and publish to Tableau Server or Cloud with permissions and certified data sources as a single source of truth, increasingly augmented by AI through Tableau Pulse. Tableau is the visualization and analytics layer on top of the data platforms, where data becomes decisions.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Tableau Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">3-step track (Desktop Specialist -&gt; Data Analyst -&gt; Architect) · Salesforce-owned · connect-prepare-visualize-share</text>
+  <rect x="160" y="42" width="640" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">TABLEAU (Salesforce) — data VISUALIZATION + BI: 'see and understand your data'</text>
+  <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">the human-facing analytics layer on the data platforms (Snowflake XLIX, Databricks XLVIII) — where data becomes DECISIONS</text>
+  <rect x="40" y="120" width="880" height="26" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="136.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">3-STEP TRACK — USING -&gt; ANALYZING -&gt; ARCHITECTING · Salesforce-owned (2019) · mechanics PUBLISHED</text>
+  <rect x="40" y="152" width="280" height="58" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="180.0" y="170.1" text-anchor="middle" font-size="8.8" font-weight="700" fill="#111827">Desktop SPECIALIST</text>
+  <text x="180.0" y="184.1" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">entry — connect + prepare + basic viz</text>
+  <text x="180.0" y="198.1" text-anchor="middle" font-size="7.2" font-weight="700" fill="#166534">45Q / 60min / 750 / ~$75 / proctored</text>
+  <rect x="340" y="152" width="280" height="58" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="170.1" text-anchor="middle" font-size="8.8" font-weight="700" fill="#111827">Certified DATA ANALYST</text>
+  <text x="480.0" y="184.1" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">mid — viz + analysis (most recognized)</text>
+  <text x="480.0" y="198.1" text-anchor="middle" font-size="7.2" font-weight="700" fill="#166534">40-45Q + 8-10 HANDS-ON LABS / 120min</text>
+  <rect x="640" y="152" width="280" height="58" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="780.0" y="170.1" text-anchor="middle" font-size="8.8" font-weight="700" fill="#111827">Certified ARCHITECT</text>
+  <text x="780.0" y="184.1" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">advanced — enterprise deploy,</text>
+  <text x="780.0" y="198.1" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">Server/Cloud, governance</text>
+  <line x1="320" y1="181" x2="340" y2="181" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="620" y1="181" x2="640" y2="181" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <rect x="40" y="224" width="880" height="56" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="241.6" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">PLATFORM WORKFLOW: CONNECT -&gt; PREPARE -&gt; VISUALIZE -&gt; SHARE</text>
+  <text x="480.0" y="255.0" text-anchor="middle" font-size="7.1" font-weight="400" fill="#374151">CONNECT (live vs EXTRACT/.hyper) · PREPARE (joins/blends/RELATIONSHIPS, Tableau Prep) · VISUALIZE (VizQL; dimensions vs measures; discrete BLUE vs continuous GREEN; right chart)</text>
+  <text x="480.0" y="268.3" text-anchor="middle" font-size="7.1" font-weight="400" fill="#374151">CALCULATIONS (calculated fields, ★ LOD FIXED/INCLUDE/EXCLUDE, table calcs) · DASHBOARDS + actions + stories · SHARE (Server/Cloud, permissions, CERTIFIED data sources) · AI (Pulse)</text>
+  <text x="40" y="306" font-size="9.5" font-weight="700" fill="#166534">Core grammar: a viz = MEASURES aggregated BY DIMENSIONS. Blue = discrete (headers), Green = continuous (axis) — independent of dimension/measure (the most-confused, most-tested concept).</text>
+  <text x="40" y="325" font-size="9.5" font-weight="400" fill="#b91c1c">Governance: without CERTIFIED data sources, "revenue" means 3 things in 3 dashboards. A certified source defines metrics ONCE = the single source of truth (the Architect's job).</text>
+  <text x="40" y="344" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: track reading · Tableau-in-the-stack · numbers-hide-vs-picture-reveals · perceptual accuracy · live-vs-extract · relationships-avoid-join-duplication · measures-aggregate-by-dimensions ·</text>
+  <text x="40" y="361" font-size="9.5" font-weight="400" fill="#374151">discrete-vs-continuous · chart-for-the-question · LOD FIXED · table calcs (running total/% of total) · dashboard filter action · certified data sources. Completes the data cluster (Snowflake XLIX, Databricks XLVIII, Confluent CXXXV).</text>
+  <line x1="40" y1="392" x2="80" y2="392" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="396" font-size="11" fill="#b45309">Specialist / Data Analyst</text>
+  <line x1="343" y1="392" x2="383" y2="392" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="391" y="396" font-size="11" fill="#166534">Architect</text>
+  <line x1="502" y1="392" x2="542" y2="392" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="550" y="396" font-size="11" fill="#6b7280">Track shape</text>
+  <line x1="679" y1="392" x2="719" y2="392" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="727" y="396" font-size="11" fill="#33415c">Platform</text>
+</svg>
