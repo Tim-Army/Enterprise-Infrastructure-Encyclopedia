@@ -1,0 +1,62 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the New Relic certification program and the platform beneath it</title>
+  <desc>
+    New Relic's certification program is small, public, and cleanly laddered: four certifications. The New Relic Verified Foundation, NVF, is free, forty-five minutes, multiple choice, online and unproctored, with no prerequisites, recommended for zero to six months of experience, and is taken on learn.newrelic.com itself. The Certified APM Practitioner Associate, APA, costs one hundred twenty-five dollars, runs fifty minutes, is online proctored, and recommends six or more months of experience. Two sibling Professional certifications cost one hundred seventy-five dollars each, run sixty minutes, are online proctored, and recommend two or more years of experience: the Certified Performance Engineer, PEP, covering platform capabilities and data, backend application performance, client-side performance, and infrastructure and cloud performance; and the Certified Reliability Engineer, REP, covering alerts and incident management including alert quality management, service level management with SLIs, SLOs and service boundaries, infrastructure, cloud integration and networking, and automation of observability fixtures using New Relic APIs and Terraform providers. There is no Expert tier, and PEP and REP are siblings rather than a sequence. All exams are multiple choice and offered in English, Spanish, Portuguese, and Japanese; the paid exams are delivered through Webassessor. Every exam publishes its section-level topics on public pages, which serve as the blueprints; question count and passing score sit in per-exam Exam Guides behind a free sign-in, and no validity policy appears publicly. The platform beneath is the single-store model: agents send metrics, events, logs, and traces, the MELT four, into NRDB, and one language, NRQL, queries all of it — dashboards, alert conditions, and service levels are all NRQL. Entities, tags, and workloads organize the estate, and NerdGraph plus the Terraform provider manage observability as code.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: New Relic Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">4 certifications, one ladder · mechanics PUBLIC · NVF free + unproctored · Webassessor · EN/ES/PT/JA</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">NEW RELIC — single store (NRDB), one language (NRQL) everywhere</text>
+  <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">dashboards, alert conditions, and service levels are ALL NRQL — leverage and risk in one clause</text>
+  <rect x="40" y="122" width="210" height="66" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="145.0" y="138.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">NVF — FOUNDATION</text>
+  <text x="145.0" y="151.8" text-anchor="middle" font-size="7.5" font-weight="700" fill="#166534">FREE · 45 min · UNPROCTORED</text>
+  <text x="145.0" y="164.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">no prerequisites · 0-6 months</text>
+  <text x="145.0" y="177.8" text-anchor="middle" font-size="7" font-weight="400" fill="#374151">taken on learn.newrelic.com</text>
+  <rect x="262" y="122" width="210" height="66" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="367.0" y="138.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">APA — ASSOCIATE</text>
+  <text x="367.0" y="151.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">APM Practitioner</text>
+  <text x="367.0" y="164.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">$125 · 50 min · proctored</text>
+  <text x="367.0" y="177.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">6+ months experience</text>
+  <rect x="484" y="122" width="212" height="66" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="590.0" y="138.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">PEP — PROFESSIONAL</text>
+  <text x="590.0" y="151.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">Performance Engineer</text>
+  <text x="590.0" y="164.8" text-anchor="middle" font-size="7" font-weight="400" fill="#374151">$175 · 60 min · proctored · 2+ yrs</text>
+  <text x="590.0" y="177.8" text-anchor="middle" font-size="7" font-weight="400" fill="#374151">backend · client-side · infra perf</text>
+  <rect x="708" y="122" width="212" height="66" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="814.0" y="138.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">REP — PROFESSIONAL</text>
+  <text x="814.0" y="151.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">Reliability Engineer</text>
+  <text x="814.0" y="164.8" text-anchor="middle" font-size="7" font-weight="400" fill="#374151">$175 · 60 min · proctored · 2+ yrs</text>
+  <text x="814.0" y="177.8" text-anchor="middle" font-size="7" font-weight="400" fill="#374151">alerts · SLOs · automation</text>
+  <line x1="250" y1="155" x2="262" y2="155" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="472" y1="155" x2="484" y2="155" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="696" y1="155" x2="708" y2="155" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <rect x="40" y="208" width="880" height="34" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="228.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">PEP and REP are SIBLINGS, not a sequence — same level, same price; choose by calendar shape · NO EXPERT TIER exists</text>
+  <rect x="40" y="262" width="880" height="40" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="278.3" text-anchor="middle" font-size="8" font-weight="700" fill="#111827">PUBLISHED OPENLY: cost · duration · format (multiple choice) · proctoring · languages (EN/ES/PT/JA) · experience bands · SECTION-LEVEL EXAM TOPICS</text>
+  <text x="480.0" y="291.3" text-anchor="middle" font-size="7.5" font-weight="400" fill="#b91c1c">behind FREE sign-in (Exam Guides): question count · passing score  ·  NOT found publicly: validity/expiration · retake policy — this volume asserts neither</text>
+  <rect x="40" y="322" width="880" height="56" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="339.6" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">PLATFORM SPINE</text>
+  <text x="480.0" y="353.0" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">agents (APM per-language · infrastructure + on-host integrations · browser · mobile) + OpenTelemetry ingest → MELT into NRDB</text>
+  <text x="480.0" y="366.3" text-anchor="middle" font-size="7" font-weight="400" fill="#374151">NRQL (SELECT/FROM/WHERE/FACET/SINCE/TIMESERIES) · entities + tags + workloads · alerts (policy→condition→incident→workflow) · SLIs/SLOs · NerdGraph + Terraform</text>
+  <text x="40" y="408" font-size="9.5" font-weight="700" fill="#166534">The disclosure mirror image of Dynatrace (Vol CXL): 4 public certifications with a mechanics table, vs 34 badges behind a University sign-in.</text>
+  <text x="40" y="427" font-size="9.5" font-weight="400" fill="#374151">Registration: paid exams via webassessor.com/newrelic · the free NVF moved onto learn.newrelic.com itself · official prep courses and program guide are free.</text>
+  <text x="40" y="446" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: MELT routing · workloads-as-verdicts · NRQL clause cost + the shared-WHERE risk · Apdex blind spots · db total-time ranking · Core Web Vitals at p75 ·</text>
+  <text x="40" y="463" font-size="9.5" font-weight="400" fill="#374151">journey synthetics · agent-tuning ledger · K8s workload aggregation · network-app MTTR correlation · alert-quality audit · boundary SLOs + compounding · fixture drift detection.</text>
+  <line x1="40" y1="496" x2="80" y2="496" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="88" y="500" font-size="11" fill="#166534">Free tier / published facts</text>
+  <line x1="361" y1="496" x2="401" y2="496" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="409" y="500" font-size="11" fill="#b45309">Paid certifications</text>
+  <line x1="610" y1="496" x2="650" y2="496" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="658" y="500" font-size="11" fill="#6b7280">Program structure</text>
+  <line x1="841" y1="496" x2="881" y2="496" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="889" y="500" font-size="11" fill="#33415c">Platform</text>
+</svg>
