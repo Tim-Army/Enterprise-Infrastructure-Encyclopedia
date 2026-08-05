@@ -151,11 +151,12 @@ does not by itself verify every technical claim in it.
 | CXXXIX — Grafana Observability Platform and GROT Academy | 9 | Drafted |
 | CXL — Dynatrace Certification Tracks | 9 | Drafted |
 | CXLI — New Relic Certification Tracks | 9 | Drafted |
+| CXLII — Cloudflare Certification Tracks | 9 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1387 of 1387 drafted (100%). Every volume has a
+**Total declared chapters:** 1396 of 1396 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

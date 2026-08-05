@@ -1,0 +1,52 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Cloudflare certification program and the platform beneath it</title>
+  <desc>
+    Cloudflare's certification track is the youngest in this encyclopedia: two Associate exams. The Application Security Associate assesses foundational knowledge of the application security family, with basic hands-on experience highly recommended; the Zero Trust Associate covers the Cloudflare One family. Both are delivered on Cloudflare's own exam platform at certifications.cloudflare.com, whose public portal still shows Register Interest alongside Launch Certification Exam. At Cloudflare Connect 2026, October nineteenth through twenty-first at Moscone West in San Francisco, a four hundred ninety-five dollar University Pass adds a full day of live technical training plus one attempt at both exams, delivered in-person proctored in a private quiet environment with live support; laptops are required. Exam duration, question count, passing score, validity period, retake policy, and standalone pricing are not published, and the detailed domain outlines sit behind the exam platform login. A separate partner accreditation track through Cloudflare University covers the Accredited Sales Professional, Accredited Sales Engineer, Accredited Configuration Engineer, Accredited Services Architect, and an Accredited Workers Developer announced as in development; accreditations are course-completion partner credentials, not proctored certifications. The platform beneath is a global anycast edge network: the same addresses announced from every data center, delivering users and distributing attacks alike. On it run the Application Security family of WAF managed and custom rules, rate limiting, DDoS protection, Bot Management, and API Shield; the Cloudflare One Zero Trust family of Access, Gateway, WARP, and Tunnel; and the Workers developer platform with KV, R2, D1, and Durable Objects — all manageable by API and Terraform. Cloudflare's free tier covers nearly the entire hands-on practice syllabus for both exams.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Cloudflare Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">2 Associate exams · Cloudflare's OWN exam platform · portal still says 'Register Interest' · mechanics NOT published</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">CLOUDFLARE — one anycast edge; apps, users, and code all meet the network first</text>
+  <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">the same substrate fronts Application Security, Cloudflare One, and Workers</text>
+  <rect x="40" y="122" width="430" height="66" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="255.0" y="138.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">APPLICATION SECURITY ASSOCIATE</text>
+  <text x="255.0" y="151.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">WAF · rate limiting · DDoS · Bot Management · API Shield</text>
+  <text x="255.0" y="164.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">&quot;basic, hands-on experience… highly recommended&quot;</text>
+  <text x="255.0" y="177.8" text-anchor="middle" font-size="7.5" font-weight="700" fill="#166534">chapters 02-04 of this volume</text>
+  <rect x="490" y="122" width="430" height="66" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="705.0" y="138.8" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">ZERO TRUST ASSOCIATE</text>
+  <text x="705.0" y="151.8" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">Access (ZTNA) · Gateway (SWG) · WARP · Tunnel</text>
+  <text x="705.0" y="164.8" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">named on the Connect 2026 University page</text>
+  <text x="705.0" y="177.8" text-anchor="middle" font-size="7.5" font-weight="700" fill="#166534">chapters 05-06 of this volume</text>
+  <rect x="40" y="208" width="880" height="40" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="224.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">DELIVERY: Cloudflare's OWN exam platform (certifications.cloudflare.com) — portal shows 'REGISTER INTEREST' · a program in ROLLOUT</text>
+  <text x="480.0" y="237.5" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">CONNECT 2026 (Oct 19-21, SF): $495 University Pass = training day + ONE ATTEMPT AT BOTH exams · in-person proctored · laptops required</text>
+  <rect x="40" y="268" width="880" height="34" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="288.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#b91c1c">NOT PUBLISHED: duration · question count · passing score · validity · retake policy · standalone price — domain outlines behind the exam login</text>
+  <rect x="40" y="322" width="880" height="46" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="335.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">PARTNER ACCREDITATION TRACK (course completion — NOT certifications)</text>
+  <text x="480.0" y="348.0" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Accredited Sales Professional · Sales Engineer (ASE) · Configuration Engineer (ACE) · Services Architect (ASA) · Workers Developer (in development)</text>
+  <text x="480.0" y="361.0" text-anchor="middle" font-size="7.5" font-weight="400" fill="#b91c1c">note the collision: Cloudflare ACE ≠ Aviatrix ACE (Vol CXXVI)</text>
+  <rect x="40" y="388" width="880" height="56" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="405.6" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">PLATFORM SPINE — the anycast edge</text>
+  <text x="480.0" y="419.0" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">DNS (proxy toggle — gray-cloud records EXPOSE the origin) · CDN/cache · WAF + rate limiting + DDoS + bots + API Shield (log→challenge→block)</text>
+  <text x="480.0" y="432.3" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Cloudflare One: Access · Gateway · WARP · Tunnel (no inbound ports) · Workers/KV/R2/D1/Durable Objects · API + Terraform + Logpush</text>
+  <text x="40" y="474" font-size="9.5" font-weight="700" fill="#166534">The FREE TIER covers nearly the whole practice syllabus — DNS, caching, WAF, rate limiting, Access (50 users), Gateway DNS filtering, Tunnel, Workers.</text>
+  <text x="40" y="493" font-size="9.5" font-weight="400" fill="#374151">Batch F disclosure arc completed: Dynatrace publishes nothing · New Relic publishes everything · Cloudflare publishes that the exams exist. Verify today, not the genre.</text>
+  <text x="40" y="512" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: anycast absorption · gray-cloud audit · purge economics · rule shadowing · precision ladders · schema validation · shadow APIs · blast radius · tunnel exposure · drift detection.</text>
+  <line x1="40" y1="540" x2="80" y2="540" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="544" font-size="11" fill="#b45309">Exams</text>
+  <line x1="163" y1="540" x2="203" y2="540" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="211" y="544" font-size="11" fill="#166534">Delivery</text>
+  <line x1="313" y1="540" x2="353" y2="540" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="361" y="544" font-size="11" fill="#6b7280">Unpublished / partner</text>
+  <line x1="580" y1="540" x2="620" y2="540" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="628" y="544" font-size="11" fill="#33415c">Platform</text>
+</svg>
