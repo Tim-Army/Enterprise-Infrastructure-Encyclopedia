@@ -5209,6 +5209,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your Ping Path"
         path: volumes/volume-150-ping-identity-certifications/chapters/09-choosing-your-ping-path.md
+  - id: volume-151
+    number: "CLI"
+    slug: volume-151-sentinelone-certifications
+    title: "SentinelOne Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The SentinelOne University Program"
+        path: volumes/volume-151-sentinelone-certifications/chapters/01-the-sentinelone-university-program.md
+      - id: 02
+        title: "Chapter 02: Autonomous Endpoint Protection"
+        path: volumes/volume-151-sentinelone-certifications/chapters/02-autonomous-endpoint-protection.md
+      - id: 03
+        title: "Chapter 03: Storyline — Autonomous Correlation"
+        path: volumes/volume-151-sentinelone-certifications/chapters/03-storyline-autonomous-correlation.md
+      - id: 04
+        title: "Chapter 04: Detection and Response — EDR Workflows"
+        path: volumes/volume-151-sentinelone-certifications/chapters/04-detection-and-response-edr-workflows.md
+      - id: 05
+        title: "Chapter 05: Rollback and Remediation"
+        path: volumes/volume-151-sentinelone-certifications/chapters/05-rollback-and-remediation.md
+      - id: 06
+        title: "Chapter 06: Singularity XDR and the Data Lake"
+        path: volumes/volume-151-sentinelone-certifications/chapters/06-singularity-xdr-and-the-data-lake.md
+      - id: 07
+        title: "Chapter 07: Purple AI and the AI SOC"
+        path: volumes/volume-151-sentinelone-certifications/chapters/07-purple-ai-and-the-ai-soc.md
+      - id: 08
+        title: "Chapter 08: Deployment, Policy, and Administration"
+        path: volumes/volume-151-sentinelone-certifications/chapters/08-deployment-policy-and-administration.md
+      - id: 09
+        title: "Chapter 09: Choosing Your SentinelOne Path"
+        path: volumes/volume-151-sentinelone-certifications/chapters/09-choosing-your-sentinelone-path.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices

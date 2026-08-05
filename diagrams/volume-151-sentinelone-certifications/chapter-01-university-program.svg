@@ -1,0 +1,51 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: SentinelOne University certifications over the autonomous Singularity platform</title>
+  <desc>
+    SentinelOne University runs a role-based certification program that issues Credly digital badges. The flagship is SIREN, the SentinelOne Incident Response Engineer, a practical credential for incident responders, threat hunters, and SOC engineers that requires roughly forty-five hours of University training before an online exam of multiple-choice and scenario-based simulations. Threat Hunting Professional is an advanced specialization covering attack analysis, anomaly detection, and SIEM and SOAR integration. Administrator Levels 1 through 3 progress from policy management to API-driven automation. Certified Technical Professional is for partners and integrators, covering architecture, policy design, and deployment, and Certified Sales Professional is for channel partners. Exam passing scores, durations, and validity are not published. Training uses on-demand courses, interactive sessions, and hands-on labs and simulations. The platform beneath is the Singularity Platform: Singularity Endpoint for autonomous endpoint protection unifying EPP and EDR, Singularity Cloud for cloud workloads, Singularity Identity for identity threats, Singularity XDR for extended detection and response across surfaces, the Singularity Data Lake and AI SIEM for log analytics, Purple AI as a generative-AI security analyst, and RemoteOps and Ranger. Three signatures unify the platform: behavioral AI that detects by behavior on the agent rather than signatures, Storyline that autonomously correlates related events into one attack narrative, and one-click remediation with rollback that restores ransomware-encrypted files to their pre-attack state.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: SentinelOne Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">role-based · Credly badges · SIREN ~45h + simulations · autonomous Singularity platform · exam mechanics portal-gated</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">SENTINELONE — AUTONOMOUS endpoint &amp; extended security (Singularity)</text>
+  <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">the AGENT detects (behavioral AI), responds at machine speed, correlates (Storyline), and rolls back — even offline</text>
+  <rect x="40" y="120" width="880" height="26" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="135.8" text-anchor="middle" font-size="8" font-weight="700" fill="#111827">ROLE-BASED program · Credly digital badges · exams = MC + scenario SIMULATIONS · passing scores/durations/validity PORTAL-GATED</text>
+  <rect x="40" y="152" width="280" height="60" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="180.0" y="170.4" text-anchor="middle" font-size="8.8" font-weight="700" fill="#111827">SIREN — Incident Response Engineer</text>
+  <text x="180.0" y="185.1" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">IR / threat hunter / SOC · the ANCHOR</text>
+  <text x="180.0" y="199.7" text-anchor="middle" font-size="7.3" font-weight="700" fill="#166534">~45h training + simulations</text>
+  <rect x="340" y="152" width="270" height="60" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="475.0" y="170.4" text-anchor="middle" font-size="8.8" font-weight="700" fill="#111827">THP — Threat Hunting Professional</text>
+  <text x="475.0" y="185.1" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">advanced: attack analysis, anomaly,</text>
+  <text x="475.0" y="199.7" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">SIEM/SOAR integration</text>
+  <rect x="630" y="152" width="290" height="60" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="775.0" y="170.4" text-anchor="middle" font-size="8.8" font-weight="700" fill="#111827">Administrator Levels 1-3</text>
+  <text x="775.0" y="185.1" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">deploy/policy -&gt; API automation</text>
+  <text x="775.0" y="199.7" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">+ CTP (partner) · CSP (sales)</text>
+  <rect x="40" y="226" width="880" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="244.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">★ THREE SIGNATURES (what 'autonomous' means)</text>
+  <text x="480.0" y="259.5" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">BEHAVIORAL AI (detect by behavior, catches novel + fileless) · STORYLINE (auto-correlate events -&gt; ONE attack narrative) · ROLLBACK (undo damage, restore ransomware-encrypted files)</text>
+  <rect x="40" y="286" width="880" height="60" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="304.3" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">SINGULARITY PLATFORM</text>
+  <text x="480.0" y="319.0" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">ENDPOINT (EPP+EDR, autonomous, on-agent, works OFFLINE) · IDENTITY (threats + deception) · CLOUD (CWPP/CNAPP) · XDR (cross-surface correlation)</text>
+  <text x="480.0" y="333.6" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">DATA LAKE + AI SIEM (log analytics, ingests 3rd-party telemetry) · PURPLE AI (GenAI analyst — natural-language hunting) · RemoteOps · Ranger</text>
+  <text x="40" y="372" font-size="9.5" font-weight="700" fill="#166534">Attacks move at MACHINE SPEED — only autonomous on-agent response is fast enough (a human SOC loses the disk before reading the alert). The human supervises + hunts.</text>
+  <text x="40" y="391" font-size="9.5" font-weight="400" fill="#b91c1c">Defensive throughout (protect / detect / hunt / respond / recover). Completes the endpoint cluster with CrowdStrike (L) + Trellix; feeds the SOC/SIEM (Splunk XLV).</text>
+  <text x="40" y="410" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: role-program reading · behavioral-vs-signature detection · machine-speed response · Storyline event correlation · MTTR reduction ·</text>
+  <text x="40" y="427" font-size="9.5" font-weight="400" fill="#374151">IR workflow (triage/scope/contain/remediate) · threat hunting · complete remediation · ransomware rollback at scale · cross-surface XDR · natural-language AI hunting · detect-vs-protect policy rollout.</text>
+  <line x1="40" y1="458" x2="80" y2="458" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="462" font-size="11" fill="#b45309">Responder certs</text>
+  <line x1="253" y1="458" x2="293" y2="458" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="301" y="462" font-size="11" fill="#166534">Admin / signatures</text>
+  <line x1="493" y1="458" x2="533" y2="458" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="541" y="462" font-size="11" fill="#6b7280">Program shape</text>
+  <line x1="688" y1="458" x2="728" y2="458" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="736" y="462" font-size="11" fill="#33415c">Platform</text>
+</svg>
