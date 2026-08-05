@@ -1,0 +1,53 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the SAP certification program and its 2026 practical-exam transition</title>
+  <desc>
+    SAP's certification program is vast and, as of 2026, mid-transformation. The defining change is a move from multiple-choice to practical, performance-based exams: most exams available by mid-January 2026 and all transitioned by end of March. The new format uses system-based tasks or roleplay scenarios tailored to each certification, timeboxed around real project expectations, with an open-book approach that allows the use of relevant resources and AI-supported tools, and no live proctoring. The rationale is the AI era: when AI handles recall, the exam tests application rather than memorization. The program has three levels. Associate, mostly carrying C underscore exam codes, validates fundamental consultant knowledge applied under supervision and forms the bulk of the catalog. Specialist adds a focused role or integration component on top of an Associate. Professional, carrying P underscore and some E underscore codes, is advanced and requires proven recent project experience, for example twenty-four months of ERP project involvement within the past thirty-six. Solution areas span S/4HANA, the ERP core with modules for finance, controlling, sales, and procurement, available as Cloud Public Edition via GROW with SAP, Cloud Private Edition via RISE with SAP, or on-premise; SuccessFactors for human experience management; the Business Technology Platform for administration, integration, and ABAP Cloud development; Ariba and Concur; analytics via SAP Analytics Cloud, Datasphere, and Business Data Cloud; and the Business AI Platform with Joule assistants and agents. Certification is purchased as attempt bundles of one, two, or six attempts, or an SAP Learning Hub subscription with four attempts; the two-attempt bundle costs two hundred seventy-six US dollars and includes ten hours of hands-on practice-system access. Scoring is automatic or AI-reviewed, with video submissions scored by experts within twenty business days. Practical format is required for first-time takers only; already-certified professionals continue their renewal cycle.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: SAP Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">a vast program MID-TRANSFORMATION · practical exams roll out Q1 2026 · open-book + AI-allowed + no proctoring</text>
+  <rect x="150" y="42" width="660" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="61.0" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">★ 2026 TRANSITION: multiple-choice → PRACTICAL, performance-based exams (all by end-March)</text>
+  <text x="480.0" y="76.0" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">system tasks/scenarios · TIMEBOXED · OPEN-BOOK + AI TOOLS ALLOWED · NO live proctoring — &quot;prove what you can DO&quot;</text>
+  <rect x="40" y="128" width="270" height="62" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="175.0" y="147.0" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">ASSOCIATE  (C_)</text>
+  <text x="175.0" y="162.3" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">fundamental, applied UNDER SUPERVISION</text>
+  <text x="175.0" y="177.7" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">no experience gate · the BULK of the catalog</text>
+  <rect x="340" y="128" width="240" height="62" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="460.0" y="147.0" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">SPECIALIST</text>
+  <text x="460.0" y="162.3" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">added ON TOP of an Associate</text>
+  <text x="460.0" y="177.7" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">focused role / integration component</text>
+  <rect x="610" y="128" width="310" height="62" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="765.0" y="147.0" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">PROFESSIONAL  (P_ / some E_)</text>
+  <text x="765.0" y="162.3" text-anchor="middle" font-size="7.5" font-weight="700" fill="#166534">advanced · requires PROVEN PROJECT EXPERIENCE</text>
+  <text x="765.0" y="177.7" text-anchor="middle" font-size="7" font-weight="400" fill="#374151">e.g. 24 months ERP in past 36 (C_RISME) — cannot be crammed</text>
+  <line x1="310" y1="159" x2="340" y2="159" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <line x1="580" y1="159" x2="610" y2="159" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="40" y="208" width="880" height="72" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="226.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">SOLUTION AREAS (choose FIRST — a business-function fork; module + level follow)</text>
+  <text x="480.0" y="240.0" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">S/4HANA (ERP core: FI · CO · SD · MM · PS) — Cloud PUBLIC (GROW) / PRIVATE (RISE) / on-prem · HANA in-memory · clean core</text>
+  <text x="480.0" y="254.0" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">SuccessFactors (HXM: Employee Central + specialties) · BTP (Administrator · Integration/CPI · ABAP Cloud/RAP+Joule) · Ariba · Concur</text>
+  <text x="480.0" y="268.0" text-anchor="middle" font-size="7.5" font-weight="400" fill="#374151">Analytics (SAC · Datasphere · Business Data Cloud) · Business AI Platform (Joule ASSISTANTS vs AGENTS · Gen AI Developer)</text>
+  <rect x="40" y="298" width="880" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="314.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">PURCHASING (published): attempt bundles — ONE / TWO / SIX attempts, or SAP Learning Hub subscription (4 attempts)</text>
+  <text x="480.0" y="327.5" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">two-attempt bundle = USD 276/yr, INCLUDES 10 HOURS of hands-on practice systems (because a practical exam is prepared by DOING)</text>
+  <text x="40" y="360" font-size="9.5" font-weight="700" fill="#166534">The AI-era bet: when AI handles recall, the exam tests APPLICATION. Question dumps target the RETIRED format — worse than useless in 2026.</text>
+  <text x="40" y="379" font-size="9.5" font-weight="400" fill="#374151">Transition rules: PRACTICAL format required for FIRST-TIME takers only · already-certified continue renewal · video components scored by experts within 20 BUSINESS DAYS.</text>
+  <text x="40" y="398" font-size="9.5" font-weight="400" fill="#374151">There is no "SAP certification" — you certify in an AREA + MODULE + LEVEL. Specialize, don't generalize (like Vols CXXIII IBM, XLVII Oracle, LXXXIII Salesforce).</text>
+  <text x="40" y="417" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: level/prefix reading · attempt-bundle choice · ECC→S/4HANA data-model change · edition choice · fit-to-standard liability math · Explore-sets-scope ·</text>
+  <text x="40" y="434" font-size="9.5" font-weight="400" fill="#374151">OCM×technical adoption · clean-core extension vs modification · ABAP-Cloud restriction · integration seams · EC system-of-record · assistant-vs-agent · practical-exam prep · SoD scan.</text>
+  <line x1="40" y1="468" x2="80" y2="468" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="472" font-size="11" fill="#b45309">Associate / Specialist</text>
+  <line x1="316" y1="468" x2="356" y2="468" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="364" y="472" font-size="11" fill="#166534">Professional / transition</text>
+  <line x1="619" y1="468" x2="659" y2="468" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="667" y="472" font-size="11" fill="#33415c">Solution areas</text>
+  <line x1="823" y1="468" x2="863" y2="468" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="871" y="472" font-size="11" fill="#6b7280">Purchasing</text>
+</svg>
