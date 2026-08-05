@@ -5039,6 +5039,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing a Path, Currency, and Career"
         path: volumes/volume-145-atlassian-certifications/chapters/09-choosing-a-path-currency-career.md
+  - id: volume-146
+    number: "CXLVI"
+    slug: volume-146-jamf-certifications
+    title: "Jamf Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Jamf Certification Ladder"
+        path: volumes/volume-146-jamf-certifications/chapters/01-the-jamf-certification-ladder.md
+      - id: 02
+        title: "Chapter 02: Apple Management Fundamentals"
+        path: volumes/volume-146-jamf-certifications/chapters/02-apple-management-fundamentals.md
+      - id: 03
+        title: "Chapter 03: Jamf Pro — Smart Groups and Scope"
+        path: volumes/volume-146-jamf-certifications/chapters/03-jamf-pro-smart-groups-and-scope.md
+      - id: 04
+        title: "Chapter 04: Configuration Profiles and Patch Management"
+        path: volumes/volume-146-jamf-certifications/chapters/04-configuration-profiles-and-patch-management.md
+      - id: 05
+        title: "Chapter 05: Scripts, Self Service, and App Deployment"
+        path: volumes/volume-146-jamf-certifications/chapters/05-scripts-self-service-and-app-deployment.md
+      - id: 06
+        title: "Chapter 06: Jamf Connect — Identity"
+        path: volumes/volume-146-jamf-certifications/chapters/06-jamf-connect-identity.md
+      - id: 07
+        title: "Chapter 07: Jamf Protect — Endpoint Security"
+        path: volumes/volume-146-jamf-certifications/chapters/07-jamf-protect-endpoint-security.md
+      - id: 08
+        title: "Chapter 08: Jamf School and Compliance"
+        path: volumes/volume-146-jamf-certifications/chapters/08-jamf-school-and-compliance.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Jamf Path"
+        path: volumes/volume-146-jamf-certifications/chapters/09-choosing-your-path.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
