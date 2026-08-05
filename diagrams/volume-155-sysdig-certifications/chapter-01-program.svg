@@ -1,0 +1,46 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Sysdig accreditations and Falco path over the runtime-first platform</title>
+  <desc>
+    Sysdig's program has two strands. Its own credentials are Credly digital badges earned through its enablement portal, most notably the Kraken Hunter accreditation, a hands-on workshop of labs and presentations plus an exam validating Sysdig-tooling skill for cloud and container security, and a Partner Technical Accreditation program. Separately, Falco, the open-source runtime security engine that Sysdig created and donated to the Cloud Native Computing Foundation, has its own training path: the twenty-hour Detecting Cloud Runtime Threats with Falco course, LFS254, built by CNCF, the Linux Foundation, and Sysdig. The platform beneath is runtime-first. Sysdig Secure is an enterprise cloud-native application protection platform unifying cloud detection and response with Falco-powered five-second detection, vulnerability management prioritized by in-use runtime context, cloud security posture management, cloud infrastructure entitlement management right-sized from observed usage, and compliance, all on shared deep runtime data captured by eBPF kernel instrumentation. Sysdig Monitor adds Prometheus-based observability on the same foundation. Runtime-first means securing what is actually running, complementing agentless posture, which tells you what could be wrong, with runtime, which tells you what is happening now, catching zero-days, drift, and insider actions that posture is blind to.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Sysdig Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Credly badges (Kraken Hunter) + open-source Falco (CNCF/LF LFS254) · RUNTIME-FIRST CNAPP on eBPF</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">SYSDIG — RUNTIME-FIRST cloud-native security (Sysdig Secure) + the creator of FALCO</text>
+  <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">secure what's actually RUNNING — posture (Wiz CXLVII) says what COULD be wrong; runtime says what IS happening now</text>
+  <rect x="40" y="120" width="880" height="26" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="135.8" text-anchor="middle" font-size="8" font-weight="700" fill="#111827">TWO STRANDS · Credly badges (enablement portal) + open-source FALCO (CNCF/LF) · a badges + hands-on-training model (NOT proctored exams)</text>
+  <rect x="40" y="152" width="430" height="58" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="255.0" y="170.1" text-anchor="middle" font-size="8.8" font-weight="700" fill="#111827">SYSDIG accreditations (Credly)</text>
+  <text x="255.0" y="184.1" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">★ KRAKEN HUNTER — Sysdig tooling for cloud &amp; container</text>
+  <text x="255.0" y="198.1" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">security (workshop LABS + exam) · Partner Technical Accred</text>
+  <rect x="490" y="152" width="430" height="58" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="705.0" y="170.1" text-anchor="middle" font-size="8.8" font-weight="700" fill="#111827">FALCO (open-source, CNCF)</text>
+  <text x="705.0" y="184.1" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">Sysdig CREATED Falco + donated it to CNCF</text>
+  <text x="705.0" y="198.1" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">★ LFS254 'Detecting Cloud Runtime Threats w/ Falco' (~20h)</text>
+  <rect x="40" y="224" width="880" height="60" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="242.3" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">RUNTIME-FIRST CNAPP (Sysdig Secure) — all on SHARED deep runtime data</text>
+  <text x="480.0" y="257.0" text-anchor="middle" font-size="7.3" font-weight="400" fill="#374151">★ FALCO-powered CDR (detection-as-code rules · 5-SECOND detection · DRIFT: running container != image = tampering, signature-free)</text>
+  <text x="480.0" y="271.6" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">VULN MGMT (★ IN-USE: only ~fraction of packages LOADED at runtime = the real risk) · CSPM (posture) · CIEM (right-size from OBSERVED usage) · compliance</text>
+  <rect x="40" y="298" width="880" height="34" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="317.7" text-anchor="middle" font-size="7.8" font-weight="700" fill="#111827">★ FOUNDATION: eBPF — safe in-kernel instrumentation of SYSTEM CALLS = ground truth of what actually happened · deep visibility, low overhead, no code changes, one agent/host</text>
+  <text x="40" y="356" font-size="9.5" font-weight="700" fill="#166534">Runtime is the CONNECTIVE TISSUE: the same observation sharpens vuln prioritization (in-use), posture (running+exposed), entitlements (used perms) AND detection. Security + observability, one data foundation.</text>
+  <text x="40" y="375" font-size="9.5" font-weight="400" fill="#b91c1c">Containers are EPHEMERAL (live seconds) — a periodic scan misses them; only real-time runtime detection + eBPF capture sees + records what a short-lived container did. Defensive throughout.</text>
+  <text x="40" y="394" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: two-strand program · runtime-vs-posture coverage gap · Falco rule detection · syscall ground-truth (vs logs) · drift detection · in-use vuln prioritization ·</text>
+  <text x="40" y="411" font-size="9.5" font-weight="400" fill="#374151">runtime-informed CIEM right-sizing · shared-runtime-data CNAPP. Completes the cloud-native security cluster: Wiz (CXLVII) posture, CNCF (XLI) K8s + Falco, SentinelOne (CLI) endpoint. Falco is open-source + CNCF = transferable.</text>
+  <line x1="40" y1="442" x2="80" y2="442" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="446" font-size="11" fill="#b45309">Sysdig / eBPF</text>
+  <line x1="235" y1="442" x2="275" y2="442" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="283" y="446" font-size="11" fill="#166534">Falco (open-source)</text>
+  <line x1="484" y1="442" x2="524" y2="442" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="532" y="446" font-size="11" fill="#6b7280">Program shape</text>
+  <line x1="679" y1="442" x2="719" y2="442" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="727" y="446" font-size="11" fill="#33415c">Runtime-first platform</text>
+</svg>
