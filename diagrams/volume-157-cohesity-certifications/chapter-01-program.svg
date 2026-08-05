@@ -1,0 +1,57 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Cohesity Academy certifications over the AI-powered Data Cloud</title>
+  <desc>
+    Cohesity Academy offers proctored certification exams across three tiers. The Associate level includes Protection Associate for DataProtect, exam COH100, and Protection Associate for Multicloud, both carrying the Cohesity Certified Protection Associate credential. The Professional level includes Implementation Professional for SmartFiles and two NetBackup Protection Professional certifications from the Veritas heritage. The Specialist level is the Security Specialist, exam COH350. Exams are proctored, cost two hundred dollars, are valid for two years, and grant a digital badge; the DataProtect associate exam is ninety minutes with a fifty-eight percent passing score. The platform beneath is the AI-powered Cohesity Data Cloud: DataProtect for backup and recovery, ransomware resilience through immutable snapshots, DataLock WORM, air-gapping and anomaly detection, SmartFiles for software-defined file and object services, FortKnox for SaaS cyber-vaulting, and AI through DataHawk threat detection and classification and Gaia generative search. Cohesity merged with Veritas in December 2024, adding NetBackup. The thesis is that backup is both the last line of defense against ransomware and a prime target of it, so data management and security have converged.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Cohesity Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Cohesity Academy — Associate/Professional/Specialist (CCPA/CCIP/CCPP/CCSS) · proctored $200 / 2yr · AI-powered Data Cloud</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">COHESITY — AI-powered DATA SECURITY &amp; MANAGEMENT (backup/recovery + ransomware resilience)</text>
+  <text x="480.0" y="74.5" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">backup = the LAST line of defense AND a ransomware TARGET -&gt; data management + security have CONVERGED</text>
+  <rect x="40" y="120" width="880" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="136.4" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">COHESITY ACADEMY — 3 TIERS · proctored digital-badge exams · $200 · valid 2 YEARS · ~3 months hands-on recommended</text>
+  <text x="480.0" y="149.4" text-anchor="middle" font-size="6.9" font-weight="400" fill="#374151">ASSOCIATE (CCPA): Protection Associate — DataProtect (COH100) · Multicloud   |   PROFESSIONAL (CCIP/CCPP): SmartFiles · Protection Pro · NetBackup ×2   |   SPECIALIST (CCSS): Security (COH350)</text>
+  <rect x="40" y="176" width="288" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="184.0" y="191.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">DATAPROTECT (the core)</text>
+  <text x="184.0" y="204.0" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">policy-based backup + recovery +</text>
+  <text x="184.0" y="217.0" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">replication + archival · INSTANT MASS RESTORE</text>
+  <rect x="336" y="176" width="288" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="191.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">RANSOMWARE RESILIENCE</text>
+  <text x="480.0" y="204.0" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">IMMUTABLE snapshots · DataLock/WORM ·</text>
+  <text x="480.0" y="217.0" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">air-gap · anomaly detection · clean recovery</text>
+  <rect x="632" y="176" width="288" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="776.0" y="191.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">SMARTFILES (CCIP)</text>
+  <text x="776.0" y="204.0" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">software-defined FILE + OBJECT services</text>
+  <text x="776.0" y="217.0" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">(NFS/SMB/S3) — consolidate NAS, security-aware</text>
+  <rect x="40" y="236" width="288" height="50" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="184.0" y="250.9" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">FORTKNOX (SaaS cyber-vault)</text>
+  <text x="184.0" y="263.9" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">ISOLATED + IMMUTABLE + AIR-GAPPED copy</text>
+  <text x="184.0" y="276.9" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">(3-2-1-1) · clean-room recovery</text>
+  <rect x="336" y="236" width="288" height="50" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="251.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">AI — DataHawk + Gaia</text>
+  <text x="480.0" y="264.0" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">threat detection · sensitive-data classify ·</text>
+  <text x="480.0" y="277.0" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">Gaia GEN-AI conversational search</text>
+  <rect x="632" y="236" width="288" height="50" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="776.0" y="250.7" text-anchor="middle" font-size="7.6" font-weight="700" fill="#111827">NETBACKUP (Veritas, merged 12/2024)</text>
+  <text x="776.0" y="263.7" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">enterprise backup + NetBackup APPLIANCES;</text>
+  <text x="776.0" y="276.7" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">largest data-protection vendor · MULTICLOUD</text>
+  <text x="40" y="312" font-size="9.5" font-weight="700" fill="#166534">Ransomware resilience = IMMUTABILITY (a clean copy EXISTS) + ANOMALY DETECTION (know WHICH copy is clean) + RAPID MASS RESTORE (bring the estate back) -> ransomware becomes a RECOVERABLE event, not "pay or lose everything".</text>
+  <text x="40" y="331" font-size="9.5" font-weight="400" fill="#b91c1c">Attackers delete mutable backups FIRST; immutable + air-gapped (FortKnox) copies survive even total compromise. Backup is a SECURITY function. Defensive throughout — data resilience.</text>
+  <text x="40" y="350" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: 3-tier program + exam rule set · immutable-vs-mutable survival · policy protection + mass restore · anomaly detection + clean recovery point · air-gap survives total breach ·</text>
+  <text x="40" y="367" font-size="9.5" font-weight="400" fill="#374151">NAS consolidation · AI detection/classification/Gaia search · combined Cohesity+NetBackup portfolio. Data-security cluster: Rubrik (CXXX) peer, Commvault (CXXXIII), EDR CrowdStrike (L)/SentinelOne (CLI) = prevent, Cohesity = recover.</text>
+  <line x1="40" y1="398" x2="80" y2="398" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="402" font-size="11" fill="#b45309">Core (protect/resilience/files)</text>
+  <line x1="397" y1="398" x2="437" y2="398" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="445" y="402" font-size="11" fill="#166534">Vault / AI / NetBackup</text>
+  <line x1="673" y1="398" x2="713" y2="398" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="721" y="402" font-size="11" fill="#6b7280">Academy program</text>
+  <line x1="886" y1="398" x2="926" y2="398" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="934" y="402" font-size="11" fill="#33415c">Data security thesis</text>
+</svg>
