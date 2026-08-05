@@ -1,0 +1,57 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the BeyondTrust Certified Administrator credentials over the PAM platform</title>
+  <desc>
+    BeyondTrust University issues one Certified Administrator credential per product, delivered as Credly verified digital badges. Each certification is granted on completion of the required Instructor-Led Training course plus a passing score of seventy-five percent or higher on a forty-question exam, delivered online through the BTU portal, open note but completed independently, with two attempts allowed. Certifications are valid for two years and renew by purchasing new training and passing again, and each course grants up to sixteen hours of Continuing Professional Education credit. Eight Certified Administrator programs cover the product line: Password Safe for credential vaulting, rotation, and privileged session management; Endpoint Privilege Management for Windows, Mac, and Linux for endpoint least privilege; Privileged Remote Access for VPN-less brokered privileged access with credential injection; Remote Support for secure remote support; AD Bridge for extending Active Directory to Linux, Unix, and Mac; and Entitle for cloud and SaaS just-in-time access. The platform beneath is Privileged Access Management, the discipline of securing, controlling, and monitoring privileged access, the primary path in nearly every breach. BeyondTrust is a PAM leader alongside CyberArk.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: BeyondTrust Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">BeyondTrust University — Certified Administrator (one per product) · Credly · ILT + 40Q/75%/2yr · PAM</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">BEYONDTRUST — Privileged Access Management (PAM) leader (peer of CyberArk LXXVII)</text>
+  <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">secure, control + monitor PRIVILEGED access (admin/root/service) — the #1 path in nearly every breach</text>
+  <rect x="40" y="120" width="880" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="136.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">BeyondTrust University — CERTIFIED ADMINISTRATOR (one credential PER PRODUCT) · Credly digital badges</text>
+  <text x="480.0" y="149.5" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">uniform mechanics: required INSTRUCTOR-LED TRAINING + 40-question exam / 75% to pass · online BTU portal · OPEN-NOTE, independent · 2 attempts · valid 2 YEARS · up to 16 CPE</text>
+  <rect x="40" y="176" width="288" height="52" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="184.0" y="192.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">PASSWORD SAFE</text>
+  <text x="184.0" y="205.0" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">credential VAULT + rotation +</text>
+  <text x="184.0" y="218.0" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">privileged SESSION mgmt (isolate/record)</text>
+  <rect x="336" y="176" width="288" height="52" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="191.8" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">ENDPOINT PRIVILEGE MGMT (Win/Mac/Linux)</text>
+  <text x="480.0" y="204.8" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">least privilege on endpoints — remove local</text>
+  <text x="480.0" y="217.8" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">admin; ELEVATE the app, not the user (3 certs)</text>
+  <rect x="632" y="176" width="288" height="52" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="776.0" y="192.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">PRIVILEGED REMOTE ACCESS</text>
+  <text x="776.0" y="205.0" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">VPN-less BROKERED access + credential</text>
+  <text x="776.0" y="218.0" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">INJECTION (user never sees creds) · vendors</text>
+  <rect x="40" y="236" width="288" height="52" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="184.0" y="252.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">REMOTE SUPPORT (Bomgar)</text>
+  <text x="184.0" y="265.0" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">secure remote support — granular perms,</text>
+  <text x="184.0" y="278.0" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">consent, session recording</text>
+  <rect x="336" y="236" width="288" height="52" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="252.0" text-anchor="middle" font-size="8.5" font-weight="700" fill="#111827">AD BRIDGE</text>
+  <text x="480.0" y="265.0" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">extend Active Directory (auth/SSO/GPO)</text>
+  <text x="480.0" y="278.0" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">to Linux/Unix/Mac — one identity, one policy</text>
+  <rect x="632" y="236" width="288" height="52" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="776.0" y="251.8" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">ENTITLE (cloud/SaaS · acq. 2024)</text>
+  <text x="776.0" y="264.8" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">JUST-IN-TIME access — self-service request +</text>
+  <text x="776.0" y="277.8" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">auto-approve + AUTO-EXPIRE (modern PAM)</text>
+  <text x="40" y="312" font-size="9.5" font-weight="700" fill="#166534">The PAM endgame: ELIMINATE STANDING PRIVILEGE — vault + rotate secrets (never exposed), remove local admin, broker + inject + record sessions, grant privilege JUST-IN-TIME then revoke.</text>
+  <text x="40" y="331" font-size="9.5" font-weight="400" fill="#b91c1c">Breaks the breach chain at every link: no admin creds to steal (EPM), no static passwords to reuse (Password Safe), no network foothold or disclosed creds (PRA), no idle standing privilege (Entitle). Defensive throughout.</text>
+  <text x="40" y="350" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: per-product credential model + exam rule set · privilege attack chain · least privilege / JIT · vault+rotate+inject · session isolation/recording · per-app elevation ·</text>
+  <text x="40" y="367" font-size="9.5" font-weight="400" fill="#374151">brokered VPN-less access · consent-based support · AD-centralized identity · cloud JIT auto-expiry. Identity cluster: CyberArk (LXXVII) peer PAM, SailPoint (CXXXII) IGA, Ping (CL)/Okta (LXXVI) access mgmt, CIEM (Sysdig CLV/Wiz CXLVII).</text>
+  <line x1="40" y1="398" x2="80" y2="398" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="402" font-size="11" fill="#b45309">Core PAM</text>
+  <line x1="190" y1="398" x2="230" y2="398" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="238" y="402" font-size="11" fill="#166534">Support/bridge/cloud</text>
+  <line x1="448" y1="398" x2="488" y2="398" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="496" y="402" font-size="11" fill="#6b7280">Cert program</text>
+  <line x1="634" y1="398" x2="674" y2="398" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="682" y="402" font-size="11" fill="#33415c">PAM discipline</text>
+</svg>

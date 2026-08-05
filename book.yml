@@ -5379,6 +5379,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your Sysdig/Falco Path"
         path: volumes/volume-155-sysdig-certifications/chapters/09-choosing-your-sysdig-path.md
+  - id: volume-156
+    number: "CLVI"
+    slug: volume-156-beyondtrust-certifications
+    title: "BeyondTrust Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The BeyondTrust University Certification Program"
+        path: volumes/volume-156-beyondtrust-certifications/chapters/01-the-beyondtrust-program.md
+      - id: 02
+        title: "Chapter 02: Privileged Access Management — The Discipline"
+        path: volumes/volume-156-beyondtrust-certifications/chapters/02-privileged-access-management.md
+      - id: 03
+        title: "Chapter 03: Password Safe — Vaulting, Rotation, and Sessions"
+        path: volumes/volume-156-beyondtrust-certifications/chapters/03-password-safe.md
+      - id: 04
+        title: "Chapter 04: Endpoint Privilege Management"
+        path: volumes/volume-156-beyondtrust-certifications/chapters/04-endpoint-privilege-management.md
+      - id: 05
+        title: "Chapter 05: Privileged Remote Access"
+        path: volumes/volume-156-beyondtrust-certifications/chapters/05-privileged-remote-access.md
+      - id: 06
+        title: "Chapter 06: Remote Support"
+        path: volumes/volume-156-beyondtrust-certifications/chapters/06-remote-support.md
+      - id: 07
+        title: "Chapter 07: AD Bridge"
+        path: volumes/volume-156-beyondtrust-certifications/chapters/07-ad-bridge.md
+      - id: 08
+        title: "Chapter 08: Entitle — Cloud and SaaS Just-in-Time Access"
+        path: volumes/volume-156-beyondtrust-certifications/chapters/08-entitle.md
+      - id: 09
+        title: "Chapter 09: Choosing Your BeyondTrust/PAM Path"
+        path: volumes/volume-156-beyondtrust-certifications/chapters/09-choosing-your-beyondtrust-path.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
