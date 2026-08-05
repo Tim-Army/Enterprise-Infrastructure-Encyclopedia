@@ -159,11 +159,12 @@ does not by itself verify every technical claim in it.
 | CXLVII — Wiz Certification Tracks | 9 | Drafted |
 | CXLVIII — Snyk Certification Tracks | 9 | Drafted |
 | CXLIX — UiPath Certification Tracks | 9 | Drafted |
+| CL — Ping Identity Certification Tracks | 9 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1459 of 1459 drafted (100%). Every volume has a
+**Total declared chapters:** 1468 of 1468 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

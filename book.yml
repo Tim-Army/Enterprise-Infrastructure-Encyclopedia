@@ -5175,6 +5175,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your UiPath Path"
         path: volumes/volume-149-uipath-certifications/chapters/09-choosing-your-uipath-path.md
+  - id: volume-150
+    number: "CL"
+    slug: volume-150-ping-identity-certifications
+    title: "Ping Identity Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Ping Identity Certification Program"
+        path: volumes/volume-150-ping-identity-certifications/chapters/01-the-ping-identity-certification-program.md
+      - id: 02
+        title: "Chapter 02: Identity and Access Management Fundamentals"
+        path: volumes/volume-150-ping-identity-certifications/chapters/02-identity-and-access-management-fundamentals.md
+      - id: 03
+        title: "Chapter 03: Federation — PingFederate"
+        path: volumes/volume-150-ping-identity-certifications/chapters/03-federation-pingfederate.md
+      - id: 04
+        title: "Chapter 04: Access Management — PingAccess and PingAM"
+        path: volumes/volume-150-ping-identity-certifications/chapters/04-access-management-pingaccess-and-pingam.md
+      - id: 05
+        title: "Chapter 05: Cloud Identity — PingOne"
+        path: volumes/volume-150-ping-identity-certifications/chapters/05-cloud-identity-pingone.md
+      - id: 06
+        title: "Chapter 06: MFA, Passwordless, and Threat Protection"
+        path: volumes/volume-150-ping-identity-certifications/chapters/06-mfa-passwordless-and-threat-protection.md
+      - id: 07
+        title: "Chapter 07: Identity Orchestration — PingOne DaVinci"
+        path: volumes/volume-150-ping-identity-certifications/chapters/07-identity-orchestration-pingone-davinci.md
+      - id: 08
+        title: "Chapter 08: Directory and Governance"
+        path: volumes/volume-150-ping-identity-certifications/chapters/08-directory-and-governance.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Ping Path"
+        path: volumes/volume-150-ping-identity-certifications/chapters/09-choosing-your-ping-path.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
