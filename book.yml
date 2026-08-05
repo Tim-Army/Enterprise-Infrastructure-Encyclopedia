@@ -4937,6 +4937,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing a Certification, Currency, and Career"
         path: volumes/volume-142-cloudflare-certifications/chapters/09-choosing-a-certification-currency-career.md
+  - id: volume-143
+    number: "CXLIII"
+    slug: volume-143-akamai-certifications
+    title: "Akamai Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Akamai Credential Landscape"
+        path: volumes/volume-143-akamai-certifications/chapters/01-the-akamai-credential-landscape.md
+      - id: 02
+        title: "Chapter 02: The Intelligent Edge — DNS, GTM, and Delivery"
+        path: volumes/volume-143-akamai-certifications/chapters/02-the-intelligent-edge-dns-and-delivery.md
+      - id: 03
+        title: "Chapter 03: Web Performance and Media Delivery"
+        path: volumes/volume-143-akamai-certifications/chapters/03-web-performance-and-media-delivery.md
+      - id: 04
+        title: "Chapter 04: App & API Protector"
+        path: volumes/volume-143-akamai-certifications/chapters/04-app-and-api-protector.md
+      - id: 05
+        title: "Chapter 05: Bot, Abuse, and Fraud Protection"
+        path: volumes/volume-143-akamai-certifications/chapters/05-bot-abuse-and-fraud.md
+      - id: 06
+        title: "Chapter 06: API Security and Zero Trust"
+        path: volumes/volume-143-akamai-certifications/chapters/06-api-security-and-zero-trust.md
+      - id: 07
+        title: "Chapter 07: Guardicore Segmentation Certifications"
+        path: volumes/volume-143-akamai-certifications/chapters/07-guardicore-segmentation-certifications.md
+      - id: 08
+        title: "Chapter 08: Akamai Cloud and Automation"
+        path: volumes/volume-143-akamai-certifications/chapters/08-akamai-cloud-and-automation.md
+      - id: 09
+        title: "Chapter 09: Choosing a Path, Currency, and Career"
+        path: volumes/volume-143-akamai-certifications/chapters/09-choosing-a-path-currency-career.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
