@@ -1,0 +1,50 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Pega certification tracks over the low-code Pega Platform</title>
+  <desc>
+    Pega offers certifications across several tracks on Pega Infinity 25. The System Architect ladder is the flagship: Certified System Architect for foundational app-building in App Studio and Dev Studio; Certified Senior System Architect, requiring the System Architect credential, for designing reusability across business lines; and Certified Lead System Architect, requiring the Senior credential, an expert tier earned through a two-part written Architecture Exam plus a hands-on Application Exam that designs and builds a real app. Other tracks: Business Architect for capturing requirements via Directly Capture Objectives, Decisioning with Data Scientist, Decisioning Consultant, and Lead Decisioning Architect, and Robotics. The platform beneath is the low-code, model-driven Pega Platform where everything is a rule and guardrails enforce best practice, spanning dynamic case management, the situational layer cake for reuse, model-driven UI, Next-Best-Action decisioning in the Customer Decision Hub, robotics, and Pega GenAI. Pega is a low-code enterprise BPM, CRM, and decisioning leader.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Pega Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Pega Academy — System Architect ladder (CSA→CSSA→CLSA) + Business Architect + Decisioning + Robotics · low-code</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.3" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">PEGA — LOW-CODE, MODEL-DRIVEN enterprise platform: BPM / case management + CRM + AI decisioning</text>
+  <text x="480.0" y="74.3" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">model the app (Pega generates it) · everything is a RULE · guardrails = 'build for change' · Pega Infinity '25</text>
+  <rect x="40" y="120" width="880" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="136.4" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">PEGA ACADEMY — certifications by track (Pega Infinity '25)</text>
+  <text x="480.0" y="149.4" text-anchor="middle" font-size="6.5" font-weight="400" fill="#374151">SYSTEM ARCHITECT ladder: CSA → CSSA (needs CSA, reuse) → CLSA (needs CSSA; ★ 2-part: written Architecture + hands-on BUILD)   |   BUSINESS ARCHITECT (CPBA)   |   DECISIONING (Data Scientist · CPDC · Lead)   |   ROBOTICS</text>
+  <rect x="40" y="176" width="288" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="184.0" y="194.3" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">CASE MANAGEMENT (the core)</text>
+  <text x="184.0" y="209.3" text-anchor="middle" font-size="6.2" font-weight="400" fill="#374151">dynamic cases: stages→steps (human+auto), adapt at runtime</text>
+  <rect x="336" y="176" width="288" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="194.1" text-anchor="middle" font-size="7.4" font-weight="700" fill="#111827">★ SITUATIONAL LAYER CAKE (reuse)</text>
+  <text x="480.0" y="209.1" text-anchor="middle" font-size="5.9" font-weight="400" fill="#374151">build common ONCE, specialize by layer (BU/region/channel) — no forking</text>
+  <rect x="632" y="176" width="288" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="776.0" y="194.2" text-anchor="middle" font-size="7.6" font-weight="700" fill="#111827">MODEL-DRIVEN UI + data model</text>
+  <text x="776.0" y="209.2" text-anchor="middle" font-size="6.1" font-weight="400" fill="#374151">responsive UI auto-rendered · data pages · integrations</text>
+  <rect x="40" y="236" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="184.0" y="254.1" text-anchor="middle" font-size="7.4" font-weight="700" fill="#111827">★ NEXT-BEST-ACTION (decisioning)</text>
+  <text x="184.0" y="269.1" text-anchor="middle" font-size="5.8" font-weight="400" fill="#374151">Customer Decision Hub: real-time 1:1 AI — relevance x value, gated</text>
+  <rect x="336" y="236" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="254.3" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">ROBOTICS (RPA) + GenAI</text>
+  <text x="480.0" y="269.3" text-anchor="middle" font-size="6.0" font-weight="400" fill="#374151">attended/unattended bots (Robot Studio) · Pega GenAI Blueprint</text>
+  <rect x="632" y="236" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="776.0" y="254.1" text-anchor="middle" font-size="7.4" font-weight="700" fill="#111827">DCO (Directly Capture Objectives)</text>
+  <text x="776.0" y="269.1" text-anchor="middle" font-size="5.7" font-weight="400" fill="#374151">business+IT capture requirements DIRECTLY as executable app (no stale docs)</text>
+  <text x="40" y="308" font-size="9.5" font-weight="700" fill="#166534">MODEL (low-code, rules) + ORCHESTRATE (dynamic cases) + REUSE (layer cake) + DECIDE (Next-Best-Action) + AUTOMATE (robotics + GenAI). App Studio (business) + Dev Studio (developer) on ONE app.</text>
+  <text x="40" y="330" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: tracks + prerequisite ladder + 2-part CLSA · rules/studios/guardrail-score · dynamic case lifecycle · build app (data/UI/decision/integration) · layer-cake per-situation assembly ·</text>
+  <text x="40" y="347" font-size="9.5" font-weight="400" fill="#374151">Next-Best-Action arbitration · RPA modes + hyperautomation + GenAI Blueprint · DCO executable requirements. Peers: ServiceNow (LXXX) platform, Salesforce (LXXXIII) CRM, UiPath (CXLIX) RPA, MuleSoft (CLX) integration.</text>
+  <line x1="40" y1="376" x2="80" y2="376" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="380" font-size="11" fill="#b45309">Build (case/reuse/UI)</text>
+  <line x1="307" y1="376" x2="347" y2="376" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="355" y="380" font-size="11" fill="#166534">Decide / automate / DCO</text>
+  <line x1="592" y1="376" x2="632" y2="376" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="640" y="380" font-size="11" fill="#6b7280">Cert tracks</text>
+  <line x1="769" y1="376" x2="809" y2="376" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="817" y="380" font-size="11" fill="#33415c">Low-code platform</text>
+</svg>

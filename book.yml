@@ -5651,6 +5651,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your Trend Micro Path"
         path: volumes/volume-163-trend-micro-certifications/chapters/09-choosing-your-trend-micro-path.md
+  - id: volume-164
+    number: "CLXIV"
+    slug: volume-164-pega-certifications
+    title: "Pega Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Pega Certification Program"
+        path: volumes/volume-164-pega-certifications/chapters/01-the-pega-program.md
+      - id: 02
+        title: "Chapter 02: The Pega Platform — Low-Code and Model-Driven"
+        path: volumes/volume-164-pega-certifications/chapters/02-the-pega-platform.md
+      - id: 03
+        title: "Chapter 03: Case Management — The Pega Core"
+        path: volumes/volume-164-pega-certifications/chapters/03-case-management.md
+      - id: 04
+        title: "Chapter 04: Building an Application — The System Architect"
+        path: volumes/volume-164-pega-certifications/chapters/04-building-an-application.md
+      - id: 05
+        title: "Chapter 05: Reusability and the Situational Layer Cake"
+        path: volumes/volume-164-pega-certifications/chapters/05-reusability-and-layer-cake.md
+      - id: 06
+        title: "Chapter 06: Decisioning and Next-Best-Action"
+        path: volumes/volume-164-pega-certifications/chapters/06-decisioning-and-next-best-action.md
+      - id: 07
+        title: "Chapter 07: Pega Robotics and GenAI"
+        path: volumes/volume-164-pega-certifications/chapters/07-robotics-and-genai.md
+      - id: 08
+        title: "Chapter 08: The Business Architect and DCO"
+        path: volumes/volume-164-pega-certifications/chapters/08-business-architect-and-dco.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Pega Path"
+        path: volumes/volume-164-pega-certifications/chapters/09-choosing-your-pega-path.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
