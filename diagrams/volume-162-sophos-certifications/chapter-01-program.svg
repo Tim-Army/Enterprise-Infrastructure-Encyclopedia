@@ -1,0 +1,47 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Sophos Academy role tiers over the Sophos security platform</title>
+  <desc>
+    Sophos offers role-based technical certifications through Sophos Academy across four tiers, earned per product: Technician for support, Administrator for day-to-day operations, Engineer for configuration, and Architect for deployment and design. Training is instructor-led or self-study eLearning, with free foundational training and separate customer and partner tracks. The platform beneath is Sophos Central, the single cloud console managing every Sophos product; Intercept X endpoint protection with Deep Learning AI detection, Exploit Prevention, and CryptoGuard anti-ransomware that detects malicious encryption and rolls back files; the Sophos Firewall next-generation firewall with TLS inspection, IPS, and web and app control on the Xstream architecture; Synchronized Security, which links firewall and endpoint through the Security Heartbeat so a red endpoint is automatically isolated to stop lateral movement; and Sophos MDR, a twenty-four-seven managed detection and response service built on XDR. Sophos is a defensive cybersecurity vendor, a peer of the endpoint, firewall, and MDR vendors.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Sophos Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Sophos Academy — Technician / Administrator / Engineer / Architect (per product) · defensive cybersecurity</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">SOPHOS — defensive cybersecurity: ENDPOINT + FIREWALL + MDR, unified by Sophos Central</text>
+  <text x="480.0" y="74.5" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">★ SYNCHRONIZED SECURITY — products that WORK TOGETHER (share intel + respond as one), not silos</text>
+  <rect x="40" y="120" width="880" height="34" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="133.2" text-anchor="middle" font-size="7.8" font-weight="700" fill="#111827">SOPHOS ACADEMY — role-based tiers, PER PRODUCT · instructor-led OR self-study eLearning · FREE foundational · customer + partner tracks</text>
+  <text x="480.0" y="146.2" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">TECHNICIAN (support) → ADMINISTRATOR (day-to-day ops) → ENGINEER (configure) → ARCHITECT (deploy + design; e.g. AT15 Central Endpoint)</text>
+  <rect x="40" y="168" width="288" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="184.0" y="182.8" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">INTERCEPT X (endpoint + EDR)</text>
+  <text x="184.0" y="195.8" text-anchor="middle" font-size="6.9" font-weight="400" fill="#374151">★ Deep Learning AI · Exploit Prevention ·</text>
+  <text x="184.0" y="208.8" text-anchor="middle" font-size="6.7" font-weight="400" fill="#374151">★ CryptoGuard anti-ransomware (roll BACK files)</text>
+  <rect x="336" y="168" width="288" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="182.8" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">SOPHOS FIREWALL (NGFW, XGS)</text>
+  <text x="480.0" y="195.8" text-anchor="middle" font-size="6.9" font-weight="400" fill="#374151">TLS inspection · IPS · web/app control ·</text>
+  <text x="480.0" y="208.8" text-anchor="middle" font-size="6.7" font-weight="400" fill="#374151">Xstream architecture · Sandstorm sandbox</text>
+  <rect x="632" y="168" width="288" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="776.0" y="182.8" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">SOPHOS MDR / XDR</text>
+  <text x="776.0" y="195.8" text-anchor="middle" font-size="6.7" font-weight="400" fill="#374151">★ 24/7 managed SOC-as-a-service · threat hunt ·</text>
+  <text x="776.0" y="208.8" text-anchor="middle" font-size="6.5" font-weight="400" fill="#374151">XDR correlate endpoint+net+email+cloud+identity</text>
+  <rect x="40" y="228" width="880" height="34" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="241.2" text-anchor="middle" font-size="7.6" font-weight="700" fill="#111827">★ SYNCHRONIZED SECURITY — the SECURITY HEARTBEAT: a live link (endpoint ⇄ firewall) reports GREEN/YELLOW/RED health.</text>
+  <text x="480.0" y="254.2" text-anchor="middle" font-size="6.9" font-weight="400" fill="#374151">Endpoint detects a threat (RED) → FIREWALL AUTO-ISOLATES the device in seconds → lateral movement STOPPED. Detect (endpoint) + contain (firewall) as ONE. The Sophos signature differentiator.</text>
+  <text x="40" y="290" font-size="9.5" font-weight="700" fill="#166534">BEHAVIOR-BASED, DEFENSE-IN-DEPTH: detect the FILE (Deep Learning) + block the TECHNIQUE (Exploit Prevention) + stop the ENCRYPTION + rollback (CryptoGuard) + inspect the NETWORK + synchronize + 24/7 MDR. Defensive throughout.</text>
+  <text x="40" y="312" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: role-tier×product program · one-console vs silos · layered endpoint (DL/exploit/EDR) · CryptoGuard detect+rollback · NGFW deep inspection vs port-only · heartbeat auto-isolation ·</text>
+  <text x="40" y="329" font-size="9.5" font-weight="400" fill="#374151">XDR correlation + 24/7 MDR response · segmented policy + scaled deployment (update caches/relays/AD sync). Peers: SentinelOne (CLI)/CrowdStrike (L)/Trellix (LXX) endpoint, Fortinet (XIX)/Check Point (LXXIII)/Palo Alto (XVI) firewall, Rapid7 (CXXXVII) MDR.</text>
+  <line x1="40" y1="360" x2="80" y2="360" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="364" font-size="11" fill="#b45309">Products (endpoint/fw/MDR)</text>
+  <line x1="352" y1="360" x2="392" y2="360" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="400" y="364" font-size="11" fill="#166534">Synchronized Security</text>
+  <line x1="619" y1="360" x2="659" y2="360" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="667" y="364" font-size="11" fill="#6b7280">Academy program</text>
+  <line x1="832" y1="360" x2="872" y2="360" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="880" y="364" font-size="11" fill="#33415c">Defensive platform</text>
+</svg>

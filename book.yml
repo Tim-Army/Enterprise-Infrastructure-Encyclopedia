@@ -5583,6 +5583,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your Qlik Path"
         path: volumes/volume-161-qlik-certifications/chapters/09-choosing-your-qlik-path.md
+  - id: volume-162
+    number: "CLXII"
+    slug: volume-162-sophos-certifications
+    title: "Sophos Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Sophos Academy Certification Program"
+        path: volumes/volume-162-sophos-certifications/chapters/01-the-sophos-program.md
+      - id: 02
+        title: "Chapter 02: Sophos Central — The Unified Cloud Platform"
+        path: volumes/volume-162-sophos-certifications/chapters/02-sophos-central.md
+      - id: 03
+        title: "Chapter 03: Intercept X — Endpoint Protection and EDR"
+        path: volumes/volume-162-sophos-certifications/chapters/03-intercept-x.md
+      - id: 04
+        title: "Chapter 04: CryptoGuard and Ransomware Defense"
+        path: volumes/volume-162-sophos-certifications/chapters/04-cryptoguard-and-ransomware-defense.md
+      - id: 05
+        title: "Chapter 05: Sophos Firewall — Next-Generation Firewall"
+        path: volumes/volume-162-sophos-certifications/chapters/05-sophos-firewall.md
+      - id: 06
+        title: "Chapter 06: Synchronized Security — The Security Heartbeat"
+        path: volumes/volume-162-sophos-certifications/chapters/06-synchronized-security.md
+      - id: 07
+        title: "Chapter 07: Sophos MDR and XDR"
+        path: volumes/volume-162-sophos-certifications/chapters/07-sophos-mdr-and-xdr.md
+      - id: 08
+        title: "Chapter 08: Operating Sophos — Administration and Deployment"
+        path: volumes/volume-162-sophos-certifications/chapters/08-operating-sophos.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Sophos Path"
+        path: volumes/volume-162-sophos-certifications/chapters/09-choosing-your-sophos-path.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
