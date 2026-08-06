@@ -1,0 +1,50 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Qlik Qualifications and Certifications over the associative platform</title>
+  <desc>
+    Qlik offers a two-tier credential structure. Fundamental-level Qualifications include the Data Literacy Qualification, a non-technical product-agnostic exam of thirty questions in one hour; the Qlik Sense Business Analyst Qualification, which requires building a Qlik Sense app plus a multiple-choice exam; and the Qlik Sense Data Architect Qualification. Expert-level Certifications include the Qlik Sense Business Analyst and Data Architect, each fifty questions in ninety minutes at sixty-two percent to pass and platform-neutral across client-managed and Qlik Cloud, and the Qlik Sense System Administrator. The platform beneath is Qlik Sense and Qlik Cloud, built on the Associative Engine: an in-memory associative model where one selection instantly recolors every visualization green for selected, white for associated, and gray for excluded, so users see not only what is related but what is not, the power of gray, unlike query-based tools. The Data Architect builds the model in the Data Load Editor avoiding synthetic keys; the Business Analyst builds visualizations and uses set analysis; the System Administrator governs via the Qlik Management Console with streams and security rules. Qlik is the associative-analytics peer of Tableau.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Qlik Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Two tiers: fundamental QUALIFICATIONS + expert CERTIFICATIONS (QSBA/QSDA/QSSA 50Q/90min/62%) · Associative Engine</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">QLIK — associative ANALYTICS / BI (Qlik Sense · Qlik Cloud) · the peer of Tableau (CLIV)</text>
+  <text x="480.0" y="74.5" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">★ ASSOCIATIVE ENGINE: explore data FREELY in any direction + see what's NOT related (the power of GRAY) — vs query-based tools</text>
+  <rect x="40" y="120" width="430" height="68" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="255.0" y="137.4" text-anchor="middle" font-size="8.2" font-weight="700" fill="#111827">QUALIFICATIONS (fundamental — 'NOT expert-level')</text>
+  <text x="255.0" y="150.4" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">Data Literacy (30Q/1hr, product-agnostic)</text>
+  <text x="255.0" y="163.4" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">QS Business Analyst Qual (build app + MCQ)</text>
+  <text x="255.0" y="176.4" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">QS Data Architect Qual (build app + MCQ)</text>
+  <rect x="490" y="120" width="430" height="68" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="705.0" y="137.4" text-anchor="middle" font-size="8.2" font-weight="700" fill="#111827">CERTIFICATIONS (EXPERT-level)</text>
+  <text x="705.0" y="150.4" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">QS Business Analyst (QSBA) — 50Q/90min/62%</text>
+  <text x="705.0" y="163.4" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">QS Data Architect (QSDA) — 50Q/90min/62%</text>
+  <text x="705.0" y="176.4" text-anchor="middle" font-size="7.2" font-weight="400" fill="#374151">QS System Administrator (QSSA) · PLATFORM-NEUTRAL</text>
+  <rect x="40" y="202" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="184.0" y="220.3" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">DATA ARCHITECT (QSDA)</text>
+  <text x="184.0" y="235.3" text-anchor="middle" font-size="6.9" font-weight="400" fill="#374151">Data Load Editor · associations by same-named</text>
+  <rect x="336" y="202" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="220.3" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">BUSINESS ANALYST (QSBA)</text>
+  <text x="480.0" y="235.3" text-anchor="middle" font-size="6.9" font-weight="400" fill="#374151">apps/sheets/viz · selections · stories</text>
+  <rect x="632" y="202" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="776.0" y="220.3" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">SYSTEM ADMIN (QSSA)</text>
+  <text x="776.0" y="235.3" text-anchor="middle" font-size="6.7" font-weight="400" fill="#374151">QMC · streams/spaces · security rules · reloads</text>
+  <text x="40" y="272" font-size="8.6" font-weight="700" fill="#166534">★ fields (avoid SYNTHETIC KEYS/loops) · QVD optimized load   |   ★ SET ANALYSIS {&lt;Year={2024}&gt;} = define a data set INDEPENDENT of selections (YoY, this-vs-all) — distinctive + heavily tested   |   master items = governed self-service</text>
+  <rect x="40" y="286" width="880" height="30" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="303.5" text-anchor="middle" font-size="7.2" font-weight="700" fill="#111827">DATA LITERACY (the product-agnostic Qualification — read/analyze/communicate) + AI: Insight Advisor (augmented/NL) → AutoML (no-code ML) → Qlik Answers (GenAI) · Qlik Talend integration (Talend acq. 2023)</text>
+  <text x="40" y="342" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: two-tier program + platform-neutral roles · associative green/white/GRAY + the power of gray · app structure + master items · associations + synthetic-key pitfall + QVD · right-chart + selection-driven analysis ·</text>
+  <text x="40" y="359" font-size="9.5" font-weight="400" fill="#374151">set analysis (selection-independent sets, YoY) · QMC streams/security-rules/reloads · data-literacy reading + descriptive→predictive→generative AI. Data cluster: Tableau (CLIV) peer, Snowflake (XLIX)/Databricks (XLVIII)/Cloudera (CLVIII) sources.</text>
+  <line x1="40" y1="388" x2="80" y2="388" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="88" y="392" font-size="11" fill="#6b7280">Qualifications</text>
+  <line x1="244" y1="388" x2="284" y2="388" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="292" y="392" font-size="11" fill="#b45309">Certifications</text>
+  <line x1="448" y1="388" x2="488" y2="388" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="496" y="392" font-size="11" fill="#166534">Roles (BA/DA/SA)</text>
+  <line x1="670" y1="388" x2="710" y2="388" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="718" y="392" font-size="11" fill="#33415c">Associative platform + AI</text>
+</svg>

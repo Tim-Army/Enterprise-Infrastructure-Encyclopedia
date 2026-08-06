@@ -5549,6 +5549,40 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your MuleSoft Path"
         path: volumes/volume-160-mulesoft-certifications/chapters/09-choosing-your-mulesoft-path.md
+  - id: volume-161
+    number: "CLXI"
+    slug: volume-161-qlik-certifications
+    title: "Qlik Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Qlik Certification Program"
+        path: volumes/volume-161-qlik-certifications/chapters/01-the-qlik-program.md
+      - id: 02
+        title: "Chapter 02: The Associative Model — Qlik's Differentiator"
+        path: volumes/volume-161-qlik-certifications/chapters/02-the-associative-model.md
+      - id: 03
+        title: "Chapter 03: Qlik Sense and Qlik Cloud"
+        path: volumes/volume-161-qlik-certifications/chapters/03-qlik-sense-and-qlik-cloud.md
+      - id: 04
+        title: "Chapter 04: Data Architect — Loading and Modeling Data"
+        path: volumes/volume-161-qlik-certifications/chapters/04-data-architect.md
+      - id: 05
+        title: "Chapter 05: Business Analyst — Building Visualizations and Analysis"
+        path: volumes/volume-161-qlik-certifications/chapters/05-business-analyst.md
+      - id: 06
+        title: "Chapter 06: Set Analysis and Expressions"
+        path: volumes/volume-161-qlik-certifications/chapters/06-set-analysis-and-expressions.md
+      - id: 07
+        title: "Chapter 07: System Administrator — Deploying and Governing"
+        path: volumes/volume-161-qlik-certifications/chapters/07-system-administrator.md
+      - id: 08
+        title: "Chapter 08: Data Literacy and AI"
+        path: volumes/volume-161-qlik-certifications/chapters/08-data-literacy-and-ai.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Qlik Path"
+        path: volumes/volume-161-qlik-certifications/chapters/09-choosing-your-qlik-path.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
