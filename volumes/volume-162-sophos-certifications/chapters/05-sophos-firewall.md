@@ -17,7 +17,7 @@
 
 Sophos Firewall's NGFW capabilities include:
 
-- **TLS/SSL inspection** — decrypting encrypted traffic to inspect it for threats. Since most traffic is now encrypted, threats hide inside TLS; inspecting it (under policy, respecting privacy) is essential to catch them. Sophos emphasizes **high-performance** TLS inspection ([Xstream, below](#the-xstream-architecture)).
+- **TLS/SSL inspection** — decrypting encrypted traffic to inspect it for threats. Since most traffic is now encrypted, threats hide inside TLS; inspecting it (under policy, respecting privacy) is essential to catch them. Sophos emphasizes **high-performance** TLS inspection (the Xstream architecture, described below).
 - **IPS (Intrusion Prevention System)** — detecting and blocking **network attacks and exploits** in traffic by matching known attack patterns and anomalies.
 - **Web control** — filtering **web access** by category and reputation (blocking malicious, inappropriate, or forbidden sites).
 - **Application control** — identifying and controlling **applications** in traffic (allow business apps, block risky ones), regardless of port.
