@@ -168,11 +168,12 @@ does not by itself verify every technical claim in it.
 | CLVI — BeyondTrust Certification Tracks | 9 | Drafted |
 | CLVII — Cohesity Certification Tracks | 9 | Drafted |
 | CLVIII — Cloudera Certification Tracks | 9 | Drafted |
+| CLIX — Delinea Certification Tracks | 9 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1540 of 1540 drafted (100%). Every volume has a
+**Total declared chapters:** 1549 of 1549 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

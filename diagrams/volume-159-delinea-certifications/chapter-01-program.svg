@@ -1,0 +1,57 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Delinea Security Academy tiers over the PAM portfolio</title>
+  <desc>
+    Delinea is a Privileged Access Management leader formed from the 2021 merger of Thycotic and Centrify. The Security Academy certification program has three tiers. Associate is a self-paced, online-only certification of e-learning coursework and an online exam. Engineer validates the ability to install, configure, and manage to best practice through hands-on lab challenges assessed by a live Delinea Security Academy expert, including break-fix troubleshooting. Consultant, by invitation only, adds customizations and integrations through coursework, an online exam, and hands-on labs. Certified professionals receive a printable certificate and digital badges, and can request Not-for-Resale license keys for practice. The portfolio spans Secret Server for credential vaulting, rotation, and session recording; Privilege Manager for endpoint least privilege; Server PAM for server privilege elevation and Active Directory bridging with MFA; DevOps Secrets Vault for machine and DevOps secrets; Account Lifecycle Manager for service-account governance; and the unified Delinea Platform, which extends PAM into identity security with Privileged Behavior Analytics, identity threat detection and response, and identity security posture management. Delinea is one of the three PAM leaders with BeyondTrust and CyberArk.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Delinea Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Delinea Security Academy — Associate / Engineer / Consultant · e-learning + EXPERT-ASSESSED labs · badges · PAM</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">DELINEA — Privileged Access Management (PAM) leader · Thycotic + Centrify merged 2021</text>
+  <text x="480.0" y="74.5" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">one of the PAM TRIO with BeyondTrust (CLVI) + CyberArk (LXXVII); PAM extending into IDENTITY SECURITY</text>
+  <rect x="40" y="120" width="880" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="136.3" text-anchor="middle" font-size="8" font-weight="700" fill="#111827">DELINEA SECURITY ACADEMY — 3 TIERS · digital badges + printable cert · free via Delinea University · NFR license keys to practice</text>
+  <text x="480.0" y="149.3" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">ASSOCIATE (self-paced e-learning + online exam) → ENGINEER (★ hands-on LABS assessed by a LIVE expert + break-fix) → CONSULTANT (coursework+exam+labs, BY INVITATION)</text>
+  <rect x="40" y="176" width="288" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="184.0" y="190.8" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">SECRET SERVER (flagship, Thycotic)</text>
+  <text x="184.0" y="203.8" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">credential VAULT — secret policies, rule-based</text>
+  <text x="184.0" y="216.8" text-anchor="middle" font-size="6.8" font-weight="400" fill="#374151">passwords, ROTATION, session record + keystroke log</text>
+  <rect x="336" y="176" width="288" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="190.8" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">PRIVILEGE MANAGER (Thycotic)</text>
+  <text x="480.0" y="203.8" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">ENDPOINT least privilege — remove local admin,</text>
+  <text x="480.0" y="216.8" text-anchor="middle" font-size="6.8" font-weight="400" fill="#374151">app control allow/deny/ELEVATE (app not user)</text>
+  <rect x="632" y="176" width="288" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="776.0" y="190.8" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">SERVER PAM (Centrify)</text>
+  <text x="776.0" y="203.8" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">server PEDM (dzdo, not blanket root) +</text>
+  <text x="776.0" y="216.8" text-anchor="middle" font-size="6.8" font-weight="400" fill="#374151">AD BRIDGING (Linux/Unix) + MFA at the server</text>
+  <rect x="40" y="236" width="288" height="50" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="184.0" y="250.8" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">DEVOPS SECRETS VAULT</text>
+  <text x="184.0" y="263.8" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">MACHINE / DevOps secrets — high-speed API,</text>
+  <text x="184.0" y="276.8" text-anchor="middle" font-size="6.8" font-weight="400" fill="#374151">★ SHORT-LIVED dynamic secrets (JIT for machines)</text>
+  <rect x="336" y="236" width="288" height="50" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="250.7" text-anchor="middle" font-size="7.8" font-weight="700" fill="#111827">ACCOUNT LIFECYCLE MANAGER</text>
+  <text x="480.0" y="263.7" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">SERVICE-ACCOUNT governance — discover, map</text>
+  <text x="480.0" y="276.7" text-anchor="middle" font-size="6.8" font-weight="400" fill="#374151">deps, vault+rotate, decommission (cradle-to-grave)</text>
+  <rect x="632" y="236" width="288" height="50" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="776.0" y="250.6" text-anchor="middle" font-size="7.4" font-weight="700" fill="#111827">DELINEA PLATFORM + IDENTITY SECURITY</text>
+  <text x="776.0" y="263.6" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">unified SaaS control plane · PBA analytics ·</text>
+  <text x="776.0" y="276.6" text-anchor="middle" font-size="6.8" font-weight="400" fill="#374151">★ ITDR (identity threats) + ISPM (reduce risk)</text>
+  <text x="40" y="312" font-size="9.5" font-weight="700" fill="#166534">PAM endgame: eliminate STANDING privilege — vault + rotate secrets (never exposed), remove local admin, granular server PEDM + MFA, short-lived machine secrets, govern service accounts. Prevent + GOVERN + DETECT.</text>
+  <text x="40" y="331" font-size="9.5" font-weight="400" fill="#b91c1c">Prevention is necessary-but-not-sufficient: a compromised admin/insider still misuses privilege → PBA/ITDR detect anomalies, ISPM reduces identity attack surface. Defensive throughout.</text>
+  <text x="40" y="350" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: 3-tier program + expert-assessed practical value · end-to-end merged portfolio · policy vault + rotation + session recording · endpoint app control · server PEDM+AD+MFA ·</text>
+  <text x="40" y="367" font-size="9.5" font-weight="400" fill="#374151">machine short-lived secrets · service-account lifecycle governance · unified-platform prevent/govern/detect. PAM trio: BeyondTrust (CLVI), CyberArk (LXXVII); identity cluster: SailPoint (CXXXII), Ping (CL)/Okta (LXXVI), CIEM (Sysdig CLV/Wiz CXLVII).</text>
+  <line x1="40" y1="398" x2="80" y2="398" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="402" font-size="11" fill="#b45309">Core PAM</text>
+  <line x1="190" y1="398" x2="230" y2="398" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="238" y="402" font-size="11" fill="#166534">DevOps/accounts/platform</text>
+  <line x1="484" y1="398" x2="524" y2="398" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="532" y="402" font-size="11" fill="#6b7280">Academy program</text>
+  <line x1="697" y1="398" x2="737" y2="398" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="745" y="402" font-size="11" fill="#33415c">Identity security</text>
+</svg>
