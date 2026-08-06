@@ -1,0 +1,57 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Cloudera role-based certifications over the hybrid Data Platform</title>
+  <desc>
+    Cloudera recently launched a new role-based Certification Program, replacing the legacy CCA and CCP exams; the older CDH and HDP certifications are discontinued. Exams are question-based and proctored securely online through Questionmark with a Zoom webcam proctor, online only, awarded as digital badges. Nine role-based certifications span the platform: Generalist for broad multi-role knowledge, Administrator on premises and Administrator Cloud for managing clusters, Data Engineer for Spark and Airflow pipelines, Data Operator for NiFi and Kafka data flow, Data Analyst for the Data Warehouse and Data Visualization with Hive and Impala, Machine Learning Engineer for MLOps on Cloudera AI, Generative AI Engineer for RAG and multi-agent systems, and Data Lakehouse Engineer for Apache Iceberg open storage. The platform beneath is the Cloudera Data Platform, a hybrid platform spanning on-premises and public cloud, rooted in open source (Spark, Hive, Impala, NiFi, Kafka, Iceberg), with the Shared Data Experience providing unified security through Apache Ranger and governance through Apache Atlas across every data service. Cloudera is a peer of Databricks and Snowflake, with hybrid and open being its differentiators.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Cloudera Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">NEW role-based program (9 role exams) · proctored online (Questionmark) · digital badges · hybrid Cloudera Data Platform + SDX</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">CLOUDERA — hybrid DATA PLATFORM (CDP): full lifecycle on-prem + cloud, open-source rooted</text>
+  <text x="480.0" y="74.5" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">collect -&gt; enrich -&gt; report -&gt; serve -&gt; predict · peer of Databricks (XLVIII) / Snowflake (XLIX); edge = HYBRID + OPEN (Iceberg)</text>
+  <rect x="40" y="120" width="880" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="136.2" text-anchor="middle" font-size="7.6" font-weight="700" fill="#111827">NEW ROLE-BASED CERTIFICATION PROGRAM (replaces legacy CCA/CCP; CDH/HDP discontinued) · question-based, proctored ONLINE via Questionmark + Zoom · digital badges</text>
+  <text x="480.0" y="149.2" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">9 role exams: GENERALIST (entry) · ADMIN on-prem · ADMIN cloud · DATA ENGINEER · DATA OPERATOR · DATA ANALYST · ML ENGINEER · GENERATIVE AI ENGINEER · DATA LAKEHOUSE ENGINEER</text>
+  <rect x="40" y="176" width="288" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="184.0" y="190.8" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">ADMINISTRATOR (on-prem + cloud)</text>
+  <text x="184.0" y="203.8" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">Cloudera Manager · install/operate clusters ·</text>
+  <text x="184.0" y="216.8" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">capacity, maintenance, users (2 certs)</text>
+  <rect x="336" y="176" width="288" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="190.9" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">DATA ENGINEER</text>
+  <text x="480.0" y="203.9" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">Spark + Airflow pipelines · Iceberg ·</text>
+  <text x="480.0" y="216.9" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">performance tuning</text>
+  <rect x="632" y="176" width="288" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="776.0" y="190.8" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">DATA OPERATOR (DataOps)</text>
+  <text x="776.0" y="203.8" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">Apache NiFi (flow) + Apache Kafka (stream) ·</text>
+  <text x="776.0" y="216.8" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">event-driven end-to-end workflows</text>
+  <rect x="40" y="236" width="288" height="50" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="184.0" y="250.9" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">DATA ANALYST</text>
+  <text x="184.0" y="263.9" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">Data Warehouse (Hive/Impala SQL) +</text>
+  <text x="184.0" y="276.9" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">Data Visualization · Ranger/Atlas</text>
+  <rect x="336" y="236" width="288" height="50" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="250.9" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">ML ENGINEER</text>
+  <text x="480.0" y="263.9" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">Cloudera AI (fka CML) · MLOps ·</text>
+  <text x="480.0" y="276.9" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">deploy/serve/monitor (drift) models</text>
+  <rect x="632" y="236" width="288" height="50" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="776.0" y="250.6" text-anchor="middle" font-size="7.4" font-weight="700" fill="#111827">GENAI + LAKEHOUSE ENGINEER (frontier)</text>
+  <text x="776.0" y="263.6" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">RAG + multi-agent (Cloudera AI) ·</text>
+  <text x="776.0" y="276.6" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">Apache ICEBERG open ACID lakehouse</text>
+  <rect x="40" y="296" width="880" height="30" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="313.6" text-anchor="middle" font-size="7.4" font-weight="700" fill="#111827">★ FOUNDATION under every role: SDX (Shared Data Experience) — one SECURITY + GOVERNANCE model across ALL services · Ranger (access) + Atlas (lineage/classification) · hybrid on-prem + cloud</text>
+  <text x="40" y="352" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: role-based program + online-proctored model · SDX one-model governance · on-prem fixed vs cloud auto-scale capacity · Spark/Airflow DAG + tuning · NiFi->Kafka->consumers ·</text>
+  <text x="40" y="369" font-size="9.5" font-weight="400" fill="#374151">governed SQL + right chart · MLOps deploy/monitor/drift/retrain · RAG grounding + Iceberg schema-evolution/rollback. Data cluster: Databricks (XLVIII)/Snowflake (XLIX) peers, Confluent (CXXXV) streaming, Tableau (CLIV) BI, NVIDIA (XLVI) AI infra.</text>
+  <line x1="40" y1="398" x2="80" y2="398" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="402" font-size="11" fill="#b45309">Admin / engineer / operator</text>
+  <line x1="361" y1="398" x2="401" y2="398" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="409" y="402" font-size="11" fill="#166534">Analyst / ML / frontier</text>
+  <line x1="646" y1="398" x2="686" y2="398" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="694" y="402" font-size="11" fill="#6b7280">Role-based program</text>
+  <line x1="886" y1="398" x2="926" y2="398" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="934" y="402" font-size="11" fill="#33415c">CDP platform + SDX</text>
+</svg>

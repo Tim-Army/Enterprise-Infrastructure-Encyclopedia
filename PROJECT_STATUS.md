@@ -167,11 +167,12 @@ does not by itself verify every technical claim in it.
 | CLV — Sysdig Certification Tracks | 9 | Drafted |
 | CLVI — BeyondTrust Certification Tracks | 9 | Drafted |
 | CLVII — Cohesity Certification Tracks | 9 | Drafted |
+| CLVIII — Cloudera Certification Tracks | 9 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1531 of 1531 drafted (100%). Every volume has a
+**Total declared chapters:** 1540 of 1540 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
