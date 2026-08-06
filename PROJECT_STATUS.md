@@ -172,11 +172,12 @@ does not by itself verify every technical claim in it.
 | CLX — MuleSoft Certification Tracks | 9 | Drafted |
 | CLXI — Qlik Certification Tracks | 9 | Drafted |
 | CLXII — Sophos Certification Tracks | 9 | Drafted |
+| CLXIII — Trend Micro Certification Tracks | 9 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 9 | Drafted |
 
-**Total declared chapters:** 1576 of 1576 drafted (100%). Every volume has a
+**Total declared chapters:** 1585 of 1585 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

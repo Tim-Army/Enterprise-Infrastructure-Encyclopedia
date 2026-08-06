@@ -1,0 +1,50 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Trend Micro Certified Professional program over Trend Vision One</title>
+  <desc>
+    Trend Micro Education offers product certifications through on-demand self-paced training and instructor-led courses, for partners, customers, and communities. The credential is the Trend Micro Certified Professional, earned per product, validating the skills to deploy and manage a solution; exams combine multiple-choice with scenario-based items testing practical judgment. The platform beneath is Trend Vision One, the unified cybersecurity platform with three pillars: XDR, extended detection and response correlating telemetry across endpoint, email, network, cloud, and identity into one attack story; Attack Surface Risk Management, proactively discovering and risk-scoring the attack surface to reduce it before an attack; and threat intelligence from the Smart Protection Network, a global backbone where a threat seen anywhere protects everyone. Products include Apex One endpoint protection with layered detection and virtual patching, Deep Security and Cloud Security for server, cloud, and container workloads, Cloud App Security for email, TippingPoint and Deep Discovery for network, and Zero Trust Secure Access. Trend Micro is a veteran defensive cybersecurity vendor.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Trend Micro Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Trend Micro Certified Professional (per product, scenario-based) · Trend Vision One platform · defensive</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">TREND MICRO — veteran defensive cybersecurity (founded 1988), now platform-centric</text>
+  <text x="480.0" y="74.5" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">★ TREND VISION ONE — one unified platform: XDR + Attack Surface Risk Mgmt (ASRM) + threat intel, across ALL layers</text>
+  <rect x="40" y="120" width="880" height="34" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="133.2" text-anchor="middle" font-size="7.6" font-weight="700" fill="#111827">TREND MICRO EDUCATION — CERTIFIED PROFESSIONAL (per product; deploy + manage) · on-demand self-paced + instructor-led · partner / customer / community</text>
+  <text x="480.0" y="146.2" text-anchor="middle" font-size="6.7" font-weight="400" fill="#374151">exams combine MULTIPLE-CHOICE + ★ SCENARIO-BASED items (server-protection requirements, policy conflicts, tenant isolation) — test practical JUDGMENT, not recall. 2026: cloud/container, automated response, ML, zero-trust</text>
+  <rect x="40" y="168" width="288" height="44" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="184.0" y="185.9" text-anchor="middle" font-size="8.2" font-weight="700" fill="#111827">XDR (detect + respond)</text>
+  <text x="184.0" y="199.9" text-anchor="middle" font-size="6.4" font-weight="400" fill="#374151">correlate endpoint+email+network+cloud+identity → one attack story</text>
+  <rect x="336" y="168" width="288" height="44" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="185.7" text-anchor="middle" font-size="7.6" font-weight="700" fill="#111827">★ ASRM (reduce risk — proactive)</text>
+  <text x="480.0" y="199.7" text-anchor="middle" font-size="6.6" font-weight="400" fill="#374151">discover + RISK-SCORE the attack surface (before attack)</text>
+  <rect x="632" y="168" width="288" height="44" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="776.0" y="185.5" text-anchor="middle" font-size="7.2" font-weight="700" fill="#111827">THREAT INTEL (Smart Protection Network)</text>
+  <text x="776.0" y="199.5" text-anchor="middle" font-size="6.6" font-weight="400" fill="#374151">global sensors — seen anywhere = protects everyone</text>
+  <rect x="40" y="224" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="184.0" y="242.3" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">APEX ONE (endpoint + EDR)</text>
+  <text x="184.0" y="257.3" text-anchor="middle" font-size="6.5" font-weight="400" fill="#374151">signature+behavior+ML+exploit · ★ VIRTUAL PATCHING</text>
+  <rect x="336" y="224" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="242.1" text-anchor="middle" font-size="7.4" font-weight="700" fill="#111827">DEEP SECURITY / CLOUD (workloads)</text>
+  <text x="480.0" y="257.1" text-anchor="middle" font-size="6.0" font-weight="400" fill="#374151">IPS/virtual-patch, anti-malware, integrity mon, CSPM · phys/virt/cloud/container</text>
+  <rect x="632" y="224" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="776.0" y="242.3" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">EMAIL + NETWORK</text>
+  <text x="776.0" y="257.3" text-anchor="middle" font-size="5.9" font-weight="400" fill="#374151">Cloud App Security (M365/Google) · TippingPoint IPS · Deep Discovery (APT sandbox)</text>
+  <text x="40" y="298" font-size="9.5" font-weight="700" fill="#166534">PROTECT (endpoint/workload/email/network, layered + virtual patching) + DETECT/RESPOND (XDR cross-layer) + REDUCE RISK (ASRM proactive) — informed by global THREAT INTEL. Zero Trust Secure Access ties access to LIVE risk. Defensive throughout.</text>
+  <text x="40" y="320" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: Certified-Professional program + scenario-based exam · one-platform-vs-silos · XDR correlation → attack story · layered endpoint + virtual-patch window · workload modules + CSPM ·</text>
+  <text x="40" y="337" font-size="9.5" font-weight="400" fill="#374151">ASRM risk-scored prioritization (incl. shadow IT) · email/network as XDR sensors · Smart Protection Network shared intel + risk-based ZTSA. Peers: Sophos (CLXII)/SentinelOne (CLI)/CrowdStrike (L) endpoint, Sysdig (CLV)/Wiz (CXLVII) cloud, Fortinet (XIX) network, Rapid7 (CXXXVII) SOC.</text>
+  <line x1="40" y1="366" x2="80" y2="366" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="370" font-size="11" fill="#b45309">Vision One pillars</text>
+  <line x1="280" y1="366" x2="320" y2="366" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="328" y="370" font-size="11" fill="#166534">Products</text>
+  <line x1="430" y1="366" x2="470" y2="366" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="478" y="370" font-size="11" fill="#6b7280">Cert program</text>
+  <line x1="616" y1="366" x2="656" y2="366" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="664" y="370" font-size="11" fill="#33415c">Defensive platform</text>
+</svg>
