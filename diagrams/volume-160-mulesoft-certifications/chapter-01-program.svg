@@ -1,0 +1,44 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the MuleSoft certifications over the Anypoint Platform</title>
+  <desc>
+    MuleSoft is the API and integration platform owned by Salesforce, and its certifications are branded Salesforce Certified MuleSoft credentials across three families. The Associate family has MuleSoft Integration Foundations. The Developer family has MuleSoft Developer, MuleSoft Developer II for production-ready apps in DevOps, and MuleSoft Hyperautomation Developer. The Architect family has MuleSoft Catalyst Consultant, MuleSoft Platform Architect, delivered as sixty questions in ninety minutes at seventy percent to pass for four hundred dollars, and MuleSoft Platform Integration Architect. The platform beneath is the Anypoint Platform, built around API-led connectivity, a three-layer architecture of System APIs that unlock data, Process APIs that orchestrate business logic, and Experience APIs that tailor data per channel, forming a reusable application network. Developers design APIs with RAML and OpenAPI specs in Design Center, publish and reuse them in Anypoint Exchange, build Mule applications as flows of connectors and DataWeave transformations in Anypoint Studio, deploy to CloudHub or Runtime Fabric, and govern with API Manager policies and Anypoint Monitoring. MuleSoft is the integration layer of the Salesforce ecosystem.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: MuleSoft Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Salesforce-branded MuleSoft certs (Associate/Developer/Architect) · Anypoint Platform · API-led connectivity</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">MULESOFT — API-led integration (Anypoint Platform) · owned by SALESFORCE (LXXXIII)</text>
+  <text x="480.0" y="74.5" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">compose REUSABLE APIs into an APPLICATION NETWORK — not brittle point-to-point spaghetti</text>
+  <rect x="40" y="120" width="880" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="136.4" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">SALESFORCE CERTIFIED MULESOFT — 3 families, 7 certifications</text>
+  <text x="480.0" y="149.4" text-anchor="middle" font-size="6.6" font-weight="400" fill="#374151">ASSOCIATE: Integration Foundations  |  DEVELOPER: Developer · Developer II (DevOps) · Hyperautomation Developer  |  ARCHITECT: Catalyst Consultant · Platform Architect (60Q/90min/70%/$400) · Platform Integration Architect</text>
+  <rect x="40" y="176" width="288" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="184.0" y="194.4" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">EXPERIENCE APIs</text>
+  <text x="184.0" y="209.4" text-anchor="middle" font-size="6.9" font-weight="400" fill="#374151">tailor data per channel (mobile/web/partner)</text>
+  <rect x="336" y="176" width="288" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="194.4" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">PROCESS APIs</text>
+  <text x="480.0" y="209.4" text-anchor="middle" font-size="6.9" font-weight="400" fill="#374151">orchestrate/compose business logic</text>
+  <rect x="632" y="176" width="288" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="776.0" y="194.4" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">SYSTEM APIs</text>
+  <text x="776.0" y="209.4" text-anchor="middle" font-size="6.7" font-weight="400" fill="#374151">unlock data from systems of record (build ONCE)</text>
+  <text x="480" y="238" text-anchor="middle" font-size="8.5" font-weight="700" fill="#166534">★ API-LED CONNECTIVITY — higher layers REUSE lower ones → a reusable APPLICATION NETWORK (integration compounds as an asset, not a cost)</text>
+  <rect x="40" y="250" width="880" height="40" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="265.9" text-anchor="middle" font-size="7.0" font-weight="700" fill="#111827">ANYPOINT PLATFORM lifecycle: DESIGN (Design Center — RAML/OAS specs) → REUSE (Anypoint Exchange) → BUILD (Anypoint Studio — Mule apps = flows of connectors + DataWeave) →</text>
+  <text x="480.0" y="278.9" text-anchor="middle" font-size="7.0" font-weight="400" fill="#374151">DEPLOY (CloudHub iPaaS / Runtime Fabric hybrid+K8s) → MANAGE (API Manager policies: rate-limit/OAuth; Anypoint Monitoring). ★ DATAWEAVE = the transformation language (heavily tested).</text>
+  <text x="40" y="316" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: 3-family program + architect domains · point-to-point vs 3-layer API-led · unified-platform lifecycle + Mule flow · design-first specs + Exchange reuse · flow with connectors + error handling ·</text>
+  <text x="40" y="333" font-size="9.5" font-weight="400" fill="#374151">DataWeave map/filter/reformat across formats · deploy targets + API-Manager policies + monitoring · hyperautomation spectrum (API/RPA/IDP/Composer) + Catalyst C4E. Salesforce (LXXXIII) owner, Confluent (CXXXV) streaming, UiPath (CXLIX) RPA.</text>
+  <line x1="40" y1="360" x2="80" y2="360" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="364" font-size="11" fill="#b45309">API-led 3-layer</text>
+  <line x1="253" y1="360" x2="293" y2="360" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="301" y="364" font-size="11" fill="#166534">Anypoint lifecycle</text>
+  <line x1="493" y1="360" x2="533" y2="360" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="541" y="364" font-size="11" fill="#6b7280">Cert families</text>
+  <line x1="688" y1="360" x2="728" y2="360" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="736" y="364" font-size="11" fill="#33415c">Integration platform</text>
+</svg>
