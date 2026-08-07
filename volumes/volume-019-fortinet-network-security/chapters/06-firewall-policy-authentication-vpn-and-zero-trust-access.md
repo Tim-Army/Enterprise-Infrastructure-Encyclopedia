@@ -444,7 +444,14 @@ bottom drops everything unmatched.
 **Negative test:** place a broad `deny all` above `allow-web`; the web policy is never
 reached and traffic is blocked — policy order, not just content, decides the outcome.
 
-**Cleanup:**
+**Gotcha — `iprope lookup` does not evaluate ICMP (FortiOS 7.6):** the tool resolves TCP
+and UDP flows (protocol `6`/`17`), but **rejects ICMP (protocol `1`)**, failing with
+`Command fail. Return code -16` no matter how the type and code are encoded in the port
+fields. A ping-only policy therefore cannot be confirmed this way — verify it with a live
+ping (a data-plane test) instead. The restriction has a useful flip side: run the lookup
+with a service your policy does *not* cover — say `TCP/80` against a ping-only rule — and it
+resolves to `policy id: 0`, the implicit deny, which is a fast way to prove least-privilege
+segmentation is holding before any host is even on the wire.
 
 ```text
 config firewall policy
