@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 624" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: the Sysdig accreditations and Falco path over the runtime-first platform</title>
   <desc>
     Sysdig's program has two strands. Its own credentials are Credly digital badges earned through its enablement portal, most notably the Kraken Hunter accreditation, a hands-on workshop of labs and presentations plus an exam validating Sysdig-tooling skill for cloud and container security, and a Partner Technical Accreditation program. Separately, Falco, the open-source runtime security engine that Sysdig created and donated to the Cloud Native Computing Foundation, has its own training path: the twenty-hour Detecting Cloud Runtime Threats with Falco course, LFS254, built by CNCF, the Linux Foundation, and Sysdig. The platform beneath is runtime-first. Sysdig Secure is an enterprise cloud-native application protection platform unifying cloud detection and response with Falco-powered five-second detection, vulnerability management prioritized by in-use runtime context, cloud security posture management, cloud infrastructure entitlement management right-sized from observed usage, and compliance, all on shared deep runtime data captured by eBPF kernel instrumentation. Sysdig Monitor adds Prometheus-based observability on the same foundation. Runtime-first means securing what is actually running, complementing agentless posture, which tells you what could be wrong, with runtime, which tells you what is happening now, catching zero-days, drift, and insider actions that posture is blind to.
@@ -9,9 +9,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="624" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Sysdig Certification Tracks</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Credly badges (Kraken Hunter) + open-source Falco (CNCF/LF LFS254) · RUNTIME-FIRST CNAPP on eBPF</text>
+  <g transform="translate(0,24)">
   <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">SYSDIG — RUNTIME-FIRST cloud-native security (Sysdig Secure) + the creator of FALCO</text>
   <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">secure what's actually RUNNING — posture (Wiz CXLVII) says what COULD be wrong; runtime says what IS happening now</text>
@@ -43,4 +44,5 @@
   <text x="532" y="446" font-size="11" fill="#6b7280">Program shape</text>
   <line x1="679" y1="442" x2="719" y2="442" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="727" y="446" font-size="11" fill="#33415c">Runtime-first platform</text>
+  </g>
 </svg>

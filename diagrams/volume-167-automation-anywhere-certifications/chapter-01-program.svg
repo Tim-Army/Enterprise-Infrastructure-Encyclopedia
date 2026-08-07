@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 644" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: the Automation Anywhere certification tiers over the cloud-native Automation Success Platform</title>
   <desc>
     Automation Anywhere is an RPA pioneer pivoting to Agentic Process Automation, combining robotic process automation with AI agents and generative AI. Certifications run through Automation Anywhere University in three tiers: the Essentials Certification, which is free and foundational; the Advanced Certification, the Certified Advanced Automation Professional on Automation 360, a sixty-question, two-hour, eighty-percent-to-pass exam with a fifty-dollar renewal; and the AI Automation Engineer Certification, the AI and agentic flagship covering Document Automation, AI Agent Studio, and Automation Co-Pilot. Training is free. The platform beneath is the Automation Success Platform on Automation 360, cloud-native and fully web-based, orchestrated from a central Control Room that stores bots, deploys them to Bot Runners, holds secrets in a Credential Vault, enforces role-based access control, and audits everything. It spans building Task Bots, attended and unattended automation, Automation Co-Pilot, Document Automation for intelligent document processing, Agentic Process Automation with AI agents that reason under guardrails, and Process Discovery, Bot Insight, and a Center of Excellence. The arc runs from scripting deterministic bots to engineering AI-driven automation.
@@ -9,9 +9,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="644" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Automation Anywhere Certification Tracks</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">University: Essentials (free) → Advanced (60Q/2h/80%) → AI Automation Engineer · RPA → Agentic Process Automation</text>
+  <g transform="translate(0,24)">
   <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.0" text-anchor="middle" font-size="8.6" font-weight="700" fill="#111827">AUTOMATION SUCCESS PLATFORM (Automation 360) — cloud-native, WEB-BASED · RPA → AGENTIC PROCESS AUTOMATION</text>
   <text x="480.0" y="74.0" text-anchor="middle" font-size="6.8" font-weight="400" fill="#374151">Control Room (deploy/govern/vault/RBAC/audit) · Bot Creators build · Bot Runners execute · AI layered across (Co-Pilot / Document Automation / AI Agent Studio)</text>
@@ -47,4 +48,5 @@
   <text x="685" y="380" font-size="11" fill="#6b7280">Cert tiers</text>
   <line x1="805" y1="376" x2="845" y2="376" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="853" y="380" font-size="11" fill="#33415c">Cloud-native platform</text>
+  </g>
 </svg>

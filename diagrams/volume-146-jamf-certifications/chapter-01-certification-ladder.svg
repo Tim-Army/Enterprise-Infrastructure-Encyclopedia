@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 624" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: the Jamf certification ladder across three product tracks</title>
   <desc>
     Jamf's certification program runs three product tracks over an ascending exam-format ladder. The Jamf Pro track, for Apple device management, is the flagship: Jamf 100, a self-paced course, leads to Jamf Certified Associate; Jamf 200, instructor-led, to Jamf Certified Tech; Jamf 300 to Jamf Certified Admin; and Jamf 400 to Jamf Certified Expert. The Jamf School track, for education, runs Jamf 140 to Certified Associate and Jamf 240 to Certified Tech. The Jamf Protect track, for Apple endpoint security, runs Jamf 170 to Certified Associate, Jamf 270 to Certified Tech, and Jamf 370 to Certified Admin. The numbering encodes both level and track: the leading digit is the level, one through four, and the middle digit marks the track, zero for Pro, four for School, seven for Protect, so that 370 reads as Protect Admin. The exam format escalates deliberately with the level: Associate courses use multiple-choice questions and test knowledge; Tech courses add practical tasks and test whether you can do it; Admin courses use graded scenarios and practical tasks and test judgment; and the Expert course is scenario-based and tests design and troubleshooting. The Jamf 100 exam is public: one hundred US dollars, fifty multiple-choice questions, and the Associate certification does not expire, while the 200 through 400 certifications carry a three-year validity; per-exam passing scores and exact durations for the instructor-led courses are behind the training portal. The platform beneath is Jamf Pro for mobile device management on Apple's MDM framework, Jamf Connect for cloud identity at the Mac login window, Jamf Protect for endpoint security, and Jamf School for education, positioning Jamf as the Apple-in-enterprise specialist against the cross-platform generalists such as Microsoft Intune.
@@ -9,9 +9,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="624" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Jamf Certification Tracks</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">three tracks (Pro / School / Protect) · exam format ESCALATES with level · Jamf 100 public · 200-400 portal-gated</text>
+  <g transform="translate(0,24)">
   <rect x="170" y="42" width="620" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">JAMF — the APPLE-IN-ENTERPRISE management specialist</text>
   <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">deeper on Apple's framework than a cross-platform generalist (Intune XXXVII) can go</text>
@@ -57,4 +58,5 @@
   <text x="631" y="560" font-size="11" fill="#6b7280">Numbering key</text>
   <line x1="778" y1="556" x2="818" y2="556" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="826" y="560" font-size="11" fill="#33415c">Apple platform</text>
+  </g>
 </svg>

@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 430" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 448" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 lab topology: five devices on one VLAN, each isolated to a network of one around the Airgap enforcement point</title>
   <desc>
     Five devices share one flat VLAN 10.100.1.0/24: web at .10, db at .20 on 5432, hmi at .30, plc at .40 on 502, and an infected victim at .50. Airgap collapses every device into a network of one by controlling ARP and DHCP, so each device's only neighbor is the enforcement point and there is no direct Layer 2 path between any two devices even on the same subnet. The enforcement point denies east-west by default and permits only the sanctioned web to db flow on 5432; every other pair, including the infected victim, is isolated so ransomware cannot spread. A single ransomware kill switch can sever all east-west instantly. No agent is installed on any device and no IP or VLAN changes. The volume is two-track: Track 1 describes Zscaler/Airgap, Track 2 builds the isolation with /32 host views and an nftables enforcer.
@@ -8,9 +8,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="430" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="448" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Agentless Network-of-One Isolation with Zscaler/Airgap</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="9.8" fill="#4b5563">Every device on one VLAN is isolated to a network of one; all east-west is brokered by the enforcement point, which permits only web-&gt;db:5432 and can kill-switch all lateral traffic</text>
+  <g transform="translate(0,18)">
   <rect x="360" y="188" width="240" height="78" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="212.8" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">Airgap enforcement point</text>
   <text x="480.0" y="230.8" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">network-of-one · default deny</text>
@@ -45,4 +46,5 @@
   <text x="424" y="402" font-size="11" fill="#b91c1c">Infected / isolated (no lateral path)</text>
   <line x1="787" y1="398" x2="827" y2="398" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="835" y="402" font-size="11" fill="#33415c">Enforcement point (+ kill switch)</text>
+  </g>
 </svg>

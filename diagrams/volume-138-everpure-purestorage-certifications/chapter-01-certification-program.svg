@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 584" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: the Everpure IT Professional Certification program</title>
   <desc>
     Everpure, the company formerly known as Pure Storage, offers twelve IT Professional Certifications across four levels through Everpure Academy. The Associate level has one certification, Data Storage, at 200 US dollars. The Professional level has four at 300 dollars each: FlashArray Storage, FlashBlade Storage, Portworx Enterprise, and Cyber Resilience. The Specialist level has six at 300 dollars each: FlashArray Implementation, FlashBlade Implementation, FlashArray Support, FlashBlade Support, Cloud, and Migration. The Expert level has one, Platform Architect, at 400 dollars. All exams are multiple choice, delivered online and proctored with a webcam, and are closed book with no external materials permitted. Training is not required because each exam is designed to test on-the-job experience. Certifications are valid for three years and renewed by retaking the updated exam; additionally the Associate Data Storage certification renews automatically when any higher certification is earned, and Continuing Everpure Education credits apply to selected FlashArray exams. Badges issue through Credly. The rebrand is partial: the company and certifications are now Everpure, while the FlashArray, FlashBlade, Portworx, and Evergreen product names are unchanged, the conference remains Pure Accelerate, and the academy is still hosted at academy.purestorage.com.
@@ -9,9 +9,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="584" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Everpure (formerly Pure Storage) Certification</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">12 certifications across 4 levels · $200/$300/$400 · online proctored, closed book · valid 3 years · DSA auto-renews</text>
+  <g transform="translate(0,24)">
   <rect x="200" y="42" width="560" height="46" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="55.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">Everpure, Inc. — formerly PURE STORAGE</text>
   <text x="480.0" y="68.7" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">company + certifications renamed; FlashArray/FlashBlade/Portworx/Evergreen unchanged</text>
@@ -55,4 +56,5 @@
   <text x="658" y="412" font-size="11" fill="#166534">Expert</text>
   <line x1="742" y1="408" x2="782" y2="408" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="790" y="412" font-size="11" fill="#33415c">Company &amp; products</text>
+  </g>
 </svg>

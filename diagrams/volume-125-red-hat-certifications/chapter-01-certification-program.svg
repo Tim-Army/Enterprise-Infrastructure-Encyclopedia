@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 520" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 544" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: the Red Hat certification program restructured for 2026</title>
   <desc>
     Red Hat's 2026 certification program has five tracks — Enterprise Linux, Ansible, OpenShift, Cloud-Native Applications, and a new provisional AI track — across five progressive levels: Technologist, Systems Administrator or Developer, Engineer, Specialist electives, and Architect. Every exam is 100 percent performance-based on live systems. RHCSA, exam EX200, now based on RHEL 10, is the shared Level 2 foundation and the RHCE prerequisite. RHCE, exam EX294, is the Ansible track Engineer exam; EX342 is the Enterprise Linux Engineer exam; the OpenShift track runs EX180 to EX280 on OpenShift 4.18 to EX380; Cloud-Native runs EX188 to EX288. The 2026 change is a track-specific RHCA: an Administrator exam plus an Engineer exam plus three Specialist electives within the same track, replacing the old any-five-specialists rule. EX318 virtualization is retired in favor of EX316 OpenShift Virtualization, and renewal offers retake, level up, or advance. All labs run free on a Red Hat Developer subscription, AlmaLinux or Rocky, and CRC.
@@ -8,9 +8,10 @@
     <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="520" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="544" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Red Hat Certifications (2026 five-track restructure)</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Five tracks x five levels, all 100% performance-based; RHCSA EX200 (RHEL 10) is the shared foundation and RHCA is now track-specific</text>
+  <g transform="translate(0,24)">
   <rect x="250" y="42" width="460" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">Red Hat certification program — 100% performance-based</text>
   <text x="480.0" y="73.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">RHCSA EX200 (RHEL 10) = shared Level-2 foundation &amp; RHCE prerequisite</text>
@@ -73,4 +74,5 @@
   <text x="296" y="369" font-size="11" fill="#6b7280">L3 Engineer exam</text>
   <line x1="470" y1="365" x2="510" y2="365" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
   <text x="518" y="369" font-size="11" fill="#b45309">L4 Specialist electives -&gt; RHCA</text>
+  </g>
 </svg>

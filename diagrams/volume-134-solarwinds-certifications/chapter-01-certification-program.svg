@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 584" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: the SolarWinds Certified Professional certification program</title>
   <desc>
     The SolarWinds Certified Professional program awards one credential, SCP, earned by passing a product-specific exam rather than by climbing a tiered ladder. The process has three steps: sign up by registering with SolarWinds, study using that exam's preparation guide plus virtual and on-demand training through the Customer Portal for customers with a product under active maintenance, and schedule through PSI Services proprietary remote proctoring. The fee is 200 US dollars, or 60,000 THWACK community points exchanged in the THWACK store for an SCP voucher delivered by email within three business days. The portfolio has been rebranded around SolarWinds Observability and split into SaaS and Self-Hosted editions, Self-Hosted being the on-premises Orion lineage. Eleven exams are current: Observability SaaS Fundamentals; Observability Self-Hosted Fundamentals, Network Monitoring, Network Management, Architecture and Design, Diagnostics and Troubleshooting, and Federal Fundamentals; Server and Application Monitor; Database Performance Analyzer; Database Management; and Service Desk. Supporting resources are product documentation, virtual classrooms, eLearning videos, and the THWACK community forum; SolarWinds notes that third-party training is not reviewed, monitored, or endorsed by them. The volume teaches the underlying monitoring disciplines and models them free in Python.
@@ -9,9 +9,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="584" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: SolarWinds Certified Professional (SCP)</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Product-specific, not tiered — 11 exams across Observability SaaS and Self-Hosted; PSI remote proctoring; US$200 or 60,000 THWACK points</text>
+  <g transform="translate(0,24)">
   <rect x="230" y="42" width="500" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">SolarWinds Certified Professional (SCP)</text>
   <text x="480.0" y="74.7" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">one credential, earned per PRODUCT exam — no tiered ladder</text>
@@ -52,4 +53,5 @@
   <text x="505" y="458" font-size="11" fill="#b45309">Exams</text>
   <line x1="580" y1="454" x2="620" y2="454" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="628" y="458" font-size="11" fill="#33415c">Program facts</text>
+  </g>
 </svg>

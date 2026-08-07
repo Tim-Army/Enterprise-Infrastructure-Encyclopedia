@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 624" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: SentinelOne University certifications over the autonomous Singularity platform</title>
   <desc>
     SentinelOne University runs a role-based certification program that issues Credly digital badges. The flagship is SIREN, the SentinelOne Incident Response Engineer, a practical credential for incident responders, threat hunters, and SOC engineers that requires roughly forty-five hours of University training before an online exam of multiple-choice and scenario-based simulations. Threat Hunting Professional is an advanced specialization covering attack analysis, anomaly detection, and SIEM and SOAR integration. Administrator Levels 1 through 3 progress from policy management to API-driven automation. Certified Technical Professional is for partners and integrators, covering architecture, policy design, and deployment, and Certified Sales Professional is for channel partners. Exam passing scores, durations, and validity are not published. Training uses on-demand courses, interactive sessions, and hands-on labs and simulations. The platform beneath is the Singularity Platform: Singularity Endpoint for autonomous endpoint protection unifying EPP and EDR, Singularity Cloud for cloud workloads, Singularity Identity for identity threats, Singularity XDR for extended detection and response across surfaces, the Singularity Data Lake and AI SIEM for log analytics, Purple AI as a generative-AI security analyst, and RemoteOps and Ranger. Three signatures unify the platform: behavioral AI that detects by behavior on the agent rather than signatures, Storyline that autonomously correlates related events into one attack narrative, and one-click remediation with rollback that restores ransomware-encrypted files to their pre-attack state.
@@ -9,9 +9,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="624" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: SentinelOne Certification Tracks</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">role-based · Credly badges · SIREN ~45h + simulations · autonomous Singularity platform · exam mechanics portal-gated</text>
+  <g transform="translate(0,24)">
   <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">SENTINELONE — AUTONOMOUS endpoint &amp; extended security (Singularity)</text>
   <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">the AGENT detects (behavioral AI), responds at machine speed, correlates (Storyline), and rolls back — even offline</text>
@@ -48,4 +49,5 @@
   <text x="541" y="462" font-size="11" fill="#6b7280">Program shape</text>
   <line x1="688" y1="458" x2="728" y2="458" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="736" y="462" font-size="11" fill="#33415c">Platform</text>
+  </g>
 </svg>

@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 524" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: the OPSWAT Academy certification program</title>
   <desc>
     The OPSWAT Academy is a free-first Critical Infrastructure Protection program across four tracks: CIP Essentials, CyberOps, OPSWAT Product Training, and End-User Guides. The Associate ladder, many of them free, is ICIP Introduction to Critical Infrastructure Protection, OCFA Cybersecurity Fundamentals Associate, OFSA File Security Associate, OECA Endpoint Compliance Associate, ONSA Network Security Associate, and OSSA Secure Storage Associate. These build into the paid MetaDefender product Professional certifications, Core, ICAP, Kiosk, and MFT, and the OPSWAT OT Security Expert designation. Badges issue on Credly with ISC2 CPE credit, and some certifications carry a validity window. The signature technologies are Deep CDR content disarm and reconstruction, multiscanning with many engines, endpoint posture and network access control, and secure data transfer across boundaries via Kiosk and Vault. The volume models these free in Python.
@@ -8,9 +8,10 @@
     <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="524" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: OPSWAT Academy (Critical Infrastructure Protection)</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="10.3" fill="#4b5563">Free-first: vendor-neutral CIP foundation + Associate certs (many free) build into paid MetaDefender Professional certs and the OT Security Expert; Credly badges + ISC2 CPE</text>
+  <g transform="translate(0,24)">
   <rect x="280" y="42" width="400" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">OPSWAT Academy — free-first CIP program</text>
   <text x="480.0" y="73.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Credly badges · ISC2 CPE · some certs expire — verify validity</text>
@@ -34,4 +35,5 @@
   <text x="449" y="354" font-size="11" fill="#166534">MetaDefender Professional (paid)</text>
   <line x1="767" y1="350" x2="807" y2="350" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
   <text x="815" y="354" font-size="11" fill="#b45309">OT Security Expert (capstone)</text>
+  </g>
 </svg>

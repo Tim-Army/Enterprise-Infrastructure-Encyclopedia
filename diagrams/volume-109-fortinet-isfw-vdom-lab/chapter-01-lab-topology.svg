@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 516" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 lab topology: a FortiGate internal segmentation firewall enforcing zone policies with the OT tier in its own VDOM</title>
   <desc>
     A FortiGate placed inside the network as an Internal Segmentation Firewall segments a four-zone estate. web is in zone APP, db is in zone DB listening on 5432, hmi is in zone MGMT, and plc is in zone OT listening on 502. Firewall policies permit APP to DB with the PGSQL service and MGMT to OT with the MODBUS service, and the FortiGate implicit deny drops everything else, including the MGMT to DB lateral flow from hmi to db. The OT tier is moved into its own VDOM, so IT to OT traffic crosses only a tightly scoped inter-VDOM link permitting MODBUS. The volume is two-track: Track 1 uses a real FortiGate-VM, Track 2 reproduces zones and VDOMs with Linux nftables tables.
@@ -8,9 +8,10 @@
     <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
     <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="516" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Internal Segmentation with Fortinet ISFW and VDOMs</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="10.6" fill="#4b5563">A FortiGate ISFW enforces zone policies (permit APP-&gt;DB, MGMT-&gt;OT; implicit deny), and the OT tier is isolated in its own VDOM crossed only by a scoped inter-VDOM link</text>
+  <g transform="translate(0,16)">
   <rect x="330" y="50" width="300" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="68.8" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">FortiGate ISFW  ·  FortiOS</text>
   <text x="480.0" y="82.8" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">firewall policies · VDOMs · implicit deny</text>
@@ -49,4 +50,5 @@
   <text x="438" y="424" font-size="11" fill="#b91c1c">Lateral movement (implicit deny)</text>
   <line x1="756" y1="420" x2="796" y2="420" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
   <text x="804" y="424" font-size="11" fill="#b45309">OT isolated in its own VDOM</text>
+  </g>
 </svg>

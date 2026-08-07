@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 480" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 492" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 lab topology: a kind Kubernetes cluster with the Istio service mesh, meshed workloads with sidecars and one un-meshed PLC</title>
   <desc>
     A single Linux host runs Docker, kind, kubectl, and istioctl. Inside it a kind Kubernetes cluster runs the Istio control plane, istiod. Namespace dc (data center) holds web (ServiceAccount sa-web), api (sa-api, an HTTP service), and db (sa-db, PostgreSQL on 5432); each has an injected Envoy sidecar and a SPIFFE identity. Namespace ot (operations) holds hmi (sa-hmi, meshed) and plc (app=plc, a Modbus listener on 502) which is deliberately un-meshed with no sidecar. Istio requires mutual TLS across the mesh and authorizes by principal: web to db on 5432 at Layer 4, web to api restricted to HTTP GET /get at Layer 7 with POST denied, and hmi to the un-meshed plc via egress. The compromised-hmi-to-db flow is denied because the sa-hmi principal is not authorized. Because the plc is un-meshed, Istio cannot enforce on it directly, so a CNI network policy is paired with the mesh.
@@ -8,9 +8,10 @@
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
     <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="480" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="492" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Kubernetes Microsegmentation with the Istio Service Mesh</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="12" fill="#4b5563">Envoy sidecars give each workload a SPIFFE identity; mTLS everywhere; AuthorizationPolicy authorizes by principal at L4 and L7; the PLC is un-meshed</text>
+  <g transform="translate(0,12)">
   <rect x="60" y="54" width="840" height="34" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="74.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">Single Linux host · Docker + kind + kubectl + istioctl</text>
   <rect x="60" y="100" width="840" height="26" rx="6" fill="#f4f7fb" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4 3"/>
@@ -53,4 +54,5 @@
   <text x="394" y="396" font-size="11" fill="#b91c1c">Lateral movement (denied)</text>
   <line x1="649" y1="392" x2="689" y2="392" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
   <text x="697" y="396" font-size="11" fill="#6b7280">Meshed pod (sidecar)</text>
+  </g>
 </svg>

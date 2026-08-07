@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 470" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 494" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: the current Citrix certification program</title>
   <desc>
     The Citrix certification program under Cloud Software Group has two tracks. The Virtualization track: CCA-V, whose exam Citrix Virtual Apps and Desktops Administration replaced the retired 1Y0-204, leads to CCP-V, Citrix Virtual Apps and Desktops 7 Advanced Administration. The App Delivery and Security track: CCA-AppDS is one credential with two exam options, NetScaler 14.x Essentials and NetScaler Gateway, or Deploy and Manage Citrix ADC 14.x with Traffic Management; either leads to CCP-AppDS, exam 1Y0-342 NetScaler Advanced Topics covering Web App Firewall, nFactor authentication, and NetScaler Console. Exams are delivered on Webassessor by Kryterion. The Expert tier, CCE-V and CCE-N, is discontinued, and the program is under an announced comprehensive overhaul with additional certifications planned.
@@ -8,9 +8,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="470" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="494" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Citrix Certifications under Cloud Software Group</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="11.6" fill="#4b5563">Two tracks, five exams, no Expert tier — Webassessor delivery, ~10% performance-based items on AppDS forms, and an announced program overhaul in progress</text>
+  <g transform="translate(0,24)">
   <rect x="280" y="42" width="400" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">Cloud Software Group — Webassessor (Kryterion) delivery</text>
   <text x="480.0" y="73.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">program overhaul announced: re-verify before scheduling</text>
@@ -40,4 +41,5 @@
   <text x="321" y="429" font-size="11" fill="#b45309">Professional level (top of ladder)</text>
   <line x1="657" y1="425" x2="697" y2="425" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="705" y="429" font-size="11" fill="#33415c">Program / delivery platform</text>
+  </g>
 </svg>

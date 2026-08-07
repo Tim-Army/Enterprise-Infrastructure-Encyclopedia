@@ -101,6 +101,10 @@ class Canvas:
             self.body.append(
                 f'<text x="{width/2}" y="{subtitle_y}" text-anchor="middle" '
                 f'font-size="{round(size, 1):g}" fill="#4b5563">{esc(subtitle)}</text>')
+        # Remember where the header (background + title + subtitle) ends so
+        # render() can shift the diagram body down if it crowds the subtitle.
+        self._subtitle_y = subtitle_y if subtitle else None
+        self._body_offset = len(self.body)
         self.svg_title = svg_title
         self.svg_desc = svg_desc
 
@@ -192,6 +196,21 @@ class Canvas:
         self.body.append(svg_fragment)
 
     def render(self) -> str:
+        import re
+        header = self.body[:self._body_offset]   # background + title + subtitle
+        content = self.body[self._body_offset:]  # everything the diagram drew
+        # If a subtitle is present and the body's topmost element sits within
+        # ~16 px of the subtitle baseline, shift the whole body down just enough
+        # to clear it. Diagrams that already have headroom are untouched.
+        dy = 0.0
+        if getattr(self, "_subtitle_y", None) is not None:
+            ys = [float(m) for frag in content
+                  for m in re.findall(r'\b(?:y|y1|y2|cy)="(-?[0-9.]+)"', frag)]
+            if ys:
+                need = self._subtitle_y + 16
+                if min(ys) < need:
+                    dy = round(need - min(ys), 1)
+        height = self.h + dy
         defs = ['  <defs>']
         marker_colors = getattr(self, "_marker_colors", {})
         for marker, color in sorted(marker_colors.items()):
@@ -201,13 +220,19 @@ class Canvas:
                 f'<path d="M0,0 L10,5 L0,10 z" fill="{color}"/></marker>'
             )
         defs.append('  </defs>')
+        bg = f'<rect x="0" y="0" width="{self.w}" height="{height:g}" fill="#ffffff"/>'
+        body_out = [bg] + header[1:]
+        if dy > 0:
+            body_out += [f'<g transform="translate(0,{dy:g})">'] + content + ['</g>']
+        else:
+            body_out += content
         parts = [
-            f'<svg viewBox="0 0 {self.w} {self.h}" xmlns="http://www.w3.org/2000/svg" '
+            f'<svg viewBox="0 0 {self.w} {height:g}" xmlns="http://www.w3.org/2000/svg" '
             f'font-family="Helvetica, Arial, sans-serif">',
             f'  <title>{esc(self.svg_title)}</title>',
             f'  <desc>\n    {esc(self.svg_desc)}\n  </desc>',
             *defs,
-            *("  " + b for b in self.body),
+            *("  " + b for b in body_out),
             '</svg>',
         ]
         return "\n".join(parts) + "\n"

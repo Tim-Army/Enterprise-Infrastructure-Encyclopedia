@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 524" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 lab topology: Nutanix Flow Network Security enforcing category-driven policy at the AHV virtual switch</title>
   <desc>
     Four VMs sit on one AHV virtual switch: web and db carry the Environment corp category, hmi and plc carry the Environment ot category, and each carries an AppTier category. Prism Central holds the category-driven policy and distributes it to every AHV host, which enforces at the virtual switch with no agent in any guest. An application policy permits web to db on 5432 and hmi to plc on 502; an isolation policy forbids all traffic between Environment corp and Environment ot, which kills the lateral hmi to db path; and a quarantine policy can remove a compromised VM's connectivity entirely, overriding every permit. Policies are written in monitor mode first, where flows are visualized without being dropped, then applied. The volume is two-track: Track 1 describes Prism Central, Track 2 builds the model with a Linux bridge, nftables sets as categories, and enforcement in the host's bridge table.
@@ -9,9 +9,10 @@
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
     <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="524" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Category-Driven Microsegmentation with Nutanix Flow</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="10.2" fill="#4b5563">Prism Central distributes category-driven policy to every AHV host; enforcement is at the virtual switch — agentless, monitor mode first, quarantine &gt; isolation &gt; application</text>
+  <g transform="translate(0,24)">
   <rect x="310" y="42" width="340" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.4" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">Prism Central (Flow)</text>
   <text x="480.0" y="73.3" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">categories + policy · monitor -&gt; apply</text>
@@ -56,4 +57,5 @@
   <text x="450" y="434" font-size="11" fill="#b91c1c">Quarantine (top precedence)</text>
   <line x1="723" y1="430" x2="763" y2="430" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="771" y="434" font-size="11" fill="#33415c">Prism Central / categories</text>
+  </g>
 </svg>

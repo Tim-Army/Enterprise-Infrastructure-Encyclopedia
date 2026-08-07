@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 516" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 lab topology: Arista EOS enforcing group policy with an MSS macro firewall redirect</title>
   <desc>
     CloudVision manages an Arista EOS fabric that enforces group-based policy in the switch silicon at line rate. Endpoints are in security groups: web in SG-Web, db in SG-DB listening on 5432, hmi in SG-Mgmt, and plc in SG-OT listening on 502. MSS-Group permits only SG-Web to SG-DB on 5432 and SG-Mgmt to SG-OT on 502, denying every other group pair including SG-Mgmt to SG-DB. MSS macro-segmentation redirects the SG-Web to SG-DB flow through an inserted firewall for inspection without re-cabling, so a malicious payload on that flow is dropped. The volume is two-track: Track 1 describes EOS and CloudVision, Track 2 reproduces group policy and the firewall redirect with Linux nftables.
@@ -8,9 +8,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="516" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Group-Based Fabric Segmentation with Arista MSS-Group</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="10.9" fill="#4b5563">EOS enforces group policy at line rate (SG-Web-&gt;SG-DB, SG-Mgmt-&gt;SG-OT; default deny); MSS macro redirects the SG-Web-&gt;SG-DB flow through a firewall for inspection</text>
+  <g transform="translate(0,16)">
   <rect x="320" y="50" width="320" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="68.8" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">CloudVision · EOS fabric</text>
   <text x="480.0" y="82.8" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">security groups + MSS policy</text>
@@ -53,4 +54,5 @@
   <text x="411" y="434" font-size="11" fill="#b91c1c">Denied (default between groups)</text>
   <line x1="720" y1="430" x2="760" y2="430" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="768" y="434" font-size="11" fill="#33415c">CloudVision (groups + MSS)</text>
+  </g>
 </svg>

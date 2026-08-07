@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 624" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: the Cloudflare certification program and the platform beneath it</title>
   <desc>
     Cloudflare's certification track is the youngest in this encyclopedia: two Associate exams. The Application Security Associate assesses foundational knowledge of the application security family, with basic hands-on experience highly recommended; the Zero Trust Associate covers the Cloudflare One family. Both are delivered on Cloudflare's own exam platform at certifications.cloudflare.com, whose public portal still shows Register Interest alongside Launch Certification Exam. At Cloudflare Connect 2026, October nineteenth through twenty-first at Moscone West in San Francisco, a four hundred ninety-five dollar University Pass adds a full day of live technical training plus one attempt at both exams, delivered in-person proctored in a private quiet environment with live support; laptops are required. Exam duration, question count, passing score, validity period, retake policy, and standalone pricing are not published, and the detailed domain outlines sit behind the exam platform login. A separate partner accreditation track through Cloudflare University covers the Accredited Sales Professional, Accredited Sales Engineer, Accredited Configuration Engineer, Accredited Services Architect, and an Accredited Workers Developer announced as in development; accreditations are course-completion partner credentials, not proctored certifications. The platform beneath is a global anycast edge network: the same addresses announced from every data center, delivering users and distributing attacks alike. On it run the Application Security family of WAF managed and custom rules, rate limiting, DDoS protection, Bot Management, and API Shield; the Cloudflare One Zero Trust family of Access, Gateway, WARP, and Tunnel; and the Workers developer platform with KV, R2, D1, and Durable Objects — all manageable by API and Terraform. Cloudflare's free tier covers nearly the entire hands-on practice syllabus for both exams.
@@ -9,9 +9,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="624" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Cloudflare Certification Tracks</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">2 Associate exams · Cloudflare's OWN exam platform · portal still says 'Register Interest' · mechanics NOT published</text>
+  <g transform="translate(0,24)">
   <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">CLOUDFLARE — one anycast edge; apps, users, and code all meet the network first</text>
   <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">the same substrate fronts Application Security, Cloudflare One, and Workers</text>
@@ -49,4 +50,5 @@
   <text x="361" y="544" font-size="11" fill="#6b7280">Unpublished / partner</text>
   <line x1="580" y1="540" x2="620" y2="540" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="628" y="544" font-size="11" fill="#33415c">Platform</text>
+  </g>
 </svg>

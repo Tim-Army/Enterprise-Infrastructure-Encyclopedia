@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 624" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: Snyk Learn over the developer-first application-security platform</title>
   <desc>
     Snyk's education and credentialing is Snyk Learn, free interactive developer security education and product training. It is a certificate-of-completion program, not proctored exams: you complete a learning path, a sequence of interactive lessons, and earn a downloadable Certificate of Completion, with a free account tracking progress. Snyk Learn has two axes. By type, it splits into security education, about one hundred twenty-eight items, and product training, about sixty-four items. By format, it splits into learning paths, about eighteen, and individual lessons, about one hundred seventy-four. Learning paths include Security for Developers, the OWASP Top 10, the OWASP Top 10 for large language models and generative AI, the OWASP Top 10 for agentic applications, the OWASP Top 10 for open source software, Secure AI Development, and Implementing Snyk enterprise administration and architecture. A separate Snyk AI Security University Program offers structured AI-security education. The platform the product training covers is developer first, meeting developers in the IDE, command line, pull request, and CI/CD pipeline to find and fix. It spans four scanning engines plus posture management: Snyk Open Source for software composition analysis of open-source dependencies, Snyk Code for static application security testing powered by DeepCode AI, Snyk Container for container image scanning with base-image recommendations, Snyk Infrastructure as Code for scanning Terraform, CloudFormation, and Kubernetes manifests before deployment, and Application Security Posture Management across the software development lifecycle. Together the four engines cover the application supply chain: your first-party code, open-source dependencies, the container image, and the infrastructure.
@@ -9,9 +9,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="624" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Snyk Certification Tracks (Snyk Learn)</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">free learning paths -&gt; Certificates of Completion · developer-first · NOT proctored exams</text>
+  <g transform="translate(0,24)">
   <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">SNYK — the DEVELOPER-FIRST application security platform</text>
   <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">security delivered TO developers, in their workflow (IDE / CLI / PR / CI-CD) — find AND fix</text>
@@ -57,4 +58,5 @@
   <text x="424" y="490" font-size="11" fill="#b45309">Scanning engines</text>
   <line x1="598" y1="486" x2="638" y2="486" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="646" y="490" font-size="11" fill="#33415c">Platform / posture</text>
+  </g>
 </svg>

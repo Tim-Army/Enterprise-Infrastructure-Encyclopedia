@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 400" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 422" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 lab topology: Nozomi baselining Modbus and a function-aware enforcer between the operator and the PLC</title>
   <desc>
     Nozomi Guardian passively dissects the Modbus protocol on a SPAN down to the function code and baselines the industrial process, feeding Vantage. A function-aware enforcer sits between the hmi operator at 10.80.1.30 and the plc at 10.80.1.40 on port 502. The enforcer permits Modbus read functions (3 and 4), denies Modbus write functions (6 and 16) and any non-Modbus payload, and flags a register value that falls outside its learned range of 20 to 80 as a process anomaly even on a permitted read. The volume is two-track: Track 1 describes the real Nozomi Guardian and Vantage, Track 2 builds a minimal Modbus server and a function-aware proxy in Python plus nftables.
@@ -8,9 +8,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="400" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="422" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Protocol-Aware OT Segmentation with Nozomi</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="11.3" fill="#4b5563">Nozomi dissects Modbus to the function code and baselines the process; the enforcer allows reads, denies writes and non-Modbus, and flags out-of-range values</text>
+  <g transform="translate(0,22)">
   <rect x="300" y="44" width="360" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="62.4" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">Nozomi Guardian / Vantage</text>
   <text x="480.0" y="75.3" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">deep protocol dissection · process baseline</text>
@@ -39,4 +40,5 @@
   <text x="375" y="334" font-size="11" fill="#b91c1c">Write / non-Modbus (denied)</text>
   <line x1="648" y1="330" x2="688" y2="330" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="696" y="334" font-size="11" fill="#33415c">Nozomi (dissect + baseline)</text>
+  </g>
 </svg>

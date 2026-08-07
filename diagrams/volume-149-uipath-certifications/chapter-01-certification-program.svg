@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 624" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: the role-based UiPath Certified Professional program over the automation platform</title>
   <desc>
     The UiPath Certified Professional program is role-based, aligned to real automation-team roles across two levels, Associate and Professional, rather than a single ladder. Certifications include Agentic Automation Associate and Professional for collaborating with and governing AI agents, Automation Developer Associate and Professional for building automations, Specialized AI Professional for Document Understanding and Communications Mining, Automation Solution Architect Professional for enterprise architecture, Automation Business Analyst Professional for process discovery and requirements, and a testing track moving from the retiring Software Testing Engineer Professional to the new Test Cloud Architect Professional. The Automation Developer Associate exam is sixty multiple-choice and multi-select questions and is the common entry point. Credentials issued since February 2026 are valid for three years. Preparation is free through UiPath Academy; exams are proctored and paid via vouchers; holding multiple certifications earns the Automation Catalysts badge. The legacy UiPath RPA Associate and Advanced RPA Developer certifications, retired in 2023, expire on October 15, 2026, and were relaunched as the Automation Developer Associate and Professional. The whole program reflects the industry shift from robotic process automation, deterministic software robots automating rule-based tasks, to agentic automation that combines AI agents that reason and act, robots, and humans. The platform beneath is Studio for building automations, Orchestrator for deploying, scheduling, and governing robots, attended and unattended Robots for execution, and AI and discovery products including Document Understanding, Communications Mining, Process Mining, Task Mining, and Autopilot, run by a Center of Excellence.
@@ -9,9 +9,10 @@
     <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="624" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: UiPath Certification Tracks</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">role-based (Associate / Professional) · RPA -&gt; AGENTIC · 3-yr validity (since Feb 2026) · UiRPA/UiARD expire 15 Oct 2026</text>
+  <g transform="translate(0,24)">
   <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">UiPATH — business process automation: from RPA to AGENTIC automation</text>
   <text x="480.0" y="74.7" text-anchor="middle" font-size="8" font-weight="400" fill="#374151">robots (deterministic) + AI agents (reason &amp; act) + humans (accountability), orchestrated</text>
@@ -54,4 +55,5 @@
   <text x="604" y="482" font-size="11" fill="#6b7280">Program shape</text>
   <line x1="751" y1="478" x2="791" y2="478" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <text x="799" y="482" font-size="11" fill="#33415c">Platform / shift</text>
+  </g>
 </svg>

@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 960 524" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Chapter 1 program map: the Netskope certification program</title>
   <desc>
     The Netskope certification program has a free vendor-agnostic SASE Accreditation, an on-demand SASE-architecture course with a 45-minute exam at 80 percent to pass and a LinkedIn badge, as the on-ramp. Then the NCCSA, Netskope Certified Cloud Security Administrator, exam NSK101 replacing NSK100, delivered by Pearson VUE with about 70 questions in two hours, 70 percent to pass, valid two years, on the Netskope One Administrator course; and the NCCSI, Netskope Certified Cloud Security Integrator, on the Netskope One Professional course for integration depth. All teach the Netskope One SASE platform, where SASE equals SD-WAN plus SSE, and SSE equals CASB for cloud apps, SWG for web, ZTNA for private apps, and DLP for data, delivered over the NewEdge network with one policy engine. The volume's labs model these on free primitives.
@@ -8,9 +8,10 @@
     <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
     <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
   </defs>
-  <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+  <rect x="0" y="0" width="960" height="524" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Netskope Certifications (SASE / SSE)</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="9.9" fill="#4b5563">A free vendor-agnostic SASE Accreditation on-ramp, then NCCSA (NSK101, administer) and NCCSI (integrate) on the Netskope One platform — SSE = CASB + SWG + ZTNA + DLP over NewEdge</text>
+  <g transform="translate(0,24)">
   <rect x="45" y="42" width="870" height="40" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="65.2" text-anchor="middle" font-size="9" font-weight="700" fill="#111827">Netskope One (SASE) = SD-WAN + SSE  |  SSE = CASB (apps) + SWG (web) + ZTNA (private) + DLP (data), over NewEdge</text>
   <rect x="45" y="120" width="270" height="58" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
@@ -43,4 +44,5 @@
   <text x="441" y="354" font-size="11" fill="#166534">NCCSA (administer)</text>
   <line x1="633" y1="350" x2="673" y2="350" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
   <text x="681" y="354" font-size="11" fill="#b45309">NCCSI (integrate)</text>
+  </g>
 </svg>
