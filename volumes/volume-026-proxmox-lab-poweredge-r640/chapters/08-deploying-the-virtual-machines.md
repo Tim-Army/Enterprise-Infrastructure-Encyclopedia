@@ -291,12 +291,13 @@ to prevent exactly this; confirm the two are on distinct addresses.
 ## Hands-On Lab
 
 This chapter carries a topic-level walkthrough lab for **each VM-deployment step** — creating a VM,
-building a cloud-init template, cloning it into the fleet, and the container alternative. Commands
-are runnable `qm`/`pct`. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
+building a cloud-init template, cloning it into the fleet, the container alternative, and importing a
+vendor appliance image. Commands are runnable `qm`/`pct`. Each ends **`**Lab verified by:** *pending*`**
+until a human runs it.
 
-**Shared prerequisites for Labs 8.1–8.4** — a Proxmox node with the `river` datastore, ISOs and a
+**Shared prerequisites for Labs 8.1–8.5** — a Proxmox node with the `river` datastore, ISOs and a
 cloud image in the library (Chapters 06–07), a VLAN-aware bridge (Chapter 05), and root SSH.
-**Cost:** none.
+Lab 8.5 additionally needs the vendor appliance disk image (a `qcow2`). **Cost:** none.
 
 ### Lab 8.1 — Create a VM from an ISO (Topic: VM creation)
 
@@ -352,7 +353,7 @@ uniquely configured.
 ```bash
 for id in $(seq 101 110); do
   qm clone 9000 "$id" --name "vm-$id" --full --storage river
-  qm set "$id" --ipconfig0 ip=192.168.30.$id/24,gw=192.168.30.1
+  qm set "$id" --ipconfig0 ip=10.30.30.$id/24,gw=10.30.30.1
   qm start "$id"
 done
 qm list
@@ -377,7 +378,7 @@ pveam update && pveam available --section system | grep -i ubuntu | head -1
 pveam download riverfiles ubuntu-24.04-standard_24.04-2_amd64.tar.zst 2>/dev/null || true
 pct create 200 riverfiles:vztmpl/ubuntu-24.04-standard_24.04-2_amd64.tar.zst \
   --hostname ct200 --memory 1024 --cores 1 --rootfs river:8 \
-  --net0 name=eth0,bridge=vmbr0,tag=30,ip=192.168.30.200/24,gw=192.168.30.1
+  --net0 name=eth0,bridge=vmbr0,tag=30,ip=10.30.30.200/24,gw=10.30.30.1
 pct start 200 ; pct status 200
 ```
 
@@ -391,6 +392,52 @@ shares the host kernel) — use a full VM (`qm`) for non-Linux or kernel-specifi
 for lightweight Linux services.
 
 **Cleanup:** `pct stop 200; pct destroy 200`.
+
+### Lab 8.5 — Import a vendor appliance image (Topic: Appliance import)
+
+**Objective:** Turn a downloaded vendor appliance disk into a bootable Proxmox VM.
+Worked example: **FortiGate-VM 7.6.2** (`fortinet-FGT-v7.6.2.F-build3462.tgz`).
+
+**Extra prerequisite:** the appliance disk image on the node — here the EVE-NG
+package, which unpacks to a `virtioa.qcow2` (equivalently, `unzip` the KVM
+image `FGT_VM64_KVM-v7.6.2.F-build3462-FORTINET.out.kvm.zip`).
+
+```bash
+# 1. Unpack the vendor package to get the qcow2 disk
+tar zxf fortinet-FGT-v7.6.2.F-build3462.tgz     # -> fortinet-FGT-.../virtioa.qcow2
+
+# 2. Create a diskless VM shell: 2 vCPU, 2 GB RAM, two NICs on the VLAN-aware bridge
+qm create 120 --name fortigate --memory 2048 --cores 2 --ostype l26 \
+  --net0 virtio,bridge=vmbr0,tag=3 \
+  --net1 virtio,bridge=vmbr0,tag=6 \
+  --scsihw virtio-scsi-single
+
+# 3. Import the appliance disk and attach it as the virtio boot disk
+qm importdisk 120 fortinet-FGT-v7.6.2.F-build3462/virtioa.qcow2 river
+qm set 120 --virtio0 river:vm-120-disk-0 --boot order=virtio0
+
+# 4. Add a 30 GB disk FortiOS uses for logs and reports, then start
+qm set 120 --virtio1 river:30
+qm start 120 ; qm status 120
+```
+
+**Expected result:** VM 120 boots the appliance from its imported virtio disk to the
+FortiGate login prompt (open the Proxmox **Console**), port1 on VLAN 3 and port2 on
+VLAN 6 — `qm importdisk` is what turns a vendor qcow2 (rather than an installer ISO)
+into a bootable VM disk; the appliance ships its OS pre-installed on that disk.
+
+**Negative test:** attach the imported disk on a bus the appliance has no driver for
+(`--sata0` instead of `--virtio0`), or point the VM at the vendor's `.out` **upgrade**
+file instead of the full disk image; the VM comes up to *no bootable device* or a
+kernel panic — an imported appliance must sit on the bus it expects (virtio here) and
+use the full disk image, not the firmware-upgrade package.
+
+**Cleanup:** `qm stop 120; qm destroy 120 --purge` (the `--purge` also removes the
+imported disks).
+
+**Next:** first-boot console login, the evaluation-license state, and management
+hardening for this FortiGate-VM are covered in [Volume XIX (Fortinet NSE
+Certification Program), Chapter 04, Lab 4.7](../../volume-019-fortinet-network-security/chapters/04-fortigate-first-deployment-licensing-management-and-hardening.md).
 
 ## Lab Verification
 

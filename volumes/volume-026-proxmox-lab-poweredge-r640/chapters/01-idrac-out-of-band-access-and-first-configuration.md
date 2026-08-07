@@ -231,9 +231,9 @@ take over the server's out-of-band controller — changing it is the first harde
 
 ```bash
 racadm set iDRAC.IPv4.DHCPEnable Disabled
-racadm set iDRAC.IPv4.Address 192.168.10.10
+racadm set iDRAC.IPv4.Address 10.30.161.25
 racadm set iDRAC.IPv4.Netmask 255.255.255.0
-racadm set iDRAC.IPv4.Gateway 192.168.10.1
+racadm set iDRAC.IPv4.Gateway 10.30.161.1
 racadm get iDRAC.IPv4.Address
 ```
 
@@ -253,7 +253,7 @@ console/virtual-media session — a static address keeps out-of-band access stab
 ```bash
 racadm set iDRAC.VirtualConsole.Enable Enabled
 racadm get iDRAC.VirtualConsole.Enable
-# GUI: https://192.168.10.10 > Virtual Console (HTML5) launches the server screen;
+# GUI: https://10.30.161.25 > Virtual Console (HTML5) launches the server screen;
 #   Virtual Media will mount the Proxmox ISO in Chapter 03.
 ```
 

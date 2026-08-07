@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="220" viewBox="0 0 440 220" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="House-style line-art wireframe of the Proxmox Confirm dialog asking 'Do you want to apply pending network changes?' with Yes (highlighted) and No buttons.">
+  <title>Proxmox Confirm apply dialog</title>
+  <desc>House-style line-art wireframe of the Proxmox Confirm dialog asking 'Do you want to apply pending network changes?' with Yes (highlighted) and No buttons.</desc>
+  <rect x="0" y="0" width="440" height="220" fill="#ffffff"/>
+  <text x="24" y="30" text-anchor="start" font-size="15" font-weight="700" fill="#111827">Confirm — apply pending network changes</text>
+  <rect x="60" y="50" width="320" height="140" rx="8" fill="#ffffff" stroke="#33415c" stroke-width="1.5"/>
+  <rect x="60" y="50" width="320" height="30" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="1.5"/>
+  <text x="76" y="70" text-anchor="start" font-size="12" font-weight="700" fill="#111827">Confirm</text>
+  <circle cx="92" cy="118" r="14" fill="none" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="92" y="123" text-anchor="middle" font-size="15" font-weight="700" fill="#6b7280">?</text>
+  <text x="118" y="123" text-anchor="start" font-size="12" font-weight="400" fill="#111827">Do you want to apply pending</text>
+  <text x="118" y="140" text-anchor="start" font-size="12" font-weight="400" fill="#111827">network changes?</text>
+  <rect x="210" y="158" width="60" height="24" rx="4" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="1.4"/><text x="240.0" y="174.0" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4ed8">Yes</text>
+  <rect x="280" y="158" width="60" height="24" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="310.0" y="174.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">No</text>
+  <text x="24" y="210" text-anchor="start" font-size="10" font-weight="400" fill="#166534">Click Yes to apply the pending changes (runs the equivalent of ifreload -a).</text>
+</svg>

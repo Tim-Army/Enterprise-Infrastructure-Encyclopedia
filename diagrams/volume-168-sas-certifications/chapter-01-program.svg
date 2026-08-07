@@ -1,0 +1,50 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the SAS certification scopes and categories over the SAS language and SAS Viya</title>
+  <desc>
+    SAS is the analytics, statistics, and data-management leader — the SAS language, built from the DATA step and PROC steps, and SAS Viya, its cloud-native, in-memory analytics and AI platform powered by the CAS engine. SAS Global Certification comes in three scopes: SAS Certified Specialist, earned by a single exam; SAS Certified Professional, earned by multiple exams; and the composite SAS Certified Data Scientist, earned by combining credentials across the discipline. Credentials are organized by category: programming, from Fundamentals to Programming Specialist to Advanced Programming; advanced analytics and statistics, the Statistical Business Analyst; AI and machine learning, the Machine Learning Specialist using SAS Viya and Model Studio; data curation; visual business intelligence with SAS Visual Analytics; and SAS Viya Administration. Exams are delivered through Pearson VUE, are about one hundred eighty dollars, are valid five years, use A00 exam codes, and some are performance-based and hands-on in SAS. The lifecycle is curate, describe, model, assess, and report or deploy, with statistical rigor at each step.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: SAS Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">SAS Global Certification — Specialist / Professional / composite Data Scientist · Pearson VUE · ~$180 · 5-yr · A00-xxx</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="59.8" text-anchor="middle" font-size="8.0" font-weight="700" fill="#111827">SAS — analytics · statistics · data management leader: the SAS LANGUAGE (DATA step + PROC) + SAS VIYA (cloud-native AI/analytics)</text>
+  <text x="480.0" y="73.8" text-anchor="middle" font-size="6.9" font-weight="400" fill="#374151">SAS Viya: in-memory CAS engine · Model Studio (ML pipelines) · SAS Visual Analytics (BI) · SAS Studio (code) · SAS 9.4 = legacy</text>
+  <rect x="40" y="120" width="880" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="136.4" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">SAS GLOBAL CERTIFICATION — three scopes</text>
+  <text x="480.0" y="149.4" text-anchor="middle" font-size="6.1" font-weight="400" fill="#374151">SAS Certified SPECIALIST (single exam)  ·  SAS Certified PROFESSIONAL (multiple exams)  ·  composite SAS Certified DATA SCIENTIST   |   Pearson VUE · ~$180 · 5-yr · A00-xxx · some performance-based</text>
+  <rect x="40" y="176" width="288" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="184.0" y="194.2" text-anchor="middle" font-size="7.8" font-weight="700" fill="#111827">PROGRAMMING</text>
+  <text x="184.0" y="209.2" text-anchor="middle" font-size="5.6" font-weight="400" fill="#374151">Fundamentals → Specialist (A00-420, 71%) → Advanced · DATA step + PROC</text>
+  <rect x="336" y="176" width="288" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="194.2" text-anchor="middle" font-size="7.8" font-weight="700" fill="#111827">DATA CURATION</text>
+  <text x="480.0" y="209.2" text-anchor="middle" font-size="5.9" font-weight="400" fill="#374151">merge · formats/informats · clean · validate · missing values</text>
+  <rect x="632" y="176" width="288" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="776.0" y="194.0" text-anchor="middle" font-size="7.2" font-weight="700" fill="#111827">STATISTICS (Stat Business Analyst)</text>
+  <text x="776.0" y="209.0" text-anchor="middle" font-size="5.8" font-weight="400" fill="#374151">A00-240 · descriptive/inferential · regression · assessment</text>
+  <rect x="40" y="236" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="184.0" y="254.2" text-anchor="middle" font-size="7.6" font-weight="700" fill="#111827">AI &amp; MACHINE LEARNING</text>
+  <text x="184.0" y="269.2" text-anchor="middle" font-size="5.6" font-weight="400" fill="#374151">ML Specialist (Viya) · Model Studio pipelines · champion · deploy</text>
+  <rect x="336" y="236" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="253.9" text-anchor="middle" font-size="7.0" font-weight="700" fill="#111827">VISUAL / BI (Visual Business Analytics)</text>
+  <text x="480.0" y="268.9" text-anchor="middle" font-size="5.9" font-weight="400" fill="#374151">A00-470 · SAS Visual Analytics · reports + forecasting</text>
+  <rect x="632" y="236" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="776.0" y="254.1" text-anchor="middle" font-size="7.4" font-weight="700" fill="#111827">ADMINISTRATION (Viya Admin)</text>
+  <text x="776.0" y="269.1" text-anchor="middle" font-size="5.8" font-weight="400" fill="#374151">A00-451 · Kubernetes · users/security · data governance</text>
+  <text x="40" y="308" font-size="9.5" font-weight="700" fill="#166534">CURATE (data) + DESCRIBE (statistics) + MODEL (stats + ML) + ASSESS (rigorously) + REPORT/DEPLOY — the end-to-end analytics lifecycle, with statistical rigor at each step.</text>
+  <text x="40" y="330" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: scopes + categories + mechanics · CAS in-memory + DATA step/PROC · read/DATA-step/summarize · match-merge + formats + clean/validate · descriptive + regression + R-squared ·</text>
+  <text x="40" y="347" font-size="9.5" font-weight="400" fill="#374151">Model Studio pipeline + champion selection · Visual Analytics report + forecast · composite Data Scientist + Viya admin · capstone lifecycle end-to-end. Peers: Tableau (CLIV), Qlik (CLXI), Databricks (XLVIII).</text>
+  <line x1="40" y1="376" x2="80" y2="376" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="380" font-size="11" fill="#b45309">Program / curate / stats</text>
+  <line x1="334" y1="376" x2="374" y2="376" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="382" y="380" font-size="11" fill="#166534">ML / BI / administer</text>
+  <line x1="592" y1="376" x2="632" y2="376" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="640" y="380" font-size="11" fill="#6b7280">Cert scopes</text>
+  <line x1="769" y1="376" x2="809" y2="376" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="817" y="380" font-size="11" fill="#33415c">SAS language + Viya</text>
+</svg>

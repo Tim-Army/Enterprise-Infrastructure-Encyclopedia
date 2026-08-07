@@ -1,0 +1,50 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 1 program map: the Automation Anywhere certification tiers over the cloud-native Automation Success Platform</title>
+  <desc>
+    Automation Anywhere is an RPA pioneer pivoting to Agentic Process Automation, combining robotic process automation with AI agents and generative AI. Certifications run through Automation Anywhere University in three tiers: the Essentials Certification, which is free and foundational; the Advanced Certification, the Certified Advanced Automation Professional on Automation 360, a sixty-question, two-hour, eighty-percent-to-pass exam with a fifty-dollar renewal; and the AI Automation Engineer Certification, the AI and agentic flagship covering Document Automation, AI Agent Studio, and Automation Co-Pilot. Training is free. The platform beneath is the Automation Success Platform on Automation 360, cloud-native and fully web-based, orchestrated from a central Control Room that stores bots, deploys them to Bot Runners, holds secrets in a Credential Vault, enforces role-based access control, and audits everything. It spans building Task Bots, attended and unattended automation, Automation Co-Pilot, Document Automation for intelligent document processing, Agentic Process Automation with AI agents that reason under guardrails, and Process Discovery, Bot Insight, and a Center of Excellence. The arc runs from scripting deterministic bots to engineering AI-driven automation.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Automation Anywhere Certification Tracks</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">University: Essentials (free) → Advanced (60Q/2h/80%) → AI Automation Engineer · RPA → Agentic Process Automation</text>
+  <rect x="150" y="42" width="660" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="480.0" y="60.0" text-anchor="middle" font-size="8.6" font-weight="700" fill="#111827">AUTOMATION SUCCESS PLATFORM (Automation 360) — cloud-native, WEB-BASED · RPA → AGENTIC PROCESS AUTOMATION</text>
+  <text x="480.0" y="74.0" text-anchor="middle" font-size="6.8" font-weight="400" fill="#374151">Control Room (deploy/govern/vault/RBAC/audit) · Bot Creators build · Bot Runners execute · AI layered across (Co-Pilot / Document Automation / AI Agent Studio)</text>
+  <rect x="40" y="120" width="880" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="480.0" y="136.4" text-anchor="middle" font-size="8.3" font-weight="700" fill="#111827">AUTOMATION ANYWHERE UNIVERSITY — certification tiers (training FREE)</text>
+  <text x="480.0" y="149.4" text-anchor="middle" font-size="6.3" font-weight="400" fill="#374151">ESSENTIALS (free, foundational)  →  ADVANCED (Certified Advanced Automation Professional; 60Q · 2h · 80% · 2 attempts · $50 renewal)  →  AI AUTOMATION ENGINEER (AI/agentic flagship)</text>
+  <rect x="40" y="176" width="288" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="184.0" y="194.2" text-anchor="middle" font-size="7.8" font-weight="700" fill="#111827">BUILD BOTS (Bot Creator)</text>
+  <text x="184.0" y="209.2" text-anchor="middle" font-size="5.9" font-weight="400" fill="#374151">Task Bots: actions over variables · recorders · control flow · reuse</text>
+  <rect x="336" y="176" width="288" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="480.0" y="194.2" text-anchor="middle" font-size="7.8" font-weight="700" fill="#111827">CONTROL ROOM (govern)</text>
+  <text x="480.0" y="209.2" text-anchor="middle" font-size="5.9" font-weight="400" fill="#374151">deploy/schedule · work queues · Credential Vault · RBAC · audit</text>
+  <rect x="632" y="176" width="288" height="46" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="776.0" y="194.0" text-anchor="middle" font-size="7.2" font-weight="700" fill="#111827">ATTENDED / UNATTENDED + CO-PILOT</text>
+  <text x="776.0" y="209.0" text-anchor="middle" font-size="5.7" font-weight="400" fill="#374151">front-office assist vs lights-out · human-in-the-loop · AI Co-Pilot</text>
+  <rect x="40" y="236" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="184.0" y="254.2" text-anchor="middle" font-size="7.6" font-weight="700" fill="#111827">DOCUMENT AUTOMATION (IDP)</text>
+  <text x="184.0" y="269.2" text-anchor="middle" font-size="5.8" font-weight="400" fill="#374151">classify + extract across layouts · confidence · validate · route</text>
+  <rect x="336" y="236" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="254.1" text-anchor="middle" font-size="7.4" font-weight="700" fill="#111827">AGENTIC PA + AI AGENT STUDIO</text>
+  <text x="480.0" y="269.1" text-anchor="middle" font-size="5.7" font-weight="400" fill="#374151">agents reason to a goal + call bots · GenAI · guardrails + oversight</text>
+  <rect x="632" y="236" width="288" height="46" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="776.0" y="254.1" text-anchor="middle" font-size="7.4" font-weight="700" fill="#111827">DISCOVERY · BOT INSIGHT · CoE</text>
+  <text x="776.0" y="269.1" text-anchor="middle" font-size="5.8" font-weight="400" fill="#374151">find opportunities · measure ROI · scale as a governed program</text>
+  <text x="40" y="308" font-size="9.5" font-weight="700" fill="#166534">BUILD (bots) + GOVERN (Control Room) + ASSIST (Co-Pilot) + READ (Document Automation) + REASON (agents) + SCALE (Discovery + CoE) — from scripting bots to engineering AI-driven automation.</text>
+  <text x="40" y="330" font-size="9.5" font-weight="400" fill="#374151">Modeled free in Python: tiers + RPA-vs-APA routing · Automation 360 architecture · Task Bot (actions/loop/if/try-catch/subtask) · Control Room work queue + vault + RBAC + audit · attended/unattended + human-in-loop + Co-Pilot ·</text>
+  <text x="40" y="347" font-size="9.5" font-weight="400" fill="#374151">IDP classify/extract/confidence/route · agent reason→call-bot under guardrails · Discovery scoring + Bot Insight ROI + CoE pipeline · capstone agentic accounts-payable. Peers: UiPath (CXLIX), Pega (CLXIV), Boomi (CLXVI).</text>
+  <line x1="40" y1="376" x2="80" y2="376" stroke="#b45309" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrow-data)"/>
+  <text x="88" y="380" font-size="11" fill="#b45309">Build / govern / assist</text>
+  <line x1="325" y1="376" x2="365" y2="376" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="373" y="380" font-size="11" fill="#166534">Read / reason / scale (AI)</text>
+  <line x1="637" y1="376" x2="677" y2="376" stroke="#6b7280" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-neutral)"/>
+  <text x="685" y="380" font-size="11" fill="#6b7280">Cert tiers</text>
+  <line x1="805" y1="376" x2="845" y2="376" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="853" y="380" font-size="11" fill="#33415c">Cloud-native platform</text>
+</svg>

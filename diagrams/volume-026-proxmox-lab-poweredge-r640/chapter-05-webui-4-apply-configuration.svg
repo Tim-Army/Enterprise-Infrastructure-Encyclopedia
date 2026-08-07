@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="280" viewBox="0 0 640 280" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="House-style line-art wireframe of the Proxmox Network toolbar with the Apply Configuration button active alongside Create, Revert, Edit and Remove, and a pending bridge row, indicating staged network changes waiting to be applied.">
+  <title>Proxmox Apply Configuration toolbar</title>
+  <desc>House-style line-art wireframe of the Proxmox Network toolbar with the Apply Configuration button active alongside Create, Revert, Edit and Remove, and a pending bridge row, indicating staged network changes waiting to be applied.</desc>
+  <rect x="0" y="0" width="640" height="280" fill="#ffffff"/>
+  <text x="24" y="30" text-anchor="start" font-size="15" font-weight="700" fill="#111827">Apply Configuration — staged changes are pending until applied</text>
+  <rect x="24" y="48" width="592" height="200" rx="6" fill="#ffffff" stroke="#6b7280" stroke-width="1.5"/>
+  <rect x="40" y="62" width="70" height="24" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="75.0" y="78.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Create ▾</text>
+  <rect x="118" y="62" width="56" height="24" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="146.0" y="78.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Revert</text>
+  <rect x="182" y="62" width="44" height="24" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="204.0" y="78.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Edit</text>
+  <rect x="234" y="62" width="60" height="24" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="264.0" y="78.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Remove</text>
+  <rect x="302" y="62" width="130" height="24" rx="4" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="1.4"/><text x="367.0" y="78.0" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4ed8">Apply Configuration</text>
+  <line x1="40" y1="104" x2="600" y2="104" stroke="#6b7280" stroke-width="1"/>
+  <text x="48" y="120" text-anchor="start" font-size="9.5" font-weight="700" fill="#33415c">Name</text>
+  <text x="200" y="120" text-anchor="start" font-size="9.5" font-weight="700" fill="#33415c">Type</text>
+  <text x="380" y="120" text-anchor="start" font-size="9.5" font-weight="700" fill="#33415c">Active</text>
+  <text x="48" y="145" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">enp216s0</text>
+  <text x="200" y="145" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">Network Device</text>
+  <text x="380" y="145" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">No</text>
+  <text x="48" y="171" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">idrac</text>
+  <text x="200" y="171" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">Network Device</text>
+  <text x="380" y="171" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">No</text>
+  <text x="48" y="197" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">nic0</text>
+  <text x="200" y="197" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">Network Device</text>
+  <text x="380" y="197" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">No</text>
+  <rect x="44" y="209" width="548" height="20" rx="3" fill="#fff7ed" stroke="#b45309" stroke-width="1"/>
+  <text x="48" y="223" text-anchor="start" font-size="9.5" font-weight="700" fill="#7c2d12">vmbr1  (pending)</text>
+  <text x="200" y="223" text-anchor="start" font-size="9.5" font-weight="700" fill="#7c2d12">Linux Bridge</text>
+  <text x="380" y="223" text-anchor="start" font-size="9.5" font-weight="700" fill="#7c2d12">—</text>
+  <text x="24" y="268" text-anchor="start" font-size="10" font-weight="400" fill="#166534">Proxmox stages network edits (shown pending); nothing takes effect until you click Apply Configuration.</text>
+</svg>

@@ -39,6 +39,17 @@ Proxmox VE's package sources on a fresh install include:
 - **`ceph` repositories** — relevant only if using Ceph storage, which this
   single-node build does not.
 
+**A note on the file format.** PVE 9 is built on Debian 13 (**trixie**) and
+uses APT's **deb822 `.sources`** format: each repository is a key/value stanza
+(`Types:`, `URIs:`, `Suites:`, `Components:`, `Signed-By:`) in a
+`/etc/apt/sources.list.d/*.sources` file, and you **disable** one by adding
+**`Enabled: false`** to its stanza. This replaces the older one-line
+`deb http://… bookworm …` entries in `.list` files that PVE 8 (Debian
+bookworm) used, where disabling meant commenting the line out. On a fresh PVE 9
+install only the `.sources` files exist; a node upgraded in place from PVE 8
+can carry the old `.list` files until `apt modernize-sources` converts them.
+Everything below therefore edits `.sources` stanzas, not `.list` lines.
+
 ### Why DNS and NTP point at the gateway
 
 This build routes the node's **DNS and NTP through the gateway,
@@ -57,8 +68,8 @@ niceties:
 
 - **Disable the enterprise repository explicitly, do not just add the free
   one.** Leaving `pve-enterprise` enabled without a key makes every
-  `apt update` throw an error on it. Disable it and enable
-  `pve-no-subscription`.
+  `apt update` throw an error on it. On PVE 9 disable it by setting
+  `Enabled: false` in its `.sources` stanza, and enable `pve-no-subscription`.
 - **Update once, fully, before building on the node.** A node updated to
   current before the network, storage, and VMs are configured avoids
   updating under load later. Do the full upgrade now.
@@ -77,20 +88,40 @@ niceties:
 On the Proxmox node (SSH as root, or the web UI's shell):
 
 ```bash
-# Disable the enterprise repository.
-# (On PVE 8/9 the enterprise repos live in these files.)
-sed -i 's/^deb/#deb/' /etc/apt/sources.list.d/pve-enterprise.list
-# If a Ceph enterprise repo exists and is unused, disable it too.
-[ -f /etc/apt/sources.list.d/ceph.list ] && \
-  sed -i 's/^deb/#deb/' /etc/apt/sources.list.d/ceph.list
+# PVE 9 is built on Debian 13 (trixie) and uses APT's deb822 ".sources"
+# format: key/value stanzas in /etc/apt/sources.list.d/*.sources. Disabling a
+# repo means setting "Enabled: false" in its stanza — the deb822 equivalent of
+# commenting out the old one-line "deb" entry that PVE 8 (Debian bookworm) used.
 
-# Enable the no-subscription repository.
-cat > /etc/apt/sources.list.d/pve-no-subscription.list <<'EOF'
-deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription
+# Disable the enterprise repos: pve-enterprise, and the Ceph enterprise repo a
+# fresh install also drops. Set "Enabled: false" in place, which preserves each
+# repo's release (the shipped Ceph line is e.g. ceph-squid or ceph-tentacle):
+for repo in pve-enterprise ceph; do
+  src="/etc/apt/sources.list.d/${repo}.sources"
+  [ -f "$src" ] || continue
+  if grep -q '^Enabled:' "$src"; then
+    sed -i 's/^Enabled:.*/Enabled: false/' "$src"
+  else
+    printf 'Enabled: false\n' >> "$src"
+  fi
+done
+
+# Enable the no-subscription repository (deb822; no "Enabled:" line means
+# enabled). Suites is "trixie" — Debian 13, the base for the whole PVE 9 line:
+cat > /etc/apt/sources.list.d/pve-no-subscription.sources <<'EOF'
+Types: deb
+URIs: http://download.proxmox.com/debian/pve
+Suites: trixie
+Components: pve-no-subscription
+Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
 EOF
-# (Match the Debian codename to your PVE release — e.g. the PVE 9 base.)
 
-# Refresh package lists — this should now succeed with no enterprise error.
+# A fresh PVE 9 install is already deb822. A node upgraded in place from PVE 8
+# may still carry old one-line ".list" files; `apt modernize-sources` converts
+# them to deb822. Remove any stale enterprise ".list" so it can't re-add the error:
+rm -f /etc/apt/sources.list.d/pve-enterprise.list /etc/apt/sources.list.d/ceph.list 2>/dev/null
+
+# Refresh package lists — now clean, hitting download.proxmox.com with no 401.
 apt update
 ```
 
@@ -158,9 +189,12 @@ chronyc sources 2>/dev/null || timedatectl status
 The most common post-install problem is `apt update` failing with a
 401/authentication error on `enterprise.proxmox.com`. The cause is always
 the same: the enterprise repository is still enabled without a subscription
-key. Disabling it (commenting the `deb` line) resolves it; adding the
-no-subscription repository alone does not, because the enterprise line still
-errors.
+key. Disabling it resolves it — on PVE 9 that means setting `Enabled: false`
+in `pve-enterprise.sources` (on PVE 8, commenting the `deb` line in
+`pve-enterprise.list`); adding the no-subscription repository alone does not,
+because the enterprise stanza still errors. A fresh PVE 9 install drops the
+same enterprise stanza for Ceph in `ceph.sources`, which 401s the same way —
+disable it too unless you are adding a matching no-subscription Ceph repo.
 
 ### Time not syncing
 
@@ -225,16 +259,28 @@ root SSH, and internet access. **Cost:** none (the no-subscription repo is free)
 **Objective:** Point APT at the free community repo.
 
 ```bash
-# Disable the enterprise repo (needs a subscription) and enable no-subscription:
-sed -i 's/^deb/#deb/' /etc/apt/sources.list.d/pve-enterprise.list 2>/dev/null
-echo "deb http://download.proxmox.com/debian/pve $(. /etc/os-release; echo $VERSION_CODENAME) pve-no-subscription" \
-  > /etc/apt/sources.list.d/pve-no-subscription.list
+# PVE 9 uses the deb822 ".sources" format. Disable the enterprise repo by
+# setting "Enabled: false" in its stanza, then write the no-subscription
+# ".sources" (auto-filling the Debian codename — "trixie" on PVE 9):
+src=/etc/apt/sources.list.d/pve-enterprise.sources
+[ -f "$src" ] && { grep -q '^Enabled:' "$src" \
+  && sed -i 's/^Enabled:.*/Enabled: false/' "$src" \
+  || printf 'Enabled: false\n' >> "$src"; }
+cat > /etc/apt/sources.list.d/pve-no-subscription.sources <<EOF
+Types: deb
+URIs: http://download.proxmox.com/debian/pve
+Suites: $(. /etc/os-release; echo "$VERSION_CODENAME")
+Components: pve-no-subscription
+Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
+EOF
 apt update
 ```
 
 **Expected result:** `apt update` succeeds against the `pve-no-subscription` repo instead of erroring
 on the enterprise repo — a Proxmox node without a subscription must use the no-subscription
-repository to receive package updates; the enterprise repo returns 401 without a key.
+repository to receive package updates; the enterprise repo returns 401 without a key. On PVE 9 the
+`.sources` stanza with `Enabled: false` is the deb822 equivalent of commenting out the old
+`.list` line.
 
 **Negative test:** leave only the enterprise repo enabled with no subscription; `apt update` fails
 with a 401 and the node never updates — the no-subscription repo is what a free/lab node updates
@@ -248,7 +294,7 @@ from.
 
 ```bash
 apt update && apt -y full-upgrade
-pveversion -v | grep -E "pve-manager|pve-kernel|qemu"
+pveversion -v | grep -E "pve-manager|proxmox-kernel|pve-kernel|qemu"
 ```
 
 **Expected result:** the node upgrades to the current no-subscription package set (kernel, pve-

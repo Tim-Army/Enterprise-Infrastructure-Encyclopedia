@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="House-style line-art wireframe of the Proxmox VE 9.2.9 System → Network panel for node proxmox-1: the Server View tree, the System navigation with Network selected, the Create/Revert/Edit/Remove/Apply Configuration toolbar, and the interface table with nic0-nic4, vmbr0 (management, 10.30.161.10/24), and the highlighted vmbr1 VLAN-aware Linux bridge on nic2.">
+  <title>Proxmox System → Network panel</title>
+  <desc>House-style line-art wireframe of the Proxmox VE 9.2.9 System → Network panel for node proxmox-1: the Server View tree, the System navigation with Network selected, the Create/Revert/Edit/Remove/Apply Configuration toolbar, and the interface table with nic0-nic4, vmbr0 (management, 10.30.161.10/24), and the highlighted vmbr1 VLAN-aware Linux bridge on nic2.</desc>
+  <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
+  <text x="30" y="30" text-anchor="start" font-size="15" font-weight="700" fill="#111827">Proxmox VE 9.2.9 — Node 'proxmox-1' → System → Network</text>
+  <rect x="30" y="44" width="900" height="30" rx="5" fill="#f4f7fb" stroke="#33415c" stroke-width="1.5"/>
+  <text x="44" y="63" text-anchor="start" font-size="11" font-weight="700" fill="#1d4ed8">✕ PROXMOX  Virtual Environment 9.2.9</text>
+  <rect x="410" y="50" width="190" height="18" rx="9" fill="#ffffff" stroke="#6b7280" stroke-width="1"/>
+  <text x="420" y="63" text-anchor="start" font-size="10" font-weight="400" fill="#6b7280">Search</text>
+  <rect x="606" y="49" width="82" height="20" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="647.0" y="63.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Documentation</text>
+  <rect x="692" y="49" width="62" height="20" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="723.0" y="63.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Create VM</text>
+  <rect x="758" y="49" width="60" height="20" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="788.0" y="63.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Create CT</text>
+  <rect x="822" y="49" width="64" height="20" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="854.0" y="63.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">root@pam</text>
+  <rect x="30" y="84" width="150" height="460" rx="6" fill="#ffffff" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="42" y="102" text-anchor="start" font-size="11" font-weight="700" fill="#374151">Server View</text>
+  <text x="42" y="124" text-anchor="start" font-size="10" font-weight="400" fill="#374151">▾ Datacenter</text>
+  <text x="42" y="144" text-anchor="start" font-size="10" font-weight="700" fill="#111827">  ▾ proxmox-1</text>
+  <text x="42" y="164" text-anchor="start" font-size="10" font-weight="400" fill="#374151">      100 (gns3)</text>
+  <text x="42" y="184" text-anchor="start" font-size="10" font-weight="400" fill="#374151">      localnetwork</text>
+  <text x="42" y="204" text-anchor="start" font-size="10" font-weight="400" fill="#374151">      backup</text>
+  <text x="42" y="224" text-anchor="start" font-size="10" font-weight="400" fill="#374151">      blue</text>
+  <text x="42" y="244" text-anchor="start" font-size="10" font-weight="400" fill="#374151">      container</text>
+  <text x="42" y="264" text-anchor="start" font-size="10" font-weight="400" fill="#374151">      iso</text>
+  <text x="42" y="284" text-anchor="start" font-size="10" font-weight="400" fill="#374151">      local</text>
+  <text x="42" y="304" text-anchor="start" font-size="10" font-weight="400" fill="#374151">      local-lvm</text>
+  <rect x="188" y="84" width="150" height="460" rx="6" fill="#f4f7fb" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="202" y="111" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">Search</text>
+  <text x="202" y="135" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">Summary</text>
+  <text x="202" y="159" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">Notes</text>
+  <text x="202" y="183" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">Shell</text>
+  <text x="202" y="207" text-anchor="start" font-size="10.5" font-weight="700" fill="#374151">⚙ System</text>
+  <rect x="196" y="217" width="134" height="20" rx="4" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="1.2"/>
+  <text x="216" y="231" text-anchor="start" font-size="10.5" font-weight="700" fill="#1d4ed8">Network</text>
+  <text x="216" y="255" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">Certificates</text>
+  <text x="216" y="279" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">DNS</text>
+  <text x="216" y="303" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">Hosts</text>
+  <text x="216" y="327" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">Options</text>
+  <text x="216" y="351" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">Time</text>
+  <text x="216" y="375" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">System Log</text>
+  <text x="202" y="399" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">Updates</text>
+  <text x="202" y="423" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">Repositories</text>
+  <text x="202" y="447" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">Firewall</text>
+  <text x="202" y="471" text-anchor="start" font-size="10.5" font-weight="400" fill="#374151">Disks</text>
+  <text x="352" y="102" text-anchor="start" font-size="12" font-weight="700" fill="#111827">Node 'proxmox-1'</text>
+  <rect x="560" y="90" width="56" height="18" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="588.0" y="103.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Reboot</text>
+  <rect x="620" y="90" width="66" height="18" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="653.0" y="103.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Shutdown</text>
+  <rect x="690" y="90" width="46" height="18" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="713.0" y="103.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Shell</text>
+  <rect x="740" y="90" width="82" height="18" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="781.0" y="103.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Bulk Actions</text>
+  <rect x="826" y="90" width="48" height="18" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="850.0" y="103.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Help</text>
+  <rect x="352" y="116" width="70" height="22" rx="4" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="1.4"/><text x="387.0" y="131.0" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4ed8">Create ▾</text>
+  <rect x="430" y="116" width="56" height="22" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="458.0" y="131.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Revert</text>
+  <rect x="494" y="116" width="44" height="22" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="516.0" y="131.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Edit</text>
+  <rect x="546" y="116" width="60" height="22" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="576.0" y="131.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Remove</text>
+  <rect x="614" y="116" width="120" height="22" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/><text x="674.0" y="131.0" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Apply Configuration</text>
+  <rect x="352" y="146" width="578" height="388" rx="6" fill="#ffffff" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="362" y="165" text-anchor="start" font-size="9.5" font-weight="700" fill="#33415c">Name</text>
+  <text x="470" y="165" text-anchor="start" font-size="9.5" font-weight="700" fill="#33415c">Type</text>
+  <text x="560" y="165" text-anchor="start" font-size="9.5" font-weight="700" fill="#33415c">Active</text>
+  <text x="615" y="165" text-anchor="start" font-size="9.5" font-weight="700" fill="#33415c">VLAN aware</text>
+  <text x="700" y="165" text-anchor="start" font-size="9.5" font-weight="700" fill="#33415c">Ports/Slaves</text>
+  <text x="790" y="165" text-anchor="start" font-size="9.5" font-weight="700" fill="#33415c">CIDR</text>
+  <text x="870" y="165" text-anchor="start" font-size="9.5" font-weight="700" fill="#33415c">Gateway</text>
+  <line x1="358" y1="172" x2="924" y2="172" stroke="#6b7280" stroke-width="1"/>
+  <text x="362" y="191" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">nic0</text>
+  <text x="470" y="191" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">Network Device</text>
+  <text x="560" y="191" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">No</text>
+  <text x="615" y="191" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">No</text>
+  <text x="700" y="191" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="790" y="191" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="870" y="191" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="362" y="219" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">nic1</text>
+  <text x="470" y="219" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">Network Device</text>
+  <text x="560" y="219" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">Yes</text>
+  <text x="615" y="219" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">No</text>
+  <text x="700" y="219" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="790" y="219" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="870" y="219" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="362" y="247" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">nic2</text>
+  <text x="470" y="247" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">Network Device</text>
+  <text x="560" y="247" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">Yes</text>
+  <text x="615" y="247" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">No</text>
+  <text x="700" y="247" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="790" y="247" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="870" y="247" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="362" y="275" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">nic3</text>
+  <text x="470" y="275" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">Network Device</text>
+  <text x="560" y="275" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">Yes</text>
+  <text x="615" y="275" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">No</text>
+  <text x="700" y="275" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="790" y="275" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="870" y="275" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="362" y="303" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">nic4</text>
+  <text x="470" y="303" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">Network Device</text>
+  <text x="560" y="303" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">Yes</text>
+  <text x="615" y="303" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151">No</text>
+  <text x="700" y="303" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="790" y="303" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="870" y="303" text-anchor="start" font-size="9.5" font-weight="400" fill="#374151"></text>
+  <text x="362" y="331" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827">vmbr0</text>
+  <text x="470" y="331" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827">Linux Bridge</text>
+  <text x="560" y="331" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827">Yes</text>
+  <text x="615" y="331" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827">No</text>
+  <text x="700" y="331" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827">nic1</text>
+  <text x="790" y="331" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827">10.30.161.10/24</text>
+  <text x="870" y="331" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827">10.30.161.1</text>
+  <rect x="358" y="345" width="562" height="20" rx="3" fill="#f0faf2" stroke="#166534" stroke-width="1"/>
+  <text x="362" y="359" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827">vmbr1</text>
+  <text x="470" y="359" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827">Linux Bridge</text>
+  <text x="560" y="359" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827">Yes</text>
+  <text x="615" y="359" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827">Yes</text>
+  <text x="700" y="359" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827">nic2</text>
+  <text x="790" y="359" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827"></text>
+  <text x="870" y="359" text-anchor="start" font-size="9.5" font-weight="700" fill="#111827"></text>
+  <text x="352" y="548" text-anchor="start" font-size="10" font-weight="400" fill="#166534">The node's interfaces and bridges: vmbr0 carries management (10.30.161.10/24), vmbr1 is the VLAN-aware trunk bridge.</text>
+</svg>

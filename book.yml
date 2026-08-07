@@ -5685,6 +5685,210 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your Pega Path"
         path: volumes/volume-164-pega-certifications/chapters/09-choosing-your-pega-path.md
+  - id: volume-165
+    number: "CLXV"
+    slug: volume-165-informatica-certifications
+    title: "Informatica Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Informatica Certification Program"
+        path: volumes/volume-165-informatica-certifications/chapters/01-the-informatica-program.md
+      - id: 02
+        title: "Chapter 02: IDMC — The Intelligent Data Management Cloud"
+        path: volumes/volume-165-informatica-certifications/chapters/02-idmc-platform.md
+      - id: 03
+        title: "Chapter 03: Cloud Data Integration — The Core"
+        path: volumes/volume-165-informatica-certifications/chapters/03-cloud-data-integration.md
+      - id: 04
+        title: "Chapter 04: From PowerCenter to the Cloud"
+        path: volumes/volume-165-informatica-certifications/chapters/04-powercenter-to-cloud.md
+      - id: 05
+        title: "Chapter 05: Cloud Application Integration — Real Time"
+        path: volumes/volume-165-informatica-certifications/chapters/05-cloud-application-integration.md
+      - id: 06
+        title: "Chapter 06: Cloud Data Quality — Trustworthy Data"
+        path: volumes/volume-165-informatica-certifications/chapters/06-data-quality.md
+      - id: 07
+        title: "Chapter 07: Master Data Management — The Golden Record"
+        path: volumes/volume-165-informatica-certifications/chapters/07-master-data-management.md
+      - id: 08
+        title: "Chapter 08: Data Governance and Catalog"
+        path: volumes/volume-165-informatica-certifications/chapters/08-governance-and-catalog.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Informatica Path"
+        path: volumes/volume-165-informatica-certifications/chapters/09-choosing-your-informatica-path.md
+  - id: volume-166
+    number: "CLXVI"
+    slug: volume-166-boomi-certifications
+    title: "Boomi Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Boomi Certification Program"
+        path: volumes/volume-166-boomi-certifications/chapters/01-the-boomi-program.md
+      - id: 02
+        title: "Chapter 02: The Boomi Enterprise Platform"
+        path: volumes/volume-166-boomi-certifications/chapters/02-the-boomi-platform.md
+      - id: 03
+        title: "Chapter 03: Atoms, Molecules, and Atom Clouds"
+        path: volumes/volume-166-boomi-certifications/chapters/03-atoms-molecules-atom-clouds.md
+      - id: 04
+        title: "Chapter 04: Building Integrations"
+        path: volumes/volume-166-boomi-certifications/chapters/04-building-integrations.md
+      - id: 05
+        title: "Chapter 05: API Management"
+        path: volumes/volume-166-boomi-certifications/chapters/05-api-management.md
+      - id: 06
+        title: "Chapter 06: Data Hub — Master Data Management"
+        path: volumes/volume-166-boomi-certifications/chapters/06-data-hub-mdm.md
+      - id: 07
+        title: "Chapter 07: B2B/EDI and Flow"
+        path: volumes/volume-166-boomi-certifications/chapters/07-b2b-edi-and-flow.md
+      - id: 08
+        title: "Chapter 08: Administration and Architecture"
+        path: volumes/volume-166-boomi-certifications/chapters/08-administration-and-architecture.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Boomi Path"
+        path: volumes/volume-166-boomi-certifications/chapters/09-choosing-your-boomi-path.md
+  - id: volume-167
+    number: "CLXVII"
+    slug: volume-167-automation-anywhere-certifications
+    title: "Automation Anywhere Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Automation Anywhere Certification Program"
+        path: volumes/volume-167-automation-anywhere-certifications/chapters/01-the-automation-anywhere-program.md
+      - id: 02
+        title: "Chapter 02: The Automation Success Platform"
+        path: volumes/volume-167-automation-anywhere-certifications/chapters/02-automation-success-platform.md
+      - id: 03
+        title: "Chapter 03: Building Bots"
+        path: volumes/volume-167-automation-anywhere-certifications/chapters/03-building-bots.md
+      - id: 04
+        title: "Chapter 04: The Control Room"
+        path: volumes/volume-167-automation-anywhere-certifications/chapters/04-the-control-room.md
+      - id: 05
+        title: "Chapter 05: Attended, Unattended, and Automation Co-Pilot"
+        path: volumes/volume-167-automation-anywhere-certifications/chapters/05-attended-unattended-and-copilot.md
+      - id: 06
+        title: "Chapter 06: Document Automation"
+        path: volumes/volume-167-automation-anywhere-certifications/chapters/06-document-automation.md
+      - id: 07
+        title: "Chapter 07: Agentic Process Automation and AI Agent Studio"
+        path: volumes/volume-167-automation-anywhere-certifications/chapters/07-agentic-process-automation.md
+      - id: 08
+        title: "Chapter 08: Process Discovery, Bot Insight, and the CoE"
+        path: volumes/volume-167-automation-anywhere-certifications/chapters/08-process-discovery-and-coe.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Automation Anywhere Path"
+        path: volumes/volume-167-automation-anywhere-certifications/chapters/09-choosing-your-path.md
+  - id: volume-168
+    number: "CLXVIII"
+    slug: volume-168-sas-certifications
+    title: "SAS Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The SAS Certification Program"
+        path: volumes/volume-168-sas-certifications/chapters/01-the-sas-program.md
+      - id: 02
+        title: "Chapter 02: The SAS Platform and Language"
+        path: volumes/volume-168-sas-certifications/chapters/02-the-sas-platform.md
+      - id: 03
+        title: "Chapter 03: SAS Programming Foundations"
+        path: volumes/volume-168-sas-certifications/chapters/03-sas-programming-foundations.md
+      - id: 04
+        title: "Chapter 04: Preparing and Curating Data"
+        path: volumes/volume-168-sas-certifications/chapters/04-preparing-and-curating-data.md
+      - id: 05
+        title: "Chapter 05: Statistical Analysis"
+        path: volumes/volume-168-sas-certifications/chapters/05-statistical-analysis.md
+      - id: 06
+        title: "Chapter 06: Machine Learning on Viya"
+        path: volumes/volume-168-sas-certifications/chapters/06-machine-learning-on-viya.md
+      - id: 07
+        title: "Chapter 07: Visual Analytics and BI"
+        path: volumes/volume-168-sas-certifications/chapters/07-visual-analytics-and-bi.md
+      - id: 08
+        title: "Chapter 08: The Data Scientist Path and Viya Administration"
+        path: volumes/volume-168-sas-certifications/chapters/08-data-scientist-and-administration.md
+      - id: 09
+        title: "Chapter 09: Choosing Your SAS Path"
+        path: volumes/volume-168-sas-certifications/chapters/09-choosing-your-sas-path.md
+  - id: volume-169
+    number: "CLXIX"
+    slug: volume-169-hitachi-vantara-certifications
+    title: "Hitachi Vantara Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Hitachi Vantara Certification Program"
+        path: volumes/volume-169-hitachi-vantara-certifications/chapters/01-the-hitachi-vantara-program.md
+      - id: 02
+        title: "Chapter 02: Hitachi Storage and the VSP Platform"
+        path: volumes/volume-169-hitachi-vantara-certifications/chapters/02-hitachi-storage-and-vsp.md
+      - id: 03
+        title: "Chapter 03: Block Storage Administration"
+        path: volumes/volume-169-hitachi-vantara-certifications/chapters/03-block-storage-administration.md
+      - id: 04
+        title: "Chapter 04: File and Object Storage"
+        path: volumes/volume-169-hitachi-vantara-certifications/chapters/04-file-and-object-storage.md
+      - id: 05
+        title: "Chapter 05: Data Protection and Replication"
+        path: volumes/volume-169-hitachi-vantara-certifications/chapters/05-data-protection-and-replication.md
+      - id: 06
+        title: "Chapter 06: Hitachi Ops Center"
+        path: volumes/volume-169-hitachi-vantara-certifications/chapters/06-hitachi-ops-center.md
+      - id: 07
+        title: "Chapter 07: Pentaho — Data Integration and Analytics"
+        path: volumes/volume-169-hitachi-vantara-certifications/chapters/07-pentaho-data-and-analytics.md
+      - id: 08
+        title: "Chapter 08: Converged, Hyperconverged, and Hybrid Cloud"
+        path: volumes/volume-169-hitachi-vantara-certifications/chapters/08-converged-and-cloud.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Hitachi Vantara Path"
+        path: volumes/volume-169-hitachi-vantara-certifications/chapters/09-choosing-your-hitachi-vantara-path.md
+  - id: volume-170
+    number: "CLXX"
+    slug: volume-170-teradata-certifications
+    title: "Teradata Certification Tracks"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Teradata Certification Program"
+        path: volumes/volume-170-teradata-certifications/chapters/01-the-teradata-program.md
+      - id: 02
+        title: "Chapter 02: Teradata Vantage and VantageCloud"
+        path: volumes/volume-170-teradata-certifications/chapters/02-vantage-and-vantagecloud.md
+      - id: 03
+        title: "Chapter 03: The MPP Architecture"
+        path: volumes/volume-170-teradata-certifications/chapters/03-the-mpp-architecture.md
+      - id: 04
+        title: "Chapter 04: Data Distribution and the Primary Index"
+        path: volumes/volume-170-teradata-certifications/chapters/04-data-distribution-and-primary-index.md
+      - id: 05
+        title: "Chapter 05: SQL and Querying at Scale"
+        path: volumes/volume-170-teradata-certifications/chapters/05-sql-and-querying.md
+      - id: 06
+        title: "Chapter 06: Physical Database Design"
+        path: volumes/volume-170-teradata-certifications/chapters/06-physical-database-design.md
+      - id: 07
+        title: "Chapter 07: Workload Management and Administration"
+        path: volumes/volume-170-teradata-certifications/chapters/07-workload-management-and-administration.md
+      - id: 08
+        title: "Chapter 08: ClearScape Analytics and the Modern Platform"
+        path: volumes/volume-170-teradata-certifications/chapters/08-clearscape-and-modern-platform.md
+      - id: 09
+        title: "Chapter 09: Choosing Your Teradata Path"
+        path: volumes/volume-170-teradata-certifications/chapters/09-choosing-your-teradata-path.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices
@@ -5931,7 +6135,7 @@ volumes:
     number: "CMXCIX"
     slug: volume-999-reference-library
     title: "Reference Library"
-    chapter_count: 9
+    chapter_count: 10
     build_eligible: true
     chapters:
       - id: 01
@@ -5961,3 +6165,6 @@ volumes:
       - id: 09
         title: "Chapter 09: Standards, Certifications, Vendor Documentation, and Reference Governance"
         path: volumes/volume-999-reference-library/chapters/09-standards-certifications-vendor-documentation-and-reference-governance.md
+      - id: 10
+        title: "Chapter 10: Software Versions and Download Sources"
+        path: volumes/volume-999-reference-library/chapters/10-software-versions-and-download-sources.md

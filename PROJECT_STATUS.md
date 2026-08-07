@@ -174,11 +174,17 @@ does not by itself verify every technical claim in it.
 | CLXII — Sophos Certification Tracks | 9 | Drafted |
 | CLXIII — Trend Micro Certification Tracks | 9 | Drafted |
 | CLXIV — Pega Certification Tracks | 9 | Drafted |
+| CLXV — Informatica Certification Tracks | 9 | Drafted |
+| CLXVI — Boomi Certification Tracks | 9 | Drafted |
+| CLXVII — Automation Anywhere Certification Tracks | 9 | Drafted |
+| CLXVIII — SAS Certification Tracks | 9 | Drafted |
+| CLXIX — Hitachi Vantara Certification Tracks | 9 | Drafted |
+| CLXX — Teradata Certification Tracks | 9 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
-| CMXCIX — Reference Library | 9 | Drafted |
+| CMXCIX — Reference Library | 10 | Drafted |
 
-**Total declared chapters:** 1594 of 1594 drafted (100%). Every volume has a
+**Total declared chapters:** 1649 of 1649 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

@@ -506,6 +506,109 @@ config system accprofile
 end
 ```
 
+### Lab 4.7 — Deploying the FortiGate-VM appliance (Topic: FortiGate-VM deployment)
+
+**Objective:** Stand up a FortiGate-VM from a downloaded image, complete the
+first-boot console login, reach the GUI on the default management address, and
+confirm the evaluation-license state — the appliance that Labs 4.1–4.6 assume
+is already running.
+
+**Prerequisites (this lab only):** a hypervisor — EVE-NG, KVM/QEMU (libvirt),
+Proxmox VE, or GNS3 — and a FortiGate-VM image such as
+`fortinet-FGT-v7.6.2.F-build3462.tgz` (the EVE-NG package: FortiOS 7.6.2, build
+3462) or the equivalent `FGT_VM64_KVM-v7.6.2.F-build3462-FORTINET.out.kvm.zip`
+(the KVM qcow2 disk). **Cost:** none — FortiGate-VM boots in evaluation mode
+with no purchased license.
+
+**Step 1 — Place the image where the hypervisor can find it.** On EVE-NG the
+qemu image *directory name is the version string* and the disk must be
+`virtioa.qcow2`:
+
+```text
+mkdir -p /opt/unetlab/addons/qemu/fortinet-FGT-v7.6.2.F-build3462
+cd /opt/unetlab/addons/qemu/fortinet-FGT-v7.6.2.F-build3462
+tar zxf /root/fortinet-FGT-v7.6.2.F-build3462.tgz --strip-components=1
+ls -1                       # expect: virtioa.qcow2
+/opt/unetlab/wrappers/unl_wrapper -a fixpermissions
+```
+
+On KVM or Proxmox, unzip the `.out.kvm.zip` and import the qcow2 as the VM's
+disk instead:
+
+```text
+unzip FGT_VM64_KVM-v7.6.2.F-build3462-FORTINET.out.kvm.zip   # -> fortios.qcow2
+# Proxmox: create a diskless VM (id 900), then attach the imported disk:
+qm importdisk 900 fortios.qcow2 local-lvm
+qm set 900 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-900-disk-0
+```
+
+**Step 2 — First-boot console login.** Boot the VM and open its console.
+FortiGate-VM ships with username `admin` and an **empty** password; FortiOS 7.6
+forces a password change on first login:
+
+```text
+FortiGate-VM64-KVM login: admin
+Password:                       # empty — press Enter
+You are forced to change your password. Please input a new password.
+New Password: ********
+Confirm Password: ********
+```
+
+**Step 3 — Confirm the build and the VM/eval-license state:**
+
+```text
+get system status
+```
+
+**Expected result:** the header reports the image and its evaluation state:
+
+```text
+Version: FortiGate-VM64-KVM v7.6.2,build3462 (GA.F)
+Serial-Number: FGVMEV0000000000
+License Status: Warning
+VM Resources: 1 CPU/1 allowed, 1024 MB RAM/2048 MB allowed
+```
+
+The `FGVMEV` serial, `License Status: Warning`, and the capped `1 CPU allowed`
+are normal for an unlicensed FortiGate-VM — it runs, but vCPU count and
+throughput stay limited until a `.lic` is installed.
+
+**Step 4 — Reach the GUI.** FortiGate-VM defaults `port1` to `192.168.1.99/24`
+with management access already enabled:
+
+```text
+show system interface port1
+    edit "port1"
+        set ip 192.168.1.99 255.255.255.0
+        set allowaccess ping https ssh http fgfm
+    next
+```
+
+Put a host on that subnet and browse to `https://192.168.1.99`; the FortiOS
+login page loads. If your hypervisor instead bridges `port1` to a DHCP network,
+read the leased address with `get system interface physical | grep -A1 port1`.
+
+**Step 5 (optional) — Install the VM license** to leave evaluation mode. Upload
+the `.lic` from *System > FortiGuard > VM License* in the GUI, or from the CLI:
+
+```text
+execute restore vmlicense tftp FGVM.lic 10.10.10.5
+get system status | grep -i "License Status"     # -> License Status: Valid
+```
+
+**Expected result:** with a valid `.lic`, `License Status: Valid`, the vCPU cap
+rises to the entitlement you purchased, and FortiGuard contracts appear — which
+Lab 4.2 then verifies.
+
+**Negative test:** boot the VM with only 512 MB of RAM, or point the hypervisor
+at the `.out` upgrade file instead of the full disk image; FortiOS fails to
+start or comes up in a limited conserve-mode state — the full disk image and the
+vendor-minimum resources (≥ 1 vCPU and ≥ 2 GB RAM for FortiOS 7.6) are what a
+healthy first boot needs.
+
+**Cleanup:** snapshot the freshly-deployed VM as your lab baseline, or
+`execute factoryreset` to hand a known-clean appliance to Lab 4.1.
+
 ## Lab Verification
 
 Complete this sign-off once the lab has been run end to end, including the

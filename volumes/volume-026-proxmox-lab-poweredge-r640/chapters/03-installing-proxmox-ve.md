@@ -251,8 +251,8 @@ boot mirror with a plain filesystem.
 
 ```bash
 # After reboot, from your workstation:
-ssh root@192.168.10.20 'hostname; pveversion'
-# Web UI: https://192.168.10.20:8006  (log in as root@pam)
+ssh root@10.30.161.10 'hostname; pveversion'
+# Web UI: https://10.30.161.10:8006  (log in as root@pam)
 ```
 
 **Expected result:** SSH and the web UI at port 8006 respond, and `pveversion` prints the installed

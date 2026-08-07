@@ -1,0 +1,43 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Chapter 10 lab flow: software-inventory rows verified against the version baseline and the vendors' own official sources, with a negative test against unofficial download mirrors</title>
+  <desc>
+    Five products spanning all three access classes are selected from this chapter's tables and their baseline versions recorded, then confirmed to match the repository's authoritative SOFTWARE_VERSIONS.md baseline (or noted as intentionally current-release for the unpinned open-source tools). Each product's official source is opened and checked so the domain is the vendor or project's own and the access class is correct: a Free source offers a public download, an Entitlement source is the vendor's public parent product or support page because the download itself is login-walled, and a Cloud row has no installer at all. Any source that has moved gets a corrected row drafted. As a negative test, an attempt to locate a non-vendor free download of an Entitlement product on a file-sharing site confirms the inventory links only official, vendor-owned locations, a security control. A review-trigger recommendation, such as a vendor acquisition moving a download portal, closes the exercise.
+  </desc>
+  <defs>
+    <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
+    <marker id="arrow-mgmt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#33415c"/></marker>
+    <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 10 Hands-On Lab: The Software Inventory Is Audited Against Its Baseline and Live Sources</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Five rows spanning Free, Entitlement, and Cloud are checked against SOFTWARE_VERSIONS.md and each vendor's own official source, with gated downloads pointed at the public parent page</text>
+  <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="180.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">5 baseline versions recorded</text>
+  <text x="180.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">(Free, Entitlement, Cloud)</text>
+  <text x="180.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">vs SOFTWARE_VERSIONS.md</text>
+  <rect x="360" y="130" width="240" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="480.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Official source checked</text>
+  <text x="480.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">vendor's own domain</text>
+  <text x="480.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">gated → public parent page</text>
+  <line x1="300" y1="185" x2="360" y2="185" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <rect x="700" y="130" width="220" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="810.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Access class verified</text>
+  <text x="810.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Free / Entitlement / Cloud</text>
+  <text x="810.0" y="207.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">moved source → corrected row</text>
+  <line x1="600" y1="185" x2="700" y2="185" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <rect x="360" y="300" width="400" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="560.0" y="332.2" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">Negative Test</text>
+  <text x="560.0" y="350.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">seek a non-vendor 'free download'</text>
+  <text x="560.0" y="368.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">of an Entitlement product</text>
+  <text x="560.0" y="386.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">→ absent; only official sources linked</text>
+  <line x1="480" y1="240" x2="480" y2="300" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <rect x="60" y="460" width="860" height="90" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="490.0" y="500.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">versions are owned by SOFTWARE_VERSIONS.md; this chapter adds the official source and access class,</text>
+  <text x="490.0" y="518.0" text-anchor="middle" font-size="11.5" font-weight="400" fill="#374151">linking only vendor-owned locations (public parent pages where the download is gated) — a security control.</text>
+  <line x1="60" y1="590" x2="100" y2="590" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
+  <text x="108" y="594" font-size="11" fill="#33415c">Baseline versions</text>
+  <line x1="291" y1="590" x2="331" y2="590" stroke="#166534" stroke-width="1.75" marker-end="url(#arrow-alt)"/>
+  <text x="339" y="594" font-size="11" fill="#166534">Official source + access class</text>
+  <line x1="639" y1="590" x2="679" y2="590" stroke="#b91c1c" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow-warn)"/>
+  <text x="687" y="594" font-size="11" fill="#b91c1c">Only official sources linked</text>
+</svg>

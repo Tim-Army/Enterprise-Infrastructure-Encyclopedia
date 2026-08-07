@@ -384,4 +384,52 @@ def ch09():
     c.save(f"{OUT}/chapter-09-capstone-reference-governance-audit-flow.svg")
 
 
-ch01(); ch02(); ch03(); ch04(); ch05(); ch06(); ch07(); ch08(); ch09()
+def ch10():
+    c = Canvas(960, 620,
+        title="Chapter 10 Hands-On Lab: The Software Inventory Is Audited Against Its Baseline and Live Sources",
+        subtitle="Five rows spanning Free, Entitlement, and Cloud are checked against SOFTWARE_VERSIONS.md and each vendor's own official source, with gated downloads pointed at the public parent page",
+        svg_title="Chapter 10 lab flow: software-inventory rows verified against the version baseline and the vendors' own official sources, with a negative test against unofficial download mirrors",
+        svg_desc="Five products spanning all three access classes are selected from this chapter's tables and "
+                  "their baseline versions recorded, then confirmed to match the repository's authoritative "
+                  "SOFTWARE_VERSIONS.md baseline (or noted as intentionally current-release for the unpinned "
+                  "open-source tools). Each product's official source is opened and checked so the domain is the "
+                  "vendor or project's own and the access class is correct: a Free source offers a public "
+                  "download, an Entitlement source is the vendor's public parent product or support page because "
+                  "the download itself is login-walled, and a Cloud row has no installer at all. Any source that "
+                  "has moved gets a corrected row drafted. As a negative test, an attempt to locate a non-vendor "
+                  "free download of an Entitlement product on a file-sharing site confirms the inventory links "
+                  "only official, vendor-owned locations, a security control. A review-trigger recommendation, "
+                  "such as a vendor acquisition moving a download portal, closes the exercise.")
+    c.node_box(60, 130, 240, 110, "mgmt", [
+        Line("5 baseline versions recorded", 12.5, 700, "#111827"),
+        Line("(Free, Entitlement, Cloud)", 10.5, 400, "#374151"),
+        Line("vs SOFTWARE_VERSIONS.md", 10.5, 400, "#374151"),
+    ])
+    c.node_box(360, 130, 240, 110, "alt", [
+        Line("Official source checked", 12.5, 700, "#111827"),
+        Line("vendor's own domain", 10.5, 700, "#14532d"),
+        Line("gated → public parent page", 10.5, 400, "#374151"),
+    ])
+    c.connector(300, 185, 360, 185, "mgmt")
+    c.node_box(700, 130, 220, 110, "alt", [
+        Line("Access class verified", 12.5, 700, "#111827"),
+        Line("Free / Entitlement / Cloud", 10.5, 400, "#374151"),
+        Line("moved source → corrected row", 10.5, 400, "#374151"),
+    ])
+    c.connector(600, 185, 700, 185, "alt")
+    c.node_box(360, 300, 400, 110, "warn", [
+        Line("Negative Test", 12, 700, "#7f1d1d"),
+        Line("seek a non-vendor 'free download'", 10.5, 700, "#7f1d1d"),
+        Line("of an Entitlement product", 10.5, 700, "#7f1d1d"),
+        Line("→ absent; only official sources linked", 10.5, 700, "#7f1d1d"),
+    ])
+    c.connector(480, 240, 480, 300, "warn")
+    c.node_box(60, 460, 860, 90, "neutral", [
+        Line("versions are owned by SOFTWARE_VERSIONS.md; this chapter adds the official source and access class,", 11.5, 400, "#374151"),
+        Line("linking only vendor-owned locations (public parent pages where the download is gated) — a security control.", 11.5, 400, "#374151"),
+    ])
+    c.legend(60, 590, [("mgmt", "Baseline versions"), ("alt", "Official source + access class"), ("warn", "Only official sources linked")])
+    c.save(f"{OUT}/chapter-10-software-inventory-download-provenance-flow.svg")
+
+
+ch01(); ch02(); ch03(); ch04(); ch05(); ch06(); ch07(); ch08(); ch09(); ch10()

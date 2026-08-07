@@ -140,6 +140,47 @@ bridge vlan show                       # lists VIDs on vmbr1, including 3
 cat /sys/class/net/vmbr1/bridge/vlan_filtering   # 1 = VLAN-aware
 ```
 
+### 4. The same bridge in the Proxmox web UI
+
+The interactive path builds the identical configuration through the web UI,
+which is often how it is done in practice:
+
+1. Navigate to the node's network panel: **Server View → `proxmox-1` →
+   System → Network**. This lists the interfaces, bridges, and any pending
+   changes.
+
+   ![The Proxmox VE System to Network panel for node proxmox-1: the Server View tree, the System navigation with Network selected, the Create, Revert, Edit, Remove, and Apply Configuration toolbar, and the interface table listing nic0 through nic4, the vmbr0 management bridge on 10.30.161.10/24, and the VLAN-aware vmbr1 trunk bridge on nic2.](../../../diagrams/volume-026-proxmox-lab-poweredge-r640/chapter-05-webui-1-system-network-panel.svg)
+
+2. **Create the bridge.** Click **Create → Linux Bridge**, then configure the
+   bridge's port settings in the dialog — set **Bridge ports** to the trunk
+   NIC (`port1`), tick **VLAN aware**, and (for the trunk bridge) leave the
+   bridge itself without an IP.
+
+   ![The Create dropdown open on the Network panel with Linux Bridge highlighted, above the Linux Bond, Linux VLAN, and OVS bridge options.](../../../diagrams/volume-026-proxmox-lab-poweredge-r640/chapter-05-webui-2-create-linux-bridge.svg)
+
+3. **Add the VLANs — with spaces, not commas.** In the bridge's **VLAN IDs**
+   field, list the allowed VLANs **space-separated** (`3 6 10 200 202`) or as
+   ranges (`2-4094`). Proxmox's VLAN-ID field parses **spaces**, not commas —
+   a comma-separated list (`3,6,10`) is a common mistake that is rejected or
+   misread. This is the GUI equivalent of `bridge-vids 3 6 10 200 202` above.
+
+   ![The Edit Linux Bridge dialog for vmbr1: Autostart and VLAN aware ticked, Bridge ports set to nic2, MTU 1500, and the VLAN IDs field holding 3 6 99 entered space-separated rather than comma-separated.](../../../diagrams/volume-026-proxmox-lab-poweredge-r640/chapter-05-webui-3-edit-bridge-vlan-ids.svg)
+
+4. **Apply the pending change.** Proxmox **stages** network edits rather than
+   applying them live — the panel shows them as *pending* until you click the
+   **Apply Configuration** button. Nothing takes effect until you do.
+
+   ![The Network toolbar with the Apply Configuration button active and a pending vmbr1 row, showing that Proxmox stages network edits until they are applied.](../../../diagrams/volume-026-proxmox-lab-poweredge-r640/chapter-05-webui-4-apply-configuration.svg)
+
+5. **Confirm.** Click **Yes** in the confirmation prompt to apply the pending
+   changes. (`Apply Configuration` runs the equivalent of `ifreload -a`.)
+
+   ![The Confirm dialog asking whether to apply pending network changes, with Yes and No buttons.](../../../diagrams/volume-026-proxmox-lab-poweredge-r640/chapter-05-webui-5-confirm-apply.svg)
+
+Because the change is only staged until applied, you can review a batch of
+edits and commit them together — but remember to apply, or the new bridge and
+VLANs will not be active despite appearing configured.
+
 ## Validation and Troubleshooting
 
 ### Confirming the network is correctly split and trunked
@@ -234,8 +275,8 @@ ip -br addr show vmbr0
 # vmbr0 in /etc/network/interfaces (bridge over the management NIC):
 auto vmbr0
 iface vmbr0 inet static
-    address 192.168.10.20/24
-    gateway 192.168.10.1
+    address 10.30.161.10/24
+    gateway 10.30.161.1
     bridge-ports eno1
     bridge-stp off
     bridge-fd 0
@@ -258,8 +299,8 @@ VMs then have no virtual switch to attach to — the bridge is what lets VMs sha
 # Make vmbr0 VLAN-aware so a VM's NIC can specify any VLAN tag on the trunk:
 auto vmbr0
 iface vmbr0 inet static
-    address 192.168.10.20/24
-    gateway 192.168.10.1
+    address 10.30.161.10/24
+    gateway 10.30.161.1
     bridge-ports eno1
     bridge-vlan-aware yes
     bridge-vids 2-4094
@@ -288,7 +329,7 @@ a trunk carrying that VID.
 # A VLAN subinterface on the trunk for node traffic on VLAN 20 (e.g. backup network):
 auto vmbr0.20
 iface vmbr0.20 inet static
-    address 192.168.20.20/24
+    address 10.30.20.20/24
 # (Alternatively, a dedicated bridge vmbr1 on a separate NIC for isolation.)
 ```
 
@@ -309,8 +350,8 @@ classes.
 ```bash
 ip -br link show type bridge
 bridge vlan show
-ping -c2 192.168.10.1                       # gateway on mgmt VLAN
-ping -c2 -I vmbr0.20 192.168.20.1 2>/dev/null   # gateway on VLAN 20 (if configured)
+ping -c2 10.30.161.1                       # gateway on mgmt VLAN
+ping -c2 -I vmbr0.20 10.30.20.1 2>/dev/null   # gateway on VLAN 20 (if configured)
 ```
 
 **Expected result:** the bridges are up, the expected VLANs are allowed, and gateways on each VLAN
