@@ -180,11 +180,12 @@ does not by itself verify every technical claim in it.
 | CLXVIII — SAS Certification Tracks | 9 | Drafted |
 | CLXIX — Hitachi Vantara Certification Tracks | 9 | Drafted |
 | CLXX — Teradata Certification Tracks | 9 | Drafted |
+| CM — Tim's Lab Gear | 3 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 10 | Drafted |
 
-**Total declared chapters:** 1649 of 1649 drafted (100%). Every volume has a
+**Total declared chapters:** 1652 of 1652 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

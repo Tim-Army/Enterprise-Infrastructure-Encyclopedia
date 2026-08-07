@@ -5889,6 +5889,22 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your Teradata Path"
         path: volumes/volume-170-teradata-certifications/chapters/09-choosing-your-teradata-path.md
+  - id: volume-900
+    number: "CM"
+    slug: volume-900-tims-lab-gear
+    title: "Tim's Lab Gear"
+    chapter_count: 3
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Equipment Considerations"
+        path: volumes/volume-900-tims-lab-gear/chapters/01-equipment-considerations.md
+      - id: 02
+        title: "Chapter 02: Current Equipment"
+        path: volumes/volume-900-tims-lab-gear/chapters/02-current-equipment.md
+      - id: 03
+        title: "Chapter 03: Current Diagrams"
+        path: volumes/volume-900-tims-lab-gear/chapters/03-current-diagrams.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices

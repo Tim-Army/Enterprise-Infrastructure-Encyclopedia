@@ -1,0 +1,35 @@
+<svg viewBox="0 0 640 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <title>Tim's Lab rack elevation</title>
+  <desc>
+    A rack elevation with, from top: the Cisco Nexus 9300 switch, five Dell PowerEdge servers in rack units ru08 through ru12, and the Unraid NAS, each labeled with its role and management address.
+  </desc>
+  <defs>
+  </defs>
+  <rect x="0" y="0" width="640" height="600" fill="#ffffff"/>
+  <text x="320.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Tim's Lab — Rack Elevation</text>
+  <text x="320.0" y="50" text-anchor="middle" font-size="10.4" fill="#4b5563">Physical placement: switch on top, five PowerEdge hosts (ru08–ru12), and the Unraid NAS. Illustrative ordering.</text>
+  <rect x="126" y="86" width="408" height="452" rx="6" fill="none" stroke="#6b7280" stroke-width="1.5"/>
+  <line x1="138" y1="86" x2="138" y2="538" stroke="#93a3b8" stroke-width="1"/>
+  <line x1="522" y1="86" x2="522" y2="538" stroke="#93a3b8" stroke-width="1"/>
+  <rect x="150" y="96" width="360" height="54" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="330.0" y="118.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">nexus-9k-1</text>
+  <text x="330.0" y="136.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Cisco Nexus 9300 · OOB mgmt0 10.30.99.250</text>
+  <rect x="150" y="158" width="360" height="54" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
+  <text x="330.0" y="180.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">ru12 · proxmox-1</text>
+  <text x="330.0" y="198.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">PowerEdge R640 · Proxmox VE · 10.30.161.10</text>
+  <rect x="150" y="220" width="360" height="54" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="330.0" y="242.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">ru11 · host (TBD)</text>
+  <text x="330.0" y="260.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">PowerEdge (TBD) · 4×10G</text>
+  <rect x="150" y="282" width="360" height="54" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="330.0" y="304.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">ru10 · host (TBD)</text>
+  <text x="330.0" y="322.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">PowerEdge (TBD) · 4×10G</text>
+  <rect x="150" y="344" width="360" height="54" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="330.0" y="366.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">ru09 · host (TBD)</text>
+  <text x="330.0" y="384.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">PowerEdge (TBD) · 4×10G</text>
+  <rect x="150" y="406" width="360" height="54" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>
+  <text x="330.0" y="428.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">ru08 · host (TBD)</text>
+  <text x="330.0" y="446.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">PowerEdge (TBD) · 4×10G</text>
+  <rect x="150" y="468" width="360" height="54" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="330.0" y="490.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">unraid-1</text>
+  <text x="330.0" y="508.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Unraid NAS · 192.168.1.209 · VLAN 1</text>
+</svg>
