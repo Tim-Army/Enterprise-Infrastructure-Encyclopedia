@@ -455,6 +455,92 @@ that rewrites your source address, so the FortiGate sees an address outside ever
 `trusthost`) is only recoverable while you still have a way in. The out-of-band console
 (iDRAC or the hypervisor console) is the last-resort recovery path.
 
+**Add email-OTP MFA (when FortiToken is not available).** FortiToken Mobile is the
+preferred second factor, but its two free licenses require the FortiGate to be
+**registered with FortiCare** and able to reach Fortinet's token server — on an
+unregistered evaluation VM that server is unreachable (`diagnose fortitoken info` shows
+`Token server status: unreachable` and `0` tokens). Email OTP has no such dependency; it
+needs only a reachable SMTP server.
+
+```text
+config system email-server
+    set type custom
+    set security starttls
+    set port 587
+    set server mail.example.com
+    set authenticate enable
+    set username otp@example.com
+    set password <smtp-password>
+    set source-ip <fortigate-mgmt-ip>
+end
+config system admin
+    edit admin
+        set two-factor email
+        set email-to admin@example.com
+    next
+end
+config system global
+    set two-factor-email-expiry 300
+end
+```
+
+**Expected result:** a password login (GUI, or SSH with a password) now prompts for an
+emailed six-digit code; entering it within the expiry window completes the login.
+`execute log display` on the event log shows `Two-factor authentication code sent`
+followed by `Admin login successful`.
+
+**Four gotchas this exercises, all real on FortiOS 7.6:**
+
+- **`set type custom` is mandatory.** `system email-server` defaults to the FortiGuard
+  message relay (which needs FortiCare registration); without `type custom` your SMTP
+  settings are silently ignored.
+- **Set `port` *after* `security`.** Setting `security` (or `type`) resets the port to
+  that mode's default (`25`), so if you set the port first it is clobbered — set it last.
+- **`two-factor-email-expiry` defaults to 60 seconds** — the emailed code's lifetime. With
+  mail-delivery latency that is tight; raise it (30–600) for a workable window. It couples
+  to the lockout: an expired code is a *failed* login, and `admin-lockout-threshold` such
+  failures lock the account for `admin-lockout-duration` seconds, so a too-short code
+  window cascades into a lockout loop.
+- **SSH public-key auth bypasses two-factor.** An admin with `ssh-public-key1` set logs in
+  over SSH with the key alone, no OTP — email OTP guards *password* logins (GUI and
+  SSH-with-password), not key logins. Account for that in your access model.
+
+**Negative test:** set `two-factor-email-expiry` very low and log in slowly; the code
+expires mid-entry and the login fails — trip that three times and the lockout engages,
+demonstrating why the code window and the lockout threshold must be tuned together.
+
+**Stronger second factors when you have the infrastructure (RSA SecurID, passkeys/FIDO2).**
+Email OTP is the lab-friendly native factor, but a production estate usually wants a
+phishing-resistant token, or one it has already deployed. Two common requests — an **RSA
+SecurID** token generator, or Apple/platform **passkeys** — are both supported, but neither
+is a token type you configure *on* the FortiGate. Each is brokered by an external system
+the FortiGate trusts, and knowing which broker to reach for is the point:
+
+- **RSA SecurID — via RADIUS.** FortiOS's native second factors are FortiToken (Mobile or
+  hardware), FortiToken Cloud, email, and SMS; RSA is not among them. Instead, point the
+  FortiGate at the **RSA Authentication Manager** RADIUS interface (`config user radius`),
+  then bind the admin to that server for remote authentication. RSA validates the passcode —
+  a hardware fob or the RSA soft-token app — typically as a RADIUS *challenge* presented
+  after the password. A generic RSA or TOTP token **cannot** be imported as a local
+  FortiToken (FortiToken accepts only Fortinet-provisioned seeds), so RSA is always
+  RADIUS-delegated, never a local token.
+- **Passkeys / FIDO2 (including Apple passkeys) — via SAML.** FortiOS 7.6 supports FIDO2
+  administrator login with the FortiGate acting as the **WebAuthn relying party** and
+  delegating the login to a SAML identity provider. Fortinet's reference path uses
+  [FortiAuthenticator as the SAML IdP](https://docs.fortinet.com/document/fortiauthenticator/6.6.0/examples/795009/logging-in-to-fortigate-as-an-administrator-using-fido2-authentication);
+  any passkey-capable IdP (Microsoft Entra ID, Okta, Google) works the same way. Because
+  Apple passkeys are ordinary FIDO2 credentials synced through iCloud Keychain, a Touch ID /
+  Face ID gesture at the IdP satisfies the SAML assertion the FortiGate trusts — configure it
+  under the admin's SAML/remote-auth binding
+  ([administrator account options](https://docs.fortinet.com/document/fortigate/7.6.4/administration-guide/14906/administrator-account-options)).
+  If you instead use **FortiToken Cloud / FortiIdentity Cloud** as the MFA back-end, it
+  supports passkeys directly, including hardware FIDO keys such as the FortiToken 410.
+
+Both paths need infrastructure this evaluation VM lacks — an RSA Authentication Manager, or
+an IdP plus a SAML trust — which is exactly why email OTP is the right factor for *this* lab.
+Delegating admin login to FortiAuthenticator over SAML and signing in with a passkey is the
+natural production capstone once that infrastructure exists.
+
 **Cleanup:** widen `trusthost1` back to your admin range if you locked yourself to a
 lab subnet.
 
