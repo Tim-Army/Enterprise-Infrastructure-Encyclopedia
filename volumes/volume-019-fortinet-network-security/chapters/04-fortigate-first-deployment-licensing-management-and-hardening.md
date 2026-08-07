@@ -208,6 +208,46 @@ purely local test (each host pinging its own gateway) can pass while an inter-VL
 between two hosts fails on the very same box — see the inter-VLAN policy lab in
 [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md).
 
+**Gotcha — the LENC (low-encryption) image cannot be licensed at all.** Fortinet publishes
+two builds of every FortiGate-VM image: the standard build
+(`FGT_VM64_KVM-...-FORTINET.out.kvm.zip`) and a **low-encryption (LENC)** build for
+export-restricted markets. A LENC build tops out below TLS 1.2 — and Fortinet's FortiGuard
+and FortiCare servers now *require* TLS 1.2 — so on a LENC image every cloud connection
+fails with `SSL_connect ... tlsv1 alert protocol version` in
+`diagnose debug application update -1`, and the GUI's license-activation dialog **silently
+does nothing** when OK is clicked. The confirming tell: `set strong-crypto enable` and
+`set ssl-min-proto-version TLSv1-2` both fail with `command parse error` — the strong-crypto
+code is compiled out of the image, so no setting can fix it. The only cure is redeploying
+with the standard image (back up with `show`, swap the boot disk, restore). Check *before*
+deploying; the LENC trap costs a full rebuild.
+
+**Gotcha — the free evaluation license enforces a 3-interface budget, and built-ins count.**
+The FGVMEV evaluation permits at most **three interface entries** (plus three policies and
+three routes), and the factory defaults already spend the budget: `port1`, `port2`, the
+switch-controller's `fortilink` aggregate, and the wireless mesh VAP `default-mesh` are all
+table entries. Creating a VLAN sub-interface then fails with
+`Command fail. Return code -4 (reached the maximum number of entries)` — and worse, when the
+license first applies, FortiOS **purges over-budget interfaces at boot**, which can silently
+delete VLAN interfaces (and orphan the policies referencing them) that worked minutes
+earlier. Two remediations, both real on 7.6:
+
+- *Reclaim slots from feature-owned interfaces.* `fortilink` deletes only after its bindings
+  are cleared (`config system ntp → set server-mode disable`, delete the FortiSwitch DHCP
+  server) and `set switch-controller disable` in `system global`. `default-mesh` is a WiFi
+  VAP — deletable only from `config wireless-controller vap`, as its delete error hints. The
+  `*.root` tunnel interfaces (`ssl.root`, `naf.root`, `l2t.root`) are permanent ("A tunnel
+  interface cannot be deleted directly") but do not consume the budget. Use
+  `diagnose sys cmdb refcnt show system.interface <name>` to find what pins an interface —
+  though note a firewall policy reference reports through the delete error
+  ("used by other 1 entries"), not always through refcnt.
+- *Move VLAN tagging to the hypervisor.* Even with slots reclaimed, two VLAN sub-interfaces
+  plus their parent trunk cannot fit a 3-slot budget (parent + two VLANs = 3 leaves no
+  management port). The escape hatch is to give the VM one vNIC per segment as an **access
+  port** — the hypervisor applies the VLAN tag (`qm set <vmid> --netN virtio,bridge=<br>,tag=<vlan>`
+  on Proxmox) — and address the physical `portN` directly. Three physical ports, zero VLAN
+  sub-interfaces, same routed topology; see Lab 5.1's variant note in
+  [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md).
+
 ### Changing the default administrator password and enabling a password policy
 
 ```text

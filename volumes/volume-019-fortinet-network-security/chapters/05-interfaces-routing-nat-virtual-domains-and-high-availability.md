@@ -432,6 +432,41 @@ simplify policy across many interfaces.
 **Negative test:** reference `port2` directly in a policy after adding it to a zone;
 FortiOS rejects it — a zoned interface is addressed only through its zone.
 
+**Variant — hypervisor-tagged access ports (when VLAN sub-interfaces will not fit).** On a
+FortiGate-VM under the evaluation license, the 3-interface budget (see the licensing gotchas
+in [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)) cannot
+hold a trunk parent plus two VLAN sub-interfaces alongside the management port. The same
+routed topology fits if the **hypervisor applies the tags** instead: give the VM one vNIC per
+segment as an access port (Proxmox: `qm set <vmid> --net1 virtio,bridge=vmbr2,tag=200` and
+`--net2 ...,tag=202`), reboot so FortiOS enumerates the new port, and address the physical
+interfaces directly — zero `vlanid` anywhere in FortiOS:
+
+```text
+config system interface
+    edit port2
+        set mode static
+        set ip 10.200.0.1 255.255.255.0
+        set allowaccess ping
+        set role lan
+    next
+    edit port3
+        set mode static
+        set ip 10.202.0.1 255.255.255.0
+        set allowaccess ping
+        set role lan
+    next
+end
+```
+
+Do not skip `set role lan`: an interface without a role trips the **Security Rating** insight
+"Interfaces that do not have a role assigned to them" as a standing orange banner in the GUI,
+and the role also drives sensible GUI defaults for the interface. Firewall policies then
+reference `port2`/`port3` exactly as they would `vlan200`/`vlan202`. The trade-off is visibility: the FortiGate no longer sees or enforces
+tags, so a misconfigured hypervisor bridge (wrong `tag=`) silently moves a segment — the
+switch/hypervisor layer becomes part of your security boundary. A successful cross-segment
+ping shows `ttl=63`: the decrement from 64 is the proof the traffic was *routed* through the
+firewall rather than switched around it.
+
 **Cleanup:**
 
 ```text
