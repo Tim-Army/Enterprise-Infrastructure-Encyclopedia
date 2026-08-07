@@ -191,6 +191,23 @@ used; the CLI equivalent for a license file already staged is:
 FGT-LAB-01 # execute restore vmlicense <TFTP_or_local_path>
 ```
 
+**Gotcha — an unlicensed FortiGate-VM forwards no traffic (FortiOS 7.6).** Until a VM
+license is applied, `get system status` reports `License Status: Invalid` and caps the
+usable resources (for example `2 CPU/1 allowed`). In this state the appliance still accepts
+*management and locally-destined* traffic — you can SSH in, and hosts can ping the
+FortiGate's own interface IPs — but it **silently drops everything it must forward through a
+firewall policy.** The signature is unmistakable in a flow trace: a forwarded packet reaches
+`__vf_ip_route_input_rcu` ("find a route ... via `<egress>`") and the trace then simply
+stops — the forward-policy engine (`iprope_check`) is never reached, no session installs
+(`diagnose sys session list` shows `total session: 0`), and widening the policy service to
+`ALL` changes nothing. It reads exactly like a broken firewall rule, but the policy is fine;
+the license is the block. Register the VM serial (an evaluation serial begins `FGVMEV`) with
+FortiCare to activate the free time-limited evaluation license, apply it with
+`execute restore vmlicense`, and the identical configuration begins forwarding. This is why a
+purely local test (each host pinging its own gateway) can pass while an inter-VLAN test
+between two hosts fails on the very same box — see the inter-VLAN policy lab in
+[Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md).
+
 ### Changing the default administrator password and enabling a password policy
 
 ```text
