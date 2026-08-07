@@ -402,9 +402,10 @@ config system admin
     next
 end
 config system global
-    set admin-https-redirect enable
     set admin-scp enable
     set admintimeout 5
+    set admin-lockout-threshold 3
+    set admin-lockout-duration 60
 end
 config system interface
     edit port1
@@ -415,12 +416,44 @@ end
 ```
 
 **Expected result:** admin login is refused from any source outside `10.10.10.0/24`,
-plain HTTP admin is gone, and idle sessions expire in 5 minutes — the FortiOS hardening
-baseline for management-plane exposure.
+plain HTTP admin is gone, idle sessions expire in 5 minutes, and an admin account locks
+for 60 seconds after 3 failed logins — the FortiOS hardening baseline for management-plane
+exposure.
+
+**Version note:** older FortiOS had `set admin-https-redirect enable` under `config
+system global` to bounce HTTP admin to HTTPS; **FortiOS 7.6 removed it**. It is
+unnecessary here anyway — dropping `http` from the interface `allowaccess` above leaves no
+plain-HTTP admin listener to redirect, which is the stronger posture.
 
 **Negative test:** leave `allowaccess http telnet` on the WAN interface; the management
 plane is reachable in clear text from the internet — exactly what trusted-host + HTTPS
 hardening removes.
+
+**Common mistake — a mistyped trusted-host subnet.** The CLI accepts any syntactically
+valid network without warning, so a single wrong or dropped digit trusts the wrong one —
+`set trusthost2 10.30.9.0 255.255.255.0` when you meant `10.30.99.0`, say. It fails two
+ways: if the fat-fingered range is your *only* trusted entry and it excludes your
+workstation, your next login is refused (lockout); and if it does **not** lock you out,
+you have quietly trusted a network you never intended, or left a dead entry that gives
+false confidence the source is covered. Nothing flags it — you catch it only by reading
+`show system admin` back, line by line. Fix it by clearing the bad entry and re-adding the
+correct one, then re-checking:
+
+```text
+config system admin
+    edit admin
+        unset trusthost2
+        set trusthost2 10.30.99.0 255.255.255.0
+    next
+end
+show system admin
+```
+
+The habit that makes this safe: keep your current session open and confirm a **fresh
+login from the trusted subnet** before you rely on the restriction — a typo (or a NAT
+that rewrites your source address, so the FortiGate sees an address outside every
+`trusthost`) is only recoverable while you still have a way in. The out-of-band console
+(iDRAC or the hypervisor console) is the last-resort recovery path.
 
 **Cleanup:** widen `trusthost1` back to your admin range if you locked yourself to a
 lab subnet.
