@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="374" viewBox="0 0 520 374" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="House-style line-art wireframe of the Proxmox Network panel Create dropdown menu open, with Linux Bond highlighted, above Linux Bridge, Linux VLAN, OVS Bridge, OVS Bond, and OVS IntPort.">
+  <title>Proxmox Create → Linux Bond menu</title>
+  <desc>House-style line-art wireframe of the Proxmox Network panel Create dropdown menu open, with Linux Bond highlighted, above Linux Bridge, Linux VLAN, OVS Bridge, OVS Bond, and OVS IntPort.</desc>
+  <rect x="0" y="0" width="520" height="374" fill="#ffffff"/>
+  <text x="24" y="30" text-anchor="start" font-size="15" font-weight="700" fill="#111827">Create → Linux Bond</text>
+  <rect x="24" y="48" width="150" height="290" rx="6" fill="#f4f7fb" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="38" y="74" text-anchor="start" font-size="11" font-weight="400" fill="#374151">Search</text>
+  <text x="38" y="98" text-anchor="start" font-size="11" font-weight="400" fill="#374151">Summary</text>
+  <text x="38" y="122" text-anchor="start" font-size="11" font-weight="400" fill="#374151">Notes</text>
+  <text x="38" y="146" text-anchor="start" font-size="11" font-weight="400" fill="#374151">Shell</text>
+  <text x="38" y="170" text-anchor="start" font-size="11" font-weight="700" fill="#374151">⚙ System</text>
+  <rect x="32" y="190" width="134" height="22" rx="4" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="1.2"/>
+  <text x="52" y="205" text-anchor="start" font-size="11" font-weight="700" fill="#1d4ed8">Network</text>
+  <rect x="200" y="60" width="80" height="24" rx="4" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="1.4"/><text x="240.0" y="76.0" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4ed8">Create ▾</text>
+  <rect x="200" y="90" width="150" height="220" rx="6" fill="#ffffff" stroke="#33415c" stroke-width="1.5"/>
+  <text x="218" y="118" text-anchor="start" font-size="12" font-weight="400" fill="#374151">Linux Bridge</text>
+  <rect x="206" y="135" width="138" height="26" rx="4" fill="#f0faf2" stroke="#166534" stroke-width="1.2"/>
+  <text x="218" y="153" text-anchor="start" font-size="12" font-weight="700" fill="#166534">Linux Bond</text>
+  <text x="218" y="188" text-anchor="start" font-size="12" font-weight="400" fill="#374151">Linux VLAN</text>
+  <text x="218" y="223" text-anchor="start" font-size="12" font-weight="400" fill="#374151">OVS Bridge</text>
+  <text x="218" y="258" text-anchor="start" font-size="12" font-weight="400" fill="#374151">OVS Bond</text>
+  <text x="218" y="293" text-anchor="start" font-size="12" font-weight="400" fill="#374151">OVS IntPort</text>
+  <text x="24" y="344" text-anchor="start" font-size="10" font-weight="400" fill="#166534">Pick Linux Bond, then add its slave NICs and set the mode.</text>
+</svg>

@@ -181,6 +181,68 @@ Because the change is only staged until applied, you can review a batch of
 edits and commit them together — but remember to apply, or the new bridge and
 VLANs will not be active despite appearing configured.
 
+### 5. Bonding two NICs into a resilient bridge uplink (LACP)
+
+A bridge on a single NIC is a single point of failure. Bonding two NICs with
+**LACP (802.3ad)** gives the uplink link redundancy and aggregate throughput,
+provided the switch presents the two ports as one port-channel. The web UI
+builds the bond first; a bridge then uses the *bond* as its port instead of a
+raw NIC.
+
+1. On **System → Network**, click **Create → Linux Bond**.
+
+   ![The Create dropdown open on the Network panel with Linux Bond highlighted, above Linux Bridge, Linux VLAN, and the OVS options.](../../../diagrams/volume-026-proxmox-lab-poweredge-r640/chapter-05-webui-6-create-linux-bond.svg)
+
+2. **Configure the bond.** Set **Name** to `bond2`, list the **Slaves** as
+   `nic3 nic4` — **space-separated, exactly like the VLAN IDs, not commas** —
+   choose **Mode** `LACP (802.3ad)`, and a transmit hash policy such as
+   `layer2+3`. Leave the bond without an IP; it is a bridge port, not an endpoint.
+
+   ![The Edit Linux Bond dialog: Name bond2, Autostart ticked, Slaves nic3 nic4 entered space-separated, Mode LACP (802.3ad), and hash policy layer2+3.](../../../diagrams/volume-026-proxmox-lab-poweredge-r640/chapter-05-webui-7-edit-linux-bond.svg)
+
+3. **Apply the pending change.** Click **Apply Configuration** — the bond is
+   staged until you do.
+
+   ![The Network toolbar with the Apply Configuration button active and a pending row, showing that Proxmox stages network edits until they are applied.](../../../diagrams/volume-026-proxmox-lab-poweredge-r640/chapter-05-webui-4-apply-configuration.svg)
+
+4. **Confirm.** Click **Yes** to apply the pending changes.
+
+   ![The Confirm dialog asking whether to apply pending network changes, with Yes and No buttons.](../../../diagrams/volume-026-proxmox-lab-poweredge-r640/chapter-05-webui-5-confirm-apply.svg)
+
+5. **Put a bridge on the bond.** Run **Create → Linux Bridge** as in section 4,
+   but set **Bridge ports** to `bond2` instead of a raw NIC (tick **VLAN aware**
+   if it carries tagged VLANs), then **Apply Configuration** and **Yes** again.
+
+The same result from the CLI — edit `/etc/network/interfaces`, then `ifreload -a`:
+
+```text
+auto bond2
+iface bond2 inet manual
+    bond-slaves nic3 nic4
+    bond-miimon 100
+    bond-mode 802.3ad
+    bond-xmit-hash-policy layer2+3
+
+auto vmbr2
+iface vmbr2 inet manual
+    bridge-ports bond2
+    bridge-stp off
+    bridge-fd 0
+```
+
+**Apply and test.** After applying, confirm the aggregation actually formed:
+
+```text
+cat /proc/net/bonding/bond2
+```
+
+Expect `Bonding Mode: IEEE 802.3ad Dynamic link aggregation` with both `nic3`
+and `nic4` at `MII Status: up` under the same aggregator ID. If only one slave
+comes up or the aggregator IDs differ, the **switch side is not in a matching
+LACP port-channel** — on the Cisco Nexus the two ports need `channel-group N
+mode active` with the same allowed VLANs, or LACP never negotiates and the bond
+silently falls back to a single active link.
+
 ## Validation and Troubleshooting
 
 ### Confirming the network is correctly split and trunked
