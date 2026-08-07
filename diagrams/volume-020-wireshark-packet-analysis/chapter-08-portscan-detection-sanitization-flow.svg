@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: A Detection Script That Correctly Reports Nothing Once the Scan Pattern Is Removed</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">An authorized SYN scan is detected by its high distinct-port count; the same script run against a sanitized capture finds no pattern left to detect</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12" fill="#4b5563">An authorized SYN scan is detected by its high distinct-port count; the same script run against a sanitized capture finds no pattern left to detect</text>
   <rect x="60" y="130" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="190.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Authorized SYN scan captured</text>
   <text x="190.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">detection one-liner: scanning host</text>

@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Internal Segmentation with Fortinet ISFW and VDOMs</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A FortiGate ISFW enforces zone policies (permit APP-&gt;DB, MGMT-&gt;OT; implicit deny), and the OT tier is isolated in its own VDOM crossed only by a scoped inter-VDOM link</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="10.6" fill="#4b5563">A FortiGate ISFW enforces zone policies (permit APP-&gt;DB, MGMT-&gt;OT; implicit deny), and the OT tier is isolated in its own VDOM crossed only by a scoped inter-VDOM link</text>
   <rect x="330" y="50" width="300" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="68.8" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">FortiGate ISFW  ·  FortiOS</text>
   <text x="480.0" y="82.8" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">firewall policies · VDOMs · implicit deny</text>

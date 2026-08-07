@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: Every Disposition Traces to Linked Evidence, Never to Memory</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Four falsifiable checklist items are validated with captured artifacts, and one deliberate Fail proves the checklist has a real failure path</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.6" fill="#4b5563">Four falsifiable checklist items are validated with captured artifacts, and one deliberate Fail proves the checklist has a real failure path</text>
   <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">4 falsifiable checklist items</text>
   <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">evidence captured per item</text>

@@ -9,7 +9,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: East-West Traffic a Physical TAP Could Never See</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A virtual tap agent tunnels inter-VM traffic to a V Series node; disabling the agent proves acquisition coverage — not the map — was the point of failure</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="11.6" fill="#4b5563">A virtual tap agent tunnels inter-VM traffic to a V Series node; disabling the agent proves acquisition coverage — not the map — was the point of failure</text>
   <rect x="60" y="140" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="170.0" y="181.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Workload VM 1</text>
   <text x="170.0" y="199.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">virtual tap agent installed</text>

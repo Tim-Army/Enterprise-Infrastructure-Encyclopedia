@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: A Scoped Operator Account Is Blocked From the One Setting It Was Never Granted</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A CA-signed certificate replaces the factory self-signed one while a Virtual-Console-only account is confirmed unable to touch network configuration</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12" fill="#4b5563">A CA-signed certificate replaces the factory self-signed one while a Virtual-Console-only account is confirmed unable to touch network configuration</text>
   <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">lab-operator: login + VConsole only</text>
   <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">CSR generated, signed by lab CA</text>

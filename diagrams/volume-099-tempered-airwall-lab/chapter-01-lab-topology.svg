@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="680" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Tempered Airwall HIP Encrypted Overlay</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">aw-gw is the overlay hub and Airwall Gateway; after cloaking the underlay goes dark and protected devices talk only over the encrypted overlay (10.99.0.0/24)</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="11.3" fill="#4b5563">aw-gw is the overlay hub and Airwall Gateway; after cloaking the underlay goes dark and protected devices talk only over the encrypted overlay (10.99.0.0/24)</text>
   <rect x="300" y="68" width="360" height="54" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="90.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Windows 11 Host · Workstation Pro 17</text>
   <text x="480.0" y="108.4" text-anchor="middle" font-size="9.5" font-weight="400" fill="#374151">Airwall admin + 'IT laptop' (attacker, Lab 5.3)</text>

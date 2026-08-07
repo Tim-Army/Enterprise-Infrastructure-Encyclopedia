@@ -11,7 +11,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Practical Certifications (HTB · TCM · INE)</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Three providers, one model — a real exam lab plus a professional report; each spans offensive, defensive/blue, and AI tracks; authorization governs everything</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="11.2" fill="#4b5563">Three providers, one model — a real exam lab plus a professional report; each spans offensive, defensive/blue, and AI tracks; authorization governs everything</text>
   <rect x="230" y="42" width="500" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">Practical, hands-on certification — prove it by doing</text>
   <text x="480.0" y="74.7" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">a real exam lab (network / web / AD / SOC) + a professional report, not multiple-choice</text>

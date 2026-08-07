@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Netskope Certifications (SASE / SSE)</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A free vendor-agnostic SASE Accreditation on-ramp, then NCCSA (NSK101, administer) and NCCSI (integrate) on the Netskope One platform — SSE = CASB + SWG + ZTNA + DLP over NewEdge</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="9.9" fill="#4b5563">A free vendor-agnostic SASE Accreditation on-ramp, then NCCSA (NSK101, administer) and NCCSI (integrate) on the Netskope One platform — SSE = CASB + SWG + ZTNA + DLP over NewEdge</text>
   <rect x="45" y="42" width="870" height="40" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="65.2" text-anchor="middle" font-size="9" font-weight="700" fill="#111827">Netskope One (SASE) = SD-WAN + SSE  |  SSE = CASB (apps) + SWG (web) + ZTNA (private) + DLP (data), over NewEdge</text>
   <rect x="45" y="120" width="270" height="58" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>

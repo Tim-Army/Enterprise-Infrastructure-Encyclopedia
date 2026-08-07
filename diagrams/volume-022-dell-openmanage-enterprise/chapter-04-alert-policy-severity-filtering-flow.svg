@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 4 Hands-On Lab: Severity Filtering Suppresses a Below-Threshold Event Rather Than Forwarding Everything</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A Warning-and-above alert policy forwards a real event to syslog; an identical Critical-only policy correctly stays silent for the same event</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.5" fill="#4b5563">A Warning-and-above alert policy forwards a real event to syslog; an identical Critical-only policy correctly stays silent for the same event</text>
   <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Alert policy: Warning+</text>
   <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">SNMP agent stopped → event fires</text>

@@ -9,7 +9,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: A Hybrid Kubernetes Cluster That Degrades Safely When the VPN Fails</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Losing the CLOUD1 tunnel drops one worker to NotReady; the control plane and workload availability both survive because neither depended on the VPN</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12" fill="#4b5563">Losing the CLOUD1 tunnel drops one worker to NotReady; the control plane and workload availability both survive because neither depended on the VPN</text>
   <rect x="60" y="140" width="240" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="180.0" y="186.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">HQ-Cluster</text>
   <text x="180.0" y="204.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">k8s-cp01 (control plane)</text>

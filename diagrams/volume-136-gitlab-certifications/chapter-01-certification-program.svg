@@ -11,7 +11,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="560" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: GitLab Certification (DevSecOps Platform)</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Five Associate certifications · $150 · 75 min / 50 Q unproctored · 75% to pass · 2 attempts in a 14-day window · certifications DO NOT EXPIRE</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.5" fill="#4b5563">Five Associate certifications · $150 · 75 min / 50 Q unproctored · 75% to pass · 2 attempts in a 14-day window · certifications DO NOT EXPIRE</text>
   <rect x="230" y="42" width="500" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">GitLab — the single-application DevSecOps platform</text>
   <text x="480.0" y="74.7" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">source · review · CI/CD · security · planning · deploy, one data model</text>

@@ -11,7 +11,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: The chgrp-0/chmod-g=u Pattern Is What Makes an Image Survive an Arbitrary UID</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Docker and LXD both serve the same app independently; a naively built image fails under an OpenShift-style random UID while the portable one succeeds</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="11.9" fill="#4b5563">Docker and LXD both serve the same app independently; a naively built image fails under an OpenShift-style random UID while the portable one succeeds</text>
   <rect x="60" y="130" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="170.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Docker container</text>
   <text x="170.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">nginx on :8080</text>

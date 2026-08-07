@@ -9,7 +9,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 8 Hands-On Lab: A Passive OT Sensor at the Purdue Boundary That Degrades to Silence, Never to Active Probing</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">The sensor identifies Modbus function codes between simulated Level 1 and Level 2 assets, and loses visibility cleanly when the SPAN feed drops</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.4" fill="#4b5563">The sensor identifies Modbus function codes between simulated Level 1 and Level 2 assets, and loses visibility cleanly when the SPAN feed drops</text>
   <rect x="60" y="140" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="170.0" y="181.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">PLC simulator</text>
   <text x="170.0" y="199.6" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">Purdue Level 1</text>

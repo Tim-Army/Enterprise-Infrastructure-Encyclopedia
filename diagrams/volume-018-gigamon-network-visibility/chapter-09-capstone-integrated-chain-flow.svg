@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="680" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: The Capstone — a Full Acquisition-to-Delivery Chain That Fails in Isolation, Not Together</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Every stage traces correctly end to end; the out-of-band rule change and the inline tool failure each reproduce their own chapter's exact failure with no cross-stage interaction</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="10" fill="#4b5563">Every stage traces correctly end to end; the out-of-band rule change and the inline tool failure each reproduce their own chapter's exact failure with no cross-stage interaction</text>
   <rect x="60" y="120" width="260" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="190.0" y="161.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Acquisition → 1st-level map</text>
   <text x="190.0" y="179.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">→ GigaSMART (slice + AMI export)</text>

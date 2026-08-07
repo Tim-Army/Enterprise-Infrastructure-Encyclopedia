@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 6 Hands-On Lab: Expert-Flag Retransmission Analysis Confirmed Against Induced Loss</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A clean baseline transfer shows the handshake options and RTT/throughput graphs; injecting 2% loss makes retransmissions appear where they didn't before</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="11.6" fill="#4b5563">A clean baseline transfer shows the handshake options and RTT/throughput graphs; injecting 2% loss makes retransmissions appear where they didn't before</text>
   <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Baseline transfer (10+ MB)</text>
   <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">SYN/SYN-ACK: Window Scale + SACK</text>

@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="520" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: The IBM Professional Certification Program</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">62 current certifications in seven portfolios — Pearson VUE/OnVUE delivery, Credly badges, six PLUS combos bundling Red Hat OpenShift exams, five flagged Retiring soon</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="10.6" fill="#4b5563">62 current certifications in seven portfolios — Pearson VUE/OnVUE delivery, Credly badges, six PLUS combos bundling Red Hat OpenShift exams, five flagged Retiring soon</text>
   <rect x="280" y="42" width="400" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">IBM Training credentials catalog — 62 certifications</text>
   <text x="480.0" y="73.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Pearson VUE / OnVUE delivery · Credly badges · version-pinned</text>

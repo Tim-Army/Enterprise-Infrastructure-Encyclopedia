@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="520" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Vendor-Neutral Linux Certifications (LPI + Linux Foundation)</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">LPI's Essentials + LPIC-1/2/3 ladder + Open Technology track (weighted public objectives, 5-yr) and the Linux Foundation's LFCA + performance-based LFCS (2-yr); LFCT inactive</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="10.2" fill="#4b5563">LPI's Essentials + LPIC-1/2/3 ladder + Open Technology track (weighted public objectives, 5-yr) and the Linux Foundation's LFCA + performance-based LFCS (2-yr); LFCT inactive</text>
   <rect x="35" y="60" width="560" height="34" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="315.0" y="80.5" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">LPI (Linux Professional Institute) — public weighted objectives</text>
   <rect x="35" y="108" width="560" height="40" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>

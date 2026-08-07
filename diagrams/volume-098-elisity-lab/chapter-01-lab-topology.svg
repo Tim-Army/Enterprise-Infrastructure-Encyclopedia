@@ -11,7 +11,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="720" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Elisity Identity-Based Segmentation Across Four Segments</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">el-gw is the network enforcement point (Elisity access-switch stand-in) every cross-segment flow crosses; the database is isolated behind it; policy is written by identity, enforced with no endpoint agents</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="8.6" fill="#4b5563">el-gw is the network enforcement point (Elisity access-switch stand-in) every cross-segment flow crosses; the database is isolated behind it; policy is written by identity, enforced with no endpoint agents</text>
   <rect x="320" y="58" width="330" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="485.0" y="77.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Windows 11 Host · Workstation Pro 17</text>
   <text x="485.0" y="91.2" text-anchor="middle" font-size="9.5" font-weight="400" fill="#374151">Elisity admin + 'IT laptop' (attacker, Lab 5.3)</text>

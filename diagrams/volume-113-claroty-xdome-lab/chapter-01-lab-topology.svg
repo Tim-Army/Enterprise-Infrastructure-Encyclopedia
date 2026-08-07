@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="460" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Observe-then-Enforce OT Segmentation with Claroty xDome</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A passive collector baselines traffic; xDome derives a zone policy; an integrated enforcer applies allow-only-baseline, denying and flagging the unbaselined hmi-&gt;db flow</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="10.5" fill="#4b5563">A passive collector baselines traffic; xDome derives a zone policy; an integrated enforcer applies allow-only-baseline, denying and flagging the unbaselined hmi-&gt;db flow</text>
   <rect x="320" y="44" width="320" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="62.4" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">Claroty xDome</text>
   <text x="480.0" y="75.3" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">discovery · baseline · zones · derived policy</text>

@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: Rubrik Certification (Cyber Resilience for Data &amp; Identity)</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">One active cert — RCSA — via a free self-paced path or a paid hands-on RSC Administration bootcamp (RCE retired); all on Rubrik Security Cloud</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.5" fill="#4b5563">One active cert — RCSA — via a free self-paced path or a paid hands-on RSC Administration bootcamp (RCE retired); all on Rubrik Security Cloud</text>
   <rect x="280" y="42" width="400" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.0" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">Rubrik Security Cloud — Cyber Resilience for Data &amp; Identity</text>
   <text x="480.0" y="73.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">premise: assume breach — protect immutably, recover fast &amp; clean</text>

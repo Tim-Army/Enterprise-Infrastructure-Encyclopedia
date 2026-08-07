@@ -91,8 +91,16 @@ class Canvas:
         self.body.append(f'<text x="{width/2}" y="{title_y}" text-anchor="middle" '
                           f'font-size="20" font-weight="700" fill="#111827">{esc(title)}</text>')
         if subtitle:
-            self.body.append(f'<text x="{width/2}" y="{subtitle_y}" text-anchor="middle" '
-                              f'font-size="13" fill="#4b5563">{esc(subtitle)}</text>')
+            # Shrink a long subtitle so it fits on one line within the canvas
+            # width instead of clipping on both edges. The layouts pack content
+            # directly beneath subtitle_y, so wrapping to a second line is not an
+            # option. Short subtitles keep the 13 px size (byte-identical output);
+            # ~0.52 em average glyph advance at Helvetica.
+            usable = width - 40
+            size = min(13.0, usable / max(len(subtitle) * 0.52, 1))
+            self.body.append(
+                f'<text x="{width/2}" y="{subtitle_y}" text-anchor="middle" '
+                f'font-size="{round(size, 1):g}" fill="#4b5563">{esc(subtitle)}</text>')
         self.svg_title = svg_title
         self.svg_desc = svg_desc
 

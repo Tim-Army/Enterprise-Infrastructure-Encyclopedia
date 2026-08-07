@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: OPSWAT Academy (Critical Infrastructure Protection)</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Free-first: vendor-neutral CIP foundation + Associate certs (many free) build into paid MetaDefender Professional certs and the OT Security Expert; Credly badges + ISC2 CPE</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="10.3" fill="#4b5563">Free-first: vendor-neutral CIP foundation + Associate certs (many free) build into paid MetaDefender Professional certs and the OT Security Expert; Credly badges + ISC2 CPE</text>
   <rect x="280" y="42" width="400" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">OPSWAT Academy — free-first CIP program</text>
   <text x="480.0" y="73.2" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">Credly badges · ISC2 CPE · some certs expire — verify validity</text>

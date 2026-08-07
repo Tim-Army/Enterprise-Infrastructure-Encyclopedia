@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 6 Hands-On Lab: A Layered Diagnosis, a Validated Restore, and a Plugin Failure Isolated From the Network</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A revoked SNMP credential surfaces as a plugin-layer failure, distinct from a network-delivery problem, and recovers cleanly once reverted</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.8" fill="#4b5563">A revoked SNMP credential surfaces as a plugin-layer failure, distinct from a network-delivery problem, and recovers cleanly once reverted</text>
   <rect x="60" y="130" width="240" height="100" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="180.0" y="175.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Baseline metrics</text>
   <text x="180.0" y="193.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">CPU/mem/disk, idle operation</text>

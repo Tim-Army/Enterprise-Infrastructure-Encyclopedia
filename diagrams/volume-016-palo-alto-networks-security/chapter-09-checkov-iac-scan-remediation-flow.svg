@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: A Checkov Scan That Must Fail Before It Can Prove Remediation Works</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">An open-SSH security group fails CKV_AWS_24 on the first scan by design; a clean scan against this file would mean Checkov itself was broken</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.6" fill="#4b5563">An open-SSH security group fails CKV_AWS_24 on the first scan by design; a clean scan against this file would mean Checkov itself was broken</text>
   <rect x="60" y="130" width="260" height="110" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
   <text x="190.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Sample Terraform (as-is)</text>
   <text x="190.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7f1d1d">SSH ingress: 0.0.0.0/0</text>

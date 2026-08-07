@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="680" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Cisco Secure Workload Across an IT/OT Estate</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Agents collect telemetry and enforce on each host firewall; ADM discovers the policy; cw-gw is the one routing choke point between three segments</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.2" fill="#4b5563">Agents collect telemetry and enforce on each host firewall; ADM discovers the policy; cw-gw is the one routing choke point between three segments</text>
   <rect x="300" y="68" width="360" height="54" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="90.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Windows 11 Host · Workstation Pro 17</text>
   <text x="480.0" y="108.4" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Secure Workload admin + 'IT laptop' (attacker, Lab 5.3)</text>

@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 5 Hands-On Lab: An App-ID Rule That Doesn't Implicitly Permit Unrelated Applications</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">A scoped web/SSL/DNS rule matches exactly the intended traffic and blocks bittorrent by default; a financial-services site skips decryption</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.7" fill="#4b5563">A scoped web/SSL/DNS rule matches exactly the intended traffic and blocks bittorrent by default; a financial-services site skips decryption</text>
   <rect x="60" y="130" width="260" height="110" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
   <text x="190.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Allow-Outbound-Web-Scoped</text>
   <text x="190.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">web-browsing, ssl, dns +</text>

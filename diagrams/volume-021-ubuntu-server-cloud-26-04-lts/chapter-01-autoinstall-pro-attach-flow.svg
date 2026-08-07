@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Hands-On Lab: An Invalid Pro Token Fails Cleanly, With No Partial Repository State</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">An unattended autoinstall completes from a NoCloud seed and attaches real ESM; a bad token is rejected without touching any configuration</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.9" fill="#4b5563">An unattended autoinstall completes from a NoCloud seed and attaches real ESM; a bad token is rejected without touching any configuration</text>
   <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">NoCloud autoinstall seed</text>
   <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">unattended install → reboot</text>

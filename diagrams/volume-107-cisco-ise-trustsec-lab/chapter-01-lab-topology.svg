@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Fabric Microsegmentation with Cisco ISE and TrustSec</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">ISE defines SGTs and the SGACL matrix; the IOS-XE enforcer downloads it and enforces by group tag; WEB-&gt;DB:5432 and HMI-&gt;PLC:502 permitted, HMI-&gt;DB denied</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="11.5" fill="#4b5563">ISE defines SGTs and the SGACL matrix; the IOS-XE enforcer downloads it and enforces by group tag; WEB-&gt;DB:5432 and HMI-&gt;PLC:502 permitted, HMI-&gt;DB denied</text>
   <rect x="330" y="50" width="300" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="68.8" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">Cisco ISE  ·  policy engine</text>
   <text x="480.0" y="82.8" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">SGTs · SGACL egress matrix · SXP · 10.10.0.10</text>

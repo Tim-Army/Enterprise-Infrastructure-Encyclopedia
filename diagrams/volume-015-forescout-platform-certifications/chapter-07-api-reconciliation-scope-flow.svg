@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: An Idempotent API Reconciliation Script Bounded by Its Own Credential Scope</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">The second run of the corrective script makes no additional changes, and the same credential is refused for anything outside its one granted property</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="11.9" fill="#4b5563">The second run of the corrective script makes no additional changes, and the same credential is refused for anything outside its one granted property</text>
   <rect x="60" y="140" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="180.0" y="181.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Read-only API credential</text>
   <text x="180.0" y="199.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">queries inventory + reference CSV</text>

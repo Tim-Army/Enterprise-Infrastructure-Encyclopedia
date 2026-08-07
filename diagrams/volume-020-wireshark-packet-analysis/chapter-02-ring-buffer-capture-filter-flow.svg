@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 2 Hands-On Lab: A Capture Filter Proven Specific, Not Accidentally Broad</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Port 22 traffic never reaches disk even during an active SSH session; DNS traffic from the same window proves the exclusion wasn't overreaching</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.4" fill="#4b5563">Port 22 traffic never reaches disk even during an active SSH session; DNS traffic from the same window proves the exclusion wasn't overreaching</text>
   <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">dumpcap ring buffer</text>
   <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">5 files x 2MB, filter: not port 22</text>

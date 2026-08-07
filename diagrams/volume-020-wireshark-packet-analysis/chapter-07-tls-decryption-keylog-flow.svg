@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="580" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: HTTPS Decryption Genuinely Depends on the Configured Key Log</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">HTTP frames and response timing appear once the TLS key log is configured; clearing that one setting turns them back into opaque Application Data</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.2" fill="#4b5563">HTTP frames and response timing appear once the TLS key log is configured; clearing that one setting turns them back into opaque Application Data</text>
   <rect x="60" y="140" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="190.0" y="186.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">SSLKEYLOGFILE set</text>
   <text x="190.0" y="204.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">HTTPS request generates</text>

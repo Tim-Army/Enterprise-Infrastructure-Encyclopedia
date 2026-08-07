@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: SSL Deep Inspection Requires Real CA Trust Distribution, Not Just Policy Configuration</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">EICAR and a blocked category are stopped before HTTPS inspection even starts; switching to deep inspection breaks trust until the CA is installed</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.2" fill="#4b5563">EICAR and a blocked category are stopped before HTTPS inspection even starts; switching to deep inspection breaks trust until the CA is installed</text>
   <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="180.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">EICAR download attempt</text>
   <text x="180.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">blocked, AV-Standard logged</text>

@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 3 Hands-On Lab: A Wrong Gateway Isolates the Fault to Routed Traffic, Not the Whole Network Path</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Static IPv4, DNS registration, and NTP are all confirmed consistent between RACADM and Redfish; a bad gateway breaks only what a gateway is responsible for</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="11.4" fill="#4b5563">Static IPv4, DNS registration, and NTP are all confirmed consistent between RACADM and Redfish; a bad gateway breaks only what a gateway is responsible for</text>
   <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="180.0" y="180.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Static IPv4 + DNS registration</text>
   <text x="180.0" y="198.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">idrac-lab-01 resolves to new IP</text>

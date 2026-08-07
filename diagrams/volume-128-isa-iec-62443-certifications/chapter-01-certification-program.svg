@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Program Map: ISA/IEC 62443 Cybersecurity Certificate Program</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Certificate 1 Fundamentals Specialist (IC32) is the mandatory gate; Risk Assessment (IC33), Design (IC34), and Maintenance (IC37) follow in any order; all four confer the Expert designation</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="9.4" fill="#4b5563">Certificate 1 Fundamentals Specialist (IC32) is the mandatory gate; Risk Assessment (IC33), Design (IC34), and Maintenance (IC37) follow in any order; all four confer the Expert designation</text>
   <rect x="300" y="42" width="360" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.0" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">IEC 62443 standard family (1-x / 2-x / 3-x / 4-x)</text>
   <text x="480.0" y="73.0" text-anchor="middle" font-size="8.5" font-weight="400" fill="#374151">credentials do not expire · standard evolves — re-read editions</text>

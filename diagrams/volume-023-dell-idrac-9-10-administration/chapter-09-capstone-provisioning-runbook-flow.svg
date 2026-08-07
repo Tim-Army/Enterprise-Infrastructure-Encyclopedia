@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="640" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: The Capstone — Every Chapter's Fail-Safe Behavior Still Holds Inside One Combined Sequence</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Network, identity, storage, and firmware baselines from the whole volume come together into one provisioning runbook, with the Virtual Media fail-safe re-verified at the end</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="10.2" fill="#4b5563">Network, identity, storage, and firmware baselines from the whole volume come together into one provisioning runbook, with the Virtual Media fail-safe re-verified at the end</text>
   <rect x="60" y="130" width="240" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="180.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Pre-capstone SCP baseline</text>
   <text x="180.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">network, identity, storage,</text>

@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 7 Hands-On Lab: Fail-Open Keeps Traffic Moving; Fail-Closed Is a Deliberate, Different Choice</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">The same tool failure produces continued traffic under fail-open and a hard stop under fail-closed — the trade-off is configured, not assumed</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="12.5" fill="#4b5563">The same tool failure produces continued traffic under fail-open and a hard stop under fail-closed — the trade-off is configured, not assumed</text>
   <rect x="60" y="130" width="220" height="110" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="170.0" y="171.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Lab host A</text>
   <text x="170.0" y="189.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">continuous traffic</text>

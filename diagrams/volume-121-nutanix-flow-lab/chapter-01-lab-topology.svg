@@ -11,7 +11,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Category-Driven Microsegmentation with Nutanix Flow</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Prism Central distributes category-driven policy to every AHV host; enforcement is at the virtual switch — agentless, monitor mode first, quarantine &gt; isolation &gt; application</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="10.2" fill="#4b5563">Prism Central distributes category-driven policy to every AHV host; enforcement is at the virtual switch — agentless, monitor mode first, quarantine &gt; isolation &gt; application</text>
   <rect x="310" y="42" width="340" height="42" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="60.4" text-anchor="middle" font-size="11" font-weight="700" fill="#111827">Prism Central (Flow)</text>
   <text x="480.0" y="73.3" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">categories + policy · monitor -&gt; apply</text>

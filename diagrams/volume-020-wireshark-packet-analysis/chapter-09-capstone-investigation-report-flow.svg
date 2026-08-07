@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 9 Hands-On Lab: The Capstone — 'Occasionally Unreachable' Traced to a Scan, Confirmed by Isolating It</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">DHCP, DNS, and TLS all check out cleanly; the detected scan explains the symptom, and removing the scan host's traffic makes the scan signature disappear</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="11.6" fill="#4b5563">DHCP, DNS, and TLS all check out cleanly; the detected scan explains the symptom, and removing the scan host's traffic makes the scan signature disappear</text>
   <rect x="60" y="130" width="260" height="120" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="190.0" y="176.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Reproduced symptom capture</text>
   <text x="190.0" y="194.4" text-anchor="middle" font-size="10.5" font-weight="400" fill="#374151">DHCP renewal + DNS + HTTPS</text>

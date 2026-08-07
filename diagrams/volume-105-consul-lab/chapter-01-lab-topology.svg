@@ -10,7 +10,7 @@
   </defs>
   <rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Multi-Platform Microsegmentation with HashiCorp Consul</text>
-  <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">Consul Connect gives each service a SPIFFE identity and mTLS; service intentions authorize by service; the same mesh and intentions span Kubernetes and VMs</text>
+  <text x="480.0" y="50" text-anchor="middle" font-size="11.4" fill="#4b5563">Consul Connect gives each service a SPIFFE identity and mTLS; service intentions authorize by service; the same mesh and intentions span Kubernetes and VMs</text>
   <rect x="60" y="54" width="840" height="34" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="74.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#111827">Single Linux host · Docker + kind + kubectl + helm + consul</text>
   <rect x="60" y="100" width="840" height="26" rx="6" fill="#f4f7fb" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4 3"/>
