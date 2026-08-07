@@ -64,7 +64,7 @@ def ch01():
     c.raw('<text x="45" y="340" font-size="9.5" font-weight="400" fill="#374151">'
           'application: only web -&gt; db:5432 and hmi -&gt; plc:502 are permitted (default-deny)</text>')
 
-    c.node_box(700, 360, 220, 74, "warn", [
+    c.node_box(700, 315, 220, 74, "warn", [
         Line("Quarantine", 10, 700, "#111827"),
         Line("one category assignment", 9, 400, "#7f1d1d"),
         Line("cuts a VM off entirely —", 9, 400, "#7f1d1d"),
