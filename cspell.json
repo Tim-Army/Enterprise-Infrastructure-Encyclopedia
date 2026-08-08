@@ -19,6 +19,7 @@
     "LENC",
     "fnsysctl",
     "fgtauth",
+    "logdesc",
     "Tredir",
     "autologin",
     "cipassword",

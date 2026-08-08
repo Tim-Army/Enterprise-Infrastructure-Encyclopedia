@@ -702,6 +702,74 @@ end
 diagnose firewall auth clear
 ```
 
+#### Watching logins succeed and fail in the event log
+
+`diagnose firewall auth list` shows only **active, successful** sessions — a
+rejected login never creates one, so failed attempts never appear there.
+Every attempt, pass or fail, is instead written to the **event log, subtype
+`user`**.
+
+**From the CLI**, filter the event log and display it:
+
+```text
+FGT # execute log filter reset
+FGT # execute log filter category 1            # 1 = event log
+FGT # execute log filter field subtype user    # authentication events
+FGT # execute log display
+```
+
+To see only failures, add the failed-authentication log ID before
+displaying (run `execute log filter reset` afterward so later displays are
+not stuck on the filter):
+
+```text
+FGT # execute log filter field logid 0102043009   # "Authentication failed"
+FGT # execute log display
+```
+
+A rejected password reads like this — note it carries the `srcip`,
+`policyid`, and `user`, so you can see exactly who failed against which
+policy:
+
+```text
+logid="0102043009" subtype="user" logdesc="Authentication failed"
+srcip=10.200.0.20 policyid=2 interface="port2" user="alice" group="N/A"
+action="authentication" status="failure" reason="invalid username/password"
+msg="User alice failed in authentication"
+```
+
+The user-event log IDs worth recognizing:
+
+| logid | Event |
+|-------|-------|
+| `0102043008` | Authentication **success** |
+| `0102043009` | Authentication **failed** |
+| `0102043039` / `0102043040` | Auth **logon** / **logout** |
+| `0102043037` | Auth session **flush** (for example, `diagnose firewall auth clear`) |
+
+**From the GUI**, the same records are under **Log & Report → System
+Events**; on FortiOS 7.6 choose **User Events** from the event-type
+selector (there is no separate "User Events" item in the left menu). Two
+settings commonly hide them: the **time range** — widen it past the default
+hour to cover the attempt — and the **log source**. This appliance logs to
+**disk** (`get log disk setting` shows `status: enable`) with memory logging
+disabled, so select **Disk**, not Memory; on a device with only memory
+logging you would choose the opposite.
+
+**Three outcomes, three behaviors.** Driving the portal from the client
+shows the FortiGate handles the two failure cases differently:
+
+| Attempt | FortiGate response | Logged | `auth list` |
+|---------|--------------------|--------|-------------|
+| valid user + correct password | `303` redirect to the requested site | success `0102043008` | user listed |
+| valid user + **wrong password** | re-serves the "Authentication Failed" form | failure `0102043009` | empty |
+| **unknown username** + any password | empty HTTP response (browser shows a blank/error page) | no failure event | empty |
+
+Both failure rows deny access, but only a *known* user with a bad password
+produces a `0102043009` record; an unknown username is dropped without a
+failed-authentication log — worth knowing when you are hunting for failed
+logins and an attempt seems to be missing.
+
 ### Lab 6.4 — Site-to-site IPsec VPN (Topic: IPsec VPN)
 
 **Objective:** Build a route-based IPsec tunnel to a peer.
