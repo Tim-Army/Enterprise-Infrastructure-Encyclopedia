@@ -631,6 +631,40 @@ natural production capstone once that infrastructure exists.
 **Cleanup:** widen `trusthost1` back to your admin range if you locked yourself to a
 lab subnet.
 
+**Lessons learned — a live FortiGate-VM evaluation deployment.** The gotchas scattered
+through this chapter and the next two were not invented for teaching; they emerged, in order,
+from a single modest goal — *route a ping between two VLANs on a free-eval FortiGate-VM* — and
+each one first presented as a different fault than it was. Collected here as a checklist,
+because the pattern behind them is the real lesson:
+
+- **Second factors are brokered, not local.** RSA SecurID rides RADIUS; passkeys/FIDO2 ride
+  SAML to an IdP — neither is a token type you set on the FortiGate (Lab 4.3).
+- **`diagnose firewall iprope lookup` will not evaluate ICMP on 7.6.** A ping-only policy
+  cannot be confirmed with the lookup tool; verify with a live ping, or use a TCP flow that
+  resolves to the implicit deny to prove least-privilege
+  ([Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md), Lab 6.1).
+- **An unlicensed FortiGate-VM forwards no traffic.** Management and local pings work while
+  every *forwarded* packet is dropped before the policy engine — it reads exactly like a
+  broken rule, but the license is the block (the licensing gotcha above).
+- **The LENC (low-encryption) image cannot be licensed at all.** It tops out below TLS 1.2,
+  so FortiCare activation silently no-ops; only a standard-image redeploy cures it.
+- **The free evaluation enforces a 3-interface / 3-policy / 3-route budget, and the built-ins
+  spend it.** Over-budget interfaces are purged at boot; reclaim slots from
+  `fortilink`/`default-mesh`, or fit the design under the cap.
+- **When VLAN sub-interfaces will not fit, tag at the hypervisor.** One vNIC per segment as an
+  access port turns two VLANs into two physical ports and fits the eval budget — at the cost
+  of making the hypervisor bridge part of the trust boundary
+  ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md), Lab 5.1
+  variant).
+- **Strong crypto is eval-gated.** `set strong-crypto enable` fails on an eval VM even when
+  licensed, which can break outbound STARTTLS email OTP and lock a password login out (the
+  email-OTP teardown above).
+
+The meta-lesson: on a virtualized security appliance, **the license tier and the hypervisor
+are part of the topology.** Faults that present as routing or policy problems are frequently
+license limits, image variants, or bridge tags in disguise — rule those out before you
+rebuild a working rule.
+
 ### Lab 4.4 — Firmware management (Topic: Firmware lifecycle)
 
 **Objective:** Read the firmware state and validate an upgrade path before applying.
