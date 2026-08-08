@@ -806,6 +806,84 @@ and the tunnel stays down — both ends must agree on authentication and encrypt
 
 **Cleanup:** delete the static route, phase-2, and phase-1.
 
+#### Standing up the tunnel between two FortiGates — the gotchas that bite
+
+Building this tunnel between two live FortiGate-VMs surfaces four things the
+bare configuration above does not warn you about.
+
+**The evaluation license is low-encryption only — DES, not AES.** On an
+eval-licensed FortiGate-VM, `set proposal aes256-sha256` is rejected, and
+the only proposals offered are `des-*`:
+
+```text
+FGT (to-fgt1) # set proposal aes256-sha256
+command parse error before 'aes256-sha256'
+Command fail. Return code -61
+FGT (to-fgt1) # set proposal ?
+des-md5  des-sha1  des-sha256  des-sha384  des-sha512
+```
+
+Use `des-sha256` on both Phase 1 and Phase 2. Two eval boxes share the same
+limit, so DES matches automatically — which is exactly why a second
+FortiGate is a cleaner lab peer than a general-purpose IPsec stack that
+(rightly) deprecates single-DES.
+
+**A route-based tunnel will not come up without a firewall policy that
+references the tunnel interface.** With everything else correct, IKE refuses
+to establish, and `diagnose debug application ike -1` shows the reason:
+
+```text
+ike ...:to-fgt1: ignoring request to establish IPsec SA, no policy configured
+```
+
+Add at least one policy with the tunnel interface as source or destination
+on each peer (for example `srcintf port3, dstintf to-fgt2`) and the SA
+establishes. This is the most common reason a freshly configured route-based
+tunnel stays down.
+
+**Bring it up with `auto-negotiate` — the static route is only active once
+the tunnel is.** A route pointing at a tunnel interface is installed only
+after the tunnel comes up, so a ping meant to *trigger* the tunnel can leak
+out the default route and never signal IKE. Setting `set auto-negotiate
+enable` under `config vpn ipsec phase2-interface` makes the FortiGate build
+the tunnel proactively, independent of traffic:
+
+```text
+FGT # diagnose vpn ike gateway clear name to-fgt1     # force a fresh attempt
+FGT # diagnose vpn ike gateway list
+  name: to-fgt1
+  IKE SA: created 1/1  established 1/1
+  IPsec SA: created 1/1  established 1/1
+  proposal: des-sha256
+FGT # get vpn ipsec tunnel summary
+'to-fgt1' ...  selectors(total,up): 1/1  rx(pkt,err): 25/0  tx(pkt,err): 5/0
+```
+
+`selectors(total,up): 1/1` plus a climbing `tx`/`rx` packet count confirms
+traffic is being encrypted over the tunnel. A ping across the protected
+subnets is the end-to-end proof — the target's ingress interface needs
+`allowaccess ping` (or a real host behind it) to answer.
+
+**The negative test has a specific signature.** Change the pre-shared key on
+one peer only: the responder — not the initiator — reports the reason, while
+the initiator simply retransmits Phase 1:
+
+```text
+# responder, from diagnose debug application ike -1:
+ike 0:to-fgt2: responder: main mode get 3rd message...
+ike 0:to-fgt2: parse error
+ike 0:to-fgt2: probable pre-shared secret mismatch
+
+# initiator:
+ike 0:to-fgt1:7: sent IKE msg (P1_RETRANSMIT): ...
+```
+
+`get vpn ipsec tunnel summary` then shows `selectors(total,up): 1/0` — the
+selector exists but is down. Restore the matching key and a `diagnose vpn
+ike gateway clear` brings it back to `1/1`. The pre-shared key authenticates
+each peer's identity, so no amount of matching proposals, selectors, or
+routes compensates for a mismatched key.
+
 ### Lab 6.5 — SSL VPN for remote access (Topic: SSL/dial-up VPN)
 
 **Objective:** Enable SSL VPN web/tunnel mode for remote users.
