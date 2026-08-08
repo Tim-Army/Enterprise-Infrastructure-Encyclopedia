@@ -85,7 +85,12 @@ idempotent playbook tasks. **Automation stitches**
 `automation-stitch`) provide on-box, event-driven automation without an
 external orchestrator — a trigger (a specific log event, IPS detection, or
 schedule) fires one or more actions (quarantine a host, send a
-notification, run a local CLI script) directly on the FortiGate.
+notification, run a local CLI script) directly on the FortiGate. For
+scheduled rather than event-driven execution, `config system auto-script`
+runs a stored block of CLI commands on a fixed interval and retains their
+output on the box. Every one of these surfaces runs *FortiOS commands*: the
+appliance has no user shell and executes no uploaded `.sh`/`.py` files or
+compiled binaries — a boundary examined under Implementation below.
 
 ## Design Considerations
 
@@ -254,6 +259,100 @@ FGT-LAB-01 (automation-stitch) # end
 Consistent with the automation guardrail design consideration above, pilot
 this stitch in a monitor/logging-only configuration and review triggered
 events before enabling the `ban-ip` action against production traffic.
+
+### FortiOS scripting: what runs on the box, and what does not
+
+A FortiGate is a closed appliance, not a general-purpose Linux host: there
+is no user shell, and you cannot upload a `.sh`, `.py`, or compiled binary
+and execute it the way you can on a managed endpoint. "Scripting" on
+FortiOS means running **FortiOS CLI commands** (and, on FortiManager,
+**Tcl**) through one of several native mechanisms — each of which operates
+on configuration and operational commands, never arbitrary code.
+
+**Plain CLI scripts.** The simplest script is an ordered batch of the same
+`config`/`execute`/`get`/`diagnose` commands an operator would type. It can
+be pasted into the console, or pushed from FortiManager (*Device Manager →
+CLI Scripts*, run against the running configuration or the device database)
+to target many devices at once.
+
+**Scheduled on-box scripts — `config system auto-script`.** FortiOS stores
+named command scripts and runs them itself on an interval, capturing a
+bounded amount of output for later retrieval:
+
+```text
+FGT-LAB-01 # config system auto-script
+FGT-LAB-01 (auto-script) # edit "healthcheck"
+FGT-LAB-01 (healthcheck) # set interval 300
+FGT-LAB-01 (healthcheck) # set repeat 0
+FGT-LAB-01 (healthcheck) # set start auto
+FGT-LAB-01 (healthcheck) # set output-size 10
+FGT-LAB-01 (healthcheck) # set script "get system performance status
+diagnose sys top 5"
+FGT-LAB-01 (healthcheck) # next
+FGT-LAB-01 (auto-script) # end
+
+FGT-LAB-01 # diagnose system auto-script healthcheck
+```
+
+`interval` is in seconds, `repeat 0` runs indefinitely, `start auto` begins
+the schedule at boot, and `output-size` caps retained output in KB;
+`diagnose system auto-script <name>` prints the last captured run.
+
+**Event-driven scripts — the CLI-script automation action.** Alongside the
+`ban-ip` action shown above, an automation stitch can run a block of CLI
+commands via the `cli-script` action type, so a log event, IPS detection,
+schedule, or inbound webhook can reconfigure the device with no external
+orchestrator. Trigger variables such as `%%log.srcip%%` are substituted
+into the script at run time:
+
+```text
+FGT-LAB-01 # config system automation-action
+FGT-LAB-01 (automation-action) # edit "Snapshot-On-Event"
+FGT-LAB-01 (Snapshot-On-Event) # set action-type cli-script
+FGT-LAB-01 (Snapshot-On-Event) # set script "get system status
+diagnose sys session stat"
+FGT-LAB-01 (Snapshot-On-Event) # next
+FGT-LAB-01 (automation-action) # end
+```
+
+For logic that genuinely needs branching, loops, or variables — or that
+must reach systems beyond the FortiGate — a stitch's `webhook`,
+`aws-lambda`, or `azure-function` action hands off to a real program hosted
+off-box, the supported way to run arbitrary code *from* an automation event
+without running it on the appliance.
+
+**Boot / zero-touch scripts — `config system auto-install`.** A
+configuration file (`fgt_system.conf`) and, optionally, a firmware image
+placed on a USB stick are applied automatically at boot — how a factory-
+reset or field-replaced unit self-provisions with no operator at the
+console.
+
+**FortiManager and Tcl.** FortiManager CLI scripts come in two flavors,
+plain *CLI* and *Tcl*, and Tcl is where real scripting logic (conditionals,
+loops, per-device variables) lives; on the FortiGate itself Tcl support is
+minimal, and CLI scripts, `auto-script`, and stitches are the practical
+tools.
+
+**Driven from outside.** In production, most "scripting" is external
+config-management pushing state through the same REST API used above: the
+Fortinet-published **Ansible** `fortinet.fortios` collection, the
+**Terraform** `fortios` provider, and FortiManager's **JSON-RPC API**. None
+of these run on the FortiGate; they render intended state and apply it over
+the API.
+
+**The boundary.** A hidden `fnsysctl` command exposes a few BusyBox-style
+utilities (`ls`, `cat`, `df`, `ifconfig`) for low-level troubleshooting,
+but it is not a scripting environment and is not a supported path to run
+custom programs. If a task needs a language runtime or a third-party
+binary, run it off-box and reach into the FortiGate through the REST API or
+an Automation-Stitch webhook — the appliance executes FortiOS commands, and
+nothing else.
+
+> **Eval-VM note.** Both `config system auto-script` and Automation Stitches
+> function under the FortiGate-VM evaluation license used throughout
+> [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md),
+> so the scheduled- and event-driven-script mechanisms here can be
+> exercised on the same lab VM without a paid subscription.
 
 ## Validation and Troubleshooting
 
