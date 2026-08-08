@@ -535,6 +535,91 @@ gates the match on successful auth.
 
 **Cleanup:** delete policy 5, the group, and the user.
 
+#### Building the GUI client that completes the captive-portal challenge
+
+Firewall authentication is finished by the *user*, in a browser. The first
+time an unauthenticated session matches the `auth-web` policy, the FortiGate
+intercepts the HTTP request and returns a **captive-portal** login page — a
+headless host cannot complete that exchange, so the lab needs one graphical
+client on the protected VLAN (`port2`/VLAN 200 in
+[Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)).
+Any desktop with a browser works; the walkthrough below builds a minimal
+Ubuntu 24.04 workstation on the KVM/Proxmox lab host used elsewhere in this
+volume.
+
+**1. Create the VM from an Ubuntu cloud image, placed on the VLAN behind the
+FortiGate.** cloud-init sets the login user and a static address whose
+gateway is the FortiGate's VLAN-200 interface:
+
+```bash
+# on the hypervisor
+wget -O noble.img \
+  https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
+qm create 210 --name ubuntu-ws --memory 4096 --cores 2 \
+    --net0 virtio,bridge=vmbr2,tag=200 --serial0 socket --vga std
+qm importdisk 210 noble.img local-lvm
+qm set 210 --scsi0 local-lvm:vm-210-disk-0 --boot order=scsi0
+qm set 210 --ide2 local-lvm:cloudinit \
+    --ciuser labuser --cipassword '<lab-password>' \
+    --ipconfig0 ip=10.200.0.20/24,gw=10.200.0.1 --nameserver 8.8.8.8
+qm disk resize 210 scsi0 20G
+qm start 210
+```
+
+**2. Install a desktop and a browser with autologin.** Drive the serial
+console (`qm terminal 210`), log in as `labuser`, then:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y xfce4 xfce4-goodies lightdm
+sudo systemctl set-default graphical.target
+sudo install -d /etc/lightdm/lightdm.conf.d
+sudo tee /etc/lightdm/lightdm.conf.d/50-autologin.conf >/dev/null <<'EOF'
+[Seat:*]
+autologin-user=labuser
+autologin-user-timeout=0
+EOF
+sudo groupadd -f autologin && sudo gpasswd -a labuser autologin
+```
+
+> **Gotcha — the default `firefox` is a snap that will not launch here.** On
+> Ubuntu 24.04, `apt install firefox` pulls a *transitional* package that
+> installs the Firefox **snap**. In a minimal VM the snap fails at launch
+> with `cannot change mount namespace ... would affect the host in
+> /var/lib/snapd` and exits immediately — the browser window never appears.
+> Removing the snap can itself hang if a Firefox process is still running or
+> snapd is wedged, so kill any `firefox` first, then mask snapd.
+
+Install the real **.deb** from the Mozilla Team PPA and pin it so APT
+prefers it over the snap-transitional package:
+
+```bash
+sudo systemctl mask --now snapd.service snapd.socket   # stop snap interfering
+sudo apt-get purge -y firefox                          # drop the snap wrapper
+sudo add-apt-repository -y ppa:mozillateam/ppa
+printf 'Package: *\nPin: release o=LP-PPA-mozillateam\nPin-Priority: 1001\n' \
+  | sudo tee /etc/apt/preferences.d/mozilla-firefox
+sudo apt-get update && sudo apt-get install -y firefox
+readlink -f "$(which firefox)"   # -> /usr/lib/firefox/firefox.sh, NOT /snap/bin
+```
+
+> **Gotcha — an `apt` upgrade can drop you back to the login greeter.** With
+> `needrestart` in automatic mode, a `dist-upgrade` restarts `lightdm`,
+> which ends the autologin session and returns to the greeter;
+> `autologin-user-timeout=0` only re-fires on a fresh boot, so **reboot**
+> the VM after a large upgrade to bring the desktop back automatically. For
+> headless checks, capture the VGA framebuffer from the hypervisor
+> (`qm monitor 210` then `screendump /tmp/ws.ppm`) instead of relying on the
+> serial console, which shows only text.
+
+**3. Complete the challenge.** With the XFCE desktop up (Proxmox noVNC, or a
+`screendump`), open Firefox and browse to any HTTP site that matches the
+`auth-web` policy. The FortiGate returns the captive-portal login; sign in
+as `alice`, and the requested page loads. Back on the FortiGate,
+`diagnose firewall auth list` now shows the session bound to `alice` —
+the same result as the CLI walkthrough above, driven end to end through a
+real browser.
+
 ### Lab 6.4 — Site-to-site IPsec VPN (Topic: IPsec VPN)
 
 **Objective:** Build a route-based IPsec tunnel to a peer.
