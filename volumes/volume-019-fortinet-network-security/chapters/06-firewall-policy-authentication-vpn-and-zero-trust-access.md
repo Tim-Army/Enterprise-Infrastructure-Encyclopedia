@@ -620,6 +620,88 @@ as `alice`, and the requested page loads. Back on the FortiGate,
 the same result as the CLI walkthrough above, driven end to end through a
 real browser.
 
+#### How the captive-portal challenge works end to end
+
+The `auth-web` policy does more than "prompt for a password" — it drives a
+specific redirect-and-POST exchange worth understanding, because it explains
+the design choices in the client build above.
+
+**Interception.** An unauthenticated HTTP request that matches the policy is
+intercepted by the FortiGate, which answers with a small HTML page that
+redirects the browser to its captive portal on the ingress interface:
+
+```text
+<script>window.location="http://10.200.0.1:1000/fgtauth?<magic>";</script>
+```
+
+`10.200.0.1` is the port2 (VLAN 200) address the client already uses as its
+gateway, `1000` is the active-authentication port, and `<magic>` is a
+one-time token binding this login attempt to this request.
+
+**The portal form.** The browser loads `…/fgtauth?<magic>` and receives the
+Fortinet **"Authentication Required"** page: a form that POSTs back to the
+same host with four fields — the hidden `4Tredir` (the original URL to return
+to), the hidden `magic`, and the `username` and `password` the user types.
+
+**Authentication and binding.** On a correct password the FortiGate replies
+`303 See Other` with `Location:` set to the original destination, and binds
+an authenticated session to the client's **source IP**:
+
+```text
+FGT # diagnose firewall auth list
+10.200.0.20, alice
+    type: fw, ... expire: 268, allow-idle: 300
+    group_name: staff
+----- 1 listed, 0 filtered ------
+```
+
+Because the binding is per source IP, every subsequent session from
+`10.200.0.20` — any application, not just the browser — is treated as
+authenticated until the session times out or idles past `allow-idle`.
+
+> **Gotcha — DNS is blocked before login.** The same policy that forces
+> authentication also blocks the client's DNS, so a browser cannot even
+> resolve `example.com` to begin the exchange. Two clean options: browse to
+> an HTTP **IP address** (for example `http://1.1.1.1`) so the FortiGate
+> intercepts TCP 80 directly with no name lookup — which is why the client
+> walkthrough tests against an IP — or add a narrow policy **above** the
+> `auth-web` policy that permits `DNS` with no `groups`, so name resolution
+> works pre-login and users can browse to hostnames. After a successful login
+> every protocol, DNS included, flows through the authenticated policy.
+
+Two settings tune the behavior:
+
+```text
+config user setting
+    set auth-timeout 30        # minutes an authenticated session lasts
+    set auth-type http https   # protocols that trigger active authentication
+end
+```
+
+For guest-network-style enforcement the portal can instead be enabled on the
+interface itself (`config system interface` → `set security-mode
+captive-portal`); the policy-plus-group method shown here is the standard way
+to make identity a match condition on a specific firewall rule.
+
+**Clean up** by reversing the three bindings — remove the group from the
+policy first, since a group cannot be deleted while a policy still references
+it:
+
+```text
+config firewall policy
+    edit 5
+        unset groups
+    next
+end
+config user group
+    delete staff
+end
+config user local
+    delete alice
+end
+diagnose firewall auth clear
+```
+
 ### Lab 6.4 — Site-to-site IPsec VPN (Topic: IPsec VPN)
 
 **Objective:** Build a route-based IPsec tunnel to a peer.

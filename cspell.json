@@ -18,6 +18,8 @@
     "FGVMEV",
     "LENC",
     "fnsysctl",
+    "fgtauth",
+    "Tredir",
     "autologin",
     "cipassword",
     "gpasswd",
