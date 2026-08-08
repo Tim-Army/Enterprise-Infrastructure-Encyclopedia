@@ -886,40 +886,33 @@ routes compensates for a mismatched key.
 
 ### Lab 6.5 — SSL VPN for remote access (Topic: SSL/dial-up VPN)
 
-**Objective:** Enable SSL VPN web/tunnel mode for remote users.
+> **FortiOS 7.6 change — SSL VPN *tunnel mode* has been removed.** Verified
+> on FortiGate-VM 7.6.7: a portal no longer accepts `set tunnel-mode enable`
+> (the keyword is gone), the tunnel plumbing such as `tunnel-ip-pools` and
+> `split-tunneling` is absent, and web mode has been rebranded **"Agentless
+> VPN."** Fortinet is deliberately retiring SSL VPN in favor of IPsec and
+> ZTNA, so a tunnel-mode walkthrough no longer applies to current firmware —
+> this lab has been replaced by the note below.
 
-```text
-config vpn ssl settings
-    set servercert Fortinet_Factory
-    set tunnel-ip-pools SSLVPN_TUNNEL_ADDR1
-    set port 10443
-    set source-interface port1
-end
-config firewall policy
-    edit 30
-        set name sslvpn-access
-        set srcintf ssl.root
-        set dstintf port2
-        set srcaddr all
-        set dstaddr all
-        set action accept
-        set schedule always
-        set service ALL
-        set groups staff
-    next
-end
-diagnose vpn ssl list
-```
+**What remains, and what to use instead:**
 
-**Expected result:** remote users reach `https://<wan-ip>:10443`, authenticate, and get
-an IP from the tunnel pool; `diagnose vpn ssl list` shows the active session — SSL VPN
-gives clientless/tunnel remote access without a site-to-site peer.
+- **Clientless (Agentless) web VPN** still exists for browser-based access
+  to internal web, RDP, SSH, and SMB resources. A remote user browses to
+  `https://<wan-ip>:10443`, authenticates against a user group bound to the
+  built-in `web-access` portal by an SSL-VPN authentication rule, and works
+  through the portal; `diagnose vpn ssl list` shows the active web session.
+  On an evaluation license the portal count is capped at one, so you modify
+  the existing `web-access` portal rather than adding your own (`edit
+  "<new>"` fails with "reached the maximum number of entries").
+- **Full-tunnel remote access** — the job tunnel mode used to do — moves to
+  **IPsec dial-up** (the Phase 1 / Phase 2 mechanics of Lab 6.4 with a
+  dial-up peer instead of a static site-to-site peer) or to **ZTNA** in
+  Lab 6.6, which is Fortinet's strategic replacement for client VPN.
 
-**Negative test:** enable SSL VPN settings but write no firewall policy from `ssl.root`;
-users authenticate but reach nothing — the policy is what authorizes traffic off the
-tunnel.
-
-**Cleanup:** delete policy 30 and disable SSL VPN settings.
+**Takeaway:** on FortiOS 7.6 and later, "SSL VPN" means clientless Agentless
+web access only. If you need a routed tunnel for roaming users, reach for
+IPsec dial-up or ZTNA — do not build lab or production designs around SSL VPN
+tunnel mode.
 
 ### Lab 6.6 — ZTNA access proxy (Topic: Zero Trust Network Access)
 
