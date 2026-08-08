@@ -566,6 +566,36 @@ followed by `Admin login successful`.
 expires mid-entry and the login fails — trip that three times and the lockout engages,
 demonstrating why the code window and the lockout threshold must be tuned together.
 
+**Teardown — disable email OTP when finished.** Return the account to key/password-only so a
+later login never waits on a code:
+
+```text
+config system admin
+    edit admin
+        set two-factor disable
+        unset email-to
+    next
+end
+```
+
+**Gotcha — an evaluation-licensed FortiGate-VM cannot enable strong-crypto, which can break
+STARTTLS OTP delivery.** The hardened-TLS step often paired with this lab —
+`config system global` / `set strong-crypto enable`, forcing the FortiGate's own TLS to
+1.2/1.3 — **fails on an eval VM** with `command parse error before 'strong-crypto'` and
+`Return code -61`, even when `get system status` reports `License Status: Valid`. The tell
+that it is gated rather than mistyped: the field shows in `get system global` as a read-only
+`disable`, is absent from `show full-configuration system global`, and `set
+ssl-min-proto-version TLSv1-2` is rejected the same way (it stays pinned at `SSLv3`). The
+FGVMEV evaluation runs the appliance in **low-encryption mode only**, which compiles those
+knobs out — no CLI, toggle, or reboot re-enables them; only a paid or FortiFlex license lifts
+the restriction. The sting is downstream: the FortiGate's *outbound* SMTP `STARTTLS` to your
+mail server may fail to negotiate on the low-encryption stack, so the OTP email never arrives
+— and because an admin with `two-factor email` set can no longer finish a *password* login
+without that code, you can lock yourself out of the GUI (SSH public-key auth still works,
+being 2FA-exempt). On an eval VM, verify OTP delivery end-to-end before you depend on it, or
+leave email OTP off (the teardown above) and rely on `trusthost` plus SSH keys until the box
+carries a full license.
+
 **Stronger second factors when you have the infrastructure (RSA SecurID, passkeys/FIDO2).**
 Email OTP is the lab-friendly native factor, but a production estate usually wants a
 phishing-resistant token, or one it has already deployed. Two common requests — an **RSA
