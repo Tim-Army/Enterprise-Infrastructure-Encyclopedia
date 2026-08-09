@@ -918,6 +918,19 @@ tunnel mode.
 
 **Objective:** Publish an internal app through a ZTNA access proxy.
 
+> **Lab environment note — this leg needs strong encryption.** The FortiGate-to-EMS
+> Security Fabric connector that feeds this access proxy its device-posture tags and
+> client-certificate trust is an HTTPS/TLS session that requires **strong (AES) encryption**.
+> The free **evaluation FortiGate-VM license is low-encryption (DES-only)** — confirmed on
+> both FortiOS 7.6 and 8.0 evaluation builds, where `strong-crypto` is not an available
+> command and IPsec/TLS proposals offer only DES. A current EMS (Apache on OpenSSL 3.x)
+> refuses every cipher weaker than AES, so an eval FortiGate never completes the TLS
+> handshake to EMS (it drops the connection before sending a ClientHello) and the connector
+> never comes up — leaving the proxy with no posture data. Running this lab end to end
+> therefore requires a **properly licensed FortiGate** (a paid BYOL license or a FortiFlex
+> entitlement); the EMS server and FortiClient endpoint enrollment themselves run on any
+> license and are unaffected.
+
 ```text
 config firewall vip
     edit ztna-web
