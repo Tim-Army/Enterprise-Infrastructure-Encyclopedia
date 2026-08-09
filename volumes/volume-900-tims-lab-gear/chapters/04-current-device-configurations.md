@@ -161,7 +161,7 @@ address are intentionally not recorded in this volume.*
 ## N9K1 running-config (verbatim)
 
 The complete `show running-config` from `nexus-9k-1`, exactly as it runs. The
-only change is the two `username … password 5 …` hashes, replaced with
+only changes are the two `username … password 5 …` hashes, replaced with
 `<redacted>` — publishing a password hash invites offline cracking, and this
 volume records no credentials. Everything else is verbatim.
 
