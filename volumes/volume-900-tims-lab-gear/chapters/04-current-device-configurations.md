@@ -1,0 +1,157 @@
+# Chapter 04: Current Device Configurations
+
+Chapter 02 inventoried *what* is in the rack; this chapter records *how the three
+infrastructure devices below the hypervisors are configured*, from their live
+running state. Those three are the **ISP modem** (the internet handoff), the
+**UCGF** (the edge router, firewall, DHCP server, and Wi‑Fi controller), and
+**N9K1** (the Layer‑2 switch fabric). As everywhere in this volume, no
+credentials, keys, or public addressing are recorded — only roles, addressing,
+and configuration structure.
+
+## The edge path
+
+The three devices layer from the internet inward:
+
+```text
+ISP modem ──▶ UCGF port 5 (WAN1, "ISP") ──▶ UCGF routes + NATs the lab VLANs
+          ──▶ UCGF port 6 (SFP+ 10 GbE, "N9K1") ──▶ N9K1 port-channel1 uplink
+          ──▶ N9K1 48× 10 Gb switch fabric ──▶ the five PowerEdge hosts
+```
+
+The division of labour is clean: **the UCGF does all Layer 3** (routing between
+VLANs, DHCP, NAT, edge firewalling, Wi‑Fi); **N9K1 is pure Layer 2** (it trunks
+VLANs to the hosts and has no SVIs or routing beyond its own management
+interface). That is why every subnet's gateway (`.1`) lives on the UCGF and the
+Nexus `mgmt0` default‑routes to `10.30.99.1`.
+
+## N9K1 — Cisco Nexus 9000 C9396PX (Layer 2 fabric)
+
+| Item | Value |
+|------|-------|
+| Model | Cisco Nexus9000 **C9396PX** (48× SFP+ 10 Gb fixed + a 12× 40 Gb QSFP+ uplink module) |
+| Hostname | `nexus-9k-1` |
+| NX-OS | `7.0(3)I2(2d)` (BIOS 07.41) |
+| Role | Pure Layer 2 — VLAN trunking to hosts; all routing/DHCP is on the UCGF |
+| Features | `lacp`, `lldp`; `system default switchport shutdown` (ports shut unless explicitly enabled); `copp profile strict`; RSTP |
+| Management | `mgmt0` = `10.30.99.250/24` in the `management` VRF; VRF default route `0.0.0.0/0 → 10.30.99.1` (the UCGF) |
+| Jumbo | Host trunks set `mtu 9216` |
+
+**VLANs defined:** `1,3,8,99,200,202,999,1610-1615,3939` — named `Servers` (3),
+`SDx` (8), `core-mgmt` (99), `native` (999), `Native-VLAN-1610`, `External-Mgmt`
+(1611), `vMotion` (1612), `vSAN` (1613), `VmNetwork-A` (1614), `VmNetwork-B`
+(1615), `Private` (3939). (VLANs 200/202 are trunked to `proxmox-1` for the
+FortiGate lab; see the note under the UCGF below.)
+
+**Port-channels:**
+
+| PC | Members | Mode | Native | Allowed VLANs | Purpose |
+|----|---------|------|--------|---------------|---------|
+| `port-channel1` | Eth1/47 (`active`), Eth1/48 standalone | trunk | 1611 | 1,3,8,1611-1615,3939 (Eth1/48 adds 99,999) | **Uplink to the UCGF** (SFP+ port 6) |
+| `port-channel2` | Eth1/19–20 (`active`) | trunk | 999 | 3,6,10,200,202 | **`proxmox-1` data bond** (`nic3`+`nic4`) |
+
+**Key interface roles:**
+
+| Ports | Description | Mode |
+|-------|-------------|------|
+| Eth1/1–16 | Host trunks `ru08`–`ru11` (`vmnic0`–`vmnic3` each), native 1611, allowed 3,8,1611-1615,3939, MTU 9216 | trunk |
+| Eth1/17 | `ru12;nic1` — `proxmox-1` management, `10.30.161.10/24` | access VLAN 1611 |
+| Eth1/18 | `ru12;nic2` — `10.30.99.0/24` core-mgmt (the FortiGate WAN, `10.30.99.99`, lives here) | access VLAN 99 |
+| Eth1/19–20 | `ru12;nic3-4` — data-VLAN bond (`port-channel2`) | trunk (native 999) |
+| Eth1/30 | spare | access VLAN 1611 |
+| Eth1/33–34 | `unraid-1` (`192.168.1.209`, VLAN 1) | access |
+| Eth1/40–41 | `proxmox-idrac`, `unraid-idrac` | access VLAN 1611 |
+| Eth1/47–48 | Uplinks to the UCGF | trunk |
+| Eth2/1–12 | 40 Gb QSFP+ module — all unconfigured | — |
+
+## UCGF — Ubiquiti UniFi Cloud Gateway Fiber (edge router / firewall / DHCP / Wi-Fi)
+
+The UCGF (`CGF`/`UCG Fiber` in the UniFi Network console) is the lab's edge — it
+routes between every VLAN, runs DHCP, NATs to the internet, applies the edge
+firewall, and is the Wi‑Fi controller.
+
+**Gateway ports (7):** RJ45 `1`–`5` (GbE), SFP+ `6`–`7` (10 GbE).
+
+| Port | Name | Assignment | Speed |
+|------|------|------------|-------|
+| 1 | `ISP…` | Unassigned | GbE |
+| 2 | `MSP` | Unassigned | GbE |
+| 3 | `AP` | Unassigned | GbE |
+| 4 | `AP` | Unassigned | GbE |
+| 5 | **`ISP`** | **WAN1 (Primary, Online)** | GbE |
+| 6 | **`N9K1…`** | Unassigned (LAN uplink) | **10 GbE (SFP+)** |
+| 7 | `Office…` | Unassigned | GbE |
+
+WAN mode is **Failover Only** (single primary WAN1); an automatic speed test runs
+daily at 05:00.
+
+**Routed networks (VLANs) — the authoritative lab plan.** The UCGF is the router
+and DHCP server for each:
+
+| VLAN | Name | Subnet | DHCP |
+|------|------|--------|------|
+| 1 | `Core_1` | `192.168.1.0/24` | Server |
+| 2 | `Eve-ng_…` | `192.168.2.0/24` | None |
+| 3 | `Servers` | `10.30.10.0/24` (+ IPv6 ULA) | Server |
+| 4 | `Guest` | `10.30.100.0/24` | Server |
+| 5 | `Doc_Box_5` | `10.30.101.0/24` | Server |
+| 6 | `Workstations` | `10.30.12.0/24` (+ IPv6 ULA) | Server |
+| 7 | `Printers` | `10.30.11.0/24` | Server |
+| 8 | `SDx-10-1-255` | `10.1.255.0/24` | Server |
+| 9 | `IoT_5G` | `10.30.200.0/24` | Server |
+| 10 | `isp` | `192.168.10.0/24` (modem-facing) | None |
+| 40 | `Doc_Box_3` | `192.168.40.0/24` | Server |
+| 90 | `Core_90` | `10.30.90.0/24` | Server |
+| 98 | `Lab_Mgmt_98` | `10.30.98.0/24` | Server |
+| 99 | `Core_Mgmt_99` | `10.30.99.0/24` (+ IPv6 ULA) | Server |
+| 200 | `Lab_Core_200` | `10.31.0.0/24` | Server |
+| 201 | `Lab_Enterprises_201` | `10.31.1.0/24` | Server |
+| 202 | `Lab_Services_202` | `10.31.11.0/24` (+ IPv6 ULA) | Server |
+| 301 | `Home_Core` | `10.30.0.0/24` | Server |
+| 971 | `IoT_2G` | `192.168.97.0/24` | Server |
+| 1610 | `Native_VLAN_1610` | `10.30.164.0/24` (+ IPv6 ULA) | Server |
+| 1611 | `Lab_Mgmt_1611` | `10.30.161.0/24` (+ IPv6 ULA) | Server |
+| 1612 | `vMotion` | `10.30.95.0/24` | None |
+| 1613 | `vSAN` | `10.30.96.0/24` (+ IPv6 ULA) | Server |
+| 1614 | `VmNetwork_A_1614` | `10.30.162.0/24` (+ IPv6 ULA) | Server |
+| 1615 | `VmNetwork_B_1615` | `10.30.163.0/24` (+ IPv6 ULA) | Server |
+| 2129 | `Eve-ng_NAT_…` | `172.29.129.0/24` | None |
+| 4009 | `native` | `10.99.99.0/24` | Server |
+
+> **FortiGate-lab tag reuse.** The Volume XIX FortiGate labs run their own
+> internal segments on `proxmox-1`'s `vmbr2` using VLAN tags **200/202** with
+> addressing `10.200.0.0/24` and `10.202.0.0/24`, gated and NATed *behind the
+> FortiGate*. Those are distinct from the UCGF's routed `Lab_Core_200`
+> (`10.31.0.0/24`) and `Lab_Services_202` (`10.31.11.0/24`) despite sharing the
+> tag numbers — the FortiGate segments never leave `proxmox-1`, so the collision
+> is harmless, but it is worth knowing when tracing a `10.200.x` address.
+
+**Global L2 / switching settings:** Spanning Tree **RSTP**; IGMP snooping on
+(queriers off — third-party switches); Jumbo Frames off; 802.1X off; Rogue-DHCP
+detection off. Default RADIUS profile `Default (UCG Fiber)`.
+
+**Firewall / security:** default security posture **Allow All**; gateway mDNS
+proxy Auto. Named network lists used by policy include `RFC1918`, `Management`,
+`Main_GW`, `Doc_Box_Group`, `VPN_7.0` (`192.168.7.0/24`), `NIST`,
+`Block_Internet_IPv4`/`IPv6`, `Allow_Internet_IPv4`, and `IPv6_Mgmt`.
+**CyberSecure** is on the **Standard (Free)** tier (~32,000 threat signatures,
+updated daily); Intrusion Prevention and Region Blocking are off, Encrypted DNS
+off, and the block page is served with the UniFi SSL certificate.
+
+**Wi-Fi (SSIDs):**
+
+| SSID | Network | Band | Security |
+|------|---------|------|----------|
+| `Platinum` | `Core_90` (90) | 5 GHz | WPA2 |
+| `Platinum_Silver_5G` | Native | 5 GHz | WPA2 |
+| `Platinum_IoT_2G` | Native | 2.4 GHz | WPA2 |
+| `Platinum_Silver_2G` | Native | 2.4 GHz | WPA2 |
+| `Doc_Box` | Native | 2.4 / 5 GHz | WPA2 / WPA3 |
+
+Channel widths run 20 MHz (2.4 GHz) / 80 MHz (5 GHz) / 320 MHz (6 GHz), Extended
+5 GHz (DFS) enabled, wireless meshing on with the gateway as mesh monitor.
+
+## ISP modem — internet handoff
+
+The ISP modem provides the WAN uplink into **UCGF port 5 (WAN1)**; the UCGF's
+`isp` network (VLAN 10, `192.168.10.0/24`) faces it. *The service provider, modem
+model, and public IP address are intentionally not recorded in this volume.*

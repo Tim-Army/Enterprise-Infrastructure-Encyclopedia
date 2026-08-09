@@ -50,7 +50,7 @@ running. The considerations below are ordered the way they actually bite.
 - **Reserve a separate out-of-band (OOB) management network.** Keep iDRAC/iLO,
   the switch's own `mgmt0`, and the hypervisor management IPs reachable even
   when a data VLAN is broken. Mixing management into a data VLAN is how you
-  lock yourself out — a lesson this lab learned the hard way (see Chapter 02's
+  lock yourself out (see Chapter 02's
   VLAN plan, and the OOB-versus-data-VLAN note there).
 - **Pick a native/parking VLAN that carries no data.** Trunk mismatches are
   silent; a dedicated unused native VLAN (and consistent native across every

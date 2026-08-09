@@ -32,6 +32,11 @@ template, because its job is to *record* a lab, not to teach one.
   — the lab drawn two ways (network topology and rack elevation) in the
   encyclopedia's house style, with the logical VLAN/addressing plan as the
   third view.
+- **[Chapter 04 — Current Device Configurations](chapters/04-current-device-configurations.md)**
+  — the live configuration of the three infrastructure devices below the
+  hypervisors: the ISP modem (redacted), the UCGF edge gateway (routing, DHCP,
+  firewall, Wi-Fi), and the N9K1 Nexus switch fabric. No credentials or public
+  addressing are recorded.
 
 ## Relationship to other volumes
 

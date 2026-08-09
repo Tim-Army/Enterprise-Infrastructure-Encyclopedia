@@ -9,27 +9,36 @@ changes rather than redrawn by hand.
 
 ## Physical and network topology
 
-Every host lands four 10 Gb NICs on the single Nexus, which trunks the data
-VLANs to them (native 1611) and routes out via `port-channel1`. The management
-plane is deliberately separate: iDRACs and the switch's own `mgmt0` live on the
-out-of-band `10.30.99.0/24` network, reachable from host management
-(`10.30.161.0/24`, VLAN 1611) only by routing — not by an L2 hop.
+The internet arrives at the **ISP modem** and hands off to the **UCGF** (the
+Ubiquiti UniFi Cloud Gateway Fiber) on WAN1; the UCGF is where all routing, NAT,
+DHCP, and edge firewalling happen — it holds the `.1` gateway for every VLAN. A
+10 Gb SFP+ uplink (UCGF port 6 ↔ the Nexus `port-channel1`) reaches the single
+**Cisco Nexus 9000 C9396PX**, which is pure Layer 2: it trunks the data VLANs to
+the five hosts (each landing four 10 Gb NICs, native 1611). The management plane
+is deliberately separate — iDRACs and the switch's own `mgmt0` live on the
+out-of-band `10.30.99.0/24` network, reachable only by routing through the UCGF
+(`10.30.99.1`), not by an L2 hop. Chapter 04 records the UCGF and Nexus
+configurations in full.
 
-![Network topology of the lab: a single Cisco Nexus 9300 switch trunks the data VLANs to five Dell PowerEdge hosts (ru08 through ru12, four 10 Gb NICs each) with native VLAN 1611, uplinks north via port-channel1, connects the Unraid NAS on VLAN 1, and keeps iDRAC out-of-band management on the separate 10.30.99.0/24 segment.](../../../diagrams/volume-900-tims-lab-gear/chapter-03-lab-network-topology.svg)
+![Network topology of the lab: an ISP modem hands off to the UCGF (UniFi Cloud Gateway Fiber) on WAN1; the UCGF routes and NATs every VLAN and uplinks over 10 Gb SFP+ (port 6 to port-channel1) to a single Cisco Nexus 9000 C9396PX switch, which trunks the data VLANs to five Dell PowerEdge hosts (ru08 through ru12, four 10 Gb NICs each) on native VLAN 1611, connects the Unraid NAS on VLAN 1, and keeps iDRAC out-of-band management on the separate 10.30.99.0/24 segment.](../../../diagrams/volume-900-tims-lab-gear/chapter-03-lab-network-topology.svg)
 
-Reading it: the **data path** is the trunked VLANs from each host to the Nexus
-and out the uplink; the **management path** is the iDRAC/OOB segment that stays
-reachable when a data VLAN breaks. `proxmox-1` (ru12) is the host built out in
-Volume XXVI and running the FortiGate-VM from Volume XIX; the other four
-positions are cabled and ready.
+Reading it: the **data path** is the trunked VLANs from each host up through the
+Nexus and out the UCGF to the internet; the **management path** is the iDRAC/OOB
+segment that stays reachable when a data VLAN breaks. `proxmox-1` (ru12) is the
+host built out in Volume XXVI and running the FortiGate-VMs and FortiClient EMS
+from Volume XIX; the other four positions are cabled and ready.
 
 ## Rack elevation
 
 The elevation records physical placement — which rack unit holds which host, the
-switch, and the NAS — so a cable traced at the switch (`ru12;vmnic1`) maps to a
-physical box without opening the rack.
+switch, the NAS, and the UPS — so a cable traced at the switch (`ru12;vmnic1`)
+maps to a physical box without opening the rack. **The `ru##` in each host's name
+is its actual rack-unit position** — `ru08` sits in rack unit 8, `ru09` in rack
+unit 9, … `ru12` in rack unit 12 — so the hostname alone locates the box in the
+rack. An **APC 30 A UPS fills the bottom 5 U** of the rack and feeds the whole
+stack (host, switch, NAS, and the edge gateway).
 
-![Rack elevation of the lab: from top, the Cisco Nexus 9300 switch, five Dell PowerEdge servers in rack units ru08 through ru12, and the Unraid NAS, each labeled with its role and management address.](../../../diagrams/volume-900-tims-lab-gear/chapter-03-rack-elevation.svg)
+![Rack elevation of the lab: from top, the Cisco Nexus 9000 C9396PX switch, five Dell PowerEdge servers whose hostnames encode their actual rack units (ru08 through ru12), the Unraid NAS, and an APC 30 A UPS occupying the bottom five rack units — each labeled with its role and management address.](../../../diagrams/volume-900-tims-lab-gear/chapter-03-rack-elevation.svg)
 
 The switch-port descriptions (`ru08;vmnic0` … `ru12;vmnic3`) are the link
 between this elevation and the topology above — the single most useful labeling

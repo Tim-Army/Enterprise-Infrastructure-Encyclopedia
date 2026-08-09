@@ -31,7 +31,7 @@ layout is captured under Storage below.
 | Item | Value |
 |------|-------|
 | Hostname | `nexus-9k-1` |
-| Platform | Cisco Nexus 9300-series (9396PX-class: 48× SFP+ 10 Gb on module 1, 12× 40 Gb uplink on module 2) — *inferred from the Eth1/1–48 + Eth2/1–12 layout* |
+| Platform | Cisco Nexus 9000 **C9396PX** (fixed 48× SFP+ 10 Gb on module 1, plus a 12× 40 Gb QSFP+ uplink module — the `M12PQ`/GEM in module 2) |
 | NX-OS | `7.0(3)I2(2d)` |
 | OOB management | `mgmt0` = `10.30.99.250/24`, default route `10.30.99.1` (management VRF) |
 | Features | `lacp`, `lldp` |
@@ -70,30 +70,50 @@ layout is captured under Storage below.
 > through `10.30.161.1`, not by an L2 VLAN — so a host cannot be placed on it by
 > tagging a data VLAN. Data segments get their own subnets.
 
+## Edge gateway and power
+
+| Item | Role | Detail |
+|------|------|--------|
+| **UCGF** | Edge router / firewall | Ubiquiti UniFi Cloud Gateway Fiber — the lab's edge gateway. WAN uplink to the ISP modem; the default gateway for the lab segments (`10.30.161.1`, `10.30.99.1`, `10.30.10.1`, …), running inter-VLAN routing, NAT to the internet, and edge firewalling. Its gateway interfaces answer with a Ubiquiti `a8:9c:6c` MAC. Configuration detail in [Chapter 04](04-current-device-configurations.md) |
+| ISP modem | Internet handoff | Feeds the UCGF WAN uplink. *Provider, modem model, and public IP are intentionally not recorded.* |
+| **APC UPS** | Power | A 30 A APC UPS occupying the bottom **5 U** of the rack backs the whole rack — protected runtime for the host, switch, NAS, and gateway |
+
 ## Storage
 
 | System | Type | Detail |
 |--------|------|--------|
-| `unraid-1` | Unraid NAS | `192.168.1.209/24` (VLAN 1), cabled Eth1/33–34. ISOs, backups, bulk. iDRAC/IPMI on Eth1/41 |
-| `proxmox-1` local | LVM-thin | `local-lvm` (~136 GB) — running VM disks |
-| `proxmox-1` local | Directory | `disk_image`, `import`, `iso` (dir stores, shared filesystem) |
-| `proxmox-1` local | Boot | `local` (Dell BOSS mirror — TBD) |
-| `proxmox-1` local | ZFS | `blue` zfspool — **inactive** (pool missing; needs import or removal) |
-| `proxmox-1` array | RAID | `river` array (PERC RAID-5 — see Volume XXVI) — VM/data datastore |
+| `proxmox-1` | ZFS pool | `blue` — **active, `ONLINE`**: 5.23 TB raw, ~3.3 TB usable free, mounted `/blue`. The primary datastore — every VM disk (`vm-<id>-disk-N`) runs from it, and it backs the directory stores below. It replaces the former `river` PERC RAID-5 datastore, which is no longer a configured Proxmox storage |
+| `proxmox-1` | Directory (on `blue`) | `iso`, `disk_image`, `import`, `backup`, `container`, `container_template`, `snippets` — directory stores living on the ZFS filesystem (ISOs, disk images, backups, snippets) |
+| `proxmox-1` | LVM-thin | `local-lvm` (~136 GB) — present but empty; VM disks now live on `blue` |
+| `proxmox-1` | Boot / system | `local` (~67 GB directory store on the Dell BOSS mirror) |
+| `unraid-1` | Unraid NAS | `192.168.1.209/24` (VLAN 1), cabled Eth1/33–34. ISOs, backups, bulk. IPMI on Eth1/41 |
 
 ## Virtualization and key VMs
 
 | ID | Name | What | Network |
 |----|------|------|---------|
-| 100 | `gns3` | GNS3 network emulator VM (nested virtualization) | VLAN 3 |
-| 120 | `fortigate-7-6-2` | FortiGate-VM 7.6.2 (build 3462), evaluation | port1 on VLAN 99 (`10.30.99.99`); port2 trunk |
+| 100 | `gns3` | GNS3 network emulator (nested virtualization); currently stopped | VLAN 3 |
+| 120 | `fortigate-7-6-2` | FortiGate-VM eval, FortiOS 7.6.x ("FGT-1") — the primary lab firewall (Volume XIX) | port1 WAN on `vmbr1` (`10.30.99.99`); internal ports on `vmbr2` VLANs 200/202 |
+| 121 | `fortigate-fgt2` | FortiGate-VM eval ("FGT-2") — second peer for the site-to-site IPsec lab | port1 on `vmbr1`; internal on `vmbr2` VLAN 60 |
+| 122 | `fortigate-fgt3` | FortiGate-VM 8.0.0 eval ("FGT-3") — built for the EMS/ZTNA lab; awaiting a licensed FortiGate for strong crypto | port1 on `vmbr1`; VLAN 200 + VLAN 3 mgmt (`10.30.10.61`) |
+| 130 | `ems-win` | Windows 11 — first FortiClient EMS host attempt; now spare / candidate Windows ZTNA endpoint | VLAN 200 (`10.200.0.50`) |
+| 131 | `ems-linux` | Ubuntu 24.04 — **FortiClient EMS 7.4.8 server** (Linux-based EMS), licensed | VLAN 200 (`10.200.0.60`) + VLAN 3 mgmt (`10.30.10.60`) |
+| 200 | `test-vlan200` | Minimal reachability-test endpoint for VLAN 200 | VLAN 200 |
+| 202 | `test-vlan202` | Minimal reachability-test endpoint for VLAN 202 | VLAN 202 |
+| 210 | `ubuntu-ws` | Ubuntu workstation + VLAN-200 jump host (XFCE, FortiClient/impacket/`sshpass` tooling) | VLAN 200 (`10.200.0.20`) |
 
-`proxmox-1` bridges: `vmbr0` (management, on `nic1`/Eth1/17, `10.30.161.10/24`),
-`vmbr1` (VLAN-aware trunk, on `nic2`/Eth1/18). A bonded uplink `bond2`
-(`nic3`+`nic4`, LACP 802.3ad) is documented in Volume XXVI, Chapter 05.
+`proxmox-1`'s four NICs land on the switch with distinct roles (from the
+running-config): `nic1`→`Eth1/17` (access VLAN 1611, host mgmt `10.30.161.10`)
+→ bridge `vmbr0`; `nic2`→`Eth1/18` (access VLAN 99, `10.30.99.0/24` — the
+FortiGate WAN lives here as `10.30.99.99`) → `vmbr1`; and `nic3`+`nic4`→
+`Eth1/19–20`, bonded as the switch's `port-channel2` (LACP, native VLAN 999,
+data VLANs 3/6/10/200/202) → the VLAN-aware `vmbr2` that carries the lab's
+FortiGate-served segments (VLAN 200/202, plus a Proxmox-local VLAN 60 between the
+FortiGate peers). The bond is documented in Volume XXVI, Chapter 05.
 
 Emulators in use: **GNS3** and **EVE-NG** (FortiGate and other appliance images
-imported per Volumes XIX and XXVI).
+imported per Volumes XIX and XXVI). The nine VMs above are the live inventory;
+the FortiGate and FortiClient EMS builds are exercised by the Volume XIX labs.
 
 ## Management planes
 

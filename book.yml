@@ -5893,7 +5893,7 @@ volumes:
     number: "CM"
     slug: volume-900-tims-lab-gear
     title: "Tim's Lab Gear"
-    chapter_count: 3
+    chapter_count: 4
     build_eligible: true
     chapters:
       - id: 01
@@ -5905,6 +5905,9 @@ volumes:
       - id: 03
         title: "Chapter 03: Current Diagrams"
         path: volumes/volume-900-tims-lab-gear/chapters/03-current-diagrams.md
+      - id: 04
+        title: "Chapter 04: Current Device Configurations"
+        path: volumes/volume-900-tims-lab-gear/chapters/04-current-device-configurations.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices

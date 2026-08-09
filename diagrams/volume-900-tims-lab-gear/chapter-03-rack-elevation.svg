@@ -1,19 +1,19 @@
-<svg viewBox="0 0 640 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Tim's Lab rack elevation</title>
   <desc>
-    A rack elevation with, from top: the Cisco Nexus 9300 switch, five Dell PowerEdge servers in rack units ru08 through ru12, and the Unraid NAS, each labeled with its role and management address.
+    A rack elevation with, from top: the Cisco Nexus 9000 C9396PX switch, five Dell PowerEdge servers whose hostnames encode their actual rack units (ru08 through ru12), the Unraid NAS, and an APC 30 A UPS occupying the bottom five rack units — each labeled with its role and management address.
   </desc>
   <defs>
   </defs>
-  <rect x="0" y="0" width="640" height="600" fill="#ffffff"/>
+  <rect x="0" y="0" width="640" height="640" fill="#ffffff"/>
   <text x="320.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Tim's Lab — Rack Elevation</text>
-  <text x="320.0" y="50" text-anchor="middle" font-size="10.4" fill="#4b5563">Physical placement: switch on top, five PowerEdge hosts (ru08–ru12), and the Unraid NAS. Illustrative ordering.</text>
-  <rect x="126" y="86" width="408" height="452" rx="6" fill="none" stroke="#6b7280" stroke-width="1.5"/>
-  <line x1="138" y1="86" x2="138" y2="538" stroke="#93a3b8" stroke-width="1"/>
-  <line x1="522" y1="86" x2="522" y2="538" stroke="#93a3b8" stroke-width="1"/>
+  <text x="320.0" y="50" text-anchor="middle" font-size="8.1" fill="#4b5563">Physical placement: switch on top, five PowerEdge hosts (ru08–ru12 = actual rack units), the Unraid NAS, and an APC 30 A UPS in the bottom 5 U.</text>
+  <rect x="126" y="86" width="408" height="508" rx="6" fill="none" stroke="#6b7280" stroke-width="1.5"/>
+  <line x1="138" y1="86" x2="138" y2="594" stroke="#93a3b8" stroke-width="1"/>
+  <line x1="522" y1="86" x2="522" y2="594" stroke="#93a3b8" stroke-width="1"/>
   <rect x="150" y="96" width="360" height="54" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="330.0" y="118.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">nexus-9k-1</text>
-  <text x="330.0" y="136.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Cisco Nexus 9300 · OOB mgmt0 10.30.99.250</text>
+  <text x="330.0" y="136.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Cisco Nexus 9000 C9396PX · OOB mgmt0 10.30.99.250</text>
   <rect x="150" y="158" width="360" height="54" rx="8" fill="#f0faf2" stroke="#166534" stroke-width="2"/>
   <text x="330.0" y="180.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">ru12 · proxmox-1</text>
   <text x="330.0" y="198.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">PowerEdge R640 · Proxmox VE · 10.30.161.10</text>
@@ -32,4 +32,7 @@
   <rect x="150" y="468" width="360" height="54" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
   <text x="330.0" y="490.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">unraid-1</text>
   <text x="330.0" y="508.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Unraid NAS · 192.168.1.209 · VLAN 1</text>
+  <rect x="150" y="530" width="360" height="54" rx="8" fill="#fef2f2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="330.0" y="552.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">APC 30 A UPS</text>
+  <text x="330.0" y="570.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">bottom 5 U · feeds the whole rack</text>
 </svg>
