@@ -157,3 +157,437 @@ The ISP modem provides the WAN uplink into **UCGF port 5 (WAN1)** — the WAN
 interface carries the (redacted) public IP, and WAN mode is Failover Only with
 this as the sole primary. *The service provider, modem model, and public IP
 address are intentionally not recorded in this volume.*
+
+## N9K1 running-config (verbatim)
+
+The complete `show running-config` from `nexus-9k-1`, exactly as it runs. The
+only change is the two `username … password 5 …` hashes, replaced with
+`<redacted>` — publishing a password hash invites offline cracking, and this
+volume records no credentials. Everything else is verbatim.
+
+```text
+version 7.0(3)I2(2d)
+switchname nexus-9k-1
+vdc nexus-9k-1 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 248 maximum 248
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature lacp
+feature lldp
+
+username admin password 5 <redacted>  role network-admin
+username tim password 5 <redacted>  role network-operator
+username tim role network-admin
+ssh key rsa 2048
+no ip domain-lookup
+system default switchport shutdown
+copp profile strict
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+vlan 1,3,8,99,200,202,999,1610-1615,3939
+vlan 3
+  name Servers
+vlan 8
+  name SDx
+vlan 99
+  name core-mgmt
+vlan 999
+  name native
+vlan 1610
+  name Native-VLAN-1610
+vlan 1611
+  name External-Mgmt
+vlan 1612
+  name vMotion
+vlan 1613
+  name vSAN
+vlan 1614
+  name VmNetwork-A
+vlan 1615
+  name VmNetwork-B
+vlan 3939
+  name Private
+
+vrf context management
+  ip route 0.0.0.0/0 10.30.99.1
+
+interface port-channel1
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 1,3,8,1611-1615,3939
+
+interface port-channel2
+  description e1/19-20;ru12;nic3-4;vlans-3,6,10,200,202;data-vlans
+  switchport mode trunk
+  switchport trunk native vlan 999
+  switchport trunk allowed vlan 3,6,10,200,202
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+
+interface Ethernet1/1
+  description ru08;vmnic0
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/2
+  description ru08;vmnic1
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/3
+  description ru08;vmnic2
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/4
+  description ru08;vmnic3
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/5
+  description ru09;vmnic0
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/6
+  description ru09;vmnic1
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/7
+  description ru09;vmnic2
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/8
+  description ru09;vmnic3
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/9
+  description ru10;vmnic0
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/10
+  description ru10;vmnic1
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/11
+  description ru10;vmnic2
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/12
+  description ru10;vmnic3
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/13
+  description ru11;vmnic0
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/14
+  description ru11;vmnic1
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/15
+  description ru11;vmnic2
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/16
+  description ru11;vmnic3
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 3,8,1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/17
+  description ru12;nic1;10.30.161.10/24;vlan-1611;proxmox-1
+  switchport access vlan 1611
+  spanning-tree port type edge
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  no shutdown
+
+interface Ethernet1/18
+  description ru12;nic2;10.30.99.0/24;vlan-99;core-mgmt
+  switchport access vlan 99
+  spanning-tree port type edge
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  no shutdown
+
+interface Ethernet1/19
+  description ru12;nic3;vlans-3,6,10,200,202;data-vlans
+  switchport mode trunk
+  switchport trunk native vlan 999
+  switchport trunk allowed vlan 3,6,10,200,202
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  channel-group 2 mode active
+  no shutdown
+
+interface Ethernet1/20
+  description ru12;nic4;vlans-3,6,10,200,202;data-vlans
+  switchport mode trunk
+  switchport trunk native vlan 999
+  switchport trunk allowed vlan 3,6,10,200,202
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  channel-group 2 mode active
+  no shutdown
+
+interface Ethernet1/21
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/22
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/23
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/24
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 1611-1615,3939
+  spanning-tree bpduguard enable
+  spanning-tree bpdufilter enable
+  flowcontrol receive on
+  mtu 9216
+  no shutdown
+
+interface Ethernet1/25
+
+interface Ethernet1/26
+
+interface Ethernet1/27
+
+interface Ethernet1/28
+
+interface Ethernet1/29
+
+interface Ethernet1/30
+  switchport access vlan 1611
+  no shutdown
+
+interface Ethernet1/31
+
+interface Ethernet1/32
+
+interface Ethernet1/33
+  description unraid-1;192.168.1.209/24;vlan-1
+  no shutdown
+
+interface Ethernet1/34
+  description unraid-1;192.168.1.209/24;vlan-1
+  no shutdown
+
+interface Ethernet1/35
+
+interface Ethernet1/36
+
+interface Ethernet1/37
+
+interface Ethernet1/38
+
+interface Ethernet1/39
+
+interface Ethernet1/40
+  description proxmox-idrac
+  switchport access vlan 1611
+  no shutdown
+
+interface Ethernet1/41
+  description unraid-idrac
+  switchport access vlan 1611
+  no shutdown
+
+interface Ethernet1/42
+
+interface Ethernet1/43
+
+interface Ethernet1/44
+
+interface Ethernet1/45
+
+interface Ethernet1/46
+
+interface Ethernet1/47
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 1,3,8,1611-1615,3939
+  channel-group 1 mode active
+  no shutdown
+
+interface Ethernet1/48
+  switchport mode trunk
+  switchport trunk native vlan 1611
+  switchport trunk allowed vlan 1,3,8,99,999,1611-1615,3939
+  no shutdown
+
+interface Ethernet2/1
+
+interface Ethernet2/2
+
+interface Ethernet2/3
+
+interface Ethernet2/4
+
+interface Ethernet2/5
+
+interface Ethernet2/6
+
+interface Ethernet2/7
+
+interface Ethernet2/8
+
+interface Ethernet2/9
+
+interface Ethernet2/10
+
+interface Ethernet2/11
+
+interface Ethernet2/12
+
+interface mgmt0
+  vrf member management
+  ip address 10.30.99.250/24
+line console
+  exec-timeout 0
+line vty
+boot nxos bootflash:/nxos.7.0.3.I2.2d.bin
+```
