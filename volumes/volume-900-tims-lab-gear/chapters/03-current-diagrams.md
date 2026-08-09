@@ -12,7 +12,7 @@ changes rather than redrawn by hand.
 The internet arrives at the **ISP modem** and hands off to the **UCGF** (the
 Ubiquiti UniFi Cloud Gateway Fiber) on WAN1; the UCGF is where all routing, NAT,
 DHCP, and edge firewalling happen — it holds the `.1` gateway for every VLAN. A
-10 Gb SFP+ uplink (UCGF port 6 ↔ the Nexus `port-channel1`) reaches the single
+10 Gb SFP+ uplink (UCGF port 6 ↔ the Nexus `Eth1/48`) reaches the single
 **Cisco Nexus 9000 C9396PX**, which is pure Layer 2: it trunks the data VLANs to
 the five hosts (each landing four 10 Gb NICs, native 1611). The management plane
 is deliberately separate — iDRACs and the switch's own `mgmt0` live on the
@@ -20,7 +20,7 @@ out-of-band `10.30.99.0/24` network, reachable only by routing through the UCGF
 (`10.30.99.1`), not by an L2 hop. Chapter 04 records the UCGF and Nexus
 configurations in full.
 
-![Network topology of the lab: an ISP modem hands off to the UCGF (UniFi Cloud Gateway Fiber) on WAN1; the UCGF routes and NATs every VLAN and uplinks over 10 Gb SFP+ (port 6 to port-channel1) to a single Cisco Nexus 9000 C9396PX switch, which trunks the data VLANs to five Dell PowerEdge hosts (ru08 through ru12, four 10 Gb NICs each) on native VLAN 1611, connects the Unraid NAS on VLAN 1, and keeps iDRAC out-of-band management on the separate 10.30.99.0/24 segment.](../../../diagrams/volume-900-tims-lab-gear/chapter-03-lab-network-topology.svg)
+![Network topology of the lab: an ISP modem hands off to the UCGF (UniFi Cloud Gateway Fiber) on WAN1; the UCGF routes and NATs every VLAN and uplinks over 10 Gb SFP+ (port 6 to Eth1/48) to a single Cisco Nexus 9000 C9396PX switch, which trunks the data VLANs to five Dell PowerEdge hosts (ru08 through ru12, four 10 Gb NICs each) on native VLAN 1611, connects the Unraid NAS on VLAN 1, and keeps iDRAC out-of-band management on the separate 10.30.99.0/24 segment.](../../../diagrams/volume-900-tims-lab-gear/chapter-03-lab-network-topology.svg)
 
 Reading it: the **data path** is the trunked VLANs from each host up through the
 Nexus and out the UCGF to the internet; the **management path** is the iDRAC/OOB

@@ -61,14 +61,27 @@ layout is captured under Storage below.
 
 | Subnet | VLAN / plane | Gateway | Notes |
 |--------|--------------|---------|-------|
-| `10.30.161.0/24` | VLAN 1611 (External-Mgmt) | `10.30.161.1` | Host management: `proxmox-1` = `.10`; iDRACs |
-| `10.30.99.0/24` | Out-of-band management | `10.30.99.1` | Nexus `mgmt0` = `.250`; **separate segment from the data VLANs** |
-| `192.168.1.0/24` | VLAN 1 | TBD | Unraid NAS = `.209` |
+| `10.30.161.0/24` | VLAN 1611 (External-Mgmt) | `10.30.161.1` | Host management + iDRACs |
+| `10.30.99.0/24` | Out-of-band management (VLAN 99) | `10.30.99.1` | Nexus `mgmt0` + the FortiGate WANs; **separate segment from the data VLANs** |
+| `192.168.1.0/24` | VLAN 1 (Core_1) | `192.168.1.1` | Unraid NAS + legacy hosts |
 
 > **OOB vs data-VLAN caution.** `10.30.99.0/24` is the out-of-band management
 > subnet (the switch's `mgmt0`). It is reached from the host network by routing
 > through `10.30.161.1`, not by an L2 VLAN — so a host cannot be placed on it by
 > tagging a data VLAN. Data segments get their own subnets.
+
+## Key hosts and addresses
+
+The fixed management and infrastructure addresses (running VM addresses are in
+Virtualization and key VMs above):
+
+| Host | Address | Segment |
+|------|---------|---------|
+| `proxmox-1` (host management) | `10.30.161.10` | VLAN 1611 · External-Mgmt |
+| `nexus-9k-1` (`mgmt0`) | `10.30.99.250` | OOB · VLAN 99 |
+| `unraid-1` NAS | `192.168.1.209` | VLAN 1 · Core_1 |
+| `proxmox-1` / `unraid-1` iDRACs | on VLAN 1611 (Nexus `Eth1/40`–`41`) | out-of-band |
+| Admin workstation (Mac Studio) | `10.30.12.172` | VLAN 6 · Workstations |
 
 ## Edge gateway and power
 

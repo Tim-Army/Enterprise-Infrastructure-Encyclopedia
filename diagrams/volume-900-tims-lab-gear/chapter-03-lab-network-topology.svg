@@ -1,7 +1,7 @@
 <svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <title>Tim's Lab network topology</title>
   <desc>
-    From the top: an ISP modem hands off to the UCGF (Ubiquiti UniFi Cloud Gateway Fiber) on WAN1; the UCGF is the router, firewall, DHCP server and Wi-Fi controller and holds the .1 gateway for every VLAN. A 10 Gb SFP+ uplink (UCGF port 6 to port-channel1) reaches a single Cisco Nexus 9000 C9396PX switch (nexus-9k-1) that trunks the data VLANs to five Dell PowerEdge hosts at rack units ru08 through ru12, each with four 10 Gb NICs, native VLAN 1611. The Unraid NAS sits on VLAN 1. iDRAC out-of-band management and the switch mgmt0 live on the separate 10.30.99.0/24 segment.
+    From the top: an ISP modem hands off to the UCGF (Ubiquiti UniFi Cloud Gateway Fiber) on WAN1; the UCGF is the router, firewall, DHCP server and Wi-Fi controller and holds the .1 gateway for every VLAN. A 10 Gb SFP+ uplink (UCGF port 6 to N9K1 Eth1/48) reaches a single Cisco Nexus 9000 C9396PX switch (nexus-9k-1) that trunks the data VLANs to five Dell PowerEdge hosts at rack units ru08 through ru12, each with four 10 Gb NICs, native VLAN 1611. The Unraid NAS sits on VLAN 1. iDRAC out-of-band management and the switch mgmt0 live on the separate 10.30.99.0/24 segment.
   </desc>
   <defs>
     <marker id="arrow-alt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#166534"/></marker>
@@ -22,7 +22,7 @@
   <text x="480.0" y="165.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">edge router · firewall · DHCP · Wi-Fi</text>
   <text x="480.0" y="179.2" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">holds .1 gateway for every VLAN</text>
   <line x1="480" y1="190" x2="480" y2="214" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
-  <text x="494" y="208" text-anchor="start" font-size="9" font-weight="600" fill="#6b7280">port 6 SFP+ 10 GbE ↔ port-channel1</text>
+  <text x="494" y="208" text-anchor="start" font-size="9" font-weight="600" fill="#6b7280">port 6 SFP+ 10 GbE ↔ N9K1 Eth1/48</text>
   <rect x="350" y="214" width="260" height="58" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
   <text x="480.0" y="233.6" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">nexus-9k-1</text>
   <text x="480.0" y="247.6" text-anchor="middle" font-size="9" font-weight="400" fill="#374151">Cisco Nexus 9000 C9396PX · NX-OS 7.0(3)I2(2d)</text>

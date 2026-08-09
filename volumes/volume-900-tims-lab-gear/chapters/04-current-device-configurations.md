@@ -14,11 +14,11 @@ The three devices layer from the internet inward:
 
 ```text
 ISP modem ──▶ UCGF port 5 (WAN1, "ISP") ──▶ UCGF routes + NATs the lab VLANs
-          ──▶ UCGF port 6 (SFP+ 10 GbE, "N9K1") ──▶ N9K1 port-channel1 uplink
+          ──▶ UCGF port 6 (SFP+ 10 GbE, "N9K1-P48") ──▶ N9K1 Eth1/48 trunk
           ──▶ N9K1 48× 10 Gb switch fabric ──▶ the five PowerEdge hosts
 ```
 
-The division of labour is clean: **the UCGF does all Layer 3** (routing between
+The division of labor is clean: **the UCGF does all Layer 3** (routing between
 VLANs, DHCP, NAT, edge firewalling, Wi‑Fi); **N9K1 is pure Layer 2** (it trunks
 VLANs to the hosts and has no SVIs or routing beyond its own management
 interface). That is why every subnet's gateway (`.1`) lives on the UCGF and the
@@ -46,7 +46,7 @@ FortiGate lab; see the note under the UCGF below.)
 
 | PC | Members | Mode | Native | Allowed VLANs | Purpose |
 |----|---------|------|--------|---------------|---------|
-| `port-channel1` | Eth1/47 (`active`), Eth1/48 standalone | trunk | 1611 | 1,3,8,1611-1615,3939 (Eth1/48 adds 99,999) | **Uplink to the UCGF** (SFP+ port 6) |
+| `port-channel1` | Eth1/47 (`active`) | trunk | 1611 | 1,3,8,1611-1615,3939 | Northbound LACP uplink |
 | `port-channel2` | Eth1/19–20 (`active`) | trunk | 999 | 3,6,10,200,202 | **`proxmox-1` data bond** (`nic3`+`nic4`) |
 
 **Key interface roles:**
@@ -60,7 +60,8 @@ FortiGate lab; see the note under the UCGF below.)
 | Eth1/30 | spare | access VLAN 1611 |
 | Eth1/33–34 | `unraid-1` (`192.168.1.209`, VLAN 1) | access |
 | Eth1/40–41 | `proxmox-idrac`, `unraid-idrac` | access VLAN 1611 |
-| Eth1/47–48 | Uplinks to the UCGF | trunk |
+| Eth1/47 | Northbound LACP uplink (`port-channel1`) | trunk |
+| Eth1/48 | **UCGF port 6** — the 10 GbE data uplink (standalone trunk; allows 1,3,8,99,999,1611-1615,3939) | trunk |
 | Eth2/1–12 | 40 Gb QSFP+ module — all unconfigured | — |
 
 ## UCGF — Ubiquiti UniFi Cloud Gateway Fiber (edge router / firewall / DHCP / Wi-Fi)
@@ -71,15 +72,15 @@ firewall, and is the Wi‑Fi controller.
 
 **Gateway ports (7):** RJ45 `1`–`5` (GbE), SFP+ `6`–`7` (10 GbE).
 
-| Port | Name | Assignment | Speed |
-|------|------|------------|-------|
-| 1 | `ISP…` | Unassigned | GbE |
-| 2 | `MSP` | Unassigned | GbE |
-| 3 | `AP` | Unassigned | GbE |
-| 4 | `AP` | Unassigned | GbE |
-| 5 | **`ISP`** | **WAN1 (Primary, Online)** | GbE |
-| 6 | **`N9K1…`** | Unassigned (LAN uplink) | **10 GbE (SFP+)** |
-| 7 | `Office…` | Unassigned | GbE |
+| Port | Name (label) | Assignment | Speed | Connects to |
+|------|------|------------|-------|-------------|
+| 1 | `ISPN9K1-mgmt0;10.30.99.205;VLAN-99` | Unassigned | GbE | N9K1 `mgmt0` (OOB, VLAN 99) |
+| 2 | `MSP` | Unassigned | GbE | — |
+| 3 | `AP` | Unassigned | GbE | access point |
+| 4 | `AP` | Unassigned | GbE (PoE) | access point |
+| 5 | `ISP` | **WAN1 (Primary, Online)** | GbE | ISP modem |
+| 6 | `N9K1-P48` | Unassigned (LAN uplink) | **10 GbE (SFP+)** | N9K1 `Eth1/48` (data trunk) |
+| 7 | `Office-Sw-1` | Unassigned | GbE | TP-Link 8-port Gigabit unmanaged switch (office) |
 
 WAN mode is **Failover Only** (single primary WAN1); an automatic speed test runs
 daily at 05:00.
@@ -98,7 +99,7 @@ and DHCP server for each:
 | 7 | `Printers` | `10.30.11.0/24` | Server |
 | 8 | `SDx-10-1-255` | `10.1.255.0/24` | Server |
 | 9 | `IoT_5G` | `10.30.200.0/24` | Server |
-| 10 | `isp` | `192.168.10.0/24` (modem-facing) | None |
+| 10 | `isp` | `192.168.10.0/24` | None |
 | 40 | `Doc_Box_3` | `192.168.40.0/24` | Server |
 | 90 | `Core_90` | `10.30.90.0/24` | Server |
 | 98 | `Lab_Mgmt_98` | `10.30.98.0/24` | Server |
@@ -152,6 +153,7 @@ Channel widths run 20 MHz (2.4 GHz) / 80 MHz (5 GHz) / 320 MHz (6 GHz), Extended
 
 ## ISP modem — internet handoff
 
-The ISP modem provides the WAN uplink into **UCGF port 5 (WAN1)**; the UCGF's
-`isp` network (VLAN 10, `192.168.10.0/24`) faces it. *The service provider, modem
-model, and public IP address are intentionally not recorded in this volume.*
+The ISP modem provides the WAN uplink into **UCGF port 5 (WAN1)** — the WAN
+interface carries the (redacted) public IP, and WAN mode is Failover Only with
+this as the sole primary. *The service provider, modem model, and public IP
+address are intentionally not recorded in this volume.*

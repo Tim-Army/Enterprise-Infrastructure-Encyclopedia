@@ -19,7 +19,7 @@ def topology():
         svg_desc="From the top: an ISP modem hands off to the UCGF (Ubiquiti UniFi Cloud Gateway "
                  "Fiber) on WAN1; the UCGF is the router, firewall, DHCP server and Wi-Fi controller "
                  "and holds the .1 gateway for every VLAN. A 10 Gb SFP+ uplink (UCGF port 6 to "
-                 "port-channel1) reaches a single Cisco Nexus 9000 C9396PX switch (nexus-9k-1) that "
+                 "N9K1 Eth1/48) reaches a single Cisco Nexus 9000 C9396PX switch (nexus-9k-1) that "
                  "trunks the data VLANs to five Dell PowerEdge hosts at rack units ru08 through ru12, "
                  "each with four 10 Gb NICs, native VLAN 1611. The Unraid NAS sits on VLAN 1. iDRAC "
                  "out-of-band management and the switch mgmt0 live on the separate 10.30.99.0/24 segment.")
@@ -39,7 +39,7 @@ def topology():
 
     # UCGF → Nexus core switch (10 GbE SFP+ uplink)
     c.connector(480, 190, 480, 214, "mgmt")
-    c.text(494, 208, "port 6 SFP+ 10 GbE ↔ port-channel1", size=9, weight=600, color=MUTE, anchor="start")
+    c.text(494, 208, "port 6 SFP+ 10 GbE ↔ N9K1 Eth1/48", size=9, weight=600, color=MUTE, anchor="start")
     c.node_box(350, 214, 260, 58, "mgmt", [
         Line("nexus-9k-1", 13, 700, INK),
         Line("Cisco Nexus 9000 C9396PX · NX-OS 7.0(3)I2(2d)", 9, 400, GREY),
