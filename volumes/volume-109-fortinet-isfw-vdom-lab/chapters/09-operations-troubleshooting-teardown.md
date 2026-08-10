@@ -51,6 +51,8 @@ sudo nft list tables | grep fgt
 | IT↔OT totally broken | VDOM split with no inter-VDOM link/policy | `diagnose sys vdom list`, vdom-link |
 | No sessions during test | asymmetric routing / bypasses ISFW | `get system session list`, routing |
 | Deny not logged | `logtraffic` not set on the policy | policy config |
+| Mgmt IP unreachable after DHCP→static | static mgmt interface lost the DHCP-learned default/return route (fine same-subnet, breaks cross-subnet) | `get router info routing-table all`; add `config router static` via the mgmt gateway |
+| No transit forwards though policy and routes look correct | FortiGate-VM license `Invalid` (failsafe mode drops all transit), or the eval's 3-interface cap silently dropped the extra ports | `get system status` → check `License Status` and `VM Resources`; a `diagnose debug flow` trace stops at the route lookup with no policy line |
 
 **Expected result.** A symptom-to-cause table to work top to bottom.
 
