@@ -13,7 +13,7 @@
 | 1 | FortiGate-VM evaluation (KVM/ESXi/Workstation), 4 endpoint VMs, 5 vNICs | Fortinet support portal (VM eval) |
 | 2 | One Ubuntu 22.04 host with `nftables`, `iproute2` | free |
 
-The FortiGate-VM evaluation runs without a purchased license in a limited mode sufficient for this lab; a 15-day trial license unlocks full throughput.
+The FortiGate-VM evaluation runs without a purchased license in a limited mode sufficient for this lab; a 15-day trial license unlocks full throughput. Note the evaluation's crypto is limited to DES — enabling strong crypto, and with it IPsec/SSL-VPN, ZTNA, and the FortiClient EMS Security Fabric join over TLS, requires a paid license. None of those features are needed here: this lab is plaintext Layer 3/4 policy enforcement, which the unlicensed evaluation runs in full.
 
 ## Hands-On Lab
 
