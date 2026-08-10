@@ -11,6 +11,8 @@
 
 FortiOS evaluates firewall policies **top to bottom**; the first match wins, and after the last policy an **implicit deny** drops anything unmatched. Microsegmentation is therefore: author the exact permits, place any explicit denies above broad permits, and remove the permit-all so the implicit deny governs the rest.
 
+**Two FortiOS requirements before you start.** First, because Chapter 03 put the interfaces into zones, a policy references the **zone** (`APP`/`DB`/`MGMT`/`OT`), not the member interface — `set srcintf port2` is rejected once `port2` belongs to a zone (`node_check_object fail`). Second, **every policy must carry a schedule**: omit `set schedule always` and FortiOS refuses to save the rule at `next`/`end` with `Attribute 'schedule' MUST be set` (return code -56), silently leaving the rule uncommitted. Both are easy to trip over — the walkthroughs below use zones and set a schedule on every rule, including the deny.
+
 ## Hands-On Lab
 
 ### Exercise 5.1 — Permit the two legitimate flows
@@ -23,8 +25,8 @@ FortiOS evaluates firewall policies **top to bottom**; the first match wins, and
 FGT # config firewall policy
 FGT (policy) # edit 1
 FGT (1) # set name web-to-db
-FGT (1) # set srcintf port2
-FGT (1) # set dstintf port3
+FGT (1) # set srcintf APP
+FGT (1) # set dstintf DB
 FGT (1) # set srcaddr web
 FGT (1) # set dstaddr db
 FGT (1) # set service PGSQL
@@ -34,8 +36,8 @@ FGT (1) # set logtraffic all
 FGT (1) # next
 FGT (policy) # edit 2
 FGT (2) # set name hmi-to-plc
-FGT (2) # set srcintf port4
-FGT (2) # set dstintf port5
+FGT (2) # set srcintf MGMT
+FGT (2) # set dstintf OT
 FGT (2) # set srcaddr hmi
 FGT (2) # set dstaddr plc
 FGT (2) # set service MODBUS
@@ -85,12 +87,13 @@ Optionally add an explicit logged deny for MGMT→DB above the implicit deny:
 FGT # config firewall policy
 FGT (policy) # edit 3
 FGT (3) # set name deny-mgmt-db
-FGT (3) # set srcintf port4
-FGT (3) # set dstintf port3
+FGT (3) # set srcintf MGMT
+FGT (3) # set dstintf DB
 FGT (3) # set srcaddr hmi
 FGT (3) # set dstaddr db
 FGT (3) # set service ALL
 FGT (3) # set action deny
+FGT (3) # set schedule always
 FGT (3) # set logtraffic all
 FGT (3) # end
 ```
