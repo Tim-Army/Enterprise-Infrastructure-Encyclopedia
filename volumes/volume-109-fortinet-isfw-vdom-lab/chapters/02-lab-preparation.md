@@ -54,6 +54,23 @@ FGT # get system interface physical | grep -A1 "port[2-5]"
 == [ port5 ]  ip: 10.30.4.1 255.255.255.0
 ```
 
+**Evaluation FortiGate variant.** An evaluation FortiGate-VM caps at three interfaces (see the licensing note above), so instead of four physical data ports it uses one **trunk port** (`port2`) carrying VLANs 2001–2004, with four **VLAN subinterfaces** (`v2001`–`v2004`) standing in for `port2`–`port5`. On current FortiOS a VLAN subinterface needs `set vdom root` even in single-VDOM mode. Everything downstream — zones, address objects, policies — is identical, because they reference zones and addresses, not the raw interface:
+
+```text
+FGT # config system interface
+FGT (interface) # edit v2001
+FGT (v2001) # set vdom root
+FGT (v2001) # set interface port2
+FGT (v2001) # set vlanid 2001
+FGT (v2001) # set ip 10.30.1.1/24
+FGT (v2001) # set allowaccess ping
+FGT (v2001) # next
+# … repeat for v2002 / v2003 / v2004 on VLANs 2002 / 2003 / 2004, gateways 10.30.2.1 … 10.30.4.1 …
+FGT (interface) # end
+```
+
+From here on, an eval reader reads `port2`–`port5` as `v2001`–`v2004`. (Prefer a single-path walkthrough? A dedicated **evaluation volume (Volume CLXXI)** and a **licensed four-physical-port volume (Volume CLXXII)** cover each path on its own.)
+
 **Negative test.** With no firewall policy (next chapters), transit traffic between ports is dropped by the implicit deny — addressing the interfaces is necessary but not sufficient. The FortiGate forwards nothing until a policy permits it.
 
 **Cleanup.** Leave running.

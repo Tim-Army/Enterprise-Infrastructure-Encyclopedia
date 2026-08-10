@@ -1,4 +1,4 @@
-# Volume CIX — Fortinet ISFW and VDOM Build-It-Yourself Lab
+# Volume CIX — Fortinet ISFW and VDOM Lab (Eval and Licensed)
 
 > A build-it-yourself microsegmentation lab on **Fortinet FortiGate**, using the **Internal Segmentation
 > Firewall (ISFW)** — a FortiGate placed *inside* the network so east-west traffic must pass a full

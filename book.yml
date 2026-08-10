@@ -3784,7 +3784,7 @@ volumes:
   - id: volume-109
     number: "CIX"
     slug: volume-109-fortinet-isfw-vdom-lab
-    title: "Fortinet ISFW and VDOM Build-It-Yourself Lab"
+    title: "Fortinet ISFW and VDOM Lab (Eval and Licensed)"
     chapter_count: 9
     build_eligible: true
     chapters:
@@ -5889,6 +5889,74 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your Teradata Path"
         path: volumes/volume-170-teradata-certifications/chapters/09-choosing-your-teradata-path.md
+  - id: volume-171
+    number: "CLXXI"
+    slug: volume-171-fortinet-isfw-vdom-lab-eval
+    title: "Fortinet ISFW and VDOM Lab (Evaluation FortiGate)"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Lab Overview and Topology"
+        path: volumes/volume-171-fortinet-isfw-vdom-lab-eval/chapters/01-lab-overview-and-topology.md
+      - id: 02
+        title: "Chapter 02: Lab Preparation"
+        path: volumes/volume-171-fortinet-isfw-vdom-lab-eval/chapters/02-lab-preparation.md
+      - id: 03
+        title: "Chapter 03: Zones and Address Objects"
+        path: volumes/volume-171-fortinet-isfw-vdom-lab-eval/chapters/03-zones-and-address-objects.md
+      - id: 04
+        title: "Chapter 04: The Flat Policy and Lateral Movement"
+        path: volumes/volume-171-fortinet-isfw-vdom-lab-eval/chapters/04-flat-policy-and-lateral-movement.md
+      - id: 05
+        title: "Chapter 05: Firewall Policies"
+        path: volumes/volume-171-fortinet-isfw-vdom-lab-eval/chapters/05-firewall-policies.md
+      - id: 06
+        title: "Chapter 06: VDOMs for Hard Separation"
+        path: volumes/volume-171-fortinet-isfw-vdom-lab-eval/chapters/06-vdoms-for-hard-separation.md
+      - id: 07
+        title: "Chapter 07: Enforcement and Verification"
+        path: volumes/volume-171-fortinet-isfw-vdom-lab-eval/chapters/07-enforcement-and-verification.md
+      - id: 08
+        title: "Chapter 08: Security Fabric, Automation, and the Boundary"
+        path: volumes/volume-171-fortinet-isfw-vdom-lab-eval/chapters/08-security-fabric-and-boundary.md
+      - id: 09
+        title: "Chapter 09: Operations, Troubleshooting, and Teardown"
+        path: volumes/volume-171-fortinet-isfw-vdom-lab-eval/chapters/09-operations-troubleshooting-teardown.md
+  - id: volume-172
+    number: "CLXXII"
+    slug: volume-172-fortinet-isfw-vdom-lab-licensed
+    title: "Fortinet ISFW and VDOM Lab (Licensed FortiGate)"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Lab Overview and Topology"
+        path: volumes/volume-172-fortinet-isfw-vdom-lab-licensed/chapters/01-lab-overview-and-topology.md
+      - id: 02
+        title: "Chapter 02: Lab Preparation"
+        path: volumes/volume-172-fortinet-isfw-vdom-lab-licensed/chapters/02-lab-preparation.md
+      - id: 03
+        title: "Chapter 03: Zones and Address Objects"
+        path: volumes/volume-172-fortinet-isfw-vdom-lab-licensed/chapters/03-zones-and-address-objects.md
+      - id: 04
+        title: "Chapter 04: The Flat Policy and Lateral Movement"
+        path: volumes/volume-172-fortinet-isfw-vdom-lab-licensed/chapters/04-flat-policy-and-lateral-movement.md
+      - id: 05
+        title: "Chapter 05: Firewall Policies"
+        path: volumes/volume-172-fortinet-isfw-vdom-lab-licensed/chapters/05-firewall-policies.md
+      - id: 06
+        title: "Chapter 06: VDOMs for Hard Separation"
+        path: volumes/volume-172-fortinet-isfw-vdom-lab-licensed/chapters/06-vdoms-for-hard-separation.md
+      - id: 07
+        title: "Chapter 07: Enforcement and Verification"
+        path: volumes/volume-172-fortinet-isfw-vdom-lab-licensed/chapters/07-enforcement-and-verification.md
+      - id: 08
+        title: "Chapter 08: Security Fabric, Automation, and the Boundary"
+        path: volumes/volume-172-fortinet-isfw-vdom-lab-licensed/chapters/08-security-fabric-and-boundary.md
+      - id: 09
+        title: "Chapter 09: Operations, Troubleshooting, and Teardown"
+        path: volumes/volume-172-fortinet-isfw-vdom-lab-licensed/chapters/09-operations-troubleshooting-teardown.md
   - id: volume-900
     number: "CM"
     slug: volume-900-tims-lab-gear
