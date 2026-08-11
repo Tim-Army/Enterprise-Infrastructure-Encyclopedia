@@ -56,7 +56,7 @@ name=IT
 name=OT
 ```
 
-Two VDOMs exist; `port5` (the plc) now lives in `OT`, `port2–port4` (web/db/hmi) remain in `IT`.
+Two VDOMs exist; the OT interface (`port5`, or `v2004` on the eval — the plc) now lives in `OT`, while the other three (`port2`–`port4` / `v2001`–`v2003`; web/db/hmi) remain in `IT`.
 
 **Negative test.** With OT split off and no inter-VDOM link yet, `hmi (IT) → plc (OT)` — previously permitted in Chapter 05 — now fails completely, because there is no route or policy path between the VDOMs at all. VDOM separation is total by default.
 
@@ -92,6 +92,7 @@ FGT (IT) # config firewall policy
 FGT (policy) # edit 4
 FGT (4) # set name it-to-ot-modbus
 FGT (4) # set srcintf port4
+# evaluation build: set srcintf v2003 (the MGMT-side subinterface) instead of port4
 FGT (4) # set dstintf itot0
 FGT (4) # set srcaddr hmi
 FGT (4) # set dstaddr plc

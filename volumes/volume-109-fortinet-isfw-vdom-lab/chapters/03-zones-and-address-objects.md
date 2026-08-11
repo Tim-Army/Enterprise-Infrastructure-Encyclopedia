@@ -41,6 +41,8 @@ FGT # show system zone
     edit "OT"   set interface "port5"
 ```
 
+*(On the evaluation build the members read `v2001`–`v2004` instead of `port2`–`port5`.)*
+
 **Negative test.** Adding an interface that already belongs to another zone is rejected — an interface lives in exactly one zone, so zone membership is unambiguous, just like an endpoint's group.
 
 **Evaluation FortiGate.** On the eval build the zone members are the VLAN subinterfaces created in Chapter 02, not physical ports: `set interface v2001` for `APP`, `v2002` for `DB`, `v2003` for `MGMT`, `v2004` for `OT`. The zone names — and everything downstream in this chapter (the `web`/`db`/`hmi`/`plc` address objects and the `PGSQL`/`MODBUS` services, which reference IP addresses, not interfaces) — are identical.

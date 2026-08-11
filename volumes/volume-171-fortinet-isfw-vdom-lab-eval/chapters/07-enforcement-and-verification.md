@@ -23,9 +23,9 @@
 Confirm the FortiGate's own view with a policy lookup:
 
 ```text
-FGT # diagnose firewall iprope lookup 10.30.3.10 12345 10.30.2.10 5432 6 port4
+FGT # diagnose firewall iprope lookup 10.30.3.10 12345 10.30.2.10 5432 6 v2003
 # policy id: 3 (deny-mgmt-db)  action: deny
-FGT # diagnose firewall iprope lookup 10.30.1.10 12345 10.30.2.10 5432 6 port2
+FGT # diagnose firewall iprope lookup 10.30.1.10 12345 10.30.2.10 5432 6 v2001
 # policy id: 1 (web-to-db)  action: accept
 ```
 

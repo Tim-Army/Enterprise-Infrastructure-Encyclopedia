@@ -11,7 +11,7 @@
 
 FortiOS evaluates firewall policies **top to bottom**; the first match wins, and after the last policy an **implicit deny** drops anything unmatched. Microsegmentation is therefore: author the exact permits, place any explicit denies above broad permits, and remove the permit-all so the implicit deny governs the rest.
 
-**Two FortiOS requirements before you start.** First, because Chapter 03 put the interfaces into zones, a policy references the **zone** (`APP`/`DB`/`MGMT`/`OT`), not the member interface — `set srcintf port2` is rejected once `port2` belongs to a zone (`node_check_object fail`). Second, **every policy must carry a schedule**: omit `set schedule always` and FortiOS refuses to save the rule at `next`/`end` with `Attribute 'schedule' MUST be set` (return code -56), silently leaving the rule uncommitted. Both are easy to trip over — the walkthroughs below use zones and set a schedule on every rule, including the deny.
+**Two FortiOS requirements before you start.** First, because Chapter 03 put the interfaces into zones, a policy references the **zone** (`APP`/`DB`/`MGMT`/`OT`), not the member interface — `set srcintf v2001` is rejected once `v2001` belongs to a zone (`node_check_object fail`). Second, **every policy must carry a schedule**: omit `set schedule always` and FortiOS refuses to save the rule at `next`/`end` with `Attribute 'schedule' MUST be set` (return code -56), silently leaving the rule uncommitted. Both are easy to trip over — the walkthroughs below use zones and set a schedule on every rule, including the deny.
 
 ## Hands-On Lab
 
