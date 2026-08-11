@@ -60,10 +60,10 @@ Two ideas carry the volume:
 
 | Endpoint | Interface | Zone | VDOM (Ch 06) | Address |
 |:---|:---|:---|:---|:---|
-| web | port2 | `APP` | `IT` | 10.30.1.10 |
-| db | port3 | `DB` | `IT` | 10.30.2.10 |
-| hmi | port4 | `MGMT` | `IT` | 10.30.3.10 |
-| plc | port5 | `OT` | `OT` | 10.30.4.10 |
+| web | v2001 | `APP` | `IT` | 10.30.1.10 |
+| db | v2002 | `DB` | `IT` | 10.30.2.10 |
+| hmi | v2003 | `MGMT` | `IT` | 10.30.3.10 |
+| plc | v2004 | `OT` | `OT` | 10.30.4.10 |
 
 In Chapter 06 the OT tier moves to its own VDOM, so IT↔OT traffic must cross an explicit inter-VDOM link — the hardest separation FortiGate offers short of separate appliances.
 

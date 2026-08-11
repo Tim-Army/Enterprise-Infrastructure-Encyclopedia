@@ -37,6 +37,17 @@ FGT (port5) # set ip 10.30.4.1/24
 FGT (port5) # end
 ```
 
+**Evaluation FortiGate.** On the eval build you move the OT **VLAN subinterface** `v2004` — not a physical port — into the `OT` VDOM. Its trunk parent `port2` and the other subinterfaces (`v2001`–`v2003`) stay in `root`/`IT`; a VLAN can live in a different VDOM than its parent, so the one trunk port keeps carrying all four segments:
+
+```text
+FGT # config global
+FGT (global) # config system interface
+FGT (interface) # edit v2004
+FGT (v2004) # set vdom OT
+FGT (v2004) # set ip 10.30.4.1/24
+FGT (v2004) # end
+```
+
 **Expected result.**
 
 ```text
@@ -91,6 +102,8 @@ FGT (4) # end
 ```
 
 The OT VDOM needs a matching policy on `itot1 → port5` permitting MODBUS to plc.
+
+**Evaluation FortiGate.** The inter-VDOM link (`itot0`/`itot1`) is identical. In the policy the MGMT-side interface is `v2003` (in place of `port4`) and the OT side is `v2004` (in place of `port5`): `set srcintf v2003` / `set dstintf itot0` in the IT VDOM, and a matching `itot1 → v2004` policy in the OT VDOM.
 
 **Expected result.** `hmi → plc:502` works again, but *only* MODBUS, and *only* over the inter-VDOM link — every other IT↔OT flow remains impossible because no other policy crosses the link.
 

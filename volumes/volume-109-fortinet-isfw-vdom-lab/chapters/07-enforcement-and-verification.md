@@ -29,6 +29,8 @@ FGT # diagnose firewall iprope lookup 10.30.1.10 12345 10.30.2.10 5432 6 port2
 # policy id: 1 (web-to-db)  action: accept
 ```
 
+**Evaluation FortiGate.** The `iprope lookup` takes the *ingress interface* as its last argument — on the eval that is the VLAN subinterface: `v2003` for the `hmi` lookup (in place of `port4`) and `v2001` for the `web` lookup (in place of `port2`). The policy IDs and verdicts are the same.
+
 **Track 2 — Walkthrough.**
 
 ```bash

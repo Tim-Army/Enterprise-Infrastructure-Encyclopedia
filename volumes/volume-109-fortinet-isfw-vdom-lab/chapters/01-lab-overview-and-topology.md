@@ -58,6 +58,8 @@ Two ideas carry the volume:
 
 ### The zone and VDOM plan
 
+**Licensed FortiGate — four physical data ports:**
+
 | Endpoint | Interface | Zone | VDOM (Ch 06) | Address |
 |:---|:---|:---|:---|:---|
 | web | port2 | `APP` | `IT` | 10.30.1.10 |
@@ -65,7 +67,16 @@ Two ideas carry the volume:
 | hmi | port4 | `MGMT` | `IT` | 10.30.3.10 |
 | plc | port5 | `OT` | `OT` | 10.30.4.10 |
 
-In Chapter 06 the OT tier moves to its own VDOM, so IT↔OT traffic must cross an explicit inter-VDOM link — the hardest separation FortiGate offers short of separate appliances.
+**Evaluation FortiGate — four VLAN subinterfaces on one trunk port (`port2`):**
+
+| Endpoint | Interface | VLAN | Zone | VDOM (Ch 06) | Address |
+|:---|:---|:---|:---|:---|:---|
+| web | v2001 | 2001 | `APP` | `IT` | 10.30.1.10 |
+| db | v2002 | 2002 | `DB` | `IT` | 10.30.2.10 |
+| hmi | v2003 | 2003 | `MGMT` | `IT` | 10.30.3.10 |
+| plc | v2004 | 2004 | `OT` | `OT` | 10.30.4.10 |
+
+The zones, VDOM split, and addresses are identical either way — only the interface each endpoint lands on changes. In Chapter 06 the OT tier moves to its own VDOM, so IT↔OT traffic must cross an explicit inter-VDOM link — the hardest separation FortiGate offers short of separate appliances.
 
 ## Conventions
 
