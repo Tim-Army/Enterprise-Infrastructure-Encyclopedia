@@ -389,6 +389,8 @@ beyond the appliance/VM.
 
 ### Lab 4.1 — Initial deployment: interfaces, DNS, and default route (Topic: Initial configuration)
 
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+
 **Objective:** Bring a FortiGate online with a WAN, a LAN, DNS, and a default route.
 
 ```text
@@ -429,6 +431,8 @@ off-subnet.
 
 ### Lab 4.2 — Licensing and FortiGuard registration (Topic: Licensing and FortiGuard)
 
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+
 **Objective:** Verify FortiGuard entitlement and force an update.
 
 ```text
@@ -449,6 +453,8 @@ protection currency.
 **Cleanup:** none (read-only / update).
 
 ### Lab 4.3 — Harden administrative access (Topic: Administrative access and hardening)
+
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
 
 **Objective:** Lock admin access to trusted hosts, drop HTTP, and shorten idle timeout.
 
@@ -667,6 +673,8 @@ rebuild a working rule.
 
 ### Lab 4.4 — Firmware management (Topic: Firmware lifecycle)
 
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+
 **Objective:** Read the firmware state and validate an upgrade path before applying.
 
 ```text
@@ -685,6 +693,8 @@ corrupts the config — skipping the documented upgrade path is unsupported.
 **Cleanup:** none (no actual upgrade performed).
 
 ### Lab 4.5 — Operation mode and global settings (Topic: NAT vs transparent, system settings)
+
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
 
 **Objective:** Read the operation mode and set the hostname/timezone.
 
@@ -707,6 +717,8 @@ event correlation is off by hours — accurate time is a prerequisite for forens
 **Cleanup:** restore your lab hostname if changed.
 
 ### Lab 4.6 — Admin profiles and role-based access (Topic: Administrative roles)
+
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
 
 **Objective:** Create a read-only admin profile and account.
 
@@ -747,6 +759,8 @@ end
 ```
 
 ### Lab 4.7 — Deploying the FortiGate-VM appliance (Topic: FortiGate-VM deployment)
+
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
 
 **Objective:** Stand up a FortiGate-VM from a downloaded image, complete the
 first-boot console login, reach the GUI on the default management address, and

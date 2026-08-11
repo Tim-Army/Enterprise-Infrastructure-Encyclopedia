@@ -343,6 +343,8 @@ none beyond lab resources.
 
 ### Lab 9.1 — End-to-end secured-edge build (Capstone: all five objectives)
 
+**Eval FortiGate — capable (with subscription caveats).** The end-to-end build runs on the eval; its threat-prevention steps return *live* verdicts only with active FortiGuard subscriptions (Chapter 07).
+
 **Objective:** Stand up a protected edge that exercises every NSE 4 objective at once.
 
 ```text
@@ -394,6 +396,8 @@ the edge to be genuinely secured.
 
 ### Lab 9.2 — Security Fabric and Security Rating (Capstone: Fabric integration)
 
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+
 **Objective:** Read the Security Rating to find configuration gaps.
 
 ```text
@@ -416,6 +420,8 @@ surfaces them.
 **Cleanup:** `set status disable` under `config system csf` if lab-only.
 
 ### Lab 9.3 — Exam-readiness self-check (Capstone: objective mapping)
+
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
 
 **Objective:** Confirm your configuration touches every NSE 4 objective and weight.
 

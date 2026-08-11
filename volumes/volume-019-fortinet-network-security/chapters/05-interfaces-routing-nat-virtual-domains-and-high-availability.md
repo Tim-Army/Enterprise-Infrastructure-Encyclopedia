@@ -406,6 +406,8 @@ two data interfaces, a client host, and (for HA) a second identical FortiGate.
 
 ### Lab 5.1 — Interfaces, zones, and VLANs (Topic: Layer-2/3 interfaces)
 
+**Eval FortiGate — capable.** Runs on the eval — but mind the free eval's **3-interface budget** (Chapter 04): carry several segments as VLAN subinterfaces of one trunk rather than separate physical ports.
+
 **Objective:** Create a VLAN sub-interface and group interfaces into a zone.
 
 ```text
@@ -480,6 +482,8 @@ end
 
 ### Lab 5.2 — Static routing and route selection (Topic: Static routes)
 
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+
 **Objective:** Add a static route and read how FortiOS chooses it.
 
 ```text
@@ -512,6 +516,8 @@ end
 ```
 
 ### Lab 5.3 — Source NAT (Topic: NAT)
+
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
 
 **Objective:** Configure outbound NAT with an IP pool.
 
@@ -562,6 +568,8 @@ end
 
 ### Lab 5.4 — Destination NAT with a VIP (Topic: Virtual IPs / DNAT)
 
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+
 **Objective:** Publish an internal server with a Virtual IP.
 
 ```text
@@ -611,6 +619,8 @@ end
 
 ### Lab 5.5 — Virtual domains (VDOMs) (Topic: VDOMs)
 
+**Eval FortiGate — licensed-only.** You can switch to multi-VDOM mode, but the eval license allows only **one traffic VDOM** — creating the tenant VDOM fails with `Could not create VD, all VD licenses have been used` (setting `root` to an admin VDOM still leaves one traffic VDOM). The split needs a licensed FortiGate; on the eval, read and design.
+
 **Objective:** Enable multi-VDOM and create a tenant VDOM.
 
 ```text
@@ -645,6 +655,8 @@ end
 ```
 
 ### Lab 5.6 — High availability (Topic: HA)
+
+**Eval FortiGate — licensed-only.** HA needs a **second** FortiGate of matching model and firmware; a lone eval VM can write the config but cannot form a cluster. On the eval, treat this as a read-and-design lab.
 
 **Objective:** Form an active-passive HA cluster.
 

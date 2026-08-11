@@ -51,6 +51,14 @@ second instance, `FGT-LAB-02`, for the high-availability and capstone
 chapters) — so configuration built in one chapter is the working starting
 point for the next.
 
+**Eval-vs-licensed flags.** Every hands-on lab from Chapter 03 on opens with an **Eval FortiGate** tag in one of three tiers, so you know before you start what a free/evaluation FortiGate-VM can run:
+
+- **capable** — runs on the free/licensed evaluation VM as-is.
+- **subscription-gated** — the configuration builds, but *live* FortiGuard verdicts (web/DNS/AV/IPS/application control) need an active security-services subscription; the eval's time-limited contract works briefly, then verdicts silently degrade.
+- **licensed-only** — needs strong (AES) crypto, a second unit, or a separate product (the multi-VDOM split, HA, ZTNA/EMS, FortiManager); on the eval it is a read-and-design lab.
+
+The evaluation VM's hard limits — no forwarding until licensed, a three-interface / three-policy / three-route budget, and low-encryption (DES-only) crypto — are detailed in Chapter 04's licensing gotchas.
+
 ## Chapters
 
 1. [NSE 1 Cybersecurity Awareness and Digital Safety](chapters/01-nse-1-cybersecurity-awareness-and-digital-safety.md) — social engineering and phishing mechanics, malware categories, password hygiene, and multi-factor authentication.

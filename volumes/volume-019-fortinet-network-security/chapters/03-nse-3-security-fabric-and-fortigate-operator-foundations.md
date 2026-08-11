@@ -301,6 +301,8 @@ beyond lab resources.
 
 ### Lab 3.1 — First login and system inventory (Topic: FortiGate operator basics)
 
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+
 **Objective:** Log in and read the appliance's identity and health.
 
 ```text
@@ -318,6 +320,8 @@ expired FortiGuard contract silently stops signature updates, which this check r
 **Cleanup:** none (read-only).
 
 ### Lab 3.2 — Build and read the Security Fabric (Topic: Security Fabric fundamentals)
+
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
 
 **Objective:** Enable Fabric on the root FortiGate and read the topology.
 
@@ -349,6 +353,8 @@ end
 
 ### Lab 3.3 — FortiView and logging (Topic: Monitoring and logging)
 
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+
 **Objective:** Enable logging and read live sessions in FortiView.
 
 ```text
@@ -369,6 +375,8 @@ FortiView renders logged data, so logging must be on for a policy or globally.
 **Cleanup:** none (leave logging enabled; it is expected in operation).
 
 ### Lab 3.4 — Back up and restore configuration (Topic: Operator lifecycle tasks)
+
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
 
 **Objective:** Take a config backup — the operator's safety net before any change.
 

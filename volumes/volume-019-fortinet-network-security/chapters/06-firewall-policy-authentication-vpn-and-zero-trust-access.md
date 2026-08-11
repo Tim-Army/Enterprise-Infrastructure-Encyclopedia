@@ -417,6 +417,8 @@ client. **Cost:** none beyond lab resources.
 
 ### Lab 6.1 — Firewall policy and policy order (Topic: Firewall policies)
 
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+
 **Objective:** Write an allow policy and observe top-down matching.
 
 ```text
@@ -461,6 +463,8 @@ end
 
 ### Lab 6.2 — Firewall objects: addresses, services, schedules (Topic: Firewall objects)
 
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+
 **Objective:** Build reusable objects and reference them in a policy.
 
 ```text
@@ -493,6 +497,8 @@ change means editing each one — objects exist precisely to avoid that.
 **Cleanup:** delete the three objects after use.
 
 ### Lab 6.3 — Firewall authentication (Topic: Authentication)
+
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
 
 **Objective:** Require user authentication on a policy via a local user group.
 
@@ -772,6 +778,8 @@ logins and an attempt seems to be missing.
 
 ### Lab 6.4 — Site-to-site IPsec VPN (Topic: IPsec VPN)
 
+**Eval FortiGate — capable (limited crypto).** A site-to-site IPsec tunnel builds and comes up on the eval, but an evaluation-licensed VM is **low-encryption (DES-only)** and cannot negotiate strong (AES) proposals — restrict the phase-1/2 ciphers accordingly; production uses AES-GCM.
+
 **Objective:** Build a route-based IPsec tunnel to a peer.
 
 ```text
@@ -886,6 +894,8 @@ routes compensates for a mismatched key.
 
 ### Lab 6.5 — SSL VPN for remote access (Topic: SSL/dial-up VPN)
 
+**Eval FortiGate — capable (limited crypto).** SSL VPN runs on the eval with the low-encryption cipher set; the strong (AES) suites a production portal uses need a licensed FortiGate.
+
 > **FortiOS 7.6 change — SSL VPN *tunnel mode* has been removed.** Verified
 > on FortiGate-VM 7.6.7: a portal no longer accepts `set tunnel-mode enable`
 > (the keyword is gone), the tunnel plumbing such as `tunnel-ip-pools` and
@@ -915,6 +925,8 @@ IPsec dial-up or ZTNA — do not build lab or production designs around SSL VPN
 tunnel mode.
 
 ### Lab 6.6 — ZTNA access proxy (Topic: Zero Trust Network Access)
+
+**Eval FortiGate — licensed-only.** The ZTNA access proxy needs **strong encryption** for the FortiGate↔EMS TLS (the eval is DES-only) and **FortiClient EMS** for client certificates and device tags — see the lab-environment note below. On the eval, read and design.
 
 **Objective:** Publish an internal app through a ZTNA access proxy.
 

@@ -451,6 +451,8 @@ beyond lab resources.
 
 ### Lab 8.1 — SD-WAN zones and members (Topic: SD-WAN setup)
 
+**Eval FortiGate — capable.** SD-WAN needs two upstream members; on the eval's 3-interface budget, build the members as VLAN subinterfaces of one trunk.
+
 **Objective:** Create an SD-WAN with two underlay members.
 
 ```text
@@ -488,6 +490,8 @@ selected.
 
 ### Lab 8.2 — Performance SLA and health checks (Topic: SD-WAN SLA)
 
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+
 **Objective:** Measure link health with an active SLA probe.
 
 ```text
@@ -521,6 +525,8 @@ what makes steering application-aware.
 
 ### Lab 8.3 — SD-WAN steering rules (Topic: SD-WAN rules)
 
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+
 **Objective:** Steer an application over the best-quality member.
 
 ```text
@@ -553,6 +559,8 @@ steering resilient.
 **Cleanup:** removed with the SD-WAN block in Lab 8.1 cleanup.
 
 ### Lab 8.4 — Central management and automation (Topic: FortiManager / automation stitches)
+
+**Eval FortiGate — mixed.** The automation-stitch half runs on the eval; **FortiManager** central management needs a separate FortiManager appliance (not part of the eval) — treat that portion as design.
 
 **Objective:** Enable FortiManager management and build an automation stitch.
 
@@ -592,6 +600,8 @@ the stitch must bind a trigger to an action to automate.
 **Cleanup:** delete the stitch, action, and trigger; unset central-management if lab-only.
 
 ### Lab 8.5 — Structured troubleshooting (Topic: Troubleshooting)
+
+**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
 
 **Objective:** Trace a flow end-to-end with debug flow.
 

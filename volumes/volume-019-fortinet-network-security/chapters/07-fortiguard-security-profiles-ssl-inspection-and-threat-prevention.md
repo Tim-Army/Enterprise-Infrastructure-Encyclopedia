@@ -356,6 +356,8 @@ attach profiles to. **Cost:** none beyond lab resources.
 
 ### Lab 7.1 — SSL/SSH deep inspection (Topic: SSL inspection)
 
+**Eval FortiGate — capable.** Certificate-based deep inspection needs no FortiGuard subscription — it runs on the eval as-is (and underpins the subscription-gated profiles that follow).
+
 **Objective:** Apply deep-inspection so encrypted flows can be scanned.
 
 ```text
@@ -388,6 +390,8 @@ end
 
 ### Lab 7.2 — Web filtering (Topic: Web filter)
 
+**Eval FortiGate — subscription-gated.** The profile and policy build fine, but *live* FortiGuard verdicts need an active security-services subscription — the eval's time-limited contract works briefly, then verdicts silently degrade (Chapter 04).
+
 **Objective:** Block a FortiGuard URL category.
 
 ```text
@@ -418,6 +422,8 @@ inspection (Lab 7.1) is what lets web filtering see the full URL and page.
 
 ### Lab 7.3 — DNS filtering (Topic: DNS filter)
 
+**Eval FortiGate — subscription-gated.** The profile and policy build fine, but *live* FortiGuard verdicts need an active security-services subscription — the eval's time-limited contract works briefly, then verdicts silently degrade (Chapter 04).
+
 **Objective:** Block malicious domains at resolution time.
 
 ```text
@@ -447,6 +453,8 @@ HTTP-only control — DNS filtering covers name resolution across all protocols.
 
 ### Lab 7.4 — Application control (Topic: Application control)
 
+**Eval FortiGate — subscription-gated.** The profile and policy build fine, but *live* FortiGuard verdicts need an active security-services subscription — the eval's time-limited contract works briefly, then verdicts silently degrade (Chapter 04).
+
 **Objective:** Block a peer-to-peer application category regardless of port.
 
 ```text
@@ -475,6 +483,8 @@ identifies them.
 
 ### Lab 7.5 — Antivirus (Topic: Antivirus)
 
+**Eval FortiGate — subscription-gated.** The profile and policy build fine, but *live* FortiGuard verdicts need an active security-services subscription — the eval's time-limited contract works briefly, then verdicts silently degrade (Chapter 04).
+
 **Objective:** Scan traffic with antivirus and verify with EICAR.
 
 ```text
@@ -500,6 +510,8 @@ sees the payload and it passes — AV inside TLS requires deep inspection (Lab 7
 **Cleanup:** delete the `av-lab` profile.
 
 ### Lab 7.6 — Intrusion prevention (Topic: IPS)
+
+**Eval FortiGate — subscription-gated.** The profile and policy build fine, but *live* FortiGuard verdicts need an active security-services subscription — the eval's time-limited contract works briefly, then verdicts silently degrade (Chapter 04).
 
 **Objective:** Attach an IPS sensor to block known exploits.
 
@@ -528,6 +540,8 @@ be stopped; they are recorded but pass — the `block` action is what enforces I
 **Cleanup:** delete the `ips-lab` sensor.
 
 ### Lab 7.7 — Assemble and attach a profile group (Topic: Security profiles on a policy)
+
+**Eval FortiGate — capable.** Assembling and attaching a profile group is pure policy config; each member profile's *live* verdict still depends on its own subscription (Labs 7.2–7.6).
 
 **Objective:** Bind the inspection profiles to a firewall policy.
 
