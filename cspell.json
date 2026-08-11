@@ -3924,6 +3924,7 @@
     "srcaddr",
     "srch",
     "srcintf",
+    "addrgrp",
     "srcnat",
     "srcport",
     "SRDF",

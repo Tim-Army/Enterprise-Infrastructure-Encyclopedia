@@ -53,6 +53,8 @@ sudo nft list tables | grep fgt
 | Deny not logged | `logtraffic` not set on the policy | policy config |
 | Mgmt IP unreachable after DHCP→static | static mgmt interface lost the DHCP-learned default/return route (fine same-subnet, breaks cross-subnet) | `get router info routing-table all`; add `config router static` via the mgmt gateway |
 | No transit forwards though policy and routes look correct | FortiGate-VM license `Invalid` (failsafe mode drops all transit), or the eval's 3-interface cap silently dropped the extra ports | `get system status` → check `License Status` and `VM Resources`; a `diagnose debug flow` trace stops at the route lookup with no policy line |
+| Cannot add a firewall policy (eval) | eval license caps the policy table | `edit N` returns `reached the maximum number of entries`; use `diagnose user banned-ip` for dynamic containment (Chapter 08) |
+| Second (OT) traffic VDOM will not create (eval) | eval license permits only one traffic VDOM | `Could not create VD, all VD licenses have been used`; the VDOM split (Chapter 07) needs a licensed FortiGate |
 
 **Expected result.** A symptom-to-cause table to work top to bottom.
 
@@ -85,6 +87,8 @@ FGT (zone) # end
 ```
 
 **Expected result.** `show firewall policy` lists no user policies (only the implicit deny remains) and the FortiGate is back in single-VDOM mode. Power the FortiGate-VM eval off.
+
+**Evaluation FortiGate.** There is no policy 4 to delete — the inter-VDOM policy is a licensed-only Chapter 07 step — and the eval is already `no-vdom`, so `delete 4` and `set vdom-mode no-vdom` are harmless no-ops. If you built the Chapter 08 quarantine objects, remove them too (`config firewall addrgrp` → `delete quarantine-hosts`, then delete the `qtn-none` address) and clear any bans with `diagnose user banned-ip clear`.
 
 **Track 2 — Walkthrough.**
 

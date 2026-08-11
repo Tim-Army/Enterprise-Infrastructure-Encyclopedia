@@ -46,6 +46,18 @@ FGT (contain-host) # end
 
 A top-of-list deny policy referencing `quarantine` then contains any member.
 
+**Evaluation FortiGate.** Two eval realities change how you do this. First, the eval VM license **caps the firewall policy table** — you cannot add the dedicated top-of-list quarantine-deny policy (a fourth rule fails with `reached the maximum number of entries`). Second, `diagnose user quarantine` is not a command on FortiOS 8.0. Drive the same reactive containment through the **banned-IP list**, which the FortiGate enforces on transit traffic without consuming a policy — exactly what an `IP Ban` automation action does:
+
+```text
+FGT # diagnose user banned-ip add src4 10.30.3.10 600 administrative
+FGT # diagnose user banned-ip list src4
+    src-ip-addr   created   expires   cause
+    10.30.3.10    ...       ...       DLP
+FGT # diagnose user banned-ip delete src4 10.30.3.10
+```
+
+The host's permitted flows drop the instant it is banned and return when it clears (`hmi → plc:502` goes OPEN → CONTAINED → OPEN). The `cause` argument is a cosmetic enum — an arbitrary string is relabeled (here `administrative` displays as `DLP`).
+
 **Expected result (concept).** When the trigger fires for a host, the stitch quarantines it and the standing deny drops its traffic — reactive containment without a manual rule edit, analogous to the dynamic address groups of Volume CVIII.
 
 **Track 2 — Walkthrough.** Model the stitch with a dynamic set consulted first:
