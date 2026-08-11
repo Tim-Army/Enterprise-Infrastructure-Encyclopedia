@@ -34,8 +34,8 @@ traffic still need segmentation design or host controls.
 | 03 | [Zones and Address Objects](chapters/03-zones-and-address-objects.md) | 3.1–3.2 |
 | 04 | [The Flat Policy and Lateral Movement](chapters/04-flat-policy-and-lateral-movement.md) | 4.1–4.3 |
 | 05 | [Firewall Policies](chapters/05-firewall-policies.md) | 5.1–5.2 |
-| 06 | [VDOMs for Hard Separation](chapters/06-vdoms-for-hard-separation.md) | 6.1–6.2 |
-| 07 | [Enforcement and Verification](chapters/07-enforcement-and-verification.md) | 7.1–7.3 |
+| 06 | [Enforcement and Verification](chapters/06-enforcement-and-verification.md) | 6.1–6.3 |
+| 07 | [VDOMs for Hard Separation](chapters/07-vdoms-for-hard-separation.md) | 7.1–7.2 |
 | 08 | [Security Fabric, Automation, and the Boundary](chapters/08-security-fabric-and-boundary.md) | 8.1–8.3 |
 | 09 | [Operations, Troubleshooting, and Teardown](chapters/09-operations-troubleshooting-teardown.md) | 9.1–9.3 |
 

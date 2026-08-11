@@ -3804,11 +3804,11 @@ volumes:
         title: "Chapter 05: Firewall Policies"
         path: volumes/volume-109-fortinet-isfw-vdom-lab/chapters/05-firewall-policies.md
       - id: 06
-        title: "Chapter 06: VDOMs for Hard Separation"
-        path: volumes/volume-109-fortinet-isfw-vdom-lab/chapters/06-vdoms-for-hard-separation.md
+        title: "Chapter 06: Enforcement and Verification"
+        path: volumes/volume-109-fortinet-isfw-vdom-lab/chapters/06-enforcement-and-verification.md
       - id: 07
-        title: "Chapter 07: Enforcement and Verification"
-        path: volumes/volume-109-fortinet-isfw-vdom-lab/chapters/07-enforcement-and-verification.md
+        title: "Chapter 07: VDOMs for Hard Separation"
+        path: volumes/volume-109-fortinet-isfw-vdom-lab/chapters/07-vdoms-for-hard-separation.md
       - id: 08
         title: "Chapter 08: Security Fabric, Automation, and the Boundary"
         path: volumes/volume-109-fortinet-isfw-vdom-lab/chapters/08-security-fabric-and-boundary.md

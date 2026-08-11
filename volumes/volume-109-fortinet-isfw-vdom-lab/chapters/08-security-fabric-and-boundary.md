@@ -22,7 +22,7 @@ FortiAnalyzer  <--(logs)--  fabric members  (central visibility)
 
 **Expected result (on paper).** A design note: author zone/VDOM policy once in FortiManager, template it across sites, and use the Security Fabric for estate-wide visibility and coordinated enforcement — the same mechanics you built by hand, automated.
 
-**Negative test (reasoning).** Assume the Security Fabric segments by itself. It does not — the fabric shares objects and visibility; the *policies* (Chapter 05) and *VDOMs* (Chapter 06) are what enforce. The fabric scales and coordinates them.
+**Negative test (reasoning).** Assume the Security Fabric segments by itself. It does not — the fabric shares objects and visibility; the *policies* (Chapter 05) and *VDOMs* (Chapter 07) are what enforce. The fabric scales and coordinates them.
 
 **Cleanup.** None (design).
 

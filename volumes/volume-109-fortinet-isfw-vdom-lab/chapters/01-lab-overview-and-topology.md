@@ -76,7 +76,7 @@ Two ideas carry the volume:
 | hmi | v2003 | 2003 | `MGMT` | `IT` | 10.30.3.10 |
 | plc | v2004 | 2004 | `OT` | `OT` | 10.30.4.10 |
 
-The zones, VDOM split, and addresses are identical either way — only the interface each endpoint lands on changes. In Chapter 06 the OT tier moves to its own VDOM, so IT↔OT traffic must cross an explicit inter-VDOM link — the hardest separation FortiGate offers short of separate appliances.
+The zones, VDOM split, and addresses are identical either way — only the interface each endpoint lands on changes. In Chapter 07 the OT tier moves to its own VDOM, so IT↔OT traffic must cross an explicit inter-VDOM link — the hardest separation FortiGate offers short of separate appliances.
 
 ## Conventions
 

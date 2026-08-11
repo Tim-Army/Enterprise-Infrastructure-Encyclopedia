@@ -129,7 +129,7 @@ sudo nft list chain inet fgt forward
 
 **Expected result.** The forward chain permits the two flows, logs-and-drops MGMT→DB, and drops all other east-west traffic.
 
-**Cleanup.** Keep the ruleset; Chapter 07 verifies enforcement.
+**Cleanup.** Keep the ruleset; Chapter 06 verifies enforcement.
 
 ## Summary and Completion Checklist
 
