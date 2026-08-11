@@ -69,7 +69,7 @@ FGT (v2001) # next
 FGT (interface) # end
 ```
 
-From here on, an eval reader reads `port2`–`port5` as `v2001`–`v2004`. (Prefer a single-path walkthrough? A dedicated **evaluation volume (Volume CLXXI)** and a **licensed four-physical-port volume (Volume CLXXII)** cover each path on its own.)
+From here on, an eval reader reads `port2`–`port5` as `v2001`–`v2004`.
 
 **Negative test.** With no firewall policy (next chapters), transit traffic between ports is dropped by the implicit deny — addressing the interfaces is necessary but not sufficient. The FortiGate forwards nothing until a policy permits it.
 
