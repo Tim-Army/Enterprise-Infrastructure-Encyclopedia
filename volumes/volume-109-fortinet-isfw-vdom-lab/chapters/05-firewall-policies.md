@@ -50,10 +50,15 @@ FGT (2) # end
 **Expected result.**
 
 ```text
-FGT # show firewall policy | grep -E "name|service"
-    set name "web-to-db"   set service "PGSQL"
-    set name "hmi-to-plc"  set service "MODBUS"
+FGT # show firewall policy | grep name
+    set name "web-to-db"
+    set name "hmi-to-plc"
+FGT # show firewall policy | grep service
+    set service "PGSQL"
+    set service "MODBUS"
 ```
+
+*FortiOS's built-in `grep` accepts only a single pattern — no `-E`, no `|` alternation — so filter one field at a time. (`grep -f <term>` is the variant that keeps a match's surrounding config block and flags it with `<---`.)*
 
 **Negative test.** Using `set service ALL` instead of `PGSQL` would permit every port between APP and DB — scope the service, not just the zones and addresses. Zone + address + service is what makes this microsegmentation.
 
@@ -101,11 +106,14 @@ FGT (3) # end
 **Expected result.**
 
 ```text
-FGT # show firewall policy | grep -E "name|action"
-    set name "web-to-db"    (accept)
-    set name "hmi-to-plc"   (accept)
-    set name "deny-mgmt-db"  set action deny
-# implicit deny drops all other transit
+FGT # show firewall policy | grep name
+    set name "web-to-db"
+    set name "hmi-to-plc"
+    set name "deny-mgmt-db"
+FGT # show firewall policy | grep action
+    set action accept
+    set action accept
+# only two 'set action' lines — deny-mgmt-db has none, because deny is the FortiOS default
 ```
 
 **Negative test.** Leaving policy 100 (allow-all) in place keeps permitting MGMT→DB regardless of the specific permits — a broad accept above the specifics defeats least privilege. The permit-all must go.

@@ -101,8 +101,9 @@ FGT # show firewall address | grep edit
     edit "db"
     edit "hmi"
     edit "plc"
-FGT # show firewall service custom | grep -E "PGSQL|MODBUS"
+FGT # show firewall service custom | grep PGSQL
     edit "PGSQL"
+FGT # show firewall service custom | grep MODBUS
     edit "MODBUS"
 ```
 

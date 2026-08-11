@@ -11,6 +11,8 @@
 
 Zone-to-zone policies (Chapter 05) segment traffic that shares one routing and policy table. **VDOMs** go further: each VDOM has its own interfaces, routing table, and policy set, and there is **no path between VDOMs** unless you create an **inter-VDOM link** and write policy across it. This is the strongest separation a single FortiGate offers — appropriate for keeping an OT network isolated from IT with only a tightly controlled crossing.
 
+**Evaluation FortiGate — this chapter needs a licensed FortiGate.** The free FortiGate-VM evaluation license permits only **one *traffic* VDOM**. You can switch to multi-VDOM mode, but creating the second (`OT`) traffic VDOM fails — `Could not create VD, all VD licenses have been used` — and setting `root` to an *admin* (management) VDOM still leaves you with a single traffic VDOM. So the VDOM hard-separation in this chapter requires a licensed FortiGate, which carries the four **physical** data ports (`port2`–`port5`) used in the walkthroughs below — not the single-trunk/VLAN-subinterface workaround the evaluation build relies on. On the evaluation FortiGate, keep the OT tier segmented with the Chapter 05 `MGMT→OT` MODBUS-only zone policy instead: the same least-privilege outcome, one enforcement layer rather than two.
+
 ## Hands-On Lab
 
 ### Exercise 6.1 — Enable VDOMs and split IT and OT
@@ -37,17 +39,6 @@ FGT (port5) # set ip 10.30.4.1/24
 FGT (port5) # end
 ```
 
-**Evaluation FortiGate.** On the eval build you move the OT **VLAN subinterface** `v2004` — not a physical port — into the `OT` VDOM. Its trunk parent `port2` and the other subinterfaces (`v2001`–`v2003`) stay in `root`/`IT`; a VLAN can live in a different VDOM than its parent, so the one trunk port keeps carrying all four segments:
-
-```text
-FGT # config global
-FGT (global) # config system interface
-FGT (interface) # edit v2004
-FGT (v2004) # set vdom OT
-FGT (v2004) # set ip 10.30.4.1/24
-FGT (v2004) # end
-```
-
 **Expected result.**
 
 ```text
@@ -56,7 +47,7 @@ name=IT
 name=OT
 ```
 
-Two VDOMs exist; the OT interface (`port5`, or `v2004` on the eval — the plc) now lives in `OT`, while the other three (`port2`–`port4` / `v2001`–`v2003`; web/db/hmi) remain in `IT`.
+Two VDOMs exist; `port5` (the plc) now lives in `OT`, while `port2`–`port4` (web/db/hmi) remain in `IT`.
 
 **Negative test.** With OT split off and no inter-VDOM link yet, `hmi (IT) → plc (OT)` — previously permitted in Chapter 05 — now fails completely, because there is no route or policy path between the VDOMs at all. VDOM separation is total by default.
 
@@ -92,7 +83,6 @@ FGT (IT) # config firewall policy
 FGT (policy) # edit 4
 FGT (4) # set name it-to-ot-modbus
 FGT (4) # set srcintf port4
-# evaluation build: set srcintf v2003 (the MGMT-side subinterface) instead of port4
 FGT (4) # set dstintf itot0
 FGT (4) # set srcaddr hmi
 FGT (4) # set dstaddr plc
@@ -103,8 +93,6 @@ FGT (4) # end
 ```
 
 The OT VDOM needs a matching policy on `itot1 → port5` permitting MODBUS to plc.
-
-**Evaluation FortiGate.** The inter-VDOM link (`itot0`/`itot1`) is identical. In the policy the MGMT-side interface is `v2003` (in place of `port4`) and the OT side is `v2004` (in place of `port5`): `set srcintf v2003` / `set dstintf itot0` in the IT VDOM, and a matching `itot1 → v2004` policy in the OT VDOM.
 
 **Expected result.** `hmi → plc:502` works again, but *only* MODBUS, and *only* over the inter-VDOM link — every other IT↔OT flow remains impossible because no other policy crosses the link.
 
