@@ -11,6 +11,8 @@
     "chroots",
     "devfs",
     "devname",
+    "endport",
+    "startport",
     "doas",
     "dropbear",
     "findutils",

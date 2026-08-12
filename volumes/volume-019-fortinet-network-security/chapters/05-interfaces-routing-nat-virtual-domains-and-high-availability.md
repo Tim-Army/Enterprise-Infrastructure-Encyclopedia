@@ -604,6 +604,34 @@ config firewall ippool
 end
 ```
 
+**Lessons from a live eval run.** Confirmed on an evaluation FortiGate-VM (12 August 2026),
+driving real traffic across the eval-fit two-segment topology of Labs 5.8–5.9:
+
+- *`diagnose firewall ippool list` is the wrong lens for an `overload` pool.* It prints an
+  empty `list ippool info:(vf=root)` header even while sessions are actively translating.
+  Use `diagnose firewall ippool-all list` (the pool definition) and
+  `diagnose firewall ippool-all stats`, which report the PAT port range
+  (`startport: 5117  endport: 65533`) and the live `total ses`/`tcp ses` counters that rise
+  and fall with traffic.
+- *The session table is the authoritative proof of SNAT.* `diagnose sys session list` shows
+  the translation directly:
+
+  ```text
+  hook=post dir=org   act=snat 10.30.1.10:41203->10.30.2.10:5432(203.0.113.20:41203)
+  hook=pre  dir=reply act=dnat 10.30.2.10:5432->203.0.113.20:41203(10.30.1.10:41203)
+  ```
+
+  `act=snat` with the source rewritten to the pool address is the source NAT; the paired
+  `act=dnat` reply line is the automatic reverse translation. `proto_state=07` confirms the
+  TCP session is established, not a half-open SYN.
+- *You need an established connection to observe it.* A probe to a closed port is a transient
+  `SYN_SENT` session that expires in seconds and is hard to catch; a connection to a
+  listening service (here PostgreSQL on 5432) stays established, so the translated session
+  sits in the table long enough to read — hold several open at once to watch `tcp ses` climb.
+- *Revert order matters.* Clear the policy's pool reference before deleting the pool:
+  `unset poolname` → `set ippool disable` → `set nat disable`, then `delete` the pool.
+  FortiOS refuses to delete an IP pool while a policy still references it.
+
 ### Lab 5.4 — Destination NAT with a VIP (Topic: Virtual IPs / DNAT)
 
 **Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
