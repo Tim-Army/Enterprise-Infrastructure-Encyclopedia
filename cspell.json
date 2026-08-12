@@ -12,6 +12,7 @@
     "devfs",
     "devname",
     "endport",
+    "realserver",
     "startport",
     "doas",
     "dropbear",

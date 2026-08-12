@@ -683,6 +683,32 @@ config firewall vip
 end
 ```
 
+**Lessons from a live eval run.** Confirmed on an evaluation FortiGate-VM (12 August 2026),
+publishing a PostgreSQL server through a VIP on the eval-fit two-segment box:
+
+- *A VIP is a forward-DNAT **and** a reverse-SNAT.* The session table carries both hooks on the
+  one session:
+
+  ```text
+  hook=pre  dir=org   act=dnat 10.30.1.10:39003->10.30.1.100:5432(10.30.2.10:5432)
+  hook=post dir=reply act=snat 10.30.2.10:5432->10.30.1.10:39003(10.30.1.100:5432)
+  ```
+
+  The `dnat` line rewrites the destination from the VIP to the real server on the way in; the
+  paired reply `act=snat` rewrites the source back to the VIP on the way out, so the client sees
+  answers from the address it dialed. It is the exact mirror of the source-NAT session in
+  Lab 5.3 (`snat` on org / `dnat` on reply). `proto_state=07` confirms it established.
+- *`show` hides `set protocol tcp`.* TCP is the default protocol for a port-forward VIP, so
+  `show firewall vip` omits it — an absent protocol line means the default, not "unset" (the same
+  `show`-vs-`get` rule as elsewhere in this chapter).
+- *`diagnose firewall vip realserver list` is for load-balance VIPs only.* The keyword is
+  `realserver` (singular), and a plain port-forward VIP reports `alloc=0` because it has no
+  real-server pool — that table populates only for `server-load-balance` VIPs. Do not read
+  `alloc=0` as a fault.
+- *FortiOS `diagnose`/`get` are not a shell.* Appending `2>/dev/null` (or any stderr
+  redirection) throws `command parse error ... Return code -61`; FortiOS supports only its own
+  pipe targets (`| grep`, `| head`, `| grep -f`), not shell redirection.
+
 ### Lab 5.5 — Virtual domains (VDOMs) (Topic: VDOMs)
 
 **Eval FortiGate — licensed-only.** You can switch to multi-VDOM mode, but the eval license allows only **one traffic VDOM** — creating the tenant VDOM fails with `Could not create VD, all VD licenses have been used` (setting `root` to an admin VDOM still leaves one traffic VDOM). The split needs a licensed FortiGate; on the eval, read and design.
