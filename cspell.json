@@ -10,6 +10,7 @@
     "chrooted",
     "chroots",
     "devfs",
+    "devname",
     "doas",
     "dropbear",
     "findutils",

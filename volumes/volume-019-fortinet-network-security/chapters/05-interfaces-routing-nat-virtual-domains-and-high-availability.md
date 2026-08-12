@@ -15,6 +15,9 @@
 - Configure a two-member FGCP high-availability cluster and validate
   session synchronization.
 - Diagnose routing, NAT, and HA issues using FortiOS diagnostic commands.
+- Work within the evaluation FortiGate-VM's interface budget by building
+  segments on physical ports with hypervisor VLAN tagging instead of
+  purge-prone VLAN sub-interfaces.
 
 ## Theory and Architecture
 
@@ -718,6 +721,207 @@ dedicated heartbeat link are mandatory.
 
 **Cleanup:** `set mode standalone` on the lab unit to leave the cluster.
 
+### Lab 5.7 — The evaluation interface budget and the VLAN purge (Topic: Eval limitations)
+
+**Eval FortiGate — this lab *is* the limitation.** It reproduces the free evaluation
+FortiGate-VM's caps rather than working around them; the two labs that follow are shaped by
+what it shows. Labs 5.7–5.9 were validated live on a 7.6.7 evaluation VM on 12 August 2026.
+
+**Objective:** Observe the evaluation FortiGate-VM's three-entry caps on interfaces, policies,
+and routes, and the boot-time purge of over-budget VLAN sub-interfaces.
+
+**The budget.** The `FGVMEV` evaluation permits roughly **three interface entries, three
+policies, and three routes**, and the factory configuration already spends the interface
+budget — `port1`, `port2`, the switch-controller `fortilink`, and the wireless `default-mesh`
+VAP are all entries. Confirm the tier and the live interface set:
+
+```text
+diagnose debug vm-print-license | grep -i model      # -> Model: EVAL
+diagnose ip address list
+```
+
+**Step 1 — hit the cap directly.** Creating a fourth entry in any of the three tables fails
+at once:
+
+```text
+FGT # config system interface
+FGT (interface) # edit vlan99
+FGT (vlan99) # set vlanid 99
+FGT (vlan99) # set interface port2
+FGT (vlan99) # next
+Command fail. Return code -4 (reached the maximum number of entries)
+```
+
+The same `-4` appears on a fourth static route (Lab 5.2's live-run note) and a fourth firewall
+policy (Lab 5.3's Gotcha) — one budget, three tables.
+
+**Step 2 — the silent purge.** More dangerous than the create-time error: VLAN sub-interfaces
+that fit *before* a license event are **deleted at the next boot** when the license
+re-evaluates the budget. Build several VLANs (`v2001`–`v2004` on `port2`, as in Lab 5.1),
+confirm they pass traffic, then reboot and re-check the running state:
+
+```text
+FGT # diagnose ip address list
+IP=10.30.99.122->10.30.99.122/255.255.255.0 index=3 devname=port1
+IP=127.0.0.1->127.0.0.1/255.0.0.0 index=7 devname=root
+IP=10.255.1.1->10.255.1.1/255.255.255.0 index=10 devname=fortilink
+```
+
+**Expected result:** after the reboot the four VLAN gateways (`10.30.1.1`–`10.30.4.1`) are
+**gone** — only `port1` and `fortilink` remain — and every zone or policy that referenced them
+is orphaned. Downstream hosts lose their gateway with no error to explain it.
+
+**Negative test:** trust `show system interface` — which still lists the VLANs in the *saved*
+config — as proof they are active. `diagnose ip address list` (the running state) is the truth;
+the saved config can describe interfaces the license refuses to instantiate.
+
+**Cleanup:** none — the next two labs rebuild the topology inside the budget.
+
+### Lab 5.8 — Segments on physical ports with hypervisor VLAN tagging (Topic: Eval-fit segmentation)
+
+**Eval FortiGate — capable.** This is the design that fits the evaluation budget: physical
+ports instead of VLAN sub-interfaces, so there is nothing for the license to purge.
+
+**Objective:** Build a two-segment routed topology inside the eval's three-interface budget by
+giving the FortiGate one **physical port per segment** and letting the **hypervisor** apply the
+VLAN tag — the remedy Chapter 04 names, carried out end to end.
+
+**The shift.** Lab 5.1 carries many segments as VLAN sub-interfaces of one trunk — correct on a
+licensed FortiGate, impossible on the eval (Lab 5.7). The eval-fit alternative moves the tagging
+**off** the FortiGate and **onto** the hypervisor: each segment is a separate vNIC presented as
+an access port, and the FortiGate addresses the physical `portN` directly. Two segments then
+cost `port1` (management) + `port2` + `port3` = three interfaces, exactly at budget, with
+**zero** sub-interfaces.
+
+**Step 1 — hypervisor: one access-port vNIC per segment.** On Proxmox VE, make `port2` an
+access port on VLAN 2001 and add `port3` as an access port on VLAN 2002 (the guest sees plain,
+untagged ports):
+
+```text
+qm set 122 --net1 virtio=<MAC>,bridge=vmbr2,tag=2001    # port2 = segment A
+qm set 122 --net2 virtio,bridge=vmbr2,tag=2002          # port3 = segment B (new vNIC)
+```
+
+Reboot the FortiGate so it detects the new port. On ESXi the equivalent is a per-VLAN port
+group on the vSwitch; on KVM/libvirt, an interface bound to a tagged bridge.
+
+**Step 2 — FortiGate: address the physical ports.** Because `port2` and `port3` already exist,
+setting an IP is an **edit**, not a create, so the interface cap never fires:
+
+```text
+config system interface
+    edit port2
+        set alias APP
+        set ip 10.30.1.1 255.255.255.0
+        set allowaccess ping
+        set role lan
+    next
+    edit port3
+        set alias DB
+        set ip 10.30.2.1 255.255.255.0
+        set allowaccess ping
+        set role lan
+    next
+end
+diagnose ip address list
+```
+
+**Expected result:** both ports take their addresses with no `-4`, and the running state shows
+them live:
+
+```text
+IP=10.30.1.1->10.30.1.1/255.255.255.0 index=4 devname=port2
+IP=10.30.2.1->10.30.2.1/255.255.255.0 index=5 devname=port3
+```
+
+**Step 3 — one policy, using the ports directly** (no zones needed; well under the
+three-policy cap):
+
+```text
+config firewall address
+    edit web
+        set subnet 10.30.1.10 255.255.255.255
+    next
+    edit db
+        set subnet 10.30.2.10 255.255.255.255
+    next
+end
+config firewall policy
+    edit 1
+        set name web-to-db
+        set srcintf port2
+        set dstintf port3
+        set srcaddr web
+        set dstaddr db
+        set action accept
+        set schedule always
+        set service PGSQL
+        set logtraffic all
+    next
+end
+```
+
+**Negative test:** carry the same two segments as VLAN sub-interfaces of one trunk on the eval
+instead; the second sub-interface (or the next reboot) fails or purges (Lab 5.7). Physical ports
+are tied to real vNICs and are never purged — that is the whole point of the shift.
+
+**Cleanup:** none — Lab 5.9 validates this topology.
+
+### Lab 5.9 — Proving segmentation and reboot-survival (Topic: Eval-fit validation)
+
+**Eval FortiGate — capable.** Confirms the eval-fit topology both enforces segmentation and
+persists across the reboot that erased the VLAN design.
+
+**Objective:** From a host on segment A, prove the policy permits only the allowed service and
+denies the rest, then reboot the FortiGate and prove the whole topology survives.
+
+**Prerequisites:** a host on segment A (this run used an **Alpine** VM at `10.30.1.10`, gateway
+`port2`/`10.30.1.1`) and a service on segment B (a PostgreSQL host at `10.30.2.10:5432`, gateway
+`port3`/`10.30.2.1`).
+
+**Step 1 — segmentation, from the segment-A host:**
+
+```text
+ping -c3 10.30.1.1                       # gateway (port2)
+ping -c2 10.30.2.10                       # far host, ICMP
+nc -w5 -z 10.30.2.10 5432; echo $?        # far host, the allowed service
+```
+
+**Expected result:** the gateway answers, ICMP to the far host is **denied**, and PGSQL is
+**allowed** — segmentation in three lines:
+
+```text
+10.30.1.1:  3 packets transmitted, 3 received, 0% packet loss, ttl=255   # gateway reachable
+10.30.2.10: 2 packets transmitted, 0 received, 100% packet loss          # ICMP denied
+0                                                                        # nc exit 0 = PGSQL allowed
+```
+
+Only the service named in policy 1 crosses the segment boundary; everything else hits the
+implicit deny.
+
+**Step 2 — reboot-survival:**
+
+```text
+execute reboot
+# after it returns:
+diagnose ip address list        # port2=10.30.1.1 and port3=10.30.2.1 still present
+show firewall policy            # policy 1 web-to-db intact
+```
+
+Re-run Step 1; the results are identical.
+
+**Expected result:** `port2`, `port3`, and the policy are **unchanged after the reboot**, and
+segmentation still holds. This is what the design shift buys: run Lab 5.7's four-VLAN topology
+through the same reboot and the segment-A host's gateway ping goes to **100% loss**, because
+`10.30.1.1` no longer exists.
+
+**Negative test:** conclude "it works" from the pre-reboot test alone. On the eval the reboot
+is the real exam — the VLAN design passes Step 1 and fails Step 2; the physical-port design
+passes both.
+
+**Cleanup:** leave the topology in place — it is the working eval-fit ISFW the rest of your labs
+can build on.
+
 ## Lab Verification
 
 Complete this sign-off once the lab has been run end to end, including the
@@ -732,7 +936,10 @@ This chapter built FGT-LAB-01's data-plane foundation: physical and VLAN
 interfaces, static and policy routing, NAT via an IP pool and a
 destination-NAT VIP, VDOM segmentation connected through an inter-VDOM
 link, and a two-member FGCP high-availability cluster validated through a
-forced heartbeat-loss negative test. [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md) builds firewall policy,
+forced heartbeat-loss negative test, and closed with an eval-fit segmentation track
+(Labs 5.7–5.9) that meets the evaluation FortiGate-VM's three-interface budget by moving VLAN
+tagging to the hypervisor and building segments on physical ports — a design that survives the
+reboot the VLAN approach does not. [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md) builds firewall policy,
 authentication, and VPN configuration directly on top of this network and
 HA foundation.
 
@@ -744,4 +951,9 @@ HA foundation.
       inter-VDOM link.
 - [ ] Can configure and validate a two-member FGCP HA cluster, including
       diagnosing a split-brain condition.
+- [ ] Can explain the evaluation FortiGate-VM's three-interface/policy/route
+      budget and the boot-time purge of over-budget VLAN sub-interfaces.
+- [ ] Can build an eval-fit two-segment ISFW on physical ports with
+      hypervisor VLAN tagging, and prove it enforces segmentation and
+      survives a reboot.
 - [ ] Completed the hands-on lab, including the negative test.
