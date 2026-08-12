@@ -605,7 +605,7 @@ end
 ```
 
 **Lessons from a live eval run.** Confirmed on an evaluation FortiGate-VM (12 August 2026),
-driving real traffic across the eval-fit two-segment topology of Labs 5.8–5.9:
+driving real traffic across the eval-fit two-segment topology of Labs 5.9–5.10:
 
 - *`diagnose firewall ippool list` is the wrong lens for an `overload` pool.* It prints an
   empty `list ippool info:(vf=root)` header even while sessions are actively translating.
@@ -779,15 +779,27 @@ the **secondary first**, so it does not momentarily claim primary as the cluster
 ```text
 config system ha          # run on the SECONDARY first, then the PRIMARY
     set mode standalone
+    unset group-name
+    set group-id 0
+    unset password
+    unset hbdev
+    set override disable
+    set session-pickup disable
+    set priority 128
 end
 ```
 
-Each unit reboots out of HA as a standalone device. **Plan for one consequence:** both units
+`set mode standalone` **alone is not a complete rollback** — it stops the unit clustering but
+leaves the group name, group ID, heartbeat devices, password, override, and priority in the
+config, so `get system ha status` still reports the old `Group Name`/`Group ID`. Clear them
+(above) so the unit is genuinely free of HA; confirm with `show system ha`, which collapses to
+defaults (at most `set override disable` remains — itself the default). Each unit reboots out of
+HA as a standalone device. **Plan for one consequence:** both units
 now hold the *same* synchronized configuration — including identical interface IPs — so leaving
 both connected to the same segments causes an address conflict. Re-address, shut down, or
 restore the pre-cluster backup on the second unit before returning it to service. Verify each is
 clear of HA with `get system ha status` (expect `Mode: Standalone`). To convert this cluster to
-**active-active** instead of tearing it down, see Lab 5.10.
+**active-active** instead of tearing it down, see Lab 5.7.
 
 **Lessons from a live eval run.** Confirmed 12 August 2026 by clustering two evaluation
 FortiGate-VMs (both `v7.6.7,build3704 (GA.M)`) on Proxmox — which corrects the "licensed-only"
@@ -798,7 +810,7 @@ assumption this lab historically carried:
   whole HA lifecycle runs on evaluation licenses. HA is **not** license-gated; a *single* eval
   VM simply has no peer.
 - *The three-interface cap blocks a dedicated heartbeat.* A fourth vNIC is never instantiated
-  on an eval VM — the interface cap applies to physical ports, not just VLANs (Lab 5.7) — so
+  on an eval VM — the interface cap applies to physical ports, not just VLANs (Lab 5.8) — so
   there is no spare port for a dedicated heartbeat link. Set an existing data interface as the
   heartbeat device instead: `set hbdev "port2" 50 "port3" 50`. FGCP lets a data interface
   carry heartbeat traffic alongside data; a licensed unit lifts the cap and restores a
@@ -823,11 +835,78 @@ assumption this lab historically carried:
   its permitted service across the reboot with no reconfiguration — verified by an
   uninterrupted `web→db` path during a primary reboot.
 
-### Lab 5.7 — The evaluation interface budget and the VLAN purge (Topic: Eval limitations)
+### Lab 5.7 — Active-active HA load-balancing (Topic: A-A HA)
+
+**Eval FortiGate — capable with a second eval unit.** This converts the two-eval-VM cluster from
+Lab 5.6, so the same "no dedicated heartbeat, shared `port2`/`port3` heartbeat" constraint
+applies.
+
+**Objective:** Convert the active-passive cluster to active-active, where both units process
+traffic, and observe sessions load-balanced across the members.
+
+**Prerequisites:** the two-member cluster from Lab 5.6 (or build one first), both units on
+matching firmware with the shared-interface heartbeat.
+
+**Background.** In active-active FGCP, both units process traffic. The primary receives all
+traffic and distributes sessions to the secondary using a configurable schedule. By default A-A
+load-balances only the CPU-heavy **proxy-based UTM inspection** sessions; `set load-balance-all
+enable` extends distribution to *all* firewall sessions, which makes the effect visible in a lab
+that runs no UTM. A-A raises aggregate inspection throughput across many sessions — it is **not**
+a bandwidth multiplier for a single flow.
+
+**Step 1 — switch the cluster to active-active.** Change the mode on the primary (it syncs to
+the secondary) and add a schedule plus all-session load-balancing:
+
+```text
+config system ha
+    set mode a-a
+    set schedule leastconnection
+    set load-balance-all enable
+end
+```
+
+The cluster renegotiates briefly, then both units are active.
+
+**Step 2 — verify the mode and membership:**
+
+```text
+get system ha status
+```
+
+**Expected result:** the header now reports **`Mode: HA A-A`** (was `A-P`), still two members,
+both **in-sync**, heartbeat flowing on `port2`/`port3`.
+
+**Step 3 — watch sessions distribute across both units.** Generate several concurrent sessions
+through the cluster (for example, a batch of `web→db` connections from a segment host), then read
+the per-unit load:
+
+```text
+diagnose sys ha status
+get system ha status | grep -A3 "System Usage"
+```
+
+**Expected result:** `diagnose sys ha status` shows **both** members carrying sessions — the
+schedule assigns each new session to the less-loaded unit, so the secondary is no longer idle.
+The per-unit `sessions=` counters in `get system ha status` both climb, rather than every session
+sitting on one unit as in active-passive.
+
+**Negative test:** expect a single large transfer to run at twice a lone unit's throughput. It
+does not — A-A distributes *sessions*, not the packets of one flow, so one connection is pinned
+to one unit. A-A scales inspection across many sessions, not the speed of any one.
+
+**Rollback:** return to active-passive (or all the way to standalone via Lab 5.6's rollback):
+
+```text
+config system ha
+    set mode a-p
+end
+```
+
+### Lab 5.8 — The evaluation interface budget and the VLAN purge (Topic: Eval limitations)
 
 **Eval FortiGate — this lab *is* the limitation.** It reproduces the free evaluation
 FortiGate-VM's caps rather than working around them; the two labs that follow are shaped by
-what it shows. Labs 5.7–5.9 were validated live on a 7.6.7 evaluation VM on 12 August 2026.
+what it shows. Labs 5.8–5.10 were validated live on a 7.6.7 evaluation VM on 12 August 2026.
 
 **Objective:** Observe the evaluation FortiGate-VM's three-entry caps on interfaces, policies,
 and routes, and the boot-time purge of over-budget VLAN sub-interfaces.
@@ -879,7 +958,7 @@ the saved config can describe interfaces the license refuses to instantiate.
 
 **Cleanup:** none — the next two labs rebuild the topology inside the budget.
 
-### Lab 5.8 — Segments on physical ports with hypervisor VLAN tagging (Topic: Eval-fit segmentation)
+### Lab 5.9 — Segments on physical ports with hypervisor VLAN tagging (Topic: Eval-fit segmentation)
 
 **Eval FortiGate — capable.** This is the design that fits the evaluation budget: physical
 ports instead of VLAN sub-interfaces, so there is nothing for the license to purge.
@@ -889,7 +968,7 @@ giving the FortiGate one **physical port per segment** and letting the **hypervi
 VLAN tag — the remedy Chapter 04 names, carried out end to end.
 
 **The shift.** Lab 5.1 carries many segments as VLAN sub-interfaces of one trunk — correct on a
-licensed FortiGate, impossible on the eval (Lab 5.7). The eval-fit alternative moves the tagging
+licensed FortiGate, impossible on the eval (Lab 5.8). The eval-fit alternative moves the tagging
 **off** the FortiGate and **onto** the hypervisor: each segment is a separate vNIC presented as
 an access port, and the FortiGate addresses the physical `portN` directly. Two segments then
 cost `port1` (management) + `port2` + `port3` = three interfaces, exactly at budget, with
@@ -964,12 +1043,12 @@ end
 ```
 
 **Negative test:** carry the same two segments as VLAN sub-interfaces of one trunk on the eval
-instead; the second sub-interface (or the next reboot) fails or purges (Lab 5.7). Physical ports
+instead; the second sub-interface (or the next reboot) fails or purges (Lab 5.8). Physical ports
 are tied to real vNICs and are never purged — that is the whole point of the shift.
 
-**Cleanup:** none — Lab 5.9 validates this topology.
+**Cleanup:** none — Lab 5.10 validates this topology.
 
-### Lab 5.9 — Proving segmentation and reboot-survival (Topic: Eval-fit validation)
+### Lab 5.10 — Proving segmentation and reboot-survival (Topic: Eval-fit validation)
 
 **Eval FortiGate — capable.** Confirms the eval-fit topology both enforces segmentation and
 persists across the reboot that erased the VLAN design.
@@ -1013,7 +1092,7 @@ show firewall policy            # policy 1 web-to-db intact
 Re-run Step 1; the results are identical.
 
 **Expected result:** `port2`, `port3`, and the policy are **unchanged after the reboot**, and
-segmentation still holds. This is what the design shift buys: run Lab 5.7's four-VLAN topology
+segmentation still holds. This is what the design shift buys: run Lab 5.8's four-VLAN topology
 through the same reboot and the segment-A host's gateway ping goes to **100% loss**, because
 `10.30.1.1` no longer exists.
 
@@ -1023,73 +1102,6 @@ passes both.
 
 **Cleanup:** leave the topology in place — it is the working eval-fit ISFW the rest of your labs
 can build on.
-
-### Lab 5.10 — Active-active HA load-balancing (Topic: A-A HA)
-
-**Eval FortiGate — capable with a second eval unit.** This converts the two-eval-VM cluster from
-Lab 5.6, so the same "no dedicated heartbeat, shared `port2`/`port3` heartbeat" constraint
-applies.
-
-**Objective:** Convert the active-passive cluster to active-active, where both units process
-traffic, and observe sessions load-balanced across the members.
-
-**Prerequisites:** the two-member cluster from Lab 5.6 (or build one first), both units on
-matching firmware with the shared-interface heartbeat.
-
-**Background.** In active-active FGCP, both units process traffic. The primary receives all
-traffic and distributes sessions to the secondary using a configurable schedule. By default A-A
-load-balances only the CPU-heavy **proxy-based UTM inspection** sessions; `set load-balance-all
-enable` extends distribution to *all* firewall sessions, which makes the effect visible in a lab
-that runs no UTM. A-A raises aggregate inspection throughput across many sessions — it is **not**
-a bandwidth multiplier for a single flow.
-
-**Step 1 — switch the cluster to active-active.** Change the mode on the primary (it syncs to
-the secondary) and add a schedule plus all-session load-balancing:
-
-```text
-config system ha
-    set mode a-a
-    set schedule leastconnection
-    set load-balance-all enable
-end
-```
-
-The cluster renegotiates briefly, then both units are active.
-
-**Step 2 — verify the mode and membership:**
-
-```text
-get system ha status
-```
-
-**Expected result:** the header now reports **`Mode: HA A-A`** (was `A-P`), still two members,
-both **in-sync**, heartbeat flowing on `port2`/`port3`.
-
-**Step 3 — watch sessions distribute across both units.** Generate several concurrent sessions
-through the cluster (for example, a batch of `web→db` connections from a segment host), then read
-the per-unit load:
-
-```text
-diagnose sys ha status
-get system ha status | grep -A3 "System Usage"
-```
-
-**Expected result:** `diagnose sys ha status` shows **both** members carrying sessions — the
-schedule assigns each new session to the less-loaded unit, so the secondary is no longer idle.
-The per-unit `sessions=` counters in `get system ha status` both climb, rather than every session
-sitting on one unit as in active-passive.
-
-**Negative test:** expect a single large transfer to run at twice a lone unit's throughput. It
-does not — A-A distributes *sessions*, not the packets of one flow, so one connection is pinned
-to one unit. A-A scales inspection across many sessions, not the speed of any one.
-
-**Rollback:** return to active-passive (or all the way to standalone via Lab 5.6's rollback):
-
-```text
-config system ha
-    set mode a-p
-end
-```
 
 ## Lab Verification
 
@@ -1106,7 +1118,7 @@ interfaces, static and policy routing, NAT via an IP pool and a
 destination-NAT VIP, VDOM segmentation connected through an inter-VDOM
 link, and a two-member FGCP high-availability cluster validated through a
 forced heartbeat-loss negative test, and closed with an eval-fit segmentation track
-(Labs 5.7–5.9) that meets the evaluation FortiGate-VM's three-interface budget by moving VLAN
+(Labs 5.8–5.10) that meets the evaluation FortiGate-VM's three-interface budget by moving VLAN
 tagging to the hypervisor and building segments on physical ports — a design that survives the
 reboot the VLAN approach does not. [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md) builds firewall policy,
 authentication, and VPN configuration directly on top of this network and
