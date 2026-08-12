@@ -480,6 +480,22 @@ config system interface
 end
 ```
 
+**Lessons from a live eval run.** Two behaviors surface immediately on a free evaluation
+FortiGate-VM and shape every lab in this chapter:
+
+- *The eval caps interfaces, policies, and routes at three entries each.* Creating a fourth
+  entry in any of those tables fails with
+  `Command fail. Return code -4 (reached the maximum number of entries)`. Plan around it:
+  carry several segments as VLAN subinterfaces of one trunk rather than separate physical
+  ports (this lab), delete-as-you-go once you exceed the route budget (Lab 5.2), and enable
+  NAT on an existing policy rather than adding a fourth (Lab 5.3). A licensed FortiGate lifts
+  the caps; registering the `FGVMEV` serial does not.
+- *`show` hides defaults; `get` shows them.* `show` prints only settings that differ from
+  their default, so `show <path> | grep <keyword>` returning nothing usually means the
+  setting is at its default — not that it is unset. Confirm with `get`, which prints the full
+  effective configuration. For example `show system settings | grep ecmp` is empty on a
+  default box, while `get system settings | grep ecmp` reports `v4-ecmp-mode: source-ip-based`.
+
 ### Lab 5.2 — Static routing and route selection (Topic: Static routes)
 
 **Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
@@ -514,6 +530,25 @@ config router static
     delete 10
 end
 ```
+
+**Lessons from a live eval run.** Confirmed on an evaluation FortiGate-VM:
+
+- *A static route installs whenever its outbound interface is up — FortiOS does not require
+  the gateway to sit on a connected subnet at configuration time.* A route configured with an
+  off-subnet gateway still installs via its device and appears in both
+  `get router info routing-table static` and `diagnose ip route list`; only actual forwarding
+  would fail (the ARP for the gateway goes unanswered). Installation and *selection* — what
+  this lab teaches — work regardless, so the textbook values run as-is.
+- *The selection order is longest prefix, then administrative distance, then ECMP.* A more
+  specific prefix installs alongside a less specific one regardless of distance — distance
+  only breaks ties between routes to the **same** prefix; among same-prefix routes the lowest
+  distance wins and the rest stay out of the RIB; and equal distance **and** priority yields
+  ECMP, with both next-hops installed and load-sharing. `v4-ecmp-mode` (default
+  `source-ip-based`) selects the hash and `ecmp-max-paths` caps the number of shared paths.
+- *The eval's three-route cap bites here.* With the default route plus two test routes you are
+  already at three; a fourth fails with
+  `Command fail. Return code -4 (reached the maximum number of entries)`. Delete as you go, or
+  use a licensed FortiGate, to hold more than three routes at once.
 
 ### Lab 5.3 — Source NAT (Topic: NAT)
 
