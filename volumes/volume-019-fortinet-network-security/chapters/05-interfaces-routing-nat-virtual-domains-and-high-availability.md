@@ -748,7 +748,7 @@ end
 
 ### Lab 5.6 — High availability (Topic: HA)
 
-**Eval FortiGate — licensed-only.** HA needs a **second** FortiGate of matching model and firmware; a lone eval VM can write the config but cannot form a cluster. On the eval, treat this as a read-and-design lab.
+**Eval FortiGate — capable with a second eval unit.** HA needs a **second** FortiGate of matching model and *exact* firmware; a lone eval VM writes the config but has no peer to cluster with. Two eval VMs *do* form a working, config-synced, failover-capable cluster — with one real constraint (the eval's three-interface cap forces a shared-interface heartbeat), documented in the live-run note after the lab.
 
 **Objective:** Form an active-passive HA cluster.
 
@@ -773,7 +773,55 @@ gives stateful failover with session pickup so flows survive a device failure.
 never form a cluster and both stay primary (split-brain) — matching HA parameters and a
 dedicated heartbeat link are mandatory.
 
-**Cleanup:** `set mode standalone` on the lab unit to leave the cluster.
+**Rollback — tear the active-passive cluster back down to standalone.** Break it in order,
+the **secondary first**, so it does not momentarily claim primary as the cluster dissolves:
+
+```text
+config system ha          # run on the SECONDARY first, then the PRIMARY
+    set mode standalone
+end
+```
+
+Each unit reboots out of HA as a standalone device. **Plan for one consequence:** both units
+now hold the *same* synchronized configuration — including identical interface IPs — so leaving
+both connected to the same segments causes an address conflict. Re-address, shut down, or
+restore the pre-cluster backup on the second unit before returning it to service. Verify each is
+clear of HA with `get system ha status` (expect `Mode: Standalone`). To convert this cluster to
+**active-active** instead of tearing it down, see Lab 5.10.
+
+**Lessons from a live eval run.** Confirmed 12 August 2026 by clustering two evaluation
+FortiGate-VMs (both `v7.6.7,build3704 (GA.M)`) on Proxmox — which corrects the "licensed-only"
+assumption this lab historically carried:
+
+- *Two eval VMs form a fully working FGCP cluster.* They negotiate the cluster, elect a
+  primary/secondary, synchronize configuration to matching checksums, and fail over — the
+  whole HA lifecycle runs on evaluation licenses. HA is **not** license-gated; a *single* eval
+  VM simply has no peer.
+- *The three-interface cap blocks a dedicated heartbeat.* A fourth vNIC is never instantiated
+  on an eval VM — the interface cap applies to physical ports, not just VLANs (Lab 5.7) — so
+  there is no spare port for a dedicated heartbeat link. Set an existing data interface as the
+  heartbeat device instead: `set hbdev "port2" 50 "port3" 50`. FGCP lets a data interface
+  carry heartbeat traffic alongside data; a licensed unit lifts the cap and restores a
+  dedicated link.
+- *Firmware must match exactly.* Both units must report the same `get system status` version
+  **and** build (here `build3704`); a difference in build or branch prevents the cluster from
+  forming.
+- *Never hard-reset a FortiGate-VM.* Power-cycling the guest from the hypervisor
+  (`qm reset`/`qm stop`, or a "reset" in any hypervisor) triggers *"WARNING: File System Check
+  Recommended! An unsafe reboot may have caused an inconsistency in the disk drive"*, and the
+  resulting config-partition damage makes the secondary loop forever on *"failed to sync with
+  primary, will try again."* Always reboot with `execute reboot`; repair a flagged disk with
+  `execute disk list` then `execute disk scan <ref#>`.
+- *HA priority is per-unit and not config-synced.* Each member keeps its own `set priority`, so
+  the cluster checksum still matches. `set override enable` plus a higher priority makes a unit
+  reclaim primary after it rejoins; when override does not apply, **uptime** decides the
+  election. The `get system ha status` "Primary selected using" log narrates every decision
+  (`override priority is larger`, `uptime is larger`, `SET_AS_SECONDARY flag is set`, `only
+  member`) — read it to understand why a given unit is primary.
+- *Failover is transparent to the segments.* On primary failure the cluster's virtual MAC and
+  interface IPs move to the new primary, so a downstream host keeps reaching its gateway and
+  its permitted service across the reboot with no reconfiguration — verified by an
+  uninterrupted `web→db` path during a primary reboot.
 
 ### Lab 5.7 — The evaluation interface budget and the VLAN purge (Topic: Eval limitations)
 
@@ -976,6 +1024,73 @@ passes both.
 **Cleanup:** leave the topology in place — it is the working eval-fit ISFW the rest of your labs
 can build on.
 
+### Lab 5.10 — Active-active HA load-balancing (Topic: A-A HA)
+
+**Eval FortiGate — capable with a second eval unit.** This converts the two-eval-VM cluster from
+Lab 5.6, so the same "no dedicated heartbeat, shared `port2`/`port3` heartbeat" constraint
+applies.
+
+**Objective:** Convert the active-passive cluster to active-active, where both units process
+traffic, and observe sessions load-balanced across the members.
+
+**Prerequisites:** the two-member cluster from Lab 5.6 (or build one first), both units on
+matching firmware with the shared-interface heartbeat.
+
+**Background.** In active-active FGCP, both units process traffic. The primary receives all
+traffic and distributes sessions to the secondary using a configurable schedule. By default A-A
+load-balances only the CPU-heavy **proxy-based UTM inspection** sessions; `set load-balance-all
+enable` extends distribution to *all* firewall sessions, which makes the effect visible in a lab
+that runs no UTM. A-A raises aggregate inspection throughput across many sessions — it is **not**
+a bandwidth multiplier for a single flow.
+
+**Step 1 — switch the cluster to active-active.** Change the mode on the primary (it syncs to
+the secondary) and add a schedule plus all-session load-balancing:
+
+```text
+config system ha
+    set mode a-a
+    set schedule leastconnection
+    set load-balance-all enable
+end
+```
+
+The cluster renegotiates briefly, then both units are active.
+
+**Step 2 — verify the mode and membership:**
+
+```text
+get system ha status
+```
+
+**Expected result:** the header now reports **`Mode: HA A-A`** (was `A-P`), still two members,
+both **in-sync**, heartbeat flowing on `port2`/`port3`.
+
+**Step 3 — watch sessions distribute across both units.** Generate several concurrent sessions
+through the cluster (for example, a batch of `web→db` connections from a segment host), then read
+the per-unit load:
+
+```text
+diagnose sys ha status
+get system ha status | grep -A3 "System Usage"
+```
+
+**Expected result:** `diagnose sys ha status` shows **both** members carrying sessions — the
+schedule assigns each new session to the less-loaded unit, so the secondary is no longer idle.
+The per-unit `sessions=` counters in `get system ha status` both climb, rather than every session
+sitting on one unit as in active-passive.
+
+**Negative test:** expect a single large transfer to run at twice a lone unit's throughput. It
+does not — A-A distributes *sessions*, not the packets of one flow, so one connection is pinned
+to one unit. A-A scales inspection across many sessions, not the speed of any one.
+
+**Rollback:** return to active-passive (or all the way to standalone via Lab 5.6's rollback):
+
+```text
+config system ha
+    set mode a-p
+end
+```
+
 ## Lab Verification
 
 Complete this sign-off once the lab has been run end to end, including the
@@ -1004,7 +1119,8 @@ HA foundation.
 - [ ] Can enable multi-VDOM mode, create VDOMs, and connect them with an
       inter-VDOM link.
 - [ ] Can configure and validate a two-member FGCP HA cluster, including
-      diagnosing a split-brain condition.
+      diagnosing a split-brain condition, converting active-passive to
+      active-active, and rolling the cluster back to standalone.
 - [ ] Can explain the evaluation FortiGate-VM's three-interface/policy/route
       budget and the boot-time purge of over-budget VLAN sub-interfaces.
 - [ ] Can build an eval-fit two-segment ISFW on physical ports with
