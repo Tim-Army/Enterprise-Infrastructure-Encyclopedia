@@ -14,6 +14,8 @@
   local-in access restriction, and administrative protocol selection.
 - Validate a first deployment using status, licensing, and connectivity
   commands.
+- Upgrade a FortiGate-VM's firmware over TFTP from the CLI, and recognize
+  when the GUI upgrade path is unavailable on an evaluation license.
 
 ## Theory and Architecture
 
@@ -247,6 +249,41 @@ earlier. Two remediations, both real on 7.6:
   on Proxmox) — and address the physical `portN` directly. Three physical ports, zero VLAN
   sub-interfaces, same routed topology; see Lab 5.1's variant note in
   [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md).
+
+**Gotcha — the free evaluation license blocks the GUI firmware upgrade, and FortiOS
+8.0.0 on a VM has an unusable GUI under evaluation.** Two independent facts converge here,
+both observed on a KVM/Proxmox lab in August 2026, and together they dictate *how* you
+upgrade an evaluation FortiGate-VM (Lab 4.8) and *which* release you run for GUI work:
+
+- *The GUI firmware upgrade requires a FortiGuard firmware-upgrade entitlement the
+  evaluation tier does not carry.* The upgrade wizard (*System > Firmware & Registration*,
+  or the dashboard **Firmware** widget) validates entitlement before it will accept an
+  image, and refuses the file with *"The FortiGuard license for firmware upgrades could not
+  be verified."* Registering the `FGVMEV` serial with FortiCare does not grant it — the free
+  evaluation license simply has no firmware-download contract. The supported escape is the
+  CLI, which performs no such check: `execute restore image tftp <file> <tftp-server-ip>`
+  (Lab 4.8) writes the image over TFTP and preserves both the configuration and the
+  installed license.
+- *FortiOS 8.0.0 on a VM logs an administrator out of the GUI moments after login.* A fresh
+  login loads the dashboard and then bounces back to the login page (via a blank
+  `…/prompt?viewOnly=` redirect). It reproduces on a clean reboot, in a private browser
+  window, with no other session connected — so it is not a stale cookie, a concurrent
+  administrator session, or a corrupted image. The **Dashboard > Status** page's real-time
+  events WebSocket targets the device *hostname*, which a lab browser cannot resolve without
+  DNS; navigating to that page triggers the logout, and after a firmware upgrade the behavior
+  degrades to logging out on every page. The **same VM shell downgraded to 7.6.7** — the
+  release the reference homelab's other FortiGate-VMs run without issue — has a stable GUI,
+  which isolates the fault to the 8.0.0-VM image rather than the license, the hypervisor, or
+  the configuration. **Run 7.6.7 for GUI work on an evaluation FortiGate-VM, and treat an
+  8.0.0 evaluation VM as a CLI/API-only device.** The elimination sequence that reached this
+  conclusion: re-imaged 8.0.0 from scratch (still bounced) → clean reboot, private-mode
+  browser, single session (still bounced) → confirmed `diagnose debug vm-print-license`
+  reports `Model: EVAL`, so the license was applied and was not the cause → ruled out the
+  concurrent-session, admin-timeout, and events-WebSocket-to-hostname theories as sole causes
+  → swapped the boot disk on the same VM (identical SMBIOS UUID and MACs) to 7.6.7, and the
+  GUI was stable. The Alpine `in.tftpd` server in
+  [Volume CLXXI](../../volume-171-alpine-linux/README.md) pairs with Lab 4.8 to stage the
+  firmware image this workaround consumes.
 
 ### Changing the default administrator password and enabling a password policy
 
@@ -863,6 +900,110 @@ healthy first boot needs.
 **Cleanup:** snapshot the freshly-deployed VM as your lab baseline, or
 `execute factoryreset` to hand a known-clean appliance to Lab 4.1.
 
+### Lab 4.8 — Upgrading firmware over TFTP from the CLI (Topic: Firmware lifecycle)
+
+**Eval FortiGate — capable via CLI (GUI upgrade blocked).** The GUI upgrade wizard refuses
+an evaluation FortiGate-VM because the evaluation tier carries no FortiGuard firmware-upgrade
+entitlement; the CLI `execute restore image tftp` performs no entitlement check and completes
+the upgrade with the configuration and license intact. See the licensing Gotcha above for the
+reason and the elimination steps behind it.
+
+**Objective:** Upgrade a FortiGate-VM from the CLI by pulling a firmware image from a TFTP
+server — the supported path when the GUI upgrade is unavailable — and confirm that the
+configuration and the evaluation license survive the reboot.
+
+**Prerequisites (this lab only):** a running FortiGate-VM (this lab upgrades one from FortiOS
+7.6.7); a TFTP server reachable on the same subnet with the target image staged in its root —
+the Alpine `in.tftpd` server built in
+[Volume CLXXI, Lab 5.1](../../volume-171-alpine-linux/chapters/05-building-a-linux-tftp-server-on-alpine.md)
+serves this role at `10.30.99.50`; and the matching build for the platform — for KVM,
+`FGT_VM64_KVM-v8.0.0.F-build0167-FORTINET.out`. **Cost:** none. **Confirm the path first:**
+FortiOS enforces stepping through intermediate releases on multi-version jumps, so verify that
+7.6.7 → 8.0.0 is a single supported step on the Fortinet Upgrade Path tool before proceeding.
+
+**Step 1 — Record the current build and back up the configuration:**
+
+```text
+FGT-LAB-01 # get system status | grep -i Version
+Version: FortiGate-VM64-KVM v7.6.7,build3704 (GA.F)
+FGT-LAB-01 # execute backup config flash pre-8.0-upgrade
+FGT-LAB-01 # execute backup config tftp fgt-pre-upgrade.conf 10.30.99.50
+```
+
+**Expected result:** the running 7.6.7 build and a saved configuration revision, both on
+flash and on the TFTP server — a firmware change is always preceded by a backup.
+
+**Step 2 — Verify the image on the TFTP server, then confirm reachability.** On the TFTP
+host, checksum the staged file so a truncated transfer is caught before it reaches the
+firewall:
+
+```text
+tftp-server:~# md5sum /tftpboot/FGT_VM64_KVM-v8.0.0.F-build0167-FORTINET.out
+5a7da77d58860321789b133e967bdb7d  /tftpboot/FGT_VM64_KVM-v8.0.0.F-build0167-FORTINET.out
+```
+
+From the FortiGate, confirm the server answers:
+
+```text
+FGT-LAB-01 # execute ping 10.30.99.50
+PING 10.30.99.50 (10.30.99.50): 56 data bytes
+64 bytes from 10.30.99.50: icmp_seq=0 ttl=64 time=0.4 ms
+```
+
+**Expected result:** a matching MD5 and a successful ping — the image is intact and the
+transport path to the TFTP server is open.
+
+**Step 3 — Run the CLI upgrade.** `execute restore image tftp` downloads the image, verifies
+it, writes it, and reboots into it:
+
+```text
+FGT-LAB-01 # execute restore image tftp FGT_VM64_KVM-v8.0.0.F-build0167-FORTINET.out 10.30.99.50
+This operation will replace the current firmware version!
+Do you want to continue? (y/n)y
+
+Please wait...
+Connect to tftp server 10.30.99.50 ...
+Get image from tftp server OK.
+Check image OK.
+This operation will download and upgrade the firmware, and the system will reboot.
+Do you want to continue? (y/n)y
+
+Image checking...
+Programming the boot device now.
+Please wait for system to restart.
+```
+
+**Expected result:** the image transfers, passes the internal checksum, and the appliance
+reboots into the new firmware — with no GUI entitlement check anywhere in the flow.
+
+**Step 4 — After the reboot, confirm the new build and that the configuration and license
+survived:**
+
+```text
+FGT-LAB-01 # get system status | grep -i Version
+Version: FortiGate-VM64-KVM v8.0.0,build0167 (GA.F)
+FGT-LAB-01 # diagnose debug vm-print-license | grep -i model
+Model: EVAL
+FGT-LAB-01 # show firewall policy | grep name
+        set name "web-to-db"
+        set name "hmi-to-plc"
+        set name "deny-mgmt-db"
+```
+
+**Expected result:** the new 8.0.0 build, an intact `Model: EVAL` license, and the
+pre-upgrade policy set still present — the CLI restore is config- and license-preserving,
+unlike re-deploying a factory disk image.
+
+**Negative test:** attempt the same upgrade from the GUI wizard on the evaluation license; it
+is refused with *"The FortiGuard license for firmware upgrades could not be verified"* before
+the file is even accepted — the CLI `execute restore image tftp` is the supported path when no
+firmware-upgrade entitlement is present. Note also that an 8.0.0 FortiGate-VM's GUI is itself
+unusable under evaluation (the licensing Gotcha above); plan to manage the upgraded appliance
+over CLI/API, or stay on 7.6.7 where GUI access is required.
+
+**Cleanup:** snapshot the upgraded VM as a new baseline, or `execute restore image tftp` the
+7.6.7 image back to return the appliance to a GUI-capable state for later labs.
+
 ## Lab Verification
 
 Complete this sign-off once the lab has been run end to end, including the
@@ -889,4 +1030,6 @@ routing, NAT, VDOMs, and high availability.
       interface from the CLI.
 - [ ] Can apply password policy, trusted hosts, and MFA hardening to an
       administrator account.
+- [ ] Can upgrade a FortiGate-VM over TFTP from the CLI when the GUI upgrade
+      is blocked on evaluation, preserving configuration and license.
 - [ ] Completed the hands-on lab, including the negative test.

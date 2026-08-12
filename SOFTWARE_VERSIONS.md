@@ -8,6 +8,7 @@ rewritten against a newer release, and record the date of the change.
 | --- | --- | --- |
 | Red Hat Enterprise Linux | RHEL 10 | 2026-07 |
 | Ubuntu Server / Cloud | 26.04 LTS | 2026-07 |
+| Alpine Linux | 3.24 | 2026-08 |
 | VMware vSphere / ESXi / vCenter | vSphere 9.x | 2026-07 |
 | VMware NSX | NSX 4.x | 2026-07 |
 | Cisco IOS XE | 17.x (Catalyst 9000 series) | 2026-07 |

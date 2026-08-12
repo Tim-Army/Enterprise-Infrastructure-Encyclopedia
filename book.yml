@@ -5889,6 +5889,34 @@ volumes:
       - id: 09
         title: "Chapter 09: Choosing Your Teradata Path"
         path: volumes/volume-170-teradata-certifications/chapters/09-choosing-your-teradata-path.md
+  - id: volume-171
+    number: "CLXXI"
+    slug: volume-171-alpine-linux
+    title: "Alpine Linux"
+    chapter_count: 7
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Alpine Linux Architecture, Philosophy, and Where It Fits"
+        path: volumes/volume-171-alpine-linux/chapters/01-alpine-linux-architecture-philosophy-and-where-it-fits.md
+      - id: 02
+        title: "Chapter 02: Installing and Provisioning Alpine Linux"
+        path: volumes/volume-171-alpine-linux/chapters/02-installing-and-provisioning-alpine-linux.md
+      - id: 03
+        title: "Chapter 03: Package Management with apk and Repositories"
+        path: volumes/volume-171-alpine-linux/chapters/03-package-management-with-apk-and-repositories.md
+      - id: 04
+        title: "Chapter 04: Networking and Service Management with OpenRC"
+        path: volumes/volume-171-alpine-linux/chapters/04-networking-and-service-management-with-openrc.md
+      - id: 05
+        title: "Chapter 05: Building a Linux TFTP Server on Alpine"
+        path: volumes/volume-171-alpine-linux/chapters/05-building-a-linux-tftp-server-on-alpine.md
+      - id: 06
+        title: "Chapter 06: Alpine as a Container and Appliance Base"
+        path: volumes/volume-171-alpine-linux/chapters/06-alpine-as-a-container-and-appliance-base.md
+      - id: 07
+        title: "Chapter 07: Operating Alpine — Updates, Storage Growth, Hardening, and Keeping Current"
+        path: volumes/volume-171-alpine-linux/chapters/07-operating-alpine-updates-storage-growth-hardening-and-keeping-current.md
   - id: volume-900
     number: "CM"
     slug: volume-900-tims-lab-gear
