@@ -4,6 +4,8 @@
 
 *Figure 1-1. One three-tier estate, three native segmentation models. The legitimate web to database flow on 5432 stays open while the operator's lateral path to the database is denied by identity on each cloud.*
 
+**Host setup — creating these VMs on your hypervisor.** The per-hypervisor steps to create each VM (install from an ISO or boot a cloud image), size it, and map its NICs to the segments in this lab are the same for every hypervisor and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 ## Learning Objectives
 
 - State what this lab builds and why it needs no agent, cluster, or mesh.
