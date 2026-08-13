@@ -189,6 +189,19 @@ track this is the **v1.2** practical update, and its written core is now
 
 ## Currency
 
+**Interim check, 13 August 2026** (ahead of the 20 August cadence),
+against vendor primary sources: Microsoft Learn confirms **AZ-204 (Azure
+Developer Associate) is now retired** — its 31 July 2026 date, recorded in
+Volume XXXIII, is in effect (successor AI-200) — and **AZ-500 (Azure
+Security Engineer Associate) retires 31 August 2026** (successor SC-500).
+AWS **ANS-C01** (Advanced Networking – Specialty) still retires **25 August
+2026** with no successor. The Cisco SCOR `350-701` v1.1→v2.0 and SISE
+`300-715` v1.1→v1.2 transition (below) remains 26–27 August 2026. VMware
+**VCAP-DCV Design (3V0-21.23)** and **VCAP-NV Deploy (3V0-41.22)** still
+have live Broadcom certification pages — no vendor retirement is confirmed,
+so both stay listed pending a browser/getjson re-check. The full
+every-code re-verification remains scheduled for the 20 August cadence.
+
 Every exam code in this table was verified against its vendor's own
 published exam description or exam-topics document on **21 July 2026**.
 Third-party summaries were not treated as sources; several were found to
